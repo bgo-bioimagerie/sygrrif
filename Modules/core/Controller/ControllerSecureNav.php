@@ -19,11 +19,13 @@ abstract class ControllerSecureNav extends ControllerSecure
     public function buildNavBar($login){
     	$logoFile = Configuration::get("logoFile");
     	$userName = $login;
-    	$toolMenu = array("Statistics" => "statistiques");
+    	$toolMenu = array("statistics" => "statistiques");
+    	$toolAdmin = array("database" => "database");
     
     	// get the view menu,fill it, and return the content
     	$view = $this->generateNavfile(
-    			array('logoFile' => $logoFile, 'userName' => $userName, 'toolMenu' => $toolMenu));
+    			array('logoFile' => $logoFile, 'userName' => $userName, 
+    					'toolMenu' => $toolMenu, 'toolAdmin' => $toolAdmin));
     	// Send the view
     	return $view;
     
@@ -32,7 +34,7 @@ abstract class ControllerSecureNav extends ControllerSecure
     
     private function generateNavfile($data)
     {
-    	$file = 'Modules/core/View/Navbar.php';
+    	$file = 'Modules/core/View/navbar.php';
     	if (file_exists($file)) {
     		extract($data);
     

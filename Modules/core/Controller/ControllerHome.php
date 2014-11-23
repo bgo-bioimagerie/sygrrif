@@ -18,5 +18,6 @@ class ControllerHome extends ControllerSecureNav {
 				'navBar' => $navBar 
 		) );
 	}
+	
 }
 

@@ -17,6 +17,7 @@ abstract class ControllerSecure extends Controller
             parent::runAction($action);
         }
         else {
+        	echo "redirect to connection";
             $this->redirect("Connection");
         }
     }

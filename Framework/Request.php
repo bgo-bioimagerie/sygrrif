@@ -60,7 +60,7 @@ class Request {
 		if ($this->isParameter ( $name )) {
 			return $this->parameters [$name];
 		} else {
-			throw new Exception ( "Parameter '$nom' is not in the request" );
+			throw new Exception ( "Parameter '$name' is not in the request" );
 		}
 	}
 }

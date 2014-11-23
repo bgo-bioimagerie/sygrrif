@@ -82,7 +82,7 @@ class View
             return ob_get_clean();
         }
         else {
-            throw new Exception("unable to find the file: '$file' ");
+            throw new Exception("unable to find the file in view: '$file' ");
         }
     }
 

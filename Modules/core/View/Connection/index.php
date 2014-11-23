@@ -16,7 +16,7 @@
             <div class="account-wall">
                 <img class="img-responsive center-block" src="Themes/logo.jpg" alt="logo">
                 <br></br>
-                <form class="form-signin" action="dbConnection/connect" method="post">
+                <form class="form-signin" action="connection/connect" method="post">
 	                <input name="login" type="text" class="form-control" placeholder="Identifiant" required autofocus>
 	                <input name="pwd" type="password" class="form-control" placeholder="Mot de passe" required>
 	                <button class="btn btn-lg btn-primary btn-block" type="submit"> Valider </button>

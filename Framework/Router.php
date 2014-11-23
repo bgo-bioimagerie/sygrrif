@@ -38,15 +38,16 @@ class router {
 	 */
 	private function createController(Request $request) {
 		// URL are of type : index.php?controller=XXX&action=YYY&id=ZZZ
-		$controller = "home"; // default controller
+		$controller = "Home"; // default controller
 		if ($request->isParameter ( 'controller' )) {
 			$controller = $request->getParameter ( 'controller' );
 			// First letter in upper
 			$controller = ucfirst ( strtolower ( $controller ) );
 		}
 		// Create the name of the controller such as : Controller/Controller<$controller>.php
-		$classController = "Controller" . $controller;
 		
+		$classController = "Controller" . $controller;
+		//echo "controler name = " . $classController . "--"; 
 		
 		// modifications starts here
 		$modulesNames = Configuration::get("modules");
