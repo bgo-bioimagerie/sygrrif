@@ -21,6 +21,20 @@ class Unit extends Model {
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
+	
+	public function getUnits($sortentry = 'id'){
+		 
+		$sql = "select * from units order by " . $sortentry . " ASC;";
+		$user = $this->runRequest($sql);
+		return $user->fetchAll();
+	}
+	
+	public function addUnit($name, $address){
+		
+		$sql = "insert into units(name, adress)"
+				. " values(?, ?)";
+		$user = $this->runRequest($sql, array($name, $address));		
+	}
 
 }
 
