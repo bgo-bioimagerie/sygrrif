@@ -13,7 +13,7 @@ abstract class ControllerSecure extends Controller
     public function runAction($action)
     {
 
-        if ($this->request->getSession()->isAttribut("idUser")) {
+        if ($this->request->getSession()->isAttribut("id_user")) {
             parent::runAction($action);
         }
         else {

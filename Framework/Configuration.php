@@ -38,10 +38,8 @@ class Configuration
     private static function getParameters()
     {
         if (self::$parameters == null) {
-            $urlFile = "Config/dev.ini";
-            if (!file_exists($urlFile)) {
-                $urlFile = "Config/prod.ini";
-            }
+
+        	$urlFile = self::getConfigFile();
             if (!file_exists($urlFile)) {
                 throw new Exception("Unable to find the configuration file");
             }
@@ -50,6 +48,14 @@ class Configuration
             }
         }
         return self::$parameters;
+    }
+    
+    public static function getConfigFile(){
+    	$urlFile = "Config/dev.ini";
+    	if (!file_exists($urlFile)) {
+    		$urlFile = "Config/prod.ini";
+    	}
+    	return $urlFile;
     }
 
 }

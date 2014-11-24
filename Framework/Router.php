@@ -39,7 +39,7 @@ class router {
 	private function createController(Request $request) {
 		// URL are of type : index.php?controller=XXX&action=YYY&id=ZZZ
 		$controller = "Home"; // default controller
-		if ($request->isParameter ( 'controller' )) {
+		if ($request->isParameterNotEmpty( 'controller' )) {
 			$controller = $request->getParameter ( 'controller' );
 			// First letter in upper
 			$controller = ucfirst ( strtolower ( $controller ) );
@@ -80,7 +80,7 @@ class router {
 	 */
 	private function createAction(Request $request) {
 		$action = "index"; // default action
-		if ($request->isParameter ( 'action' )) {
+		if ($request->isParameterNotEmpty( 'action' )) {
 			$action = $request->getParameter ( 'action' );
 		}
 		return $action;

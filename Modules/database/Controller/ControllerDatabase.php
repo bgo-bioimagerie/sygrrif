@@ -65,7 +65,7 @@ class ControllerDatabase extends ControllerSecureNav {
 		// 2- get the table content
 		$tableColumns = null;
 		$tablename = '';
-		if ($this->request->isParameter('actionid')){
+		if ($this->request->isParameterNotEmpty('actionid')){
 			$tablename = $this->request->getParameter("actionid");
 			$tableColumns = null;
 			if ($tablename != ''){

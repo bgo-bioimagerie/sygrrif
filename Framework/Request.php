@@ -38,14 +38,25 @@ class Request {
 	}
 	
 	/**
-	 * Return trhe is a parameter exists in the request
+	 * Return true if a parameter exists in the request and is not empty
+	 *
+	 * @param string $name
+	 *        	Name of the parameter
+	 * @return bool True if the parameter exists and is not empty
+	 */
+	public function isParameterNotEmpty($name) {
+		return (isset ( $this->parameters [$name] ) && $this->parameters [$name] != "");
+	}
+	
+	/**
+	 * Return true if a parameter exists in the request
 	 *
 	 * @param string $name
 	 *        	Name of the parameter
 	 * @return bool True if the parameter exists and is not empty
 	 */
 	public function isParameter($name) {
-		return (isset ( $this->parameters [$name] ) && $this->parameters [$name] != "");
+		return (isset ( $this->parameters [$name] ) );
 	}
 	
 	/**

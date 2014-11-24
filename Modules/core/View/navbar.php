@@ -50,7 +50,7 @@
 					<ul class="dropdown-menu" role="menu">
         				<li><a href=# > Edit </a></li>
         				<li class="divider"></li>
-        				<li><a href=# > disconnect </a></li>
+        				<li><a href=connection/logout > logout </a></li>
 					</ul>
 				</li>
 

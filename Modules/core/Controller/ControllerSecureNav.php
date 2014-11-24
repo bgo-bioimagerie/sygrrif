@@ -20,7 +20,7 @@ abstract class ControllerSecureNav extends ControllerSecure
     	$logoFile = Configuration::get("logoFile");
     	$userName = $login;
     	$toolMenu = array("statistics" => "statistiques");
-    	$toolAdmin = array("database" => "database");
+    	$toolAdmin = array("users" => "users", "database" => "database");
     
     	// get the view menu,fill it, and return the content
     	$view = $this->generateNavfile(
