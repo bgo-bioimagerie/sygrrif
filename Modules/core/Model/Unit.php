@@ -35,6 +35,21 @@ class Unit extends Model {
 				. " values(?, ?)";
 		$user = $this->runRequest($sql, array($name, $address));		
 	}
+	
+	public function editUnit($id, $name, $address){
+		
+		$sql = "update units set name=?, adress=? where id=?";
+		$unit = $this->runRequest($sql, array("".$name."", "".$address."", $id));
+	}
+	
+	public function getUnit($id){
+		$sql = "select * from units where id=?";
+		$unit = $this->runRequest($sql, array($id));
+		if ($unit->rowCount() == 1)
+    		return $unit->fetch();  // get the first line of the result
+    	else
+    		throw new Exception("Cannot find the user using the given parameters"); 
+	}
 
 }
 

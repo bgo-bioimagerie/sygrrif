@@ -114,7 +114,7 @@
 		<br></br>
 		<div class="col-md-3 col-md-offset-9">
 				<button onclick="location.href='users/saveuseredits'" class="btn btn-primary" id="navlink">Save</button>
-				<button onclick="location.href='users'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
 
 	</div>

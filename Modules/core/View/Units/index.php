@@ -19,9 +19,9 @@
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td>Id</td>
-					<td>Name</td>
-					<td>Address</td>
+					<td><a href="units/index/id">Id</a></td>
+					<td><a href="units/index/name">Name</a></td>
+					<td><a href="units/index/adress">Address</a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -32,7 +32,9 @@
 					<td><?= $unitId ?></td>
 				    <td><?= $this->clean ( $unit ['name'] ); ?></td>
 				    <td><?= $this->clean ( $unit ['adress'] ); ?></td>
-				    <td><button onclick="location.href='units/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button></td>  
+				    <td>
+				      <button type='button' onclick="location.href='units/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
 				

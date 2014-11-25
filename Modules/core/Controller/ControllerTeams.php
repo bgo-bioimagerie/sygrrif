@@ -1,8 +1,8 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
-require_once 'Modules/core/Model/Unit.php';
-class ControllerUnits extends ControllerSecureNav {
+require_once 'Modules/core/Model/Team.php';
+class ControllerTeams extends ControllerSecureNav {
 	
 	/**
 	 * User model object
