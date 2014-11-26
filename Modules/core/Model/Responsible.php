@@ -21,6 +21,16 @@ class Responsible extends Model {
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
+	
+	public function createDefaultResponsible(){
+	
+		$sql = "INSERT INTO responsibles (id_users) VALUES(?)";
+		$pdo = $this->runRequest($sql, array(1));
+		return $pdo;
+	
+		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
+	}
+	
 
 	public function addResponsible($id_user){
 		

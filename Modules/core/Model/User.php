@@ -34,9 +34,24 @@ class User extends Model {
 	
 	public function createDefaultUser(){
 	
+		$sql = "INSERT INTO users (login, firstname, name, id_status, pwd, id_unit,
+				                   id_team, id_responsible, date_created)
+				 VALUES(?,?,?,?,?,?,?,?,?)";
+		$pdo = $this->runRequest($sql, array("--", "--", "--", "1", sha1("--"),
+				1, 1, 1, "".date("Y-m-d")."" ));
+		return $pdo;
+	
+		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
+	}
+	
+	public function createDefaultAdmin(){
+	
 		
-		$sql = 'INSERT INTO `users` (`login`, `firstname`, `name`, `id_status`, pwd) VALUES(?,?,?,?,?)';
-		$pdo = $this->runRequest($sql, array("admin", "admin", "admin", "3", sha1("admin")));
+		$sql = "INSERT INTO users (login, firstname, name, id_status, pwd, id_unit, 
+				                   id_team, id_responsible, date_created)
+				 VALUES(?,?,?,?,?,?,?,?,?)";
+		$pdo = $this->runRequest($sql, array("admin", "administrateur", "admin", "3", sha1("admin"),
+				                              1, 1, 1, "".date("Y-m-d")."" ));
 		return $pdo;
 	
 		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
@@ -54,6 +69,16 @@ class User extends Model {
         $sql = "select id from users where login=? and pwd=?";
         $user = $this->runRequest($sql, array($login, sha1($pwd)));
         return ($user->rowCount() == 1);
+    }
+    
+    /**
+     * Update the last login date attribut to the todau date
+     * 
+     * @param int $userId Id of the user to update
+     */
+    public function updateLastConnection($userId){
+    	$sql = "update users set date_last_login=? where id=?";
+    	$unit = $this->runRequest($sql, array("".date("Y-m-d")."", $userId));
     }
 
     /**
@@ -82,6 +107,34 @@ class User extends Model {
     	return $user->fetchAll();
     }
     
+    public function getUserFUllName($id){
+    	$sql = "select firstname, name from users where id=?";
+    	$user = $this->runRequest($sql, array($id));
+    	
+    	if ($user->rowCount() == 1){
+    		$userf = $user->fetch(); 
+    		return $userf['firstname'] . " " . $userf['name'];
+    	}
+    	else
+    		throw new Exception("Cannot find the user using the given id");
+    }
+    
+    public function getUsersInfo($sortentry = 'id'){
+    	$users = $this->getUsers($sortentry);
+    	
+    	
+    	$unitModel = new Unit();
+    	$teamModel = new Team();
+    	$statusModel = new Status();
+    	for ($i = 0 ; $i < count($users) ; $i++){	
+    		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit'])[0];
+    		$users[$i]['team'] = $teamModel->getTeamName($users[$i]['id_team'])[0];
+    		$users[$i]['status'] = $statusModel->getStatusName($users[$i]['id_status'])[0];
+    		$users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
+    	}
+    	return $users;
+    }
+    
 
     public function userAllInfo($id){
     	$sql = "select * from users where id=?";
@@ -98,10 +151,6 @@ class User extends Model {
 		           			$email, $phone, $id_unit, $id_team, 
 		           			$id_responsible, $id_status ){
     	
-    	
-    	$today = date("d-m-Y");
-    	echo $today;
-    	
     	$sql = "insert into users(login, firstname, name, email, tel, pwd, id_unit, id_team, id_responsible, id_status, date_created)"
     			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     	$this->runRequest($sql, array($login, $firstname, $name, $email, 
@@ -113,7 +162,7 @@ class User extends Model {
     public function updateUser($id, $firstname, $name, $login, $email, $phone,
     		$unit, $team, $responsibleId, $status){
     	
-    	
+    	/*
     	// get unit id
     	$unitModel = new Unit();
     	$unitId = $unitModel->getUnitId($unit);
@@ -129,7 +178,7 @@ class User extends Model {
     	// update the user
     	$sql = "update users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_team=?, id_responsible=?, id_status=? where id=?";
 		$unit = $this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $unitId, $teamId, $responsibleId, $statusId, $id));
-    	
+    	*/
     }
 }
 

@@ -26,15 +26,19 @@ class InitDatabase extends Model {
 		$userModel = new User();
 		$pdo = $userModel->createTable();
 		$pdo = $userModel->createDefaultUser();
+		$pdo = $userModel->createDefaultAdmin();
 		
 		$unitModel = new Unit();
 		$pdo = $unitModel->createTable();
+		$pdo = $unitModel->createDefaultUnit();
 		
 		$teamModel = new Team();
 		$pdo = $teamModel->createTable();
+		$pdo = $teamModel->createDefaultTeam();
 		
 		$respModel = new Responsible();
 		$pdo = $respModel->createTable();
+		$pdo = $respModel->createDefaultResponsible();
 		
 		$statusModel = new Status();
 		$pdo = $statusModel->createTable();

@@ -43,6 +43,7 @@
 			</thead>
 			<tbody>
 				<?php foreach ( $usersArray as $user ) : ?> 
+				<?php if ($user ['id'] > 1){ ?>
 				<tr>
 					<?php $userId = $this->clean ( $user ['id'] ); ?>
 					<td><?= $userId ?></td>
@@ -51,15 +52,15 @@
 				    <td><?= $this->clean ( $user ['login'] ); ?></td>
 				    <td><?= $this->clean ( $user ['email'] ); ?></td>
 				    <td><?= $this->clean ( $user ['tel'] ); ?></td>
-				    <td><?= $this->clean ( $user ['id_unit'] ); ?></td>
-				    <td><?= $this->clean ( $user ['id_team'] ); ?></td>
-				    <td><?= $this->clean ( $user ['id_responsible'] ); ?></td>
-				    <td><?= $this->clean ( $user ['id_status'] ); ?></td>
+				    <td><?= $this->clean ( $user ['unit'] ); ?></td>
+				    <td><?= $this->clean ( $user ['team'] ); ?></td>
+				    <td><?= $this->clean ( $user ['fullname'] ); ?></td>
+				    <td><?= $this->clean ( $user ['status'] ); ?></td>
 				    <td><?= $this->clean ( $user ['date_created'] ); ?></td>
 				    <td><?= $this->clean ( $user ['date_last_login'] ); ?></td>
 				    <td><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button></td>  
 	    		</tr>
-	    		<?php endforeach; ?>
+	    		<?php }endforeach; ?>
 				
 			</tbody>
 		</table>

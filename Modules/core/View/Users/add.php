@@ -106,8 +106,13 @@
 				<select class="form-control" name="responsible">   
 					<?php foreach ($respsList as $resp):?>
 					    <?php   $respId = $this->clean( $resp['id'] );
-							    $respSummary = $respId . " " . $this->clean( $resp['firstname'] ) . " " . $this->clean( $resp['name'] );
-					    ?>
+					    		if ($resp['id'] > 1){
+							    	$respSummary = $respId . " " . $this->clean( $resp['firstname'] ) . " " . $this->clean( $resp['name'] );
+					    		}
+					    		else{
+					    			$respSummary = "--";
+					    		}
+						?>
 						<OPTION value="<?= $respId ?> " > <?= $respSummary ?> </OPTION>
 					<?php endforeach; ?>
 				</select>

@@ -27,10 +27,23 @@ class ControllerConnection extends Controller
         if ($this->request->isparameter("login") && $this->request->isParameter("pwd")) {
             $login = $this->request->getParameter("login");
             $pwd = $this->request->getparameter("pwd");
+            
+            if ($login == "--"){
+            	$this->generateView(array('msgError' => 'Login not correct'), "index");
+            	return;
+            }
+         
             if ($this->user->connect($login, $pwd)) {
+            	
+            	// open the session
                 $user = $this->user->getUser($login, $pwd);
                 $this->request->getSession()->setAttribut("id_user", $user['idUser']);
                 $this->request->getSession()->setAttribut("login", $user['login']);
+                
+                // update the user last connection
+                $this->user->updateLastConnection($user['idUser']);
+                
+                // redirect
                 $this->redirect("home");
             }
             else

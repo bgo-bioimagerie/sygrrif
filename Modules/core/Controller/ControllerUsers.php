@@ -34,7 +34,7 @@ class ControllerUsers extends ControllerSecureNav {
 		}
 			
 		// get the user list
-		$usersArray = $this->userModel->getUsers($sortentry);
+		$usersArray = $this->userModel->getUsersInfo($sortentry);
 		
 		
 		$this->generateView ( array (
@@ -100,7 +100,7 @@ class ControllerUsers extends ControllerSecureNav {
 	
 	
 	public function edit(){
-		
+		/*
 		$navBar = $this->navBar();
 		
 		// get user id
@@ -158,6 +158,7 @@ class ControllerUsers extends ControllerSecureNav {
 				'unitsList' => $unitsList, 'teamsList' => $teamsList,
 				'respsList' => $respsList, 'isResponsible' => $isResponsible
 		) );
+		*/
 	}
 	
 	public function editquery(){

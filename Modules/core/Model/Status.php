@@ -50,12 +50,13 @@ class Status extends Model {
 	}
 	
 	public function getStatusName($id){
+		echo "id status = " . $id;
 		$sql = "select name from status where id=?";
-		$status = $this->runRequest($sql, $id);
+		$status = $this->runRequest($sql, array($id));
 		if ($status->rowCount() == 1)
 			return $status->fetch();  // get the first line of the result
 		else
-			throw new Exception("Cannot find the user using the given parameters");
+			throw new Exception("Cannot find the status using the given parameters");
 	}
 
 }

@@ -22,6 +22,15 @@ class Team extends Model {
 		return $pdo;
 	}
 	
+	public function createDefaultTeam(){
+	
+		$sql = "INSERT INTO teams (name, adress) VALUES(?,?)";
+		$pdo = $this->runRequest($sql, array("--", "--"));
+		return $pdo;
+	
+		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
+	}
+	
 	public function getTeams($sortentry = 'id'){
 			
 		$sql = "select * from teams order by " . $sortentry . " ASC;";

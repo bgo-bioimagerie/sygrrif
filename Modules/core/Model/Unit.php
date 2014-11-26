@@ -22,6 +22,15 @@ class Unit extends Model {
 		return $pdo;
 	}
 	
+	public function createDefaultUnit(){
+	
+		$sql = "INSERT INTO units (name, adress) VALUES(?,?)";
+		$pdo = $this->runRequest($sql, array("--", "--"));
+		return $pdo;
+	
+		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
+	}
+	
 	public function getUnits($sortentry = 'id'){
 		 
 		$sql = "select * from units order by " . $sortentry . " ASC;";
