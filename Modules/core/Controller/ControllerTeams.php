@@ -2,17 +2,18 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/Team.php';
+
 class ControllerTeams extends ControllerSecureNav {
 	
 	/**
-	 * User model object
+	 * Team model object
 	 */
-	private $unitModel;
+	private $teamModel;
 	
 	// private $billet;
 	public function __construct() {
 		// $this->billet = new Billet ();
-		$this->unitModel = new Unit ();
+		$this->teamModel = new Team ();
 	}
 	
 	// Affiche la liste de tous les billets du blog
@@ -26,30 +27,30 @@ class ControllerTeams extends ControllerSecureNav {
 		}
 		
 		// get the user list
-		$unitsArray = $this->unitModel->getUnits ( $sortentry );
+		$teamsArray = $this->teamModel->getTeams ( $sortentry );
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'unitsArray' => $unitsArray 
+				'teamsArray' => $teamsArray 
 		) );
 	}
 	public function edit() {
 		$navBar = $this->navBar ();
 		
 		// get user id
-		$unitId = 0;
+		$teamId = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$unitId = $this->request->getParameter ( "actionid" );
+			$teamId = $this->request->getParameter ( "actionid" );
 		}
 		
 		// get unit info
-		$unit = $this->unitModel->getUnit ( $unitId );
+		$team = $this->teamModel->getTeam ( $teamId );
 		
-		print_r ( $unit );
+		//print_r ( $team );
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'unit' => $unit 
+				'team' => $team 
 		) );
 	}
 	public function add() {
@@ -66,9 +67,9 @@ class ControllerTeams extends ControllerSecureNav {
 		$address = $this->request->getParameter ( "address" );
 		
 		// get the user list
-		$unitsArray = $this->unitModel->addUnit ( $name, $address );
+		$teamsArray = $this->teamModel->addTeam ( $name, $address );
 		
-		$this->redirect ( "units" );
+		$this->redirect ( "teams" );
 	}
 	public function editquery() {
 		$navBar = $this->navBar ();
@@ -79,8 +80,8 @@ class ControllerTeams extends ControllerSecureNav {
 		$address = $this->request->getParameter ( "address" );
 		
 		// get the user list
-		$unitsArray = $this->unitModel->editUnit ( $id, $name, $address );
+		$this->teamModel->editTeam ( $id, $name, $address );
 		
-		$this->redirect ( "units" );
+		$this->redirect ( "teams" );
 	}
 }

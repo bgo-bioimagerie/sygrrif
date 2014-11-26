@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Framework/Model.php';
+require_once 'Modules/core/Model/User.php';
 
 /**
  * Class defining the Responsible model
@@ -20,6 +21,66 @@ class Responsible extends Model {
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
+
+	public function addResponsible($id_user){
+		
+		// test if the user is already responsible
+		$sql = "SELECT EXISTS(SELECT 1 FROM responsibles WHERE id = ?)";
+		
+		$exists = $this->runRequest($sql, array($id_user));
+		$out = $exists->fetch();
+		
+		if ($out[0] == 0){
+			$sql = "insert into responsibles(id_users)"
+				   . " values(?)";
+			$insertpdo = $this->runRequest($sql, array($id_user));	
+		}
+	}
+	
+	public function isResponsible($userId){
+		$sql = "SELECT EXISTS(SELECT 1 FROM responsibles WHERE id = ?)";
+		
+		$exists = $this->runRequest($sql, array($userId));
+		$out = $exists->fetch();
+		
+		if ($out[0] == 0){
+			return false;
+		}
+		return true;
+	}
+	
+	public function responsiblesNames(){
+		$sql = "SELECT firstname, name FROM users WHERE id IN (SELECT id_users FROM responsibles)";
+		$respPDO = $this->runRequest($sql);
+		$resps = $respPDO->fetchAll();
+
+		return $resps;
+	}
+	
+	public function responsiblesIds(){
+		$sql = "SELECT id_users FROM responsibles";
+		$respPDO = $this->runRequest($sql);
+		$resps = $respPDO->fetchAll();
+		
+		return $resps;
+	}
+	
+	public function responsibleName($id){
+		$sql = "SELECT firstname, name FROM users WHERE id=?";
+		$respPDO = $this->runRequest($sql, array($id));
+		$resp = $respPDO->fetch();
+		
+		return $resp;
+	}
+	
+	public function responsibleSummaries(){
+		$sql = "SELECT id, firstname, name FROM users WHERE id IN (SELECT id_users FROM responsibles)";
+		$respPDO = $this->runRequest($sql);
+		$resps = $respPDO->fetchAll();
+
+		return $resps;
+	}
+	
 
 }
 

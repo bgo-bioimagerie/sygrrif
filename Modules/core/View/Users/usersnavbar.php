@@ -22,21 +22,25 @@
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h1>Users/Institutions</h1>
-
-		<div class="row">
-			<div class="col-md-12 text-center">
-			    <button onclick="location.href='units/'" class="btn btn-link" id="navlink">Units</button>
-				<button onclick="location.href='units/add'" class="btn btn-link" id="navlink">Add unit</button>
-			</div>
-		</div>
+		<h2>Users/Institutions</h2>
+		<div class="col-md-9 col-md-offset-3">
 		
-		<div class="row">
-			<div class="col-md-12 text-center">
-				<button onclick="location.href='users'" class="btn btn-link" id="navlink">All users</button>
-			</div>
-		</div>
+				<div class="col-md-12">
+				    <button onclick="location.href='units/'" class="btn btn-link" id="navlink">Units</button>
+					<button onclick="location.href='units/add'" class="btn btn-link" id="navlink">Add unit</button>
+				</div>
+	
+				<div class="col-md-12 ">
+				    <button onclick="location.href='teams/'" class="btn btn-link" id="navlink">Teams</button>
+					<button onclick="location.href='teams/add'" class="btn btn-link" id="navlink">Add team</button>
+				</div>
+			
 
+				<div class="col-md-12">
+					<button onclick="location.href='users'" class="btn btn-link" id="navlink">Users</button>
+					<button onclick="location.href='users/add'" class="btn btn-link" id="navlink">Add user</button>
+				</div>
+		</div>
 	</div>
 </div>
 

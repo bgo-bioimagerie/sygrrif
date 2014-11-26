@@ -81,37 +81,55 @@ class User extends Model {
     	$user = $this->runRequest($sql);
     	return $user->fetchAll();
     }
+    
 
     public function userAllInfo($id){
     	$sql = "select * from users where id=?";
     	$user = $this->runRequest($sql, array($id));
     	$userquery = null;
     	if ($user->rowCount() == 1)
-    		$userquery = $user->fetch();  // get the first line of the result
+    		return $user->fetch();  // get the first line of the result
     	else
     		throw new Exception("Cannot find the user using the given parameters");
     	
-    	// get the status
-    	$sql = "select name from status where id=?";
-    	$status = $this->runRequest($sql, array($userquery['id_status']));
-    	$statusName = "";
-    	if ($user->rowCount() == 1)
-    		$statusName = $status->fetch()['name'];
-    	
-    	$userInfo = array(
-    			'id' => $userquery['id'],
-    			'name' => $userquery['name'],
-    			'firstname' => $userquery['firstname'],
-    			'login' => $userquery['login'],
-    			'email' => $userquery['email'],
-    			'tel' => $userquery['tel'],
-    			'unit' => $userquery['id_unit'],
-    			'team' => $userquery['id_team'],
-    			'responsible' => $userquery['id_responsible'],
-    			'status' => $statusName   			
-    	);
-    	return $userInfo;
     }
     
+    public function addUser($name, $firstname, $login, $pwd, 
+		           			$email, $phone, $id_unit, $id_team, 
+		           			$id_responsible, $id_status ){
+    	
+    	
+    	$today = date("d-m-Y");
+    	echo $today;
+    	
+    	$sql = "insert into users(login, firstname, name, email, tel, pwd, id_unit, id_team, id_responsible, id_status, date_created)"
+    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	$this->runRequest($sql, array($login, $firstname, $name, $email, 
+    			                      $phone, sha1($pwd), $id_unit, $id_team, 
+    			                      $id_responsible, $id_status, "".date("Y-m-d").""));
+    	
+    }
+    
+    public function updateUser($id, $firstname, $name, $login, $email, $phone,
+    		$unit, $team, $responsibleId, $status){
+    	
+    	
+    	// get unit id
+    	$unitModel = new Unit();
+    	$unitId = $unitModel->getUnitId($unit);
+    	
+    	// get team id
+    	$teamModel = new Team();
+    	$teamId = $teamModel->getTeamId($team);
+    	
+    	// get status id
+    	$statusModel = new Status();
+    	$statusId = $statusModel->getStatusId($status);
+    	
+    	// update the user
+    	$sql = "update users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_team=?, id_responsible=?, id_status=? where id=?";
+		$unit = $this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $unitId, $teamId, $responsibleId, $statusId, $id));
+    	
+    }
 }
 

@@ -21,6 +21,59 @@ class Team extends Model {
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
+	
+	public function getTeams($sortentry = 'id'){
+			
+		$sql = "select * from teams order by " . $sortentry . " ASC;";
+		$teams = $this->runRequest($sql);
+		return $teams->fetchAll();
+	}
+	
+	public function teamsName(){
+			
+		$sql = "select name from teams";
+		$teams = $this->runRequest($sql);
+		return $teams->fetchAll();
+	}
+	
+	public function teamsIDName(){
+			
+		$sql = "select id, name from teams";
+		$teams = $this->runRequest($sql);
+		return $teams->fetchAll();
+	}
+	
+	public function addTeam($name, $address){
+	
+		$sql = "insert into teams(name, adress)"
+				. " values(?, ?)";
+		$this->runRequest($sql, array($name, $address));
+	}
+	
+	public function editTeam($id, $name, $address){
+	
+		$sql = "update teams set name=?, adress=? where id=?";
+		$this->runRequest($sql, array("".$name."", "".$address."", $id));
+	}
+	
+	public function getTeam($id){
+		$sql = "select * from teams where id=?";
+		$team = $this->runRequest($sql, array($id));
+		if ($team->rowCount() == 1)
+			return $team->fetch();  // get the first line of the result
+		else
+			throw new Exception("Cannot find the user using the given parameters");
+	}
+	
+	public function getTeamName($id){
+		$sql = "select name from teams where id=?";
+		$team = $this->runRequest($sql, array($id));
+		if ($team->rowCount() == 1)
+			return $team->fetch();  // get the first line of the result
+		else
+			throw new Exception("Cannot find the user using the given parameters");
+	}
+	
 
 }
 

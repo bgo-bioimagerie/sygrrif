@@ -14,8 +14,15 @@
 
 <br>
 <div class="contatiner">
+
 	<div class="col-md-10 col-md-offset-1">
 
+		<div class="page-header">
+			<h1>
+				Users<br> <small></small>
+			</h1>
+		</div>
+	
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>

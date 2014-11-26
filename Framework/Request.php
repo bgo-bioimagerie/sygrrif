@@ -74,5 +74,20 @@ class Request {
 			throw new Exception ( "Parameter '$name' is not in the request" );
 		}
 	}
+	
+	/**
+	 * Return the value of a parameter
+	 *
+	 * @param string $name
+	 *        	Name of the parameter
+	 * @return string Value of the parameter, or en empty string if the parameter is not set
+	 */
+	public function getParameterNoException($name) {
+		if ($this->isParameter ( $name )) {
+			return $this->parameters [$name];
+		} else {
+			return '';
+		}
+	}
 }
 

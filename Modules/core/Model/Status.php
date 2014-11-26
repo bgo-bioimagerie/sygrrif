@@ -42,6 +42,21 @@ class Status extends Model {
 		$status = $this->runRequest($sql);
 		return $status->fetchAll();
 	}
+	
+	public function statusIDName(){
+		$sql = "select id, name from status";
+		$status = $this->runRequest($sql);
+		return $status->fetchAll();
+	}
+	
+	public function getStatusName($id){
+		$sql = "select name from status where id=?";
+		$status = $this->runRequest($sql, $id);
+		if ($status->rowCount() == 1)
+			return $status->fetch();  // get the first line of the result
+		else
+			throw new Exception("Cannot find the user using the given parameters");
+	}
 
 }
 
