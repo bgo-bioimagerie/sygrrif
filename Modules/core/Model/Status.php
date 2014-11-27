@@ -50,7 +50,7 @@ class Status extends Model {
 	}
 	
 	public function getStatusName($id){
-		echo "id status = " . $id;
+		//echo "id status = " . $id;
 		$sql = "select name from status where id=?";
 		$status = $this->runRequest($sql, array($id));
 		if ($status->rowCount() == 1)

@@ -24,7 +24,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Name</label>
 			<div class="col-xs-10">
-			    <input class="form-control" id="id" type="text" name="id" value=<?= $user['id'] ?> readonly
+			    <input class="form-control" id="id" type="text" name="id" value="<?= $user['id'] ?>" readonly
 				/>
 			</div>
 		</div>
@@ -32,7 +32,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Name</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name" value=<?= $user['name'] ?>
+				<input class="form-control" id="name" type="text" name="name" value="<?= $user['name'] ?>"
 				/>
 			</div>
 		</div>
@@ -41,7 +41,7 @@
 			<label for="inputEmail" class="control-label col-xs-2">Firstname</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
-				       value = <?= $user['firstname'] ?>
+				       value = "<?= $user['firstname'] ?>"
 				/>
 			</div>
 		</div>
@@ -50,7 +50,7 @@
 			<label for="login" class="control-label col-xs-2">Login</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="login" type="text" name="login"
-					   value = <?= $user['login'] ?>
+					   value = "<?= $user['login'] ?>"
 				/>
 			</div>
 		</div>
@@ -59,7 +59,7 @@
 			<label for="inputEmail" class="control-label col-xs-2">Email</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
-				       value = <?= $user['email'] ?>
+				       value = "<?= $user['email'] ?>"
 				/>
 			</div>
 		</div>
@@ -126,7 +126,7 @@
 					    			$active = "selected=\"selected\"";
 					    		}
 						?>
-						<OPTION value="<?= $respId ?> " <?= $active ?>> <?= $respSummary ?> </OPTION>
+						<OPTION value="<?= $respId ?>" <?= $active ?>> <?= $respSummary ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>

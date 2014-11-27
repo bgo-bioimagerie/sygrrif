@@ -13,14 +13,15 @@
 				Change passeword <br> <small> for user</small>
 			</h1>
 			<div class="form-group">
-				<div class="col-xs-5">
+				<div class="col-xs-4">
 					<input class="form-control" id="firstname" type="text" name="firstname" value=<?= $user['firstname'] ?> readonly />
 				</div>
-				<div class="col-xs-5">
+				<div class="col-xs-4">
 					<input class="form-control" id="name" type="text" name="name" value=<?= $user['name'] ?> readonly />
 				</div>
+				<label for="pwd" class="control-label col-xs-2">ID:</label>
 				<div class="col-xs-2">
-					<input class="form-control" id="id" type="text" name="id" value= "id: <?= $user['id'] ?>" readonly />
+					<input class="form-control" id="id" type="text" name="id" value=<?= $user['id'] ?> readonly />
 				</div>
 			</div>
 		</div>

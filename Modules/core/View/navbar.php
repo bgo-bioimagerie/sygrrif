@@ -48,7 +48,7 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?= $userName ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-        				<li><a href=# > Edit </a></li>
+        				<li><a href=users/manageaccount > My Account </a></li>
         				<li class="divider"></li>
         				<li><a href=connection/logout > logout </a></li>
 					</ul>

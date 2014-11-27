@@ -168,11 +168,26 @@ class User extends Model {
     }
     
     public function changePwd($id, $pwd){
-    	
-    	echo "change pwd of " . $id . "pwd = " . $pwd; 
-    	 
+    	  	
     	$sql = "update users set pwd=? where id=?";
     	$user = $this->runRequest($sql, array(sha1($pwd), $id));
+    }
+    
+    public function getpwd($id){
+    	$sql = "select pwd from users where id=?";
+    	$user = $this->runRequest($sql, array($id));
+    	$userquery = null;
+    	if ($user->rowCount() == 1)
+    		return $user->fetch();  // get the first line of the result
+    	else
+    		throw new Exception("Cannot find the user using the given parameters");
+    	 
+    }
+    
+    public function updateUserAccount($id, $firstname, $name, $email, $phone){
+    	$sql = "update users set firstname=?, name=?, email=?, tel=? where id=?";
+    	$this->runRequest($sql, array($firstname, $name, $email, $phone, $id));
+    	
     }
 }
 

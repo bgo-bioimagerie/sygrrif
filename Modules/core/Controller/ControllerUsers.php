@@ -216,4 +216,98 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	public function manageaccount(){
+		$navBar = $this->navBar();
+		
+		// get user id
+		$userId = 0;
+		$userId = $this->request->getSession()->getAttribut("id_user");
+		
+		// get user info
+		$user = $this->userModel->userAllInfo($userId);
+		
+		// Lists for the form
+		// get status list
+		$modelStatus = new Status();
+		$status = $modelStatus->getStatusName($user['id_status']);
+		
+		// get units list
+		$modelUnit = new Unit();
+		$unit = $modelUnit->getUnitName($user['id_unit']);
+		
+		// get teams list
+		$modelTeam = new Team();
+		$team = $modelTeam->getTeamName($user['id_team']);
+		
+		
+		// responsible list
+		$resp = $this->userModel->getUserFUllName($user['id_responsible']);
+		
+		// is responsoble user
+		$respModel = new Responsible();
+		$user['is_responsible'] = $respModel->isResponsible($user['id']);
+		
+		// generate the view
+		$this->generateView ( array (
+				'navBar' => $navBar, 'status' => $status['name'],
+				'unit' => $unit['name'], 'team' => $team['name'],
+				'resp' => $resp, 'user' => $user
+		) );
+		
+	}
+	
+	public function manageaccountquery(){
+
+		// get form variables
+		$id = $this->request->getParameter ( "id");
+		$name = $this->request->getParameter ( "name");
+		$firstname = $this->request->getParameter ( "firstname");
+		$email = $this->request->getParameter ( "email");
+		$phone = $this->request->getParameter ( "phone");
+		
+		// update user
+		$this->userModel->updateUserAccount($id, $firstname, $name, $email, $phone);
+		
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+		
+	}
+	
+	public function accountchangepwdquery(){
+		
+		$id = $this->request->getParameter ( "id");
+		$previouspwd = $this->request->getParameter ( "previouspwd");
+		$pwd = $this->request->getParameter ( "pwd");
+		$pwdc = $this->request->getParameter ( "pwdc");
+		
+		echo "id to change = " . $id;
+		
+		$previouspwddb = $this->userModel->getpwd($id);
+		echo "previous pwd = " . sha1($previouspwd);
+		echo "previous pwd db = " . $previouspwddb['pwd'];
+		
+		
+		if ($previouspwddb['pwd'] == sha1($previouspwd)){
+		
+			if ($pwd == $pwdc){
+				$this->userModel->changePwd($id, $pwd);
+			}
+			else{
+				throw new Exception("The two passwords are not identical");
+			}
+		}
+		else{
+			throw new Exception("The curent password is not correct");
+		}
+
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
 }
