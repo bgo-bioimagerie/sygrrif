@@ -21,145 +21,179 @@
 				Edit User <br> <small></small>
 			</h1>
 		</div>
-	
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Name</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name" 
-				       value="<?= $this->clean($user['name']); ?>"
+			    <input class="form-control" id="id" type="text" name="id" value=<?= $user['id'] ?> readonly
 				/>
 			</div>
 		</div>
-		<br></br>
+		<br>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Name</label>
+			<div class="col-xs-10">
+				<input class="form-control" id="name" type="text" name="name" value=<?= $user['name'] ?>
+				/>
+			</div>
+		</div>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Firstname</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
-					   value="<?= $this->clean($user['firstname']); ?>"
+				       value = <?= $user['firstname'] ?>
 				/>
 			</div>
 		</div>
-		<br></br>
+		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Login</label>
+			<label for="login" class="control-label col-xs-2">Login</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="login" type="text" name="login"
-					value="<?= $this->clean($user['login']); ?>"
+					   value = <?= $user['login'] ?>
 				/>
 			</div>
 		</div>
-		<br></br>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Email</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
-					value="<?= $this->clean($user['email']); ?>"
+				       value = <?= $user['email'] ?>
 				/>
 			</div>
 		</div>
-		<br></br>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Phone</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
-				    value="<?= $this->clean($user['tel']); ?>"
+				       value = "<?= $user['tel'] ?>"
 				/>
 			</div>
 		</div>
-		<br></br>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
 			<div class="col-xs-10">
-				<select class="form-control" name="unit">
+				<select class="form-control" name="id_unit">
 					<?php foreach ($unitsList as $unit):?>
-					    <?php $unitname = $this->clean( $unit['name'] ); 
-					          $userunit = $this->clean( $user['unit']);
-					          $selected = "";
-					          if ($unitname == $userunit){
-					          	$selected = "selected";
+					    <?php $unitname = $this->clean( $unit['name'] );
+					          $unitId = $this->clean( $unit['id'] );
+					          $active = "";
+					          if ( $user['id_unit'] == $unitId  ){
+					          	$active = "selected=\"selected\"";	
 					          }
 					    ?>
-						<OPTION value="<?= $unitname ?>" <?= $selected ?>> <?= $unitname ?> </OPTION>
+						<OPTION value="<?= $unitId ?>" <?= $active ?> > <?= $unitname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
-		<br></br>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Team</label>
 			<div class="col-xs-10">
-				<select class="form-control" name="team">
+				<select class="form-control" name="id_team">
 					<?php foreach ($teamsList as $team):?>
 					    <?php $teamname = $this->clean( $team['name'] ); 
-					          $userteam = $this->clean( $user['team']);
-					          $selected = "";
-					          if ($teamname == $userteam){
-					          	$selected = "selected";
-					          }
+					    	  $teamid = $this->clean( $team['id'] );
+					    	  $active = "";
+					    	  if ( $user['id_team'] == $teamid  ){
+					    	  	$active = "selected=\"selected\"";
+					    	  }
 					    ?>
-						<OPTION value="<?= $teamname ?>" <?= $selected ?>> <?= $teamname ?> </OPTION>
+						<OPTION value="<?= $teamid ?>" <?= $active ?> > <?= $teamname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
-		
-		
-		<br></br>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Responsible</label>
 			<div class="col-xs-10">
-				<select class="form-control" name="responsible">   
+				<select class="form-control" name="id_responsible">   
 					<?php foreach ($respsList as $resp):?>
-					    <?php $respname = $this->clean( $resp ); 
-					          $userteam = $this->clean( $user['resp_summary']);
-					          $selected = "";
-					          if ($teamname == $userteam){
-					          	$selected = "selected";
-					          }
-					    ?>
-						<OPTION value="<?= $respname ?> " <?= $selected ?>> <?= $respname ?> </OPTION>
+					    <?php   $respId = $this->clean( $resp['id'] );
+					    		if ($resp['id'] > 1){
+							    	$respSummary = $respId . " " . $this->clean( $resp['firstname'] ) . " " . $this->clean( $resp['name'] );
+					    		}
+					    		else{
+					    			$respSummary = "--";
+					    		}
+					    		$active = "";
+					    		if ( $user['id_responsible'] == $respId  ){
+					    			$active = "selected=\"selected\"";
+					    		}
+						?>
+						<OPTION value="<?= $respId ?> " <?= $active ?>> <?= $respSummary ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
-		
-		
-		<br></br>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"></label>
 			<div class="col-xs-10">
 			  <div class="checkbox">
 			    <label>
-			    <?php $checked=''; if ($isResponsible){$checked = "checked disabled";} ?>
-			      <input type="checkbox" name="is_responsible" <?= $checked ?> > is responsible
+			      <?php if ( $user['is_responsible'] ){  
+			      	$checked = "disabled=\"disabled\" checked"; 
+			      ?>
+			      	<input type="hidden" value="true" name="is_responsible" />
+			      <?php
+						} 
+						else {
+							$checked = "";
+						} 
+				  ?>
+			      
+			      <input type="checkbox" name="is_responsible" <?= $checked ?>> is responsible
+			      
 			    </label>
               </div>
 			</div>
 		</div>
-		<br></br>
+		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Status</label>
 			<div class="col-xs-10">
-				<select class="form-control" name="status">
+				<select class="form-control" name="id_status">
 					<?php foreach ($statusList as $status):?>
-					    <?php $statusname = $this->clean( $status['name'] ); 
-					          $userstatus = $this->clean($user['status']);
-					          $selected = "";
-					          if ($userstatus == $statusname){
-					          	$selected = "selected";
+					    <?php $statusname = $this->clean( $status['name'] );
+					          $statusid = $this->clean( $status['id'] );
+					          
+					          $active = "";
+					          if ( $user['id_status'] == $statusid  ){
+					          	$active = "selected=\"selected\"";
 					          }
 					    ?>
-						<OPTION value="<?= $statusname ?>" <?= $selected ?>> <?= $statusname ?> </OPTION>
+						<OPTION value="<?= $statusid ?>" <?= $active ?>> <?= $statusname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
-		<br></br>
+		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>
+      
+      <br>
+      <div>
+      	<div class="page-header">
+			<h1>
+				Change password <br> <small></small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="col-xs-4" id="button-div">
+				<button type="button" onclick="location.href='users/changepwd/<?=$user['id']?>'" class="btn btn-default" id="navlink">Change password</button>
+			</div>
+		</div>
+
+
 
 	</div>
 </div>

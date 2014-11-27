@@ -96,11 +96,18 @@ class ControllerUsers extends ControllerSecureNav {
 			$respModel = new Responsible();
 			$respModel->addResponsible($userID['idUser']);
 		}
+		
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+		
 	}
 	
 	
 	public function edit(){
-		/*
+		
 		$navBar = $this->navBar();
 		
 		// get user id
@@ -110,84 +117,103 @@ class ControllerUsers extends ControllerSecureNav {
 		}
 		
 		// get user info
-		$userquery = $this->userModel->userAllInfo($userId);
-		
-		$modelUnit = new Unit();
-		$unitName = $modelUnit->getUnitName($userquery["id_unit"]);
-		
-		$modelTeam = new Team();
-		$teamName = $modelTeam->getTeamName($userquery["id_team"]);
-		
-		$modelStatus = new Status();
-		$statusName = $modelStatus->getStatusName($userquery["id_status"]);
-		
-		$resp_summary = $this->userModel->userSummary($userquery['id_responsible']);
-		
-		$user = array(
-				'id' => $userquery['id'],
-				'name' => $userquery['name'],
-				'firstname' => $userquery['firstname'],
-				'login' => $userquery['login'],
-				'email' => $userquery['email'],
-				'tel' => $userquery['tel'],
-				'unit' => $unitName,
-				'team' => $teamName,
-				'resp_summary' => $resp_summary,
-				'status' => $statusName
-		);
+		$user = $this->userModel->userAllInfo($userId);	
 		
 		// Lists for the form
 		// get status list
-		$status = $modelStatus->allStatus();
+		$modelStatus = new Status();
+		$status = $modelStatus->statusIDName();
+
+		// get units list
+		$modelUnit = new Unit();
+		$unitsList = $modelUnit->unitsIDName();
 		
 		// get teams list
-		$teamsList = $modelTeam->teamsName();
-		
-		// get teams list
-		$unitsList = $modelUnit->unitsName();
+		$modelTeam = new Team();
+		$teamsList = $modelTeam->teamsIDName();
+	
 		
 		// responsible list
 		$respModel = new Responsible();
-		$respsList = $respModel->responsibleSummaries();
+		$respsList = $respModel->responsibleSummaries(); 
 		
-		// responsible status
-		$isResponsible = $respModel->isResponsible($userId);
+		// is responsoble user
+		$user['is_responsible'] = $respModel->isResponsible($user['id']);
 		
+		// generate the view
 		$this->generateView ( array (
-				'navBar' => $navBar, 'user' => $user, 'statusList' => $status, 
+				'navBar' => $navBar, 'statusList' => $status,
 				'unitsList' => $unitsList, 'teamsList' => $teamsList,
-				'respsList' => $respsList, 'isResponsible' => $isResponsible
+				'respsList' => $respsList, 'user' => $user
 		) );
-		*/
 	}
 	
 	public function editquery(){
 		
 		// get form variables
-		$id = $this->request->getParameter ( "name");
+		$id = $this->request->getParameter ( "id");
 		$name = $this->request->getParameter ( "name"); 
 		$firstname = $this->request->getParameter ( "firstname");
 		$login = $this->request->getParameter ( "login");
 		$email = $this->request->getParameter ( "email");
 		$phone = $this->request->getParameter ( "phone");
-		$unit = $this->request->getParameter ( "unit");
-		$team = $this->request->getParameter ( "team");
-		$responsible = $this->request->getParameter ( "responsible");
-		$is_responsible = $this->request->getParameter ( "is_responsible");
-		$status = $this->request->getParameter ( "status");
+		$id_unit = $this->request->getParameter ( "id_unit");
+		$id_team = $this->request->getParameter ( "id_team");
+		$id_responsible = $this->request->getParameter ( "id_responsible");
+		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
+		$id_status = $this->request->getParameter ( "id_status");
 		
-		// get the responsible id
-		list($responsibleFullName, $responsibleId) = split('id:', $responsible);
 		
 		// update user
 		$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
-    		                         $unit, $team, $responsibleId, $status);
+    		                         $id_unit, $id_team, $id_responsible, $id_status);
 
 		// update responsible
-		if ($is_responsible){
+		if ($is_responsible != ''){
 			$respModel = new Responsible();
 			$respModel->addResponsible($id);
 		} 
+		
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
+	public function changepwd(){
+		$userId = 0;
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$userId = $this->request->getParameter("actionid");
+		};
+		
+		$user = $this->userModel->userAllInfo($userId);	
+		
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 'user' => $user
+		) );
+	}
+	
+	public function changepwdquery(){
+		
+		$id = $this->request->getParameter ( "id");
+		$pwd = $this->request->getParameter ( "pwd");
+		$pwdc = $this->request->getParameter ( "pwdc");
+		
+		if ($pwd == $pwdc){
+			$this->userModel->changePwd($id, $pwd);
+		}
+		else{
+			throw new Exception("The two passwords are not identical");
+		}
+
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
 	}
 	
 }

@@ -26,18 +26,18 @@
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td>Id</td>
-					<td>Name</td>
-					<td>Firstname</td>
-					<td>Login</td>
-					<td>Email</td>
-					<td>Phone</td>
-					<td>Unit</td>
-					<td>Team</td>
-					<td>Responsible</td>
-					<td>Status</td>
-					<td>User from</td>
-					<td>Last connection</td>
+					<td><a href="users/index/id">Id</a></td>
+					<td><a href="users/index/name">Name</a></td>
+					<td><a href="users/index/firstname">Firstname</a></td>
+					<td><a href="users/index/login">Login</a></td>
+					<td><a href="users/index/email">Email</a></td>
+					<td><a href="users/index/tel">Phone</a></td>
+					<td><a href="users/index/id_unit">Unit</a></td>
+					<td><a href="users/index/id_team">Team</a></td>
+					<td><a href="users/index/id_responsible">Responsible</a></td>
+					<td><a href="users/index/id_status">Status</a></td>
+					<td><a href="users/index/date_created">User from</a></td>
+					<td><a href="users/index/date_last_login">Last connection</a></td>
 					<td></td>
 				</tr>
 			</thead>

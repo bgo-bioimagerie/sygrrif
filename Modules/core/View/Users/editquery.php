@@ -14,16 +14,16 @@
 		
 		<div class="page-header">
 			<h1>
-				Add User <br> <small></small>
+				Edit User <br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Unable to add the user</p>
+			<p> Unable to update the user</p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> The user had been successfully added !</p>
+			<p> The user had been successfully updated !</p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">

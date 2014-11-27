@@ -14,16 +14,16 @@
 		
 		<div class="page-header">
 			<h1>
-				Add User <br> <small></small>
+				Change password <br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Unable to add the user</p>
+			<p> Unable to change the password</p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> The user had been successfully added !</p>
+			<p> The password has been successfully updated !</p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">

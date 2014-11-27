@@ -159,26 +159,20 @@ class User extends Model {
     	
     }
     
+    
     public function updateUser($id, $firstname, $name, $login, $email, $phone,
-    		$unit, $team, $responsibleId, $status){
+    							$id_unit, $id_team, $id_responsible, $id_status){
     	
-    	/*
-    	// get unit id
-    	$unitModel = new Unit();
-    	$unitId = $unitModel->getUnitId($unit);
-    	
-    	// get team id
-    	$teamModel = new Team();
-    	$teamId = $teamModel->getTeamId($team);
-    	
-    	// get status id
-    	$statusModel = new Status();
-    	$statusId = $statusModel->getStatusId($status);
-    	
-    	// update the user
     	$sql = "update users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_team=?, id_responsible=?, id_status=? where id=?";
-		$unit = $this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $unitId, $teamId, $responsibleId, $statusId, $id));
-    	*/
+    	$this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $id_unit, $id_team, $id_responsible, $id_status, $id));
+    }
+    
+    public function changePwd($id, $pwd){
+    	
+    	echo "change pwd of " . $id . "pwd = " . $pwd; 
+    	 
+    	$sql = "update users set pwd=? where id=?";
+    	$user = $this->runRequest($sql, array(sha1($pwd), $id));
     }
 }
 

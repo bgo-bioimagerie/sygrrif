@@ -23,14 +23,14 @@ abstract class Model
      */
     protected function runRequest($sql, $params = null)
     {
-        if ($params == null) {
-            $result = self::getDatabase()->query($sql);   // direct query
-        }
-        else {
-            $result = self::getDatabase()->prepare($sql); // prepared request
-            $result->execute($params);
-        }
-        return $result;
+	        if ($params == null) {
+	            $result = self::getDatabase()->query($sql);   // direct query
+	        }
+	        else {
+	            $result = self::getDatabase()->prepare($sql); // prepared request
+	            $result->execute($params);
+	        }
+	        return $result;
     }
 
     /**
