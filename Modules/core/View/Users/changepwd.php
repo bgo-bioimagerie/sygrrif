@@ -13,6 +13,7 @@
 				Change passeword <br> <small> for user</small>
 			</h1>
 			<div class="form-group">
+			    <input class="form-control" id="login" type="hidden" name="login" value=<?= $user['login'] ?> readonly />
 				<div class="col-xs-4">
 					<input class="form-control" id="firstname" type="text" name="firstname" value=<?= $user['firstname'] ?> readonly />
 				</div>

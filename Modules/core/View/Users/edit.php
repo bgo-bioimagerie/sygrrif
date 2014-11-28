@@ -174,6 +174,35 @@
 			</div>
 		</div>
 		<br>
+		<?php if ( Configuration::get("grr_installed") ) {?>
+		<div>
+        	<label><input type="checkbox" name="grr_use" value="add to GRR"> Add to GRR </label>
+    	</div>
+    	<div class="grr box">
+    		<div class="form-group">
+				<label for="inputEmail" class="control-label col-xs-2">GRR Status</label>
+				<div class="col-xs-10">
+					<select class="form-control" name="grr_status">
+						<OPTION value="visiteur" <?php if ($grrstatus == "visiteur"){echo "selected=\"selected\"";} ?> > Visitor </OPTION>
+						<OPTION value="utilisateur" <?php if ($grrstatus == "utilisateur"){echo "selected=\"selected\"";} ?> > User </OPTION>
+						<OPTION value="gestionnaire_utilisateur" <?php if ($grrstatus == "gestionnaire_utilisateur"){echo "selected=\"selected\"";} ?> > User manager </OPTION>
+						<OPTION value="administrateur" <?php if ($grrstatus == "administrateur"){echo "selected=\"selected\"";} ?> > Admin </OPTION>
+					</select>
+				</div>
+			</div>
+			<br>
+			<div class="form-group">
+				<label for="inputEmail" class="control-label col-xs-2">GRR State</label>
+				<div class="col-xs-10">
+					<select class="form-control" name="grr_etat">
+						<OPTION value="actif" <?php if ($grretat == "actif"){echo "selected=\"selected\"";} ?> > Active </OPTION>
+						<OPTION value="inactif" <?php if ($grretat == "inactif"){echo "selected=\"selected\"";} ?> > Not active </OPTION>
+					</select>
+				</div>
+			</div>
+		</div>
+    	<?php }?>
+		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink">Cancel</button>
@@ -192,8 +221,6 @@
 				<button type="button" onclick="location.href='users/changepwd/<?=$user['id']?>'" class="btn btn-default" id="navlink">Change password</button>
 			</div>
 		</div>
-
-
 
 	</div>
 </div>

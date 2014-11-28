@@ -6,6 +6,7 @@ require_once 'Modules/core/Model/Status.php';
 require_once 'Modules/core/Model/Team.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/UserGRR.php';
 
 class ControllerUsers extends ControllerSecureNav {
 	
@@ -97,6 +98,18 @@ class ControllerUsers extends ControllerSecureNav {
 			$respModel->addResponsible($userID['idUser']);
 		}
 		
+		// GRR add user
+		if (Configuration::get("grr_installed")){
+			$use_grr = $this->request->getParameterNoException ( "grr_use");
+			if ($use_grr != ''){
+				// add user to grr
+				$grr_status = $this->request->getParameter ( "grr_status");
+				$grr_etat = $this->request->getParameter ( "grr_etat");
+				$usergrrModel = new UserGRR();
+				$usergrrModel->addUser($login, $name, $firstname, $pwd, $email, $grr_status, $grr_etat);
+			}
+		}
+		
 		// generate view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -140,11 +153,24 @@ class ControllerUsers extends ControllerSecureNav {
 		// is responsoble user
 		$user['is_responsible'] = $respModel->isResponsible($user['id']);
 		
+		// GRR
+		$grretat = "";
+		$grrstatus = "";
+		if (Configuration::get("grr_installed")){
+			$usermodelgrr = new UserGRR();
+			$grrinfo = $usermodelgrr->getStatusState($user['login']);
+			if ($grrinfo){
+				$grretat = $grrinfo['etat'];
+				$grrstatus = $grrinfo['statut'];
+			}
+		}
+		
 		// generate the view
 		$this->generateView ( array (
 				'navBar' => $navBar, 'statusList' => $status,
 				'unitsList' => $unitsList, 'teamsList' => $teamsList,
-				'respsList' => $respsList, 'user' => $user
+				'respsList' => $respsList, 'user' => $user, 
+				'grretat' => $grretat, 'grrstatus' => $grrstatus
 		) );
 	}
 	
@@ -174,6 +200,18 @@ class ControllerUsers extends ControllerSecureNav {
 			$respModel->addResponsible($id);
 		} 
 		
+		// GRR add user
+		if (Configuration::get("grr_installed")){
+			$use_grr = $this->request->getParameterNoException ( "grr_use");
+			if ($use_grr != ''){
+				// add user to grr
+				$grr_status = $this->request->getParameter ( "grr_status");
+				$grr_etat = $this->request->getParameter ( "grr_etat");
+				$usergrrModel = new UserGRR();
+				$usergrrModel->editUser($login, $name, $firstname, $pwd, $email, $grr_status, $grr_etat);
+			}
+		}
+		
 		// generate view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -199,11 +237,19 @@ class ControllerUsers extends ControllerSecureNav {
 	public function changepwdquery(){
 		
 		$id = $this->request->getParameter ( "id");
+		$login = $this->request->getParameter ( "login");
 		$pwd = $this->request->getParameter ( "pwd");
 		$pwdc = $this->request->getParameter ( "pwdc");
 		
 		if ($pwd == $pwdc){
+			// this database
 			$this->userModel->changePwd($id, $pwd);
+			
+			// grr database
+			if (Configuration::get("grr_installed")){
+				$grrmodel = new UserGRR();
+				$grrmodel->changePwd($login, $pwd);
+			}
 		}
 		else{
 			throw new Exception("The two passwords are not identical");
@@ -294,6 +340,12 @@ class ControllerUsers extends ControllerSecureNav {
 		
 			if ($pwd == $pwdc){
 				$this->userModel->changePwd($id, $pwd);
+				
+				// grr database
+				if (Configuration::get("grr_installed")){
+					$grrmodel = new UserGRR();
+					$grrmodel->changePwd($login, $pwd);
+				}
 			}
 			else{
 				throw new Exception("The two passwords are not identical");

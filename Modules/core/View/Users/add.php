@@ -4,9 +4,26 @@
 
 <head>
 <!-- Bootstrap core CSS -->
-<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.min.css"
-	rel="stylesheet">
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<head>
+
+<style type="text/css">
+    .box{
+        display: none;
+    }
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $('input[type="checkbox"]').click(function(){
+            if($(this).attr("value")=="add to GRR"){
+                $(".grr").toggle();
+            }
+        });
+    });
+</script>
+
 </head>
 
 
@@ -143,6 +160,37 @@
 				</select>
 			</div>
 		</div>
+		<br>
+		<?php if ( Configuration::get("grr_installed") ) {?>
+		<div>
+        	<label><input type="checkbox" name="grr_use" value="add to GRR"> Add to GRR </label>
+    	</div>
+    	<div class="grr box">
+    		<div class="form-group">
+				<label for="inputEmail" class="control-label col-xs-2">GRR Status</label>
+				<div class="col-xs-10">
+					<select class="form-control" name="grr_status">
+						<OPTION value="visiteur"> Visitor </OPTION>
+						<OPTION value="utilisateur"> User </OPTION>
+						<OPTION value="gestionnaire_utilisateur"> User manager </OPTION>
+						<OPTION value="administrateur"> Admin </OPTION>
+					</select>
+				</div>
+			</div>
+			<br>
+			<div class="form-group">
+				<label for="inputEmail" class="control-label col-xs-2">GRR State</label>
+				<div class="col-xs-10">
+					<select class="form-control" name="grr_etat">
+						<OPTION value="actif"> Active </OPTION>
+						<OPTION value="inactif"> Not active </OPTION>
+					</select>
+				</div>
+			</div>
+			
+		</div>
+    	<?php }?>
+    
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />

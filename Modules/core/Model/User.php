@@ -24,7 +24,7 @@ class User extends Model {
 		`id_responsible` int(11) NOT NULL,
 		`id_status` int(11) NOT NULL,
 		`date_created` DATE NOT NULL,
-		`date_last_login` DATE NOT NULL,
+		`date_last_login` DATE NOT NULL,	
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -187,7 +187,8 @@ class User extends Model {
     public function updateUserAccount($id, $firstname, $name, $email, $phone){
     	$sql = "update users set firstname=?, name=?, email=?, tel=? where id=?";
     	$this->runRequest($sql, array($firstname, $name, $email, $phone, $id));
-    	
     }
+    
+    
 }
 
