@@ -36,6 +36,8 @@
 					<td><a href="users/index/id_team">Team</a></td>
 					<td><a href="users/index/id_responsible">Responsible</a></td>
 					<td><a href="users/index/id_status">Status</a></td>
+					<td><a href="users/index/id">Is responsible</a></td>
+					<td><a href="users/index/convention">Convention</a></td>
 					<td><a href="users/index/date_created">User from</a></td>
 					<td><a href="users/index/date_last_login">Last connection</a></td>
 					<td></td>
@@ -56,6 +58,21 @@
 				    <td><?= $this->clean ( $user ['team'] ); ?></td>
 				    <td><?= $this->clean ( $user ['fullname'] ); ?></td>
 				    <td><?= $this->clean ( $user ['status'] ); ?></td>
+				    <td><?php if($this->clean ( $user ['is_responsible'] )){echo "true";}else{echo "false";} ?></td>
+				    <td> 
+				    	<?php 
+				    	$convno = $this->clean ( $user ['convention'] );
+				    	if ($convno == 0){
+				    		$convTxt = "no convention";	
+				    	}
+				    	else{
+				    		$convTxt = "<p> No:" . $convno . "</p>"
+				    				   ."<p>" . $this->clean ( $user ['date_convention'] ) . "</p>";
+				    	}
+				    	?>
+				    
+				      <?= $convTxt ?>
+				    </td>
 				    <td><?= $this->clean ( $user ['date_created'] ); ?></td>
 				    <td><?= $this->clean ( $user ['date_last_login'] ); ?></td>
 				    <td><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button></td>  

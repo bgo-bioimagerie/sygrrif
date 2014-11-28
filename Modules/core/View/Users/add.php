@@ -3,10 +3,13 @@
 <?php echo $navBar?>
 
 <head>
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<head>
+	<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	
+	<script src="bootstrap/datepicker/js/moments.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script src="bootstrap/dist/js/bootstrap.min.js"></script>
 
 <style type="text/css">
     .box{
@@ -159,6 +162,36 @@
 					<?php endforeach; ?>
 				</select>
 			</div>
+		</div>
+		<br>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Convention</label>
+			<div class="col-xs-10">
+				<input class="form-control" id="convention" type="text" name="convention"
+				/>
+			</div>
+		</div>
+		<br>
+		<div class="form-group ">
+		
+				<label for="inputEmail" class="control-label col-xs-2">Date convention</label>
+				<div class="col-xs-10">
+				<div class='input-group date' id='datetimepicker5'>
+					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_convention"/>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+			
+			<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+      		<script type="text/javascript">
+			$(function () {
+				$('#datetimepicker5').datetimepicker({
+					pickTime: false
+				});
+			});
+		    </script>
+		    </div>
 		</div>
 		<br>
 		<?php if ( Configuration::get("grr_installed") ) {?>

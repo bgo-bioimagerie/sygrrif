@@ -84,12 +84,14 @@ class ControllerUsers extends ControllerSecureNav {
 		$id_responsible = $this->request->getParameter ( "responsible");
 		$id_status = $this->request->getParameter ( "status");
 		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
+		$convention = $this->request->getParameterNoException ( "convention");
+		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		
 		
 		// add the user to the database
 		$this->userModel->addUser($name, $firstname, $login, $pwd, 
 				                  $email, $phone, $id_unit, $id_team, 
-				                  $id_responsible, $id_status );
+				                  $id_responsible, $id_status, $convention, $date_convention );
 		
 		// add the user to the responsible list
 		if ($is_responsible != ''){
@@ -188,11 +190,14 @@ class ControllerUsers extends ControllerSecureNav {
 		$id_responsible = $this->request->getParameter ( "id_responsible");
 		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
 		$id_status = $this->request->getParameter ( "id_status");
+		$convention = $this->request->getParameterNoException ( "convention");
+		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		
 		
 		// update user
 		$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
-    		                         $id_unit, $id_team, $id_responsible, $id_status);
+    		                         $id_unit, $id_team, $id_responsible, $id_status,
+				                     $convention, $date_convention);
 
 		// update responsible
 		if ($is_responsible != ''){
@@ -208,7 +213,7 @@ class ControllerUsers extends ControllerSecureNav {
 				$grr_status = $this->request->getParameter ( "grr_status");
 				$grr_etat = $this->request->getParameter ( "grr_etat");
 				$usergrrModel = new UserGRR();
-				$usergrrModel->editUser($login, $name, $firstname, $pwd, $email, $grr_status, $grr_etat);
+				$usergrrModel->editUser($login, $name, $firstname, $email, $grr_status, $grr_etat);
 			}
 		}
 		
@@ -306,6 +311,7 @@ class ControllerUsers extends ControllerSecureNav {
 
 		// get form variables
 		$id = $this->request->getParameter ( "id");
+		$login = $this->request->getParameter ( "login");
 		$name = $this->request->getParameter ( "name");
 		$firstname = $this->request->getParameter ( "firstname");
 		$email = $this->request->getParameter ( "email");
@@ -313,6 +319,12 @@ class ControllerUsers extends ControllerSecureNav {
 		
 		// update user
 		$this->userModel->updateUserAccount($id, $firstname, $name, $email, $phone);
+		
+		// grr database
+		if (Configuration::get("grr_installed")){
+			$grrmodel = new UserGRR();
+			$grrmodel->updateUserAccount($login, $firstname, $name, $email);
+		}
 		
 		// generate view
 		$navBar = $this->navBar();
@@ -325,6 +337,7 @@ class ControllerUsers extends ControllerSecureNav {
 	public function accountchangepwdquery(){
 		
 		$id = $this->request->getParameter ( "id");
+		$login = $this->request->getParameter ( "login");
 		$previouspwd = $this->request->getParameter ( "previouspwd");
 		$pwd = $this->request->getParameter ( "pwd");
 		$pwdc = $this->request->getParameter ( "pwdc");

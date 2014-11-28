@@ -48,7 +48,7 @@ class Responsible extends Model {
 	}
 	
 	public function isResponsible($userId){
-		$sql = "SELECT EXISTS(SELECT 1 FROM responsibles WHERE id = ?)";
+		$sql = "SELECT EXISTS(SELECT 1 FROM responsibles WHERE id_users = ?)";
 		
 		$exists = $this->runRequest($sql, array($userId));
 		$out = $exists->fetch();

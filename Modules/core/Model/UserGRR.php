@@ -20,7 +20,7 @@ class UserGRR extends ModelGRR {
     }
 
     public function getStatusState($login){
-    	$sql = "select status, etat from grr_utilisateurs where login=?";
+    	$sql = "select statut, etat from grr_utilisateurs where login=?";
     	$user = $this->runRequest($sql, array($login));
     	if ($user->rowCount() == 1)
     		return $user->fetch();  // get the first line of the result
@@ -28,14 +28,19 @@ class UserGRR extends ModelGRR {
     		return null;
     }
     
-    public function editUser($login, $name, $firstname, $pwd, $email, $grr_status, $grr_etat){
-    	$sql = "update grr_utilisateurs set prenom=?, nom=?, email=?, password=?, statut=?, etat=? where login=?";
-    	$this->runRequest($sql, array($firstname, $name, $email, $pwd, $grr_status, $grr_etat, $login));
+    public function editUser($login, $name, $firstname, $email, $grr_status, $grr_etat){
+    	$sql = "update grr_utilisateurs set prenom=?, nom=?, email=?, statut=?, etat=? where login=?";
+    	$this->runRequest($sql, array($firstname, $name, $email, $grr_status, $grr_etat, $login));
     }
     
     public function changePwd($login, $pwd){
     	$sql = "update grr_utilisateurs set password=? where login=?";
     	$user = $this->runRequest($sql, array(md5($pwd), $login));
+    }
+    
+    public function updateUserAccount($login, $firstname, $name, $email){
+    	$sql = "update grr_utilisateurs set prenom=?, nom=?, email=? where login=?";
+    	$this->runRequest($sql, array($firstname, $name, $email, $login));
     }
 }
 

@@ -23,7 +23,9 @@ class User extends Model {
 		`id_team` int(11) NOT NULL,
 		`id_responsible` int(11) NOT NULL,
 		`id_status` int(11) NOT NULL,
-		`date_created` DATE NOT NULL,
+		`convention` int(11) NOT NULL DEFAULT 0,		
+		`date_convention` DATE NOT NULL,
+	    `date_created` DATE NOT NULL,
 		`date_last_login` DATE NOT NULL,	
 		PRIMARY KEY (`id`)
 		);";
@@ -126,11 +128,13 @@ class User extends Model {
     	$unitModel = new Unit();
     	$teamModel = new Team();
     	$statusModel = new Status();
+    	$respModel = new Responsible();
     	for ($i = 0 ; $i < count($users) ; $i++){	
     		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit'])[0];
     		$users[$i]['team'] = $teamModel->getTeamName($users[$i]['id_team'])[0];
     		$users[$i]['status'] = $statusModel->getStatusName($users[$i]['id_status'])[0];
     		$users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
+    		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
     	}
     	return $users;
     }
@@ -149,22 +153,25 @@ class User extends Model {
     
     public function addUser($name, $firstname, $login, $pwd, 
 		           			$email, $phone, $id_unit, $id_team, 
-		           			$id_responsible, $id_status ){
+		           			$id_responsible, $id_status,
+    						$convention, $date_convention ){
     	
-    	$sql = "insert into users(login, firstname, name, email, tel, pwd, id_unit, id_team, id_responsible, id_status, date_created)"
-    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    	$sql = "insert into users(login, firstname, name, email, tel, pwd, id_unit, id_team, id_responsible, id_status, date_created, convention, date_convention)"
+    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
     	$this->runRequest($sql, array($login, $firstname, $name, $email, 
     			                      $phone, sha1($pwd), $id_unit, $id_team, 
-    			                      $id_responsible, $id_status, "".date("Y-m-d").""));
+    			                      $id_responsible, $id_status, "".date("Y-m-d")."",
+    			                      $convention, $date_convention));
     	
     }
     
     
     public function updateUser($id, $firstname, $name, $login, $email, $phone,
-    							$id_unit, $id_team, $id_responsible, $id_status){
+    							$id_unit, $id_team, $id_responsible, $id_status,
+    		                    $convention, $date_convention){
     	
-    	$sql = "update users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_team=?, id_responsible=?, id_status=? where id=?";
-    	$this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $id_unit, $id_team, $id_responsible, $id_status, $id));
+    	$sql = "update users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_team=?, id_responsible=?, id_status=?, convention=?, date_convention=? where id=?";
+    	$this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $id_unit, $id_team, $id_responsible, $id_status, $convention, $date_convention, $id));
     }
     
     public function changePwd($id, $pwd){

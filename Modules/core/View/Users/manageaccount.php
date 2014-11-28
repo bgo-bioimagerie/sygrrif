@@ -121,10 +121,27 @@
 			</div>
 		</div>
 		<br>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Convention</label>
+			<div class="col-xs-10">
+				<input class="form-control" id="convention" type="text" name="convention" value = "<?= $user['convention'] ?>"
+				disabled="disabled" />
+			</div>
+		</div>
+		<br>
+		<div class="form-group ">
+			<label for="inputEmail" class="control-label col-xs-2">Date convention</label>
+			<div class="col-xs-10">
+				<input class="form-control" type="text" value = "<?= $user['date_convention'] ?>" name="date_convention" disabled="disabled">
+		    </div>
+		</div>
+		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
+	
+		
       </form>
       
       <br>
@@ -140,10 +157,10 @@
 				Change password <br> <small></small>
 			</h1>
 		</div>
-		
-		<input class="form-control" id="id" type="hidden" name="id" value=<?= $user['id'] ?>
-				/>
-		
+		 
+		<input class="form-control" id="id" type="hidden" name="id" value=<?= $user['id'] ?> >
+		<input class="form-control" id="login" type="hidden" name="login" value=<?= $user['login'] ?> >
+				
 		<div class="form-group">
 			<label for="pwd" class="control-label col-xs-2">Curent password</label>
 			<div class="col-xs-4">
