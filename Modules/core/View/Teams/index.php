@@ -27,7 +27,7 @@
 				<tr>
 					<td><a href="teams/index/id">Id</a></td>
 					<td><a href="teams/index/name">Name</a></td>
-					<td><a href="teams/index/adress">Address</a></td>
+					<td><a href="teams/index/address">Address</a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -37,7 +37,7 @@
 					<?php $teamId = $this->clean ( $team ['id'] ); ?>
 					<td><?= $teamId ?></td>
 				    <td><?= $this->clean ( $team ['name'] ); ?></td>
-				    <td><?= $this->clean ( $team ['adress'] ); ?></td>
+				    <td><?= $this->clean ( $team ['address'] ); ?></td>
 				    <td>
 				      <button type='button' onclick="location.href='teams/edit/<?= $teamId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  

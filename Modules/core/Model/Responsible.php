@@ -10,9 +10,14 @@ require_once 'Modules/core/Model/User.php';
  */
 class Responsible extends Model {
 
+	/**
+	 * Create the Responsible table
+	 * 
+	 * @return PDOStatement
+	 */
 	public function createTable(){
 			
-		$sql = "CREATE TABLE IF NOT EXISTS `responsibles` (
+		$sql = "CREATE TABLE IF NOT EXISTS `core_responsibles` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`id_users` int(11) NOT NULL,
 		PRIMARY KEY (`id`)
@@ -22,20 +27,29 @@ class Responsible extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Create the dafault empty responsible user
+	 * 
+	 * @return PDOStatement
+	 */
 	public function createDefaultResponsible(){
 	
-		$sql = "INSERT INTO responsibles (id_users) VALUES(?)";
+		$sql = "INSERT INTO core_responsibles (id_users) VALUES(?)";
 		$pdo = $this->runRequest($sql, array(1));
 		return $pdo;
 	
 		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
 	}
 	
-
+	/**
+	 * Add a user in the responsible table
+	 * 
+	 * @param int $id_user Id of the user to add in the responsible table
+	 */
 	public function addResponsible($id_user){
 		
 		// test if the user is already responsible
-		$sql = "SELECT EXISTS(SELECT 1 FROM responsibles WHERE id = ?)";
+		$sql = "SELECT EXISTS(SELECT 1 FROM core_responsibles WHERE id = ?)";
 		
 		$exists = $this->runRequest($sql, array($id_user));
 		$out = $exists->fetch();
@@ -47,8 +61,14 @@ class Responsible extends Model {
 		}
 	}
 	
+	/**
+	 * Return true is a user is responsible
+	 * 
+	 * @param int $userId Id of the user test
+	 * @return boolean return true if the user is responsible false otherwise
+	 */
 	public function isResponsible($userId){
-		$sql = "SELECT EXISTS(SELECT 1 FROM responsibles WHERE id_users = ?)";
+		$sql = "SELECT EXISTS(SELECT 1 FROM core_responsibles WHERE id_users = ?)";
 		
 		$exists = $this->runRequest($sql, array($userId));
 		$out = $exists->fetch();
@@ -59,38 +79,57 @@ class Responsible extends Model {
 		return true;
 	}
 	
+	/**
+	 * Get the names and firstname of the responsible users 
+	 * 
+	 * @return multitype: array of the responsible users
+	 */
 	public function responsiblesNames(){
-		$sql = "SELECT firstname, name FROM users WHERE id IN (SELECT id_users FROM responsibles)";
+		$sql = "SELECT firstname, name FROM core_users WHERE id IN (SELECT id_users FROM core_responsibles)";
 		$respPDO = $this->runRequest($sql);
 		$resps = $respPDO->fetchAll();
 
 		return $resps;
 	}
 	
+	/**
+	 * Get the ids of the responsible users
+	 * 
+	 * @return multitype: array of the responsible users
+	 */
 	public function responsiblesIds(){
-		$sql = "SELECT id_users FROM responsibles";
+		$sql = "SELECT id_users FROM core_responsibles";
 		$respPDO = $this->runRequest($sql);
 		$resps = $respPDO->fetchAll();
 		
 		return $resps;
 	}
 	
+	/** 
+	 * return the name of a responsible user
+	 * 
+	 * @param int $id Id of the user to query
+	 * @return mixed array containing the firsname and the name of the responsible user
+	 */
 	public function responsibleName($id){
-		$sql = "SELECT firstname, name FROM users WHERE id=?";
+		$sql = "SELECT firstname, name FROM core_users WHERE id=?";
 		$respPDO = $this->runRequest($sql, array($id));
 		$resp = $respPDO->fetch();
-		
+		/// @todo add a throw here
 		return $resp;
 	}
 	
+	/**
+	 * get the id, firstname and name of the responsibles users 
+	 * 
+	 * @return multitype: 2D array containing the users informations 
+	 */
 	public function responsibleSummaries(){
-		$sql = "SELECT id, firstname, name FROM users WHERE id IN (SELECT id_users FROM responsibles)";
+		$sql = "SELECT id, firstname, name FROM core_users WHERE id IN (SELECT id_users FROM core_responsibles)";
 		$respPDO = $this->runRequest($sql);
 		$resps = $respPDO->fetchAll();
 
 		return $resps;
 	}
-	
-
 }
 

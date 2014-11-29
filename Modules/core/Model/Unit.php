@@ -9,12 +9,17 @@ require_once 'Framework/Model.php';
  */
 class Unit extends Model {
 
+	/**
+	 * Create the unit table
+	 * 
+	 * @return PDOStatement
+	 */
 	public function createTable(){
 			
-		$sql = "CREATE TABLE IF NOT EXISTS `units` (
+		$sql = "CREATE TABLE IF NOT EXISTS `core_units` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(30) NOT NULL DEFAULT '',
-		`adress` varchar(150) NOT NULL DEFAULT '',
+		`address` varchar(150) NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -22,52 +27,92 @@ class Unit extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Create the default empty Unit
+	 * 
+	 * @return PDOStatement
+	 */
 	public function createDefaultUnit(){
 	
-		$sql = "INSERT INTO units (name, adress) VALUES(?,?)";
+		$sql = "INSERT INTO core_units (name, address) VALUES(?,?)";
 		$pdo = $this->runRequest($sql, array("--", "--"));
 		return $pdo;
 	
 		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
 	}
 	
+	/**
+	 * get units informations
+	 * 
+	 * @param string $sortentry Entry that is used to sort the units
+	 * @return multitype: array
+	 */
 	public function getUnits($sortentry = 'id'){
 		 
-		$sql = "select * from units order by " . $sortentry . " ASC;";
+		$sql = "select * from core_units order by " . $sortentry . " ASC;";
 		$user = $this->runRequest($sql);
 		return $user->fetchAll();
 	}
 	
+	/**
+	 * get the names of all the units
+	 *
+	 * @return multitype: array
+	 */
 	public function unitsName(){
 			
-		$sql = "select name from units";
+		$sql = "select name from core_units";
 		$units = $this->runRequest($sql);
 		return $units->fetchAll();
 	}
 	
+	/**
+	 * Get the units ids and names
+	 *
+	 * @return array
+	 */
 	public function unitsIDName(){
 			
-		$sql = "select id, name from units";
+		$sql = "select id, name from core_units";
 		$units = $this->runRequest($sql);
 		return $units->fetchAll();
 	}
 	
-	
+	/**
+	 * add a unit to the table
+	 *
+	 * @param string $name name of the unit
+	 * @param string $address address of the unit
+	 */
 	public function addUnit($name, $address){
 		
-		$sql = "insert into units(name, adress)"
+		$sql = "insert into core_units(name, address)"
 				. " values(?, ?)";
 		$user = $this->runRequest($sql, array($name, $address));		
 	}
 	
+	/**
+	 * update the information of a unit
+	 *
+	 * @param int $id Id of the unit to update
+	 * @param string $name New name of the unit
+	 * @param string $address New Address of the unit
+	 */
 	public function editUnit($id, $name, $address){
 		
-		$sql = "update units set name=?, adress=? where id=?";
+		$sql = "update core_units set name=?, address=? where id=?";
 		$unit = $this->runRequest($sql, array("".$name."", "".$address."", $id));
 	}
 	
+	/**
+	 * get the informations of a unit
+	 *
+	 * @param int $id Id of the unit to query
+	 * @throws Exception id the unit is not found
+	 * @return mixed array
+	 */
 	public function getUnit($id){
-		$sql = "select * from units where id=?";
+		$sql = "select * from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
 		if ($unit->rowCount() == 1)
     		return $unit->fetch();  // get the first line of the result
@@ -75,8 +120,15 @@ class Unit extends Model {
     		throw new Exception("Cannot find the unit using the given id"); 
 	}
 	
+	/**
+	 * get the name of a unit
+	 *
+	 * @param int $id Id of the unit to query
+	 * @throws Exception if the unit is not found
+	 * @return mixed array
+	 */
 	public function getUnitName($id){
-		$sql = "select name from units where id=?";
+		$sql = "select name from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
 		if ($unit->rowCount() == 1)
 			return $unit->fetch();  // get the first line of the result
@@ -84,8 +136,15 @@ class Unit extends Model {
 			throw new Exception("Cannot find the unit using the given id");
 	}
 	
+	/**
+	 * get the id of a unit from it's name
+	 * 
+	 * @param string $name Name of the unit
+	 * @throws Exception if the unit connot be found
+	 * @return mixed array
+	 */
 	public function getUnitId($name){
-		$sql = "select id from units where name=?";
+		$sql = "select id from core_units where name=?";
 		$unit = $this->runRequest($sql, array($name));
 		if ($unit->rowCount() == 1)
 			return $unit->fetch();  // get the first line of the result

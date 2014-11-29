@@ -42,14 +42,15 @@ abstract class ModelGRR
     {
         if (self::$bdd === null) {
             // load the database informations
-            $dsn = Configuration::get("grr_dsn");
+        	$grr_sql_host = Configuration::get("grr_sql_host");
+        	$grr_db_name = Configuration::get("grr_db_name");
+        	$dsn = 'mysql:host=' . $grr_sql_host . ';dbname=' . $grr_db_name .';charset=utf8';
             $login = Configuration::get("grr_login");
-            $pwd = Configuration::get("grr_pwd");
+            $pwd = Configuration::get("grr_password");
             // Create connection
             self::$bdd = new PDO($dsn, $login, $pwd,
                     array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
         }
         return self::$bdd;
     }
-
 }

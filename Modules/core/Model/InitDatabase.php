@@ -8,10 +8,9 @@ require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/core/Model/Status.php';
 
 /**
- * Class defining the Database for the core module
- * This database contains the user, unit, team, responsible, and status 
+ * Class defining methods to install and initialize the core database
  *
- * @author Baptiste Pesquet
+ * @author Sylvain Prigent
  */
 class InitDatabase extends Model {
 

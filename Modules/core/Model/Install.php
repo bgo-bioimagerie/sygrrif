@@ -11,7 +11,15 @@ require_once 'Framework/Configuration.php';
  */
 class Install extends Model {
 
-	
+	/**
+	 * Test if the database informations are correct
+	 * 
+	 * @param string $sql_host Host of the database (ex: localhost)
+	 * @param string $login Login to connect to the database (ex: root)
+	 * @param string $password Password to connect to the database
+	 * @param string $db_name Name of the database
+	 * @return string error message
+	 */
 	public function testConnection($sql_host, $login, $password, $db_name){
 		
 		try {
@@ -25,6 +33,15 @@ class Install extends Model {
 		}
 	}
 	
+	/**
+	 * Save the database connection information into the config file
+	 * 
+	 * @param string $sql_host Host of the database (ex: localhost)
+	 * @param string $login Login to connect to the database (ex: root)
+	 * @param string $password Password to connect to the database
+	 * @param string $db_name Name of the database
+	 * @return boolean false if unable to write in the file
+	 */
 	public function writedbConfig($sql_host, $login, $password, $db_name){
 		
 	    $dsn = '\'mysql:host=' . $sql_host . ';dbname=' . $db_name .';charset=utf8\'';
@@ -34,6 +51,15 @@ class Install extends Model {
 	    return $returnVal;  
 	}
 	
+	/**
+	 * Internal function that implement the config file edition
+	 * 
+	 * @param string $fileURL URL of the configuration file
+	 * @param string $dsn Connection informations for the PDO connection
+	 * @param string $login Login to connect to the database (ex: root)
+	 * @param string $password Password to connect to the database
+	 * @return boolean
+	 */
 	protected function editConfFile($fileURL, $dsn, $login, $password) {
 
 		$handle = @fopen($fileURL, "r");
@@ -68,7 +94,7 @@ class Install extends Model {
 				$outContent = $outContent . $buffer;
 			}
 			if (!feof($handle)) {
-				echo "Erreur: fgets() a échoué\n";
+				echo "Erreur: fgets() a ï¿½chouï¿½\n";
 			}
 			fclose($handle);
 		}

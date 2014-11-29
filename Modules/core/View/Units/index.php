@@ -27,7 +27,7 @@
 				<tr>
 					<td><a href="units/index/id">Id</a></td>
 					<td><a href="units/index/name">Name</a></td>
-					<td><a href="units/index/adress">Address</a></td>
+					<td><a href="units/index/address">Address</a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -37,7 +37,7 @@
 					<?php $unitId = $this->clean ( $unit ['id'] ); ?>
 					<td><?= $unitId ?></td>
 				    <td><?= $this->clean ( $unit ['name'] ); ?></td>
-				    <td><?= $this->clean ( $unit ['adress'] ); ?></td>
+				    <td><?= $this->clean ( $unit ['address'] ); ?></td>
 				    <td>
 				      <button type='button' onclick="location.href='units/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  

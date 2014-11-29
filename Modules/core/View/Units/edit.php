@@ -47,7 +47,7 @@
 			<label for="inputEmail" class="control-label col-xs-2">Address</label>
 			<div class="col-xs-10">
 				<textarea class="form-control" id="address" type="textarea" name="address"
-				><?= $unit['adress'] ?></textarea>
+				><?= $unit['address'] ?></textarea>
 			</div>
 		</div>
 		
