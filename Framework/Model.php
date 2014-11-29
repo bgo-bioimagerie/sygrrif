@@ -38,7 +38,7 @@ abstract class Model
      * 
      * @return PDO Objet PDO of the database connections
      */
-    private static function getDatabase()
+    protected static function getDatabase()
     {
         if (self::$bdd === null) {
             // load the database informations

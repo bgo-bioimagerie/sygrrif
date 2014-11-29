@@ -8,8 +8,7 @@
 	<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 	
 	<script src="bootstrap/datepicker/js/moments.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="bootstrap/jquery-1.11.1.js"></script>
 
 <style type="text/css">
     .box{

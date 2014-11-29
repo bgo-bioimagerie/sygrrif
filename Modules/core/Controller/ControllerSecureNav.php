@@ -19,9 +19,11 @@ abstract class ControllerSecureNav extends ControllerSecure
     public function buildNavBar($login){
     	$logoFile = Configuration::get("logoFile");
     	$userName = $login;
-    	$toolMenu = array("statistics" => "statistiques");
+    	$toolMenu = array("statistics" => "statistiques",
+    			          "anticorps" => "anticorps"
+    	);
     	$toolAdmin = array("users" => "users/institutions", "database" => "database",
-    			           "configgrr" => "GRR configuration"
+    			           "configgrr" => "GRR configuration" 
     	);
     
     	// get the view menu,fill it, and return the content
