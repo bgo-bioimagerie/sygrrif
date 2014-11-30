@@ -3,6 +3,7 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/anticorps/Model/AcInstall.php';
 require_once 'Modules/anticorps/Model/Anticorps.php';
+require_once 'Modules/core/Model/User.php';
 
 class ControllerAnticorps extends ControllerSecureNav {
 	
@@ -43,12 +44,17 @@ class ControllerAnticorps extends ControllerSecureNav {
 		// get sources list
 		$modelSource = new Source();
 		$sourcesList = $modelSource->getSources();
+		
+		// get users List
+		$modelUser = new User();
+		$users = $modelUser->getUsersSummary('name');
 			
 	
 		$this->generateView ( array (
 				'navBar' => $navBar,
 				'isotypesList' => $isotypesList,
-				'sourcesList' => $sourcesList 
+				'sourcesList' => $sourcesList,
+				'users' => $users  
 		) );
 	}
 	public function addquery(){
@@ -66,15 +72,17 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$stockage = $this->request->getParameter ("stockage");
 		$No_Proto = $this->request->getParameter ("No_Proto");
 		$disponible = $this->request->getParameter ("disponible");
+		$id_proprietaire = $this->request->getParameter("id_proprietaire");
 		
+		// add anticorps to table
 		$modelAnticorps = new Anticorps();
 		$id = $modelAnticorps->addAnticorps($nom, $no_h2p2, $date_recept, 
 		                              $reference, $clone, $fournisseur, 
 		                              $lot, $id_isotype, $id_source, $stockage, 
 		                              $No_Proto, $disponible);
 		
-		
-	    print_r($id);
+		// add the owner
+		$modelAnticorps->addOwner($id_proprietaire, $id);
 
 	    // add to the tissus table
 	    $espece = $this->request->getParameter ("espece");

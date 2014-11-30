@@ -91,10 +91,30 @@ class Anticorps extends Model {
 			$ac[$i]['isotype'] = $isotypeModel->getIsotype($ac[$i]['id_isotype'])['nom'];
 			$ac[$i]['source'] = $sourceModel->getSource($ac[$i]['id_source'])['nom'];
 			$ac[$i]['tissus'] = $tissusModel->getTissus($ac[$i]['id']);
+			$ac[$i]['proprietaire'] = $this->getOwner($ac[$i]['id']);
 			//print_r($ac[$i]['tissus']);
 		}
 		return $ac;
 	}
 
+	public function getOwner($acId){
+		//$sql = "select id_utilisateur from ac_lien_user_anticorps where id_anticorps=?";
+		
+		$sql = "SELECT firstname, name, id FROM core_users WHERE id IN 
+				(select id_utilisateur from ac_lien_user_anticorps where id_anticorps=?)";
+		
+		$user = $this->runRequest($sql, array($acId));
+		return $user->fetchAll();
+	}
+	
+	public function addOwner($id_user, $id_anticorps){
+		
+		$sql = "insert into ac_lien_user_anticorps(id_utilisateur, id_anticorps)"
+				. " values(?, ? )";
+		$pdo = $this->runRequest($sql, array($id_user, $id_anticorps));
+		
+		return $this->getDatabase()->lastInsertId();
+	}
+	
 }
 

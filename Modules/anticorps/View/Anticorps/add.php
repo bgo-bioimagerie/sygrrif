@@ -85,14 +85,25 @@
 				/>
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">No H2P2</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="no_h2p2" type="text" name="no_h2p2" />
 			</div>
 		</div>
-		<br>	
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Propriétaire</label>
+			<div class="col-xs-10">
+				<select class="form-control" name="id_proprietaire">
+					<?php foreach ($users as $user):?>
+					    <?php $username = $this->clean( $user['firstname'] . " " . $user['name'] );
+					          $userId = $this->clean( $user['id'] );
+					    ?>
+						<OPTION value="<?= $userId ?>" > <?= $username ?> </OPTION>
+					<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
 		<div class="form-group ">
 		
 				<label for="inputEmail" class="control-label col-xs-2">Date Reception</label>
@@ -115,35 +126,30 @@
 		    </script>
 		    </div>
 		</div>
-	    <br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Référence</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="reference" type="text" name="reference" />
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Clone</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="clone" type="text" name="clone" />
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Fournisseur</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="fournisseur" type="text" name="fournisseur" />
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Lot</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="lot" type="text" name="lot" />
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Isotype</label>
 			<div class="col-xs-10">
@@ -157,7 +163,6 @@
 				</select>
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Source</label>
 			<div class="col-xs-10">
@@ -171,32 +176,27 @@
 				</select>
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Stockage</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="stockage" type="text" name="stockage" />
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">No Protocole</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="No_Proto" type="text" name="No_Proto" />
 			</div>
 		</div>
-		<br>
-			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-2">Disponible</label>
-				<div class="col-xs-10">
-					<select class="form-control" name="disponible">
-						<OPTION value="oui" > oui </OPTION>
-						<OPTION value="non" > non </OPTION>
-					</select>
-				</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Disponible</label>
+			<div class="col-xs-10">
+				<select class="form-control" name="disponible">
+					<OPTION value="oui" > oui </OPTION>
+					<OPTION value="non" > non </OPTION>
+				</select>
 			</div>
-		
-		<br>
+		</div>
 		<div class="form-group">
 			<label class="control-label col-xs-2">Tissus</label>
 			<div class="col-xs-10">
@@ -233,8 +233,6 @@
 				
 			</div>
 		</div>
-		
-		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='anticorps'" class="btn btn-default" id="navlink">Cancel</button>

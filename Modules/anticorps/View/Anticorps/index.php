@@ -28,6 +28,7 @@
 				<tr>
 					<td class="text-center"><a href="anticorps/index/id">Id</a></td>
 					<td class="text-center"><a href="anticorps/index/nom">Nom</a></td>
+					<td class="text-center"><a href="anticorps/index/id">Propriétaire</a></td>
 					<td class="text-center"><a href="anticorps/index/no_h2p2">No H2P2</a></td>
 					<td class="text-center"><a href="anticorps/index/date_recept">Date réception</a></td>
 					<td class="text-center"><a href="anticorps/index/reference">Référence</a></td>
@@ -49,6 +50,15 @@
 					<?php $anticorpsId = $this->clean ( $anticorps['id'] ); ?>
 					<td><?= $anticorpsId ?></td>
 				    <td><?= $this->clean ( $anticorps ['nom'] ); ?></td>
+				    <td><?php
+				    	$owner =  $anticorps ['proprietaire'];
+				    	if (count($owner) > 0){
+					    	$name = $owner[0]['firstname'] . " " . $owner[0]['name'];
+					    	$name = $this->clean ( $name ); 
+					        echo $name;
+				    	}
+				    	?>
+				    </td>
 				    <td><?= $this->clean ( $anticorps ['no_h2p2'] ); ?></td>
 				    <td><?= $this->clean ( $anticorps ['date_recept'] ); ?></td>
 				    <td><?= $this->clean ( $anticorps ['reference'] ); ?></td>

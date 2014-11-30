@@ -131,6 +131,19 @@ class User extends Model {
     }
     
     /**
+     * Get the users summary (id, name, firstname)
+     *
+     * @param string $sortentry column used to sort the users
+     * @return multitype:
+     */
+    public function getUsersSummary($sortentry = 'id'){
+    	 
+    	$sql = "select id, name, firstname from core_users order by " . $sortentry . " ASC;";
+    	$user = $this->runRequest($sql);
+    	return $user->fetchAll();
+    }
+    
+    /**
      * get the firstname and name of a user from it's id
      * 
      * @param int $id Id of the user to get
