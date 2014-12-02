@@ -17,7 +17,7 @@ class Tissus extends Model {
 	public function createTable(){
 	
 		$sql = "CREATE TABLE IF NOT EXISTS `ac_lien_tissu_anticorps` (
-  				`id` int(11) NOT NULL AUTO_INCREMENT,,
+  				`id` int(11) NOT NULL AUTO_INCREMENT,
   				`espece` varchar(30) NOT NULL,
   				`organe` varchar(30) NOT NULL, 
   				`valide` enum('oui','non') NOT NULL,  

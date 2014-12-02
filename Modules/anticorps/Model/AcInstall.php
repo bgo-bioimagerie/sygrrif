@@ -20,22 +20,17 @@ class AcInstall extends Model {
 	 */
 	public function createDatabase(){
 		
-		echo " 1 ";
 		$anticorpsModel = new Anticorps();
-		$pdo = $anticorpsModel->createTable();
+		$anticorpsModel->createTable();
 		
-		echo " 2 ";
 		$isotypeModel = new Isotype();
-		$pdo = $isotypeModel->createTable();
+		$isotypeModel->createTable();
 		
-		echo " 3 ";
 		$sourceModel = new Source();
-		$pdo = $sourceModel->createTable();
+		$sourceModel->createTable();
 		
-		echo " 4 ";
 		$tissusModel = new Tissus();
-		$pdo = $tissusModel->createTable();
-		echo " 5 ";
+		$tissusModel->createTable();
 		
 		$message = 'success';
 		return $message;
