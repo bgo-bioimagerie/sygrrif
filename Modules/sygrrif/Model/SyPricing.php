@@ -35,6 +35,12 @@ class SyPricing extends Model {
 		return $data->fetchAll();
 	}
 	
+	public function pricingsIDName(){
+		$sql = "select id, tarif_name from sy_pricing";
+		$data = $this->runRequest($sql);
+		return $data->fetchAll();
+	}
+	
 	public function getPricing($id){
 		$sql = "select * from sy_pricing where id=?;";
 		$data = $this->runRequest($sql, array($id));

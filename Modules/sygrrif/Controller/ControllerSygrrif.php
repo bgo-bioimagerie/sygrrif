@@ -5,6 +5,8 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyInstall.php';
+require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
+require_once 'Modules/core/Model/Unit.php';
 
 class ControllerSygrrif extends ControllerSecureNav {
 
@@ -50,8 +52,8 @@ class ControllerSygrrif extends ControllerSecureNav {
 		/**
 		 *  @todo remove this and do install module
 		 */
-		//$installModel = new SyInstall();
-		//$installModel->createDatabase();
+		$installModel = new SyInstall();
+		$installModel->createDatabase();
 		
 		
 		$sort = "id";
@@ -179,6 +181,91 @@ class ControllerSygrrif extends ControllerSecureNav {
 		$modelPricing->editPricing($id, $nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char);
 
 		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
+	public function unitpricing(){
+		
+		$modelUnitPricing = new SyUnitPricing();
+		$pricingArray = $modelUnitPricing->allPricingTable();
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 'pricingArray' => $pricingArray
+		) );
+	}
+	
+	public function addunitpricing(){
+		
+		$modelUnit = new Unit();
+		$unitsList = $modelUnit->unitsIDName();
+		
+		$modelPricing = new SyPricing();
+		$pricingList = $modelPricing->pricingsIDName();
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 'unitsList' => $unitsList,
+				'pricingList' => $pricingList
+		) );
+	}
+	
+	public function addunitpricingquery(){
+		// get form variables
+		$id_unit = $this->request->getParameter ( "id_unit" );
+		$id_pricing = $this->request->getParameter ( "id_pricing" );
+		
+		$modelPricing = new SyUnitPricing();
+		$modelPricing->setPricing($id_unit, $id_pricing);
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
+	public function editunitpricing(){
+		// get unit id
+		$unit_id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$unit_id = $this->request->getParameter ( "actionid" );
+		}
+		
+		$modelUnit = new Unit();
+		$unitName = $modelUnit->getUnitName($unit_id);
+		
+		print_r($unitName);
+		
+		$modelPricing = new SyPricing();
+		$pricingList = $modelPricing->pricingsIDName();
+		$curentPricingId = $modelPricing->getPricing($unit_id);
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 'unitName' => $unitName[0],
+				'unitId' => $unit_id, 'curentPricingId' => $curentPricingId,
+				'pricingList' => $pricingList
+		) );
+	}
+	
+	public function editunitpricingquery(){
+		// get form variables
+		$id_unit = $this->request->getParameter ( "id_unit" );
+		$id_pricing = $this->request->getParameter ( "id_pricing" );
+		
+		$modelPricing = new SyUnitPricing();
+		$modelPricing->setPricing($id_unit, $id_pricing);
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
+	public function addresourcecalendar(){
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar

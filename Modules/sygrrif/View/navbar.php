@@ -49,10 +49,10 @@ legend {
 						class="btn btn-link" id="navlink">Ajouter</button>
 				</p>
 				<p>
-					<button onclick="location.href='sygrrif/statistics'"
+					<button onclick="location.href='sygrrif/unitpricing'"
 						class="btn btn-link" id="navlink">Tarifications/Unité</button>
-					<button onclick="location.href='sygrrif/statistics'"
-						class="btn btn-link" id="navlink">Tarifications/Equipe</button>
+					<button onclick="location.href='sygrrif/addunitpricing'"
+						class="btn btn-link" id="navlink">Ajouter</button>
 				</p>
 			</fieldset>
 		</div>
@@ -63,8 +63,10 @@ legend {
 				<p>
 					<button onclick="location.href='sygrrif/statistics'"
 						class="btn btn-link" id="navlink">Ressources</button>
+					<button onclick="location.href='sygrrif/addresourcecalendar'"
+						class="btn btn-link" id="navlink">Ajouter ressource calendaire</button>
 					<button onclick="location.href='sygrrif/statistics'"
-						class="btn btn-link" id="navlink">Ajouter</button>
+						class="btn btn-link" id="navlink">Ajouter ressource unitaire</button>
 				</p>
 			</fieldset>
 		</div>

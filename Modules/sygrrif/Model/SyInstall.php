@@ -2,6 +2,7 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
+require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 
 /**
  * Class defining methods to install and initialize the sygrrif database
@@ -21,6 +22,8 @@ class SyInstall extends Model {
 		$pricingModel = new SyPricing();
 		$pricingModel->createTable();
 		
+		$unitpricingModel = new SyUnitPricing();
+		$unitpricingModel->createTable();
 	}
 }
 	

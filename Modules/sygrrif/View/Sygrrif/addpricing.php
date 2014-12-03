@@ -131,7 +131,7 @@
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Add" />
-				<button type="button" onclick="location.href='units'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='sygrrif/pricing'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>
 	</div>
