@@ -61,12 +61,10 @@ legend {
 			<fieldset>
 				<legend>Ressources</legend>
 				<p>
-					<button onclick="location.href='sygrrif/statistics'"
+					<button onclick="location.href='sygrrif/resources'"
 						class="btn btn-link" id="navlink">Ressources</button>
-					<button onclick="location.href='sygrrif/addresourcecalendar'"
-						class="btn btn-link" id="navlink">Ajouter ressource calendaire</button>
-					<button onclick="location.href='sygrrif/statistics'"
-						class="btn btn-link" id="navlink">Ajouter ressource unitaire</button>
+					<button onclick="location.href='sygrrif/addresource'"
+						class="btn btn-link" id="navlink">Ajouter</button>
 				</p>
 			</fieldset>
 		</div>
@@ -75,7 +73,7 @@ legend {
 			<fieldset>
 				<legend>Export</legend>
 				<p>
-					<button onclick="location.href='sygrrif/statistics'"
+					<button onclick="location.href='sygrrif/facture'"
 						class="btn btn-link" id="navlink">Facture</button>
 					<button onclick="location.href='sygrrif/statistics'"
 						class="btn btn-link" id="navlink">Statistiques</button>

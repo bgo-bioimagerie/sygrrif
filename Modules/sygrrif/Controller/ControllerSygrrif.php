@@ -6,7 +6,10 @@ require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyInstall.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
+require_once 'Modules/sygrrif/Model/SyResourceGRR.php';
+require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/core/Model/Unit.php';
+
 
 class ControllerSygrrif extends ControllerSecureNav {
 
@@ -18,6 +21,12 @@ class ControllerSygrrif extends ControllerSecureNav {
 	// Affiche la liste de tous les billets du blog
 	public function index() {
 
+		/**
+		 *  @todo remove this and do install module
+		 */
+		$installModel = new SyInstall();
+		$installModel->createDatabase();
+		
 		$navBar = $this->navBar();
 
 		$this->generateView ( array (
@@ -47,14 +56,7 @@ class ControllerSygrrif extends ControllerSecureNav {
 	}
 	
 	// pricing
-	public function pricing(){
-		
-		/**
-		 *  @todo remove this and do install module
-		 */
-		$installModel = new SyInstall();
-		$installModel->createDatabase();
-		
+	public function pricing(){	
 		
 		$sort = "id";
 		if ($this->request->isParameterNotEmpty('actionid')){
@@ -265,7 +267,218 @@ class ControllerSygrrif extends ControllerSecureNav {
 		) );
 	}
 	
+	public function resources(){
+		
+		$sortEntry = 'id';
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$sortEntry = $this->request->getParameter ( "actionid" );
+		}
+		
+		$modelResources = new SyResourceGRR();
+		$resourcesArray = $modelResources->resourcesInfo($sortEntry);
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 'resourcesArray' => $resourcesArray
+		) );
+		
+	}
+	
+	public function addresource(){
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
 	public function addresourcecalendar(){
+	
+		// get the pricings
+		$modelPricing = new SyPricing();
+		$pricingTable = $modelPricing->getPrices();
+		
+		$modelArea = new SyAreaGRR();
+		$domainesList = $modelArea->getAreasIDName();
+	
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 'pricingTable' => $pricingTable,
+				'domainesList' => $domainesList
+		) );
+	}
+	
+	public function addresourcecalendarquery(){
+		
+		// GRR
+		// get GRR form variables
+		$room_name = $this->request->getParameter ("room_name");
+		$description = $this->request->getParameter ("description");
+		$id_domaine = $this->request->getParameter ("id_domaine");
+		$order_display = $this->request->getParameter ("order_display");
+		$who_can_see = $this->request->getParameter ("who_can_see");
+		$statut_room = $this->request->getParameterNoException("statut_room");
+		if ($statut_room == ""){$statut_room = 1;}else{$statut_room = 0;} 
+		
+		$type_affichage_reser = $this->request->getParameter ("type_affichage_reser");
+		$capacity = $this->request->getParameter ("capacity");
+		$max_booking = $this->request->getParameter ("max_booking");
+		$delais_max_resa_room = $this->request->getParameter ("delais_max_resa_room");
+		$delais_min_resa_room = $this->request->getParameter ("delais_min_resa_room");
+		$delais_option_reservation = $this->request->getParameter ("delais_option_reservation");
+		
+		$moderate = $this->request->getParameterNoException ("moderate");
+		if ($moderate == ""){$moderate = 0;}else{$moderate = 1;}
+		$allow_action_in_past = $this->request->getParameterNoException ("allow_action_in_past");
+		if ($allow_action_in_past == ""){$allow_action_in_past = 'n';}else{$allow_action_in_past = 'y';}  
+		$dont_allow_modify = $this->request->getParameterNoException ("dont_allow_modify");
+		if ($dont_allow_modify == ""){$dont_allow_modify = 'n';}else{$dont_allow_modify = 'y';}  
+		
+		$qui_peut_reserver_pour = $this->request->getParameter ("qui_peut_reserver_pour");
+		$active_ressource_empruntee = $this->request->getParameterNoException ("active_ressource_empruntee");
+		if ($active_ressource_empruntee == ""){$active_ressource_empruntee = 'n';}else{$active_ressource_empruntee = 'y';}
+		
+		// run GRR query
+		$modelResources = new SyResourceGRR();
+		$resourceID = $modelResources->addResource($room_name, $description, $id_domaine, $order_display, $who_can_see, $statut_room,
+				                     $type_affichage_reser, $capacity, $max_booking, $delais_max_resa_room, $delais_min_resa_room,
+				                     $delais_option_reservation, $moderate, $allow_action_in_past, $dont_allow_modify,
+				                     $qui_peut_reserver_pour, $active_ressource_empruntee);
+		
+		 
+		
+		// Pricing
+		// get pricing variables
+		$modelResourcePricing = new SyResourcePricing();
+		$modelPricing = new SyPricing();
+		$pricingTable = $modelPricing->getPrices();
+		foreach ($pricingTable as $pricing){
+			$pid = $pricing['id'];
+			$pname = $pricing['tarif_name'];
+			$punique = $pricing['tarif_unique'];
+			$pnight = $pricing['tarif_night'];
+			$pwe = $pricing['tarif_we'];
+			$priceDay = $this->request->getParameter ($pid. "_day");
+			$price_night = 0;
+			if ($pnight){
+				$price_night = $this->request->getParameter ($pid . "_night");
+			}
+			$price_we = 0;
+			if ($pwe){
+				$price_we = $this->request->getParameter ($pid . "_we");
+			}
+			
+			echo "start set pricing";
+			$modelResourcePricing->setPricing($resourceID, $pid, $priceDay, $price_night, $price_we);
+		}
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
+	public function editresource(){
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+		
+		$model = new SyResourceTypeGRR();
+		$typeID = $model->getResourceTypeID($id);
+		if ($typeID == 1){
+			$modelResources = new SyResourceGRR();
+			$resource = $modelResources->getResource($id);
+			
+			$modelPricing = new SyPricing();
+			$pricingTable = $modelPricing->getPrices();
+			
+			// fill the pricing table with the prices for this resource
+			$modelResourcesPricing = new SyResourcePricing();
+			for ($i = 0 ; $i < count($pricingTable) ; ++$i){
+				$pid = $pricingTable[$i]['id'];
+				$inter = $modelResourcesPricing->getPrice($id, $pid);
+				$pricingTable[$i]['val_day'] = $inter['price_day'];
+				$pricingTable[$i]['val_night'] = $inter['price_night'];
+				$pricingTable[$i]['val_we'] = $inter['price_we'];
+			}
+			
+			$modelArea = new SyAreaGRR();
+			$domainesList = $modelArea->getAreasIDName();
+			
+			
+			//print_r($resource);
+			$navBar = $this->navBar();
+			$this->generateView ( array (
+					'navBar' => $navBar, 'resource' => $resource,
+					'pricingTable' => $pricingTable,
+					'typeEdit' => 1, 'domainesList' => $domainesList
+			) );
+		}
+	}
+	
+	public function editresourcecalendarquery(){
+	
+		// GRR
+		// get GRR form variables
+		$resourceID = $this->request->getParameter('resource_id');
+		$room_name = $this->request->getParameter ("room_name");
+		$description = $this->request->getParameter ("description");
+		$id_domaine = $this->request->getParameter ("id_domaine");
+		$order_display = $this->request->getParameter ("order_display");
+		$who_can_see = $this->request->getParameter ("who_can_see");
+		$statut_room = $this->request->getParameterNoException("statut_room");
+		if ($statut_room == ""){$statut_room = 1;}else{$statut_room = 0;}
+	
+		$type_affichage_reser = $this->request->getParameter ("type_affichage_reser");
+		$capacity = $this->request->getParameter ("capacity");
+		$max_booking = $this->request->getParameter ("max_booking");
+		$delais_max_resa_room = $this->request->getParameter ("delais_max_resa_room");
+		$delais_min_resa_room = $this->request->getParameter ("delais_min_resa_room");
+		$delais_option_reservation = $this->request->getParameter ("delais_option_reservation");
+	
+		$moderate = $this->request->getParameterNoException ("moderate");
+		if ($moderate == ""){$moderate = 0;}else{$moderate = 1;}
+		$allow_action_in_past = $this->request->getParameterNoException ("allow_action_in_past");
+		if ($allow_action_in_past == ""){$allow_action_in_past = 'n';}else{$allow_action_in_past = 'y';}
+		$dont_allow_modify = $this->request->getParameterNoException ("dont_allow_modify");
+		if ($dont_allow_modify == ""){$dont_allow_modify = 'n';}else{$dont_allow_modify = 'y';}
+	
+		$qui_peut_reserver_pour = $this->request->getParameter ("qui_peut_reserver_pour");
+		$active_ressource_empruntee = $this->request->getParameterNoException ("active_ressource_empruntee");
+		if ($active_ressource_empruntee == ""){$active_ressource_empruntee = 'n';}else{$active_ressource_empruntee = 'y';}
+	
+		// run GRR query
+		$modelResources = new SyResourceGRR();
+		$modelResources->editResource($resourceID, $room_name, $description, $id_domaine, $order_display, $who_can_see, $statut_room,
+				$type_affichage_reser, $capacity, $max_booking, $delais_max_resa_room, $delais_min_resa_room,
+				$delais_option_reservation, $moderate, $allow_action_in_past, $dont_allow_modify,
+				$qui_peut_reserver_pour, $active_ressource_empruntee);
+	
+		// Pricing
+		// get pricing variables
+		$modelResourcePricing = new SyResourcePricing();
+		$modelPricing = new SyPricing();
+		$pricingTable = $modelPricing->getPrices();
+		foreach ($pricingTable as $pricing){
+			$pid = $pricing['id'];
+			$pname = $pricing['tarif_name'];
+			$punique = $pricing['tarif_unique'];
+			$pnight = $pricing['tarif_night'];
+			$pwe = $pricing['tarif_we'];
+			$priceDay = $this->request->getParameter ($pid. "_day");
+			$price_night = 0;
+			if ($pnight){
+				$price_night = $this->request->getParameter ($pid . "_night");
+			}
+			$price_we = 0;
+			if ($pwe){
+				$price_we = $this->request->getParameter ($pid . "_we");
+			}
+				
+			$modelResourcePricing->setPricing($resourceID, $pid, $priceDay, $price_night, $price_we);
+		}
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar

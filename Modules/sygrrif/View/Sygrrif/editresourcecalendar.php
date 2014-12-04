@@ -1,38 +1,12 @@
-<?php $this->title = "SyGRRiF add pricing"?>
-
-<?php echo $navBar?>
-
-<head>
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-#button-div{
-	padding-top: 20px;
-}
-
-#tarif{
-	text-align: center;
-	width: 30%;
-}
-
-</style>
-
-
-</head>
-
-
-<?php include "Modules/sygrrif/View/navbar.php"; ?>
-
 <br>
 <div class="container">
 	<div class="col-lg-12">
-	<form role="form" class="form-horizontal" action="sygrrif/addresourcecalendarquery"
+	<form role="form" class="form-horizontal" action="sygrrif/editresourcecalendarquery"
 		method="post">
 	
 		<div class="page-header">
 			<h1>
-				Ajouter une ressource calendaire <br> <small></small>
+				Modifier une ressource calendaire <br> <small></small>
 			</h1>
 		</div>
 		<div class="page-header">
@@ -41,9 +15,16 @@
 			</h3>
 		</div>
 		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-8">ID</label>
+			<div class="col-xs-4">
+				<input class="form-control" id="resource_id" type="text" name="resource_id" value="<?= $this->clean($resource['id']); ?>"
+				readonly/>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-8">Nom</label>
 			<div class="col-xs-4">
-				<input class="form-control" id="room_name" type="text" name="room_name"
+				<input class="form-control" id="room_name" type="text" name="room_name" value="<?= $this->clean($resource["room_name"]); ?>"
 				/>
 			</div>
 		</div>
@@ -51,6 +32,7 @@
 			<label for="inputEmail" class="control-label col-xs-8">Description</label>
 			<div class="col-xs-4">
 				<input class="form-control" id="description" type="text" name="description"
+				value="<?= $this->clean($resource["description"]); ?>"
 				/>
 			</div>
 		</div>
@@ -59,9 +41,14 @@
 			<div class="col-xs-4">
 					<select class="form-control" name="id_domaine">
 						<?php 
+						$id_area = $this->clean($resource["area_id"]);
 						foreach($domainesList as $domaine){
+							$selected = "";
+							if ($id_area == $this->clean($domaine['id'])){
+								$selected = "selected=\"selected\"";
+							}
 						?>
-							<option value="<?= $this->clean($domaine['id'])?>"> <?= $this->clean($domaine['area_name']) ?> </option>
+							<option value="<?= $this->clean($domaine['id'])?>" <?= $selected ?>> <?= $this->clean($domaine['area_name']) ?> </option>
 						<?php 
 						}
 						?>
@@ -71,7 +58,8 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-8">Ordre d'affichage</label>
 			<div class="col-xs-4">
-				<input class="form-control" id="description" type="number" name="order_display" value="-1"
+				<input class="form-control" id="description" type="number" name="order_display"
+				value="<?= $this->clean($resource["order_display"]); ?>"
 				/>
 			</div>
 		</div>
@@ -81,14 +69,15 @@
 			Qui peut voir cette ressource (et éventuellement réserver selon les droits attribués) ?
 			</div>
 			<div class="col-xs-4">
+					<?php $wcs_value = $this->clean($resource["who_can_see"]); ?>
 					<select class="form-control" name="who_can_see">
-						<option value="0" > N'importe qui allant sur le site même s'il n'est pas connecté </option>
-						<option value="1" > Il faut obligatoirement être connecté, même en simple visiteur </option>
-						<option value="2" > Il faut obligatoirement être connecté et avoir le statut "utilisateur" </option>
-						<option value="3" > Il faut obligatoirement être connecté et être au moins gestionnaire d'une ressource </option>
-						<option value="4" > Il faut obligatoirement se connecter et être au moins administrateur du domaine </option>
-						<option value="5" > Il faut obligatoirement être connecté et être administrateur de site </option>
-						<option value="6" > Il faut obligatoirement être connecté et être administrateur général </option>
+						<option value="0" <?php if ($wcs_value==0){echo "selected=\"selected\"";} ?>> N'importe qui allant sur le site même s'il n'est pas connecté </option>
+						<option value="1" <?php if ($wcs_value==1){echo "selected=\"selected\"";} ?>> Il faut obligatoirement être connecté, même en simple visiteur </option>
+						<option value="2" <?php if ($wcs_value==2){echo "selected=\"selected\"";} ?>> Il faut obligatoirement être connecté et avoir le statut "utilisateur" </option>
+						<option value="3" <?php if ($wcs_value==3){echo "selected=\"selected\"";} ?>> Il faut obligatoirement être connecté et être au moins gestionnaire d'une ressource </option>
+						<option value="4" <?php if ($wcs_value==4){echo "selected=\"selected\"";} ?>> Il faut obligatoirement se connecter et être au moins administrateur du domaine </option>
+						<option value="5" <?php if ($wcs_value==5){echo "selected=\"selected\"";} ?>> Il faut obligatoirement être connecté et être administrateur de site </option>
+						<option value="6" <?php if ($wcs_value==6){echo "selected=\"selected\"";} ?>> Il faut obligatoirement être connecté et être administrateur général </option>
 				</select>
 			</div>
 		</div>
@@ -101,7 +90,8 @@
 					</p>
 			</div>
 			<div class="col-xs-4">
-				<input type="checkbox" name="statut_room">
+			    <?php $sr_value = $this->clean($resource["statut_room"]); ?>
+				<input type="checkbox" name="statut_room" <?php if ($sr_value<1){echo "checked";} ?>>
 			</div>
 		</div>
 
@@ -126,7 +116,8 @@
 				<tr>
 					<td><b><?= $pname ?></b></td>
 					<td></td>
-					<td>Tarif Unique: <input id="tarif" type="text" name="<?= $pid. "_day" ?>" value="0"/> € (H.T.)</td>
+					<td>Tarif Unique: <input id="tarif" type="text" name="<?= $pid. "_day" ?>" 
+					                         value="<?= $this->clean($pricing['val_day']) ?>"/> € (H.T.)</td>
 					<td></td>
 				</tr>
 			<?php
@@ -135,7 +126,7 @@
 				?>
 				<tr>
 					<td><b><?= $pname ?></b></td>
-					<td>Tarif Jour: <input id="tarif" type="text" name="<?= $pid. "_day" ?>" value="0"/> € (H.T.)</td>
+					<td>Tarif Jour: <input id="tarif" type="text" name="<?= $pid. "_day" ?>" value="<?= $this->clean($pricing['val_day']) ?>"/> € (H.T.)</td>
 				<?php	
 				
 				$pnight = $this->clean($pricing['tarif_night']);
@@ -143,20 +134,20 @@
 
 				if (($pnight == "1") AND ($pwe== "0")){
 					?>
-					<td>Tarif Nuit: <input id="tarif" type="text" name="<?= $pid."_night" ?>" value="0"/> € (H.T.)</td>
+					<td>Tarif Nuit: <input id="tarif" type="text" name="<?= $pid . "_night" ?>" value="<?= $this->clean($pricing['val_night']) ?>"/> € (H.T.)</td>
 					<td></td>
 					<?php
 				}
 				else if (($pnight == "0") AND ($pwe == "1")){
 					?>
-					<td>Tarif w.e: <input id="tarif" type="text" name="<?= $pid."_we" ?>" value="0"/> € (H.T.)</td>
+					<td>Tarif w.e: <input id="tarif" type="text" name="<?= $pid . "_we" ?>" value="<?= $this->clean($pricing['val_we']) ?>"/> € (H.T.)</td>
 					<td></td>
 					<?php
 				}
 				else if (($pnight == "1") AND ($pwe == "1")){
 					?>
-					<td>Tarif Nuit: <input id="tarif" type="text" name="<?= $pid."_night" ?>" value="0"/> € (H.T.)</td>
-					<td>Tarif w.e: <input id="tarif" type="text" name="<?= $pid."_we" ?>" value="0"/> € (H.T.)</td>
+					<td>Tarif Nuit: <input id="tarif" type="text" name="<?= $pid . "_night" ?>" value="<?= $this->clean($pricing['val_night']) ?>"/> € (H.T.)</td>
+					<td>Tarif w.e: <input id="tarif" type="text" name="<?= $pid . "_we" ?>" value="<?= $this->clean($pricing['val_we']) ?>"/> € (H.T.)</td>
 				    <?php
 				}
 				?>
@@ -179,9 +170,10 @@
 			Pour une nouvelle réservation ou modification d'une réservation, l'utilisateur spécifie la date/heure de début de réservation et :
 			</div>
 			<div class="col-xs-4">
+			        <?php $tar_value = $this->clean($resource["type_affichage_reser"]); ?>
 					<select class="form-control" name="type_affichage_reser">
-						<option value="0" > La durée de la réservation </option>
-						<option value="1" > La date/heure de fin de réservation </option>
+						<option value="0" <?php if($tar_value==0){echo "selected=\"selected\"";}?>> La durée de la réservation </option>
+						<option value="1" <?php if($tar_value==1){echo "selected=\"selected\"";}?>> La date/heure de fin de réservation </option>
 				</select>
 			</div>
 		</div>
@@ -191,6 +183,7 @@
 			</div>
 			<div class="col-xs-4">
 				<input class="form-control" id="description" type="number" name="capacity"
+				value="<?= $this->clean($resource["capacity"]); ?>"
 				/>
 			</div>
 		</div>
@@ -199,7 +192,8 @@
 			Nombre max. de réservations par utilisateur (-1 si pas de restriction)
 			</div>
 			<div class="col-xs-4">
-				<input class="form-control" id="description" type="number" name="max_booking" value="-1"
+				<input class="form-control" id="description" type="number" name="max_booking" 
+				value="<?= $this->clean($resource["max_booking"]); ?>"
 				/>
 			</div>
 		</div>	
@@ -212,7 +206,8 @@
 Cette limitation ne touche pas les gestionnaires de la ressource ainsi que les administrateurs du domaine: </i></p>
 			</div>
 			<div class="col-xs-4">
-				<input class="form-control" id="description" type="number" name="delais_max_resa_room" value="-1"
+				<input class="form-control" id="description" type="number" name="delais_max_resa_room"
+				value="<?= $this->clean($resource["delais_max_resa_room"]); ?>"
 				/>
 			</div>
 		</div>	
@@ -226,7 +221,8 @@ Cette limitation ne touche pas les gestionnaires de la ressource ainsi que les a
             </i></p>
 			</div>
 			<div class="col-xs-4">
-				<input class="form-control" id="description" type="number" name="delais_min_resa_room" value="0"
+				<input class="form-control" id="description" type="number" name="delais_min_resa_room"
+				value="<?= $this->clean($resource["delais_min_resa_room"]); ?>"
 				/>
 			</div>
 		</div>	
@@ -238,7 +234,8 @@ Cette limitation ne touche pas les gestionnaires de la ressource ainsi que les a
 			La valeur ci-contre désigne le nombre maximal de jours dont dispose le réservant pour confirmer une réservation.</p>
 			</div>
 			<div class="col-xs-4">
-				<input class="form-control" id="description" type="number" name="delais_option_reservation" value="0"
+				<input class="form-control" id="description" type="number" name="delais_option_reservation"
+				value="<?= $this->clean($resource["delais_option_reservation"]); ?>"
 				/>
 			</div>
 		</div>
@@ -251,7 +248,8 @@ Cette limitation ne touche pas les gestionnaires de la ressource ainsi que les a
             </p>
 			</div>
 			<div class="col-xs-4">
-				<input type="checkbox" name="moderate">
+			    <?php $mod_value = $this->clean($resource["moderate"]); ?>
+				<input type="checkbox" name="moderate" <?php if($mod_value>0){echo "checked";}?>>
 			</div>
 		</div>
 		<div class="form-group">
@@ -263,7 +261,8 @@ Si la case n'est pas cochée, un usager (ni même un gestionnaire ou un administ
             </p>
 			</div>
 			<div class="col-xs-4">
-				<input type="checkbox" name="allow_action_in_past">
+			    <?php $aaip_value = $this->clean($resource["allow_action_in_past"]); ?>
+				<input type="checkbox" name="allow_action_in_past" <?php if ($aaip_value == "y"){echo "checked";}?>>
 			</div>
 		</div>
 		<div class="form-group">
@@ -272,7 +271,8 @@ Si la case n'est pas cochée, un usager (ni même un gestionnaire ou un administ
 Ne pas permettre aux utilisateurs (hormis les gestionnaires et les administrateurs) de modifier ou de supprimer leurs propres réservations.            </p>
 			</div>
 			<div class="col-xs-4">
-				<input type="checkbox" name="dont_allow_modify">
+			    <?php $dam_value = $this->clean($resource["dont_allow_modify"]); ?>
+				<input type="checkbox" name="dont_allow_modify" <?php if ($dam_value == "y"){echo "checked";}?>>
 			</div>
 		</div>	
 		<div class="form-group">
@@ -280,33 +280,31 @@ Ne pas permettre aux utilisateurs (hormis les gestionnaires et les administrateu
 			Hormis les administrateurs, précisez ci-contre quels types d'utilisateurs ont le droit de faire des réservations au nom d'autres utilisateurs.
 			</div>
 			<div class="col-xs-4">
+			        <?php $qprp_value = $this->clean($resource["qui_peut_reserver_pour"]); ?>
 					<select class="form-control" name="qui_peut_reserver_pour">
-						<option value="6" > personne </option>
-						<option value="4" > uniquement les administrateurs restreints </option>
-						<option value="3" > les gestionnaires de la ressource </option>
-						<option value="2" > tous les utilisateurs </option>
+						<option value="6" <?php if($qprp_value==6){echo "selected=\"selected\"";}?>> personne </option>
+						<option value="4" <?php if($qprp_value==4){echo "selected=\"selected\"";}?>> uniquement les administrateurs restreints </option>
+						<option value="3" <?php if($qprp_value==3){echo "selected=\"selected\"";}?>> les gestionnaires de la ressource </option>
+						<option value="2" <?php if($qprp_value==2){echo "selected=\"selected\"";}?>> tous les utilisateurs </option>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
 			<div class="col-xs-8">
+			    
 				Activer la fonctionnalité "ressource empruntée/restituée"			
 			</div>
 			<div class="col-xs-4">
-				<input type="checkbox" name="active_ressource_empruntee">
+				<?php $are_value = $this->clean($resource["active_ressource_empruntee"]); ?>
+				<input type="checkbox" name="active_ressource_empruntee" <?php if ($are_value == "y"){echo "checked";}?>>
 			</div>
 		</div>	
 		
-		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Add" />
-				<button type="button" onclick="location.href='sygrrif/unitpricing'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="Save" />
+				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>
       <br></br>
 	</div>
 </div>
-
-<?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
-<?php endif; ?>

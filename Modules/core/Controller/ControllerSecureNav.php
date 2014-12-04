@@ -23,8 +23,7 @@ abstract class ControllerSecureNav extends ControllerSecure
     			          "sygrrif" => "sygrrif",
     			          "anticorps" => "anticorps"
     	);
-    	$toolAdmin = array("database" => "database",
-    			           "configgrr" => "GRR configuration" 
+    	$toolAdmin = array("configgrr" => "GRR configuration" 
     	);
     
     	// get the view menu,fill it, and return the content
