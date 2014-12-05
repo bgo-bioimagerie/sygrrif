@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Framework/Controller.php';
+require_once 'Modules/core/Model/Unit.php';
+require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
@@ -8,7 +10,9 @@ require_once 'Modules/sygrrif/Model/SyInstall.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 require_once 'Modules/sygrrif/Model/SyResourceGRR.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
-require_once 'Modules/core/Model/Unit.php';
+require_once 'Modules/sygrrif/Model/SyVisa.php';
+require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+
 
 
 class ControllerSygrrif extends ControllerSecureNav {
@@ -484,4 +488,140 @@ class ControllerSygrrif extends ControllerSecureNav {
 				'navBar' => $navBar
 		) );
 	}
+	
+	public function visa(){
+		
+		// get sort action
+		$sortentry = "id";
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$sortentry = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get the user list
+		$visaModel = new SyVisa();
+		$visaTable = $visaModel->getVisas ( $sortentry );
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'visaTable' => $visaTable
+		) );
+	}
+	
+	public function addvisa(){
+	
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+		) );
+	}
+	
+	public function addvisaquery(){
+		
+		// get form variables
+		$name = $this->request->getParameter ( "name" );
+		
+		// get the user list
+		$visaModel = new SyVisa();
+		$visaModel->addVisa ( $name );
+		
+		$this->redirect ( "sygrrif", "visa" );
+	}
+	
+	public function editvisa(){
+		
+		// get user id
+		$visaId = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$visaId = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get unit info
+		$visaModel = new SyVisa();
+		$visa = $visaModel->getVisa ( $visaId );
+		
+		$navBar = $this->navBar ();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'visa' => $visa
+		) );
+	}
+	
+	public function editvisaquery(){
+		$navBar = $this->navBar ();
+		
+		// get form variables
+		$id = $this->request->getParameter ( "id" );
+		$name = $this->request->getParameter ( "name" );
+		
+		// get the user list
+		$visaModel = new SyVisa();
+		$visaModel->editVisa ( $id, $name );
+		
+		$this->redirect ( "sygrrif", "visa" );
+	} 
+	
+	public function authorizations(){
+		// get user id
+		$sortentry = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$sortentry = $this->request->getParameter ( "actionid" );
+		}
+		
+		// query
+		$authModel = new SyAuthorization();
+		$authorizationTable = $authModel->getAuthorizations ( $sortentry );
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'authorizationTable' => $authorizationTable
+		) );
+	}
+	
+	public function addauthorization(){
+		
+		// get users list
+		$modelUser = new User();
+		$users = $modelUser->getUsersSummary('name');
+		
+		// get unit list
+		$modelUnit = new Unit();
+		$units = $modelUnit->unitsIDName();
+		
+		// get visa list
+		$modelVisa = new SyVisa();
+		$visas = $modelVisa->visasIDName();
+		
+		// get resource list
+		$modelResource = new SyResource();
+		$resources = $modelResource->resources();
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'users' => $users,
+				'units' => $units,
+				'visas' => $visas,
+				'resources' => $resources
+		) );
+	
+	}
+	
+	public function addauthorizationsquery(){
+		
+		$user_id = $this->request->getParameter('user_id');
+		$unit_id = $this->request->getParameter('unit_id');
+		$date = $this->request->getParameter('date');
+		$visa_id = $this->request->getParameter('visa_id');
+		$resource_id = $this->request->getParameter('resource_id');
+		
+		$model = new SyAuthorization();
+		$model->addAuthorization($date, $user_id, $unit_id, $visa_id, $resource_id);
+		
+		$this->redirect ( "sygrrif", "authorizations" );
+	}
+	
 }

@@ -5,6 +5,10 @@ require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 require_once 'Modules/sygrrif/Model/SyResourceTypeGRR.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
+require_once 'Modules/sygrrif/Model/SyVisa.php';
+require_once 'Modules/sygrrif/Model/SyResource.php';
+require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+
 /**
  * Class defining methods to install and initialize the sygrrif database
  *
@@ -26,12 +30,22 @@ class SyInstall extends Model {
 		$unitpricingModel = new SyUnitPricing();
 		$unitpricingModel->createTable();
 		
+		$SyResourceModel = new SyResource();
+		$SyResourceModel->createTable();
+		
 		$SyResourceTypeGRRModel = new SyResourceTypeGRR();
 		$SyResourceTypeGRRModel->createTable();
 		$SyResourceTypeGRRModel->createDefaultTypes();
 		
 		$SyResourcePricingModel = new SyResourcePricing();
 		$SyResourcePricingModel->createTable();
+		
+		$SyVisaModel = new SyVisa();
+		$SyVisaModel->createTable();
+		$SyVisaModel->createDefaultVisa();
+		
+		$SyAuthorization = new SyAuthorization();
+		$SyAuthorization->createTable();
 	}
 }
 	

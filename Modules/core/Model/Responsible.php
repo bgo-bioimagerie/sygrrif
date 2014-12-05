@@ -55,7 +55,7 @@ class Responsible extends Model {
 		$out = $exists->fetch();
 		
 		if ($out[0] == 0){
-			$sql = "insert into responsibles(id_users)"
+			$sql = "insert into core_responsibles(id_users)"
 				   . " values(?)";
 			$insertpdo = $this->runRequest($sql, array($id_user));	
 		}

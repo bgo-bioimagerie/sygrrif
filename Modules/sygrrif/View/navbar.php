@@ -59,11 +59,23 @@ legend {
 
 		<div class='col-md-4 well'>
 			<fieldset>
-				<legend>Ressources</legend>
+				<legend>Ressources/utilisateurs</legend>
 				<p>
 					<button onclick="location.href='sygrrif/resources'"
 						class="btn btn-link" id="navlink">Ressources</button>
 					<button onclick="location.href='sygrrif/addresource'"
+						class="btn btn-link" id="navlink">Ajouter</button>
+				</p>
+				<p>
+					<button onclick="location.href='sygrrif/visa'"
+						class="btn btn-link" id="navlink">Visa</button>
+					<button onclick="location.href='sygrrif/addvisa'"
+						class="btn btn-link" id="navlink">Ajouter</button>
+				</p>
+				<p>
+					<button onclick="location.href='sygrrif/authorizations'"
+						class="btn btn-link" id="navlink">Autorisations</button>
+					<button onclick="location.href='sygrrif/addauthorization'"
 						class="btn btn-link" id="navlink">Ajouter</button>
 				</p>
 			</fieldset>

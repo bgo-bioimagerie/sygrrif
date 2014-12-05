@@ -3,6 +3,7 @@
 require_once 'Framework/ModelGRR.php';
 require_once 'Modules/sygrrif/Model/SyResourceTypeGRR.php';
 require_once 'Modules/sygrrif/Model/SyAreaGRR.php';
+require_once 'Modules/sygrrif/Model/SyResource.php';
 
 /**
  * Class defining the GRR resource model
@@ -24,7 +25,13 @@ class SyResourceGRR extends ModelGRR {
 		
 		$modelArea = new SyAreaGRR();
 		$modelType = new SyResourceTypeGRR();
+		$modelRes = new SyResource();
 		for ($i = 0 ; $i < count($basicInfo) ; ++$i){
+			// add to sygrrif list f not exists
+			if (!$modelRes->isResource($basicInfo[$i]['id'])){
+				$modelRes->addResource($basicInfo[$i]['id'], $basicInfo[$i]['room_name']);
+			}
+			
 			$basicInfo[$i]['area'] = $modelArea->getAreaName($basicInfo[$i]['area_id']);
 			$typeID = $modelType->getResourceTypeID($basicInfo[$i]['id']);
 			if ($typeID <= 0){
