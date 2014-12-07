@@ -29,12 +29,6 @@
 				    <button onclick="location.href='units/'" class="btn btn-link" id="navlink">Units</button>
 					<button onclick="location.href='units/add'" class="btn btn-link" id="navlink">Add unit</button>
 				</div>
-	
-				<div class="col-md-12 ">
-				    <button onclick="location.href='teams/'" class="btn btn-link" id="navlink">Teams</button>
-					<button onclick="location.href='teams/add'" class="btn btn-link" id="navlink">Add team</button>
-				</div>
-			
 
 				<div class="col-md-12">
 					<button onclick="location.href='users'" class="btn btn-link" id="navlink">Users</button>

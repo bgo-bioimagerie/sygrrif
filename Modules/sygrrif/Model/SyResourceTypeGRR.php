@@ -23,8 +23,12 @@ class SyResourceTypeGRR extends ModelGRR {
 		return $pdo;
 	}
 	public function createDefaultTypes() {
-		$this->addType ( "Calandar" );
-		$this->addType ( "Quantity" );
+		if (!$this->isType("Calandar")){
+			$this->addType ( "Calandar" );
+		}
+		if (!$this->isType("Quantity")){
+			$this->addType ( "Quantity" );
+		}
 	}
 	public function addType($name) {
 		$sql = "INSERT INTO sy_resource_type (name)
@@ -34,6 +38,17 @@ class SyResourceTypeGRR extends ModelGRR {
 		) );
 		return $pdo;
 	}
+	public function isType($name){
+		$sql = "select id from sy_resource_type where name=?";
+		$data = $this->runRequest ( $sql, array (
+				$name
+		) );
+		if ($data->rowCount () == 1)
+			return true;
+		else
+			return false;
+	}
+	
 	public function getTypeId($typename) {
 		$sql = "select id from sy_resource_type where name=?";
 		$data = $this->runRequest ( $sql, array (

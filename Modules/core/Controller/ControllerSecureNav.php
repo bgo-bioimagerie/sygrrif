@@ -2,6 +2,7 @@
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecure.php';
+require_once 'Modules/core/Model/ModulesManager.php';
 
 /**
  * Mather class for controller using secure connection
@@ -19,12 +20,11 @@ abstract class ControllerSecureNav extends ControllerSecure
     public function buildNavBar($login){
     	$logoFile = Configuration::get("logoFile");
     	$userName = $login;
-    	$toolMenu = array("users" => "users/institutions",
-    			          "sygrrif" => "sygrrif",
-    			          "anticorps" => "anticorps"
-    	);
-    	$toolAdmin = array("configgrr" => "GRR configuration" 
-    	);
+    	
+    	$modulesModel = new ModulesManager();
+    	$toolMenu = $modulesModel->getDataMenus();
+    	$toolAdmin = $modulesModel->getAdminMenus();
+    	
     
     	// get the view menu,fill it, and return the content
     	$view = $this->generateNavfile(

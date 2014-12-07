@@ -24,12 +24,6 @@ class ControllerSygrrif extends ControllerSecureNav {
 
 	// Affiche la liste de tous les billets du blog
 	public function index() {
-
-		/**
-		 *  @todo remove this and do install module
-		 */
-		$installModel = new SyInstall();
-		$installModel->createDatabase();
 		
 		$navBar = $this->navBar();
 

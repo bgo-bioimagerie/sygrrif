@@ -79,6 +79,12 @@ class Responsible extends Model {
 		return true;
 	}
 	
+	public function setResponsible($id_user){
+		if (!$this->isResponsible($id_user)){
+			$this->addResponsible($id_user);
+		}
+	}
+	
 	/**
 	 * Get the names and firstname of the responsible users 
 	 * 

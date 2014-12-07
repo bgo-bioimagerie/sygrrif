@@ -26,7 +26,10 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">data <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 					<?php 
-        				foreach ($toolMenu as $key => $value) {
+					
+        				foreach ($toolMenu as $tool) {
+        					$key = $tool['link'];
+        					$value = $tool['name'];
         					echo "<li><a href= $key > $value </a></li>";
         				}
         			?>
@@ -36,7 +39,9 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">admin <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 				      <?php 
-        				foreach ($toolAdmin as $key => $value) {
+        				foreach ($toolAdmin as $tool) {
+        					$key = $tool['link'];
+        					$value = $tool['name'];
         					echo "<li><a href= $key > $value </a></li>";
         				}
         			  ?>

@@ -32,12 +32,7 @@ class SyVisa extends Model {
 	 * @return PDOStatement
 	 */
 	public function createDefaultVisa(){
-	
-		$sql = "INSERT INTO sy_visas (name) VALUES(?)";
-		$pdo = $this->runRequest($sql, array("--"));
-		return $pdo;
-	
-		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
+		$this->setVisa("--");
 	}
 	
 	/**
@@ -87,6 +82,21 @@ class SyVisa extends Model {
 		$sql = "insert into sy_visas(name)"
 				. " values(?)";
 		$user = $this->runRequest($sql, array($name));		
+	}
+	
+	public function isVisa($name){
+		$sql = "select * from sy_visas where name=?";
+		$unit = $this->runRequest($sql, array($name));
+		if ($unit->rowCount() == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	public function setVisa($name){
+		if (!$this->isVisa($name)){
+			$this->addVisa($name);
+		}
 	}
 	
 	/**

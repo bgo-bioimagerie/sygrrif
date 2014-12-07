@@ -3,7 +3,6 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Status.php';
-require_once 'Modules/core/Model/Team.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/core/Model/UserGRR.php';
@@ -56,18 +55,13 @@ class ControllerUsers extends ControllerSecureNav {
 		$modelUnit = new Unit();
 		$unitsList = $modelUnit->unitsIDName();
 		
-		// get teams list
-		$modelTeam = new Team();
-		$teamsList = $modelTeam->teamsIDName();
-	
-		
 		// responsible list
 		$respModel = new Responsible();
 		$respsList = $respModel->responsibleSummaries(); 
 		
 		$this->generateView ( array (
 				'navBar' => $navBar, 'statusList' => $status,
-				'unitsList' => $unitsList, 'teamsList' => $teamsList,
+				'unitsList' => $unitsList, 
 				'respsList' => $respsList
 		) );
 	}
@@ -80,7 +74,6 @@ class ControllerUsers extends ControllerSecureNav {
 		$email = $this->request->getParameter ( "email");
 		$phone = $this->request->getParameter ( "phone");
 		$id_unit = $this->request->getParameter ( "unit");
-		$id_team = $this->request->getParameter ( "team");
 		$id_responsible = $this->request->getParameter ( "responsible");
 		$id_status = $this->request->getParameter ( "status");
 		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
@@ -90,7 +83,7 @@ class ControllerUsers extends ControllerSecureNav {
 		
 		// add the user to the database
 		$this->userModel->addUser($name, $firstname, $login, $pwd, 
-				                  $email, $phone, $id_unit, $id_team, 
+				                  $email, $phone, $id_unit, 0, 
 				                  $id_responsible, $id_status, $convention, $date_convention );
 		
 		// add the user to the responsible list
@@ -142,10 +135,6 @@ class ControllerUsers extends ControllerSecureNav {
 		// get units list
 		$modelUnit = new Unit();
 		$unitsList = $modelUnit->unitsIDName();
-		
-		// get teams list
-		$modelTeam = new Team();
-		$teamsList = $modelTeam->teamsIDName();
 	
 		
 		// responsible list
@@ -170,7 +159,7 @@ class ControllerUsers extends ControllerSecureNav {
 		// generate the view
 		$this->generateView ( array (
 				'navBar' => $navBar, 'statusList' => $status,
-				'unitsList' => $unitsList, 'teamsList' => $teamsList,
+				'unitsList' => $unitsList,
 				'respsList' => $respsList, 'user' => $user, 
 				'grretat' => $grretat, 'grrstatus' => $grrstatus
 		) );
@@ -186,7 +175,6 @@ class ControllerUsers extends ControllerSecureNav {
 		$email = $this->request->getParameter ( "email");
 		$phone = $this->request->getParameter ( "phone");
 		$id_unit = $this->request->getParameter ( "id_unit");
-		$id_team = $this->request->getParameter ( "id_team");
 		$id_responsible = $this->request->getParameter ( "id_responsible");
 		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
 		$id_status = $this->request->getParameter ( "id_status");
@@ -196,7 +184,7 @@ class ControllerUsers extends ControllerSecureNav {
 		
 		// update user
 		$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
-    		                         $id_unit, $id_team, $id_responsible, $id_status,
+    		                         $id_unit, 0, $id_responsible, $id_status,
 				                     $convention, $date_convention);
 
 		// update responsible
@@ -286,11 +274,6 @@ class ControllerUsers extends ControllerSecureNav {
 		$modelUnit = new Unit();
 		$unit = $modelUnit->getUnitName($user['id_unit']);
 		
-		// get teams list
-		$modelTeam = new Team();
-		$team = $modelTeam->getTeamName($user['id_team']);
-		
-		
 		// responsible list
 		$resp = $this->userModel->getUserFUllName($user['id_responsible']);
 		
@@ -301,7 +284,7 @@ class ControllerUsers extends ControllerSecureNav {
 		// generate the view
 		$this->generateView ( array (
 				'navBar' => $navBar, 'status' => $status['name'],
-				'unit' => $unit['name'], 'team' => $team['name'],
+				'unit' => $unit['name'],
 				'resp' => $resp, 'user' => $user
 		) );
 		

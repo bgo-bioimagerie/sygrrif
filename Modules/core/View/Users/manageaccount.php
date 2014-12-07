@@ -72,15 +72,6 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Team</label>
-			<div class="col-xs-10">
-				<input class="form-control" id="" type="text" name=""
-				       value = "<?= $team ?>" readonly
-				/>
-			</div>
-		</div>
-		<br>
-		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Responsible</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""

@@ -25,7 +25,6 @@ class User extends Model {
 		`tel` varchar(30) NOT NULL DEFAULT '',
 		`pwd` varchar(50) NOT NULL DEFAULT '',
 		`id_unit` int(11) NOT NULL,
-		`id_team` int(11) NOT NULL,
 		`id_responsible` int(11) NOT NULL,
 		`id_status` int(11) NOT NULL,
 		`convention` int(11) NOT NULL DEFAULT 0,		
@@ -46,12 +45,14 @@ class User extends Model {
 	 */
 	public function createDefaultUser(){
 	
-		$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit,
-				                   id_team, id_responsible, date_created)
-				 VALUES(?,?,?,?,?,?,?,?,?)";
-		$pdo = $this->runRequest($sql, array("--", "--", "--", "1", md5("--"),
-				1, 1, 1, "".date("Y-m-d")."" ));
-		return $pdo;
+		if (!$this->isUser("--")){
+		
+			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit,
+				                   id_responsible, date_created)
+				 VALUES(?,?,?,?,?,?,?,?)";
+			$this->runRequest($sql, array("--", "--", "--", "1", md5("--"),
+				1, 1, "".date("Y-m-d")."" ));
+		}
 	
 		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", md5("dupont"), "pierre@dupont.fr");
 	}
@@ -63,13 +64,13 @@ class User extends Model {
 	 */
 	public function createDefaultAdmin(){
 	
-		
-		$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit, 
-				                   id_team, id_responsible, date_created)
-				 VALUES(?,?,?,?,?,?,?,?,?)";
-		$pdo = $this->runRequest($sql, array("admin", "administrateur", "admin", "3", md5("admin"),
-				                              1, 1, 1, "".date("Y-m-d")."" ));
-		return $pdo;
+		if (!$this->isUser("admin")){
+			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit, 
+				                   id_responsible, date_created)
+				 VALUES(?,?,?,?,?,?,?,?)";
+			$this->runRequest($sql, array("admin", "administrateur", "admin", "3", md5("admin"),
+				                              1, 1, "".date("Y-m-d")."" ));
+		}
 	
 		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", md5("dupont"), "pierre@dupont.fr");
 	}
@@ -116,6 +117,8 @@ class User extends Model {
         else
             throw new Exception("Cannot find the user using the given parameters");
     }
+    
+
     
     /**
      * Get the users information
@@ -173,12 +176,10 @@ class User extends Model {
     	
     	
     	$unitModel = new Unit();
-    	$teamModel = new Team();
     	$statusModel = new Status();
     	$respModel = new Responsible();
     	for ($i = 0 ; $i < count($users) ; $i++){	
-    		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit'])[0];
-    		$users[$i]['team'] = $teamModel->getTeamName($users[$i]['id_team'])[0];
+    		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit']);
     		$users[$i]['status'] = $statusModel->getStatusName($users[$i]['id_status'])[0];
     		$users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
     		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
@@ -213,24 +214,34 @@ class User extends Model {
      * @param string $email
      * @param string $phone
      * @param int $id_unit
-     * @param int $id_team
      * @param int $id_responsible
      * @param int $id_status
      * @param int $convention
      * @param date $date_convention
      */
     public function addUser($name, $firstname, $login, $pwd, 
-		           			$email, $phone, $id_unit, $id_team, 
+		           			$email, $phone, $id_unit, 
 		           			$id_responsible, $id_status,
     						$convention, $date_convention ){
     	
-    	$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_team, id_responsible, id_status, date_created, convention, date_convention)"
-    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    	$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, id_status, date_created, convention, date_convention)"
+    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
     	$this->runRequest($sql, array($login, $firstname, $name, $email, 
-    			                      $phone, md5($pwd), $id_unit, $id_team, 
+    			                      $phone, md5($pwd), $id_unit, 
     			                      $id_responsible, $id_status, "".date("Y-m-d")."",
     			                      $convention, $date_convention));
     	
+    }
+    
+    public function setUser($name, $firstname, $login, $pwd,
+    		$email, $phone, $id_unit,
+    		$id_responsible, $id_status,
+    		$convention, $date_convention ){
+    	
+    	if (!$this->isUser($login)){
+    		$this->addUser($name, $firstname, $login, $pwd, $email, $phone, 
+    				$id_unit, $id_responsible, $id_status, $convention, $date_convention);
+    	}
     }
     
     /**
@@ -243,18 +254,17 @@ class User extends Model {
      * @param string $email
      * @param string $phone
      * @param int $id_unit
-     * @param int $id_team
      * @param int $id_responsible
      * @param int $id_status
      * @param int $convention
      * @param date $date_convention
      */
     public function updateUser($id, $firstname, $name, $login, $email, $phone,
-    							$id_unit, $id_team, $id_responsible, $id_status,
+    							$id_unit, $id_responsible, $id_status,
     		                    $convention, $date_convention){
     	
-    	$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_team=?, id_responsible=?, id_status=?, convention=?, date_convention=? where id=?";
-    	$this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $id_unit, $id_team, $id_responsible, $id_status, $convention, $date_convention, $id));
+    	$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?, id_status=?, convention=?, date_convention=? where id=?";
+    	$this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $id));
     }
     
     /**
@@ -311,14 +321,52 @@ class User extends Model {
     {
     	$sql = "select id from core_users where login=?";
     	$user = $this->runRequest($sql, array($login));
-    	return ($user->rowCount() == 1);
+    	if ($user->rowCount() == 1)
+    		return true;  // get the first line of the result
+    	else
+    		return false;
     }
+    
+    public function userIdFromLogin($login)
+    {
+    	$sql = "select id from core_users where login=?";
+    	$user = $this->runRequest($sql, array($login));
+    	if ($user->rowCount() == 1)
+    		return $user->fetch()[0];
+    	else
+    		return -1;
+    }
+    
     
     public function addIfLoginNotExists($login, $name, $firstname, $pwd, $email, $id_status){
     	
     	if ( !$this->isUser($login)){
     		$this->addUser($name, $firstname, $login, $pwd, $email, "", 1, 1, 1, $id_status, "", '');
     	}
+    }
+    
+    public function setUnitId($login, $unitId){
+    	$sql = "update core_users set id_unit=? where login=?";
+    	$this->runRequest($sql, array($unitId, $login));
+    }
+    
+    public function getUserIdFromFullName($fullname){
+    	$sql = "select firstname, name, id from core_users";
+    	$user = $this->runRequest($sql);
+    	$users = $user->fetchAll();
+    	
+    	foreach ($users as $user){
+    		$curentFullname = $user['name'] . " " . $user['firstname'];
+    		if ($fullname == $curentFullname){
+    			return $user['id'];
+    		} 
+    	}
+    	return -1;
+    }
+    
+    public function setResponsible($idUser, $idResp){
+    	$sql = "update core_users set id_responsible=? where id=?";
+    	$this->runRequest($sql, array($idResp, $idUser));
     }
 }
 

@@ -23,7 +23,6 @@ class SyInstall extends Model {
 	 */
 	public function createDatabase(){
 		
-		echo "call init database";
 		$pricingModel = new SyPricing();
 		$pricingModel->createTable();
 		

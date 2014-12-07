@@ -111,24 +111,6 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Team</label>
-			<div class="col-xs-10">
-				<select class="form-control" name="id_team">
-					<?php foreach ($teamsList as $team):?>
-					    <?php $teamname = $this->clean( $team['name'] ); 
-					    	  $teamid = $this->clean( $team['id'] );
-					    	  $active = "";
-					    	  if ( $user['id_team'] == $teamid  ){
-					    	  	$active = "selected=\"selected\"";
-					    	  }
-					    ?>
-						<OPTION value="<?= $teamid ?>" <?= $active ?> > <?= $teamname ?> </OPTION>
-					<?php endforeach; ?>
-				</select>
-			</div>
-		</div>
-		<br>
-		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Responsible</label>
 			<div class="col-xs-10">
 				<select class="form-control" name="id_responsible">   

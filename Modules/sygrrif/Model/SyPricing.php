@@ -71,4 +71,19 @@ class SyPricing extends Model {
 		$this->runRequest($sql, array($nom, $nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char, $id));
 	}
 	
+	private function isPricing($name){
+		$sql = "select * from sy_pricing where tarif_name=?;";
+		$data = $this->runRequest($sql, array($name));
+		if ($data->rowCount() == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	public function setPricing($nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
+		if (!$this->isPricing($nom)){
+			$this->addPricing($nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char);	
+		}
+	}
+	
 }

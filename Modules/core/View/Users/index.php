@@ -33,7 +33,6 @@
 					<td><a href="users/index/email">Email</a></td>
 					<td><a href="users/index/tel">Phone</a></td>
 					<td><a href="users/index/id_unit">Unit</a></td>
-					<td><a href="users/index/id_team">Team</a></td>
 					<td><a href="users/index/id_responsible">Responsible</a></td>
 					<td><a href="users/index/id_status">Status</a></td>
 					<td><a href="users/index/id">Is responsible</a></td>
@@ -55,7 +54,6 @@
 				    <td><?= $this->clean ( $user ['email'] ); ?></td>
 				    <td><?= $this->clean ( $user ['tel'] ); ?></td>
 				    <td><?= $this->clean ( $user ['unit'] ); ?></td>
-				    <td><?= $this->clean ( $user ['team'] ); ?></td>
 				    <td><?= $this->clean ( $user ['fullname'] ); ?></td>
 				    <td><?= $this->clean ( $user ['status'] ); ?></td>
 				    <td><?php if($this->clean ( $user ['is_responsible'] )){echo "true";}else{echo "false";} ?></td>

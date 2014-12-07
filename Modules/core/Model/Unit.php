@@ -34,10 +34,10 @@ class Unit extends Model {
 	 */
 	public function createDefaultUnit(){
 	
-		$sql = "INSERT INTO core_units (name, address) VALUES(?,?)";
-		$pdo = $this->runRequest($sql, array("--", "--"));
-		return $pdo;
-	
+		if(!$this->isUnit("--")){
+			$sql = "INSERT INTO core_units (name, address) VALUES(?,?)";
+			$this->runRequest($sql, array("--", "--"));
+		}
 		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
 	}
 	
@@ -104,6 +104,22 @@ class Unit extends Model {
 		$unit = $this->runRequest($sql, array("".$name."", "".$address."", $id));
 	}
 	
+	
+	public function isUnit($name){
+		$sql = "select * from core_units where name=?";
+		$unit = $this->runRequest($sql, array($name));
+		if ($unit->rowCount() == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	public function setUnit($name, $address){
+		if (!$this->isUnit($name)){
+			$this->addUnit($name, $address);
+		}
+	}
+	
 	/**
 	 * get the informations of a unit
 	 *
@@ -131,9 +147,9 @@ class Unit extends Model {
 		$sql = "select name from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
 		if ($unit->rowCount() == 1)
-			return $unit->fetch();  // get the first line of the result
+			return $unit->fetch()[0];  // get the first line of the result
 		else
-			throw new Exception("Cannot find the unit using the given id");
+			return "";
 	}
 	
 	/**
@@ -147,7 +163,7 @@ class Unit extends Model {
 		$sql = "select id from core_units where name=?";
 		$unit = $this->runRequest($sql, array($name));
 		if ($unit->rowCount() == 1)
-			return $unit->fetch();  // get the first line of the result
+			return $unit->fetch()[0];  // get the first line of the result
 		else
 			throw new Exception("Cannot find the unit using the given name");
 	}

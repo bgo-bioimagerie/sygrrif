@@ -32,7 +32,9 @@
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ( $unitsArray as $unit ) : ?> 
+				<?php foreach ( $unitsArray as $unit ) : 
+				if ($unit ['id'] > 1){
+				?> 
 				<tr>
 					<?php $unitId = $this->clean ( $unit ['id'] ); ?>
 					<td><?= $unitId ?></td>
@@ -42,7 +44,7 @@
 				      <button type='button' onclick="location.href='units/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
-	    		<?php endforeach; ?>
+	    		<?php }endforeach; ?>
 				
 			</tbody>
 		</table>
