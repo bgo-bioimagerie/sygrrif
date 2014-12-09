@@ -22,6 +22,7 @@ class SyResource extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`grr_id` int(11) NOT NULL,		
 		`name` varchar(30) NOT NULL DEFAULT '',
+		`category_id` int(11) NOT NULL,			
 		PRIMARY KEY (`id`)
 		);";
 
@@ -29,9 +30,9 @@ class SyResource extends Model {
 		return $pdo;
 	}
 	
-	public function addResource($grr_id, $name){
-		$sql = "INSERT INTO sy_resources (grr_id, name) VALUES(?, ?)";
-		$pdo = $this->runRequest($sql, array($grr_id, $name));
+	public function addResource($grr_id, $name, $category_id = 0){
+		$sql = "INSERT INTO sy_resources (grr_id, name ,category_id) VALUES(?, ?, ?)";
+		$pdo = $this->runRequest($sql, array($grr_id, $name, $category_id));
 		return $pdo;
 	}
 	

@@ -16,9 +16,9 @@
 		<table id="dataTable" class="table table-striped text-center">
 			<thead>
 				<tr>
-				    <td>ID</a></td>
-					<td>Nom</a></td>
-					<td>Tarif</a></td>
+				    <td>ID</td>
+					<td>Nom</td>
+					<td>Tarif</td>
 					<td></td>
 				</tr>
 			</thead>

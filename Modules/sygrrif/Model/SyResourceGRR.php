@@ -4,6 +4,7 @@ require_once 'Framework/ModelGRR.php';
 require_once 'Modules/sygrrif/Model/SyResourceTypeGRR.php';
 require_once 'Modules/sygrrif/Model/SyAreaGRR.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
+require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 
 /**
  * Class defining the GRR resource model
@@ -26,6 +27,7 @@ class SyResourceGRR extends ModelGRR {
 		$modelArea = new SyAreaGRR();
 		$modelType = new SyResourceTypeGRR();
 		$modelRes = new SyResource();
+		$modelCategory = new SyResourcesCategory();
 		for ($i = 0 ; $i < count($basicInfo) ; ++$i){
 			// add to sygrrif list f not exists
 			if (!$modelRes->isResource($basicInfo[$i]['id'])){
@@ -42,6 +44,9 @@ class SyResourceGRR extends ModelGRR {
 				$basicInfo[$i]['type_id'] = $typeID;
 			}
 			$basicInfo[$i]['type_name'] = $modelType->getTypeName($basicInfo[$i]['type_id'])[0];
+			$categoryArray = $modelCategory->getCategory($basicInfo[$i]['id']);
+			$basicInfo[$i]['id_category'] = $categoryArray['id_category'];
+			$basicInfo[$i]['name_category'] = $categoryArray['name_category'];
 		}
 		return $basicInfo;
 	}
@@ -56,9 +61,11 @@ class SyResourceGRR extends ModelGRR {
 		// get area and type info
 		$modelArea = new SyAreaGRR();
 		$modelType = new SyResourceTypeGRR();
+		$modelCategory = new SyResourcesCategory();
 		$basicInfo['area'] = $modelArea->getAreaName($basicInfo['area_id']);
 		$basicInfo['type_id'] = $modelType->getResourceTypeID($basicInfo['id']);
 		$basicInfo['type_name'] = $modelType->getTypeName($basicInfo['type_id'])[0];
+		$basicInfo['id_category'] = $modelCategory->getCategoryID($basicInfo['id']);
 		
 		return $basicInfo;
 

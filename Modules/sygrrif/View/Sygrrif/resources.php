@@ -27,6 +27,7 @@
 					<td><a href="sygrrif/resources/room_name">Nom</a></td>
 					<td><a href="sygrrif/resources/area_id">Domaine</a></td>
 					<td>Type</td>
+					<td>Category</td>
 					<td></td>
 				</tr>
 			</thead>
@@ -38,6 +39,7 @@
 				    <td><?= $this->clean ( $resource ['room_name'] ); ?></td>
 				    <td><?= $this->clean ( $resource ['area'] ); ?></td>
 				    <td><?= $this->clean ( $resource ['type_name'] ); ?></td>
+				    <td><?= $this->clean ( $resource ['name_category'] ); ?></td>
 				    <td>
 				      <button type='button' onclick="location.href='sygrrif/editresource/<?= $resourceId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  

@@ -58,10 +58,13 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			
 			// sygrrif data menu
 			$sygrrifDataMenu = $this->request->getParameterNoException ("sygrrifdatamenu");
+			
 			if ($sygrrifDataMenu != ""){
-				if ($ModulesManagerModel->isDataMenu("sygrrif")){
+				if (!$ModulesManagerModel->isDataMenu("sygrrif")){
 					$ModulesManagerModel->addDataMenu("sygrrif", "sygrrif", 1);
+					$isSygrrifMenu = true;
 				}
+				
 				$this->generateView ( array ('navBar' => $navBar,
 						                     'isSygrrifMenu' => $isSygrrifMenu) );
 				return;

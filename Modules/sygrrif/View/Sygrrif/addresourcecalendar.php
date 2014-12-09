@@ -69,6 +69,20 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-8">Category</label>
+			<div class="col-xs-4">
+					<select class="form-control" name="id_category">
+						<?php 
+						foreach($categoriesList as $category){
+						?>
+							<option value="<?= $this->clean($category['id'])?>"> <?= $this->clean($category['name']) ?> </option>
+						<?php 
+						}
+						?>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-8">Ordre d'affichage</label>
 			<div class="col-xs-4">
 				<input class="form-control" id="description" type="number" name="order_display" value="-1"

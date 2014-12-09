@@ -12,8 +12,7 @@ require_once 'Modules/sygrrif/Model/SyResourceGRR.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
-
-
+require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 
 class ControllerSygrrif extends ControllerSecureNav {
 
@@ -32,12 +31,18 @@ class ControllerSygrrif extends ControllerSecureNav {
 		) );
 	}
 	
+	
 	public function statistics(){
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	} 
+	
+	public function statisticsquery(){
 
-		$year = 2014;
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$year = $this->request->getParameter("actionid");
-		}
+		$year = $this->request->getParameter ( "year" );
 		
 		$modelGraph = new SyGraph();
 		$graphArray = $modelGraph->getYearNumResGraph($year);
@@ -298,11 +303,15 @@ class ControllerSygrrif extends ControllerSecureNav {
 		
 		$modelArea = new SyAreaGRR();
 		$domainesList = $modelArea->getAreasIDName();
+		
+		$modelCategories = new SyResourcesCategory();
+		$categoriesArray = $modelCategories->getResourcesCategories("name");
 	
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar, 'pricingTable' => $pricingTable,
-				'domainesList' => $domainesList
+				'domainesList' => $domainesList,
+				'categoriesList' => $categoriesArray
 		) );
 	}
 	
@@ -313,6 +322,7 @@ class ControllerSygrrif extends ControllerSecureNav {
 		$room_name = $this->request->getParameter ("room_name");
 		$description = $this->request->getParameter ("description");
 		$id_domaine = $this->request->getParameter ("id_domaine");
+		$id_category = $this->request->getParameter("id_category");
 		$order_display = $this->request->getParameter ("order_display");
 		$who_can_see = $this->request->getParameter ("who_can_see");
 		$statut_room = $this->request->getParameterNoException("statut_room");
@@ -343,7 +353,9 @@ class ControllerSygrrif extends ControllerSecureNav {
 				                     $delais_option_reservation, $moderate, $allow_action_in_past, $dont_allow_modify,
 				                     $qui_peut_reserver_pour, $active_ressource_empruntee);
 		
-		 
+		// category query
+		$modelResourcesCategory = new SyResourcesCategory();
+		$modelResourcesCategory->setCategory($resourceID, $id_category);
 		
 		// Pricing
 		// get pricing variables
@@ -391,6 +403,9 @@ class ControllerSygrrif extends ControllerSecureNav {
 			$modelPricing = new SyPricing();
 			$pricingTable = $modelPricing->getPrices();
 			
+			$modelCategories = new SyResourcesCategory();
+			$categoriesArray = $modelCategories->getResourcesCategories("name");
+			
 			// fill the pricing table with the prices for this resource
 			$modelResourcesPricing = new SyResourcePricing();
 			for ($i = 0 ; $i < count($pricingTable) ; ++$i){
@@ -410,6 +425,7 @@ class ControllerSygrrif extends ControllerSecureNav {
 			$this->generateView ( array (
 					'navBar' => $navBar, 'resource' => $resource,
 					'pricingTable' => $pricingTable,
+					'categoriesList' => $categoriesArray,
 					'typeEdit' => 1, 'domainesList' => $domainesList
 			) );
 		}
@@ -423,6 +439,7 @@ class ControllerSygrrif extends ControllerSecureNav {
 		$room_name = $this->request->getParameter ("room_name");
 		$description = $this->request->getParameter ("description");
 		$id_domaine = $this->request->getParameter ("id_domaine");
+		$id_category = $this->request->getParameter("id_category");
 		$order_display = $this->request->getParameter ("order_display");
 		$who_can_see = $this->request->getParameter ("who_can_see");
 		$statut_room = $this->request->getParameterNoException("statut_room");
@@ -452,6 +469,10 @@ class ControllerSygrrif extends ControllerSecureNav {
 				$type_affichage_reser, $capacity, $max_booking, $delais_max_resa_room, $delais_min_resa_room,
 				$delais_option_reservation, $moderate, $allow_action_in_past, $dont_allow_modify,
 				$qui_peut_reserver_pour, $active_ressource_empruntee);
+		
+		// category query
+		$modelResourcesCategory = new SyResourcesCategory();
+		$modelResourcesCategory->setCategory($resourceID, $id_category);
 	
 		// Pricing
 		// get pricing variables
@@ -481,6 +502,76 @@ class ControllerSygrrif extends ControllerSecureNav {
 		$this->generateView ( array (
 				'navBar' => $navBar
 		) );
+	}
+	
+	public function resourcescategory(){
+		// get sort action
+		$sortentry = "id";
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$sortentry = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get the user list
+		$categoriesModel = new SyResourcesCategory();
+		$categoriesTable = $categoriesModel->getResourcesCategories ( $sortentry );
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'categoriesTable' => $categoriesTable
+		) );
+	}
+	
+	public function addresourcescategory(){
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+		) );
+	}
+	
+	public function addresourcescategoryquery(){
+	
+		// get form variables
+		$name = $this->request->getParameter ( "name" );
+	
+		// get the user list
+		$rcModel = new SyResourcesCategory();
+		$rcModel->addResourcesCategory ( $name );
+	
+		$this->redirect ( "sygrrif", "resourcescategory" );
+	}
+	
+	public function editresourcescategory(){
+	
+		// get user id
+		$rcId = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$rcId = $this->request->getParameter ( "actionid" );
+		}
+	
+		// get unit info
+		$rcModel = new SyResourcesCategory();
+		$rc = $rcModel->getResourcesCategory ( $rcId );
+	
+		$navBar = $this->navBar ();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'rc' => $rc
+		) );
+	}
+	
+	public function editresourcescategoryquery(){
+	
+		// get form variables
+		$id = $this->request->getParameter ( "id" );
+		$name = $this->request->getParameter ( "name" );
+	
+		// get the user list
+		$rcModel = new SyResourcesCategory();
+		$rcModel->editResourcesCategory ( $id, $name );
+	
+		$this->redirect ( "sygrrif", "resourcescategory" );
 	}
 	
 	public function visa(){
@@ -616,6 +707,81 @@ class ControllerSygrrif extends ControllerSecureNav {
 		$model->addAuthorization($date, $user_id, $unit_id, $visa_id, $resource_id);
 		
 		$this->redirect ( "sygrrif", "authorizations" );
+	}
+	
+	public function statpriceunits(){
+		
+		// get the form parameters
+		$searchDate_start = $this->request->getParameterNoException('searchDate_start');
+		$searchDate_end = $this->request->getParameterNoException('searchDate_end');
+		$unit_id = $this->request->getParameterNoException('unit');
+		$responsible_id = $this->request->getParameterNoException('responsible');
+		$export_type = $this->request->getParameterNoException('export_type');
+		
+		// get the selected unit
+		$selectedUnitId = 0;
+		if ($unit_id != ""){
+			$selectedUnitId = $unit_id; 
+		}
+		
+		// get the responsibles for this unit
+		$responsiblesList = array();
+		if ($selectedUnitId > 0){
+			// @todo get the responsible list for this unit
+		}
+		
+		// test if it needs to calculate output
+		$errorMessage = '';
+		if ($selectedUnitId != 0 && $responsible_id != ''){
+			
+			// test the dates
+			$testPass = true;
+			if ( $searchDate_start == ''){
+				$errorMessage = "Please set a start date";
+				$testPass = false;
+			}
+			if ( $searchDate_end == ''){
+				$errorMessage = "Please set a end date";
+				$testPass = false;
+			}
+			if ( $searchDate_end < $searchDate_start){
+				$errorMessage = "The start date must be before the start date";
+				$testPass = false;
+			}
+			
+			// if the form is correct, calculate the output
+			if ($testPass){
+				if ($export_type == 1){
+					// generate decompte
+					$errorMessage = "counting not yet implemented";
+				}
+				if ($export_type == 2){
+					// generate detail
+					$errorMessage = "detail not yet implemented";
+				}
+				if ($export_type == 3){
+					// generate bill
+					$errorMessage = "bill not yet implemented";
+				}
+			}
+		}
+		
+		echo "selectedUnitId = " . $selectedUnitId ."--"; 
+		
+		// get units list
+		$modelUnit = new Unit();
+		$unitsList = $modelUnit->unitsIDName();
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'selectedUnitId' => $selectedUnitId,
+				'responsiblesList' => $responsiblesList,
+				'unitsList' => $unitsList,
+				'errorMessage' => $errorMessage,
+				'searchDate_start' => $searchDate_start,
+				'searchDate_end' => $searchDate_end
+		) );
 	}
 	
 }
