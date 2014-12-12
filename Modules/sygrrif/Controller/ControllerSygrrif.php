@@ -13,12 +13,11 @@ require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
+require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 
 class ControllerSygrrif extends ControllerSecureNav {
 
-	//private $billet;
 	public function __construct() {
-		//$this->billet = new Billet ();
 	}
 
 	// Affiche la liste de tous les billets du blog
@@ -727,7 +726,8 @@ class ControllerSygrrif extends ControllerSecureNav {
 		// get the responsibles for this unit
 		$responsiblesList = array();
 		if ($selectedUnitId > 0){
-			// @todo get the responsible list for this unit
+			$modeluser = new User();
+			$responsiblesList = $modeluser->getResponsibleOfUnit($selectedUnitId);
 		}
 		
 		// test if it needs to calculate output
@@ -741,7 +741,7 @@ class ControllerSygrrif extends ControllerSecureNav {
 				$testPass = false;
 			}
 			if ( $searchDate_end == ''){
-				$errorMessage = "Please set a end date";
+				$errorMessage = "Please set an end date";
 				$testPass = false;
 			}
 			if ( $searchDate_end < $searchDate_start){
@@ -753,20 +753,20 @@ class ControllerSygrrif extends ControllerSecureNav {
 			if ($testPass){
 				if ($export_type == 1){
 					// generate decompte
-					$errorMessage = "counting not yet implemented";
+					$errorMessage = "counting functionality not yet available";
 				}
 				if ($export_type == 2){
 					// generate detail
-					$errorMessage = "detail not yet implemented";
+					$errorMessage = "detail functionality not yet available";
 				}
 				if ($export_type == 3){
 					// generate bill
-					$errorMessage = "bill not yet implemented";
+					$billgenaratorModel = new SyBillGenerator();
+					$bill = $billgenaratorModel->generate($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
+					//$errorMessage = "bill not yet implemented";
 				}
 			}
 		}
-		
-		echo "selectedUnitId = " . $selectedUnitId ."--"; 
 		
 		// get units list
 		$modelUnit = new Unit();

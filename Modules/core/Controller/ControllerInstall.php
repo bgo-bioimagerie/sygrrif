@@ -14,7 +14,7 @@ class ControllerInstall extends Controller {
 	
 	protected function isInstalled(){
 		$dsn = Configuration::get('dsn', '');
-		echo "dsn = " . $dsn . "--";
+		//echo "dsn = " . $dsn . "--";
 		if ($dsn == ''){
 			$alreadyInstalled = false;
 		}
@@ -52,7 +52,7 @@ class ControllerInstall extends Controller {
 			// test the connection
 			$installModel = new Install();
 			$testVal = $installModel->testConnection($sql_host, $login, $password, $db_name);
-			echo 'test connection return val = ' . $testVal . '-----'; 
+			//echo 'test connection return val = ' . $testVal . '-----'; 
 			if ($testVal == 'success'){
 				// edit the config file
 				$returnVal = $installModel->writedbConfig($sql_host, $login, $password, $db_name);
@@ -68,7 +68,7 @@ class ControllerInstall extends Controller {
 			else{
 				$showform = true;
 				$errorMessage = $testVal;
-				echo '$errorMessage = ' . $errorMessage . '-----';
+				//echo '$errorMessage = ' . $errorMessage . '-----';
 			}
 		}
 		
@@ -80,7 +80,7 @@ class ControllerInstall extends Controller {
 	
 	public function createdatabase(){
 		
-		echo '--' . 'function createdatabase()' . '--';
+		//echo '--' . 'function createdatabase()' . '--';
 		
 		$model = new InitDatabase();
 		$errorMessage = $model->createDatabase();

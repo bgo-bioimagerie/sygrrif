@@ -18,8 +18,8 @@
 				<tr>
 					<td><a href="sygrrif/authorizations/id">ID</a></td>
 					<td><a href="sygrrif/authorizations/date">Date</a></td>
-					<td><a href="sygrrif/authorizations/userFirstname">Nom</a></td>
-					<td><a href="sygrrif/authorizations/userName">Prénom</a></td>
+					<td><a href="sygrrif/authorizations/userName">Nom</a></td>
+					<td><a href="sygrrif/authorizations/userFirstname">Prénom</a></td>
 					<td><a href="sygrrif/authorizations/unit">Unité</a></td>
 					<td><a href="sygrrif/authorizations/visa">Visa</a></td>
 					<td><a href="sygrrif/authorizations/ressource">Ressource</a></td>

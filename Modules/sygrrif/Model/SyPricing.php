@@ -51,6 +51,15 @@ class SyPricing extends Model {
 
 	}
 	
+	public function getPricingId($name){
+		$sql = "select * from sy_pricing where tarif_name=?;";
+		$data = $this->runRequest($sql, array($name));
+		if ($data->rowCount() == 1)
+			return $data->fetch()[0];  // get the first line of the result
+		else
+			return 0;
+	}
+	
 	public function addUnique($name){
 		$sql = "INSERT INTO sy_pricing (tarif_name, tarif_print) VALUES(?,?)";
 		$pdo = $this->runRequest($sql, array($name, $name));

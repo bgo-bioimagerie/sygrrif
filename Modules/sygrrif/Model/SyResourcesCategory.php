@@ -80,8 +80,8 @@ class SyResourcesCategory extends Model {
 	}
 	
 	public function setResourcesCategory($name){
-		if (!$this->isVisa($name)){
-			$this->addVisa($name);
+		if (!$this->isResourcesCategory($name)){
+			$this->addResourcesCategory($name);
 		}
 	}
 	
@@ -142,7 +142,7 @@ class SyResourcesCategory extends Model {
 		if ($unit->rowCount() == 1)
 			return $unit->fetch();  // get the first line of the result
 		else
-			throw new Exception("Cannot find the resources category using the given name");
+			throw new Exception("Cannot find the resources category using the given name: " . $name);
 	}
 	
 	// joint ressource category

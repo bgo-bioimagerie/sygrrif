@@ -5,6 +5,9 @@ require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
+require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 
 class ControllerSynchistop extends Controller {
 
@@ -57,9 +60,13 @@ class ControllerSynchistop extends Controller {
 		$this->addUsers($pdo_old);
 		echo "<p>add user done</p>";
 		
-		// ad unit link
+		// add unit link
 		$this->addlinkUnitUser($pdo_old);
 		echo "<p>unit user link added</p>";
+		
+		// add unit pricing
+		$this->addlinkUnitPricing($pdo_old);
+		echo "<p>unit pricing link added</p>";
 		
 		// add responsible
 		$this->addResponsibles($pdo_old);
@@ -69,8 +76,13 @@ class ControllerSynchistop extends Controller {
 		$this->linkUserResponsible($pdo_old);
 		echo "<p>link user responsibles added</p>";
 		
+		// add machines cathegories
+		$this->syncMachines($pdo_old);
+		echo "<p>add ressources cathegories</p>";
+		
 		// add authorisations
-		// @todo
+		$this->syncAuthorisations($pdo_old);
+		echo "<p>add athorizations</p>";
 	}
 	
 	// /////////////////////////////////////////// //
@@ -147,6 +159,28 @@ class ControllerSynchistop extends Controller {
 		}
 	}
 	
+	public function addlinkUnitPricing($pdo_old){
+		// get all users from old db
+		$sql = "select * from laboratoire";
+		$labs_oldq = $pdo_old->query($sql);
+		$labs_old = $labs_oldq->fetchAll();
+		
+		$modelUnit = new Unit();
+		$userPricing = new SyPricing();
+		$modelLink = new SyUnitPricing();
+		foreach ($labs_old as $lo){
+			// get lab id
+			$unitId = $modelUnit->getUnitId($lo['name']);
+			
+			// get tarif id
+			$id_pricing = $userPricing->getPricingId($lo['tarif']);
+
+			// link 
+			$modelLink->setPricing($unitId, $id_pricing);
+		}
+		
+	}
+	
 	public function addResponsibles($pdo_old){
 		// get all users from old db
 		$sql = "select * from users";
@@ -196,6 +230,58 @@ class ControllerSynchistop extends Controller {
 			
 			
 		}
+	}
+	
+	public function syncMachines($pdo_old){
+		// get the machines
+		$sql = "select * from machines";
+		$result = $pdo_old->query($sql);
+		$machines = $result->fetchAll();
+		
+		$model = new SyResourcesCategory();
+		foreach ($machines as $m){
+			$model->setResourcesCategory($m['nom']);
+		}
+	}
+	
+	public function syncAuthorisations($pdo_old){
+		// get all authorizations from old db
+		$sql = "select * from autorisation";
+		$autorisations_oldq = $pdo_old->query($sql);
+		$autorisations_old = $autorisations_oldq->fetchAll();
+		
+		foreach ($autorisations_old as $aut){
+			// get id resource category
+			$mrc = new SyResourcesCategory();
+			if (!$mrc->isResourcesCategory($aut['machine'])){
+				$mrc->addResourcesCategory($aut['machine']);
+			}
+			$id_resourceCategory = $mrc->getResourcesCategoryId($aut['machine'])[0];
+			
+			// get visa id
+			$mv = new SyVisa();
+			$id_visa = $mv->getVisaId($aut['visa'])[0];
+			
+			// get unit id
+			$mu = new Unit();
+			$idUnit = $mu->getUnitId($aut['laboratoire']);
+			
+			// get user id
+			$muser = new User();
+			$idUser = $muser->getUserIdFromFullName($aut['nf']);
+
+			// convert date
+			$date_convention = '';
+			$dateObj = DateTime::createFromFormat("d/m/Y", $aut['date']);
+			if ($dateObj){
+				$date_convention = $dateObj->format('Y-m-d');
+			}
+			
+			// set autorization
+			$maut = new SyAuthorization();
+			$maut->addAuthorization($date_convention, $idUser, $idUnit, $id_visa, $id_resourceCategory);
+		}
+		
 	}
 
 }

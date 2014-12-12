@@ -68,15 +68,15 @@ class SyAuthorization extends Model {
 			$sqlSort = "sy_visas.name";
 		}
 		else if ($sortentry == "ressource"){
-			$sqlSort = "sy_resources.name";
+			$sqlSort = "sy_resourcescategory.name";
 		}
 		
-		$sql = "SELECT sy_authorization.id, sy_authorization.date, core_users.name AS userName, core_users.firstname AS userFirstname, core_units.name AS unitName, sy_visas.name AS visa, sy_resources.name AS resource 		
+		$sql = "SELECT sy_authorization.id, sy_authorization.date, core_users.name AS userName, core_users.firstname AS userFirstname, core_units.name AS unitName, sy_visas.name AS visa, sy_resourcescategory.name AS resource 		
 					from sy_authorization
 					     INNER JOIN core_users on sy_authorization.user_id = core_users.id
 					     INNER JOIN core_units on sy_authorization.lab_id = core_units.id
 					     INNER JOIN sy_visas on sy_authorization.visa_id = sy_visas.id
-					     INNER JOIN sy_resources on sy_authorization.resource_id = sy_resources.id
+					     INNER JOIN sy_resourcescategory on sy_authorization.resource_id = sy_resourcescategory.id
 					ORDER BY ". $sqlSort . ";";
 		$auth = $this->runRequest ( $sql );
 		return $auth->fetchAll ();

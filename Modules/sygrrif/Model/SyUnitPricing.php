@@ -58,9 +58,9 @@ class SyUnitPricing extends Model {
 	public function getPricing($id_unit)
 	{
 		$sql = "select id_pricing from sy_unitpricing where id_unit=?";
-		$data = $this->runRequest($sql, array($login));
+		$data = $this->runRequest($sql, array($id_unit));
 		if ($data->rowCount() == 1){
-			return $data->fetch();
+			return $data->fetch()[0];
 		}
 		else{
 			return 0;
@@ -87,6 +87,5 @@ class SyUnitPricing extends Model {
 			$this->addPricing($id_unit, $id_pricing);
 		}
 	}
-
 	
 }

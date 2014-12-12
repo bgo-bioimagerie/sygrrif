@@ -260,7 +260,7 @@ Cette limitation ne touche pas les gestionnaires de la ressource ainsi que les a
 			<div class="col-xs-8">
 			<p>
 	        <b>Modérer les réservations de cette ressource</b>
-	        <p></p>
+	        <p>
             Une réservation n'est effective qu'après validation par un administrateur du domaine ou un gestionnaire de la ressource. :
             </p>
 			</div>
@@ -272,7 +272,7 @@ Cette limitation ne touche pas les gestionnaires de la ressource ainsi que les a
 			<div class="col-xs-8">
 			<p>
 Permettre les réservations dans le passé ainsi que les modifications/suppressions de réservations passées.
-<p></p>
+<p>
 Si la case n'est pas cochée, un usager (ni même un gestionnaire ou un administrateur restreint) ne peut effectuer une réservation dans le passé, ni modifier ou supprimer une réservation passée. Seul l'administrateur général a cette possibilité.
             </p>
 			</div>

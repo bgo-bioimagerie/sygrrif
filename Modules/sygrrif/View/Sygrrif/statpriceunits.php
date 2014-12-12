@@ -115,7 +115,7 @@
 					<?php 
 					foreach ($responsiblesList as $resp){
 						$respId = $this->clean( $resp['id'] );	
-						$respName = $this->clean( $resp['name'] );
+						$respName = $this->clean( $resp['name'] . " " . $resp['firstname']);
 					?>
 					<OPTION value="<?= $respId?>"> <?=$respName?> </OPTION>
 					<?php

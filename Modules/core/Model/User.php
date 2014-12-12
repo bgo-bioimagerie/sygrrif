@@ -368,5 +368,16 @@ class User extends Model {
     	$sql = "update core_users set id_responsible=? where id=?";
     	$this->runRequest($sql, array($idResp, $idUser));
     }
+    
+    public function getResponsibleOfUnit($unitId){
+    	$sql = "select id, name, firstname from core_users where id in (select id_users from core_responsibles) and id_unit=? ORDER BY name";
+    	return $this->runRequest($sql, array($unitId));
+    }
+    
+    public function getUserFromlup($login, $unit_id, $responsible_id){
+    	$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE login=? AND id_unit=? AND id_responsible=?';
+    	$req = $this->runRequest($sql, array($login, $unit_id, $responsible_id));
+    	return $req->fetchAll();
+    }
 }
 
