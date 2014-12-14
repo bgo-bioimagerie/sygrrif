@@ -85,7 +85,8 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
 			<div class="col-xs-10">
-					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);">
+					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);"
+						>
 					<?php 
 					foreach ($unitsList as $unit){
 						$unitId = $this->clean( $unit['id'] );	

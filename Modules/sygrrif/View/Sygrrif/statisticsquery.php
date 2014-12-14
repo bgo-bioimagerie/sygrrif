@@ -100,10 +100,19 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		$gAnnee .= '</svg>';
 		
 		echo $gAnnee;
+		
+		$nameFile = "temp/bilan_resaSVG.svg";
+		$openFile = fopen($nameFile,"w");
+		$toWrite = $gAnnee;
+		fwrite($openFile, $toWrite);
+		fclose($openFile);
+		
+		exec('sudo /usr/bin/inkscape -D temp/bilan_resaSVG.svg -e temp/bilan_resaJPG.jpg -b "#ffffff" -h800');
+		
 		?>
 	</div>
 	<div class='col-md-2 col-md-offset-1'>
-    <button type="button" class="btn btn-primary" id="exportgraph">Export as jpeg</button>
+	<button type="button" onclick="location.href='temp/bilan_resaJPG.jpg'" download="bilan_reservations<?=$annee?>" class="btn btn-primary" id="navlink">Export as jpeg</button>
 	</div>
 <!-- -------------------------------------------- -->
 <!-- Plot the camembert -->
@@ -118,9 +127,17 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 			$camembert .= $camembertContent;		
 			$camembert .= '</svg>';
 			echo $camembert;
+			
+			$nameFile = "temp/camembert_resaSVG.svg";
+			$openFile = fopen($nameFile,"w");
+			$toWrite = $camembert;
+			fwrite($openFile, $toWrite);
+			fclose($openFile);
+		
+			exec('sudo /usr/bin/inkscape -D temp/camembert_resaSVG.svg -e temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
 		?>
 		</div>
 		<div class='col-md-2 col-md-offset-1'>
-		<button type="button" class="btn btn-primary" id="navlink">Export as jpeg</button>
+		<button type="button" onclick="location.href='temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?=$annee?>" class="btn btn-primary" id="navlink">Export as jpeg</button>
 		</div>
 </div>

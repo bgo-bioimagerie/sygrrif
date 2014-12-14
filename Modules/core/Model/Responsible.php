@@ -137,5 +137,12 @@ class Responsible extends Model {
 
 		return $resps;
 	}
+	
+	public function getUserResponsible($user_id){
+		 $sql = "SELECT id_responsible FROM core_users WHERE id=?";
+		 $respPDO = $this->runRequest($sql, array($user_id));
+		 $respID = $respPDO->fetch()[0];
+		 return $this->responsibleName($respID);
+	}
 }
 

@@ -751,19 +751,9 @@ class ControllerSygrrif extends ControllerSecureNav {
 			
 			// if the form is correct, calculate the output
 			if ($testPass){
-				if ($export_type == 1){
-					// generate decompte
-					$errorMessage = "counting functionality not yet available";
-				}
-				if ($export_type == 2){
-					// generate detail
-					$errorMessage = "detail functionality not yet available";
-				}
-				if ($export_type == 3){
-					// generate bill
-					$billgenaratorModel = new SyBillGenerator();
-					$bill = $billgenaratorModel->generate($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
-					//$errorMessage = "bill not yet implemented";
+				if ($export_type > 0 && $export_type < 4 ){
+					$this->output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
+					return;
 				}
 			}
 		}
@@ -784,4 +774,199 @@ class ControllerSygrrif extends ControllerSecureNav {
 		) );
 	}
 	
+	public function output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id){
+		
+		if ($export_type == 1){
+			// generate decompte
+			$billgenaratorModel = new SyBillGenerator();
+			$billgenaratorModel->generateCounting($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
+			//$errorMessage = "counting functionality not yet available";
+		}
+		if ($export_type == 2){
+			// generate detail
+			$billgenaratorModel = new SyBillGenerator();
+			$billgenaratorModel->generateDetail($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
+			//$errorMessage = "detail functionality not yet available";
+		}
+		if ($export_type == 3){
+			// generate bill
+			$billgenaratorModel = new SyBillGenerator();
+			$billgenaratorModel->generateBill($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
+			//$errorMessage = "bill not yet implemented";
+		}
+	}
+	
+	public function statauthorizations(){
+		
+		// get form info
+		$searchDate_start = $this->request->getParameterNoException('searchDate_start');
+		$searchDate_end = $this->request->getParameterNoException('searchDate_end');
+		$user_id = $this->request->getParameterNoException('user');
+		$curentunit_id = $this->request->getParameterNoException('curentunit'); 
+		$trainingunit_id = $this->request->getParameterNoException('trainingunit');
+		$visa_id = $this->request->getParameterNoException('visa');
+		$resource_id = $this->request->getParameterNoException('resource');
+		
+		$view_pie_chart = $this->request->getParameterNoException('view_pie_chart');
+		$view_counting = $this->request->getParameterNoException('view_counting');
+		$view_details = $this->request->getParameterNoException('view_details');
+		$save_details = $this->request->getParameterNoException("save_details");
+		
+		// format form info
+		if ($user_id == ''){$user_id = "0";}
+		if ($curentunit_id == ''){$curentunit_id = "0";}
+		if ($trainingunit_id == ''){$trainingunit_id = "0";}
+		if ($visa_id == ''){$visa_id = "0";}
+		if ($resource_id == ''){$resource_id = "0";}
+		
+		if ($user_id == 1){$user_id = "0";}
+		if ($curentunit_id == 1){$curentunit_id = "0";}
+		if ($trainingunit_id == 1){$trainingunit_id = "0";}
+		if ($visa_id == 1){$visa_id = "0";}
+		if ($resource_id == 1){$resource_id = "0";}
+		
+		// users
+		$modeluser = new User();
+		$users = $modeluser->getUsersSummary('name');
+		
+		// units
+		$modelunits = new Unit();
+		$units = $modelunits->unitsIDName();
+		
+		// visa
+		$modelvisa = new SyVisa();
+		$visas = $modelvisa->visasIDName();
+		
+		// resources categories
+		$modelresource = new SyResourcesCategory();
+		$resourcesList = $modelresource->getResourcesCategories('name'); 
+		 
+		
+		// on form change
+		$testPass = true;
+		$resultsVisible = false;
+		if ( $searchDate_start == ''){
+			$errorMessage = "Please set a start date";
+			$testPass = false;
+		}
+		if ( $searchDate_end == ''){
+			$errorMessage = "Please set an end date";
+			$testPass = false;
+		}
+		if ($searchDate_end != '' && $searchDate_end != '' ){
+			if ( $searchDate_end < $searchDate_start){
+				$errorMessage = "The start date must be before the start date";
+				$testPass = false;
+			}
+		}
+		
+		$msData = "";
+		$dsData = "";
+		$camembert = "";
+		if ($testPass){
+			$modelAuth = new SyAuthorization();
+			
+			if ($view_counting != ""){
+				$msData = $modelAuth->minimalStatistics($searchDate_start, $searchDate_end, $user_id, $curentunit_id, 
+			                          $trainingunit_id, $visa_id, $resource_id);
+			}
+			
+			if ($view_details != ""){
+				$dsData = $modelAuth->statsDetails($searchDate_start, $searchDate_end, $user_id, $curentunit_id, 
+			                          $trainingunit_id, $visa_id, $resource_id);
+			}
+			
+			if ($view_pie_chart != ""){
+				$camembert = $modelAuth->statsResources($searchDate_start, $searchDate_end);
+			}
+			
+			$resultsVisible = true;
+		}
+		
+		$errorMessage = '';
+		
+		// put some data to cession
+		$_SESSION['searchDate_start']=$searchDate_start;
+		$_SESSION['searchDate_end']=$searchDate_end;
+		if ($dsData != ""){
+			$_SESSION['dsData']=$dsData;
+		}
+		if ($msData != ""){
+			$_SESSION['msData']=$msData;
+		}
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'errorMessage' => $errorMessage,
+				'searchDate_start' => $searchDate_start,
+				'searchDate_end' => $searchDate_end,
+				'user_id' => $user_id,
+				'curentunit_id' => $curentunit_id,
+				'trainingunit_id' => $trainingunit_id,
+				'visa_id' => $visa_id,
+				'resource_id' => $resource_id,
+				'usersList' => $users,
+				'unitsList' => $units,
+				'visasList' => $visas,
+				'resourcesList' => $resourcesList,
+				'trainingunit_id' => $trainingunit_id,
+				'resultsVisible' => $resultsVisible,
+				'msData' => $msData,
+				'dsData' => $dsData,
+				'camembert' => $camembert,
+				'view_pie_chart' => $view_pie_chart,
+				'view_counting' => $view_counting,
+				'view_details' => $view_details,
+				'save_details' => $save_details
+		) );
+	
+	}
+	
+	public function statauthorizationsdetailcsv(){
+		
+		$searchDate_start = $this->request->getSession()->getAttribut('searchDate_start');
+		$searchDate_end = $this->request->getSession()->getAttribut('searchDate_end');
+		$t = $this->request->getSession()->getAttribut('dsData');
+		
+		$filename = $t['nom_fic'];
+		$datas = $t["data"];
+		
+		header('Content-Type: text/csv;'); //Envoie le résultat du script dans une feuille excel
+		header('Content-Disposition: attachment; filename='.$filename.''); //Donne un nom au fichier exel
+		$i = 0;
+		foreach($datas as $v){
+			if($i==0){
+				echo '"From '.$searchDate_start.' to '.$searchDate_end.'"'."\n";
+				echo '"'.implode('";"',array_keys($v)).'"'."\n";
+			}
+			echo '"'.implode('";"',$v).'"'."\n";
+			$i++;
+		}
+	}
+	
+	public function statauthorizationscountingcsv(){
+		$searchDate_start = $this->request->getSession()->getAttribut('searchDate_start');
+		$searchDate_end = $this->request->getSession()->getAttribut('searchDate_end');
+		$msData = $this->request->getSession()->getAttribut('msData');
+		
+		$filename = "authorizations_count.csv";
+		header('Content-Type: text/csv;'); //Envoie le résultat du script dans une feuille excel
+		header('Content-Disposition: attachment; filename='.$filename.''); //Donne un nom au fichier exel
+		
+		echo "Search criteria \n";
+		echo str_replace("<br/>", "\n", $msData["criteres"]) ;
+		
+		echo    " \n Results \n";
+		echo   	"Number of training :" . $msData["numOfRows"] . "\n";
+		echo 	"Nomber of users :" . $msData["distinct_nf"]  . "\n";
+		echo 	"Nomber of units :" . $msData["distinct_laboratoire"]  . "\n";
+		echo 	"Nomber of VISAs :" . $msData["distinct_visa"]  . "\n";
+		echo 	"Nomber of resources :" . $msData["distinct_machine"] . "\n";
+		echo 	"Nomber of new user :" . $msData["new_people"] . "\n";
+		
+	}
+		
+
 }

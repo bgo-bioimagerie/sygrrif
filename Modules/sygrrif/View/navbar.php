@@ -95,6 +95,8 @@ legend {
 						class="btn btn-link" id="navlink">Statistics Resources</button>
 					<button onclick="location.href='sygrrif/statpriceunits'"
 						class="btn btn-link" id="navlink">Statistics/pricing units</button>
+					<button onclick="location.href='sygrrif/statauthorizations'"
+						class="btn btn-link" id="navlink">Statistics authorizations</button>
 				</p>
 			</fieldset>
 		</div>

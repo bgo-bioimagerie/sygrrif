@@ -159,7 +159,7 @@ class User extends Model {
     	
     	if ($user->rowCount() == 1){
     		$userf = $user->fetch(); 
-    		return $userf['firstname'] . " " . $userf['name'];
+    		return $userf['name'] . " " . $userf['firstname'];
     	}
     	else
     		throw new Exception("Cannot find the user using the given id");
@@ -379,5 +379,16 @@ class User extends Model {
     	$req = $this->runRequest($sql, array($login, $unit_id, $responsible_id));
     	return $req->fetchAll();
     }
+    
+    public function getUserFromloginUnit($login, $unit_id){
+    	$sql = "SELECT name, firstname, id_responsible, id_unit FROM core_users WHERE login=?";
+    	if ($unit_id > 0){
+    		$sql .= " AND id_unit=" . $unit_id; 
+    	}
+    	
+    	$req = $this->runRequest($sql, array($login));
+    	return $req->fetchAll();
+    }
+    
 }
 
