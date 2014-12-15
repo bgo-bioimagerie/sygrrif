@@ -12,9 +12,10 @@ class ControllerBooking extends ControllerSecureNav {
 
 	// Affiche la liste de tous les billets du blog
 	public function index() {
-;
+		$navBar = $this->navBar();
 
 		$this->generateView ( array (
+				'navBar' => $navBar
 		) );
 	}
 	

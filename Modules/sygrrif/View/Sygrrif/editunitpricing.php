@@ -59,7 +59,7 @@
 								$selected = "selected=\"selected\"";
 							}
 						?>
-							<option value="<?= $pricingID ?>" $selected> <?= $this->clean($pricing['tarif_name']) ?> </option>
+							<option value="<?= $pricingID ?>" <?=$selected?>> <?= $this->clean($pricing['tarif_name']) ?> </option>
 						<?php 
 						}
 						?>
