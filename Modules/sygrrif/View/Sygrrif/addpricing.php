@@ -28,37 +28,37 @@
 	
 		<div class="page-header">
 			<h1>
-				Ajouter tarif <br> <small></small>
+				Add pricing <br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">nom</label>
+			<label for="inputEmail" class="control-label col-xs-2">Name</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name"
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif unique</label>
+			<label for="inputEmail" class="control-label col-xs-2">Unique price</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_unique">
-						<OPTION value="oui"> Oui </OPTION>
-						<OPTION value="non"> Non </OPTION>
+						<OPTION value="oui"> Yes </OPTION>
+						<OPTION value="non"> No </OPTION>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif nuit</label>
+			<label for="inputEmail" class="control-label col-xs-2">Price night</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_nuit">
-						<OPTION value="oui"> Oui </OPTION>
-						<OPTION value="non"> Non </OPTION>
+						<OPTION value="oui"> Yes </OPTION>
+						<OPTION value="non"> No </OPTION>
 				</select>
 			</div>
 			<br></br>
 			<div class="col-xs-10 col-xs-offset-2">
-				<label for="inputEmail" class="control-label col-xs-3">début nuit</label>
+				<label for="inputEmail" class="control-label col-xs-3">Night beginning</label>
 				<div class="col-xs-2">
 				<select class="form-control col-xs-2" name="night_start">
 					<OPTION value="18"> 18h </OPTION>
@@ -68,7 +68,7 @@
 					<OPTION value="22"> 22h </OPTION>
 				</select>
 				</div>
-				<label for="inputEmail" class="control-label col-xs-3">fin nuit</label>
+				<label for="inputEmail" class="control-label col-xs-3">Night end</label>
 				<div class="col-xs-2">
 				<select class="form-control" name="night_end">
 					<OPTION value="6"> 6h </OPTION>
@@ -80,49 +80,49 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif weekend</label>
+			<label for="inputEmail" class="control-label col-xs-2">Price weekend</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_we">
-						<OPTION value="oui"> Oui </OPTION>
-						<OPTION value="non"> Non </OPTION>
+						<OPTION value="oui"> Yes </OPTION>
+						<OPTION value="non"> No </OPTION>
 				</select>
 			</div>
 			<div class="col-xs-10 col-xs-offset-2">
-				<label for="inputEmail" class="control-label col-xs-3">Jours weekend</label>
+				<label for="inputEmail" class="control-label col-xs-3">Weekend days</label>
 				<div class="col-xs-2">
 					<div class="checkbox">
     				<label>
-      					<input type="checkbox" name="lundi"> Lundi
+      					<input type="checkbox" name="lundi"> Monday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
-      					<input type="checkbox" name="mardi"> Mardi
+      					<input type="checkbox" name="mardi"> Tuesday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
-      					<input type="checkbox" name="mercredi"> Mercredi
+      					<input type="checkbox" name="mercredi"> Wednesday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
-      					<input type="checkbox" name="jeudi"> Jeudi
+      					<input type="checkbox" name="jeudi"> Thursday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
-      					<input type="checkbox" name="vendredi"> Vendredi
+      					<input type="checkbox" name="vendredi"> Friday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
-      					<input type="checkbox" name="samedi" checked> Samedi
+      					<input type="checkbox" name="samedi" checked> Saturday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
-      					<input type="checkbox" name="dimanche" checked> Dimanche
+      					<input type="checkbox" name="dimanche" checked> Sunday
     				</label>
   					</div>
 				</div>

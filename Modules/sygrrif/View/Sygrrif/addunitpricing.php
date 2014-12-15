@@ -27,11 +27,11 @@
 	
 		<div class="page-header">
 			<h1>
-				Associer tarif à une unité <br> <small></small>
+				Associate a pricing to a unit <br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unité</label>
+			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_unit">
 						<?php 
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif</label>
+			<label for="inputEmail" class="control-label col-xs-2">Pricing</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_pricing">
 						<?php 

@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF add VISA"?>
+<?php $this->title = "SyGRRiF add a resources category"?>
 
 <?php echo $navBar?>
 

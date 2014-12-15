@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF add pricing"?>
+<?php $this->title = "SyGRRiF add a calendar resource"?>
 
 <?php echo $navBar?>
 
@@ -14,16 +14,16 @@
 		
 		<div class="page-header">
 			<h1>
-				Ajout ressource calendaire <br> <small></small>
+				Add a calendar resource <br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Impossible d'ajouter la ressource calendaire</p>
+			<p> Unable to add the resource</p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> Le ressource calendaire a été ajoutée avec succès !</p>
+			<p> The resource has been successfully added !</p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">

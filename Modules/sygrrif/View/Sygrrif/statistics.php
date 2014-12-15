@@ -27,7 +27,7 @@
 	
 		<div class="page-header">
 			<h1>
-				statistics <br> <small></small>
+				Statistics <br> <small></small>
 			</h1>
 		</div>
 	

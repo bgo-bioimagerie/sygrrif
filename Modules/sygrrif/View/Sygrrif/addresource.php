@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF add pricing"?>
+<?php $this->title = "SyGRRiF add resource"?>
 
 <?php echo $navBar?>
 
@@ -24,13 +24,13 @@
 	
 		<div class="page-header">
 				<h1>
-					Ajouter Ressource <br> <small>Selectionner le type de ressources</small>
+					Add a resource <br> <small>Select the resource type</small>
 				</h1>
 		</div>
 	
 		<div class="text-center">
-			<button type="button" onclick="location.href='sygrrif/addresourcecalendar'" class="btn btn-default" id="navlink">Calendaire</button>
-			<button type="button" onclick="location.href='sygrrif/addresourcequantity'" class="btn btn-default" id="navlink">Unitaire</button>
+			<button type="button" onclick="location.href='sygrrif/addresourcecalendar'" class="btn btn-default" id="navlink">Calendar</button>
+			<button type="button" onclick="location.href='sygrrif/addresourcequantity'" class="btn btn-default" id="navlink">Unitary</button>
 		</div>
 	</div>
 </div>

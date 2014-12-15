@@ -140,8 +140,6 @@ class ControllerSygrrif extends ControllerSecureNav {
 		$modelPricing = new SyPricing();
 		$pricing = $modelPricing->getPricing($id);
 		
-		print_r($pricing);
-		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
@@ -240,8 +238,6 @@ class ControllerSygrrif extends ControllerSecureNav {
 		
 		$modelUnit = new Unit();
 		$unitName = $modelUnit->getUnitName($unit_id);
-		
-		print_r($unitName);
 		
 		$modelPricing = new SyPricing();
 		$pricingList = $modelPricing->pricingsIDName();
@@ -679,8 +675,8 @@ class ControllerSygrrif extends ControllerSecureNav {
 		$visas = $modelVisa->visasIDName();
 		
 		// get resource list
-		$modelResource = new SyResource();
-		$resources = $modelResource->resources();
+		$modelResource = new SyResourcesCategory();
+		$resources = $modelResource->getResourcesCategories("name");
 		
 		// view
 		$navBar = $this->navBar();
@@ -692,6 +688,62 @@ class ControllerSygrrif extends ControllerSecureNav {
 				'resources' => $resources
 		) );
 	
+	}
+	
+	public function editauthorization(){
+		
+		// get sort action
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get the authorization info
+		$modelAuth = new SyAuthorization();
+		$authorization = $modelAuth->getAuthorization($id);
+		
+		print_r($authorization);
+		
+		// get users list
+		$modelUser = new User();
+		$users = $modelUser->getUsersSummary('name');
+		
+		// get unit list
+		$modelUnit = new Unit();
+		$units = $modelUnit->unitsIDName();
+		
+		// get visa list
+		$modelVisa = new SyVisa();
+		$visas = $modelVisa->visasIDName();
+		
+		// get resource list
+		$modelResource = new SyResourcesCategory();
+		$resources = $modelResource->getResourcesCategories("name");
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'users' => $users,
+				'units' => $units,
+				'visas' => $visas,
+				'resources' => $resources,
+				'authorization' => $authorization
+		) );
+	}
+	
+	public function editauthorizationsquery(){
+		$id = $this->request->getParameter('id');
+		$user_id = $this->request->getParameter('user_id');
+		$unit_id = $this->request->getParameter('unit_id');
+		$date = $this->request->getParameter('date');
+		$visa_id = $this->request->getParameter('visa_id');
+		$resource_id = $this->request->getParameter('resource_id');
+		
+		$model = new SyAuthorization();
+		$model->editAuthorization($id, $date, $user_id, $unit_id, $visa_id, $resource_id);
+		
+		$this->redirect ( "sygrrif", "authorizations" );
 	}
 	
 	public function addauthorizationsquery(){

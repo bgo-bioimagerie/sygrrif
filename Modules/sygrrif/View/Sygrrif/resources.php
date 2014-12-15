@@ -24,8 +24,8 @@
 			<thead>
 				<tr>
 					<td><a href="sygrrif/resources/id">ID</a></td>
-					<td><a href="sygrrif/resources/room_name">Nom</a></td>
-					<td><a href="sygrrif/resources/area_id">Domaine</a></td>
+					<td><a href="sygrrif/resources/room_name">Name</a></td>
+					<td><a href="sygrrif/resources/area_id">Area</a></td>
 					<td>Type</td>
 					<td>Category</td>
 					<td></td>

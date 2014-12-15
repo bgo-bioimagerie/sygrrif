@@ -30,7 +30,7 @@ class SyAuthorization extends Model {
 	}
 	public function addAuthorization($date, $user_id, $lab_id, $visa_id, $resource_id) {
 		$sql = "insert into sy_authorization(date, user_id, lab_id, visa_id, resource_id)" . " values(?,?,?,?,?)";
-		$user = $this->runRequest ( $sql, array (
+		$this->runRequest ( $sql, array (
 				$date,
 				$user_id,
 				$lab_id,
@@ -81,6 +81,12 @@ class SyAuthorization extends Model {
 					ORDER BY ". $sqlSort . ";";
 		$auth = $this->runRequest ( $sql );
 		return $auth->fetchAll ();
+	}
+	
+	public function getAuthorization($id){
+		$sql = "SELECT * from sy_authorization where id=?";
+		$auth = $this->runRequest ( $sql, array($id) );
+		return $auth->fetch();
 	}
 	
 	public function minimalStatistics($searchDate_start, $searchDate_end, $user_id, $unit_id, 

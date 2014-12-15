@@ -28,7 +28,7 @@
 	
 		<div class="page-header">
 			<h1>
-				Modifier tarif <br> <small></small>
+				Edit pricing <br> <small></small>
 			</h1>
 		</div>
 	
@@ -40,14 +40,14 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">nom</label>
+			<label for="inputEmail" class="control-label col-xs-2">Name</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name" value="<?= $this->clean($pricing['tarif_name'])?>"
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif unique</label>
+			<label for="inputEmail" class="control-label col-xs-2">Unique price</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_unique">
 						<?php $unique = $this->clean($pricing['tarif_unique']) ?>
@@ -57,7 +57,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif nuit</label>
+			<label for="inputEmail" class="control-label col-xs-2">Price night</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_nuit">
 					    <?php $tnuit = $this->clean($pricing['tarif_nuit']) ?>
@@ -67,7 +67,7 @@
 			</div>
 			<br></br>
 			<div class="col-xs-10 col-xs-offset-2">
-				<label for="inputEmail" class="control-label col-xs-3">début nuit</label>
+				<label for="inputEmail" class="control-label col-xs-3">Night beginning</label>
 				<div class="col-xs-2">
 				<select class="form-control col-xs-2" name="night_start">
 				    <?php $snight = $this->clean($pricing['night_start']) ?>
@@ -78,7 +78,7 @@
 					<OPTION value="22" <?php if ($snight==22){echo "selected=\"selected\"";}?>> 22h </OPTION>
 				</select>
 				</div>
-				<label for="inputEmail" class="control-label col-xs-3">fin nuit</label>
+				<label for="inputEmail" class="control-label col-xs-3">Night end</label>
 				<div class="col-xs-2">
 				<select class="form-control" name="night_end">
 				    <?php $enight = $this->clean($pricing['night_end']) ?>
@@ -91,7 +91,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif weekend</label>
+			<label for="inputEmail" class="control-label col-xs-2">Price weekend</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_we">
 					    <?php $tarif_we = $this->clean($pricing['tarif_we']) ?>
@@ -111,48 +111,48 @@
 			
 			?>
 			<div class="col-xs-10 col-xs-offset-2">
-				<label for="inputEmail" class="control-label col-xs-3">Jours weekend</label>
+				<label for="inputEmail" class="control-label col-xs-3">Weekend days</label>
 				<div class="col-xs-2">
 					<div class="checkbox">
     				<label>
     				    <?php $lundi = $list[0]; ?>
-      					<input type="checkbox" name="lundi" <?php if ($lundi==1){echo "checked";}?>> Lundi
+      					<input type="checkbox" name="lundi" <?php if ($lundi==1){echo "checked";}?>> Monday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $mardi = $list[1]; ?>
-      					<input type="checkbox" name="mardi" <?php if ($mardi==1){echo "checked";}?>> Mardi
+      					<input type="checkbox" name="mardi" <?php if ($mardi==1){echo "checked";}?>> Tuesday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     					<?php $mercredi = $list[2]; ?>
-      					<input type="checkbox" name="mercredi" <?php if ($mercredi==1){echo "checked";}?>> Mercredi
+      					<input type="checkbox" name="mercredi" <?php if ($mercredi==1){echo "checked";}?>> Wednesday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $jeudi = $list[3]; ?>
-      					<input type="checkbox" name="jeudi" <?php if ($jeudi==1){echo "checked";}?>> Jeudi
+      					<input type="checkbox" name="jeudi" <?php if ($jeudi==1){echo "checked";}?>> Thursday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $vendredi = $list[4]; ?>
-      					<input type="checkbox" name="vendredi" <?php if ($vendredi==1){echo "checked";}?>> Vendredi
+      					<input type="checkbox" name="vendredi" <?php if ($vendredi==1){echo "checked";}?>> Friday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $samedi = $list[5]; ?>
-      					<input type="checkbox" name="samedi" <?php if ($samedi==1){echo "checked";}?>> Samedi
+      					<input type="checkbox" name="samedi" <?php if ($samedi==1){echo "checked";}?>> Saturday
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $dimanche = $list[6]; ?>
-      					<input type="checkbox" name="dimanche" <?php if ($dimanche==1){echo "checked";}?>> Dimanche
+      					<input type="checkbox" name="dimanche" <?php if ($dimanche==1){echo "checked";}?>> Sunday
     				</label>
   					</div>
 				</div>

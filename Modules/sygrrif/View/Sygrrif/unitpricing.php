@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Tarifs par unité"?>
+<?php $this->title = "SyGRRiF pricing per unit"?>
 
 <?php echo $navBar?>
 <?php include "Modules/sygrrif/View/navbar.php"; ?>
@@ -9,7 +9,7 @@
 	
 		<div class="page-header">
 			<h1>
-				Tarifs par unité<br> <small></small>
+				Pricing per unit<br> <small></small>
 			</h1>
 		</div>
 
@@ -17,8 +17,8 @@
 			<thead>
 				<tr>
 				    <td>ID</td>
-					<td>Nom</td>
-					<td>Tarif</td>
+					<td>Name</td>
+					<td>Pricing</td>
 					<td></td>
 				</tr>
 			</thead>

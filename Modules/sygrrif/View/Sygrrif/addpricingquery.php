@@ -14,16 +14,16 @@
 		
 		<div class="page-header">
 			<h1>
-				Ajout tarif <br> <small></small>
+				Add pricing <br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Impossible d'ajouter le tarif</p>
+			<p> Unable to add the pricing</p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> Le tarif a été ajouté avec success !</p>
+			<p> The pricing has been successfully added !</p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">

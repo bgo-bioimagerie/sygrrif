@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF add pricing"?>
+<?php $this->title = "SyGRRiF edit pricing"?>
 
 <?php echo $navBar?>
 
@@ -14,16 +14,16 @@
 		
 		<div class="page-header">
 			<h1>
-				Associer tarif à une unité  <br> <small></small>
+				Associate a pricing to a unit  <br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Impossible de modifier le tarif</p>
+			<p> Unable to modify the pricing</p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> Le tarif a été modifier avec success !</p>
+			<p> The pricing has been successfully modified !</p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">

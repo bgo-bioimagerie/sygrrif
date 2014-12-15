@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF add pricing"?>
+<?php $this->title = "SyGRRiF edit pricing"?>
 
 <?php echo $navBar?>
 
@@ -27,11 +27,11 @@
 	
 		<div class="page-header">
 			<h1>
-				Associer tarif à une unité <br> <small></small>
+				Associate a pricing to a unit <br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">ID Unité</label>
+			<label for="inputEmail" class="control-label col-xs-2">ID Unit</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="id_unit" type="text" name="id_unit" value="<?= $this->clean($unitId)?>" readonly
 				/>
@@ -39,7 +39,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Nom Unité</label>
+			<label for="inputEmail" class="control-label col-xs-2">Name Unit</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="unit_name" type="text" name="unit_name" value="<?= $this->clean($unitName)?>" readonly
 				/>
@@ -48,7 +48,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Tarif</label>
+			<label for="inputEmail" class="control-label col-xs-2">Pricing</label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_pricing">
 						<?php 

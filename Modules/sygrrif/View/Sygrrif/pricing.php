@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Tarifs"?>
+<?php $this->title = "SyGRRiF pricing"?>
 
 <?php echo $navBar?>
 <?php include "Modules/sygrrif/View/navbar.php"; ?>
@@ -9,7 +9,7 @@
 	
 		<div class="page-header">
 			<h1>
-				Tarifs<br> <small></small>
+				Pricing<br> <small></small>
 			</h1>
 		</div>
 
@@ -17,10 +17,10 @@
 			<thead>
 				<tr>
 				    <td><a href="sygrrif/pricing/id">ID</a></td>
-					<td><a href="sygrrif/pricing/tarif_name">Nom</a></td>
-					<td><a href="sygrrif/pricing/tarif_unique">Tarif Unique</a></td>
-					<td><a href="sygrrif/pricing/tarif_night">Tarif Nuit</a></td>
-					<td><a href="sygrrif/pricing/tarif_we">Tarif Weekend</a></td>
+					<td><a href="sygrrif/pricing/tarif_name">Name</a></td>
+					<td><a href="sygrrif/pricing/tarif_unique">Unique price</a></td>
+					<td><a href="sygrrif/pricing/tarif_night">Price night</a></td>
+					<td><a href="sygrrif/pricing/tarif_we">Price weekend</a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -37,10 +37,10 @@
 				    <?php 
 				    	$unique = $this->clean ( $price ['tarif_unique'] );
 						if ($unique == 1){
-							echo "oui";
+							echo "yes";
 						}			  
 						else{
-							echo "non";
+							echo "no";
 						}  
 				    ?>
 				    </td>
@@ -50,12 +50,12 @@
 				    	$night = $this->clean ( $price ['tarif_night'] );
 						if ($night == 1){
 							?>
-							<p> Oui </p>
+							<p> yes </p>
 							<p> <?= $this->clean ( $price ['night_start']) ?>h - <?= $this->clean ( $price ['night_end']) ?>h </p>
 					 <?php 	
 						}			  
 						else{
-							echo "non";
+							echo "no";
 						}  
 				    ?>
 				    </td>
@@ -65,7 +65,7 @@
 				    	$we = $this->clean ( $price ['tarif_we'] );
 						if ($we == 1){
 						  ?>
-						  <p> Oui </p>
+						  <p> yes </p>
 						  <p>
 						  <?php 	
 						 	$jours = $this->clean ( $price ['choice_we'] );
@@ -83,7 +83,7 @@
 					<?php
 						}			  
 						else{
-							echo "non";
+							echo "no";
 						}  
 				    ?>
 				    </td>

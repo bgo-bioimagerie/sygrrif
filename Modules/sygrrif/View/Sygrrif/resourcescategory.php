@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Visa"?>
+<?php $this->title = "SyGRRiF resource categories"?>
 
 <?php echo $navBar?>
 <?php include "Modules/sygrrif/View/navbar.php"; ?>

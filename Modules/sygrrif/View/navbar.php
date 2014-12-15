@@ -41,48 +41,48 @@ legend {
 
 		<div class='col-md-4 well'>
 			<fieldset>
-				<legend>Tarification</legend>
+				<legend>Pricing</legend>
 				<p>
 					<button onclick="location.href='sygrrif/pricing'"
-						class="btn btn-link" id="navlink">Tarifs</button>
+						class="btn btn-link" id="navlink">Pricing</button>
 					<button onclick="location.href='sygrrif/addpricing'"
-						class="btn btn-link" id="navlink">Ajouter</button>
+						class="btn btn-link" id="navlink">Add</button>
 				</p>
 				<p>
 					<button onclick="location.href='sygrrif/unitpricing'"
-						class="btn btn-link" id="navlink">Tarifications/Unité</button>
+						class="btn btn-link" id="navlink">Pricing/Unit</button>
 					<button onclick="location.href='sygrrif/addunitpricing'"
-						class="btn btn-link" id="navlink">Ajouter</button>
+						class="btn btn-link" id="navlink">Add</button>
 				</p>
 			</fieldset>
 		</div>
 
 		<div class='col-md-4 well'>
 			<fieldset>
-				<legend>Ressources/utilisateurs</legend>
+				<legend>Resources/Users</legend>
 				<p>
 					<button onclick="location.href='sygrrif/resources'"
-						class="btn btn-link" id="navlink">Ressources</button>
+						class="btn btn-link" id="navlink">Resources</button>
 					<button onclick="location.href='sygrrif/addresource'"
-						class="btn btn-link" id="navlink">Ajouter</button>
+						class="btn btn-link" id="navlink">Add</button>
 				</p>
 				<p>
 					<button onclick="location.href='sygrrif/resourcescategory'"
-						class="btn btn-link" id="navlink">Catégories ressources</button>
+						class="btn btn-link" id="navlink">Resource categories</button>
 					<button onclick="location.href='sygrrif/addresourcescategory'"
-						class="btn btn-link" id="navlink">Ajouter</button>
+						class="btn btn-link" id="navlink">Add</button>
 				</p>
 				<p>
 					<button onclick="location.href='sygrrif/visa'"
 						class="btn btn-link" id="navlink">Visa</button>
 					<button onclick="location.href='sygrrif/addvisa'"
-						class="btn btn-link" id="navlink">Ajouter</button>
+						class="btn btn-link" id="navlink">Add</button>
 				</p>
 				<p>
 					<button onclick="location.href='sygrrif/authorizations'"
-						class="btn btn-link" id="navlink">Autorisations</button>
+						class="btn btn-link" id="navlink">Authorizations</button>
 					<button onclick="location.href='sygrrif/addauthorization'"
-						class="btn btn-link" id="navlink">Ajouter</button>
+						class="btn btn-link" id="navlink">Add</button>
 				</p>
 			</fieldset>
 		</div>
@@ -94,7 +94,7 @@ legend {
 					<button onclick="location.href='sygrrif/statistics'"
 						class="btn btn-link" id="navlink">Statistics Resources</button>
 					<button onclick="location.href='sygrrif/statpriceunits'"
-						class="btn btn-link" id="navlink">Statistics/pricing units</button>
+						class="btn btn-link" id="navlink">Statistics/pricing per unit</button>
 					<button onclick="location.href='sygrrif/statauthorizations'"
 						class="btn btn-link" id="navlink">Statistics authorizations</button>
 				</p>

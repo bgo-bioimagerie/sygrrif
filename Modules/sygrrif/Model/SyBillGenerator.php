@@ -312,6 +312,399 @@ class SyBillGenerator extends ModelGRR {
 		
 		
 		// /////////////////////////////////////////// //
+		//             xls output                      //
+		// /////////////////////////////////////////// //
+		// stylesheet
+		$styleTableHeader = array(
+				'font' => array(
+						'name' => 'Times',
+						'size' => 10,
+						'bold' => true,
+						'color' => array(
+								'rgb' => '000000'
+				  ),
+				),
+				'borders' => array(
+						'outline' => array(
+								'style' => PHPExcel_Style_Border::BORDER_THIN,
+								'color' => array(
+										'rgb' => '000000'),
+						),
+				),
+				'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'startcolor' => array(
+								'rgb' => 'C0C0C0',
+						),
+				),
+				'alignment' => array(
+						'wrap'       => false,
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				),
+		);
+		
+		$styleTableCell = array(
+		  'font' => array(
+			'name' => 'Times',
+			'size' => 10,
+			'bold' => false,
+			'color' => array(
+			  'rgb' => '000000'
+			  ),
+			),
+		 'alignment' => array(
+			'wrap'       => false,
+			'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+			),
+		  'borders' => array(
+		  'outline' => array(
+			'style' => PHPExcel_Style_Border::BORDER_THIN,
+			'color' => array(
+			  'rgb' => '000000'),
+			),
+		  ),	
+		);
+		$styleTableCellTotal = array(
+				'font' => array(
+						'name' => 'Times',
+						'size' => 10,
+						'bold' => true,
+						'color' => array(
+								'rgb' => 'ff0000'
+				  ),
+				),
+			 'alignment' => array(
+			 		'wrap'       => false,
+			 		'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				),
+				'borders' => array(
+						'outline' => array(
+								'style' => PHPExcel_Style_Border::BORDER_THIN,
+								'color' => array(
+										'rgb' => '000000'),
+						),
+				),
+				'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'startcolor' => array(
+								'rgb' => 'ffffff',
+						),
+				),
+		);
+		
+		// load the template
+		$file = "data/template.xls";
+		$XLSDocument = new PHPExcel_Reader_Excel5();
+		$objPHPExcel = $XLSDocument->load($file);
+		
+		// get the line where to insert the table
+		$insertLine = 0;
+		
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		foreach($rowIterator as $row) {
+			
+			$rowIndex = $row->getRowIndex ();
+			$num = $objPHPExcel->getActiveSheet()->getCell("A".$rowIndex)->getValue();
+			if (strpos($num,"{table}") !== false){
+				$insertLine = $rowIndex;
+				break;
+			}
+		}
+		
+		$curentLine = $insertLine; 
+		// Fill the pricing table
+		// table headers
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->mergeCells('A'.$curentLine.':F'.$curentLine);
+		
+		$titleTab = "";
+		if ($date_debut == $date_fin){
+			$titleTab = "Prestations du ".$date_debut."";
+		}
+		else{
+			$titleTab = "Prestations du ".$date_debut." au ".$date_fin."";
+		}
+
+		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $titleTab);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->getFont()->setBold(true);
+		
+		$curentLine++;
+		
+		// set the row
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()
+		->getRowDimension($curentLine)
+		->setRowHeight(25);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, "Equipement");
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Utilisateur");
+		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre de \n séances");
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Nombre \n d'heures");
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Tarif (€/h)");
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "Montant");
+		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		// table content
+		$honoraireTotal = 0;
+		for ($j = 0; $j < $numOfEquipement; $j++) {
+			
+			// tarif unique = tarif jour
+			if ($beneficiaire[0][$room[0][$j]][2] == 1){ 						// tarif unique = tarif jour
+				$jour = $room[3][$j];
+				$honoraire = $jour*$beneficiaire[0][$room[0][$j]][10];
+				$honoraireTotal += $honoraire;
+				$nBe = 0;
+				$nBeArray = array();
+				for ($p = 0; $p < count($people[0]); $p++) {
+					if ($beneficiaire[$p][$room[0][$j]][0] != 0){
+						$nBeArray[$nBe][0] = $people[0][$p].' '.$people[1][$p];
+						$nBeArray[$nBe][1] = $beneficiaire[$p][$room[0][$j]][0];
+						$nBeArray[$nBe][2] = $beneficiaire[$p][$room[0][$j]][1];
+						$nBeArray[$nBe][3] = $beneficiaire[0][$room[0][$j]][10];
+						$nBeArray[$nBe][4] = $beneficiaire[$p][$room[0][$j]][1]*$beneficiaire[$p][$room[0][$j]][10];
+						$nBe++;
+					}
+				}
+				// add the room
+				$curentLine++;
+				$roomspan = $nBe + $curentLine-1;
+				$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, $nBe);
+				$objPHPExcel->getActiveSheet()->mergeCells('A'.$curentLine.':A'.$roomspan);
+				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $room[1][$j]);
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableCell);
+				
+				for ($i = 0; $i < $nBe; $i++) {
+					$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, $nBeArray[$i][0]);
+					$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, $nBeArray[$i][1]);
+					$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, $nBeArray[$i][2]);
+					$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, $nBeArray[$i][3]);
+					$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($nBeArray[$i][4],2), 2, ',', ' '));
+					
+					$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableCell);
+					$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
+					$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
+					$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+					$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+					
+					if ($i<$nBe-1){
+						$curentLine++;
+					}
+				}	
+
+			// tarif jour + tarif nuit
+			} else {
+				/*
+				if (($beneficiaire[0][$room[0][$j]][3] == 1) && ($beneficiaire[0][$room[0][$j]][4] == 0)){			// tarif jour + tarif nuit
+					$jour = $room[4][$j]+$room[6][$j];
+					$nuit = $room[5][$j]+$room[7][$j];
+					$honoraire_jour = $jour*$beneficiaire[0][$room[0][$j]][10];
+					$honoraire_nuit = $nuit*$beneficiaire[0][$room[0][$j]][11];
+					$honoraireTotal += $honoraire_jour + $honoraire_nuit;
+					echo '<td class="resultat" style="width: 15%">'.$jour.' (Jour)<br/>'.$nuit.' (Nuit)</td>';
+					echo '<td class="resultat" style="width: 20%">'.$beneficiaire[0][$room[0][$j]][10].' (Jour)<br/>'.$beneficiaire[0][$room[0][$j]][11].' (Nuit)</td>';
+					echo '<td class="resultat" style="width: 20%">'.$honoraire_jour.'<br/>'.$honoraire_nuit.'</td>';
+				} else if (($beneficiaire[0][$room[0][$j]][3] == 0) && ($beneficiaire[0][$room[0][$j]][4] == 1)){	// tarif jour + tarif week-end
+					$semaine = $room[4][$j]+$room[5][$j];
+					$we = $room[6][$j]+$room[7][$j];
+					$honoraire_semaine = $semaine*$beneficiaire[0][$room[0][$j]][10];
+					$honoraire_we = $we*$beneficiaire[0][$room[0][$j]][12];
+					$honoraireTotal += $honoraire_semaine + $honoraire_we;
+					echo '<td class="resultat" style="width: 15%">'.$semaine.' (Semaine)<br/>'.$we.' (Week-end)</td>';
+					echo '<td class="resultat" style="width: 20%">'.$beneficiaire[0][$room[0][$j]][10].' (Semaine)<br/>'.$beneficiaire[0][$room[0][$j]][12].' (Week-end)</td>';
+					echo '<td class="resultat" style="width: 20%">'.$honoraire_semaine.'<br/>'.$honoraire_we.'</td>';
+				} else if (($beneficiaire[0][$room[0][$j]][3] == 1) && ($beneficiaire[0][$room[0][$j]][4] == 1)){ 	// tarif jour + tarif nuit + tarif week-end
+					$jour = $room[4][$j];
+					$nuit = $room[5][$j];
+					$we = $room[6][$j] + $room[7][$j];
+										
+					$nuitVrai = $room[9][$j];
+					$weVrai = $room[10][$j] + $room[11][$j];
+										
+					$honoraire_jour = $jour*$beneficiaire[0][$room[0][$j]][10];
+					$honoraire_nuit = $nuit*$beneficiaire[0][$room[0][$j]][11];
+					$honoraire_we = $we*$beneficiaire[0][$room[0][$j]][12];
+					$honoraireTotal += $honoraire_jour + $honoraire_nuit + $honoraire_we;
+										
+					$honoraire_nuitVrai = $nuitVrai*$beneficiaire[0][$room[0][$j]][11];
+					$honoraire_weVrai = $weVrai*$beneficiaire[0][$room[0][$j]][12];
+					$honoraireTotalVrai += $honoraire_jour + $honoraire_nuitVrai + $honoraire_weVrai;
+										
+					$nbTarif = 0;
+					if ($jour) {
+						$affichage[$nbTarif][0] = "Jour";
+						$affichage[$nbTarif][1] = number_format(round($jour,2), 2, ',', ' ');
+						$affichage[$nbTarif][2] = number_format(round($beneficiaire[0][$room[0][$j]][10],2), 2, ',', ' ');
+						$affichage[$nbTarif][3] = number_format(round($honoraire_jour,2), 2, ',', ' ');
+						$affichage[$nbTarif][4] = number_format(round($jour,2), 2, ',', ' ');
+						$nbTarif++;
+					}
+					if ($nuit) { 
+						$affichage[$nbTarif][0] = "Nuit";
+						$affichage[$nbTarif][1] = number_format(round($nuit,2), 2, ',', ' ');
+						$affichage[$nbTarif][2] = number_format(round($beneficiaire[0][$room[0][$j]][11],2), 2, ',', ' ');
+						$affichage[$nbTarif][3] = number_format(round($honoraire_nuit,2), 2, ',', ' ');
+						$affichage[$nbTarif][4] = number_format(round($nuitVrai,2), 2, ',', ' ');
+						$nbTarif++;
+					}
+					if ($we) { 
+						$affichage[$nbTarif][0] = "Week-end";
+						$affichage[$nbTarif][1] = number_format(round($we,2), 2, ',', ' ');
+						$affichage[$nbTarif][2] = number_format(round($beneficiaire[0][$room[0][$j]][12],2), 2, ',', ' ');
+						$affichage[$nbTarif][3] = number_format(round($honoraire_we,2), 2, ',', ' ');
+						$affichage[$nbTarif][4] = number_format(round($weVrai,2), 2, ',', ' ');
+						$nbTarif++;
+					}
+					echo '<tr>';
+					echo '<td class="resultat" style="width: 30%; border-bottom: 1px solid #000000; border-right: 1px solid #000000;" rowspan="'.$nbTarif.'">'.$room[1][$j].'</td>';
+					echo '<td class="resultat" style="width: 15%; border-bottom: 1px solid #000000; border-right: 1px solid #000000;" rowspan="'.$nbTarif.'">'.$room[2][$j].'</td>';
+					for ($n = 0; $n < $nbTarif; $n++) {
+						if ($n == 0){
+							if ($nbTarif == 1){
+								echo '<td class="resultat" style="width: 13%; border-bottom: 1px solid #000000;border-right: 1px solid #000000;">'.$affichage[$n][0].'</td>';
+								//echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000;border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].' ('.$affichage[$n][4].')</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000;border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000;border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][2].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][3].' €</td>';
+							} else{
+								echo '<td class="resultat" style="width: 13%; border-bottom: 1px dashed #000000;border-right: 1px solid #000000;">'.$affichage[$n][0].'</td>';
+								//echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000;border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].' ('.$affichage[$n][4].')</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000;border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000;border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][2].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][3].' €</td>';
+							}
+							echo '</tr>';
+						} else{
+							if (($n+1) == $nbTarif){
+								echo '<tr>';
+								echo '<td class="resultat" style="width: 13%; border-bottom: 1px solid #000000; border-right: 1px solid #000000;">'.$affichage[$n][0].'</td>';
+								//echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000; border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].' ('.$affichage[$n][4].')</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000; border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000; border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][2].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][3].' €</td>';
+								echo '</tr>';
+												
+							} else{
+								echo '<tr>';
+								echo '<td class="resultat" style="width: 13%; border-bottom: 1px dashed #000000; border-right: 1px solid #000000;">'.$affichage[$n][0].'</td>';
+								//echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000; border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].' ('.$affichage[$n][4].')</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000; border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][1].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000; border-right: 1px solid #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][2].'</td>';
+								echo '<td class="resultat" style="width: 14%; border-bottom: 1px dashed #000000; padding-right: 10px; text-align: right;">'.$affichage[$n][3].' €</td>';
+								echo '</tr>';
+							}
+						}
+					}
+				} else {
+					$jour = $room[3][$j];
+					$honoraire = $jour*$beneficiaire[0][$room[0][$j]][10];
+					echo '<td class="resultat" style="width: 15%">'.$jour.'</td>';
+					echo '<td class="resultat" style="width: 20%">'.$beneficiaire[0][$room[0][$j]][10].'</td>';
+					echo '<td class="resultat" style="width: 20%">'.$honoraire.'</td>';
+				}
+				*/
+			}
+		}
+		
+		// bilan
+		// total HT
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Total H.T.");
+		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." €");
+		
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+		
+		// frais de gestion
+		if ($people[4][0] != "31"){
+			$curentLine++;
+			$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Frais de gestion :10%");
+			$honoraireFrais = 0.1*$honoraireTotal;
+			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($honoraireFrais,2), 2, ',', ' ')." €");
+			
+			$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+			$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
+			$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+			
+			$curentLine++;
+			$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "");
+			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "----");
+				
+		
+			$curentLine++;
+			$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+			// total H.T.
+			$temp = "Total H.T.";
+			if ($people[4][0] != "31"){
+				$temp .= "\n (dont frais de gestion 10%)"; 
+				$objPHPExcel->getActiveSheet()
+				->getRowDimension($curentLine)
+				->setRowHeight(25);
+			}
+			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, $temp);
+			
+			if ($people[4][0] != "31"){
+				$honoraireFrais = 0.1*$honoraireTotal;
+				$honoraireTotal += $honoraireFrais;
+			}
+			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." €");
+			
+			$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+			$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
+			$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+		}
+		
+		// TVA 20p
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "T.V.A.:20%");
+		$honoraireTVA = 0.2*$honoraireTotal;
+		$honoraireTVA = number_format(round($honoraireTVA,2), 2, '.', ' ');
+		$honoraireTotal += $honoraireTVA;
+		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." €");
+		
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+		
+		// space
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "");
+		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "----");
+		
+		// TTC
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Total T.T.C.");
+		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." €");		
+
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCellTotal);
+		
+		// Save the xls file
+		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="bill.xls"');
+		header('Cache-Control: max-age=0');
+		$objWriter->save('php://output');
+		
+		/*
+		// /////////////////////////////////////////// //
 		//             pdf output                      //
 		// /////////////////////////////////////////// //
 		ob_start();
@@ -765,40 +1158,7 @@ class SyBillGenerator extends ModelGRR {
 		    $pdf->WriteHTML($content);
 		    $pdf->Output();
 			//$pdf->Output('facture.pdf','D');
-		
-		
-		
-		
-		
-		// ///////////////////////////////////////// //
-		//    Write the xls output file              //
-		// ///////////////////////////////////////// //
-		// create PHPExcel object
-		
-		
-		/*
-		$objPHPExcel = new PHPExcel;
-		$objSheet = $objPHPExcel->getActiveSheet();
-		
-		// columns size
-		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth('14.5');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth('7.2');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth('6.6');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth('13.9');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth('5.18');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth('9.77');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth('13.9');
-		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth('11.42');
-		
-		$objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
-		
-		//On enregistre les modifications et on met en téléchargement le fichier Excel obtenu
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="Facture.xlsx"');
-		header('Cache-Control: max-age=0');
-		$objWriter->save('php://output');
 		*/
-		
 	
 	}
 

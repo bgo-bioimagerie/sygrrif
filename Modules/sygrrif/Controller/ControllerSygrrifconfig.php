@@ -71,9 +71,47 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			}
 		}
 		
+		// set bill template section
+		$templatequery = $this->request->getParameterNoException ( "templatequery");
+		$templateMessage = "";
+		if ($templatequery == "yes"){
+			$templateMessage = $this->uploadTemplate();
+		}
+		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				                     'isSygrrifMenu' => $isSygrrifMenu
+				                     'isSygrrifMenu' => $isSygrrifMenu,
+				                     'templateMessage' => $templateMessage
 		) );
+	}
+	
+	public function uploadTemplate(){
+		$target_dir = "data/";
+		$target_file = $target_dir . "template.xls";
+		$uploadOk = 1;
+		$imageFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
+
+		// Check file size
+		if ($_FILES["fileToUpload"]["size"] > 500000000) {
+			return "Error: your file is too large.";
+			$uploadOk = 0;
+		}
+		// Allow certain file formats
+		if($imageFileType != "xls") {
+			return "Error: only xls files are allowed.";
+			$uploadOk = 0;
+		}
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+			return  "Error: your file was not uploaded.";
+			// if everything is ok, try to upload file
+		} else {
+			if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+				return  "The file template file". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+			} else {
+				return "Error, there was an error uploading your file.";
+			}
+		}
+	
 	}
 }

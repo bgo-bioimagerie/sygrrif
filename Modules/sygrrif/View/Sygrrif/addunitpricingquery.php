@@ -14,16 +14,16 @@
 		
 		<div class="page-header">
 			<h1>
-				Associer tarif à une unité <br> <small></small>
+				Associate a pricing to a unit <br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Impossible d'associer le tarif à l'unité</p>
+			<p> Unable to associate the pricing with the unit</p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> Le tarif a été associé à l'unité avec success !</p>
+			<p> The pricing has been successfully associated to the unit !</p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">

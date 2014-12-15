@@ -59,7 +59,7 @@ class SyResourcePricing extends Model {
 		$sql = "select price_day, price_night, price_we from sy_j_resource_pricing where id_resource=? AND id_pricing=?";
 		$user = $this->runRequest($sql, array($id_ressource, $id_pricing));
 		if ($user->rowCount() == 1){
-			return $user->fetch()[0];
+			return $user->fetch();
 		}
 		else{
 			return array('price_day' => 0, 'price_night' => 0, 'price_we' => 0);

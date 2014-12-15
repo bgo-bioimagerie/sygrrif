@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Database" ?>
+<?php $this->title = "SyGRRiF statisics" ?>
 
 <?php echo $navBar ?>
 
@@ -28,9 +28,9 @@
 <!-- Plot the curve number reservations in a year -->
 <!-- -------------------------------------------- -->
 <?php
-$titre = '<text x="375" y="30" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">Bilan annuel du nombre de réservations de la plate-forme ' . Configuration::get("name") . '</text>';
-$stat = '<text x="670" y="110" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">Année ' . $annee . '</text>';
-$stat .= '<text x="670" y="130" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">Nombre de réservations : ' . $numTotal . '</text>';
+$titre = '<text x="375" y="30" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">Annual review of the number of reservations of ' . Configuration::get("name") . '</text>';
+$stat = '<text x="670" y="110" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">Year ' . $annee . '</text>';
+$stat .= '<text x="670" y="130" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">Reservations number : ' . $numTotal . '</text>';
 
 $m = max ( $graph );
 if ($m == 0) {
@@ -92,7 +92,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		$gAnnee .= '<text x="650" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Déc.</text>';
 		$gAnnee .= '</g>';
 		$gAnnee .= '<g>';
-		$gAnnee .= '<text x="60" y="175" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle" baseline-shift="-0.5ex" transform="rotate(-90,60,175)">Nombre de réservations</text>';
+		$gAnnee .= '<text x="60" y="175" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle" baseline-shift="-0.5ex" transform="rotate(-90,60,175)">Reservations number</text>';
 		$gAnnee .= $axeY;
 		$gAnnee .= '</g>';
 		$gAnnee .= $points;

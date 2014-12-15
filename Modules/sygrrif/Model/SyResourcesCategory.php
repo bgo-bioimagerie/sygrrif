@@ -200,7 +200,7 @@ class SyResourcesCategory extends Model {
 	}
 	
 	public function updateJResourceCategory($id_resource, $id_category){
-		$sql = "update sy_j_resource_category set id_category=? where id_resource id=?";
+		$sql = "update sy_j_resource_category set id_category=? where id_resource=?";
 		$unit = $this->runRequest($sql, array($id_category, $id_resource));
 	}
 	
