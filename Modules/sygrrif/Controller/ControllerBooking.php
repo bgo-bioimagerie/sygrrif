@@ -3,25 +3,25 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 
-class ControllerBooking extends ControllerSecureNav {
+abstract class ControllerBooking extends ControllerSecureNav {
 
-	//private $billet;
-	public function __construct() {
-		//$this->billet = new Billet ();
-	}
-
-	// Affiche la liste de tous les billets du blog
-	public function index() {
-		$this->redirect("booking", "day");
+	public function calendarMenuData($curentAreaId, $curentResourceId, $curentDate){
+	
+		$modelArea = new SyArea();
+		$areas = $modelArea->getAreasIDName();
+	
+		$modelResource = new SyResource();
+		$resources = $modelResource->resourceIDNameForArea($curentAreaId);
+	
+		return array('areas' => $areas, 'resources' => $resources,
+				'curentAreaId' => $curentAreaId, 
+				'curentResourceId' => $curentResourceId, 
+				'curentDate' => $curentDate
+		);
 	}
 	
-	public function day(){
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar
-		) );
-	}
 	
+	/*
 	public function week() {
 	
 		$buttonId = "";
@@ -54,4 +54,5 @@ class ControllerBooking extends ControllerSecureNav {
 				't' => $t
 		) );
 	}
+	*/
 }

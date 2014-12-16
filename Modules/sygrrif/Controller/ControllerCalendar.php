@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Controller/ControllerSecureNav.php';
+require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/sygrrif/Model/SyResourceType.php';
@@ -10,14 +10,8 @@ require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 
-class ControllerCalendar extends ControllerSecureNav {
+class ControllerCalendar extends ControllerBooking {
 
-	//private $billet;
-	public function __construct() {
-		//$this->billet = new Billet ();
-	}
-
-	// Affiche la liste de tous les billets du blog
 	public function index() {
 		
 	}
@@ -191,4 +185,20 @@ class ControllerCalendar extends ControllerSecureNav {
 		
 		$this->redirect("sygrrif", "resources");
 	}
+	
+	public function day(){
+		
+		$curentAreaId = 1;
+		$curentResource = 1;
+		$curentDate = date("Y-m-d", time());
+		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'menuData' => $menuData
+		) );
+	}
+	
 }
