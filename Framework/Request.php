@@ -1,6 +1,5 @@
 <?php
 require_once 'Session.php';
-
 /**
  * Class defining a request.
  *
@@ -90,4 +89,3 @@ class Request {
 		}
 	}
 }
-

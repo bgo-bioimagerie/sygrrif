@@ -32,8 +32,12 @@
 			</h1>
 		</div>
 	
-		<input class="form-control" id="id" type="hidden"  name="id" value="<?= $visa['id']?>" />
-	
+		<div class="form-group">
+		<label for="inputEmail" class="control-label col-xs-2">ID</label>
+			<div class="col-xs-10">
+			<input class="form-control" id="id" type="text"  name="id" value="<?= $visa['id']?>" readonly/>
+		</div>
+		</div>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Name</label>
 			<div class="col-xs-10">
@@ -45,7 +49,7 @@
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='visa'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>
 	</div>

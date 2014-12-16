@@ -76,12 +76,16 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		$templateMessage = "";
 		if ($templatequery == "yes"){
 			$templateMessage = $this->uploadTemplate();
+			$this->generateView ( array ('navBar' => $navBar,
+					'isSygrrifMenu' => $isSygrrifMenu,
+					'templateMessage' => $templateMessage
+			) );
+			return;
 		}
 		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				                     'isSygrrifMenu' => $isSygrrifMenu,
-				                     'templateMessage' => $templateMessage
+				                     'isSygrrifMenu' => $isSygrrifMenu
 		) );
 	}
 	

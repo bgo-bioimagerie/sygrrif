@@ -24,10 +24,11 @@
 			<thead>
 				<tr>
 					<td><a href="sygrrif/resources/id">ID</a></td>
-					<td><a href="sygrrif/resources/room_name">Name</a></td>
-					<td><a href="sygrrif/resources/area_id">Area</a></td>
-					<td>Type</td>
-					<td>Category</td>
+					<td><a href="sygrrif/resources/name">Name</a></td>
+					<td><a href="sygrrif/resources/description">description</a></td>
+					<td><a href="sygrrif/resources/area_name">Area</a></td>
+					<td><a href="sygrrif/resources/type_name">Type</a></td>
+					<td><a href="sygrrif/resources/category_name">Category</a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -36,12 +37,13 @@
 				<tr>
 					<?php $resourceId = $this->clean ( $resource ['id'] ); ?>
 					<td><?= $resourceId ?></td>
-				    <td><?= $this->clean ( $resource ['room_name'] ); ?></td>
-				    <td><?= $this->clean ( $resource ['area'] ); ?></td>
+				    <td><?= $this->clean ( $resource ['name'] ); ?></td>
+				    <td><?= $this->clean ( $resource ['description'] ); ?></td>
+				    <td><?= $this->clean ( $resource ['area_name'] ); ?></td>
 				    <td><?= $this->clean ( $resource ['type_name'] ); ?></td>
-				    <td><?= $this->clean ( $resource ['name_category'] ); ?></td>
-				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editresource/<?= $resourceId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				    <td><?= $this->clean ( $resource ['category_name'] ); ?></td>
+				    <td>	
+				      <button type='button' onclick="location.href='<?= $resource ["controller"]."/".$resource ["edit_action"]."/".$resourceId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

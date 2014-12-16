@@ -20,7 +20,9 @@
 
 <br>
 <div class="container">
-	<div class="col-md-8 col-md-offset-2">
+	<div class="col-md-6 col-md-offset-3">
+	<form role="form" class="form-horizontal" action="sygrrif/addresource"
+		method="post">
 	
 		<div class="page-header">
 				<h1>
@@ -28,9 +30,24 @@
 				</h1>
 		</div>
 	
-		<div class="text-center">
-			<button type="button" onclick="location.href='sygrrif/addresourcecalendar'" class="btn btn-default" id="navlink">Calendar</button>
-			<button type="button" onclick="location.href='sygrrif/addresourcequantity'" class="btn btn-default" id="navlink">Unitary</button>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-3">Resource type</label>
+			<div class="col-xs-9">
+					<select class="form-control" name="resource_type">
+					<?php 
+					    foreach ($resourcesTypes as $type){
+					          $typename = $this->clean( $type['name']  );
+					          $typeId = $this->clean( $type['id'] );
+					    ?>
+						<OPTION value="<?= $typeId ?>" > <?= $typename ?> </OPTION>
+					<?php } ?>
+				</select>
+			</div>
+		</div>
+		<br></br>
+		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		        <button type="button" onclick="location.href='resources'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="Next" />
 		</div>
 	</div>
 </div>

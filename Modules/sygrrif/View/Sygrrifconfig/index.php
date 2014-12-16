@@ -96,21 +96,23 @@
 		</div>
 		
 		<?php 
-		if ($templateMessage != ""){
-			if ( strpos($templateMessage,'Error') !== false){
-				?>
-				<div class="alert alert-danger">
-			<?php 
-			} 
-			else{
-			?>	
-			    <div class="alert alert-info">
-			<?php 
-			    
-			}?>
-				<p><?= $templateMessage ?></p>
-				</div>
+		if (isset($templateMessage)){
+			if ($templateMessage != ""){
+				if ( strpos($templateMessage,'Error') !== false){
+					?>
+					<div class="alert alert-danger">
 				<?php 
+				} 
+				else{
+				?>	
+				    <div class="alert alert-info">
+				<?php 
+				    
+				}?>
+					<p><?= $templateMessage ?></p>
+					</div>
+					<?php 
+			}
 		}
 		?>
 			

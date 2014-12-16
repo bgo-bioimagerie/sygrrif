@@ -39,55 +39,57 @@ legend {
 	<div class="container">
 		<h1>SyGRRif</h1>
 
-		<div class='col-md-4 well'>
+		
+		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Pricing</legend>
-				<p>
-					<button onclick="location.href='sygrrif/pricing'"
-						class="btn btn-link" id="navlink">Pricing</button>
-					<button onclick="location.href='sygrrif/addpricing'"
+				<legend>Area and Resources</legend>
+					<button onclick="location.href='sygrrif/areas'"
+						class="btn btn-link" id="navlink">Areas</button>
+					<button onclick="location.href='sygrrif/addarea'"
 						class="btn btn-link" id="navlink">Add</button>
-				</p>
-				<p>
-					<button onclick="location.href='sygrrif/unitpricing'"
-						class="btn btn-link" id="navlink">Pricing/Unit</button>
-					<button onclick="location.href='sygrrif/addunitpricing'"
-						class="btn btn-link" id="navlink">Add</button>
-				</p>
-			</fieldset>
-		</div>
-
-		<div class='col-md-4 well'>
-			<fieldset>
-				<legend>Resources/Users</legend>
-				<p>
-					<button onclick="location.href='sygrrif/resources'"
-						class="btn btn-link" id="navlink">Resources</button>
-					<button onclick="location.href='sygrrif/addresource'"
-						class="btn btn-link" id="navlink">Add</button>
-				</p>
-				<p>
+				<br/>
 					<button onclick="location.href='sygrrif/resourcescategory'"
 						class="btn btn-link" id="navlink">Resource categories</button>
 					<button onclick="location.href='sygrrif/addresourcescategory'"
 						class="btn btn-link" id="navlink">Add</button>
-				</p>
-				<p>
+				<br/>
+					<button onclick="location.href='sygrrif/resources'"
+						class="btn btn-link" id="navlink">Resources</button>
+					<button onclick="location.href='sygrrif/addresource'"
+						class="btn btn-link" id="navlink">Add</button>
+
+			</fieldset>
+		</div>
+		<div class='col-md-3 well'>
+			<fieldset>
+				<legend>Users Authorizations</legend>
 					<button onclick="location.href='sygrrif/visa'"
 						class="btn btn-link" id="navlink">Visa</button>
 					<button onclick="location.href='sygrrif/addvisa'"
 						class="btn btn-link" id="navlink">Add</button>
-				</p>
-				<p>
+				<br/>
 					<button onclick="location.href='sygrrif/authorizations'"
 						class="btn btn-link" id="navlink">Authorizations</button>
 					<button onclick="location.href='sygrrif/addauthorization'"
 						class="btn btn-link" id="navlink">Add</button>
-				</p>
+			</fieldset>
+		</div>
+		<div class='col-md-3 well'>
+			<fieldset>
+				<legend>Pricing</legend>
+					<button onclick="location.href='sygrrif/pricing'"
+						class="btn btn-link" id="navlink">Pricing</button>
+					<button onclick="location.href='sygrrif/addpricing'"
+						class="btn btn-link" id="navlink">Add</button>
+				<br/>
+					<button onclick="location.href='sygrrif/unitpricing'"
+						class="btn btn-link" id="navlink">Pricing/Unit</button>
+					<button onclick="location.href='sygrrif/addunitpricing'"
+						class="btn btn-link" id="navlink">Add</button>
 			</fieldset>
 		</div>
 
-		<div class='col-md-4 well'>
+		<div class='col-md-3 well'>
 			<fieldset>
 				<legend>Export</legend>
 				<p>

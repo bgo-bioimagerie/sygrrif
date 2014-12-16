@@ -3,12 +3,14 @@
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
-require_once 'Modules/sygrrif/Model/SyResourceTypeGRR.php';
+require_once 'Modules/sygrrif/Model/SyResourceType.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
+require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
+require_once 'Modules/sygrrif/Model/SyArea.php';
 
 /**
  * Class defining methods to install and initialize the sygrrif database
@@ -33,10 +35,13 @@ class SyInstall extends Model {
 		$SyResourceModel = new SyResource();
 		$SyResourceModel->createTable();
 		
+		$syResourceCalendar = new SyResourceCalendar();
+		$syResourceCalendar->createTable();
+		
 		$syResourcesCategoryModel = new SyResourcesCategory();
 		$syResourcesCategoryModel->createTable();
 		
-		$SyResourceTypeGRRModel = new SyResourceTypeGRR();
+		$SyResourceTypeGRRModel = new SyResourceType();
 		$SyResourceTypeGRRModel->createTable();
 		$SyResourceTypeGRRModel->createDefaultTypes();
 		
@@ -49,6 +54,9 @@ class SyInstall extends Model {
 		
 		$SyAuthorization = new SyAuthorization();
 		$SyAuthorization->createTable();
+		
+		$SyArea = new SyArea();
+		$SyArea->createTable();
 	}
 }
 	
