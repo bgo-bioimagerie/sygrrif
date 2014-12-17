@@ -35,7 +35,7 @@ class SyBillGenerator extends ModelGRR {
 		$req = $this->runRequest($sql);
 		$tarif_overload = $req->fetchAll();
 		
-		// respondible fullname
+		// responsible fullname
 		$modelUser = new User();
 		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
 		
@@ -627,7 +627,7 @@ class SyBillGenerator extends ModelGRR {
 		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
 		
 		// frais de gestion
-		if ($people[4][0] != "31"){
+		if ($people[4][0] != "1"){
 			$curentLine++;
 			$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Frais de gestion :10%");
@@ -648,7 +648,7 @@ class SyBillGenerator extends ModelGRR {
 			$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 			// total H.T.
 			$temp = "Total H.T.";
-			if ($people[4][0] != "31"){
+			if ($people[4][0] != "1"){
 				$temp .= "\n (dont frais de gestion 10%)"; 
 				$objPHPExcel->getActiveSheet()
 				->getRowDimension($curentLine)
@@ -656,7 +656,7 @@ class SyBillGenerator extends ModelGRR {
 			}
 			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, $temp);
 			
-			if ($people[4][0] != "31"){
+			if ($people[4][0] != "1"){
 				$honoraireFrais = 0.1*$honoraireTotal;
 				$honoraireTotal += $honoraireFrais;
 			}

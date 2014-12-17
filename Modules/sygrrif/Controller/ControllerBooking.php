@@ -13,7 +13,8 @@ abstract class ControllerBooking extends ControllerSecureNav {
 		$modelResource = new SyResource();
 		$resources = $modelResource->resourceIDNameForArea($curentAreaId);
 	
-		return array('areas' => $areas, 'resources' => $resources,
+		return array('areas' => $areas, 
+				'resources' => $resources,
 				'curentAreaId' => $curentAreaId, 
 				'curentResourceId' => $curentResourceId, 
 				'curentDate' => $curentDate

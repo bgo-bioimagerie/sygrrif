@@ -46,6 +46,15 @@ class SyResource extends Model {
 		else
 			return false;
 	}
+	
+	public function getAreaID($id){
+		$sql = "select area_id from sy_resources where id=?";
+		$req = $this->runRequest($sql, array($id));
+		if ($req->rowCount() == 1)
+			return $req->fetch()[0];
+		else
+			return false;
+	}
 
 	public function editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id){
 		$sql = "update sy_resources set name=?, description=?, accessibility_id=?, type_id=?, area_id=?,
@@ -98,13 +107,24 @@ class SyResource extends Model {
 	
 	public function resource($id){
 		$sql = "select * from sy_resources where id=?";
-		$data = $this->runRequest($sql, array($id));
-		return $data->fetch();
+		$req = $this->runRequest($sql, array($id));
+		if ($req->rowCount() == 1)
+			return $req->fetch();
+		else
+			return 0;
 	}
 	
 	public function resourceIDNameForArea($areaId){
 		$sql = "select id, name from sy_resources where area_id=?";
 		$data = $this->runRequest($sql, array($areaId));
 		return $data->fetchAll();
+	}
+	public function getResourceType($id){
+		$sql = "select type_id from sy_resources where id=?";
+		$req = $this->runRequest($sql, array($id));
+		if ($req->rowCount() == 1)
+			return $req->fetch()[0];
+		else
+			return 0;
 	}
 }

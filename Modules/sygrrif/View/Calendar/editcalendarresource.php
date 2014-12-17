@@ -234,10 +234,7 @@
 				<?php $size_bloc_resa = $this->clean($size_bloc_resa)?>
 					<OPTION value="900" <?php  if ($size_bloc_resa == 900){echo "selected=\"selected\"";}?> > 15min </OPTION>
 					<OPTION value="1800" <?php  if ($size_bloc_resa == 1800){echo "selected=\"selected\"";}?> > 30min </OPTION>
-					<OPTION value="2700" <?php  if ($size_bloc_resa == 2700){echo "selected=\"selected\"";}?> > 45min </OPTION>
 					<OPTION value="3600" <?php  if ($size_bloc_resa == 3600){echo "selected=\"selected\"";}?> > 1h </OPTION>
-					<OPTION value="5400" <?php  if ($size_bloc_resa == 5400){echo "selected=\"selected\"";}?> > 1h30 </OPTION>
-					<OPTION value="7200" <?php  if ($size_bloc_resa == 7200){echo "selected=\"selected\"";}?> > 2h </OPTION>
 				</select>
 			</div>
 		</div>	

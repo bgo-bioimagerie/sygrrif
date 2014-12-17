@@ -17,10 +17,11 @@
 </head>
 
 
-<?php include "Modules/sygrrif/View/Calendar/navbar.php"; ?>
+<?php include "Modules/sygrrif/View/bookingnavbar.php"; ?>
 
+<br></br>
 <p>
-ADD HERE THE CALENDAR
+This is the booking home page
 </p>
 
 

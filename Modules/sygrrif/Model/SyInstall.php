@@ -11,6 +11,7 @@ require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
+require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 
 /**
  * Class defining methods to install and initialize the sygrrif database
@@ -57,6 +58,9 @@ class SyInstall extends Model {
 		
 		$SyArea = new SyArea();
 		$SyArea->createTable();
+		
+		$syCalendarEntry = new SyCalendarEntry();
+		$syCalendarEntry->createTable();
 	}
 }
 	

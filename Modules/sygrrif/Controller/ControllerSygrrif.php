@@ -3,7 +3,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
-require_once 'Modules/core/Controller/ControllerSecureNav.php';
+require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyInstall.php';
@@ -17,7 +17,7 @@ require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResourceType.php';
 
-class ControllerSygrrif extends ControllerSecureNav {
+class ControllerSygrrif extends ControllerBooking {
 
 	public function __construct() {
 	}
@@ -892,6 +892,54 @@ class ControllerSygrrif extends ControllerSecureNav {
 		echo 	"Nomber of new user :" . $msData["new_people"] . "\n";
 		
 	}
-		
+	
+	public function booking(){
 
+		$id_resource = $this->request->getParameterNoException('id_resource');
+
+		
+		if ($id_resource == "" || $id_resource == 0){ // booking home page
+			
+			$menuData = $this->calendarMenuData(1, 0, date("Y-m-d", time()));
+			$navBar = $this->navBar();
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'menuData' => $menuData
+					) );
+		}
+		else{ // redirect to the resource page
+			// redirect given the resource type
+			$modelRes = new SyResource();
+			$idType = $modelRes->getResourceType($id_resource);
+			
+			$modelType = new SyResourceType();
+			$typInfo = $modelType->getType($idType);
+			
+			// call the controller like the rooter does
+			$controller = ucfirst ( strtolower ( $typInfo['controller'] ) );
+			$classController = "Controller" . $controller;
+			
+			$modulesNames = Configuration::get("modules");
+			$count = count($modulesNames);
+			
+			$controllerFound = false;
+			for($i = 0; $i < $count; $i++) {
+				$fileController = 'Modules/' . $modulesNames[$i] . "/Controller/" . $classController . ".php";
+				if (file_exists($fileController)){
+					// Instantiate controler
+					$controllerFound = true;
+					require ($fileController);
+					$controller = new $classController ();
+					$controller->setRequest ( $this->request );
+				}
+			}
+			if (!$controllerFound){
+				throw new Exception ( "Unable to find the file '$fileController' " );
+			}
+			
+			// call the action
+			$actionName = $typInfo['book_action'];	
+			$controller->runAction($actionName);
+		}
+	}
 }

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Framework/Controller.php';
+require_once 'Modules/core/Model/User.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
@@ -9,6 +10,9 @@ require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
+require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
+require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
+require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 
 class ControllerCalendar extends ControllerBooking {
 
@@ -186,19 +190,176 @@ class ControllerCalendar extends ControllerBooking {
 		$this->redirect("sygrrif", "resources");
 	}
 	
-	public function day(){
+	public function book(){
 		
-		$curentAreaId = 1;
-		$curentResource = 1;
-		$curentDate = date("Y-m-d", time());
+		$curentResource = $this->request->getParameterNoException('id_resource');
+		$curentAreaId = $this->request->getParameterNoException('id_area');
+		$curentDate = $this->request->getParameterNoException('curentDate');
+		
+		if ($curentAreaId == ""){
+			$curentResource = $_SESSION['id_resource'];
+			$curentAreaId = $_SESSION['id_area'];
+			$curentDate = $_SESSION['curentDate'];
+		}
+		
 		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+		
+		// save the menu info in the session
+		$_SESSION['id_resource'] = $curentResource;
+		$_SESSION['id_area'] = $curentAreaId;
+		$_SESSION['curentDate'] = $curentDate;
+		
+		// get the resource info
+		$modelRescal = new SyResourceCalendar();
+		$resourceInfo = $modelRescal->resource($curentResource);
+		
+		$modelRes = new SyResource();
+		$resourceBase = $modelRes->resource($curentResource);
+		
+		// get the entries for this resource
+		$modelEntries = new SyCalendarEntry();
+		$calEntries = $modelEntries->getEntriesForDayAndResource($curentDate, $curentResource);
+		
+		// curentdate unix
+		$temp = explode("-", $curentDate);
+		$curentDateUnix = mktime(0,0,0,$temp[1], $temp[2], $temp[0]);
 		
 		// view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'menuData' => $menuData
+				'menuData' => $menuData,
+				'resourceInfo' => $resourceInfo,
+				'resourceBase' => $resourceBase,
+				'date' => $curentDate,
+				'date_unix' => $curentDateUnix,
+				'calEntries' => $calEntries
 		) );
 	}
 	
+	public function editReservation(){
+		
+		// get the action
+		$action = '';
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$action = $this->request->getParameter ( "actionid" );
+		}
+		$contentAction = explode("_", $action);
+		
+		// get the menu info
+		$id_resource = $this->request->getSession()->getAttribut('id_resource');
+		$id_area = $this->request->getSession()->getAttribut('id_area');
+		$curentDate = $this->request->getSession()->getAttribut('curentDate');
+		
+		// get the resource info
+		$modelRescal = new SyResourceCalendar();
+		$resourceInfo = $modelRescal->resource($id_resource);
+		$modelRes = new SyResource();
+		$resourceBase = $modelRes->resource($id_resource);
+		
+		// get users list
+		$modelUser = new User();
+		$users = $modelUser->getUsers("Name");
+		
+		$curentuserid = $this->request->getSession()->getAttribut("id_user");
+		$curentuser = $modelUser->userAllInfo($curentuserid);
+		
+		// navigation
+		$navBar = $this->navBar();
+		$menuData = $this->calendarMenuData($id_area, $id_resource, $curentDate);
+		
+		// set the view given the action		
+		if ($contentAction[0] == "t"){ // add resa 
+			$beginTime = $contentAction[1];
+			$h = floor($beginTime);
+			$m = $beginTime - $h;
+			if ($m == 0.25){$m=15;}
+			if ($m == 0.5){$m=30;}
+			if ($m == 0.75){$m=45;}
+			$timeBegin = array('h'=> $h, 'm' => $m);
+			$timeEnd = array('h'=> $h, 'm' => $m);
+			
+			// view
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'menuData' => $menuData,
+					'resourceInfo' => $resourceInfo,
+					'resourceBase' => $resourceBase,
+					'date' => $curentDate,
+					'timeBegin' => $timeBegin,
+					'timeEnd' => $timeEnd,
+					'users' => $users,
+					'curentuser' => $curentuser
+			) );
+		}
+		else{ // edit resa
+			$reservation_id = $contentAction[1];
+			
+			$modelResa = new SyCalendarEntry();
+			$reservationInfo = $modelResa->getEntry($reservation_id);
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'menuData' => $menuData,
+					'resourceInfo' => $resourceInfo,
+					'resourceBase' => $resourceBase,
+					'date' => $curentDate,
+					'users' => $users,
+					'curentuser' => $curentuser,
+					'reservationInfo' => $reservationInfo
+					
+			) );
+		}
+		
+	}
+	
+	public function editreservationquery(){
+		
+		// get reservation info
+		$reservation_id = $this->request->getParameter('reservation_id');
+		$resource_id = $this->request->getParameter('resource_id');
+		$booked_by_id = $this->request->getSession()->getAttribut("id_user");
+		$recipient_id = $this->request->getParameter('recipient_id');
+		$last_update = date("Y-m-d H:i:s", time());
+		$color_type_id = 1; /// @todo add this parameter 1=default
+		$short_description = $this->request->getParameter('short_description');
+		$full_description = $this->request->getParameter('full_description');
+		
+		// get reservation date
+		$beginDate = $this->request->getParameter('begin_date');
+		$beginDate = explode("-", $beginDate);
+		$begin_hour =  $this->request->getParameter('begin_hour');
+		$begin_min = $this->request->getParameter('begin_min');
+		$start_time = mktime($begin_hour, $begin_min, 0, $beginDate[1], $beginDate[2], $beginDate[0]);
+		
+		$endDate = $this->request->getParameter('end_date');
+		$endDate = explode("-", $endDate);
+		$end_hour =  $this->request->getParameter('end_hour');
+		$end_min = $this->request->getParameter('end_min');
+		$end_time = mktime($end_hour, $end_min, 0, $endDate[1], $endDate[2], $endDate[0]);
+		
+		$modelCalEntry = new SyCalendarEntry();
+		
+		// @todo test if a resa already exists on this periode
+		
+		
+		if ($reservation_id == ""){
+			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+									 $last_update, $color_type_id, $short_description, $full_description);
+		}
+		else{
+			$modelCalEntry->updateEntry($reservation_id, $start_time, $end_time, $resource_id, $booked_by_id, 
+					                   $recipient_id, $last_update, $color_type_id, $short_description, 
+					                   $full_description);
+		}
+		
+		$_SESSION['id_resource'] = $resource_id;
+		$modelResource = new SyResource();
+		$areaID = $modelResource->getAreaID($resource_id);
+		$_SESSION['id_area'] = $areaID;
+		$date = $this->request->getParameter('begin_date');
+		echo "DATE = " .  $date . "--";
+		$_SESSION['curentDate'] = $date;
+		
+		$this->redirect("calendar", "book");
+	}
 }
