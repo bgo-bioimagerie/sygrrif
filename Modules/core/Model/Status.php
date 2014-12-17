@@ -33,6 +33,9 @@ class Status extends Model {
 	 */
 	public function createDefaultStatus(){
 		
+		$sql = 'INSERT INTO `core_status` (`name`) VALUES("visitor")';
+		$pdo = $this->runRequest($sql);
+		
 		$sql = 'INSERT INTO `core_status` (`name`) VALUES("user")';
 		$pdo = $this->runRequest($sql);
 

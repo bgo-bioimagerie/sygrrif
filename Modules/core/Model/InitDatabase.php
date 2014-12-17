@@ -20,7 +20,6 @@ class InitDatabase extends Model {
 	 * @return boolean True if the base is created successfully
 	 */
 	public function createDatabase(){
-		echo "call init database";
 		
 		$modulesModel = new ModulesManager();
 		$modulesModel->createTable();

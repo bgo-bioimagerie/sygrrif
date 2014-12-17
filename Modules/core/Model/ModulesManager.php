@@ -37,19 +37,14 @@ class ModulesManager extends Model {
 	}
 	
 	public function addCoreDefaultMenus(){
-		if (!$this->isAdminMenu("GRR configuration")){
-			$sql = "INSERT INTO core_adminmenu (name, link) VALUES(?,?)";
-			$this->runRequest($sql, array("GRR configuration", "configgrr"));
-		}
-		
 		if (!$this->isAdminMenu("Modules")){
 			$sql = "INSERT INTO core_adminmenu (name, link) VALUES(?,?)";
 			$this->runRequest($sql, array("Modules", "modulesmanager"));
 		}
 		
 		if (!$this->isDataMenu("users/institutions")){
-			$sql = "INSERT INTO core_datamenu (name, link) VALUES(?,?)";
-			$this->runRequest($sql, array("users/institutions", "users"));
+			$sql = "INSERT INTO core_datamenu (name, link, usertype) VALUES(?,?,?)";
+			$this->runRequest($sql, array("users/institutions", "users", 3));
 		}
 	}
 	
@@ -105,9 +100,9 @@ class ModulesManager extends Model {
 			return false;
 	}
 	
-	public function getDataMenus(){
-		$sql = "select name, link from core_datamenu";
-		$data = $this->runRequest($sql);
+	public function getDataMenus($user_status=1){
+		$sql = "select name, link from core_datamenu where usertype<=?";
+		$data = $this->runRequest($sql, array($user_status));
 		return $data->fetchAll();
 	}
 }

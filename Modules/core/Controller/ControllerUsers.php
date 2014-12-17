@@ -83,7 +83,7 @@ class ControllerUsers extends ControllerSecureNav {
 		
 		// add the user to the database
 		$this->userModel->addUser($name, $firstname, $login, $pwd, 
-				                  $email, $phone, $id_unit, 0, 
+				                  $email, $phone, $id_unit,
 				                  $id_responsible, $id_status, $convention, $date_convention );
 		
 		// add the user to the responsible list
@@ -181,10 +181,11 @@ class ControllerUsers extends ControllerSecureNav {
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		
+		echo "id_responsible = " . $id_responsible . "--";
 		
 		// update user
 		$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
-    		                         $id_unit, 0, $id_responsible, $id_status,
+    		                         $id_unit, $id_responsible, $id_status,
 				                     $convention, $date_convention);
 
 		// update responsible
@@ -284,7 +285,7 @@ class ControllerUsers extends ControllerSecureNav {
 		// generate the view
 		$this->generateView ( array (
 				'navBar' => $navBar, 'status' => $status['name'],
-				'unit' => $unit['name'],
+				'unit' => $unit,
 				'resp' => $resp, 'user' => $user
 		) );
 		

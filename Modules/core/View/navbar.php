@@ -35,6 +35,10 @@
         			?>
 					</ul>
 				</li>
+				
+				<?php 
+				if ($toolAdmin){
+				?>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
@@ -47,6 +51,7 @@
         			  ?>
 					</ul>
 				</li>
+				<?php }?>
 				<!-- <li><a href="#contact">Help</a></li>  -->
 			</ul>
 			<ul class="nav navbar-nav navbar-right">

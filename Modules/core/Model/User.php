@@ -68,7 +68,7 @@ class User extends Model {
 			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit, 
 				                   id_responsible, date_created)
 				 VALUES(?,?,?,?,?,?,?,?)";
-			$this->runRequest($sql, array("admin", "administrateur", "admin", "3", md5("admin"),
+			$this->runRequest($sql, array("admin", "administrateur", "admin", "4", md5("admin"),
 				                              1, 1, "".date("Y-m-d")."" ));
 		}
 	
@@ -109,7 +109,7 @@ class User extends Model {
      */
     public function getUser($login, $pwd)
     {
-        $sql = "select id as idUser, login as login, pwd as pwd 
+        $sql = "select id as idUser, login as login, pwd as pwd, id_status 
             from core_users where login=? and pwd=?";
         $user = $this->runRequest($sql, array($login, md5($pwd)));
         if ($user->rowCount() == 1)
@@ -162,7 +162,7 @@ class User extends Model {
     		return $userf['name'] . " " . $userf['firstname'];
     	}
     	else
-    		throw new Exception("Cannot find the user using the given id");
+    		return "";
     }
     
     /**

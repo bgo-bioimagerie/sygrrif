@@ -26,6 +26,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		// activated menus list
 		$ModulesManagerModel = new ModulesManager();
 		$isSygrrifMenu = $ModulesManagerModel->isDataMenu("sygrrif");
+		$isBookingMenu = $ModulesManagerModel->isDataMenu("booking");
 		
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
@@ -39,14 +40,16 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     			$installSuccess = "<b>Success:</b> the database have been successfully installed";
     			$this->generateView ( array ('navBar' => $navBar, 
     					                     'installError' => $installError,
-    					                     'isSygrrifMenu' => $isSygrrifMenu
+    					                     'isSygrrifMenu' => $isSygrrifMenu,
+    										 'isBookingMenu' => $isBookingMenu
     			) );
     			return;
 			}
 			$installSuccess = "<b>Success:</b> the database have been successfully installed";
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
-					                     'isSygrrifMenu' => $isSygrrifMenu
+					                     'isSygrrifMenu' => $isSygrrifMenu,
+					                     'isBookingMenu' => $isBookingMenu
 			) );
 			return;
 		}
@@ -58,17 +61,28 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			
 			// sygrrif data menu
 			$sygrrifDataMenu = $this->request->getParameterNoException ("sygrrifdatamenu");
-			
 			if ($sygrrifDataMenu != ""){
 				if (!$ModulesManagerModel->isDataMenu("sygrrif")){
 					$ModulesManagerModel->addDataMenu("sygrrif", "sygrrif", 1);
 					$isSygrrifMenu = true;
 				}
-				
-				$this->generateView ( array ('navBar' => $navBar,
-						                     'isSygrrifMenu' => $isSygrrifMenu) );
-				return;
 			}
+			
+			// booking menu
+			$bookingMenu = $this->request->getParameterNoException ("bookingmenu");
+			if ($sygrrifDataMenu != ""){
+				if (!$ModulesManagerModel->isDataMenu("booking")){
+					$ModulesManagerModel->addDataMenu("booking", "sygrrif/booking", 2);
+					$isBookingMenu = true;
+				}
+			}
+				
+			$this->generateView ( array ('navBar' => $navBar,
+				                     'isSygrrifMenu' => $isSygrrifMenu,
+									 'isBookingMenu' => $isBookingMenu	
+			) );
+			return;
+			
 		}
 		
 		// set bill template section
@@ -78,6 +92,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$templateMessage = $this->uploadTemplate();
 			$this->generateView ( array ('navBar' => $navBar,
 					'isSygrrifMenu' => $isSygrrifMenu,
+					'isBookingMenu' => $isBookingMenu,
 					'templateMessage' => $templateMessage
 			) );
 			return;
@@ -85,7 +100,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				                     'isSygrrifMenu' => $isSygrrifMenu
+				                     'isSygrrifMenu' => $isSygrrifMenu,
+									 'isBookingMenu' => $isBookingMenu
 		) );
 	}
 	

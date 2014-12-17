@@ -21,11 +21,16 @@ abstract class ControllerSecureNav extends ControllerSecure
     	$logoFile = Configuration::get("logoFile");
     	$userName = $login;
     	
-    	$modulesModel = new ModulesManager();
-    	$toolMenu = $modulesModel->getDataMenus();
-    	$toolAdmin = $modulesModel->getAdminMenus();
+    	$user_status_id = $_SESSION["user_status"];
     	
-    
+    	$modulesModel = new ModulesManager();
+    	$toolMenu = $modulesModel->getDataMenus($user_status_id);
+    	
+    	$toolAdmin = null;
+    	if ($user_status_id == 4){
+    		$toolAdmin = $modulesModel->getAdminMenus();
+    	}
+    	
     	// get the view menu,fill it, and return the content
     	$view = $this->generateNavfile(
     			array('logoFile' => $logoFile, 'userName' => $userName, 

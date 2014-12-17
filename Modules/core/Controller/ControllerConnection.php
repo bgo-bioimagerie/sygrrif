@@ -39,6 +39,9 @@ class ControllerConnection extends Controller
                 $user = $this->user->getUser($login, $pwd);
                 $this->request->getSession()->setAttribut("id_user", $user['idUser']);
                 $this->request->getSession()->setAttribut("login", $user['login']);
+                $this->request->getSession()->setAttribut("user_status", $user['id_status']);
+                
+                echo "user['id_status'] = " . $user['id_status'] . "</br>";
                 
                 // update the user last connection
                 $this->user->updateLastConnection($user['idUser']);

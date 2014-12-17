@@ -17,7 +17,7 @@
 		</div>
 		
 		
-		<div>
+		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
 				Install/Repair database <br> <small></small>
@@ -56,7 +56,7 @@
       
       
       <!-- Sygrrif Menu -->
-      	<div>
+      <div>
 		  <div class="page-header">
 			<h2>
 				Activate/desactivate menus <br> <small></small>
@@ -71,14 +71,23 @@
 			 	/>
 		    </div>
 		  
-		    <div>
+		    <div class="col-xs-12">
 		    	<?php
 		    	$sygrrifchecked = "";  
 		    	if ($isSygrrifMenu){
 		    		$sygrrifchecked = "checked=\"checked\"";
 		    	}
 		    	?>
-        	  <label><input type="checkbox" name="sygrrifdatamenu" value="sygrrif" <?= $sygrrifchecked ?>> sygrrif data menu </label>
+        	  <label><input type="checkbox" name="sygrrifdatamenu" value="sygrrif" <?= $sygrrifchecked ?>> sygrrif menu </label>
+    	    </div>
+    	    <div class="col-xs-12">
+		    	<?php
+		    	$bookingchecked = "";  
+		    	if ($isBookingMenu){
+		    		$bookingchecked = "checked=\"checked\"";
+		    	}
+		    	?>
+        	  <label><input type="checkbox" name="bookingmenu" value="booking" <?= $bookingchecked ?>> booking menu </label>
     	    </div>
 		  
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
@@ -117,29 +126,28 @@
 		?>
 			
       <form action="sygrrifconfig" method="post" enctype="multipart/form-data">
-      
       <div class="col-xs-10">
 			<input class="form-control" type="hidden" name="templatequery" value="yes"
 				/>
 	  </div>
       
       <div class="form-group">
-        <div class="col-md-10">
-        <p>
-        Select a xls file that will be used as template 
-        to generate the SyGRRif bill</p>
+          <div class="col-md-10">
+          <p>
+          Select a xls file that will be used as template 
+          to generate the SyGRRif bill</p>
     	
-    	<input type="file" name="fileToUpload" id="fileToUpload">
-      </div>
+    	  <input type="file" name="fileToUpload" id="fileToUpload">
+        </div>
       </div>
       <div class="col-xs-2 col-xs-offset-10" id="button-div">
     	<input class="btn btn-primary" type="submit" value="Upload" name="submit">
-    	</div>
+      </div>
 	  </form>
       
       
-</div>
-   </div>    
+  </div>
+</div>    
 
 <?php if (isset($msgError)): ?>
     <p><?= $msgError ?></p>
