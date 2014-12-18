@@ -63,7 +63,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$sygrrifDataMenu = $this->request->getParameterNoException ("sygrrifdatamenu");
 			if ($sygrrifDataMenu != ""){
 				if (!$ModulesManagerModel->isDataMenu("sygrrif")){
-					$ModulesManagerModel->addDataMenu("sygrrif", "sygrrif", 1);
+					$ModulesManagerModel->addDataMenu("sygrrif", "sygrrif", 3, "glyphicon-signal");
 					$isSygrrifMenu = true;
 				}
 			}
@@ -72,7 +72,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$bookingMenu = $this->request->getParameterNoException ("bookingmenu");
 			if ($sygrrifDataMenu != ""){
 				if (!$ModulesManagerModel->isDataMenu("booking")){
-					$ModulesManagerModel->addDataMenu("booking", "sygrrif/booking", 2);
+					$ModulesManagerModel->addDataMenu("booking", "sygrrif/booking", 1, "glyphicon-calendar");
 					$isBookingMenu = true;
 				}
 			}

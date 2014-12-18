@@ -8,6 +8,7 @@ require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
+require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 
 class ControllerSynchistop extends Controller {
 
@@ -83,6 +84,10 @@ class ControllerSynchistop extends Controller {
 		// add authorisations
 		$this->syncAuthorisations($pdo_old);
 		echo "<p>add athorizations</p>";
+		
+		// add calendar entries
+		$this->syncCalendarEntry($pdo_old);
+		echo "<p>add Calendar Entries</p>";
 	}
 	
 	// /////////////////////////////////////////// //
@@ -281,7 +286,35 @@ class ControllerSynchistop extends Controller {
 			$maut = new SyAuthorization();
 			$maut->addAuthorization($date_convention, $idUser, $idUnit, $id_visa, $id_resourceCategory);
 		}
+	}
+	
+	public function syncCalendarEntry($pdo_old){
+		// get all authorizations from old db
+		$sql = "select * from grr_entry";
+		$entry_oldq = $pdo_old->query($sql);
+		$entry_old = $entry_oldq->fetchAll();
 		
+		$modelUser = new User();
+		$modelCalEntry = new SyCalendarEntry();
+		foreach ($entry_old as $entry){
+			// get the recipient ID
+			$recipientID = $modelUser->userIdFromLogin($entry['beneficiaire']);
+			
+			// get the creator ID
+			$creatorID = $modelUser->userIdFromLogin($entry['create_by']);
+			
+			// add the reservation
+			$start_time = $entry['start_time'];
+			$end_time = $entry['end_time']; 
+			$resource_id = $entry['room_id'];
+			$booked_by_id = $creatorID; 
+			$recipient_id = $recipientID;
+			$last_update = $entry['timestamp'];
+			$color_type_id = $entry['entry_type']; 
+			$short_description = $entry['description'];
+			$full_description = $entry['description'];
+			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
+		}
 	}
 
 }

@@ -14,8 +14,13 @@ class ControllerHome extends ControllerSecureNav {
 		
 		$navBar = $this->navBar();
 		
+		$toolMenu = $this->getToolsMenu();
+		$toolAdmin = $this->getAdminMenu();
+		
 		$this->generateView ( array (
-				'navBar' => $navBar 
+				'navBar' => $navBar,
+				'toolMenu' => $toolMenu, 
+				'toolAdmin' => $toolAdmin
 		) );
 	}
 	

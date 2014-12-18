@@ -20,6 +20,7 @@ class ModulesManager extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(40) NOT NULL DEFAULT '',
 		`link` varchar(150) NOT NULL DEFAULT '',
+		`icon` varchar(40) NOT NULL DEFAULT '',		
 		PRIMARY KEY (`id`)
 		);
 
@@ -28,6 +29,7 @@ class ModulesManager extends Model {
 		`name` varchar(40) NOT NULL DEFAULT '',
 		`link` varchar(150) NOT NULL DEFAULT '',
 		`usertype` int(11) NOT NULL,
+		`icon` varchar(40) NOT NULL DEFAULT '',			
 		PRIMARY KEY (`id`)
 		);
 		";
@@ -38,20 +40,20 @@ class ModulesManager extends Model {
 	
 	public function addCoreDefaultMenus(){
 		if (!$this->isAdminMenu("Modules")){
-			$sql = "INSERT INTO core_adminmenu (name, link) VALUES(?,?)";
-			$this->runRequest($sql, array("Modules", "modulesmanager"));
+			$sql = "INSERT INTO core_adminmenu (name, link, icon) VALUES(?,?,?)";
+			$this->runRequest($sql, array("Modules", "modulesmanager","glyphicon-th-large"));
 		}
 		
 		if (!$this->isDataMenu("users/institutions")){
-			$sql = "INSERT INTO core_datamenu (name, link, usertype) VALUES(?,?,?)";
-			$this->runRequest($sql, array("users/institutions", "users", 3));
+			$sql = "INSERT INTO core_datamenu (name, link, usertype, icon) VALUES(?,?,?,?)";
+			$this->runRequest($sql, array("users/institutions", "users", 3, "glyphicon-user"));
 		}
 	}
 	
 	// Admin menu methods
-	public function addAdminMenu($name, $link){
-		$sql = "INSERT INTO core_adminmenu (name, link) VALUES(?,?)";
-		$pdo = $this->runRequest($sql, array($name, $link));
+	public function addAdminMenu($name, $link, $icon){
+		$sql = "INSERT INTO core_adminmenu (name, link, icon) VALUES(?,?,?)";
+		$pdo = $this->runRequest($sql, array($name, $link, $icon));
 		return $pdo;
 	}
 	
@@ -72,15 +74,15 @@ class ModulesManager extends Model {
 	}
 	
 	public function getAdminMenus(){
-		$sql = "select name, link from core_adminmenu";
+		$sql = "select name, link, icon from core_adminmenu";
 		$data = $this->runRequest($sql);
 		return $data->fetchAll();
 	}
 	
 	// data menu methods
-	public function addDataMenu($name, $link, $usertype){
-		$sql = "INSERT INTO core_datamenu (name, link, usertype) VALUES(?,?,?)";
-		$pdo = $this->runRequest($sql, array($name, $link, $usertype));
+	public function addDataMenu($name, $link, $usertype, $icon){
+		$sql = "INSERT INTO core_datamenu (name, link, usertype, icon) VALUES(?,?,?,?)";
+		$pdo = $this->runRequest($sql, array($name, $link, $usertype, $icon));
 		return $pdo;
 	}
 	
@@ -101,7 +103,7 @@ class ModulesManager extends Model {
 	}
 	
 	public function getDataMenus($user_status=1){
-		$sql = "select name, link from core_datamenu where usertype<=?";
+		$sql = "select name, link, icon from core_datamenu where usertype<=?";
 		$data = $this->runRequest($sql, array($user_status));
 		return $data->fetchAll();
 	}

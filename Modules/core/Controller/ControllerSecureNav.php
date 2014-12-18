@@ -17,19 +17,32 @@ abstract class ControllerSecureNav extends ControllerSecure
     	return $menu;
     }
     
+    public function getToolsMenu(){
+    	$user_status_id = $_SESSION["user_status"];
+    	 
+    	$modulesModel = new ModulesManager();
+    	$toolMenu = $modulesModel->getDataMenus($user_status_id);
+    	return $toolMenu;
+    }
+    
+    public function getAdminMenu(){
+    	$user_status_id = $_SESSION["user_status"];
+    	
+    	$toolAdmin = null;
+    	if ($user_status_id == 4){
+    		$modulesModel = new ModulesManager();
+    		$toolAdmin = $modulesModel->getAdminMenus();
+    	}
+    	return $toolAdmin;
+    }
+    
     public function buildNavBar($login){
     	$logoFile = Configuration::get("logoFile");
     	$userName = $login;
     	
-    	$user_status_id = $_SESSION["user_status"];
     	
-    	$modulesModel = new ModulesManager();
-    	$toolMenu = $modulesModel->getDataMenus($user_status_id);
-    	
-    	$toolAdmin = null;
-    	if ($user_status_id == 4){
-    		$toolAdmin = $modulesModel->getAdminMenus();
-    	}
+    	$toolMenu = $this->getToolsMenu();
+    	$toolAdmin = $this->getAdminMenu();
     	
     	// get the view menu,fill it, and return the content
     	$view = $this->generateNavfile(
