@@ -85,6 +85,9 @@ $day_end = $resourceInfo['day_end'];
 	$caseTimeBegin = $date_unix + $day_begin*3600 - 1800;
 	$caseTimeEnd = $date_unix + $day_begin*3600;
 	$caseTimeLength = 1800;
+	
+	//echo "cal entries size = " . count($calEntries) . "--";
+	//print_r($calEntries);
 	for ($h = $day_begin ; $h < $day_end ; $h = $h+0.5){
 		
 		$caseTimeBegin = $date_unix + $h*3600;
@@ -98,8 +101,18 @@ $day_end = $resourceInfo['day_end'];
 				$blocNumber = ($calEntry['end_time'] - $calEntry['start_time'])/($caseTimeLength);
 				$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
 				$pixelHeight = $blocNumber*25;
+				
+				$text = "";
+				if ($blocNumber <= 2){
+					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc</b> " .$calEntry['short_description']."";
+				}
+				else{
+					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc</b> " .$calEntry['short_description']."";
+				}
+				
+				
 				//$text = "<p><b>".$calEntry['recipient_id']."</b></p>"."<p><b>".$calEntry['short_description']."</b></p>";
-				$text = "<p><b>".$calEntry['short_description']."</b></p>";
+				
 				?>
 					<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px;">
 					<a class="text-center" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>

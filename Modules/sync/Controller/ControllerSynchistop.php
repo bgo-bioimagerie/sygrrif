@@ -9,6 +9,10 @@ require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
+require_once 'Modules/sygrrif/Model/SyArea.php';
+require_once 'Modules/sygrrif/Model/SyResource.php';
+require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
+require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 
 class ControllerSynchistop extends Controller {
 
@@ -24,6 +28,14 @@ class ControllerSynchistop extends Controller {
 		$pwd_old = "";
 		
 		$pdo_old = new PDO($dsn_old, $login_old, $pwd_old,
+				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+		
+		// connect to h2p2 grr 
+		$dsn_grr = 'mysql:host=localhost;dbname=grr_h2p2;charset=utf8';
+		$login_grr = "root";
+		$pwd_grr = "";
+		
+		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		
 		// Visa
@@ -85,8 +97,16 @@ class ControllerSynchistop extends Controller {
 		$this->syncAuthorisations($pdo_old);
 		echo "<p>add athorizations</p>";
 		
+		// add area
+		$this->syncAreas($pdo_grr);
+		echo "<p>add areas</p>";
+		
+		// add resources
+		$this->syncResources($pdo_grr);
+		echo "<p>add resources</p>";
+		
 		// add calendar entries
-		$this->syncCalendarEntry($pdo_old);
+		$this->syncCalendarEntry($pdo_grr);
 		echo "<p>add Calendar Entries</p>";
 	}
 	
@@ -316,6 +336,66 @@ class ControllerSynchistop extends Controller {
 			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
 		}
 	}
+	
+	public function syncResources($pdo_grr){
+		$sql = "select * from grr_room";
+		$entry_oldq = $pdo_grr->query($sql);
+		$entry_old = $entry_oldq->fetchAll();
+		
+		$modelArea = new SyArea();
+		$modelResource = new SyResource();
+		$modelResourceCal = new SyResourceCalendar();
+		
+		foreach ($entry_old as $room){
+			
+			$area_id = $room['area_id'];
+			// get the area name
+			$sql = "select * from grr_area where id=".$area_id."";
+			$entry_oldq = $pdo_grr->query($sql);
+			$area_info = $entry_oldq->fetch();
+			
+			$area_name = $area_info["area_name"];
+			// get the area sygrrif id
+			$area_id = $modelArea->getAreaFromName($area_name);
+			// add the resource
+			$id = $room["id"];
+			$name = $room["room_name"];
+			$description = $room["description"];
+			$accessibility_id = 4; // who can book = admin by default
+			$type_id = 1; // calendar
+			$category_id = 1;
+			$modelResource->importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+			
+			$nb_people_max = $room["capacity"];
+			$arr1 = str_split($area_info["display_days"]);
+			$available_days = $arr1[0] . "," . $arr1[1] . "," . $arr1[2] . "," . $arr1[3] . "," 
+					        . $arr1[4] . "," . $arr1[5] . "," . $arr1[6];
+			$day_begin = $area_info["morningstarts_area"];
+			$day_end = $area_info["eveningends_area"];
+			$size_bloc_resa = $area_info["resolution_area"];
+			$modelResourceCal->addResource($id, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa);
+		}
+	}
 
+	public function syncAreas($pdo_grr){
+		$sql = "select * from grr_area";
+		$entry_oldq = $pdo_grr->query($sql);
+		$entry_old = $entry_oldq->fetchAll();
+		
+		$modelArea = new SyArea();
+		foreach ($entry_old as $area){
+			
+			$id = $area["id"];
+			$name = $area["area_name"];;
+			$display_order = $area["order_display"];
+			
+			$restricted = 0;
+			if ($area["access"] == "r"){
+				$restricted = 1;
+			}
+			$modelArea->importArea($id, $name, $display_order, $restricted);	
+			
+		}
+	}
 }
 ?>

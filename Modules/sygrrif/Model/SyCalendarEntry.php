@@ -83,6 +83,17 @@ class SyCalendarEntry extends Model {
 				(start_time >=:start AND end_time <= :end) AND resource_id = :res
 				ORDER BY start_time';
 		$req = $this->runRequest($sql, $q);
-		return $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
+		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
+		
+		$modelUser = new User();
+		for ($i = 0 ; $i < count($data) ; $i++){
+			$rid = $data[$i]["recipient_id"];
+			if ($rid > 0){
+				$userInfo = $modelUser->userAllInfo($rid);
+				$data[$i]["recipient_fullname"] = $userInfo["name"] . " " . $userInfo["firstname"];
+				$data[$i]["phone"] = $userInfo["tel"];
+			} 
+		}
+		return $data;
 	}
 }

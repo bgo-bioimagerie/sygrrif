@@ -21,7 +21,7 @@ class SyResource extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,	
 		`name` varchar(30) NOT NULL DEFAULT '',
 		`description` varchar(200) NOT NULL DEFAULT '',		
-		`accessibility_id` int(11) NOT NULL,
+		`accessibility_id` int(11) NOT NULL, 
 		`type_id` int(11) NOT NULL,
 		`category_id` int(11) NOT NULL,		
 		`area_id` int(11) NOT NULL,				
@@ -35,6 +35,12 @@ class SyResource extends Model {
 	public function addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0){
 		$sql = "INSERT INTO sy_resources (name, description, accessibility_id, type_id, area_id, category_id) VALUES(?, ?, ?, ?, ?,?)";
 		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id));
+		return $this->getDatabase()->lastInsertId();
+	}
+	
+	public function importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0){
+		$sql = "INSERT INTO sy_resources (id, name, description, accessibility_id, type_id, area_id, category_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
