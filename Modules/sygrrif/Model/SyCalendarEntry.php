@@ -1,6 +1,7 @@
 <?php
 
-require_once 'Framework/ModelGRR.php';
+require_once 'Framework/Model.php';
+require_once 'Modules/sygrrif/Model/SyColorCode.php';
 
 /**
  * Class defining the GRR area model
@@ -27,7 +28,8 @@ class SyCalendarEntry extends Model {
 		`last_update` timestamp NOT NULL,
 		`color_type_id` int(11) NOT NULL,						
 		`short_description` varchar(100) NOT NULL,	
-		`full_description` text NOT NULL,				
+		`full_description` text NOT NULL,
+		`quantity` int(11) NOT NULL,						
 		PRIMARY KEY (`id`)
 		);";
 
@@ -36,13 +38,13 @@ class SyCalendarEntry extends Model {
 	}
 	
 	public function addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description){
+							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
 		
 		$sql = "insert into sy_calendar_entry(start_time, end_time, resource_id, booked_by_id, recipient_id, 
-							last_update, color_type_id, short_description, full_description)"
-				. " values(?,?,?,?,?,?,?,?,?)";
+							last_update, color_type_id, short_description, full_description, quantity)"
+				. " values(?,?,?,?,?,?,?,?,?,?)";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description));
+							$last_update, $color_type_id, $short_description, $full_description, $quantity));
 	}
 	
 	public function getEntry($id){
@@ -52,12 +54,12 @@ class SyCalendarEntry extends Model {
 	}
 	
 	public function updateEntry($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description){
+							$last_update, $color_type_id, $short_description, $full_description, $quantity=0){
 		$sql = "update sy_calendar_entry set start_time=?, end_time=?, resource_id=?, booked_by_id=?, recipient_id=?, 
-							last_update=?, color_type_id=?, short_description=?, full_description=?
+							last_update=?, color_type_id=?, short_description=?, full_description=?, quantity=?
 									  where id=?";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $id));
+							$last_update, $color_type_id, $short_description, $full_description, $quantity, $id));
 	}
 	
 	public function getEntriesForDay($curentDate){
@@ -85,15 +87,47 @@ class SyCalendarEntry extends Model {
 		$req = $this->runRequest($sql, $q);
 		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
 		
+	
 		$modelUser = new User();
+		$modelColor = new SyColorCode();
 		for ($i = 0 ; $i < count($data) ; $i++){
+			//echo "color id = " . $data[$i]["color_type_id"] . "</br>";
 			$rid = $data[$i]["recipient_id"];
 			if ($rid > 0){
 				$userInfo = $modelUser->userAllInfo($rid);
 				$data[$i]["recipient_fullname"] = $userInfo["name"] . " " . $userInfo["firstname"];
 				$data[$i]["phone"] = $userInfo["tel"];
+				$data[$i]["color"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
 			} 
 		}
 		return $data;
+	}
+	
+	public function isConflict($start_time, $end_time, $resource_id, $reservation_id = ""){
+		$sql="SELECT id FROM sy_calendar_entry WHERE
+			  ((start_time >=:start AND start_time < :end) OR	
+			  (end_time >:start AND end_time <= :end)) 
+			AND resource_id = :res;";
+		$q = array('start'=>$start_time, 'end'=>$end_time, 'res'=>$resource_id);	
+		$req = $this->runRequest($sql, $q);
+		if ($req->rowCount() > 0){
+			if ($reservation_id != "" && $req->rowCount() == 1){
+				$id = $req->fetch()[0];
+				if ($id == $reservation_id){
+					return false;
+				}
+				else{
+					return true;
+				}
+			}
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public function removeEntry($id){
+		$sql="DELETE FROM sy_calendar_entry WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
 	}
 }

@@ -189,37 +189,14 @@
 				<input class="form-control" type="text" value = "<?= $user['date_convention'] ?>" name="date_convention">
 		    </div>
 		</div>
-		
-		
 		<br>
-		<?php if ( Configuration::get("grr_installed") ) {?>
-		<div>
-        	<label><input type="checkbox" name="grr_use" value="add to GRR"> Add to GRR </label>
-    	</div>
-    	<div class="grr box">
-    		<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-2">GRR Status</label>
-				<div class="col-xs-10">
-					<select class="form-control" name="grr_status">
-						<OPTION value="visiteur" <?php if ($grrstatus == "visiteur"){echo "selected=\"selected\"";} ?> > Visitor </OPTION>
-						<OPTION value="utilisateur" <?php if ($grrstatus == "utilisateur"){echo "selected=\"selected\"";} ?> > User </OPTION>
-						<OPTION value="gestionnaire_utilisateur" <?php if ($grrstatus == "gestionnaire_utilisateur"){echo "selected=\"selected\"";} ?> > User manager </OPTION>
-						<OPTION value="administrateur" <?php if ($grrstatus == "administrateur"){echo "selected=\"selected\"";} ?> > Admin </OPTION>
-					</select>
-				</div>
-			</div>
-			<br>
-			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-2">GRR State</label>
-				<div class="col-xs-10">
-					<select class="form-control" name="grr_etat">
-						<OPTION value="actif" <?php if ($grretat == "actif"){echo "selected=\"selected\"";} ?> > Active </OPTION>
-						<OPTION value="inactif" <?php if ($grretat == "inactif"){echo "selected=\"selected\"";} ?> > Not active </OPTION>
-					</select>
-				</div>
-			</div>
+		<div class="form-group ">
+			<label for="inputEmail" class="control-label col-xs-2">Date end contract</label>
+			<div class="col-xs-10">
+				<input class="form-control" type="text" value = "<?= $user['date_end_contract'] ?>" name="date_end_contract">
+		    </div>
 		</div>
-    	<?php }?>
+		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
@@ -227,6 +204,29 @@
 		</div>
       </form>
       
+      <div>
+      <div class="page-header">
+			<h1>
+				Is active <br> <small></small>
+			</h1>
+		</div>
+		<div >
+			<label for="inputEmail" class="control-label col-xs-2">Is user active</label>
+			<div class="col-xs-10">
+			<?php $active = $this->clean($user["is_active"]); 
+				if ($active){$active="yes";}
+				if (!$active){$active="no";}
+  			?>
+				<input class="form-control" type="text" value = "<?= $active ?>" name="active" readonly>
+		    </div>
+		</div>
+		<?php if ($active == "no"){?>
+	  <div class="row">
+			<div class="col-xs-4" id="button-div">
+				<button type="button" onclick="location.href='users/activate/<?=$user['id']?>'" class="btn btn-default" id="navlink">Activate</button>
+			</div>
+		</div> 	
+      <?php } ?>
       <br>
       <div>
       	<div class="page-header">

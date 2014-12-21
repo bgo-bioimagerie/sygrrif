@@ -33,7 +33,8 @@ class ControllerConnection extends Controller
             	return;
             }
          
-            if ($this->user->connect($login, $pwd)) {
+            $connect = $this->user->connect($login, $pwd);
+            if ($connect) {
             	
             	// open the session
                 $user = $this->user->getUser($login, $pwd);
@@ -41,16 +42,19 @@ class ControllerConnection extends Controller
                 $this->request->getSession()->setAttribut("login", $user['login']);
                 $this->request->getSession()->setAttribut("user_status", $user['id_status']);
                 
-                echo "user['id_status'] = " . $user['id_status'] . "</br>";
-                
                 // update the user last connection
                 $this->user->updateLastConnection($user['idUser']);
+                
+                // update user active base if the user is manager or admin
+                if ($user['id_status'] >= 3){
+                	$this->user->updateUsersActive();
+                }
                 
                 // redirect
                 $this->redirect("home");
             }
             else
-                $this->generateView(array('msgError' => 'Login or password not correct'),
+                $this->generateView(array('msgError' => $connect),
                         "index");
         }
         else

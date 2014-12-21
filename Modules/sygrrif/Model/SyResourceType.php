@@ -1,5 +1,5 @@
 <?php
-require_once 'Framework/ModelGRR.php';
+require_once 'Framework/Model.php';
 
 /**
  * Class defining the resource type model

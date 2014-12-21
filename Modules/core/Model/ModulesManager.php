@@ -102,6 +102,51 @@ class ModulesManager extends Model {
 			return false;
 	}
 	
+	public function setDataMenu($name, $link, $usertype, $icon){
+		
+		//echo "user type = ". $usertype . "</br>";
+		$exists = $this->isDataMenu($name);
+		if (!$exists && $usertype == 0){
+			//echo "do nothing </br>";
+			return;
+		}
+		if ($exists && $usertype == 0){
+			//echo "remove </br>";
+			$this->removeDataMenu($name);
+			return;
+		}
+		if (!$exists && $usertype > 0){
+			//echo "add data menu </br>";
+			$this->addDataMenu($name, $link, $usertype, $icon);
+			return;
+		}
+		if ($exists && $usertype > 0){
+			//echo "update nothing </br>";
+			$this->updateDataMenu($name, $link, $usertype, $icon);
+			return;
+		}
+	}
+	
+	public function updateDataMenu($name, $link, $usertype, $icon){
+		$sql = "select id from core_datamenu where name=?";
+		$req = $this->runRequest($sql, array($name));
+		$id = $req->fetch()[0];
+		
+		$sql = "update core_datamenu set name=?, link=?, usertype=?, icon=? where id=?";
+		$this->runRequest($sql, array("".$name."", "".link."",
+				                              "".usertype."", "".icon."", $id));
+	}
+	
+	public function getDataMenusUserType($name){
+		if ($this->isDataMenu($name)){
+			$sql = "select usertype from core_datamenu where name=?";
+			$data = $this->runRequest($sql, array($name));
+			return $data->fetch()[0];
+		}
+		return 0;
+
+	}
+	
 	public function getDataMenus($user_status=1){
 		$sql = "select name, link, icon from core_datamenu where usertype<=?";
 		$data = $this->runRequest($sql, array($user_status));

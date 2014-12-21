@@ -53,6 +53,11 @@ legend {
 					<button onclick="location.href='sygrrif/addresourcescategory'"
 						class="btn btn-link" id="navlink">Add</button>
 				<br/>
+					<button onclick="location.href='sygrrif/colorcodes'"
+						class="btn btn-link" id="navlink">Resource color code</button>
+					<button onclick="location.href='sygrrif/addcolorcode'"
+						class="btn btn-link" id="navlink">Add</button>
+				<br/>
 					<button onclick="location.href='sygrrif/resources'"
 						class="btn btn-link" id="navlink">Resources</button>
 					<button onclick="location.href='sygrrif/addresource'"

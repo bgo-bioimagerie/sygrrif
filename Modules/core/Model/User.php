@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Framework/Model.php';
+require_once 'Modules/core/Model/CoreConfig.php';
 
 /**
  * Class defining the User model
@@ -30,7 +31,9 @@ class User extends Model {
 		`convention` int(11) NOT NULL DEFAULT 0,		
 		`date_convention` DATE NOT NULL,
 	    `date_created` DATE NOT NULL,
-		`date_last_login` DATE NOT NULL,	
+		`date_last_login` DATE NOT NULL,
+		`date_end_contract` DATE NOT NULL,	
+		`is_active` int(1) NOT NULL DEFAULT 1,				
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -52,9 +55,7 @@ class User extends Model {
 				 VALUES(?,?,?,?,?,?,?,?)";
 			$this->runRequest($sql, array("--", "--", "--", "1", md5("--"),
 				1, 1, "".date("Y-m-d")."" ));
-		}
-	
-		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", md5("dupont"), "pierre@dupont.fr");
+		}	
 	}
 	
 	/**
@@ -84,9 +85,20 @@ class User extends Model {
      */
     public function connect($login, $pwd)
     {
-        $sql = "select id from core_users where login=? and pwd=?";
+        $sql = "select id, is_active from core_users where login=? and pwd=?";
         $user = $this->runRequest($sql, array($login, md5($pwd)));
-        return ($user->rowCount() == 1);
+        if ($user->rowCount() == 1){
+        	$req = $user->fetch();
+        	if ($req["is_active"] == 1){
+        		return true;
+        	}
+        	else{
+        		return "Your account is not active";
+        	}
+        }
+        else{
+        	return "Login or password not correct";
+        }
     }
     
     /**
@@ -109,7 +121,7 @@ class User extends Model {
      */
     public function getUser($login, $pwd)
     {
-        $sql = "select id as idUser, login as login, pwd as pwd, id_status 
+        $sql = "select id as idUser, login as login, pwd as pwd, id_status, is_active 
             from core_users where login=? and pwd=?";
         $user = $this->runRequest($sql, array($login, md5($pwd)));
         if ($user->rowCount() == 1)
@@ -139,9 +151,9 @@ class User extends Model {
      * @param string $sortentry column used to sort the users
      * @return multitype:
      */
-    public function getUsersSummary($sortentry = 'id'){
+    public function getUsersSummary($sortentry = 'id', $active = 1){
     	 
-    	$sql = "select id, name, firstname from core_users order by " . $sortentry . " ASC;";
+    	$sql = "select id, name, firstname from core_users where is_active >= ".$active." order by " . $sortentry . " ASC;";
     	$user = $this->runRequest($sql);
     	return $user->fetchAll();
     }
@@ -222,25 +234,30 @@ class User extends Model {
     public function addUser($name, $firstname, $login, $pwd, 
 		           			$email, $phone, $id_unit, 
 		           			$id_responsible, $id_status,
-    						$convention, $date_convention ){
+    						$convention, $date_convention,
+    						$date_end_contract="", $is_active=1 ){
     	
-    	$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, id_status, date_created, convention, date_convention)"
-    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    	$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
+    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active)"
+    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
     	$this->runRequest($sql, array($login, $firstname, $name, $email, 
     			                      $phone, md5($pwd), $id_unit, 
     			                      $id_responsible, $id_status, "".date("Y-m-d")."",
-    			                      $convention, $date_convention));
+    			                      $convention, $date_convention, $date_end_contract,
+    			                      $is_active
+    	));
     	
     }
     
     public function setUser($name, $firstname, $login, $pwd,
     		$email, $phone, $id_unit,
     		$id_responsible, $id_status,
-    		$convention, $date_convention ){
+    		$convention, $date_convention, $date_end_contract="",$is_active=1 ){
     	
     	if (!$this->isUser($login)){
     		$this->addUser($name, $firstname, $login, $pwd, $email, $phone, 
-    				$id_unit, $id_responsible, $id_status, $convention, $date_convention);
+    				$id_unit, $id_responsible, $id_status, $convention, $date_convention,
+    				$date_end_contract, $is_active);
     	}
     }
     
@@ -261,10 +278,15 @@ class User extends Model {
      */
     public function updateUser($id, $firstname, $name, $login, $email, $phone,
     							$id_unit, $id_responsible, $id_status,
-    		                    $convention, $date_convention){
+    		                    $convention, $date_convention, $date_end_contract="",
+    		                    $is_active=1){
     	
-    	$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?, id_status=?, convention=?, date_convention=? where id=?";
-    	$this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $id));
+    	$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?, id_status=?,
+    			                      convention=?, date_convention=?, date_end_contract=?, is_active=? 
+    			                  where id=?";
+    	$this->runRequest($sql, array($login, $firstname, $name, $email, $phone, $id_unit, 
+    			                      $id_responsible, $id_status, $convention, $date_convention, 
+    			                      $date_end_contract, $is_active, $id));
     }
     
     /**
@@ -374,20 +396,113 @@ class User extends Model {
     	return $this->runRequest($sql, array($unitId));
     }
     
-    public function getUserFromlup($login, $unit_id, $responsible_id){
-    	$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE login=? AND id_unit=? AND id_responsible=?';
-    	$req = $this->runRequest($sql, array($login, $unit_id, $responsible_id));
+    public function getUserFromlup($id, $unit_id, $responsible_id){
+    	$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE id=? AND id_unit=? AND id_responsible=?';
+    	$req = $this->runRequest($sql, array($id, $unit_id, $responsible_id));
     	return $req->fetchAll();
     }
     
-    public function getUserFromloginUnit($login, $unit_id){
-    	$sql = "SELECT name, firstname, id_responsible, id_unit FROM core_users WHERE login=?";
+    public function getUserFromIdUnit($id, $unit_id){
+    	$sql = "SELECT name, firstname, id_responsible, id_unit FROM core_users WHERE id=?";
     	if ($unit_id > 0){
     		$sql .= " AND id_unit=" . $unit_id; 
     	}
     	
-    	$req = $this->runRequest($sql, array($login));
+    	$req = $this->runRequest($sql, array($id));
     	return $req->fetchAll();
+    }
+    
+    public function getLastConnection($id){
+    	$sql = "select date_last_login from core_users where id=?";
+    	$user = $this->runRequest($sql, array($id));
+    	if ($user->rowCount() == 1)
+    		return $user->fetch()[0];
+    	else
+    		return "0000-00-00";
+    }
+    
+    public function setLastConnection($id, $time){
+    	$sql = "update core_users set date_last_login=? where id=?";
+    	$this->runRequest($sql, array($time, $id));
+    }
+    
+    public function updateUsersActive(){
+    	$modelConfig = new CoreConfig();
+    	$desactivateType = $modelConfig->getParam("user_desactivate");
+    	
+    	if ($desactivateType > 1){
+    		if ($desactivateType == 2){
+    			$this->updateUserActiveContract();
+    		}	
+    		else if ($desactivateType == 3){
+    			$this->updateUserActiveLastLogin(1);
+    		}
+    		else if ($desactivateType == 4){
+    			$this->updateUserActiveLastLogin(2);
+    		}
+    		else if ($desactivateType == 5){
+    			$this->updateUserActiveLastLogin(3);
+    		}
+    	
+    	}
+    }
+    
+    public function setactive($id, $active){
+    	$sql = "update core_users set is_active=? where id=?";
+    	$this->runRequest($sql, array($active, $id));
+    }
+    
+    private function updateUserActiveContract(){
+    	$sql="select id, date_end_contract from core_users where is_active=1";
+    	$req = $this->runRequest($sql);
+    	$users = $req->fetchAll();
+    	
+    	foreach ($users as $user){
+    		$contractDate = $user["date_end_contract"];
+    		$today = date("Y-m-d", time());
+    		
+    		if ($contractDate < $today){
+    			$this->setactive($id, 0);
+    		}
+    	}
+    }
+    
+    private function updateUserActiveLastLogin($numberYear){
+    	
+    	$sql="select id, date_last_login from core_users where is_active=1";
+    	$req = $this->runRequest($sql);
+    	$users = $req->fetchAll();
+    	 
+    	foreach ($users as $user){
+    		$lastLoginDate = $user["date_last_login"];
+    		$lastLoginDate = explode("-", $lastLoginDate);
+    		$timell = mktime(0,0,0, $lastLoginDate[1], $lastLoginDate[2], $lastLoginDate[0]);
+    		$timell = date("Y-m-d", $timell + $numberYear*31556926);
+    		$today = date("Y-m-d", time());
+    	
+    		$changedUsers = array();
+    		if ($lastLoginDate[0] != "0000"){
+	    		if ($timell <= $today){
+	    			$this->setactive($user['id'], 0);
+	    			$changedUsers[] = $user['id'];
+	    		}
+    		}
+    	}
+    	
+    	$modelConfig = new CoreConfig();
+    	
+    	if ($modelConfig->isKey("sygrrif_installed")){
+    		require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+    		$authModel = new SyAuthorization();
+    		$authModel->desactivateAthorizationsForUsers($changedUsers);
+    	}
+    }
+    
+    public function activate($userId){
+    	$today = date("Y-m-d", time());
+    	
+    	$sql = "update core_users set is_active=?, date_last_login=? where id=?";
+    	$this->runRequest($sql, array(1, $today, $userId));
     }
     
 }

@@ -6,6 +6,7 @@ require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/core/Model/Status.php';
+require_once 'Modules/core/Model/CoreConfig.php';
 
 /**
  * Class defining methods to install and initialize the core database
@@ -41,6 +42,10 @@ class InitDatabase extends Model {
 		$statusModel = new Status();
 		$pdo = $statusModel->createTable();
 		$pdo = $statusModel->createDefaultStatus();
+		
+		$configModel = new CoreConfig();
+		$configModel->createTable();
+		$configModel->createDefaultConfig();
 		
 		$message = 'success';
 		return $message;

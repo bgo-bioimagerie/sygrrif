@@ -1,13 +1,13 @@
 <?php
 
-require_once 'Framework/ModelGRR.php';
+require_once 'Framework/Model.php';
 
 /**
  * Class defining the Sygrrif graph model
  *
  * @author Sylvain Prigent
  */
-class SyGraph extends ModelGRR {
+class SyGraph extends Model {
 
 	public function getYearNumResGraph($year){
 		
@@ -18,7 +18,7 @@ class SyGraph extends ModelGRR {
 			$dend= mktime(0,0,0,$i+1,0,$year); // Le 0eme jour du mois suivant == le dernier jour du mois en cour
 		
 			//$q = array('start'=>$dstart, 'end'=>$dend);
-			$sql = 'SELECT * FROM grr_entry WHERE start_time >= ? AND end_time <= ? ORDER BY id';
+			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >= ? AND end_time <= ? ORDER BY id';
 			$req = $this->runRequest($sql, array($dstart, $dend));
 			
 			$num = $req->rowCount(); // Nombre de réservations dans la période sélectionnée

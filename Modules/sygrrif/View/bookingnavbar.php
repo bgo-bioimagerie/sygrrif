@@ -4,28 +4,30 @@
 	type="text/css">
 
 
-<link href="data:text/css;charset=utf-8,"
-	data-href="bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet"
-	id="bs-theme-stylesheet">
+<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
 
 <style>
 .bs-docs-header {
 	position: relative;
 	color: #cdbfe3;
-	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+	text-shadow: 0 0px 0 rgba(0, 0, 0, .1);
 	background-color: #337ab7;
+	border:0px solid #337ab7;
 }
 
 #navlink {
 	color: #cdbfe3;
-	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
+	text-shadow: 0 0px 0 rgba(0, 0, 0, .1);
+	border:0px solid #337ab7;
 }
 
-.well {
+#well {
+	margin-top:10px;
+	margin-bottom:25px;
 	color: #cdbfe3;
 	background-color: #337ab7;
-	border: none;
+	border:0px solid #337ab7;
 }
 
 legend {
@@ -40,7 +42,7 @@ legend {
 		<h1>SyGRRif Booking</h1>
 
 		<form role="form" class="form-horizontal" action="sygrrif/booking" method="post" id="navform">
-		<div class='col-md-4 well'>
+		<div class='col-md-4' id="well">
 			<fieldset>
 				<legend>Area</legend>
 				<div >
@@ -67,7 +69,7 @@ legend {
 				</div>
 			</fieldset>
 		</div>
-		<div class='col-md-4 well'>
+		<div class='col-md-4' id="well">
 			<fieldset>
 				<legend>Resource</legend>
 				<div >
@@ -95,7 +97,7 @@ legend {
 				</div>
 			</fieldset>
 		</div>
-		<div class='col-md-4 well'>
+		<div class='col-md-3' id="well">
 			<fieldset>
 				<legend>Date</legend>
 				<div >
@@ -127,7 +129,15 @@ legend {
 				});
 				</script>
 		    </div>
-		 </div>   
+		 </div>
+		 <div class='col-md-1' id="well">
+			<fieldset>
+			<legend style="color:#337ab7; border:0px solid #337ab7;">.</legend>
+				<div >
+				<input type="submit" class="btn btn-primary" value="ok" />
+				</div>
+			</fieldset>
+		</div>   
 	  </form>
 	</div>
 </div>

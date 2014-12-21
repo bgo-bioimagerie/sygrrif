@@ -131,7 +131,7 @@ class Responsible extends Model {
 	 * @return multitype: 2D array containing the users informations 
 	 */
 	public function responsibleSummaries(){
-		$sql = "SELECT id, firstname, name FROM core_users WHERE id IN (SELECT id_users FROM core_responsibles)";
+		$sql = "SELECT id, firstname, name FROM core_users WHERE id IN (SELECT id_users FROM core_responsibles) ORDER BY name";
 		$respPDO = $this->runRequest($sql);
 		$resps = $respPDO->fetchAll();
 

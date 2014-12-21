@@ -10,22 +10,6 @@
 	<script src="bootstrap/datepicker/js/moments.js"></script>
 	<script src="bootstrap/jquery-1.11.1.js"></script>
 
-<style type="text/css">
-    .box{
-        display: none;
-    }
-</style>
-<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('input[type="checkbox"]').click(function(){
-            if($(this).attr("value")=="add to GRR"){
-                $(".grr").toggle();
-            }
-        });
-    });
-</script>
-
 </head>
 
 
@@ -179,36 +163,27 @@
 		    </div>
 		</div>
 		<br>
-		<?php if ( Configuration::get("grr_installed") ) {?>
-		<div>
-        	<label><input type="checkbox" name="grr_use" value="add to GRR"> Add to GRR </label>
-    	</div>
-    	<div class="grr box">
-    		<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-2">GRR Status</label>
+		<div class="form-group ">
+			<label for="inputEmail" class="control-label col-xs-2">Date end contract</label>
 				<div class="col-xs-10">
-					<select class="form-control" name="grr_status">
-						<OPTION value="visiteur"> Visitor </OPTION>
-						<OPTION value="utilisateur"> User </OPTION>
-						<OPTION value="gestionnaire_utilisateur"> User manager </OPTION>
-						<OPTION value="administrateur"> Admin </OPTION>
-					</select>
+				<div class='input-group date' id='datetimepicker6'>
+					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_end_contract"/>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
 				</div>
-			</div>
-			<br>
-			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-2">GRR State</label>
-				<div class="col-xs-10">
-					<select class="form-control" name="grr_etat">
-						<OPTION value="actif"> Active </OPTION>
-						<OPTION value="inactif"> Not active </OPTION>
-					</select>
-				</div>
-			</div>
 			
-		</div>
-    	<?php }?>
-    
+			<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+      		<script type="text/javascript">
+			$(function () {
+				$('#datetimepicker6').datetimepicker({
+					pickTime: false
+				});
+			});
+		    </script>
+		    </div>
+		</div>		
+		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />

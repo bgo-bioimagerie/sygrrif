@@ -8,7 +8,6 @@ require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyInstall.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
-require_once 'Modules/sygrrif/Model/SyResourceGRR.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
@@ -896,11 +895,11 @@ class ControllerSygrrif extends ControllerBooking {
 	public function booking(){
 
 		$id_resource = $this->request->getParameterNoException('id_resource');
-
+		$id_area = $this->request->getParameterNoException('id_area');
 		
 		if ($id_resource == "" || $id_resource == 0){ // booking home page
 			
-			$menuData = $this->calendarMenuData(1, 0, date("Y-m-d", time()));
+			$menuData = $this->calendarMenuData($id_area, 0, date("Y-m-d", time()));
 			$navBar = $this->navBar();
 			$this->generateView ( array (
 					'navBar' => $navBar,
@@ -942,4 +941,79 @@ class ControllerSygrrif extends ControllerBooking {
 			$controller->runAction($actionName);
 		}
 	}
+	
+	public function colorcodes(){
+		// get sort action
+		$sortentry = "id";
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$sortentry = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get the user list
+		$colorModel = new SyColorCode();
+		$colorTable = $colorModel->getColorCodes( $sortentry );
+		
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'colorTable' => $colorTable
+		) );
+	}
+	
+	public function addcolorcode(){
+	
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+		) );
+	}
+	
+	public function addcolorcodequery(){
+	
+		// get form variables
+		$name = $this->request->getParameter ( "name" );
+		$color = $this->request->getParameter ( "color" );
+		
+		
+		// get the user list
+		$ccModel = new SyColorCode();
+		$ccModel->addColorCode($name, $color);
+	
+		$this->redirect ( "sygrrif", "colorcodes" );
+	}
+	
+	public function editcolorcode(){
+	
+		// get user id
+		$ccId = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$ccId = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get unit info
+		$ccModel = new SyColorCode();
+		$colorcode = $ccModel->getColorCode( $ccId );
+	
+		$navBar = $this->navBar ();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'colorcode' => $colorcode
+		) );
+	}
+	
+	public function editcolorcodequery(){
+		$navBar = $this->navBar ();
+	
+		// get form variables
+		$id = $this->request->getParameter ( "id" );
+		$name = $this->request->getParameter ( "name" );
+		$color = $this->request->getParameter ( "color" );
+		
+		// get the user list
+		$ccModel = new SyColorCode();
+		$ccModel->editColorCode($id, $name, $color);
+	
+		$this->redirect ( "sygrrif", "colorcodes" );
+	}
+	
 }

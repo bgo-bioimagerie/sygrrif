@@ -1,23 +1,15 @@
 <?php $this->title = "SyGRRiF Edit Calendar Reservation"?>
 
 <?php echo $navBar?>
+<?php include "Modules/sygrrif/View/bookingnavbar.php"; ?>
 
-<head>
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-#button-div{
-	padding-top: 20px;
+<?php
+$readOnlyGlobal = ""; 
+if (!$canEditReservation){
+	$readOnlyGlobal = "readonly";
 }
 
-</style>
-
-
-</head>
-
-
-<?php include "Modules/sygrrif/View/bookingnavbar.php"; ?>
+?>
 
 <br>
 <div class="container">
@@ -31,7 +23,7 @@
 			</h1>
 		</div>
 
-	    <input class="form-control" id="id" type="hidden"  name="resource_id" value="<?=$this->clean($resourceBase['id']) ?>" />
+	    <input class="form-control" id="id" type="hidden"  name="resource_id" value="<?=$this->clean($resourceBase['id']) ?>" <?=$readOnlyGlobal?>/>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4">Resource</label>
@@ -63,7 +55,7 @@
 					}
 					?>
 			
-					<select class="form-control" name="recipient_id">
+					<select class="form-control" name="recipient_id" <?=$readOnlyGlobal?>>
 						<?php
 						if ($allowedBookForOther){
 							$curentUserId = $this->clean($curentuser['id']); 
@@ -93,14 +85,15 @@
 			<label for="inputEmail" class="control-label col-xs-4">Short description</label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="short_description"
-				       value="<?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['short_description']);} ?>"  
+				       value="<?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['short_description']);} ?>" 
+				       <?=$readOnlyGlobal?> 
 				/>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4">Full description</label>
 			<div class="col-xs-8">
-				<textarea class="form-control" id="name" type="text" name="full_description"
+				<textarea class="form-control" id="name" type="text" name="full_description" <?=$readOnlyGlobal?>
 				><?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['full_description']);} ?></textarea>
 			</div>
 		</div>
@@ -122,7 +115,7 @@
 			<div class="col-xs-8">
 				<div class='input-group date' id='datetimepicker5'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="begin_date"
-					       value="<?= $sdate ?>"/>
+					       value="<?= $sdate ?>" <?=$readOnlyGlobal?>/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -146,7 +139,7 @@
 				</div>
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="begin_hour"
-				       value="<?= $sh ?>"  
+				       value="<?= $sh ?>" <?=$readOnlyGlobal?> 
 				/>
 				</div>
 				<div class="col-xs-1">
@@ -154,7 +147,7 @@
 				</div>
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="begin_min"
-				       value="<?= $sm ?>"  
+				       value="<?= $sm ?>"  <?=$readOnlyGlobal?>
 				/>
 				</div>
 			</div>
@@ -177,7 +170,7 @@
 			<div class="col-xs-8">
 				<div class='input-group date' id='datetimepicker6'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="end_date"
-					       value="<?= $edate ?>"/>
+					       value="<?= $edate ?>" <?=$readOnlyGlobal?>/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -201,7 +194,7 @@
 				</div>
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="end_hour"
-				       value="<?= $eh ?>"  
+				       value="<?= $eh ?>"  <?=$readOnlyGlobal?>
 				/>
 								</div>
 				<div class="col-xs-1">
@@ -209,15 +202,67 @@
 				</div>
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="end_min"
-				       value="<?= $em ?>"  
+				       value="<?= $em ?>"  <?=$readOnlyGlobal?>
 				/>
 			</div>
 		</div>
+		
+		<?php 
+		if ($this->clean($resourceBase["type_id"])==2){ // is unitary
+		?>
+		<input class="form-control" id="id" type="hidden"  name="is_unitary" value="1" />
 		<br></br>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= $this->clean($resourceInfo["quantity_name"]) ?></label>
+			<div class="col-xs-8">
+				<input class="form-control" id="id" type="number"  name="quantity" value="<?=$this->clean($reservationInfo["quantity"])?>"
+				<?=$readOnlyGlobal?>/>
+			</div>
+		</div>
+		<?php 	
+		}
+		?>
 		<br></br>
-		<div class="col-xs-3 col-xs-offset-9" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='visa'" class="btn btn-default" id="navlink">Cancel</button>
+		<!-- color code -->
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">Color code</label>
+			<div class="col-xs-8">
+			<select class="form-control" name="color_code_id" <?=$readOnlyGlobal?>>
+			<?php 
+			$colorID = 1;
+			if (isset($reservationInfo)){
+				$colorID = $this->clean($reservationInfo["color_type_id"]);
+			}
+			foreach ($colorCodes as $colorCode){
+				$codeID = $this->clean($colorCode["id"]);
+				$codeName = $this->clean($colorCode["name"]);
+				$selected = "";
+				if ($codeID == $colorID ){
+					$selected = "selected=\"selected\"";
+				}
+				?>
+				<OPTION value="<?= $codeID ?>" <?= $selected ?>> <?= $codeName?> </OPTION>
+				<?php 
+			}
+			?>
+			</select>
+			</div>
+		</div>		
+		</br>
+		<?php if ($canEditReservation){
+			?>
+			<div class="col-xs-4 col-xs-offset-8">
+		<?php
+		}else{
+		?>
+		<div class="col-xs-1 col-xs-offset-11">
+		        <?php } if ($canEditReservation){
+				?>	
+				<input type="submit" class="btn btn-primary" value="Save" />
+				<?php if (isset($reservationInfo)){?>
+		        <button type="button" onclick="location.href='calendar/removeentry/<?=$this->clean($reservationInfo['id']) ?>'" class="btn btn-danger" id="navlink">Delete</button>
+		        <?php }} ?>
+				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'">Cancel</button>
 		</div>
       </form>
 	</div>

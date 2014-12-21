@@ -3,8 +3,6 @@
 <?php echo $navBar?>
 
 <head>
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
 #tcell{
@@ -23,29 +21,72 @@
 }
 
 #tcellResa{
-	background-color: #dfdfdf;
 	-moz-border-radius: 9px;
 	border-radius: 9px;
 	border: 1px solid #f1f1f1;
 }
 
 </style>
-
-
 </head>
-
 
 <?php include "Modules/sygrrif/View/bookingnavbar.php"; ?>
 
 
+
+
 <!-- Add the table title -->
 <br></br>
-<div class="col-md-8 col-md-offset-2">
+<div class="col-lg-12">
+<div class="col-lg-10 col-lg-offset-1">
+	<?php if ($message != ""): 
+		if (strpos($message, "Error") === false){?>
+			<div class="alert alert-success text-center">	
+		<?php 
+		}
+		else{
+		?>
+		 	<div class="alert alert-danger text-center">
+		<?php 
+		}
+	?>
+    	<p><?= $message ?></p>
+    	</div>
+	<?php endif; ?>
 
-<div class="col-md-4 col-md-offset-4">
-<p>
-Date: <?= $date ?>
-</p>
+</div>
+</div>
+
+<div class="col-lg-12">
+
+<?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
+<div class="col-lg-10">
+
+<div class="col-lg-12">
+
+<div class="col-md-8 text-left">
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/book/daybefore'"><</button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/book/dayafter'">></button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/book/today'">Today</button>
+<?php 
+$d = explode("-", $date);
+$time = mktime(0,0,0,$d[1],$d[2],$d[0]);
+$dayStream = date("l", $time);
+$monthStream = date("F", $time);
+$dayNumStream = date("d", $time);
+$yearStream = date("Y", $time);
+$sufixStream = date("S", $time);
+
+?>
+<b><?php echo $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream  ?></b>
+</div>
+
+
+<div class="col-md-4 text-right">
+<button type="button" class="btn btn-default active">Day</button>
+<button type="button" class="btn btn-default ">Week</button>
+<button type="button" class="btn btn-default">Month</button>
+
+</div>
 </div>
 
 <br></br>
@@ -56,7 +97,8 @@ $day_end = $resourceInfo['day_end'];
 ?>
 
 <!-- hours column -->
-<div class="col-lg-1" id="colDiv">
+<div class="col-xs-12">
+<div class="col-xs-1" id="colDiv">
 
 	<div id="tcelltop" style="height: 50px;">
 
@@ -74,7 +116,7 @@ $day_end = $resourceInfo['day_end'];
 </div>	
 	
 <!-- hours reservation -->	
-<div class="col-lg-11" id="colDiv">
+<div class="col-xs-11" id="colDiv">
 
 	<div id="tcelltop" style="height: 50px;">
 	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b></br><?= $this->clean($resourceBase['description']) ?></p>
@@ -104,17 +146,13 @@ $day_end = $resourceInfo['day_end'];
 				
 				$text = "";
 				if ($blocNumber <= 2){
-					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc</b> " .$calEntry['short_description']."";
+					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 				}
 				else{
-					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc</b> " .$calEntry['short_description']."";
-				}
-				
-				
-				//$text = "<p><b>".$calEntry['recipient_id']."</b></p>"."<p><b>".$calEntry['short_description']."</b></p>";
-				
+					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
+				}	
 				?>
-					<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px;">
+					<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
 					<a class="text-center" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
 					</div>
 				<?php
@@ -124,7 +162,9 @@ $day_end = $resourceInfo['day_end'];
 		if (!$foundStartEntry){
 		?>
 			<div class="text-center" id="tcell" style="height: 25px;">
+			<?php if ($isUserAuthorizedToBook){?>
 			<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $h ?>"></a>
+			<?php }?>
 			</div>
 		<?php 
 		}	
@@ -133,7 +173,10 @@ $day_end = $resourceInfo['day_end'];
 
 
 </div>
+</div>
+</div>
 
+</div>
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>
 <?php endif; ?>

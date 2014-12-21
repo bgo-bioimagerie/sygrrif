@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Framework/ModelGRR.php';
+require_once 'Framework/Model.php';
 
 /**
  * Class defining the GRR area model
@@ -54,6 +54,12 @@ class SyArea extends Model {
 			return $data->fetch ()[0];
 		else
 			return "not found";
+	}
+	
+	public function getUnrestrictedAreasIDName(){
+		$sql = "select id, name from sy_areas where restricted=0;";
+		$data = $this->runRequest($sql);
+		return $data->fetchAll();
 	}
 	
 	public function getAreasIDName(){

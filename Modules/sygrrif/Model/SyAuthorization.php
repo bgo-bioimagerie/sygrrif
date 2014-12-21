@@ -21,32 +21,62 @@ class SyAuthorization extends Model {
 		`user_id` int(11) NOT NULL,
 		`lab_id` int(11) NOT NULL,
 		`visa_id` int(11) NOT NULL,
-		`resource_id` int(11) NOT NULL,		
+		`resource_id` int(11) NOT NULL,	
+		`is_active` int(1) NOT NULL,			
 		PRIMARY KEY (`id`)
 		);";
 		
 		$pdo = $this->runRequest ( $sql );
 		return $pdo;
 	}
-	public function addAuthorization($date, $user_id, $lab_id, $visa_id, $resource_id) {
-		$sql = "insert into sy_authorization(date, user_id, lab_id, visa_id, resource_id)" . " values(?,?,?,?,?)";
+	public function addAuthorization($date, $user_id, $lab_id, $visa_id, $resource_id, $is_active=1) {
+		$sql = "insert into sy_authorization(date, user_id, lab_id, visa_id, resource_id, is_active)" .
+		 " values(?,?,?,?,?,?)";
 		$this->runRequest ( $sql, array (
 				$date,
 				$user_id,
 				$lab_id,
 				$visa_id,
-				$resource_id 
+				$resource_id,
+				$is_active
 		) );
 	}
-	public function editAuthorization($id, $date, $user_id, $lab_id, $visa_id, $resource_id) {
-		$sql = "update sy_authorization set date=?, user_id=?, lab_id=?, visa_id=?, resource_id=?
-						where id=?";
+	
+	public function setActive($id, $active){
+		$sql = "update sy_authorization set
+					   is_active=?,	where id=?";
+		$unit = $this->runRequest ( $sql, array (
+				$is_active,
+				$id
+		) );
+	}  
+	
+	public function desactivateAthorizationsForUser($userId){
+		$sql="select id from sy_authorization where user_id=?";
+		$req = $this->runRequest($sql, array($userId));
+		$auths = $req->fetchAll();
+		
+		foreach ($auths as $auth){
+			$this->setActive($auth["id"], 0);
+		}
+	} 
+	
+	public function desactivateAthorizationsForUsers($ids){
+		foreach ($ids as $id){
+			$this->desactivateAthorizationsForUser($id);
+		}
+	}
+	
+	public function editAuthorization($id, $date, $user_id, $lab_id, $visa_id, $resource_id,$is_active=1) {
+		$sql = "update sy_authorization set date=?, user_id=?, lab_id=?, visa_id=?, resource_id=?,
+					   is_active=?,	where id=?";
 		$unit = $this->runRequest ( $sql, array (
 				$date,
 				$user_id,
 				$lab_id,
 				$visa_id,
 				$resource_id,
+				$is_active,
 				$id 
 		) );
 	}
@@ -87,6 +117,16 @@ class SyAuthorization extends Model {
 		$sql = "SELECT * from sy_authorization where id=?";
 		$auth = $this->runRequest ( $sql, array($id) );
 		return $auth->fetch();
+	}
+	
+	public function hasAuthorization($id_resource, $id_user){
+		$sql = "SELECT id from sy_authorization where user_id=? AND resource_id=? AND is_active=1";
+		$data = $this->runRequest ( $sql, array($id_user, $id_resource) );
+		if ($data->rowCount() >= 1)
+			return true;  // get the first line of the result
+		else
+			return false;
+		
 	}
 	
 	public function minimalStatistics($searchDate_start, $searchDate_end, $user_id, $unit_id, 
@@ -438,7 +478,5 @@ class SyAuthorization extends Model {
 		$camembert .= $test;		
 		$camembert .= '</svg>';
 		return $camembert;
-
-
 	}
 }

@@ -13,6 +13,7 @@ require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
+require_once 'Modules/sygrrif/Model/SyColorCode.php';
 
 class ControllerSynchistop extends Controller {
 
@@ -97,6 +98,10 @@ class ControllerSynchistop extends Controller {
 		$this->syncAuthorisations($pdo_old);
 		echo "<p>add athorizations</p>";
 		
+		// calendar entry types
+		$this->syncEntryTypes($pdo_grr);
+		echo "<p>add entry types</p>";
+		
 		// add area
 		$this->syncAreas($pdo_grr);
 		echo "<p>add areas</p>";
@@ -108,6 +113,10 @@ class ControllerSynchistop extends Controller {
 		// add calendar entries
 		$this->syncCalendarEntry($pdo_grr);
 		echo "<p>add Calendar Entries</p>";
+		
+		// last login
+		$this->syncLastLogin($pdo_grr);
+		echo "<p>add Last login</p>";
 	}
 	
 	// /////////////////////////////////////////// //
@@ -323,6 +332,15 @@ class ControllerSynchistop extends Controller {
 			// get the creator ID
 			$creatorID = $modelUser->userIdFromLogin($entry['create_by']);
 			
+			// get the color id
+			$type = $entry['type'];
+			$sql = "select id from grr_type_area where type_letter='".$type."'";
+			//echo "sql = " . $sql ."</br>";
+			$req = $pdo_old->query($sql);
+			$color_type_id = $req->fetch()[0];
+			
+			//echo " color_type_id = " . $color_type_id; 
+			
 			// add the reservation
 			$start_time = $entry['start_time'];
 			$end_time = $entry['end_time']; 
@@ -330,7 +348,7 @@ class ControllerSynchistop extends Controller {
 			$booked_by_id = $creatorID; 
 			$recipient_id = $recipientID;
 			$last_update = $entry['timestamp'];
-			$color_type_id = $entry['entry_type']; 
+			$color_type_id = $color_type_id+1; 
 			$short_description = $entry['description'];
 			$full_description = $entry['description'];
 			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
@@ -368,6 +386,10 @@ class ControllerSynchistop extends Controller {
 			
 			$nb_people_max = $room["capacity"];
 			$arr1 = str_split($area_info["display_days"]);
+			for ($t = 0 ; $t < count($arr1) ; $t++){
+				if ($arr1[$t] == "y"){$arr1[$t] = 1;}
+				if ($arr1[$t] == "n"){$arr1[$t] = 0;}
+			}
 			$available_days = $arr1[0] . "," . $arr1[1] . "," . $arr1[2] . "," . $arr1[3] . "," 
 					        . $arr1[4] . "," . $arr1[5] . "," . $arr1[6];
 			$day_begin = $area_info["morningstarts_area"];
@@ -394,7 +416,72 @@ class ControllerSynchistop extends Controller {
 				$restricted = 1;
 			}
 			$modelArea->importArea($id, $name, $display_order, $restricted);	
+		}
+	}
+	
+	public function syncEntryTypes($pdo_grr){
+		
+		$tab_couleur[1] = "FFCCFF"; # mauve pâle
+		$tab_couleur[2] = "99CCCC"; # bleu
+		$tab_couleur[3] = "FF9999"; # rose pâle
+		$tab_couleur[4] = "FFFF99"; # jaune pâle
+		$tab_couleur[5] = "C0E0FF"; # bleu-vert
+		$tab_couleur[6] = "FFCC99"; # pêche
+		$tab_couleur[7] = "FF6666"; # rouge
+		$tab_couleur[8] = "66FFFF"; # bleu "aqua"
+		$tab_couleur[9] = "DDFFDD"; # vert clair
+		$tab_couleur[10] = "CCCCCC"; # gris
+		$tab_couleur[11] = "7EFF7E"; # vert pâle
+		$tab_couleur[12] = "8000FF"; # violet
+		$tab_couleur[13] = "FFFF00"; # jaune
+		$tab_couleur[14] = "FF00DE"; # rose
+		$tab_couleur[15] = "00FF00"; # vert
+		$tab_couleur[16] = "FF8000"; # orange
+		$tab_couleur[17] = "DEDEDE"; # gris clair
+		$tab_couleur[18] = "C000FF"; # Mauve
+		$tab_couleur[19] = "FF0000"; # rouge vif
+		$tab_couleur[20] = "FFFFFF"; # blanc
+		$tab_couleur[21] = "A0A000"; # Olive verte
+		$tab_couleur[22] = "DAA520"; # marron goldenrod
+		$tab_couleur[23] = "40E0D0"; # turquoise
+		$tab_couleur[24] = "FA8072"; # saumon
+		$tab_couleur[25] = "4169E1"; # bleu royal
+		$tab_couleur[26] = "6A5ACD"; # bleu ardoise
+		$tab_couleur[27] = "AA5050"; # bordeaux
+		$tab_couleur[28] = "FFBB20"; # pêche
+		
+		$sql = "select * from grr_type_area";
+		$type_oldq = $pdo_grr->query($sql);
+		$type_old = $type_oldq->fetchAll();
+		
+		$model = new SyColorCode();
+		foreach ($type_old as $typeo){
 			
+			$id = $typeo["id"] + 1;
+			$name = $typeo["type_name"];
+			$color = $tab_couleur[$typeo["couleur"]];
+			$model->importColorCode($id, $name, $color);
+		}
+	}
+
+	public function syncLastLogin($pdo_grr){
+		$sql = "select * from grr_entry";
+		$entry_oldq = $pdo_grr->query($sql);
+		$entry_old = $entry_oldq->fetchAll();
+		
+		$modelUser = new User();
+		$modelCalEntry = new SyCalendarEntry();
+		foreach ($entry_old as $entry){
+			// get the recipient ID
+			$recipientID = $modelUser->userIdFromLogin($entry['beneficiaire']);
+			$date_last_login = $modelUser->getLastConnection($recipientID);
+			
+			$end_time = $entry['end_time'];
+			$end_time = date("Y-m-d", $end_time);
+			
+			if ($end_time > $date_last_login){
+				$modelUser->setLastConnection($recipientID, $end_time);
+			}
 		}
 	}
 }

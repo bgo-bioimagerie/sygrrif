@@ -5,7 +5,6 @@ require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Status.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/Responsible.php';
-require_once 'Modules/core/Model/UserGRR.php';
 
 class ControllerUsers extends ControllerSecureNav {
 	
@@ -79,30 +78,20 @@ class ControllerUsers extends ControllerSecureNav {
 		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
+		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
 		
 		
 		// add the user to the database
 		$this->userModel->addUser($name, $firstname, $login, $pwd, 
 				                  $email, $phone, $id_unit,
-				                  $id_responsible, $id_status, $convention, $date_convention );
+				                  $id_responsible, $id_status, $convention, 
+				                  $date_convention, $date_end_contract );
 		
 		// add the user to the responsible list
 		if ($is_responsible != ''){
 			$userID = $this->userModel->getUser($login, $pwd);
 			$respModel = new Responsible();
 			$respModel->addResponsible($userID['idUser']);
-		}
-		
-		// GRR add user
-		if (Configuration::get("grr_installed")){
-			$use_grr = $this->request->getParameterNoException ( "grr_use");
-			if ($use_grr != ''){
-				// add user to grr
-				$grr_status = $this->request->getParameter ( "grr_status");
-				$grr_etat = $this->request->getParameter ( "grr_etat");
-				$usergrrModel = new UserGRR();
-				$usergrrModel->addUser($login, $name, $firstname, $pwd, $email, $grr_status, $grr_etat);
-			}
 		}
 		
 		// generate view
@@ -144,24 +133,11 @@ class ControllerUsers extends ControllerSecureNav {
 		// is responsoble user
 		$user['is_responsible'] = $respModel->isResponsible($user['id']);
 		
-		// GRR
-		$grretat = "";
-		$grrstatus = "";
-		if (Configuration::get("grr_installed")){
-			$usermodelgrr = new UserGRR();
-			$grrinfo = $usermodelgrr->getStatusState($user['login']);
-			if ($grrinfo){
-				$grretat = $grrinfo['etat'];
-				$grrstatus = $grrinfo['statut'];
-			}
-		}
-		
 		// generate the view
 		$this->generateView ( array (
 				'navBar' => $navBar, 'statusList' => $status,
 				'unitsList' => $unitsList,
-				'respsList' => $respsList, 'user' => $user, 
-				'grretat' => $grretat, 'grrstatus' => $grrstatus
+				'respsList' => $respsList, 'user' => $user
 		) );
 	}
 	
@@ -180,31 +156,20 @@ class ControllerUsers extends ControllerSecureNav {
 		$id_status = $this->request->getParameter ( "id_status");
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
+		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
 		
-		echo "id_responsible = " . $id_responsible . "--";
+		//echo "id_responsible = " . $id_responsible . "--";
 		
 		// update user
 		$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
     		                         $id_unit, $id_responsible, $id_status,
-				                     $convention, $date_convention);
+				                     $convention, $date_convention, $date_end_contract);
 
 		// update responsible
 		if ($is_responsible != ''){
 			$respModel = new Responsible();
 			$respModel->addResponsible($id);
 		} 
-		
-		// GRR add user
-		if (Configuration::get("grr_installed")){
-			$use_grr = $this->request->getParameterNoException ( "grr_use");
-			if ($use_grr != ''){
-				// add user to grr
-				$grr_status = $this->request->getParameter ( "grr_status");
-				$grr_etat = $this->request->getParameter ( "grr_etat");
-				$usergrrModel = new UserGRR();
-				$usergrrModel->editUser($login, $name, $firstname, $email, $grr_status, $grr_etat);
-			}
-		}
 		
 		// generate view
 		$navBar = $this->navBar();
@@ -357,6 +322,19 @@ class ControllerUsers extends ControllerSecureNav {
 		$this->generateView ( array (
 				'navBar' => $navBar
 		) );
+	}
+	
+	public function activate(){
+		$userId = 0;
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$userId = $this->request->getParameter("actionid");
+		};
+		
+		if ($userId>0){
+			$this->userModel->activate($userId);
+		}
+		
+		$this->redirect("users", "index");
 	}
 	
 }
