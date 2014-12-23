@@ -101,7 +101,7 @@ class SyBillGenerator extends Model {
 				$night_end = $descriptionTarif['night_end'];
 				$we_array = explode(",", $descriptionTarif['choice_we']);
 				
-				// get the pricing for the curent resource
+				// get the price for the curent resource
 				$modelRessourcePricing = new SyResourcePricing();
 				$res = $modelRessourcePricing->getPrice($e[0], $tarif_id);
 				$tarif_horaire_jour = $res['price_day'];	//Tarif jour pour l'utilisateur sélectionné

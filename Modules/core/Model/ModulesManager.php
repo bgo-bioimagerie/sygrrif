@@ -133,8 +133,8 @@ class ModulesManager extends Model {
 		$id = $req->fetch()[0];
 		
 		$sql = "update core_datamenu set name=?, link=?, usertype=?, icon=? where id=?";
-		$this->runRequest($sql, array("".$name."", "".link."",
-				                              "".usertype."", "".icon."", $id));
+		$this->runRequest($sql, array("".$name."", "".$link."",
+				                              "".$usertype."", "".$icon."", $id));
 	}
 	
 	public function getDataMenusUserType($name){
