@@ -3,9 +3,7 @@
 <?php echo $navBar?>
 
 <head>
-<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
 <style>
 #button-div{

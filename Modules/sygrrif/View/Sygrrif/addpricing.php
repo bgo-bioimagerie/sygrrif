@@ -3,9 +3,6 @@
 <?php echo $navBar?>
 
 <head>
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <style>
 #button-div{
 	padding-top: 20px;

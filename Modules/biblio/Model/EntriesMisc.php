@@ -1,13 +1,14 @@
 <?php
 
 require_once 'Framework/Model.php';
+require_once 'Modules/biblio/Model/Entries.php';
 
 /**
  * Class defining the publication model
  *
  * @author Sylvain Prigent
  */
-class EntriesMisc extends Model {
+class EntriesMisc extends Entries {
 
 	
 	/**
@@ -18,26 +19,57 @@ class EntriesMisc extends Model {
 	public function createTable(){
 			
 		$sql = "CREATE TABLE IF NOT EXISTS `biblio_entries_misc` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,	
- 		`title` varchar(50) NOT NULL,
-		`howpublished` varchar(50) NOT NULL,
-		`month` int(2) NOT NULL,
-		`year` int(4) NOT NULL,		
-		PRIMARY KEY (`id`)
+		`id_publi` int(11) NOT NULL AUTO_INCREMENT,	
+		`howpublished` varchar(50) NOT NULL,		
+		PRIMARY KEY (`id_publi`)
 		);";
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
 	
-	public function addEntry($title, $howpublished, $month, $year){
-		$sql = "insert into biblio_entries_misc(title, howpublished, month, year)"
-				. " values(?,?,?,?)";
-		$user = $this->runRequest($sql, array($title, $howpublished, $month, $year));
+	public function defaultEntry(){
+		$pubicationInfos['howpublished'] = "";
+		return $pubicationInfos;
+	}
+	
+	public function getDescription($id_publi){
+		$entry = $this->getEntry($id_publi);
+	
+		$desc = $entry['howpublished'];
+		
+		return $desc;
+	}
+	
+	public function editEntry($pubicationInfos){
+	
+		$id_publi = $pubicationInfos["publi_id"];
+		$howpublished = $pubicationInfos["howpublished"];
+	
+		$model = new EntriesMisc();
+		if ($pubicationInfos["id"] == "" || $pubicationInfos["id"] == 0){
+			$this->addEntry($id_publi, $howpublished);
+		}
+		else{
+			$this->updateEntry($id_publi, $howpublished);
+		}
+	}
+	
+	
+	public function addEntry($id_publi, $howpublished){
+		$sql = "insert into biblio_entries_misc(id_publi, howpublished)"
+				. " values(?,?)";
+		$user = $this->runRequest($sql, array($id_publi, $howpublished));
+	}
+	
+	public function updateEntry($id_publi, $howpublished){
+		$sql = "update biblio_entries_misc set howpublished=?"
+				. " where id_publi=?";
+		$user = $this->runRequest($sql, array($howpublished, $id_publi));
 	}
 	
 	public function getEntry($id){
-		$sql = "select * from biblio_entries_misc where id=?;";
-		$req = $this->runRequest($sql);
+		$sql = "select * from biblio_entries_misc where id_publi=?";
+		$req = $this->runRequest($sql, array($id));
 		if ($req->rowCount () == 1){
 			return $req->fetch();
 		}

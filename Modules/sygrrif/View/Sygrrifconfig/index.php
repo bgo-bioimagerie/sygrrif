@@ -2,11 +2,6 @@
 
 <?php echo $navBar ?>
 
-<head>
-    <!-- Bootstrap core CSS -->
-    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">   
-</head>
-
 <div class="container">
     	<div class="col-md-8 col-md-offset-2">
     	

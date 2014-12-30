@@ -30,7 +30,8 @@ class Journal extends Model {
 	public function addJournal($name){
 		$sql = "insert into biblio_journals(name)"
 				. " values(?)";
-		$user = $this->runRequest($sql, array($name));
+		$req = $this->runRequest($sql, array($name));
+		return $this->getDatabase()->lastInsertId();
 	}
 	
 	public function journals($sortEntry = "name"){
@@ -40,10 +41,10 @@ class Journal extends Model {
 	}
 	
 	public function getJournal($id){
-		$sql = "select * from biblio_journals where id=?;";
-		$req = $this->runRequest($sql);
+		$sql = "select * from biblio_journals where id=?";
+		$req = $this->runRequest($sql, array($id));
 		if ($req->rowCount () == 1){
-			return $req->fetch()[0];
+			return $req->fetch();
 		}
 		else{
 			return null;

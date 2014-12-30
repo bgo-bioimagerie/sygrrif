@@ -1,13 +1,4 @@
-
 <head>
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css">
-
-
-<link href="data:text/css;charset=utf-8,"
-	data-href="bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet"
-	id="bs-theme-stylesheet">
-
 
 <style>
 .bs-docs-header {
@@ -17,7 +8,7 @@
 	background-color: #337ab7;
 }
 
-#navlink {
+#navlink2 {
 	color: #cdbfe3;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
@@ -35,45 +26,42 @@ legend {
 
 </head>
 
+
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h1 style="border-bottom:1px solid #2775aa;">Bibliography</h1>
+		<h1>Bibliography</h1>
 		<div class='col-md-3' id='well'>
 		</div>
 		
 		<div class='col-md-4' id='well'>
 			<fieldset>
 				<legend>Search Publications</legend>
-					<button onclick="location.href='biblio/'"
-						class="btn btn-link" id="navlink">All</button>
+					<button onclick="location.href='biblio/allpublications'"
+						class="btn btn-link" id="navlink2">All</button>
 				<br/>
-					<button onclick="location.href='biblio/'"
-						class="btn btn-link" id="navlink">By year</button>
+					<button onclick="location.href='biblio/yearpublications'"
+						class="btn btn-link" id="navlink2">By year</button>
 				<br/>
-					<button onclick="location.href='biblio/'"
-						class="btn btn-link" id="navlink">By type</button>
+					<button onclick="location.href='biblio/typepublications'"
+						class="btn btn-link" id="navlink2">By type</button>
 				<br/>
-					<button onclick="location.href='biblio/'"
-						class="btn btn-link" id="navlink">By author</button>
+					<button onclick="location.href='biblio/authorpublications'"
+						class="btn btn-link" id="navlink2">By author</button>
 			</fieldset>
 		</div>
 		<div class='col-md-4' id='well'>
 			<fieldset>
 				<legend>Add Publication</legend>
-					<button onclick="location.href='biblio/editarticle'"
-						class="btn btn-link" id="navlink">Add article</button>
-				<br/>
-					<button onclick="location.href='biblio'"
-						class="btn btn-link" id="navlink">Add Conference</button>
-				<br/>
-					<button onclick="location.href='biblio'"
-						class="btn btn-link" id="navlink">Add Book</button>
-				<br/>
-					<button onclick="location.href='biblio'"
-						class="btn btn-link" id="navlink">Add Book chapter</button>
-				<br/>
-					<button onclick="location.href='biblio'"
-						class="btn btn-link" id="navlink">Add Misc</button>
+				<?php
+				$entryTypes = PublicationManager::entriesTypes(); 
+				foreach ($entryTypes as $entryType){
+				?>
+					<button onclick="location.href='biblio/editpublication/type_<?=$entryType?>'"
+						class="btn btn-link" id="navlink2">Add <?=$entryType?></button>
+					<br/>
+				<?php 
+				}
+				?>
 			</fieldset>
 		</div>
 	</div>

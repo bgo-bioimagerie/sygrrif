@@ -2,11 +2,12 @@
 
 <head>
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
 <?php if ($alreadyInstalled){?>
 
+</br>
 <div class="container">
 	<div class="jumbotron">
         <h1>Permission denied</h1>

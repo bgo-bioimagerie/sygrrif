@@ -3,11 +3,9 @@
 <?php echo $navBar?>
 
 <head>
-	<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-	<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-	
-	<script src="bootstrap/datepicker/js/moments.js"></script>
-	<script src="bootstrap/jquery-1.11.1.js"></script>
+	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<script src="externals/datepicker/js/moments.js"></script>
+	<script src="externals/jquery-1.11.1.js"></script>
 
 <style>
 #button-div{
@@ -54,7 +52,7 @@
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
       		<script type="text/javascript">
 			$(function () {
 				$('#datetimepicker5').datetimepicker({
@@ -74,7 +72,7 @@
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
       		<script type="text/javascript">
   			$(function () {
 				$('#datetimepicker6').datetimepicker({

@@ -12,6 +12,21 @@
 
 <div class="container">
     <br></br>
+	<?php if (isset($message)): 
+		if (strpos($message, "Error") === false){?>
+			<div class="alert alert-success text-center">	
+		<?php 
+		}
+		else{
+		?>
+		 	<div class="alert alert-danger text-center">
+		<?php 
+		}
+	?>
+    	<p><?= $message ?></p>
+    	</div>
+	<?php endif; ?>
+    
 </div>
        
 

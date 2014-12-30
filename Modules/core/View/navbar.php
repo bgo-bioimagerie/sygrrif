@@ -1,6 +1,6 @@
 <head>
     <!-- Bootstrap core CSS -->
-    <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="Themes/navbar-fixed-top.css" rel="stylesheet">
@@ -72,5 +72,5 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="externals/jquery-1.11.1.js"></script>
+<script src="externals/bootstrap/js/bootstrap.min.js"></script>

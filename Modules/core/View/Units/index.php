@@ -4,11 +4,9 @@
 
 <head>
 <!-- Bootstrap core CSS -->
-<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.min.css"
+<link href="externals/datepicker/css/bootstrap-datetimepicker.min.css"
 	rel="stylesheet">
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-
 
 <?php include "Modules/core/View/Users/usersnavbar.php"; ?>
 

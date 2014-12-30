@@ -30,7 +30,8 @@ class Conference extends Model {
 	public function addConference($name){
 		$sql = "insert into biblio_conferences(name)"
 				. " values(?)";
-		$user = $this->runRequest($sql, array($name));
+		$this->runRequest($sql, array($name));
+		return $this->getDatabase()->lastInsertId();
 	}
 	
 	public function Conferences($sortEntry = "name"){
@@ -40,10 +41,10 @@ class Conference extends Model {
 	}
 	
 	public function getConference($id){
-		$sql = "select * from biblio_conferences where id=?;";
-		$req = $this->runRequest($sql);
+		$sql = "select * from biblio_conferences where id=?";
+		$req = $this->runRequest($sql, array($id));
 		if ($req->rowCount () == 1){
-			return $req->fetch()[0];
+			return $req->fetch();
 		}
 		else{
 			return null;

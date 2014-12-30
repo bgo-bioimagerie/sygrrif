@@ -31,7 +31,8 @@ class Author extends Model {
 	public function addAuthor($name, $firstname){
 		$sql = "insert into biblio_authors(name, firstname)"
 				. " values(?,?)";
-		$user = $this->runRequest($sql, array($name, $firstname));
+		$req = $this->runRequest($sql, array($name, $firstname));
+		return $this->getDatabase()->lastInsertId();
 	}
 	
 	public function authors($sortEntry = "name"){
@@ -41,10 +42,12 @@ class Author extends Model {
 	}
 	
 	public function getAuthor($id){
-		$sql = "select * from biblio_authors where id=?;";
-		$req = $this->runRequest($sql);
+		//echo "id to get = " . $id . "</br>";
+		$sql = "select * from biblio_authors where id=?";
+		$req = $this->runRequest($sql, array($id));
 		if ($req->rowCount () == 1){
-			return $req->fetch()[0];
+			//echo "return auth </br>";
+			return $req->fetch();
 		}
 		else{
 			return null;

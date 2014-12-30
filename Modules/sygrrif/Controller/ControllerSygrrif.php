@@ -899,6 +899,7 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		if ($id_resource == "" || $id_resource == 0){ // booking home page
 			
+			if ($id_area == "" || $id_area ==0){$id_area=1;}
 			$menuData = $this->calendarMenuData($id_area, 0, date("Y-m-d", time()));
 			$navBar = $this->navBar();
 			$this->generateView ( array (

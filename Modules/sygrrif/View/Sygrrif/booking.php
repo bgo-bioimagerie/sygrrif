@@ -3,9 +3,6 @@
 <?php echo $navBar?>
 
 <head>
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
 <style>
 #desc{
 	border: 1px dashed #aaaaaa;

@@ -33,6 +33,7 @@ class ControllerBiblioconfig extends ControllerSecureNav {
 			try{
 				$installModel = new BiblioInstall();
 				$installModel->createDatabase();
+				$installModel->createDataDir();
 			}
 			catch (Exception $e) {
     			$installError =  $e->getMessage();

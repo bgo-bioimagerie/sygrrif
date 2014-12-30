@@ -2,7 +2,7 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
-require_once("PHPExcel/Classes/PHPExcel.php");
+require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
 /**
  * Class defining the Sygrrif pricing model
