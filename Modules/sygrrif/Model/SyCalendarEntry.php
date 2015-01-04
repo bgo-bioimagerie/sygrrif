@@ -22,14 +22,15 @@ class SyCalendarEntry extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,	
 		`start_time` int(11) NOT NULL,	
 		`end_time` int(11) NOT NULL,	
-		`resource_id` int(11) NOT NULL,
+		`resource_id` int(11) NOT NULL,	
 		`booked_by_id` int(11) NOT NULL,	
 		`recipient_id` int(11) NOT NULL,	
 		`last_update` timestamp NOT NULL,
 		`color_type_id` int(11) NOT NULL,						
 		`short_description` varchar(100) NOT NULL,	
 		`full_description` text NOT NULL,
-		`quantity` int(11) NOT NULL,						
+		`quantity` int(11) NOT NULL,
+		`repeat_id` int(11) NOT NULL DEFAULT 0,									
 		PRIMARY KEY (`id`)
 		);";
 
@@ -45,6 +46,13 @@ class SyCalendarEntry extends Model {
 				. " values(?,?,?,?,?,?,?,?,?,?)";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 							$last_update, $color_type_id, $short_description, $full_description, $quantity));
+		return $this->getDatabase()->lastInsertId();
+	}
+	
+	public function setRepeatID($id, $repeat_id){
+		$sql = "update sy_calendar_entry set repeat_id=?
+									  where id=?";
+		$this->runRequest($sql, array($repeat_id, $id));
 	}
 	
 	public function getEntry($id){
