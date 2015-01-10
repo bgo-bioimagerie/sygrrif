@@ -130,7 +130,8 @@ class ModulesManager extends Model {
 	public function updateDataMenu($name, $link, $usertype, $icon){
 		$sql = "select id from core_datamenu where name=?";
 		$req = $this->runRequest($sql, array($name));
-		$id = $req->fetch()[0];
+		$id = $req->fetch();
+		$id = $id[0];
 		
 		$sql = "update core_datamenu set name=?, link=?, usertype=?, icon=? where id=?";
 		$this->runRequest($sql, array("".$name."", "".$link."",
@@ -141,7 +142,8 @@ class ModulesManager extends Model {
 		if ($this->isDataMenu($name)){
 			$sql = "select usertype from core_datamenu where name=?";
 			$data = $this->runRequest($sql, array($name));
-			return $data->fetch()[0];
+			$tmp = $data->fetch();
+			return $tmp[0];
 		}
 		return 0;
 

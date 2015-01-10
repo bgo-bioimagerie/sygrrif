@@ -118,7 +118,8 @@ class PublicationManager extends Model {
 		//print_r($_FILES["fileToUpload"]);
 		if ($_FILES["fileToUpload"]["name"] != ""){
 			// file url
-			$firstauthorname = $modelAuth->getAuthor($autho_list[0])["name"];
+			$tmp = $modelAuth->getAuthor($autho_list[0]);
+			$firstauthorname = $tmp["name"];
 			$fileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);
 			$target_dir = "data/biblio/";
 			$target_file = $target_dir . $publi_id . "_" . $year . "." . $fileType;

@@ -17,7 +17,8 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="#"><?php echo Configuration::get("name"); ?> </a>
+			<a class="navbar-brand" href=""><img style="height:45px; margin-top: -12px;"
+             src="Themes/logo.jpg">
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">

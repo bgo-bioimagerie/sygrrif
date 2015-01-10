@@ -192,7 +192,8 @@ class User extends Model {
     	$respModel = new Responsible();
     	for ($i = 0 ; $i < count($users) ; $i++){	
     		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit']);
-    		$users[$i]['status'] = $statusModel->getStatusName($users[$i]['id_status'])[0];
+    		$tmp = $statusModel->getStatusName($users[$i]['id_status']);
+			$users[$i]['status'] = $tmp[0];
     		$users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
     		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
     	}
@@ -247,6 +248,7 @@ class User extends Model {
     			                      $is_active
     	));
     	
+    	return $this->getDatabase()->lastInsertId();
     }
     
     public function setUser($name, $firstname, $login, $pwd,
@@ -353,10 +355,13 @@ class User extends Model {
     {
     	$sql = "select id from core_users where login=?";
     	$user = $this->runRequest($sql, array($login));
-    	if ($user->rowCount() == 1)
-    		return $user->fetch()[0];
-    	else
+    	if ($user->rowCount() == 1){
+			$tmp = $user->fetch();
+    		return $tmp[0];
+		}
+    	else{
     		return -1;
+		}
     }
     
     
@@ -415,10 +420,13 @@ class User extends Model {
     public function getLastConnection($id){
     	$sql = "select date_last_login from core_users where id=?";
     	$user = $this->runRequest($sql, array($id));
-    	if ($user->rowCount() == 1)
-    		return $user->fetch()[0];
-    	else
+    	if ($user->rowCount() == 1){
+			$tmp = $user->fetch();
+			return $tmp[0];
+		}
+    	else{
     		return "0000-00-00";
+		}
     }
     
     public function setLastConnection($id, $time){
@@ -503,6 +511,19 @@ class User extends Model {
     	
     	$sql = "update core_users set is_active=?, date_last_login=? where id=?";
     	$this->runRequest($sql, array(1, $today, $userId));
+    }
+    
+    public function getUserFromNameFirstname($name, $firstname){
+    	$sql = "select id from core_users where name=? and firstname=?";
+    	$user = $this->runRequest($sql, array($name, $firstname));
+
+    if ($user->rowCount() == 1){
+			$tmp = $user->fetch();
+			return $tmp[0];
+		}
+    	else{
+    		return -1;
+		}
     }
     
 }

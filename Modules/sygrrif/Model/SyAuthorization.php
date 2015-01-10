@@ -166,7 +166,8 @@ class SyAuthorization extends Model {
 		if ($user_id != "0") {
 			$sql='SELECT login, name, firstname from core_users WHERE id = ?';
 			$req = $this->runRequest($sql, array($user_id));
-			$user = $req->fetchAll()[0];
+			$tmp = $req->fetchAll();
+			$user = $tmp[0];
 			$login = $user["login"];
 			$nf = $user["name"] . " " . $user["firstname"];
 					
@@ -178,7 +179,8 @@ class SyAuthorization extends Model {
 		if ($oldunit_id != "0") {
 			$sql='SELECT name from core_units WHERE id = ?';
 			$req = $this->runRequest($sql, array($oldunit_id));
-			$lab_old = $req->fetchAll()[0];
+			$tmp = $req->fetchAll();
+			$lab_old = $tmp[0];
 			$lab_old = $lab_old["name"];
 					
 			$q_search['lab_old'] = $oldunit_id;
@@ -190,7 +192,8 @@ class SyAuthorization extends Model {
 			$q = array('id'=>$unit_id);
 			$sql='SELECT name from core_units WHERE id = ?';
 			$req = $this->runRequest($sql, array($unit_id));
-			$laboratoire = $req->fetchAll()[0];
+			$tmp = $req->fetchAll();
+			$laboratoire = $tmp[0];
 			$laboratoire = $laboratoire["name"];
 					
 			$q_search['laboratoire'] = $unit_id;
@@ -201,7 +204,8 @@ class SyAuthorization extends Model {
 		if ($visa_id != "0") {
 			$sql='SELECT name from sy_visas WHERE id = ?';
 			$req = $this->runRequest($sql, array($visa_id));
-			$visa = $req->fetchAll()[0];
+			$tmp = $req->fetchAll();
+			$visa = $tmp[0];
 			$visa = $visa["name"];
 					
 			$q_search['visa'] = $visa_id;
@@ -212,7 +216,8 @@ class SyAuthorization extends Model {
 		if ($resource_id != "0") {
 			$sql='SELECT name from sy_resourcescategory WHERE id = ?';
 			$req = $this->runRequest($sql, array($resource_id));
-			$machine = $req->fetchAll()[0];
+			$tmp = $req->fetchAll();
+			$machine = $tmp[0];
 			$machine = $machine["name"];
 					
 			$q_search['machine'] = $resource_id;
@@ -399,12 +404,14 @@ class SyAuthorization extends Model {
 				$respInfo = $modelResp->getUserResponsible($d[1]);
 				$responsable = $respInfo["name"] . " " . $respInfo["firstname"];  
 					
+				$visas = $modelVisa->getVisaName($d[3]);
+				$machines = $modelResource->getResourcesCategoryName($d[4]);	
 				$datas[] = array(
 						'Date' 			=> $d[0],
 						'Utilisateur' 	=> $modelUser->getUserFUllName($d[1]),
 						'Laboratoire' 	=> $modelUnit->getUnitName($d[2]),
-						'Visa' 			=> $modelVisa->getVisaName($d[3])[0],
-						'machine' 		=> $modelResource->getResourcesCategoryName($d[4])[0],
+						'Visa' 			=> $visas[0],
+						'machine' 		=> $machines[0],
 						'responsable'   => $responsable
 				);
 			}
@@ -447,7 +454,8 @@ class SyAuthorization extends Model {
 			$q = array( "start" => $searchDate_start, "end" => $searchDate_end);
 			$sql = 'SELECT id FROM sy_authorization WHERE date >=:start AND date <=:end AND resource_id="'.$mFL[0].'"';
 			$req = $this->runRequest($sql, $q);
-			$numMachinesFormes[0][$i] = $modelResouces->getResourcesCategoryName($mFL[0])[0];
+			$tmp = $modelResouces->getResourcesCategoryName($mFL[0]);
+			$numMachinesFormes[0][$i] = $tmp[0];
 			$numMachinesFormes[1][$i] = $req->rowCount();
 			$i++;
 		}

@@ -18,7 +18,7 @@ abstract class ControllerSecure extends Controller
         }
         else {
         	echo "redirect to connection";
-            $this->redirect("Connection");
+            $this->redirect("connection");
         }
     }
 }

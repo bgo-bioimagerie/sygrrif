@@ -196,7 +196,6 @@ class ControllerSyncneurinfo extends Controller {
 				$id_status = 1;
 			}
 			
-			$id_status = 1;
 			$convention = "";
 			$date_convention = '';
 			//$dateObj = DateTime::createFromFormat("d/m/Y", $uo['date_c']);
@@ -273,8 +272,6 @@ class ControllerSyncneurinfo extends Controller {
 			}
 		}
 	}
-	
-	
 }
 
 ?>

@@ -88,6 +88,9 @@ class SyBillGenerator extends Model {
 			$heureResTotalWeNuitVrai = 0;
 		
 			$pricingModel = new SyPricing();
+			$resourceID = $e[0];
+			$modelResource = new SyResource();
+			$resourceType = $modelResource->getResourceType($resourceID);
 			for ($j = 0; $j < count($people[0]); $j++) {
 				$descriptionTarif = $pricingModel->getPricing($people[4][$j]);
 
@@ -118,81 +121,102 @@ class SyBillGenerator extends Model {
 				//---------
 				//ResBefore : Réservation qui commence avant la période sélectionée et se termine dans la période sélectionnée
 				$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'room_id'=>$e[0], 'beneficiaire'=>$people[2][$j]);
-				$sql = 'SELECT start_time, end_time FROM sy_calendar_entry WHERE start_time <:start AND end_time <= :end AND end_time>:start AND resource_id=:room_id AND recipient_id=:beneficiaire';
+				$sql = 'SELECT start_time, end_time, quantity FROM sy_calendar_entry WHERE start_time <:start AND end_time <= :end AND end_time>:start AND resource_id=:room_id AND recipient_id=:beneficiaire';
 				$req = $this->runRequest($sql, $q);
 				$resBefore = $req->fetchAll();
 				$numResBefore = $req->rowCount();
+				$heureBefore = 0;
 
-				$heureBeforeJour = 0;
-				$honoraireBeforeJour = 0;
-				$heureBeforeNuit = 0;
-				$honoraireBeforeNuit = 0;
-				$heureBeforeWeJour = 0;
-				$honoraireBeforeWeJour = 0;
-				$heureBeforeWeNuit = 0;
-				$honoraireBeforeWeNuit = 0;
-				foreach($resBefore as $rB){
-					$progress = $searchDate_start;
-					while ($progress < $rB[1]){
-						$progress += $resolutionDomaine;
-						if (in_array(date('N',$progress),$we_array)){
-							if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
-								$heureBeforeWeJour += $resolutionDomaine/3600;
+				if ($resourceType == 1){ // calendar
+					$heureBeforeJour = 0;
+					$honoraireBeforeJour = 0;
+					$heureBeforeNuit = 0;
+					$honoraireBeforeNuit = 0;
+					$heureBeforeWeJour = 0;
+					$honoraireBeforeWeJour = 0;
+					$heureBeforeWeNuit = 0;
+					$honoraireBeforeWeNuit = 0;
+					foreach($resBefore as $rB){
+						$progress = $searchDate_start;
+						while ($progress < $rB[1]){
+							$progress += $resolutionDomaine;
+							if (in_array(date('N',$progress),$we_array)){
+								if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
+									$heureBeforeWeJour += $resolutionDomaine/3600;
+								} else {
+									$heureBeforeWeNuit += $resolutionDomaine/3600;
+								}
 							} else {
-								$heureBeforeWeNuit += $resolutionDomaine/3600;
-							}
-						} else {
-							if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
-								$heureBeforeJour += $resolutionDomaine/3600;
-							} else {
-								$heureBeforeNuit += $resolutionDomaine/3600;
+								if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
+									$heureBeforeJour += $resolutionDomaine/3600;
+								} else {
+									$heureBeforeNuit += $resolutionDomaine/3600;
+								}
 							}
 						}
 					}
+					$heureBeforeVrai = $heureBeforeJour + $heureBeforeNuit + $heureBeforeWeJour + $heureBeforeWeNuit;
+					$heureBefore = $heureBeforeJour + ($heureBeforeNuit/2) + ($heureBeforeWeJour/2) + ($heureBeforeWeNuit/2);
 				}
-				$heureBeforeVrai = $heureBeforeJour + $heureBeforeNuit + $heureBeforeWeJour + $heureBeforeWeNuit;
-				$heureBefore = $heureBeforeJour + ($heureBeforeNuit/2) + ($heureBeforeWeJour/2) + ($heureBeforeWeNuit/2);
+				else if ($resourceType == 2){ // unitary calendar
+					foreach($resBefore as $rB){
+						$heureBefore += $rB[2];
+					}
+				}
+				
+				
 				//---------
 				//ResIn : Réservation qui commence ET se termine dans la période sélectionnée
 				$sql = 'SELECT start_time, end_time FROM sy_calendar_entry WHERE start_time >=:start AND end_time <= :end AND resource_id=:room_id AND recipient_id=:beneficiaire';
 				$req = $this->runRequest($sql, $q);
 				$resIn = $req->fetchAll();
 				$numResIn = $req->rowCount();
-
-				$heureInJour = 0;
-				$honoraireInJour = 0;
-				$heureInNuit = 0;
-				$honoraireInNuit = 0;
-				$heureInWeJour = 0;
-				$honoraireInWeJour = 0;
-				$heureInWeNuit = 0;
-				$honoraireInWeNuit = 0;
-				foreach($resIn as $rI){
-					//if (strpos($rI[2],"@2@")) {
-					//	$tarif_majoration = urldecode(substr($rI[2],strpos($rI[2],"@2@")+3,strpos($rI[2],"@/2@")-strpos($rI[2],"@2@")-3));
-					//} else {
+				
+				$heureIn = 0;
+				if ($resourceType == 1){ // calendar
+					$heureInJour = 0;
+					$honoraireInJour = 0;
+					$heureInNuit = 0;
+					$honoraireInNuit = 0;
+					$heureInWeJour = 0;
+					$honoraireInWeJour = 0;
+					$heureInWeNuit = 0;
+					$honoraireInWeNuit = 0;
+					foreach($resIn as $rI){
+							
+						//if (strpos($rI[2],"@2@")) {
+						//	$tarif_majoration = urldecode(substr($rI[2],strpos($rI[2],"@2@")+3,strpos($rI[2],"@/2@")-strpos($rI[2],"@2@")-3));
+						//} else {
 						$tarif_majoration = 0;
-					//}
-					$progress = $rI[0];
-					while ($progress < $rI[1]){
-						$progress += $resolutionDomaine;
-						if (in_array(date('N',$progress),$we_array)){
-							if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
-								$heureInWeJour += $resolutionDomaine/3600;
+						//}
+						$progress = $rI[0];
+						while ($progress < $rI[1]){
+							$progress += $resolutionDomaine;
+							if (in_array(date('N',$progress),$we_array)){
+								if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
+									$heureInWeJour += $resolutionDomaine/3600;
+								} else {
+									$heureInWeNuit += $resolutionDomaine/3600;
+								}
 							} else {
-								$heureInWeNuit += $resolutionDomaine/3600;
-							}
-						} else {
-							if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
-								$heureInJour += $resolutionDomaine/3600;
-							} else {
-								$heureInNuit += $resolutionDomaine/3600;
+								if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
+									$heureInJour += $resolutionDomaine/3600;
+								} else {
+									$heureInNuit += $resolutionDomaine/3600;
+								}
 							}
 						}
 					}
+					$heureInVrai = $heureInJour + $heureInNuit + $heureInWeJour + $heureInWeNuit;
+					$heureIn = $heureInJour + ($heureInNuit/2) + ($heureInWeJour/2) + ($heureInWeNuit/2);
 				}
-				$heureInVrai = $heureInJour + $heureInNuit + $heureInWeJour + $heureInWeNuit;
-				$heureIn = $heureInJour + ($heureInNuit/2) + ($heureInWeJour/2) + ($heureInWeNuit/2);
+				else if ($resourceType == 2){ // unitary calendar
+					foreach($resIn as $rB){
+						$heureIn += $rB[2];
+					}
+				}	
+					
+				
 				//---------
 				//ResAfter : Réservation qui commence dans la période sélectionnée et se termine après la période sélectionnée
 				$sql = 'SELECT start_time, end_time FROM sy_calendar_entry WHERE start_time >=:start AND start_time<:end AND end_time > :end AND resource_id=:room_id AND recipient_id=:beneficiaire';
@@ -200,35 +224,43 @@ class SyBillGenerator extends Model {
 				$resAfter = $req->fetchAll();
 				$numResAfter = $req->rowCount();
 
-				$heureAfterJour = 0;
-				$honoraireAfterJour = 0;
-				$heureAfterNuit = 0;
-				$honoraireAfterNuit = 0;
-				$heureAfterWeJour = 0;
-				$honoraireAfterWeJour = 0;
-				$heureAfterWeNuit = 0;
-				$honoraireAfterWeNuit = 0;
-				foreach($resAfter as $rA){
-					$progress = $rA[0];
-					while ($progress < $searchDate_end){
-						$progress += $resolutionDomaine;
-						if (in_array(date('N',$progress),$we_array)){
-							if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
-								$heureAfterWeJour += $resolutionDomaine/3600;
+				$heureAfter = 0;
+				if ($resourceType == 1){ // calendar
+					$heureAfterJour = 0;
+					$honoraireAfterJour = 0;
+					$heureAfterNuit = 0;
+					$honoraireAfterNuit = 0;
+					$heureAfterWeJour = 0;
+					$honoraireAfterWeJour = 0;
+					$heureAfterWeNuit = 0;
+					$honoraireAfterWeNuit = 0;
+					foreach($resAfter as $rA){
+						$progress = $rA[0];
+						while ($progress < $searchDate_end){
+							$progress += $resolutionDomaine;
+							if (in_array(date('N',$progress),$we_array)){
+								if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
+									$heureAfterWeJour += $resolutionDomaine/3600;
+								} else {
+									$heureAfterWeNuit += $resolutionDomaine/3600;
+								}
 							} else {
-								$heureAfterWeNuit += $resolutionDomaine/3600;
-							}
-						} else {
-							if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
-								$heureAfterJour += $resolutionDomaine/3600;
-							} else {
-								$heureAfterNuit += $resolutionDomaine/3600;
+								if ((date('H',$progress)>$night_end) && (date('H',$progress) <= $night_start)){
+									$heureAfterJour += $resolutionDomaine/3600;
+								} else {
+									$heureAfterNuit += $resolutionDomaine/3600;
+								}
 							}
 						}
 					}
+					$heureAfterVrai = $heureAfterJour + $heureAfterNuit + $heureAfterWeJour + $heureAfterWeNuit;
+					$heureAfter = $heureAfterJour + ($heureAfterNuit/2) + ($heureAfterWeJour/2) + ($heureAfterWeNuit/2);
 				}
-				$heureAfterVrai = $heureAfterJour + $heureAfterNuit + $heureAfterWeJour + $heureAfterWeNuit;
-				$heureAfter = $heureAfterJour + ($heureAfterNuit/2) + ($heureAfterWeJour/2) + ($heureAfterWeNuit/2);
+				else if ($resourceType == 2){ // unitary calendar
+					foreach($resAfter as $rB){
+						$heureAfter += $rB[2];
+					}
+				}
 				//---------
 		
 				$numResBeneficiaire = $numResIn + $numResAfter;
@@ -252,8 +284,8 @@ class SyBillGenerator extends Model {
 				//$heureResBeneficiaireWeJour = $heureBeforeWeJour + $heureInWeJour;
 				$heureResBeneficiaireWeNuitVrai = $heureInWeNuit + $heureAfterWeNuit;
 				//$heureResBeneficiaireWeNuit = $heureBeforeWeNuit + $heureInWeNuit;
-		
-		
+			
+				
 				$beneficiaire[$j][$e[0]][0] = $numResBeneficiaire;			//nombre de réservations par bénéficiaire et par équipement
 				$beneficiaire[$j][$e[0]][1] = $heureResBeneficiaire;		//nombre d'heures réservées par bénéficiaire et par équipement
 				$beneficiaire[$j][$e[0]][2] = $tarif_unique;
@@ -441,10 +473,10 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre de \n séances");
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
 		
-		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Nombre \n d'heures");
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Quantité");
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableHeader);
 		
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Tarif (€/h)");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Tarif Unitaire");
 		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableHeader);
 		
 		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "Montant");
@@ -464,10 +496,10 @@ class SyBillGenerator extends Model {
 				for ($p = 0; $p < count($people[0]); $p++) {
 					if ($beneficiaire[$p][$room[0][$j]][0] != 0){
 						$nBeArray[$nBe][0] = $people[0][$p].' '.$people[1][$p];
-						$nBeArray[$nBe][1] = $beneficiaire[$p][$room[0][$j]][0];
-						$nBeArray[$nBe][2] = $beneficiaire[$p][$room[0][$j]][1];
-						$nBeArray[$nBe][3] = $beneficiaire[0][$room[0][$j]][10];
-						$nBeArray[$nBe][4] = $beneficiaire[$p][$room[0][$j]][1]*$beneficiaire[$p][$room[0][$j]][10];
+						$nBeArray[$nBe][1] = $beneficiaire[$p][$room[0][$j]][0]; // nombre resa
+						$nBeArray[$nBe][2] = $beneficiaire[$p][$room[0][$j]][1]; // quantité
+						$nBeArray[$nBe][3] = $beneficiaire[0][$room[0][$j]][10]; // prix unitaire
+						$nBeArray[$nBe][4] = $beneficiaire[$p][$room[0][$j]][1]*$beneficiaire[$p][$room[0][$j]][10]; // quantité*prixUnitaire
 						$nBe++;
 					}
 				}

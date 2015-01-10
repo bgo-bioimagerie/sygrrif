@@ -165,7 +165,8 @@ class SyResourcesCategory extends Model {
 				where id_resource=?";
 		$user = $this->runRequest($sql, array($id_resource));
 		if ($user->rowCount() == 1){
-			return $user->fetch()[0];
+			$tmp = $user->fetch();
+			return $tmp[0];
 		}
 		else{
 			return 0;

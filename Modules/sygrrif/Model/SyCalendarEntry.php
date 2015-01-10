@@ -120,7 +120,8 @@ class SyCalendarEntry extends Model {
 		$req = $this->runRequest($sql, $q);
 		if ($req->rowCount() > 0){
 			if ($reservation_id != "" && $req->rowCount() == 1){
-				$id = $req->fetch()[0];
+				$tmp = $req->fetch();  
+				$id = $tmp[0];
 				if ($id == $reservation_id){
 					return false;
 				}

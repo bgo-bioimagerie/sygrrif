@@ -54,10 +54,13 @@ class SyPricing extends Model {
 	public function getPricingId($name){
 		$sql = "select * from sy_pricing where tarif_name=?;";
 		$data = $this->runRequest($sql, array($name));
-		if ($data->rowCount() == 1)
-			return $data->fetch()[0];  // get the first line of the result
-		else
+		if ($data->rowCount() == 1){
+			$tmp = $data->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
 			return 0;
+			}
 	}
 	
 	public function addUnique($name){

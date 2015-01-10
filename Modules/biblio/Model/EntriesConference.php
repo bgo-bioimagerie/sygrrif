@@ -38,7 +38,8 @@ class EntriesConference extends Entries {
 		$entry = $this->getEntry($id_publi);
 		
 		$modelConf = new Conference();
-		$confName = $modelConf->getConference($entry['conference_id'])['name'];
+		$tmp = $modelConf->getConference($entry['conference_id']);
+		$confName = $tmp['name'];
 	
 		//echo "conf name = " . $confName . "</br>";
 		

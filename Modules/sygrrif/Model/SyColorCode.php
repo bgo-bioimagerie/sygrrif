@@ -144,10 +144,13 @@ class SyColorCode extends Model {
 	public function getColorCodeValue($id){
 		$sql = "select color from sy_color_codes where id=?";
 		$SyColorCode = $this->runRequest($sql, array($id));
-		if ($SyColorCode->rowCount() == 1)
-    		return $SyColorCode->fetch()[0];  // get the first line of the result
-    	else
+		if ($SyColorCode->rowCount() == 1){
+			$tmp = $SyColorCode->fetch();
+    		return $tmp[0];  // get the first line of the result
+		}
+    	else{
 			return "aaaaaa";
+			}
 		}
 	
 	/**
@@ -160,10 +163,13 @@ class SyColorCode extends Model {
 	public function getColorCodeName($id){
 		$sql = "select name from sy_color_codes where id=?";
 		$SyColorCode = $this->runRequest($sql, array($id));
-		if ($SyColorCode->rowCount() == 1)
-			return $SyColorCode->fetch()[0];  // get the first line of the result
-		else
-			return "";
+		if ($SyColorCode->rowCount() == 1){
+			$tmp = $SyColorCode->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
+			return "";	
+		}
 	}
 	
 	/**
@@ -176,10 +182,13 @@ class SyColorCode extends Model {
 	public function getColorCodeId($name){
 		$sql = "select id from sy_color_codes where name=?";
 		$SyColorCode = $this->runRequest($sql, array($name));
-		if ($SyColorCode->rowCount() == 1)
-			return $SyColorCode->fetch()[0];  // get the first line of the result
-		else
+		if ($SyColorCode->rowCount() == 1){
+			$tmp = $SyColorCode->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
 			throw new Exception("Cannot find the SyColorCode using the given name");
+		}
 	}
 
 }

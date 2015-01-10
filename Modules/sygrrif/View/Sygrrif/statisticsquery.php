@@ -73,7 +73,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		$gAnnee .= $stat;
 		$gAnnee .= '</g>';
 		$gAnnee .= '<g>';
-		$gAnnee .= '<text x="375" y="350" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">Année ' . $annee . '</text>';
+		$gAnnee .= '<text x="375" y="350" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">Year ' . $annee . '</text>';
 		$gAnnee .= '<text x="100" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Janv.</text>';
 		$gAnnee .= '<text x="150" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Févr.</text>';
 		$gAnnee .= '<text x="200" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Mars</text>';
@@ -97,13 +97,13 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		
 		echo $gAnnee;
 		
-		$nameFile = "temp/bilan_resaSVG.svg";
-		$openFile = fopen($nameFile,"w");
-		$toWrite = $gAnnee;
-		fwrite($openFile, $toWrite);
-		fclose($openFile);
+		//$nameFile = "temp/bilan_resaSVG.svg";
+		//$openFile = fopen($nameFile,"w");
+		//$toWrite = $gAnnee;
+		//fwrite($openFile, $toWrite);
+		//fclose($openFile);
 		
-		exec('sudo /usr/bin/inkscape -D temp/bilan_resaSVG.svg -e temp/bilan_resaJPG.jpg -b "#ffffff" -h800');
+		//exec('sudo /usr/bin/inkscape -D temp/bilan_resaSVG.svg -e temp/bilan_resaJPG.jpg -b "#ffffff" -h800');
 		
 		?>
 	</div>
@@ -124,13 +124,13 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 			$camembert .= '</svg>';
 			echo $camembert;
 			
-			$nameFile = "temp/camembert_resaSVG.svg";
-			$openFile = fopen($nameFile,"w");
-			$toWrite = $camembert;
-			fwrite($openFile, $toWrite);
-			fclose($openFile);
+			//$nameFile = "temp/camembert_resaSVG.svg";
+			//$openFile = fopen($nameFile,"w");
+			//$toWrite = $camembert;
+			//fwrite($openFile, $toWrite);
+			//fclose($openFile);
 		
-			exec('sudo /usr/bin/inkscape -D temp/camembert_resaSVG.svg -e temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+			//exec('sudo /usr/bin/inkscape -D temp/camembert_resaSVG.svg -e temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
 		?>
 		</div>
 		<div class='col-md-2 col-md-offset-1'>

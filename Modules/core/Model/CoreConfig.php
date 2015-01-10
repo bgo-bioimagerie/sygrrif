@@ -60,10 +60,13 @@ class CoreConfig extends Model {
 	public function getParam($key){
 		$sql = "SELECT value FROM core_config WHERE id='".$key."'";
 		$req = $this->runRequest($sql);
-		if ($req->rowCount() == 1)
-			return $req->fetch()[0];
-		else
+		if ($req->rowCount() == 1){
+			$tmp = $req->fetch();
+			return $tmp[0];
+		}
+		else{
 			return "";
+		}
 	}
 	
 	public function setParam($key, $value){

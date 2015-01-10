@@ -40,7 +40,8 @@ class EntriesArticle extends Entries {
 		$entry = $this->getEntry($id_publi);
 		
 		$modelJournal = new Journal();
-		$jounalName = $modelJournal->getJournal($entry['journal_id'])['name'];
+		$tmp = $modelJournal->getJournal($entry['journal_id']);
+		$jounalName = $tmp['name'];
 		
 		$desc = "<i>". $jounalName . "</i>, vol. "
 				. $entry['volume'] . ", pp. "

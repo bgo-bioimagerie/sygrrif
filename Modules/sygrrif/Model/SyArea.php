@@ -50,10 +50,13 @@ class SyArea extends Model {
 
 		$sql = "select name from sy_areas where id=?;";
 		$data = $this->runRequest($sql, array($id));
-		if ($data->rowCount () == 1)
-			return $data->fetch ()[0];
-		else
+		if ($data->rowCount () == 1){
+			$tmp = $data->fetch ();
+			return $tmp[0];
+		}
+		else{
 			return "not found";
+			}
 	}
 	
 	public function getUnrestrictedAreasIDName(){
@@ -111,8 +114,10 @@ class SyArea extends Model {
 	public function getAreaFromName($name){
 		$sql = "select id from sy_areas where name=?";
 		$req = $this->runRequest($sql, array($name));
-		if ($req->rowCount() == 1)
-			return $req->fetch()[0] ;
+		if ($req->rowCount() == 1){
+			$tmp = $req->fetch();
+			return $tmp[0] ;
+		}
 		else
 			return 0;
 	}

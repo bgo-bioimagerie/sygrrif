@@ -291,14 +291,14 @@ class ControllerUsers extends ControllerSecureNav {
 		$pwd = $this->request->getParameter ( "pwd");
 		$pwdc = $this->request->getParameter ( "pwdc");
 		
-		echo "id to change = " . $id;
+		//echo "id to change = " . $id;
 		
 		$previouspwddb = $this->userModel->getpwd($id);
-		echo "previous pwd = " . sha1($previouspwd);
-		echo "previous pwd db = " . $previouspwddb['pwd'];
+		//echo "previous pwd = " . md5($previouspwd);
+		//echo "previous pwd db = " . $previouspwddb['pwd'];
 		
 		
-		if ($previouspwddb['pwd'] == sha1($previouspwd)){
+		if ($previouspwddb['pwd'] == md5($previouspwd)){
 		
 			if ($pwd == $pwdc){
 				$this->userModel->changePwd($id, $pwd);

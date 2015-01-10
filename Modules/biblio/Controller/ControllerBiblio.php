@@ -230,7 +230,8 @@ class ControllerBiblio extends ControllerSecureNav {
 		
 	
 		if ($type == ""){
-			$type = PublicationManager::entriesTypes()[0]; 
+		$tmp = PublicationManager::entriesTypes();
+			$type = $tmp[0]; 
 		}
 		
 		$model = new PublicationManager();

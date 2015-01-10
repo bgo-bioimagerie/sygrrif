@@ -65,10 +65,13 @@ class SyResourceType extends Model {
 		$data = $this->runRequest ( $sql, array (
 				$typename 
 		) );
-		if ($data->rowCount () == 1)
-			return $data->fetch ()[0]; // get the first line of the result
-		else
+		if ($data->rowCount () == 1){
+			$tmp = $data->fetch ();
+			return $tmp[0]; // get the first line of the result
+		}
+		else{
 			throw new Exception ( "Cannot find the resource type using the given name" );
+		}
 	}
 	
 	public function getType($id){

@@ -146,10 +146,13 @@ class Unit extends Model {
 	public function getUnitName($id){
 		$sql = "select name from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
-			return $unit->fetch()[0];  // get the first line of the result
-		else
+		if ($unit->rowCount() == 1){
+			$tmp = $unit->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
 			return "";
+		}
 	}
 	
 	/**
@@ -162,10 +165,13 @@ class Unit extends Model {
 	public function getUnitId($name){
 		$sql = "select id from core_units where name=?";
 		$unit = $this->runRequest($sql, array($name));
-		if ($unit->rowCount() == 1)
-			return $unit->fetch()[0];  // get the first line of the result
-		else
+		if ($unit->rowCount() == 1){
+			$tmp = $unit->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
 			throw new Exception("Cannot find the unit using the given name");
+		}
 	}
 
 }

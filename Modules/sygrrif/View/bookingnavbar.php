@@ -1,10 +1,6 @@
 
 <head>
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css">
-
-
-<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
 
 
 <style>
@@ -109,9 +105,9 @@ legend {
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-		        <script src="bootstrap/datepicker/js/moments.js"></script>
-				<script src="bootstrap/jquery-1.11.1.js"></script>
-				<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+		        <script src="externals/datepicker/js/moments.js"></script>
+				<script src="externals/jquery-1.11.1.js"></script>
+				<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 	      		<script type="text/javascript">
 				$(function () {
 					$('#datetimepicker5').datetimepicker({
