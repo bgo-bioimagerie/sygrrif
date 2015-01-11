@@ -45,9 +45,9 @@ class Install extends Model {
 	public function writedbConfig($sql_host, $login, $password, $db_name){
 		
 	    $dsn = '\'mysql:host=' . $sql_host . ';dbname=' . $db_name .';charset=utf8\'';
-
+	    
 		$fileURL = Configuration::getConfigFile();
-	    $returnVal = $this->editConfFile($fileURL, $dsn, $login, $password);  
+	    $returnVal = $this->editConfFile($fileURL, $dsn, $sql_host, $db_name, $login, $password);  
 	    return $returnVal;  
 	}
 	
@@ -60,7 +60,7 @@ class Install extends Model {
 	 * @param string $password Password to connect to the database
 	 * @return boolean
 	 */
-	protected function editConfFile($fileURL, $dsn, $login, $password) {
+	protected function editConfFile($fileURL, $dsn, $sql_host, $db_name, $login, $password) {
 
 		$handle = @fopen($fileURL, "r");
 		$outContent = '';
@@ -75,6 +75,25 @@ class Install extends Model {
 				    $outContent = $outContent . 'dsn = ' . $dsn . PHP_EOL;
 				    continue;
 				}
+				
+				// replace host
+				$pos = strpos($buffer, 'host');
+				if ($pos === false) {
+				}
+				else if ($pos == 0) {
+					$outContent = $outContent . 'host = ' . $sql_host . PHP_EOL;
+					continue;
+				}
+				
+				// replace dbname
+				$pos = strpos($buffer, 'dbname');
+				if ($pos === false) {
+				}
+				else if ($pos == 0) {
+					$outContent = $outContent . 'dbname = ' . $db_name . PHP_EOL;
+					continue;
+				}
+				
 				// replace login
 				$pos = strpos($buffer, 'login');
 				if ($pos === false) {

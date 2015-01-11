@@ -5,6 +5,7 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/core/Model/InitDatabase.php';
 require_once 'Modules/core/Model/CoreConfig.php';
+require_once 'Modules/core/Model/BackupDatabase.php';
 
 
 class ControllerCoreconfig extends ControllerSecureNav {
@@ -94,6 +95,14 @@ class ControllerCoreconfig extends ControllerSecureNav {
 					'activeUserSetting' => $activeUserSetting
 						
 			) );
+			return;
+		}
+		
+		// backup
+		$setactivebackupquery = $this->request->getParameterNoException("setactivebackupquery");
+		if($setactivebackupquery == "yes"){
+			$modelBackup = new BackupDatabase();
+			$modelBackup->run();
 			return;
 		}
 		

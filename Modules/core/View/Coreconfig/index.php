@@ -128,6 +128,30 @@
 		  </form>
       </div>
       
+      
+      
+      <!-- desable user-->
+      <div>
+		  <div class="page-header">
+			<h2>
+				Backup <br> <small></small>
+			</h2>
+		  </div>
+		
+		  <form role="form" class="form-horizontal" action="coreconfig"
+		  method="post">
+		  
+		    <div class="col-xs-12">
+			  <input class="form-control" type="hidden" name="setactivebackupquery" value="yes"
+			 	/>
+		    </div>
+		  
+		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="Run backup" />
+		    </div>
+		  </form>
+      </div>
+      
        
   </div>
 </div>    

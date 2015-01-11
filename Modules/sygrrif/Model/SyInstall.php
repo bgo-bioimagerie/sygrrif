@@ -13,6 +13,7 @@ require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
+require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 
 /**
  * Class defining methods to install and initialize the sygrrif database
@@ -69,6 +70,10 @@ class SyInstall extends Model {
 		
 		$modelConfig = new CoreConfig();
 		$modelConfig->setParam("sygrrif_installed", "yes");
+		
+		$modelBookingSettings = new SyBookingSettings();
+		$modelBookingSettings->createTable();
+		$modelBookingSettings->defaultEntries();
 		
 	}
 }

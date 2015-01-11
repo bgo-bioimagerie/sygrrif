@@ -98,6 +98,74 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			return;
 		}
 		
+		// set booking settings
+		$setbookingoptionsquery = $this->request->getParameterNoException ( "setbookingoptionsquery");
+		$bookingOptionMessage = "";
+		if ($setbookingoptionsquery == "yes"){
+			
+			$modelBookingSetting = new SyBookingSettings();
+			
+			$tag_visible_rname = $this->request->getParameterNoException ( "tag_visible_rname" );
+			$tag_title_visible_rname = $this->request->getParameterNoException ( "tag_title_visible_rname" );
+			$tag_position_rname = $this->request->getParameterNoException ( "tag_position_rname" );
+			$tag_font_rname = $this->request->getParameterNoException ( "tag_font_rname" );
+			$modelBookingSetting->setEntry("User", $tag_visible_rname, $tag_title_visible_rname,
+					$tag_position_rname, $tag_font_rname);
+			
+			
+			$tag_visible_rphone = $this->request->getParameterNoException ( "tag_visible_rphone" );
+			$tag_title_visible_rphone = $this->request->getParameterNoException ( "tag_title_visible_rphone" );
+			$tag_position_rphone = $this->request->getParameterNoException ( "tag_position_rphone" );
+			$tag_font_rphone = $this->request->getParameterNoException ( "tag_font_rphone" );
+			$modelBookingSetting->setEntry("Phone", $tag_visible_rphone, $tag_title_visible_rphone, 
+											$tag_position_rphone, $tag_font_rphone);
+				
+			$tag_visible_sdesc = $this->request->getParameterNoException ( "tag_visible_sdesc" );
+			$tag_title_visible_sdesc = $this->request->getParameterNoException ( "tag_title_visible_sdesc" );
+			$tag_position_sdesc = $this->request->getParameterNoException ( "tag_position_sdesc" );
+			$tag_font_sdesc = $this->request->getParameterNoException ( "tag_font_sdesc" );
+			$modelBookingSetting->setEntry("Short desc", $tag_visible_sdesc, $tag_title_visible_sdesc, 
+											$tag_position_sdesc, $tag_font_sdesc);
+			
+			$tag_visible_desc = $this->request->getParameterNoException ( "tag_visible_desc" );
+			$tag_title_visible_desc = $this->request->getParameterNoException ( "tag_title_visible_desc" );
+			$tag_position_desc = $this->request->getParameterNoException ( "tag_position_desc" );
+			$tag_font_desc = $this->request->getParameterNoException ( "tag_font_desc" );
+			$modelBookingSetting->setEntry("Desc", $tag_visible_desc, $tag_title_visible_desc, 
+											$tag_position_desc, $tag_font_desc);
+			
+			$bookingOptionMessage = "Changes have been saved";
+			
+			$bookingSettings = array(
+					'tag_visible_rname' => $tag_visible_rname ,
+					'tag_title_visible_rname' => $tag_title_visible_rname ,
+					'tag_position_rname' => $tag_position_rname ,
+					'tag_font_rname' => $tag_font_rname ,
+					
+					'tag_visible_rphone' => $tag_visible_rphone ,
+					'tag_title_visible_rphone' => $tag_title_visible_rphone ,
+					'tag_position_rphone' => $tag_position_rphone ,
+					'tag_font_rphone' => $tag_font_rphone ,
+						
+					'tag_visible_sdesc' => $tag_visible_sdesc ,
+					'tag_title_visible_sdesc' => $tag_title_visible_sdesc ,
+					'tag_position_sdesc' => $tag_position_sdesc ,
+					'tag_font_sdesc' => $tag_font_sdesc ,
+						
+					'tag_visible_desc' => $tag_visible_desc ,
+					'tag_title_visible_desc' => $tag_title_visible_desc ,
+					'tag_position_desc' => $tag_position_desc ,
+					'tag_font_desc' => $tag_font_desc
+			);
+		
+			$this->generateView ( array ('navBar' => $navBar,
+					'isSygrrifMenu' => $isSygrrifMenu,
+					'isBookingMenu' => $isBookingMenu,
+					'bookingOptionMessage' => $bookingOptionMessage,
+					'bookingSettings' => $bookingSettings
+			) );
+		}
+		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
 				                     'isSygrrifMenu' => $isSygrrifMenu,
