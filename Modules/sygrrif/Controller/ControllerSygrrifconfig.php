@@ -28,6 +28,10 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		$isSygrrifMenu = $ModulesManagerModel->isDataMenu("sygrrif");
 		$isBookingMenu = $ModulesManagerModel->isDataMenu("booking");
 		
+		// booking settings
+		$modelBookingSettings = new SyBookingSettings();
+		$bookingSettings = $modelBookingSettings->entries();
+		
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
@@ -41,7 +45,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     			$this->generateView ( array ('navBar' => $navBar, 
     					                     'installError' => $installError,
     					                     'isSygrrifMenu' => $isSygrrifMenu,
-    										 'isBookingMenu' => $isBookingMenu
+    										 'isBookingMenu' => $isBookingMenu,
+    										 'bookingSettings' => $bookingSettings
     			) );
     			return;
 			}
@@ -49,7 +54,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
 					                     'isSygrrifMenu' => $isSygrrifMenu,
-					                     'isBookingMenu' => $isBookingMenu
+					                     'isBookingMenu' => $isBookingMenu,
+					                     'bookingSettings' => $bookingSettings
 			) );
 			return;
 		}
@@ -79,7 +85,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 				
 			$this->generateView ( array ('navBar' => $navBar,
 				                     'isSygrrifMenu' => $isSygrrifMenu,
-									 'isBookingMenu' => $isBookingMenu	
+									 'isBookingMenu' => $isBookingMenu,
+									 'bookingSettings' => $bookingSettings
 			) );
 			return;
 			
@@ -93,6 +100,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar,
 					'isSygrrifMenu' => $isSygrrifMenu,
 					'isBookingMenu' => $isBookingMenu,
+					'bookingSettings' => $bookingSettings,
 					'templateMessage' => $templateMessage
 			) );
 			return;
@@ -135,28 +143,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 											$tag_position_desc, $tag_font_desc);
 			
 			$bookingOptionMessage = "Changes have been saved";
-			
-			$bookingSettings = array(
-					'tag_visible_rname' => $tag_visible_rname ,
-					'tag_title_visible_rname' => $tag_title_visible_rname ,
-					'tag_position_rname' => $tag_position_rname ,
-					'tag_font_rname' => $tag_font_rname ,
-					
-					'tag_visible_rphone' => $tag_visible_rphone ,
-					'tag_title_visible_rphone' => $tag_title_visible_rphone ,
-					'tag_position_rphone' => $tag_position_rphone ,
-					'tag_font_rphone' => $tag_font_rphone ,
-						
-					'tag_visible_sdesc' => $tag_visible_sdesc ,
-					'tag_title_visible_sdesc' => $tag_title_visible_sdesc ,
-					'tag_position_sdesc' => $tag_position_sdesc ,
-					'tag_font_sdesc' => $tag_font_sdesc ,
-						
-					'tag_visible_desc' => $tag_visible_desc ,
-					'tag_title_visible_desc' => $tag_title_visible_desc ,
-					'tag_position_desc' => $tag_position_desc ,
-					'tag_font_desc' => $tag_font_desc
-			);
+			$bookingSettings = $modelBookingSettings->entries();
 		
 			$this->generateView ( array ('navBar' => $navBar,
 					'isSygrrifMenu' => $isSygrrifMenu,
@@ -164,12 +151,14 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'bookingOptionMessage' => $bookingOptionMessage,
 					'bookingSettings' => $bookingSettings
 			) );
+			return;
 		}
 		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
 				                     'isSygrrifMenu' => $isSygrrifMenu,
-									 'isBookingMenu' => $isBookingMenu
+									 'isBookingMenu' => $isBookingMenu,
+									 'bookingSettings' => $bookingSettings
 		) );
 	}
 	

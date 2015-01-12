@@ -18,6 +18,7 @@
 				Install/Repair database <br> <small></small>
 			</h2>
 		</div>
+		</div>
 		
 		<form role="form" class="form-horizontal" action="sygrrifconfig"
 		method="post">
@@ -162,6 +163,10 @@
 		  }	
 		
 		  ?>
+		  
+		  <?php 
+		  if (isset($bookingSettings) && $bookingSettings != ""){
+		  ?>
 		  <form role="form" class="form-horizontal" action="sygrrifconfig"
 		  method="post">
 		  
@@ -171,99 +176,165 @@
 		    </div>
 		    
 		    <!-- recipient name -->
+		    <?php 
+		    //$tagName = $this->clean($bookingSettings[$i]['tag_name']);
+		    $i=0;
+			$tag_visible = $this->clean($bookingSettings[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($bookingSettings[$i]['is_tag_visible']);
+			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
+			$tag_font = $this->clean($bookingSettings[$i]['font']);
+			?>
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Recipient name:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rname">
-				<OPTION value="0" > Visible </OPTION>
-				<OPTION value="1" > Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_rname">
-				<OPTION value="0" > Tag Visible </OPTION>
-				<OPTION value="1" > Tag Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_rname">
-				<OPTION value="1" > position 1 </OPTION>
-				<OPTION value="2" > position 2 </OPTION>
+				<?php 
+				for ($j = 0 ; $j < count($bookingSettings) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_font_rname">
-				<OPTION value="1" > normal </OPTION>
-				<OPTION value="2" > bold </OPTION>
-				<OPTION value="3" > italic </OPTION>
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
 			</select></div>
 		    </div> 
 
-		    <!-- recipient phone -->
+		    <!-- recipient phone - rphone-->
+		    <?php 
+		    $i=1;
+			$tag_visible = $this->clean($bookingSettings[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($bookingSettings[$i]['is_tag_visible']);
+			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
+			$tag_font = $this->clean($bookingSettings[$i]['font']);
+			?>
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Recipient phone:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rphone">
-				<OPTION value="0" > Visible </OPTION>
-				<OPTION value="1" > Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_rphone">
-				<OPTION value="0" > Tag Visible </OPTION>
-				<OPTION value="1" > Tag Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_rphone">
-				<OPTION value="1" > position 1 </OPTION>
-				<OPTION value="2" > position 2 </OPTION>
+				<?php 
+				for ($j = 0 ; $j < count($bookingSettings) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_font_rphone">
-				<OPTION value="1" > normal </OPTION>
-				<OPTION value="2" > bold </OPTION>
-				<OPTION value="3" > italic </OPTION>
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
 			</select></div>
 		    </div> 
 		    
-		    <!-- short description -->
+		    
+		    <!-- short description - sdesc -->
+		    <?php 
+		    $i=2;
+			$tag_visible = $this->clean($bookingSettings[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($bookingSettings[$i]['is_tag_visible']);
+			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
+			$tag_font = $this->clean($bookingSettings[$i]['font']);
+			?>
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Short description:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_sdesc">
-				<OPTION value="0" > Visible </OPTION>
-				<OPTION value="1" > Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_sdesc">
-				<OPTION value="0" > Tag Visible </OPTION>
-				<OPTION value="1" > Tag Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_sdesc">
-				<OPTION value="1" > position 1 </OPTION>
-				<OPTION value="2" > position 2 </OPTION>
+				<?php 
+				for ($j = 0 ; $j < count($bookingSettings) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_font_sdesc">
-				<OPTION value="1" > normal </OPTION>
-				<OPTION value="2" > bold </OPTION>
-				<OPTION value="3" > italic </OPTION>
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
 			</select></div>
 		    </div> 
 		    
-		    <!-- description -->
+		    <!-- description - desc -->
+		    <?php 
+		    $i=3;
+			$tag_visible = $this->clean($bookingSettings[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($bookingSettings[$i]['is_tag_visible']);
+			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
+			$tag_font = $this->clean($bookingSettings[$i]['font']);
+			?>
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Description:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_desc">
-				<OPTION value="0" > Visible </OPTION>
-				<OPTION value="1" > Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_desc">
-				<OPTION value="0" > Tag Visible </OPTION>
-				<OPTION value="1" > Tag Hiden </OPTION>
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_desc">
-				<OPTION value="1" > position 1 </OPTION>
-				<OPTION value="2" > position 2 </OPTION>
+				<?php 
+				for ($j = 0 ; $j < count($bookingSettings) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_font_desc">
-				<OPTION value="1" > normal </OPTION>
-				<OPTION value="2" > bold </OPTION>
-				<OPTION value="3" > italic </OPTION>
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
 			</select></div>
-		    
 		    <br></br>
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
 			  <input type="submit" class="btn btn-primary" value="save" />
 		    </div>
 		  </form>
-      </div>
-      
+		  <?php 
+		  }
+		  ?>
       
   </div>
 </div>    

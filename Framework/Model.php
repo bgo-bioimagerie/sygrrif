@@ -51,5 +51,16 @@ abstract class Model
         }
         return self::$bdd;
     }
+    
+    public function isTable($table){
+    	
+    	$sql = 'SHOW TABLES FROM '. Configuration::get("dbname") . ' LIKE \''. $table. '\'';
+    	$req = $this->runRequest($sql);
+    	if ($req->rowCount() == 1){
+    		return true;
+    	}
+    	return false;
+    	
+    }
 
 }

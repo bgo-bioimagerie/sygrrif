@@ -1,6 +1,7 @@
 <?php $this->title = "SyGRRiF Booking"?>
 
 <?php echo $navBar?>
+<?php require_once 'Modules/sygrrif/Model/SyBookingSettings.php';?>
 
 <head>
 
@@ -130,6 +131,7 @@ $day_end = $resourceInfo['day_end'];
 	
 	//echo "cal entries size = " . count($calEntries) . "--";
 	//print_r($calEntries);
+	$modelBookingSetting = new SyBookingSettings();
 	for ($h = $day_begin ; $h < $day_end ; $h = $h+0.5){
 		
 		$caseTimeBegin = $date_unix + $h*3600;
@@ -146,10 +148,12 @@ $day_end = $resourceInfo['day_end'];
 				
 				$text = "";
 				if ($blocNumber <= 2){
-					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
+					$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $calEntry['short_description'], $calEntry['full_description'], true);
+					//$text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 				}
 				else{
-					$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
+					$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $calEntry['short_description'], $calEntry['full_description'], false);
+					//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 				}	
 				?>
 					<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">

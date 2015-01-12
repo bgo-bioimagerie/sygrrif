@@ -32,10 +32,22 @@ class SyBookingSettings extends Model {
 	}
 	
 	public function defaultEntries(){
-		setEntry("User", 1, 1, 1, "normal");
-		setEntry("Phone", 1, 1, 2, "normal");
-		setEntry("Short desc", 1, 1, 3, "normal");
-		setEntry("Desc", 0, 0, 4, "normal");
+		$this->setEntry("User", 1, 1, 1, "normal");
+		$this->setEntry("Phone", 1, 1, 2, "normal");
+		$this->setEntry("Short desc", 1, 1, 3, "normal");
+		$this->setEntry("Desc", 0, 0, 4, "normal");
+	}
+	
+	public function entries($sortEntry = "id"){
+		
+		if ($this->isTable("sy_booking_settings")){
+			$sql="select * from sy_booking_settings order by " . $sortEntry;
+			$req = $this->runRequest($sql);
+			return $req->fetchAll();
+		}
+		else{
+			return "";
+		}
 	}
 	
 	public function addEntry($tag_name, $is_visible, $is_tag_visible, 
@@ -90,5 +102,47 @@ class SyBookingSettings extends Model {
 			                 where id=?";
 		$this->runRequest($sql, array($tag_name, $is_visible, $is_tag_visible, 
 			                 $display_order, $font, $id));
+	}
+	
+	public function getSummary($user, $phone, $short_desc, $desc, $displayHorizontal = true){
+		$entryList = $this->entries("display_order");
+		//print_r($entryList);
+		//echo "count = " . count($entryList) . "</br>";
+		$summary = "";
+		// user
+		for ($i = 0; $i < count($entryList) ; $i++){
+			$last = false;
+			if ($i == 3){$last = true;}
+			if ($entryList[$i]['tag_name'] == "User"){
+				$summary = $this->summaryEntry($i, $summary, $entryList, $user, $displayHorizontal, $last);
+			}
+			elseif ($entryList[$i]['tag_name'] == "Phone"){
+				$summary = $this->summaryEntry($i, $summary, $entryList, $phone, $displayHorizontal, $last);
+			}
+			elseif ($entryList[$i]['tag_name'] == "Short desc"){
+				$summary = $this->summaryEntry($i, $summary, $entryList, $short_desc, $displayHorizontal, $last);
+			}
+			elseif ($entryList[$i]['tag_name'] == "Desc"){
+				$summary = $this->summaryEntry($i, $summary, $entryList, $desc, $displayHorizontal, $last);
+			}
+		}
+		return $summary;
+	}
+	
+	protected function summaryEntry($i, $summary, $entryList, $content, $displayHorizontal, $last){
+		if ($entryList[$i]['is_visible'] == 1){
+			if ($entryList[$i]['is_tag_visible'] == 1){
+				$summary .= "<b>" . $entryList[$i]['tag_name']. ": </b>";
+			}
+			if ($entryList[$i]['font'] == "bold"){$summary .= "<b>";}
+			elseif ($entryList[$i]['font'] == "italic"){$summary .= "<i>";}
+			$summary .= $content;
+			if ($entryList[$i]['font'] == "bold"){$summary .= "</b>";}
+			elseif ($entryList[$i]['font'] == "italic"){$summary .= "</i>";}
+			if ($last == false){
+				if ($displayHorizontal){$summary .= " ";}else{$summary .= "</br>";}
+			}
+		}
+		return $summary;
 	}
 }
