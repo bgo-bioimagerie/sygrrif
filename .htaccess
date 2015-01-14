@@ -4,4 +4,4 @@ Options +FollowSymLinks -MultiViews
 RewriteEngine on
 
 RewriteCond %{REQUEST_URI} !index.php$
-RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9_]*)?/?$ index.php?controller=$1&action=$2&actionid=$3 [NC,L]
+RewriteRule ^([a-zA-Z]*)/?([a-zA-Z]*)?/?([a-zA-Z0-9_-]*)?/?$ index.php?controller=$1&action=$2&actionid=$3 [NC,L]

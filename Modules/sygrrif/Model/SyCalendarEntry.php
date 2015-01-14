@@ -83,10 +83,16 @@ class SyCalendarEntry extends Model {
 		return $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
 	}
 	
-	public function getEntriesForDayAndResource($date, $resource_id){
-		$dateArray = explode("-", $date);
-		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
-		$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2],$dateArray[0]);
+	/**
+	 * 
+	 * @param $dateBegin Beginning of the periode in linux time
+	 * @param $dateEnd End of the periode in linux time
+	 * 
+	 */
+	public function getEntriesForPeriodeAndResource($dateBegin, $dateEnd, $resource_id){
+		//$dateArray = explode("-", $date);
+		//$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
+		//$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2],$dateArray[0]);
 		
 		$q = array('start'=>$dateBegin, 'end'=>$dateEnd, 'res'=>$resource_id);
 		$sql = 'SELECT * FROM sy_calendar_entry WHERE
