@@ -15,7 +15,7 @@ class SyResourcesCategory extends Model {
 	 * @return PDOStatement
 	 */
 	public function createTable(){
-			
+			/*
 		$sql = "
 		CREATE TABLE IF NOT EXISTS `sy_resourcescategory` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -26,6 +26,14 @@ class SyResourcesCategory extends Model {
 		CREATE TABLE IF NOT EXISTS `sy_j_resource_category` (
 		`id_resource` int(11) NOT NULL,
 		`id_category` int(11) NOT NULL
+		);
+		";
+		*/
+		$sql = "
+		CREATE TABLE IF NOT EXISTS `sy_resourcescategory` (
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+		`name` varchar(30) NOT NULL DEFAULT '',
+		PRIMARY KEY (`id`)
 		);
 		";
 		
@@ -67,7 +75,8 @@ class SyResourcesCategory extends Model {
 		
 		$sql = "insert into sy_resourcescategory(name)"
 				. " values(?)";
-		$user = $this->runRequest($sql, array($name));		
+		$user = $this->runRequest($sql, array($name));	
+		return $this->getDatabase()->lastInsertId();	
 	}
 	
 	public function isResourcesCategory($name){

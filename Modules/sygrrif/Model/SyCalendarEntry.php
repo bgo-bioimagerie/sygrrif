@@ -112,6 +112,12 @@ class SyCalendarEntry extends Model {
 				$data[$i]["recipient_fullname"] = $userInfo["name"] . " " . $userInfo["firstname"];
 				$data[$i]["phone"] = $userInfo["tel"];
 				$data[$i]["color"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+			}
+			else{
+				$data[$i]["recipient_fullname"] = "";
+				$data[$i]["phone"] = "";
+				$data[$i]["color"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+				
 			} 
 		}
 		return $data;
@@ -144,5 +150,10 @@ class SyCalendarEntry extends Model {
 	public function removeEntry($id){
 		$sql="DELETE FROM sy_calendar_entry WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
+	}
+	
+	public function removeEntriesFromSeriesID($series_id){
+		$sql="DELETE FROM sy_calendar_entry WHERE repeat_id = ?";
+		$req = $this->runRequest($sql, array($series_id));
 	}
 }

@@ -34,7 +34,7 @@ class ControllerConnection extends Controller
             }
          
             $connect = $this->user->connect($login, $pwd);
-            if ($connect) {
+            if ($connect == "allowed") {
             	
             	// open the session
                 $user = $this->user->getUser($login, $pwd);

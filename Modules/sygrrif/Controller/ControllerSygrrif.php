@@ -669,7 +669,7 @@ class ControllerSygrrif extends ControllerBooking {
 				$testPass = false;
 			}
 			if ( $searchDate_end < $searchDate_start){
-				$errorMessage = "The start date must be before the start date";
+				$errorMessage = "The start date must be before the end date";
 				$testPass = false;
 			}
 			
@@ -819,6 +819,10 @@ class ControllerSygrrif extends ControllerBooking {
 			$_SESSION['msData']=$msData;
 		}
 		
+		if ( $searchDate_end < $searchDate_start){
+			$errorMessage = "The start date must be before the end date";
+		}
+		
 		// view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -897,17 +901,43 @@ class ControllerSygrrif extends ControllerBooking {
 		$id_resource = $this->request->getParameterNoException('id_resource');
 		$id_area = $this->request->getParameterNoException('id_area');
 		
+		//echo "id_resource begin = " . $id_resource . "</br>";
+		
 		if ($id_resource == "" || $id_resource == 0){ // booking home page
 			
-			if ($id_area == "" || $id_area ==0){$id_area=1;}
-			$menuData = $this->calendarMenuData($id_area, 0, date("Y-m-d", time()));
-			$navBar = $this->navBar();
-			$this->generateView ( array (
-					'navBar' => $navBar,
-					'menuData' => $menuData
-					) );
+			
+			if ($id_area == "" || $id_area ==0){
+				$modelArea = new SyArea();
+				if ($_SESSION["user_status"] < 3){
+					$id_area=$modelArea->getSmallestUnrestrictedID();
+				}
+				else{
+					$id_area=$modelArea->getSmallestID();
+				}
+			}
+			// get the resource with the smallest id
+			$modelResource = new SyResource();
+			$id_resource = $modelResource->firstResourceIDForArea($id_area);
+			
+			//echo "id_resource = " . $id_resource . "</br>";
+			//$menuData = $this->calendarMenuData($id_area, $id_resource, date("Y-m-d", time()));
+			$_SESSION['id_resource'] = $id_resource;
+			$_SESSION['id_area'] = $id_area;
+			$_SESSION['curentDate'] = date("Y-m-d", time());
+			
+			
+			if ($id_resource == 0){
+				$menuData = $this->calendarMenuData($id_area, $id_resource, date("Y-m-d", time()));
+				$navBar = $this->navBar();
+				$this->generateView ( array (
+						'navBar' => $navBar,
+						'menuData' => $menuData
+				) );
+				return;
+			}
+				
 		}
-		else{ // redirect to the resource page
+		 // redirect to the resource page
 			// redirect given the resource type
 			$modelRes = new SyResource();
 			$idType = $modelRes->getResourceType($id_resource);
@@ -940,7 +970,7 @@ class ControllerSygrrif extends ControllerBooking {
 			// call the action
 			$actionName = $typInfo['book_action'];	
 			$controller->runAction($actionName);
-		}
+		
 	}
 	
 	public function colorcodes(){

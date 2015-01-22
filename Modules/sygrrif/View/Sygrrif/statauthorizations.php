@@ -263,6 +263,8 @@ if (!$resultsVisible){
 		<?=  $camembert ?>
 		
 		<?php 
+		
+		if (Configuration::get("saveImages") == "enable"){
 			$nameFile = "temp/camembert_authSVG.svg";
 			$openFile = fopen($nameFile,"w");
 			$toWrite = $camembert;
@@ -270,11 +272,13 @@ if (!$resultsVisible){
 			fclose($openFile);
 		
 			exec('sudo /usr/bin/inkscape -D temp/camembert_authSVG.svg -e temp/camembert_authJPG.jpg -b "#ffffff" -h800');
+		}
 		?>
 		</div>
 		<br>
+		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<button type="button" onclick="location.href='temp/camembert_authJPG.jpg'" download="pie_chart_authorizations" class="btn btn-primary" id="navlink">Export as jpeg</button>
-		
+		<?php } ?>
 	  </div>
 	  <br>
 	  

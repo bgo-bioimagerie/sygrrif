@@ -234,6 +234,16 @@
 					<OPTION value="3600" <?php  if ($size_bloc_resa == 3600){echo "selected=\"selected\"";}?> > 1h </OPTION>
 				</select>
 			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">The user specify</label>
+			<div class="col-xs-8">
+				<select class="form-control" name="resa_time_setting">
+				<?php $resa_time_setting = $this->clean($resa_time_setting)?>
+					<OPTION value="0" <?php  if ($resa_time_setting == 0){echo "selected=\"selected\"";}?> > the booking duration </OPTION>
+					<OPTION value="1" <?php  if ($resa_time_setting == 1){echo "selected=\"selected\"";}?> > the date/time when reservation ends </OPTION>
+				</select>
+			</div>
 		</div>	
 		
 		<div class="page-header">

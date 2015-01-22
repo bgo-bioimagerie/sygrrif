@@ -79,7 +79,12 @@ $monthStream = date("F", $time);
 $dayNumStream = date("d", $time);
 $yearStream = date("Y", $time);
 $sufixStream = date("S", $time);
-
+$day_position = date("w", $time); // 0 for sunday, 6 for saturday
+for ($p = 0 ; $p < count($day_position) ; $p++){
+	if ($day_position[$p] == 0){
+		$day_position[$p] = 7;
+	}
+}
 ?>
 <b><?php echo $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream  ?></b>
 </div>
@@ -98,6 +103,9 @@ $sufixStream = date("S", $time);
 $day_begin = $this->clean($resourceInfo['day_begin']);
 $day_end = $this->clean($resourceInfo['day_end']);
 $size_bloc_resa = $this->clean($resourceInfo['size_bloc_resa']);
+$available_days = $this->clean($resourceInfo['available_days']);
+$available_days = explode(",", $available_days);
+
 ?>
 
 <!-- hours column -->
@@ -138,7 +146,12 @@ $size_bloc_resa = $this->clean($resourceInfo['size_bloc_resa']);
 	</div>
 
 	<?php 
-	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook);
+	$isAvailableDay = false;
+	if ($available_days[$day_position-1] == 1){
+		$isAvailableDay = true;
+	}
+	
+	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isAvailableDay);
 	?>
 	
 </div>

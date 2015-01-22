@@ -9,7 +9,7 @@ abstract class ControllerBooking extends ControllerSecureNav {
 	public function calendarMenuData($curentAreaId, $curentResourceId, $curentDate){
 	
 		$modelArea = new SyArea();
-		$areas = "";
+		$areas = array();
 		if ($_SESSION["user_status"] < 3){
 			$areas = $modelArea->getUnrestrictedAreasIDName();
 		}
@@ -19,7 +19,14 @@ abstract class ControllerBooking extends ControllerSecureNav {
 		
 		$modelResource = new SyResource();
 		$resources = $modelResource->resourceIDNameForArea($curentAreaId);
-	
+		
+		/*
+		echo "curentAreaId id = " . $curentAreaId . "</br>"; 
+		print_r($resources);
+		echo "areas </br>";
+		print_r($areas);
+		*/
+		
 		return array('areas' => $areas, 
 				'resources' => $resources,
 				'curentAreaId' => $curentAreaId, 
@@ -32,6 +39,9 @@ abstract class ControllerBooking extends ControllerSecureNav {
 
 		//echo "curentDateUnix = " .$curentDateUnix . "</br>";
 		//echo "time = " .time() . "</br>";
+		
+		//echo "resource access = " . $resourceAccess . "</br>"; 
+		//echo "userStatus = " . $userStatus . "</br>";
 		// user cannot book in the past
 		if ($curentDateUnix < time() && $userStatus < 3){
 			return false;
@@ -45,10 +55,12 @@ abstract class ControllerBooking extends ControllerSecureNav {
 			}
 		}
 		if ($resourceAccess == 2){
+			//echo "pass 1 </Br>";
 			if ($userStatus > 2){
 				$isUserAuthorizedToBook = true;
 			}
 			if ($userStatus == 2){
+				//echo "pass </Br>";
 				// check if the user has been authorized
 				$modelAuth = new SyAuthorization();
 				$isUserAuthorizedToBook = $modelAuth->hasAuthorization($id_resourcecategory, $id_user);
@@ -67,40 +79,4 @@ abstract class ControllerBooking extends ControllerSecureNav {
 		}
 		return $isUserAuthorizedToBook;
 	}
-	
-	
-	/*
-	public function week() {
-	
-		$buttonId = "";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$buttonId = $this->request->getParameter("actionid");
-		}
-		
-		$t = $this->request->getSession()->getAttribut("date");
-		
-		$ty = date("Y",$t);
-		$tm = date("m",$t);
-		$td = date("d",$t);
-		
-		echo "<p> buttonId =" . $buttonId . "</p>";
-		echo "<p> t =" . $t . "</p>";
-		echo "<p> ty =" . $ty . "</p>";
-		echo "<p> tm =" . $tm . "</p>";
-		echo "<p> td =" . $td . "</p>";
-		
-		if ($buttonId == 0){
-
-			$t = date( "Y-m-d", mktime(0, 0, 0, $tm, $td-1, $ty));
-		}
-		if ($buttonId == 1){
-			$t = date( "Y-m-d", mktime(0, 0, 0, $tm, $td+1, $ty));
-		}
-		
-	
-		$this->generateView ( array (
-				't' => $t
-		) );
-	}
-	*/
 }

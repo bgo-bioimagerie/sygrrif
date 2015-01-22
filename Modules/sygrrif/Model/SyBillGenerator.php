@@ -320,7 +320,7 @@ class SyBillGenerator extends Model {
 			}
 			if ($numResTotal != 0){
 				$room[0][$i] = $e[0]; 					//id de la room
-				$room[1][$i] = $e[2]; 					//nom de la room
+				$room[1][$i] = $e[1]; 					//nom de la room
 				$room[2][$i] = $numResTotal; 			//nombre de réservations sur la room
 				$room[3][$i] = $heureTotal; 			//nombre d'heures réservées sur la room
 				$room[4][$i] = $heureResTotalJour;		//nombre d'heures réservées sur la room pendant la période jour
@@ -508,7 +508,7 @@ class SyBillGenerator extends Model {
 				$roomspan = $nBe + $curentLine-1;
 				$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, $nBe);
 				$objPHPExcel->getActiveSheet()->mergeCells('A'.$curentLine.':A'.$roomspan);
-				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $room[1][$j]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $room[1][$j]); // room name
 				$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableCell);
 				
 				for ($i = 0; $i < $nBe; $i++) {
@@ -736,9 +736,9 @@ class SyBillGenerator extends Model {
 	public function generateCounting($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 	
 		
-		require_once ("PHPExcel/Classes/PHPExcel.php");
-		require_once ("PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
-		require_once ("PHPExcel/Classes/PHPExcel/Writer/Excel2007.php");
+		require_once ("externals/PHPExcel/Classes/PHPExcel.php");
+		require_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
+		require_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php");
 		
 		// /////////////////////////////////////////// //
 		//        get the input informations           //
@@ -773,7 +773,11 @@ class SyBillGenerator extends Model {
 		(start_time >=:start AND start_time<:end AND end_time > :end) ORDER BY id';
 		$req = $this->runRequest($sql, $q);
 		$beneficiaire = $req->fetchAll();
-		//print_r($beneficiaire);
+		
+		
+		if (count($beneficiaire) == 0){
+			return ;
+		}
 		
 		$i=0;
 		$people = array();
@@ -791,7 +795,6 @@ class SyBillGenerator extends Model {
 				$i++;
 			}
 		}
-		//print_r($people[0]);
 		array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);
 		
 		$sql = 'SELECT id, name, area_id FROM sy_resources ORDER BY name';
@@ -1159,9 +1162,9 @@ class SyBillGenerator extends Model {
 	
 	public function generateDetail($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
-		include_once ("PHPExcel/Classes/PHPExcel.php");
-		include_once ("PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
-		include_once ("PHPExcel/Classes/PHPExcel/Writer/Excel2007.php");
+		include_once ("externals/PHPExcel/Classes/PHPExcel.php");
+		include_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
+		include_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php");
 		
 		// /////////////////////////////////////////// // 
 		//        get the input informations           //

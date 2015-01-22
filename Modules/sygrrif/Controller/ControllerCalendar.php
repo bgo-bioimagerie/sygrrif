@@ -13,6 +13,7 @@ require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
+require_once 'Modules/sygrrif/Model/SyCalendarSeries.php';
 
 class ControllerCalendar extends ControllerBooking {
 
@@ -39,6 +40,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_begin = 8;
 		$day_end = 19;
 		$size_bloc_resa = 1800;
+		$resa_time_setting = 0;
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -63,6 +65,7 @@ class ControllerCalendar extends ControllerBooking {
 			$day_begin = $resourceCInfo["day_begin"];
 			$day_end = $resourceCInfo["day_end"];
 			$size_bloc_resa = $resourceCInfo["size_bloc_resa"];
+			$resa_time_setting = $resourceCInfo["resa_time_setting"];
 		}
 		
 		// parse de days
@@ -105,6 +108,7 @@ class ControllerCalendar extends ControllerBooking {
 				'day_begin' => $day_begin,
 				'day_end' => $day_end,
 				'size_bloc_resa' => $size_bloc_resa,
+				'resa_time_setting' => $resa_time_setting,
 				'days_array' => $days_array,
 				'pricingTable'=> $pricingTable,
 				'cateoriesList' => $cateoriesList,
@@ -142,6 +146,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_begin = $this->request->getParameter("day_begin");
 		$day_end = $this->request->getParameter("day_end");
 		$size_bloc_resa = $this->request->getParameter("size_bloc_resa");
+		$resa_time_setting = $this->request->getParameter('resa_time_setting');
 
 		$lundi = $this->request->getParameterNoException ( "monday");
 		$mardi = $this->request->getParameterNoException ( "tuesday");
@@ -162,7 +167,7 @@ class ControllerCalendar extends ControllerBooking {
 		$available_days = $lundi . "," . $mardi . "," . $mercredi . "," . $jeudi . "," . $vendredi . "," . $samedi . "," . $dimanche;
 		
 		$modelCResource = new SyResourceCalendar();
-		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa);
+		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting);
 		
 		// pricing
 		$modelResourcePricing = new SyResourcePricing();
@@ -209,6 +214,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_begin = 8;
 		$day_end = 19;
 		$size_bloc_resa = 1800;
+		$resa_time_setting = 0;
 	
 		// type id
 		$mrs = new SyResourceType();
@@ -233,6 +239,7 @@ class ControllerCalendar extends ControllerBooking {
 			$day_begin = $resourceCInfo["day_begin"];
 			$day_end = $resourceCInfo["day_end"];
 			$size_bloc_resa = $resourceCInfo["size_bloc_resa"];
+			$resa_time_setting = $resourceCInfo["resa_time_setting"];
 		}
 	
 		// parse de days
@@ -275,6 +282,7 @@ class ControllerCalendar extends ControllerBooking {
 				'day_begin' => $day_begin,
 				'day_end' => $day_end,
 				'size_bloc_resa' => $size_bloc_resa,
+				'resa_time_setting' => $resa_time_setting,
 				'days_array' => $days_array,
 				'pricingTable'=> $pricingTable,
 				'cateoriesList' => $cateoriesList,
@@ -312,6 +320,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_begin = $this->request->getParameter("day_begin");
 		$day_end = $this->request->getParameter("day_end");
 		$size_bloc_resa = $this->request->getParameter("size_bloc_resa");
+		$resa_time_setting = $this->request->getParameter("resa_time_setting");
 	
 		$lundi = $this->request->getParameterNoException ( "monday");
 		$mardi = $this->request->getParameterNoException ( "tuesday");
@@ -332,7 +341,7 @@ class ControllerCalendar extends ControllerBooking {
 		$available_days = $lundi . "," . $mardi . "," . $mercredi . "," . $jeudi . "," . $vendredi . "," . $samedi . "," . $dimanche;
 	
 		$modelCResource = new SyResourceCalendar();
-		$modelCResource->setResource($id_resource, 0, $available_days, $day_begin, $day_end, $size_bloc_resa, $quantity_name);
+		$modelCResource->setResource($id_resource, 0, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name);
 	
 		// pricing
 		$modelResourcePricing = new SyResourcePricing();
@@ -534,7 +543,7 @@ class ControllerCalendar extends ControllerBooking {
 	
 	
 	
-	public function editReservation(){
+	public function editreservation(){
 		
 		// get the action
 		$action = '';
@@ -615,6 +624,14 @@ class ControllerCalendar extends ControllerBooking {
 			$modelResa = new SyCalendarEntry();
 			$reservationInfo = $modelResa->getEntry($reservation_id);
 			
+			$seriesInfo = "";
+			if ($reservationInfo['repeat_id'] > 0){
+				$modelSeries = new SyCalendarSeries();
+				$seriesInfo = $modelSeries->getEntry($reservationInfo['repeat_id']);
+			}
+			
+			print_r($seriesInfo);
+			
 			if ($_SESSION["user_status"] < 3 && $curentuserid != $reservationInfo["recipient_id"]){
 				$canEditReservation = false;
 			}
@@ -624,6 +641,7 @@ class ControllerCalendar extends ControllerBooking {
 					'menuData' => $menuData,
 					'resourceInfo' => $resourceInfo,
 					'resourceBase' => $resourceBase,
+					'seriesInfo' => $seriesInfo,
 					'date' => $curentDate,
 					'users' => $users,
 					'curentuser' => $curentuser,
@@ -648,6 +666,7 @@ class ControllerCalendar extends ControllerBooking {
 		$short_description = $this->request->getParameter('short_description');
 		$full_description = $this->request->getParameter('full_description');
 		$is_unitary = $this->request->getParameterNoException('is_unitary');
+		$repeat_id = $this->request->getParameterNoException('repeat_id');
 		
 		$quantity = 0;
 		if ($is_unitary != ""){
@@ -661,30 +680,101 @@ class ControllerCalendar extends ControllerBooking {
 		$begin_min = $this->request->getParameter('begin_min');
 		$start_time = mktime($begin_hour, $begin_min, 0, $beginDate[1], $beginDate[2], $beginDate[0]);
 		
-		$endDate = $this->request->getParameter('end_date');
+		$endDate = $this->request->getParameterNoException('end_date');
 		$endDate = explode("-", $endDate);
-		$end_hour =  $this->request->getParameter('end_hour');
-		$end_min = $this->request->getParameter('end_min');
-		$end_time = mktime($end_hour, $end_min, 0, $endDate[1], $endDate[2], $endDate[0]);
+		$end_hour =  $this->request->getParameterNoException('end_hour');
+		$end_min = $this->request->getParameterNoException('end_min');
 		
-		$modelCalEntry = new SyCalendarEntry();
-		
-		// test if a resa already exists on this periode
-		$conflict = $modelCalEntry->isConflict($start_time, $end_time, $resource_id, $reservation_id);
-		
-		if ($conflict){
-			$this->book("Error: There is already a reservation for the given slot");
-			return;
+		if (count($endDate) > 2){
+			$end_time = mktime($end_hour, $end_min, 0, $endDate[1], $endDate[2], $endDate[0]);
 		}
 		
-		if ($reservation_id == ""){
-			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
-									 $last_update, $color_type_id, $short_description, $full_description, $quantity);
+		$duration = $this->request->getParameterNoException('duration');
+		if ($duration != ""){
+			$end_time = $start_time + $duration*60;
+		}
+		
+		// get the series info
+		$series_type_id = $this->request->getParameter("series_type_id");
+		
+		
+		if ($series_type_id == 0){
+		
+			$modelCalEntry = new SyCalendarEntry();
+			// test if a resa already exists on this periode
+			$conflict = $modelCalEntry->isConflict($start_time, $end_time, $resource_id, $reservation_id);
+			
+			if ($conflict){
+				$this->book("Error: There is already a reservation for the given slot");
+				return;
+			}
+			
+			if ($reservation_id == ""){
+				$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+										 $last_update, $color_type_id, $short_description, $full_description, $quantity);
+			}
+			else{
+				$modelCalEntry->updateEntry($reservation_id, $start_time, $end_time, $resource_id, $booked_by_id, 
+						                   $recipient_id, $last_update, $color_type_id, $short_description, 
+						                   $full_description, $quantity);
+			}
 		}
 		else{
-			$modelCalEntry->updateEntry($reservation_id, $start_time, $end_time, $resource_id, $booked_by_id, 
-					                   $recipient_id, $last_update, $color_type_id, $short_description, 
-					                   $full_description, $quantity);
+			// get the series info
+			$lundi = $this->request->getParameterNoException ( "monday");
+			$mardi = $this->request->getParameterNoException ( "tuesday");
+			$mercredi = $this->request->getParameterNoException ( "wednesday");
+			$jeudi = $this->request->getParameterNoException ( "thursday");
+			$vendredi = $this->request->getParameterNoException ( "friday");
+			$samedi = $this->request->getParameterNoException ( "saturday");
+			$dimanche = $this->request->getParameterNoException ( "sunday");
+			
+			if ($lundi != ""){$lundi = "1";}else{$lundi = "0";}
+			if ($mardi != ""){$mardi = "1";}else{$mardi = "0";}
+			if ($mercredi != ""){$mercredi = "1";}else{$mercredi = "0";}
+			if ($jeudi != ""){$jeudi = "1";}else{$jeudi = "0";}
+			if ($vendredi != ""){$vendredi = "1";}else{$vendredi = "0";}
+			if ($samedi != ""){$samedi = "1";}else{$samedi = "0";}
+			if ($dimanche != ""){$dimanche = "1";}else{$dimanche = "0";}
+			
+			$days_option = $lundi . "," . $mardi . "," . $mercredi . "," . $jeudi . "," . $vendredi . "," . $samedi . "," . $dimanche;
+			$seriesEndDate = $this->request->getParameter("series_end_date");
+			
+			// get the list of all the entries in the series
+			$modelCalSeries = new SyCalendarSeries();
+			$seriesDates = $modelCalSeries->entriesDates($start_time, $end_time, $series_type_id, $days_option, $seriesEndDate);
+			
+			// test if there are conflicts
+			$modelCalEntry = new SyCalendarEntry();
+			for ($d = 0 ; $d < count($seriesDates) ; $d++){
+				$conflict = $modelCalEntry->isConflict($seriesDates[$d]['start_time'], $seriesDates[$d]['end_time'], $resource_id, $reservation_id);
+					
+				if ($conflict){
+					$this->book("Error: There is already a reservation for the given series slot");
+					return;
+				}
+			}
+			
+			// create/update the series entry
+			if ($repeat_id == "" || $repeat_id == "0"){
+				$repeat_id = $modelCalSeries->addEntry($start_time, $end_time, $series_type_id, $seriesEndDate, $days_option, $resource_id, $booked_by_id,
+									  $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
+			}
+			else{
+				$modelCalSeries->updateEntry($repeat_id, $start_time, $end_time, $series_type_id, $seriesEndDate, $days_option, $resource_id, 
+											$booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
+			}
+			
+			// create the entries
+			for ($d = 0 ; $d < count($seriesDates) ; $d++){
+				
+				$start_time = $seriesDates[$d]['start_time'];
+				$end_time = $seriesDates[$d]['end_time'];
+				$reservation_id = $modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+							$last_update, $color_type_id, $short_description, $full_description, $quantity);
+
+				$modelCalEntry->setRepeatID($reservation_id, $repeat_id);
+			}
 		}
 		
 		$_SESSION['id_resource'] = $resource_id;
@@ -709,6 +799,22 @@ class ControllerCalendar extends ControllerBooking {
 		
 		$modelEntry = new SyCalendarEntry();
 		$message = $modelEntry->removeEntry($id);
+		
+		$this->book($message);
+	}
+	
+	public function removeseries(){
+		// get the action
+		$id = '';
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+		
+		$modelSeries = new SyCalendarSeries();
+		$modelSeries->removeSeries($id);
+		
+		$modelEntry = new SyCalendarEntry();
+		$message = $modelEntry->removeEntriesFromSeriesID($id);
 		
 		$this->book($message);
 	}

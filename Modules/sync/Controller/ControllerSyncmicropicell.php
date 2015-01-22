@@ -24,7 +24,9 @@ class ControllerSyncmicropicell extends Controller {
 
 	// affiche la liste des Sources
 	public function index() {
-		/*
+	
+		$authorizeUsers = true;
+		
 		// connect to h2p2 grr 
 		$dsn_grr = 'mysql:host=localhost;dbname=myriam;charset=utf8';
 		$login_grr = "root";
@@ -32,6 +34,10 @@ class ControllerSyncmicropicell extends Controller {
 		
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+		
+		// resources categories
+		$this->createdefaultResourceCatAndPricing();
+		echo "add resources categories and pricing </br>";
 		
 		// area
 		$this->syncAreas($pdo_grr);
@@ -56,8 +62,7 @@ class ControllerSyncmicropicell extends Controller {
 		// last login 
 		$this->syncLastLogin($pdo_grr);
 		echo "sync last login </br>";
-		*/
-		
+	
 		
 		// load xls file
 		$file = "C:/Users/sprigent/Desktop/myriam/utilisateurs imagerie cellulaire.xls";
@@ -91,6 +96,15 @@ class ControllerSyncmicropicell extends Controller {
 		// users xls 2
 		$this->syncUsersFromXls2($objPHPExcel);
 		echo "sync users from xls 2 </br>";
+		
+		if ($authorizeUsers){
+			$this->addResourcesCategories();
+			echo "sync resources types </br>";
+		
+			$this->addAuthorizations();
+			echo "sync add authorizations </br>";
+			
+		}
 	}
 	
 	public function syncAreas($pdo_grr){
@@ -189,7 +203,7 @@ class ControllerSyncmicropicell extends Controller {
 			$id = $room["id"];
 			$name = $room["room_name"];
 			$description = $room["description"];
-			$accessibility_id = 4; // who can book = admin by default
+			$accessibility_id = 2; // who can book = users by default
 			$type_id = 1; // calendar
 			$category_id = 1;
 			$modelResource->importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id);
@@ -205,7 +219,8 @@ class ControllerSyncmicropicell extends Controller {
 			$day_begin = $area_info["morningstarts_area"];
 			$day_end = $area_info["eveningends_area"];
 			$size_bloc_resa = $area_info["resolution_area"];
-			$modelResourceCal->addResource($id, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa);
+			$resa_time_setting = 1;
+			$modelResourceCal->addResource($id, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting);
 		}
 	}
 	protected function addUsers($pdo_grr){
@@ -267,6 +282,9 @@ class ControllerSyncmicropicell extends Controller {
 				
 				$convention = "";
 				$date_convention = '';
+				if ($pwd == ""){
+					$pwd = "azerty";
+				}
 				$userModel->setUser($name, $firstname, $login, $pwd,
 						$email, $phone, $id_unit,
 						$id_responsible, $id_status,
@@ -588,6 +606,56 @@ class ControllerSyncmicropicell extends Controller {
 				}
 			}
 			$curentLine++;
+		}
+	}
+	
+	public function createdefaultResourceCatAndPricing(){
+		$modelResourceCat = new SyResourcesCategory();
+		$modelResourceCat->addResourcesCategory("default");
+		
+		$modelPricing = new SyPricing();
+		$modelPricing->addPricing("Equipes SFR Santé François Bonamy", 1, 0, 0, 0, 0, "");
+		$modelPricing->addPricing("Equipes hors SFR / Entreprises incubées localement", 1, 0, 0, 0, 0, "");
+		$modelPricing->addPricing("Entreprises privées", 1, 0, 0, 0, 0, "");
+	}
+	
+	public function addResourcesCategories(){
+		$modelResources = new SyResource();
+		$resources = $modelResources->resources("id");
+		
+		$modelCat = new SyResourcesCategory();
+		foreach($resources as $r){
+			$catID = $modelCat->addResourcesCategory($r["name"]);
+			$modelResources->setResourceCategory($r["id"], $catID);
+		}
+	}
+	
+	public function addAuthorizations(){
+		$modelVisa = new SyVisa();
+		$modelVisa->addVisa("default");
+		
+		
+		$modelUser = new User();
+		$users = $modelUser->getUsers();
+		
+		$modelResources = new SyResourcesCategory();
+		$resources = $modelResources->getResourcesCategories();
+		
+		$modelAuth = new SyAuthorization();
+		foreach ($users as $us){
+			
+			if ($us["id_status"] == 2 ){ // only users
+					
+				$date = date('Y-m-d'); 
+				$user_id = $us["id"]; 
+				$lab_id = $us["id_unit"]; 
+				$visa_id = 2;
+
+				foreach ($resources as $r){
+					$resource_id = $r["id"];
+					$modelAuth->addAuthorization($date, $user_id, $lab_id, $visa_id, $resource_id);
+				}
+			}
 		}
 	}
 }

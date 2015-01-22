@@ -128,6 +128,14 @@ class SyResource extends Model {
 		$data = $this->runRequest($sql, array($areaId));
 		return $data->fetchAll();
 	}
+	
+	public function firstResourceIDForArea($areaId){
+		$sql = "select id from sy_resources where area_id=?";
+		$req = $this->runRequest($sql, array($areaId));
+		$tmp = $req->fetch();
+		return $tmp[0];
+	}
+	
 	public function getResourceType($id){
 		$sql = "select type_id from sy_resources where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -138,5 +146,10 @@ class SyResource extends Model {
 		else{
 			return 0;
 		}
+	}
+	
+	public function setResourceCategory($id_resource, $id_category){
+		$sql = "update sy_resources set category_id=? where id=?";
+		$this->runRequest($sql, array($id_category, $id_resource));
 	}
 }

@@ -1,5 +1,5 @@
 <?php 
-function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook){
+function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable){
 	
 	$dateString = date("Y-m-d", $date_unix);
 	
@@ -46,10 +46,11 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					if (!$foundStartEntry){
 					?>
 						<div class="text-center" id="tcell" style="height: 25px;">
+						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){
 							$h2 = str_replace(".", "-", $h);?>
 						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
-						<?php }?>
+						<?php }}?>
 						</div>
 					<?php 
 					}	
@@ -98,10 +99,11 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			if (!$foundStartEntry){
 			?>
 				<div class="text-center" id="tcell" style="height: 25px;">
+				<?php if ($isDayAvailable){?>
 				<?php if ($isUserAuthorizedToBook){
 				$h2 = str_replace(".", "-", $h);?>
 				<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
-				<?php }?>
+				<?php }}?>
 				</div>
 			<?php 
 			}	
@@ -141,19 +143,20 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					?>
 								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
+								<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
 								</div>
 							<?php
-							$h+= $blocNumber*0.25 - 0.25;
+							$h+= $blocNumber*1 - 1;
 						}
 					}
 					if (!$foundStartEntry){
 					?>
 						<div class="text-center" id="tcell" style="height: 50px;">
+						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){
 						$h2 = str_replace(".", "-", $h);?>
 						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
-						<?php }?>
+						<?php }}?>
 						</div>
 					<?php 
 					}	

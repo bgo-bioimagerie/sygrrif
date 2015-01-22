@@ -90,7 +90,7 @@ class User extends Model {
         if ($user->rowCount() == 1){
         	$req = $user->fetch();
         	if ($req["is_active"] == 1){
-        		return true;
+        		return "allowed";
         	}
         	else{
         		return "Your account is not active";

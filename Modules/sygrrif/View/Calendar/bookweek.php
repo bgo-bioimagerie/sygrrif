@@ -41,6 +41,14 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 	border: 1px solid #f1f1f1;
 }
 
+#resa_link{
+	font-family: Arial;
+	font-size: 11px;
+	line-height: 11px;
+	letter-spacing: 1px;
+	font-weight: normal;
+}
+
 @media (min-width: 1200px) {
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
@@ -135,6 +143,8 @@ $sufixStream = date("S", $time);
 $day_begin = $this->clean($resourceInfo['day_begin']);
 $day_end = $this->clean($resourceInfo['day_end']);
 $size_bloc_resa = $this->clean($resourceInfo['size_bloc_resa']);
+$available_days = $this->clean($resourceInfo['available_days']);
+$available_days = explode(",", $available_days);
 ?>
 
 <!-- hours column -->
@@ -188,7 +198,6 @@ $size_bloc_resa = $this->clean($resourceInfo['size_bloc_resa']);
 		}
 		
 		// day title
-		
 		$temp = explode("-", $mondayDate);
 		$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
 		$dayStream = date("l", $date_unix);
@@ -208,9 +217,12 @@ $size_bloc_resa = $this->clean($resourceInfo['size_bloc_resa']);
 		</div>
 		
 		<?php 
-		//$temp = explode("-", $mondayDate);
-		//$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
-		bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook);
+		// test if the day is available
+		$isDayAvailable = false;
+		if ($available_days[$d] == 1){
+			$isDayAvailable = true;
+		}
+		bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable);
 		?>
 		
 		</div>

@@ -97,19 +97,22 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		
 		echo $gAnnee;
 		
-		//$nameFile = "temp/bilan_resaSVG.svg";
-		//$openFile = fopen($nameFile,"w");
-		//$toWrite = $gAnnee;
-		//fwrite($openFile, $toWrite);
-		//fclose($openFile);
-		
-		//exec('sudo /usr/bin/inkscape -D temp/bilan_resaSVG.svg -e temp/bilan_resaJPG.jpg -b "#ffffff" -h800');
-		
+		if (Configuration::get("saveImages") == "enable"){
+			$nameFile = "temp/bilan_resaSVG.svg";
+			$openFile = fopen($nameFile,"w");
+			$toWrite = $gAnnee;
+			fwrite($openFile, $toWrite);
+			fclose($openFile);
+			
+			exec('sudo /usr/bin/inkscape -D temp/bilan_resaSVG.svg -e temp/bilan_resaJPG.jpg -b "#ffffff" -h800');
+		}
 		?>
 	</div>
+	<?php if (Configuration::get("saveImages") == "enable"){ ?>
 	<div class='col-md-2 col-md-offset-1'>
 	<button type="button" onclick="location.href='temp/bilan_resaJPG.jpg'" download="bilan_reservations<?=$annee?>" class="btn btn-primary" id="navlink">Export as jpeg</button>
 	</div>
+	<?php } ?>
 <!-- -------------------------------------------- -->
 <!-- Plot the camembert -->
 <!-- -------------------------------------------- -->	
@@ -117,23 +120,27 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		<div class='col-md-9 col-md-offset-1 text-center' id="camembert-area">
 
 		<?php
-			$camembert = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="500" height="300" font-family="Verdana">';
+			$camembert = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="300" font-family="Verdana">';
 			$camembert .= '<title>Best Foods</title>';
 			$camembert .= '<desc></desc>';
 			$camembert .= $camembertContent;		
 			$camembert .= '</svg>';
 			echo $camembert;
 			
-			//$nameFile = "temp/camembert_resaSVG.svg";
-			//$openFile = fopen($nameFile,"w");
-			//$toWrite = $camembert;
-			//fwrite($openFile, $toWrite);
-			//fclose($openFile);
+			if (Configuration::get("saveImages") == "enable"){
+				$nameFile = "temp/camembert_resaSVG.svg";
+				$openFile = fopen($nameFile,"w");
+				$toWrite = $camembert;
+				fwrite($openFile, $toWrite);
+				fclose($openFile);
 		
-			//exec('sudo /usr/bin/inkscape -D temp/camembert_resaSVG.svg -e temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+				exec('sudo /usr/bin/inkscape -D temp/camembert_resaSVG.svg -e temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+			}
 		?>
 		</div>
+		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<div class='col-md-2 col-md-offset-1'>
 		<button type="button" onclick="location.href='temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?=$annee?>" class="btn btn-primary" id="navlink">Export as jpeg</button>
 		</div>
+		<?php }?>
 </div>
