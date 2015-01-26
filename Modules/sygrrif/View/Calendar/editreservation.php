@@ -11,6 +11,10 @@ if (!$canEditReservation){
 
 ?>
 
+<header>
+<script src="externals/bootstrap/js/bootstrap.min.js"></script>
+</header>
+
 <br>
 <div class="container">
 	<div class="col-md-8 col-md-offset-2">
@@ -81,6 +85,7 @@ if (!$canEditReservation){
 			</div>
 		</div>
 	
+		<?php if ($projectsList == ""){?>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4">Short description</label>
 			<div class="col-xs-8">
@@ -90,6 +95,36 @@ if (!$canEditReservation){
 				/>
 			</div>
 		</div>
+		<?php 
+		}
+		else{
+			?>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">Project</label>
+			<div class="col-xs-8">
+				<select class="form-control" name="short_description">
+				<?php 
+				$curentProject = $this->clean($reservationInfo['short_description']);
+				foreach ($projectsList as $project){
+					$projectID = $this->clean($project["id"]);
+					$projectName = $this->clean($project["name"]);
+					$selected = "";
+					if ($curentProject == $projectID){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $projectID ?>" <?= $selected ?>> <?= $projectName?> </OPTION>
+					<?php
+					
+				}
+				?>
+				</select>
+			</div>
+		</div>
+		<?php
+		}
+		?>
+		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4">Full description</label>
 			<div class="col-xs-8">
@@ -113,19 +148,19 @@ if (!$canEditReservation){
 				?>
 			<label for="inputEmail" class="control-label col-xs-4">Beginning of the reservation:</label>
 			<div class="col-xs-8">
-				<div class='input-group date' id='datetimepicker5'>
+				<div class='input-group date' id='datetimepicker6'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="begin_date"
 					       value="<?= $sdate ?>" <?=$readOnlyGlobal?>/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-		        <script src="bootstrap/datepicker/js/moments.js"></script>
-				<script src="bootstrap/jquery-1.11.1.js"></script>
-				<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-	      		<script type="text/javascript">
+		        <script src="externals/datepicker/js/moments.js"></script>
+				<script src="externals/jquery-1.11.1.js"></script>
+				<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+		      	<script type="text/javascript">
 				$(function () {
-					$('#datetimepicker5').datetimepicker({
+					$('#datetimepicker6').datetimepicker({
 						pickTime: false
 					});
 				});
@@ -172,19 +207,19 @@ if (!$canEditReservation){
 					?>
 				<label for="inputEmail" class="control-label col-xs-4">End of the reservation:</label>
 				<div class="col-xs-8">
-					<div class='input-group date' id='datetimepicker6'>
+					<div class='input-group date' id='datetimepicker7'>
 						<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="end_date"
 						       value="<?= $edate ?>" <?=$readOnlyGlobal?>/>
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>
 						</span>
 					</div>
-			        <script src="bootstrap/datepicker/js/moments.js"></script>
-					<script src="bootstrap/jquery-1.11.1.js"></script>
-					<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+			        <script src="externals/datepicker/js/moments.js"></script>
+					<script src="externals/jquery-1.11.1.js"></script>
+					<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 		      		<script type="text/javascript">
 					$(function () {
-						$('#datetimepicker6').datetimepicker({
+						$('#datetimepicker7').datetimepicker({
 							pickTime: false
 						});
 					});

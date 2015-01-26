@@ -574,7 +574,7 @@ class ControllerSygrrif extends ControllerBooking {
 		$modelAuth = new SyAuthorization();
 		$authorization = $modelAuth->getAuthorization($id);
 		
-		print_r($authorization);
+		//print_r($authorization);
 		
 		// get users list
 		$modelUser = new User();
@@ -901,6 +901,8 @@ class ControllerSygrrif extends ControllerBooking {
 		$id_resource = $this->request->getParameterNoException('id_resource');
 		$id_area = $this->request->getParameterNoException('id_area');
 		
+		//echo "id_area a= " . $id_area . "</br>";
+		//echo "id_resource a= " . $id_resource . "</br>";
 		//echo "id_resource begin = " . $id_resource . "</br>";
 		
 		if ($id_resource == "" || $id_resource == 0){ // booking home page
@@ -919,11 +921,16 @@ class ControllerSygrrif extends ControllerBooking {
 			$modelResource = new SyResource();
 			$id_resource = $modelResource->firstResourceIDForArea($id_area);
 			
+			//echo "id_area = " . $id_area . "</br>";
 			//echo "id_resource = " . $id_resource . "</br>";
+				
+			
 			//$menuData = $this->calendarMenuData($id_area, $id_resource, date("Y-m-d", time()));
 			$_SESSION['id_resource'] = $id_resource;
 			$_SESSION['id_area'] = $id_area;
 			$_SESSION['curentDate'] = date("Y-m-d", time());
+			
+			
 			
 			
 			if ($id_resource == 0){

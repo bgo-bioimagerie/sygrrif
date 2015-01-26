@@ -3,6 +3,8 @@
 require_once 'Framework/Model.php';
 require_once 'Modules/supplies/Model/SuUnitPricing.php';
 require_once 'Modules/supplies/Model/SuItemPricing.php';
+require_once 'Modules/supplies/Model/SuBill.php';
+require_once 'Modules/supplies/Model/SuEntry.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
 /**
@@ -120,7 +122,7 @@ class SuBillGenerator extends Model {
 		);
 		
 		// load the template
-		$file = "data/template.xls";
+		$file = "data/template_supplies.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
@@ -195,8 +197,44 @@ class SuBillGenerator extends Model {
 		}
 		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitAddress);
 		
-		
-		
+		// replace the bill number
+		// calculate the number
+		$modelBill = new SuBill();
+		$bills = $modelBill->getBills("number");
+		$lastNumber = "";
+		$number = "";
+		if (count($bills) > 0){
+			$lastNumber = $bills[count($bills)-1]["number"];
+		}
+		if ($lastNumber != ""){
+			$lastNumber = explode("-", $lastNumber);
+			$lastNumberY = $lastNumber[0];
+			$lastNumberN = $lastNumber[1];
+			
+			if ($lastNumberY == date("Y", time())){
+				$lastNumberN = (int)$lastNumberN + 1;
+			}
+			$number = $lastNumberY ."-".$lastNumberN;
+		}
+		else{
+			$number = date("Y", time()) . "-1";
+		}
+		// replace the number
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{nombre}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					break;
+				}
+			}
+		}
+		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $number);
 		
 		
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -259,6 +297,7 @@ class SuBillGenerator extends Model {
 		
 		// select users whose unit and responsible is the selected one
 		$i=0;
+		$people = array();
 		foreach($beneficiaire as $b){
 			// user info
 			$modelUser = new SuUser();
@@ -273,6 +312,10 @@ class SuBillGenerator extends Model {
 				$i++;
 			}
 		}
+		if (count($people) == 0){
+			echo "There are no open orders for the given responsible";
+			return;
+		}
 		array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);
 		
 		// get the items
@@ -282,6 +325,7 @@ class SuBillGenerator extends Model {
 		$i=0;
 		$modelItemPricing = new SuItemPricing();
 		$totalHT = 0;
+		$ordersToClose = array();
 		foreach ($items as $e){
 			$itemID = $e[0];
 			$itemName = $e[1];
@@ -295,15 +339,18 @@ class SuBillGenerator extends Model {
 			for ( $j = 0 ; $j < count($people[0]) ; $j++ ){
 				
 				// get the quantity of curent item booked for the curent user
-				$sql = "SELECT content FROM su_entries WHERE id_user=" . $people[2][$j];
+				$sql = "SELECT id, content FROM su_entries WHERE id_user=" . $people[2][$j] . " AND id_status=1";
 				$req = $this->runRequest($sql);
-				$contents = $req->fetchAll();
+				$queryouts = $req->fetchAll();
+				//print_r($queryouts);
 				$quantity = 0;
-				$orderNumber = count($contents);
-				foreach ($contents as $content){
+				$orderNumber = count($queryouts);
+				foreach ($queryouts as $out){
+					$ordersToClose[] = $out["id"];
+					$content = $out["content"];
 					//print_r($content);
 					// get the quentity for item=itemID
-					$citems = explode(";", $content[0]);
+					$citems = explode(";", $content);
 					foreach ($citems as $citem){
 						$vals = explode("=", $citem);
 						if (count($vals)>1){
@@ -361,6 +408,14 @@ class SuBillGenerator extends Model {
 				$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableCell);
 			}
 		}
+		
+		// close the orders
+		$modelEntry = new SuEntry();
+		foreach ($ordersToClose as $toClose){
+			$modelEntry->setEntryCloded($toClose);
+		}
+		// add the order to thehistory
+		$modelBill->addBill($number, date("Y-m-d", time()));
 				
 		// bilan
 		// total HT

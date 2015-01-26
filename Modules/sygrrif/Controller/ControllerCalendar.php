@@ -2,6 +2,7 @@
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/Project.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
@@ -589,6 +590,14 @@ class ControllerCalendar extends ControllerBooking {
 			$canEditReservation = true;
 		}
 		
+		$ModulesManagerModel = new ModulesManager();
+		$status = $ModulesManagerModel->getDataMenusUserType("projects");
+		$projectsList = "";
+		if ($status > 0){
+			$modelProjects = new Project();
+			$projectsList = $modelProjects->projectsIDName(); 
+		}
+		
 		// set the view given the action		
 		if ($contentAction[0] == "t"){ // add resa 
 			
@@ -615,7 +624,8 @@ class ControllerCalendar extends ControllerBooking {
 					'users' => $users,
 					'curentuser' => $curentuser,
 					'canEditReservation' => $canEditReservation,
-					'colorCodes' => $colorCodes
+					'colorCodes' => $colorCodes,
+					'projectsList' => $projectsList
 			) );
 		}
 		else{ // edit resa
@@ -647,8 +657,8 @@ class ControllerCalendar extends ControllerBooking {
 					'curentuser' => $curentuser,
 					'reservationInfo' => $reservationInfo,
 					'canEditReservation' => $canEditReservation,
-					'colorCodes' => $colorCodes
-					
+					'colorCodes' => $colorCodes,
+					'projectsList' => $projectsList
 			));
 		}
 		

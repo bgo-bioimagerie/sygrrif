@@ -106,8 +106,8 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$index = -1;
 		foreach ($activeItems as $activeItem ){
 			// test if not exists
+			$alreadyFounded = false;
 			foreach($itemsOrderC as $itemo){
-				$alreadyFounded = false;
 				if ($itemo["id"] == $activeItem["id"]){
 					$alreadyFounded = true;
 					break;
@@ -123,7 +123,7 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		
 		$itemsOrder = array_merge($itemsOrderA, $itemsOrderC);
 		
-		print_r($itemsOrder);
+		//print_r($itemsOrder);
 		
 		$modelUser = new SuUser();
 		$users = $modelUser->getUsersSummary();
@@ -165,6 +165,7 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 			$modelEntry->addEntry($id_user, $content, $id_status, $date_open);
 		}
 		else{
+			$date_last_modified = date("Y-m-d", time());
 			$modelEntry->updateEntry($id, $id_user, $content, $id_status, $date_open, $date_last_modified,$date_close);
 		}
 		

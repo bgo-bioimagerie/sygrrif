@@ -1,0 +1,87 @@
+<?php $this->title = "Supplies Bill"?>
+
+<?php echo $navBar?>
+
+<head>
+
+<style>
+#button-div{
+	padding-top: 20px;
+}
+
+</style>
+
+</head>
+
+
+<?php include "Modules/supplies/View/navbar.php"; ?>
+
+<br>
+<div class="container">
+	<div class="col-md-8 col-md-offset-2">
+	      
+	  <form role="form" class="form-horizontal" action="suppliesbillmanager/editquery" method="post">
+	
+		<div class="page-header">
+			<h1>
+				Edit Bill Informations
+				<br> <small></small>
+			</h1>
+		</div>
+	
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">ID</label>
+			<div class="col-xs-8">
+				<input class="form-control" id="id" type="text"  name="id" value="<?= $this->clean($billInfo["id"]) ?>" readonly/>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">Number</label>
+			<div class="col-xs-8">
+				<input class="form-control" id="name" type="text" name="number"
+				       value="<?=$this->clean($billInfo["number"]) ?>"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">Date generated</label>
+			<div class="col-xs-8">
+				<input class="form-control" id="name" type="text" name="date_generated"
+				       value="<?=$this->clean($billInfo["date_generated"]) ?>"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">Date generated</label>
+			<div class="col-xs-8">
+				<input class="form-control" id="name" type="text" name="date_paid"
+				       value="<?=$this->clean($billInfo["date_paid"]) ?>"  
+				/>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">Is Paid</label>
+			<div class="col-xs-8">
+				<?php  $is_active = $this->clean($billInfo["is_paid"]);?>
+				<select class="form-control" name="is_paid">
+					<option value="1" <?php if ($is_active==1){echo "selected=\"selected\"";} ?>> Yes </option>
+					<option value="0" <?php if ($is_active==0){echo "selected=\"selected\"";} ?>> No </option>
+				</select>
+			</div>
+		</div>
+				
+		<div class="col-xs-3 col-xs-offset-9" id="button-div">
+		        <input type="submit" class="btn btn-primary" value="Save" />
+				<button type="button" onclick="location.href='suppliesbillmanager'" class="btn btn-default" id="navlink">Cancel</button>
+		</div>
+	
+      </form>
+	      
+	</div>
+</div>
+
+<?php if (isset($msgError)): ?>
+<p><?= $msgError ?></p>
+<?php endif; ?>

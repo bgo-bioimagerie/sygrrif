@@ -4,6 +4,7 @@ require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Unit.php';
+require_once 'Modules/core/Model/Project.php';
 require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/core/Model/Status.php';
 require_once 'Modules/core/Model/CoreConfig.php';
@@ -46,6 +47,9 @@ class InitDatabase extends Model {
 		$configModel = new CoreConfig();
 		$configModel->createTable();
 		$configModel->createDefaultConfig();
+		
+		$projectModel = new Project();
+		$projectModel->createTable();
 		
 		$message = 'success';
 		return $message;

@@ -62,11 +62,6 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 
 <div class="col-lg-12">
 
-<?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
-<div class="col-lg-10">
-
-<div class="col-lg-12">
-
 <div class="col-md-8 text-left">
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/book/daybefore'"><</button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/book/dayafter'">></button>
@@ -155,8 +150,8 @@ $available_days = explode(",", $available_days);
 	?>
 	
 </div>
-</div>
-</div>
+
+<?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
 
 </div>
 <?php if (isset($msgError)): ?>

@@ -96,7 +96,14 @@ legend {
 				<legend>Stats & Bills</legend>
 					<button onclick="location.href='suppliesbill'"
 						class="btn btn-link" id="navlink">Bill</button>
+				</br>		
+					<button onclick="location.href='Suppliesbillmanager'"
+						class="btn btn-link" id="navlink">Bills manager</button>
+						
 			</fieldset>
+			
+			
+			
 		</div>
 
 	</div>

@@ -1,18 +1,18 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
-require_once 'Modules/core/Model/Unit.php';
-class ControllerUnits extends ControllerSecureNav {
+require_once 'Modules/core/Model/Project.php';
+class ControllerProjects extends ControllerSecureNav {
 	
 	/**
 	 * User model object
 	 */
-	private $unitModel;
+	private $projectModel;
 	
 	// private $billet;
 	public function __construct() {
 		// $this->billet = new Billet ();
-		$this->unitModel = new Unit ();
+		$this->projectModel = new Project ();
 	}
 	
 	// Affiche la liste de tous les billets du blog
@@ -26,30 +26,28 @@ class ControllerUnits extends ControllerSecureNav {
 		}
 		
 		// get the user list
-		$unitsArray = $this->unitModel->getUnits ( $sortentry );
+		$projectsArray = $this->projectModel->getProjects ( $sortentry );
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'unitsArray' => $unitsArray 
+				'projectsArray' => $projectsArray 
 		) );
 	}
 	public function edit() {
 		$navBar = $this->navBar ();
 		
-		// get user id
-		$unitId = 0;
+		// get project id
+		$projectId = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$unitId = $this->request->getParameter ( "actionid" );
+			$projectId = $this->request->getParameter ( "actionid" );
 		}
 		
-		// get unit info
-		$unit = $this->unitModel->getUnit ( $unitId );
-		
-		//print_r ( $unit );
+		// get project info
+		$project = $this->projectModel->getProject ( $projectId );
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'unit' => $unit 
+				'project' => $project 
 		) );
 	}
 	public function add() {
@@ -63,12 +61,12 @@ class ControllerUnits extends ControllerSecureNav {
 		
 		// get form variables
 		$name = $this->request->getParameter ( "name" );
-		$address = $this->request->getParameter ( "address" );
+		$description = $this->request->getParameter ( "description" );
 		
 		// get the user list
-		$unitsArray = $this->unitModel->addUnit ( $name, $address );
+		$projectsArray = $this->projectModel->addProject ( $name, $description );
 		
-		$this->redirect ( "units" );
+		$this->redirect ( "projects" );
 	}
 	public function editquery() {
 		$navBar = $this->navBar ();
@@ -76,11 +74,11 @@ class ControllerUnits extends ControllerSecureNav {
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
-		$address = $this->request->getParameter ( "address" );
+		$description = $this->request->getParameter ( "description" );
 		
 		// get the user list
-		$unitsArray = $this->unitModel->editUnit ( $id, $name, $address );
+		$projectsArray = $this->projectModel->editProject ( $id, $name, $description );
 		
-		$this->redirect ( "units" );
+		$this->redirect ( "projects" );
 	}
 }

@@ -3,19 +3,19 @@
 <?php echo $navBar?>
 
 <head>
-	<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-	<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="externals/dist/css/bootstrap.min.css" rel="stylesheet">
 	
-	<script src="bootstrap/datepicker/js/moments.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-	<script src="bootstrap/dist/js/bootstrap.min.js"></script>
+	<script src="externals/datepicker/js/moments.js"></script>
+	<script src="externals/jquery-1.11.1.js"></script>
+	<script src="externals/bootstrap/js/bootstrap.min.js"></script>
 
 <style type="text/css">
     .box{
         display: none;
     }
 </style>
-<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+<script type="text/javascript" src="externals/jquery-1.11.1.js"></script>
 <script type="text/javascript">
     $(document).ready(function(){
         $('input[type="checkbox"]').click(function(){

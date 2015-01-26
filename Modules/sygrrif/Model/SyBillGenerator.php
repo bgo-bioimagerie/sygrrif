@@ -39,6 +39,9 @@ class SyBillGenerator extends Model {
 		$modelUnit = new Unit();
 		$unitName = $modelUnit->getUnitName($unit_id);
 		
+		$unitInfo = $modelUnit->getUnit($unit_id);
+		$unitAddress = $unitInfo[2];
+		
 		
 		// ///////////////////////////////////////// //
 		//             Main query                    //
@@ -428,6 +431,131 @@ class SyBillGenerator extends Model {
 		// get the line where to insert the table
 		$insertLine = 0;
 		
+		// replace the date
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{date}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("d/m/Y", time()));
+		}
+		// replace the responsible
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{responsable}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $responsibleFullName);
+		}
+		// replace $unitName
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{unite}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitName);
+		}
+		
+		// replace address $unitAddress
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{adresse}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitAddress);
+		}
+		// replace the bill number
+		// calculate the number
+		$modelBill = new SyBill();
+		$bills = $modelBill->getBills("number");
+		$lastNumber = "";
+		$number = "";
+		if (count($bills) > 0){
+			$lastNumber = $bills[count($bills)-1]["number"];
+		}
+		if ($lastNumber != ""){
+			$lastNumber = explode("-", $lastNumber);
+			$lastNumberY = $lastNumber[0];
+			$lastNumberN = $lastNumber[1];
+				
+			if ($lastNumberY == date("Y", time())){
+				$lastNumberN = (int)$lastNumberN + 1;
+			}
+			$number = $lastNumberY ."-".$lastNumberN;
+		}
+		else{
+			$number = date("Y", time()) . "-1";
+		}
+		// replace the number
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{nombre}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $number);
+		}
+		
+		// table
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
 		foreach($rowIterator as $row) {
 			
@@ -642,6 +770,9 @@ class SyBillGenerator extends Model {
 				*/
 			}
 		}
+		
+		// add the bill to the bill manager
+		$modelBill->addBill($number, date("Y-m-d", time()));
 		
 		// bilan
 		// total HT

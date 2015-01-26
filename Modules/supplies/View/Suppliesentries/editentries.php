@@ -13,7 +13,6 @@
 
 </head>
 
-
 <?php include "Modules/supplies/View/navbar.php"; ?>
 
 <br>

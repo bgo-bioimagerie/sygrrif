@@ -156,12 +156,12 @@ class ControllerSyncneurinfo extends Controller {
 				if ($arr1[$t] == "y"){$arr1[$t] = 1;}
 				if ($arr1[$t] == "n"){$arr1[$t] = 0;}
 			}
-			$available_days = $arr1[0] . "," . $arr1[1] . "," . $arr1[2] . "," . $arr1[3] . ","
-					. $arr1[4] . "," . $arr1[5] . "," . $arr1[6];
+			$available_days = $arr1[1] . "," . $arr1[2] . "," . $arr1[3] . ","
+					. $arr1[4] . "," . $arr1[5] . "," . $arr1[6] . "," . $arr1[0];
 			$day_begin = $area_info["morningstarts_area"];
 			$day_end = $area_info["eveningends_area"];
 			$size_bloc_resa = $area_info["resolution_area"];
-			$modelResourceCal->addResource($id, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa);
+			$modelResourceCal->addResource($id, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, 0);
 		}
 	}
 	
@@ -243,7 +243,7 @@ class ControllerSyncneurinfo extends Controller {
 			$recipient_id = $recipientID;
 			$last_update = $entry['timestamp'];
 			$color_type_id = $color_type_id+1;
-			$short_description = $entry['description'];
+			$short_description = $entry['name'];
 			$full_description = $entry['description'];
 			$id = $modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
 		

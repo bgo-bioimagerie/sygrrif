@@ -29,6 +29,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		$ModulesManagerModel = new ModulesManager();
 		$status = $ModulesManagerModel->getDataMenusUserType("users/institutions");
 		$menus[0] = array("name" => "users/institutions", "status" => $status);
+		$status = $ModulesManagerModel->getDataMenusUserType("projects");
+		$menus[1] = array("name" => "projects", "status" => $status);
 		
 		// user setting
 		$modelCoreConfig = new CoreConfig();
@@ -67,10 +69,12 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			
 			$ModulesManagerModel = new ModulesManager();
 			$ModulesManagerModel->setDataMenu("users/institutions", "users", $menusStatus[0], "glyphicon-user");
-				
+			$ModulesManagerModel->setDataMenu("projects", "projects", $menusStatus[1], "glyphicon-tasks");
 			
 			$status = $ModulesManagerModel->getDataMenusUserType("users/institutions");
 			$menus[0] = array("name" => "users/institutions", "status" => $status);
+			$status = $ModulesManagerModel->getDataMenusUserType("projects");
+			$menus[1] = array("name" => "projects", "status" => $status);
 			
 			
 			$this->generateView ( array ('navBar' => $navBar,

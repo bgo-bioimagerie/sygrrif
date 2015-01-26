@@ -10,6 +10,7 @@ require_once 'Modules/supplies/Model/SuItemPricing.php';
 require_once 'Modules/supplies/Model/SuItem.php';
 require_once 'Modules/supplies/Model/SuEntry.php';
 require_once 'Modules/supplies/Model/SuResponsible.php';
+require_once 'Modules/supplies/Model/SuBill.php';
 
 /**
  * Class defining methods to install and initialize the Suplies database
@@ -51,6 +52,9 @@ class SuInitDatabase extends Model {
 		$modulesModel = new SuResponsible();
 		$modulesModel->createTable();
 		$modulesModel->createDefaultResponsible();
+		
+		$modulesModel = new SuBill();
+		$modulesModel->createTable();
 		
 		$message = 'success';
 		return $message;

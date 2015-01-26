@@ -125,23 +125,16 @@ class SyArea extends Model {
 	public function getSmallestID(){
 		$sql = "select id from sy_areas";
 		$req = $this->runRequest($sql);
-		if ($req->rowCount() == 1){
-			$tmp = $req->fetch();
-			return $tmp[0] ;
-		}
-		else
-			return 0;
+		$tmp = $req->fetch();
+		return $tmp[0] ;
+
 	}
 	
 	public function getSmallestUnrestrictedID(){
 		$sql = "select id from sy_areas where restricted=0";
 		$req = $this->runRequest($sql);
-		if ($req->rowCount() == 1){
-			$tmp = $req->fetch();
-			return $tmp[0] ;
-		}
-		else
-			return 0;
+		$tmp = $req->fetch();
+		return $tmp[0] ;
 	}
 	
 

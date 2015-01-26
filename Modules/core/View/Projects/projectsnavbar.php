@@ -22,17 +22,12 @@
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h2>Users/Institutions</h2>
+		<h2>Projects</h2>
 		<div class="col-md-9 col-md-offset-3">
 		
 				<div class="col-md-12">
-				    <button onclick="location.href='units/'" class="btn btn-link" id="navlink">Units</button>
-					<button onclick="location.href='units/add'" class="btn btn-link" id="navlink">Add unit</button>
-				</div>
-
-				<div class="col-md-12">
-					<button onclick="location.href='users'" class="btn btn-link" id="navlink">Users</button>
-					<button onclick="location.href='users/add'" class="btn btn-link" id="navlink">Add user</button>
+				    <button onclick="location.href='projects/index'" class="btn btn-link" id="navlink">Projects</button>
+					<button onclick="location.href='projects/add'" class="btn btn-link" id="navlink">Add project</button>
 				</div>
 		</div>
 	</div>

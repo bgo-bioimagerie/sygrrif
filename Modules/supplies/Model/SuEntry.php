@@ -97,4 +97,9 @@ class SuEntry extends Model {
 		return $entry;
 	}
 	
+	public function setEntryCloded($id){
+		$sql = "update su_entries set id_status=0, date_close=?
+		        where id=?";
+		$this->runRequest($sql, array(date("Y-m-d", time()), $id));
+	}
 }

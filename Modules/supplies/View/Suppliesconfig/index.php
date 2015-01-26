@@ -88,7 +88,55 @@
 		    </div>
 		  </form>
       </div>
-         
+      <br/> 
+      <!-- set bill template section -->
+      <div>
+		<div class="page-header">
+		  <h2>
+			Bill template <br> <small></small>
+		  </h2>
+		</div>
+		
+		<?php 
+		if (isset($templateMessage)){
+			if ($templateMessage != ""){
+				if ( strpos($templateMessage,'Error') !== false){
+					?>
+					<div class="alert alert-danger">
+				<?php 
+				} 
+				else{
+				?>	
+				    <div class="alert alert-info">
+				<?php 
+				    
+				}?>
+					<p><?= $templateMessage ?></p>
+					</div>
+					<?php 
+			}
+		}
+		?>
+			
+      <form action="suppliesconfig" method="post" enctype="multipart/form-data">
+      <div class="col-xs-10">
+			<input class="form-control" type="hidden" name="templatequery" value="yes"
+				/>
+	  </div>
+      
+      <div class="form-group">
+          <div class="col-md-10">
+          <p>
+          Select a xls file that will be used as template 
+          to generate the Supplies bill</p>
+    	
+    	  <input type="file" name="fileToUpload" id="fileToUpload">
+        </div>
+      </div>
+      <div class="col-xs-2 col-xs-offset-10" id="button-div">
+    	<input class="btn btn-primary" type="submit" value="Upload" name="submit">
+      </div>
+	  </form>   
        
   </div>
 </div>    
