@@ -43,8 +43,8 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 
 #resa_link{
 	font-family: Arial;
-	font-size: 11px;
-	line-height: 11px;
+	font-size: 9px;
+	line-height: 9px;
 	letter-spacing: 1px;
 	font-weight: normal;
 }

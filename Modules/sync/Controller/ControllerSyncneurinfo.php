@@ -5,6 +5,7 @@ require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/Project.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
@@ -30,7 +31,7 @@ class ControllerSyncneurinfo extends Controller {
 		
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-		
+		/*
 		// area
 		$this->syncAreas($pdo_grr);
 		echo "sync area </br>";
@@ -47,6 +48,10 @@ class ControllerSyncneurinfo extends Controller {
 		$this->addUsers($pdo_grr);
 		echo "sync users </br>";
 		
+		// projects 
+		$this->syncProject($pdo_grr);
+		echo "sync project </br>";
+		*/
 		// calendar entries
 		$this->syncCalendarEntry($pdo_grr);
 		echo "sync calendar entries </br>";
@@ -219,6 +224,7 @@ class ControllerSyncneurinfo extends Controller {
 	
 		$modelUser = new User();
 		$modelCalEntry = new SyCalendarEntry();
+		$modelProject = new Project();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
 			$recipientID = $modelUser->userIdFromLogin($entry['beneficiaire']);
@@ -243,7 +249,8 @@ class ControllerSyncneurinfo extends Controller {
 			$recipient_id = $recipientID;
 			$last_update = $entry['timestamp'];
 			$color_type_id = $color_type_id+1;
-			$short_description = $entry['name'];
+			$projectID = $modelProject->getProjectId($entry['name']);
+			$short_description = $projectID;
 			$full_description = $entry['description'];
 			$id = $modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
 		
@@ -270,6 +277,17 @@ class ControllerSyncneurinfo extends Controller {
 			if ($end_time > $date_last_login){
 				$modelUser->setLastConnection($recipientID, $end_time);
 			}
+		}
+	}
+	
+	public function syncProject($pdo_grr){
+		$sql = "select distinct name from grr_entry";
+		$entry_oldq = $pdo_grr->query($sql);
+		$entry_old = $entry_oldq->fetchAll();
+		
+		$modelProject = new Project();
+		foreach($entry_old as $entry){
+			$modelProject->addProject($entry[0], "");
 		}
 	}
 }

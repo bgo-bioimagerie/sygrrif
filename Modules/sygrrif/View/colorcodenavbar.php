@@ -29,11 +29,11 @@
 	}	
 	?>
 	
-	<div class="col-xs-1">
+	<div class="col-xs-2">
 		<p class="text-center" id="colorparagraph" style="background-color: #<?=$color?>;"><?=$name?></p>
 	</div>
 	<?php 
-		if ($cmpt == 12 || $i == count($colorcodes)-1){
+		if ($cmpt == 6 || $i == count($colorcodes)-1){
 		?>
 			</div>
 			<?php 

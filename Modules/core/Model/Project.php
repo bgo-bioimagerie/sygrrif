@@ -170,7 +170,7 @@ class Project extends Model {
 			return $tmp[0];  // get the first line of the result
 		}
 		else{
-			throw new Exception("Cannot find the project using the given name");
+			return 0;
 		}
 	}
 
