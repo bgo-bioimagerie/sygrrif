@@ -35,12 +35,15 @@ class SuPricing extends Model {
 	}
 	
 	public function getPricing($id){
+		
+		echo "id = " . $id . "</br>";
+		
 		$sql = "select * from su_pricing where id=?;";
 		$data = $this->runRequest($sql, array($id));
 		if ($data->rowCount() == 1)
 			return $data->fetch(); 
 		else
-			throw new Exception("Cannot find the pricing using the given id");
+			throw new Exception("Cannot find the pricing using the given id = " . $id . "</br>");
 
 	}
 	
@@ -57,7 +60,7 @@ class SuPricing extends Model {
 	}
 	
 	public function addPricing($name){
-		$sql = "INSERT INTO su_pricing (tarif_name) VALUES(?,?)";
+		$sql = "INSERT INTO su_pricing (tarif_name) VALUES(?)";
 		$pdo = $this->runRequest($sql, array($name));
 		return $pdo;
 	}

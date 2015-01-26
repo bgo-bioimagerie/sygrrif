@@ -7,7 +7,7 @@ require_once 'Framework/Model.php';
  *
  * @author Sylvain Prigent
  */
-class SyUnitPricing extends Model {
+class SuUnitPricing extends Model {
 	
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `su_unitpricing` (
@@ -33,11 +33,11 @@ class SyUnitPricing extends Model {
 			$pricingId = $pricingsIds[$i];
 			
 			// get unit info
-			$sql = "select id, name from core_units where id=?";
+			$sql = "select id, name from su_units where id=?";
 			$dataunit = $this->runRequest($sql, array($pricingId['id_unit']))->fetch(); /// @todo make it more robust (catch errors)
 			
 			// get pricing info
-			$sql = "select id, tarif_name from sy_pricing where id=?";
+			$sql = "select id, tarif_name from su_pricing where id=?";
 			$datapricing = $this->runRequest($sql, array($pricingId['id_pricing']))->fetch(); /// @todo make it more robust (catch errors)
 
 			$pricingArray[$i]['unit_id'] = $dataunit['id'];

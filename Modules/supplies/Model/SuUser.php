@@ -2,13 +2,12 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/CoreConfig.php';
-
 /**
  * Class defining the User model for the Co module
  *
  * @author Sylvain Prigent
  */
-class CoUser extends Model {
+class SuUser extends Model {
 
 	/**
 	 * Create the user table
@@ -24,8 +23,7 @@ class CoUser extends Model {
 		`email` varchar(100) NOT NULL DEFAULT '',
 		`tel` varchar(30) NOT NULL DEFAULT '',
 		`id_unit` int(11) NOT NULL,
-		`id_responsible` int(11) NOT NULL,
-		`id_status` int(11) NOT NULL,		
+		`id_responsible` int(11) NOT NULL,		
 	    `date_created` DATE NOT NULL,	
 		`is_active` int(1) NOT NULL DEFAULT 1,				
 		PRIMARY KEY (`id`)
@@ -34,7 +32,50 @@ class CoUser extends Model {
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
+	
+	public function createDefaultUser(){
+	
+		if (!$this->isUser("--")){
+	
+			$sql = "INSERT INTO su_users (firstname, name, id_unit,
+				                   id_responsible, date_created)
+				 VALUES(?,?,?,?,?)";
+			$this->runRequest($sql, array("--", "--",
+					1, 1, "".date("Y-m-d")."" ));
+		}
+	}
     
+	/**
+	 * Verify that a user is in the database
+	 *
+	 * @param string $login the login
+	 * @return boolean True if the user is in the database
+	 */
+	public function isUser($name)
+	{
+		$sql = "select id from su_users where name=?";
+		$user = $this->runRequest($sql, array($name));
+		if ($user->rowCount() == 1)
+			return true;  // get the first line of the result
+		else
+			return false;
+	}
+	
+	public function defaultUserAllInfo(){
+		
+		$user = array();
+		$user['id'] = "";
+		$user['firstname'] = ""; 
+		$user['name'] = ""; 
+		$user['email'] = ""; 
+		$user['tel'] = "";
+		$user['id_unit'] = "";
+		$user['id_responsible'] = "";
+		$user['is_active'] = 1;
+		
+		return $user;
+	}
+	
     /**
      * Get the users information
      *  
@@ -103,13 +144,10 @@ class CoUser extends Model {
     	$users = $this->getUsers($sortentry);
     	
     	
-    	$unitModel = new Unit();
-    	$statusModel = new Status();
-    	$respModel = new Responsible();
+    	$unitModel = new SuUnit();
+    	$respModel = new SuResponsible();
     	for ($i = 0 ; $i < count($users) ; $i++){	
     		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit']);
-    		$tmp = $statusModel->getStatusName($users[$i]['id_status']);
-			$users[$i]['status'] = $tmp[0];
     		$users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
     		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
     	}
@@ -146,15 +184,15 @@ class CoUser extends Model {
      */
     public function addUser($name, $firstname, 
 		           			$email, $phone, $id_unit, 
-		           			$id_responsible, $id_status,
+		           			$id_responsible,
     						$is_active=1 ){
     	
     	$sql = "insert into su_users(firstname, name, email, tel, id_unit, id_responsible, 
-    			                       id_status, date_created, is_active)"
-    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       date_created, is_active)"
+    			. " values(?, ?, ?, ?, ?, ?, ?, ? )";
     	$this->runRequest($sql, array($firstname, $name, $email, 
     			                      $phone, $id_unit, 
-    			                      $id_responsible, $id_status, "".date("Y-m-d")."",
+    			                      $id_responsible, "".date("Y-m-d")."",
     			                      $is_active
     	));
     	
@@ -173,20 +211,17 @@ class CoUser extends Model {
      * @param string $phone
      * @param int $id_unit
      * @param int $id_responsible
-     * @param int $id_status
-     * @param int $convention
-     * @param date $date_convention
      */
     public function updateUser($id, $name, $firstname, 
 		           			$email, $phone, $id_unit, 
-		           			$id_responsible, $id_status,
+		           			$id_responsible,
     						$is_active=1){
     	
-    	$sql = "update su_users set firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?, id_status=?,
+    	$sql = "update su_users set firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?,
     			                      is_active=? 
     			                  where id=?";
     	$this->runRequest($sql, array($firstname, $name, $email, $phone, $id_unit, 
-    			                      $id_responsible, $id_status, $is_active, $id));
+    			                      $id_responsible, $is_active, $id));
     }
     
     
@@ -215,7 +250,7 @@ class CoUser extends Model {
     }
     
     public function getResponsibleOfUnit($unitId){
-    	$sql = "select id, name, firstname from su_users where id in (select id_users from co_responsibles) and id_unit=? ORDER BY name";
+    	$sql = "select id, name, firstname from su_users where id in (select id_users from su_responsibles) and id_unit=? ORDER BY name";
     	return $this->runRequest($sql, array($unitId));
     }
     
@@ -246,5 +281,10 @@ class CoUser extends Model {
 		}
     }
     
+    public function getUserFromlup($id, $unit_id, $responsible_id){
+    	$sql = 'SELECT name, firstname, id_responsible FROM su_users WHERE id=? AND id_unit=? AND id_responsible=?';
+    	$req = $this->runRequest($sql, array($id, $unit_id, $responsible_id));
+    	return $req->fetchAll();
+    }
 }
 

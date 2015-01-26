@@ -38,7 +38,6 @@ class SuUnit extends Model {
 			$sql = "INSERT INTO su_units (name, address) VALUES(?,?)";
 			$this->runRequest($sql, array("--", "--"));
 		}
-		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
 	}
 	
 	/**
@@ -133,7 +132,7 @@ class SuUnit extends Model {
 		if ($unit->rowCount() == 1)
     		return $unit->fetch();  // get the first line of the result
     	else
-    		throw new Exception("Cannot find the unit using the given id"); 
+    		throw new Exception("Cannot find the unit using the given id = " . $id . "</br>"); 
 	}
 	
 	/**

@@ -37,34 +37,64 @@ legend {
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h1>Consomables</h1>
+		<h1>Supplies</h1>
 
-		<div class='col-md-4 well'>
+		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Users</legend>
+				<legend>Users/units</legend>
 					<button onclick="location.href='suppliesusers/index'"
-						class="btn btn-link" id="navlink">users</button>
-					<button onclick="location.href='suppliesusers/edituser'"
+						class="btn btn-link" id="navlink">Users</button>
+					<button onclick="location.href='suppliesusers/edit'"
 						class="btn btn-link" id="navlink">Add</button>
 				<br/>
-					<button onclick="location.href='suppliesusers/units'"
+					<button onclick="location.href='suppliesunits/index'"
 						class="btn btn-link" id="navlink">Units</button>
-					<button onclick="location.href='suppliesusers/editunit'"
+					<button onclick="location.href='suppliesunits/add'"
 						class="btn btn-link" id="navlink">Add</button>
 
 			</fieldset>
 		</div>
-		<div class='col-md-4 well'>
+		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Comsomables</legend>
-					<button onclick="location.href='consom/alllist'"
-						class="btn btn-link" id="navlink">all Consom</button>
+				<legend>Supplies/Pricing</legend>	
+							
+					<button onclick="location.href='suppliespricing'"
+						class="btn btn-link" id="navlink">Pricing</button>
+					<button onclick="location.href='suppliespricing/addpricing'"
+						class="btn btn-link" id="navlink">Add</button>
+				<br/>
+					<button onclick="location.href='suppliespricing/unitpricing'"
+						class="btn btn-link" id="navlink">Pricing per unit</button>
+					<button onclick="location.href='suppliespricing/addunitpricing'"
+						class="btn btn-link" id="navlink">Add</button>
+				<br/>
+					<button onclick="location.href='suppliesItems/index'"
+						class="btn btn-link" id="navlink">Items</button>
+					<button onclick="location.href='suppliesItems/edit'"
+						class="btn btn-link" id="navlink">Add</button>
+				
 			</fieldset>
 		</div>
-		<div class='col-md-4 well'>
+		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Export</legend>
-					<button onclick="location.href='concsom/bill'"
+				<legend>Orders</legend>
+					<button onclick="location.href='suppliesentries'"
+						class="btn btn-link" id="navlink">All orders</button>
+				</br>
+					<button onclick="location.href='suppliesentries/openedentries'"
+						class="btn btn-link" id="navlink">Opened orders</button>
+				</br>
+					<button onclick="location.href='suppliesentries/closedentries'"
+						class="btn btn-link" id="navlink">Closed orders</button>	
+				</br>
+					<button onclick="location.href='suppliesentries/editentries'"
+						class="btn btn-link" id="navlink">New orders</button>			
+			</fieldset>
+		</div>
+		<div class='col-md-3 well'>
+			<fieldset>
+				<legend>Stats & Bills</legend>
+					<button onclick="location.href='suppliesbill'"
 						class="btn btn-link" id="navlink">Bill</button>
 			</fieldset>
 		</div>
