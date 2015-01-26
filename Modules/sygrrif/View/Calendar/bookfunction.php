@@ -3,6 +3,14 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 	
 	$dateString = date("Y-m-d", $date_unix);
 	$moduleProject = new Project();
+	$ModulesManagerModel = new ModulesManager();
+	$isProjectMode = $ModulesManagerModel->getDataMenusUserType("projects");
+	if ($isProjectMode > 0){
+		$isProjectMode = true;
+	}
+	else{
+		$isProjectMode = false;
+	}
 	if ($size_bloc_resa == 900){
 		// resa
 		$caseTimeBegin = $date_unix + $day_begin*3600 - 900;
@@ -26,7 +34,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
 					$pixelHeight = $blocNumber*25;
 						
-					$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					$shortDescription = $calEntry['short_description'];
+					if ($isProjectMode){
+						$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					}
 					$text = "";
 					if ($blocNumber <= 2){
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
@@ -80,7 +91,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
 					$pixelHeight = $blocNumber*25;
 					
-					$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					$shortDescription = $calEntry['short_description'];
+					if ($isProjectMode){
+						$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					}
 					$text = "";
 					if ($blocNumber <= 2){
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
@@ -134,7 +148,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
 					$pixelHeight = $blocNumber*50;
 						
-					$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					$shortDescription = $calEntry['short_description'];
+					if ($isProjectMode){
+						$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					}
 					$text = "";
 					if ($blocNumber <= 2){
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
