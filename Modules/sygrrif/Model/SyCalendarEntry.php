@@ -96,7 +96,7 @@ class SyCalendarEntry extends Model {
 		
 		$q = array('start'=>$dateBegin, 'end'=>$dateEnd, 'res'=>$resource_id);
 		$sql = 'SELECT * FROM sy_calendar_entry WHERE
-				(start_time >=:start AND end_time <= :end) AND resource_id = :res
+				(start_time >=:start AND start_time <= :end) AND resource_id = :res
 				ORDER BY start_time';
 		$req = $this->runRequest($sql, $q);
 		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
@@ -120,6 +120,21 @@ class SyCalendarEntry extends Model {
 				
 			} 
 		}
+		return $data;
+	}
+	
+	public function getEntriesForPeriodeAndArea($dateBegin, $dateEnd, $areaId){
+		
+		$modelResource = new SyResource();
+		$resources = $modelResource->resourceIDNameForArea($areaId);
+		
+		$data= array();
+		foreach ($resources as $resource){
+			$id = $resource["id"];
+			$dataInter = $this->getEntriesForPeriodeAndResource($dateBegin, $dateEnd, $id);
+			$data = array_merge($data, $dataInter);
+		}
+		
 		return $data;
 	}
 	

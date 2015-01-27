@@ -88,6 +88,7 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 <div class="col-md-4 text-right">
 <button type="button" class="btn btn-default active">Day</button>
 <button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default ">Week</button>
+<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default ">Week Area</button>
 
 </div>
 </div>

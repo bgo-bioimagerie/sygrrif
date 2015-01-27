@@ -69,8 +69,6 @@ img{
 <?php include "Modules/sygrrif/View/bookingnavbar.php"; ?>
 
 
-
-
 <!-- Add the table title -->
 <br></br>
 <div class="col-lg-12">
@@ -128,6 +126,7 @@ $sufixStream = date("S", $time);
 <div class="col-md-4 text-right">
 <button type="button" onclick="location.href='calendar/book'" class="btn btn-default">Day</button>
 <button type="button" class="btn btn-default active">Week</button>
+<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default ">Week Area</button>
 
 </div>
 </div>

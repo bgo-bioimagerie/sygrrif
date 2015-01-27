@@ -20,18 +20,28 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 		//echo "cal entries size = " . count($calEntries) . "--";
 		//print_r($calEntries);
 		$modelBookingSetting = new SyBookingSettings();
+		$leftBlocks = ($day_end*3600 - $day_begin*3600)/900;
+		//echo "leftBlocks = " . $leftBlocks . "</br>";
 		for ($h = $day_begin ; $h < $day_end ; $h = $h+0.25){
 				
 			$caseTimeBegin = $date_unix + $h*3600;
 			$caseTimeEnd = $date_unix + $h*3600 +900;
 				
 			$foundStartEntry = false;
+			
 			foreach ($calEntries as $calEntry){
 				if ($calEntry['start_time'] >= $caseTimeBegin && $calEntry['start_time'] < $caseTimeEnd){
 					// there is an entry in this half time
 					$foundStartEntry = true;
 					$blocNumber = ($calEntry['end_time'] - $calEntry['start_time'])/($caseTimeLength);
 					$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
+					
+					if ($leftBlocks <= $blocNumber){
+						$blocNumber = $leftBlocks; 
+					}
+					$leftBlocks -= $blocNumber; 
+					//echo "leftBlocks = " . $leftBlocks . "</br>";
+					
 					$pixelHeight = $blocNumber*25;
 						
 					$shortDescription = $calEntry['short_description'];
@@ -56,6 +66,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 					}
 					if (!$foundStartEntry){
+						$leftBlocks--;
 					?>
 						<div class="text-center" id="tcell" style="height: 25px;">
 						<?php if ($isDayAvailable){?>
@@ -76,6 +87,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 		
 		//echo "cal entries size = " . count($calEntries) . "--";
 		//print_r($calEntries);
+		$leftBlocks = ($day_end*3600 - $day_begin*3600)/1800;
 		$modelBookingSetting = new SyBookingSettings();
 		for ($h = $day_begin ; $h < $day_end ; $h = $h+0.5){
 			
@@ -89,6 +101,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$foundStartEntry = true;
 					$blocNumber = ($calEntry['end_time'] - $calEntry['start_time'])/($caseTimeLength);
 					$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
+					
+					if ($leftBlocks <= $blocNumber){
+						$blocNumber = $leftBlocks;
+					}
+					$leftBlocks -= $blocNumber;
+					
 					$pixelHeight = $blocNumber*25;
 					
 					$shortDescription = $calEntry['short_description'];
@@ -113,6 +131,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 				}
 			}
 			if (!$foundStartEntry){
+				$leftBlocks--;
 			?>
 				<div class="text-center" id="tcell" style="height: 25px;">
 				<?php if ($isDayAvailable){?>
@@ -133,6 +152,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 		
 		//echo "cal entries size = " . count($calEntries) . "--";
 		//print_r($calEntries);
+		$leftBlocks = ($day_end*3600 - $day_begin*3600)/3600;
 		$modelBookingSetting = new SyBookingSettings();
 		for ($h = $day_begin ; $h < $day_end ; $h = $h+1){
 				
@@ -146,6 +166,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$foundStartEntry = true;
 					$blocNumber = ($calEntry['end_time'] - $calEntry['start_time'])/($caseTimeLength);
 					$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
+					
+					if ($leftBlocks <= $blocNumber){
+						$blocNumber = $leftBlocks;
+					}
+					$leftBlocks -= $blocNumber;
+					
 					$pixelHeight = $blocNumber*50;
 						
 					$shortDescription = $calEntry['short_description'];
@@ -170,6 +196,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 					}
 					if (!$foundStartEntry){
+						$leftBlocks--;
 					?>
 						<div class="text-center" id="tcell" style="height: 50px;">
 						<?php if ($isDayAvailable){?>

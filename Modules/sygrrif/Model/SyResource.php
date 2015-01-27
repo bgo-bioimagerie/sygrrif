@@ -129,6 +129,12 @@ class SyResource extends Model {
 		return $data->fetchAll();
 	}
 	
+	public function resourcesForArea($areaId){
+		$sql = "select * from sy_resources where area_id=?";
+		$data = $this->runRequest($sql, array($areaId));
+		return $data->fetchAll();
+	}
+	
 	public function firstResourceIDForArea($areaId){
 		$sql = "select id from sy_resources where area_id=?";
 		$req = $this->runRequest($sql, array($areaId));
