@@ -31,7 +31,7 @@ class ControllerSyncneurinfo extends Controller {
 		
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
-		/*
+		
 		// area
 		$this->syncAreas($pdo_grr);
 		echo "sync area </br>";
@@ -51,7 +51,7 @@ class ControllerSyncneurinfo extends Controller {
 		// projects 
 		$this->syncProject($pdo_grr);
 		echo "sync project </br>";
-		*/
+		
 		// calendar entries
 		$this->syncCalendarEntry($pdo_grr);
 		echo "sync calendar entries </br>";

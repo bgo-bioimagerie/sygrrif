@@ -197,36 +197,28 @@
 		    </div>
 		</div>
 		
+		<div class="form-group ">
+			<label for="inputEmail" class="control-label col-xs-2">Is user active</label>
+			<div class="col-xs-10">
+			<?php $active = $this->clean($user["is_active"]); 
+				$selected = "selected=\"selected\"";
+  			?>
+  				<select class="form-control" name="is_active">
+  					<OPTION value="1" <?php if($active){echo $selected;} ?>> yes </OPTION>
+  					<OPTION value="0" <?php if(!$active){echo $selected;} ?>> no </OPTION>
+  					
+  				</select>
+		    </div>
+		</div>
+		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
+		
       </form>
       
-      <div>
-      <div class="page-header">
-			<h1>
-				Is active <br> <small></small>
-			</h1>
-		</div>
-		<div >
-			<label for="inputEmail" class="control-label col-xs-2">Is user active</label>
-			<div class="col-xs-10">
-			<?php $active = $this->clean($user["is_active"]); 
-				if ($active){$active="yes";}
-				if (!$active){$active="no";}
-  			?>
-				<input class="form-control" type="text" value = "<?= $active ?>" name="active" readonly>
-		    </div>
-		</div>
-		<?php if ($active == "no"){?>
-	  <div class="row">
-			<div class="col-xs-4" id="button-div">
-				<button type="button" onclick="location.href='users/activate/<?=$user['id']?>'" class="btn btn-default" id="navlink">Activate</button>
-			</div>
-		</div> 	
-      <?php } ?>
       <br>
       <div>
       	<div class="page-header">

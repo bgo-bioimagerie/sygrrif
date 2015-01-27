@@ -33,12 +33,32 @@ class ControllerUsers extends ControllerSecureNav {
 		}
 			
 		// get the user list
-		$usersArray = $this->userModel->getUsersInfo($sortentry);
+		$usersArray = $this->userModel->getActiveUsersInfo($sortentry);
 		
 		
 		$this->generateView ( array (
 				'navBar' => $navBar, 'usersArray' => $usersArray 
 		) );
+	}
+	
+	// Affiche la liste de tous les billets du blog
+	public function unactiveusers() {
+	
+		$navBar = $this->navBar();
+	
+		// get sort action
+		$sortentry = "id";
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$sortentry = $this->request->getParameter("actionid");
+		}
+			
+		// get the user list
+		$usersArray = $this->userModel->getActiveUsersInfo($sortentry, 0);
+	
+	
+		$this->generateView ( array (
+				'navBar' => $navBar, 'usersArray' => $usersArray
+		), "index" );
 	}
 	
 	
@@ -170,6 +190,10 @@ class ControllerUsers extends ControllerSecureNav {
 			$respModel = new Responsible();
 			$respModel->addResponsible($id);
 		} 
+		
+		// update the active/unactive
+		$is_active = $this->request->getParameterNoException ( "is_active");
+		$this->userModel->setactive($id, $is_active);
 		
 		// generate view
 		$navBar = $this->navBar();

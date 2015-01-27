@@ -146,6 +146,19 @@ class User extends Model {
     }
     
     /**
+     * Get the users information
+     *
+     * @param string $sortentry column used to sort the users
+     * @return multitype:
+     */
+    public function getActiveUsers($sortentry = 'id', $is_active = 1){
+    	 
+    	$sql = "select * from core_users where is_active=".$is_active." order by " . $sortentry . " ASC;";
+    	$user = $this->runRequest($sql);
+    	return $user->fetchAll();
+    }
+    
+    /**
      * Get the users summary (id, name, firstname)
      *
      * @param string $sortentry column used to sort the users
@@ -194,6 +207,29 @@ class User extends Model {
     		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit']);
     		$tmp = $statusModel->getStatusName($users[$i]['id_status']);
 			$users[$i]['status'] = $tmp[0];
+    		$users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
+    		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
+    	}
+    	return $users;
+    }
+    
+    /**
+     * Get the active user info by changing the ids by names
+     *
+     * @param string $sortentry column used to sort the users
+     * @return Ambigous <multitype:, boolean>
+     */
+    public function getActiveUsersInfo($sortentry = 'id', $is_active=1){
+    	$users = $this->getActiveUsers($sortentry, $is_active);
+    	 
+    	 
+    	$unitModel = new Unit();
+    	$statusModel = new Status();
+    	$respModel = new Responsible();
+    	for ($i = 0 ; $i < count($users) ; $i++){
+    		$users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit']);
+    		$tmp = $statusModel->getStatusName($users[$i]['id_status']);
+    		$users[$i]['status'] = $tmp[0];
     		$users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
     		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
     	}
