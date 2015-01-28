@@ -40,7 +40,7 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		$modelBillManager = new SyBill();
 		$billInfo = $modelBillManager->getBill($id);
 		
-		print_r($billInfo);
+		//print_r($billInfo);
 		
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
@@ -62,5 +62,18 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		
 		$this->redirect("sygrrifbillmanager");
 		
+	}
+	
+	public function removeentry(){
+		$id = "";
+		if ($this->request->isParameterNotEmpty("actionid")) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+		
+		if ($id != ""){
+			$modelBillManager = new SyBill();
+			$modelBillManager->removeEntry($id);
+		}
+		$this->redirect("sygrrifbillmanager");
 	}
 }

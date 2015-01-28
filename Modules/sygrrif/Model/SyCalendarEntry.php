@@ -171,4 +171,10 @@ class SyCalendarEntry extends Model {
 		$sql="DELETE FROM sy_calendar_entry WHERE repeat_id = ?";
 		$req = $this->runRequest($sql, array($series_id));
 	}
+	
+	public function selectEntriesByDescription($desciption){
+		$sql = "SELECT * FROM sy_calendar_entry WHERE short_description=? ORDER BY end_time";
+		$req = $this->runRequest($sql, array($desciption));
+		return $req->fetchAll();
+	}
 }

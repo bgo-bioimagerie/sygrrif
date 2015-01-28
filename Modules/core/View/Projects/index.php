@@ -25,6 +25,7 @@
 					<td><a href="projects/index/id">Id</a></td>
 					<td><a href="projects/index/name">Name</a></td>
 					<td><a href="projects/index/description">Description</a></td>
+					<td><a href="projects/index/status">Status</a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -37,6 +38,13 @@
 					<td><?= $projectID ?></td>
 				    <td><?= $this->clean ( $project ['name'] ); ?></td>
 				    <td><?= $this->clean ( $project ['description'] ); ?></td>
+				    <?php  $status = $this->clean ( $project ['status'] );
+				    	   $statusTxt = "Open";  
+				    	   if ($status == 0){
+				    	   		$statusTxt = "Close";
+				    	   }
+				    	   ?>
+				    <td><?= $statusTxt ?></td>
 				    <td>
 				      <button type='button' onclick="location.href='projects/edit/<?= $projectID ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  

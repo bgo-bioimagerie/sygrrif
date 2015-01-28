@@ -324,7 +324,7 @@
 
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
-				<button type="button" onclick="location.href='visa'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>
 	</div>

@@ -2,6 +2,8 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
+require_once 'Modules/sygrrif/Model/SyBill.php';
+require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
 /**
@@ -10,6 +12,325 @@ require_once("externals/PHPExcel/Classes/PHPExcel.php");
  * @author Sylvain Prigent
  */
 class SyBillGenerator extends Model {
+	
+	/**
+	 * Generate a bill for a project from calendar entries
+	 * 
+	 * @param unknown $searchDate_start Starting date of the bill
+	 * @param unknown $searchDate_end   End date of the bill
+	 * @param unknown $projectID		Id of the project to bill	
+	 * @param unknown $pricingID		Id of the pricing to use
+	 * @param unknown $billPerReservation	1 if pricing on the number of reservation, 0 on the reservation time
+	 */
+	public function generateProjectBill($searchDate_start, $searchDate_end, $projectID, $pricingID, $billPerReservation){
+		
+		// /////////////////////////////////////////// //
+		//        get the input informations           //
+		// /////////////////////////////////////////// //
+		// convert start date to unix date
+		$tabDate = explode("-",$searchDate_start);
+		$date_debut = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
+		$searchDate_start= mktime(0,0,0,$tabDate[1],$tabDate[2],$tabDate[0]);
+		
+		// convert end date to unix date
+		$tabDate = explode("-",$searchDate_end);
+		$date_fin = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
+		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
+		
+		// resources 
+		$sql = 'SELECT * FROM sy_resources ORDER BY name';
+		$req = $this->runRequest($sql);
+		$resources = $req->fetchAll();
+		
+		// projectName
+		$modelProject = new Project();
+		$projectName = $modelProject->getProjectName($projectID);
+		
+		// ///////////////////////////////////////// //
+		//             Main query                    //
+		// ///////////////////////////////////////// //
+		// count the booking 
+		$bookedTime = array();
+		$resaNumber = array();
+		
+		$i = -1;
+		foreach ($resources as $resource){
+			$i++;
+			$bookedTime[$i] = 0;
+			$resaNumber[$i] = 0;
+			
+			// reservations that starts before the date and that finish during the date
+			$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'short_description'=>$projectID, 'room_id'=>$resource["id"]);
+			$sql = 'SELECT start_time, end_time, quantity FROM sy_calendar_entry WHERE start_time <:start AND end_time <= :end AND end_time>:start AND short_description=:short_description AND resource_id=:room_id';
+			$req = $this->runRequest($sql, $q);
+			$resBefore = $req->fetchAll();
+			
+			foreach($resBefore as $rB){
+				$resaNumber[$i]++;
+				$bookedTime[$i] += ($rB["end_time"] - $searchDate_start)/3600;
+			}
+			
+			// reseravtions that starts AND end during the selected periode
+			$sql = 'SELECT start_time, end_time FROM sy_calendar_entry WHERE start_time >=:start AND end_time <= :end AND short_description=:short_description AND resource_id=:room_id';
+			$req = $this->runRequest($sql, $q);
+			$resIn = $req->fetchAll();
+			$numResIn = $req->rowCount();
+			
+			foreach($resIn as $rI){
+				$resaNumber[$i]++;
+				$bookedTime[$i] += ($rI["end_time"] - $rI["start_time"])/3600;
+			}
+			
+			//ResAfter : Réservation qui commence dans la période sélectionnée et se termine après la période sélectionnée
+			$sql = 'SELECT start_time, end_time FROM sy_calendar_entry WHERE start_time >=:start AND start_time<:end AND end_time > :end AND short_description=:short_description AND resource_id=:room_id';
+			$req = $this->runRequest($sql, $q);
+			$resAfter = $req->fetchAll();
+			$numResAfter = $req->rowCount();
+			
+			foreach($resAfter as $rI){
+				$resaNumber[$i]++;
+				$bookedTime[$i] += ($searchDate_end - $rI["start_time"])/3600;
+			}
+		}	
+		
+		//print_r($bookedTime);
+		
+		// /////////////////////////////////////////// //
+		//             xls output                      //
+		// /////////////////////////////////////////// //
+		// stylesheet
+		$styleTableHeader = array(
+				'font' => array(
+						'name' => 'Times',
+						'size' => 10,
+						'bold' => true,
+						'color' => array(
+								'rgb' => '000000'
+						),
+				),
+				'borders' => array(
+						'outline' => array(
+								'style' => PHPExcel_Style_Border::BORDER_THIN,
+								'color' => array(
+										'rgb' => '000000'),
+						),
+				),
+				'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'startcolor' => array(
+								'rgb' => 'C0C0C0',
+						),
+				),
+				'alignment' => array(
+						'wrap'       => false,
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				),
+		);
+		
+		$styleTableCell = array(
+				'font' => array(
+						'name' => 'Times',
+						'size' => 10,
+						'bold' => false,
+						'color' => array(
+								'rgb' => '000000'
+						),
+				),
+				'alignment' => array(
+						'wrap'       => false,
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				),
+				'borders' => array(
+				  'outline' => array(
+				  		'style' => PHPExcel_Style_Border::BORDER_THIN,
+				  		'color' => array(
+				  				'rgb' => '000000'),
+				  ),
+				),
+		);
+		$styleTableCellTotal = array(
+				'font' => array(
+						'name' => 'Times',
+						'size' => 10,
+						'bold' => true,
+						'color' => array(
+								'rgb' => 'ff0000'
+						),
+				),
+				'alignment' => array(
+						'wrap'       => false,
+						'horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,
+				),
+				'borders' => array(
+						'outline' => array(
+								'style' => PHPExcel_Style_Border::BORDER_THIN,
+								'color' => array(
+										'rgb' => '000000'),
+						),
+				),
+				'fill' => array(
+						'type' => PHPExcel_Style_Fill::FILL_SOLID,
+						'startcolor' => array(
+								'rgb' => 'ffffff',
+						),
+				),
+		);
+		
+		// load the template
+		$file = "data/template.xls";
+		$XLSDocument = new PHPExcel_Reader_Excel5();
+		$objPHPExcel = $XLSDocument->load($file);
+		
+		// get the line where to insert the table
+		$insertLine = 0;
+		
+		// replace tags by values
+		$objPHPExcel = $this->replaceDate($objPHPExcel);
+		$objPHPExcel = $this->replaceProject($objPHPExcel, $projectName);
+		$output = $this->replaceBillNumber($objPHPExcel);
+		$number = $output[0];
+		$objPHPExcel = $output[1];
+		
+		// replace table
+		$curentLine = $this->getTableLine($objPHPExcel);
+		
+		// Fill the pricing table
+		// table headers
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->mergeCells('A'.$curentLine.':F'.$curentLine);
+		
+		$titleTab = "";
+		if ($date_debut == $date_fin){
+			$titleTab = "Prestations du ".$date_debut."";
+		}
+		else{
+			$titleTab = "Prestations du ".$date_debut." au ".$date_fin."";
+		}
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $titleTab);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->getFont()->setBold(true);
+		
+		$curentLine++;
+		
+		// table title
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()
+		->getRowDimension($curentLine)
+		->setRowHeight(25);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, "Equipement");
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Nombre de \n séances");
+		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre d'heures");
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$titleUnitaryPricing = "Tarif Séance";
+		if ($billPerReservation == 0){
+			$titleUnitaryPricing = "Tarif Horaire";
+		}
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, $titleUnitaryPricing);
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Montant");
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		// table content
+		$honoraireTotal = 0;
+		$totalHT = 0;
+		for ($j = 0; $j < count($resources); $j++) {
+			
+			if ($resaNumber[$j] > 0){ // print only when there is some booking
+				// get the unit price for the room
+				$modelPricing = new SyResourcePricing();
+				//echo "pricing id = " . $pricingID . "<br/>";
+				//echo "resource id = " . $resources[$j]["id"] . "<br/>";
+				
+				$tmp = $modelPricing->getPrice($resources[$j]["id"], $pricingID);
+				$unitaryPrice = $tmp["price_day"];
+				//echo "unitaryPrice = " . $unitaryPrice . "<br/>";
+				//return;
+				// calculate the price
+				$price = 0;
+				if ($billPerReservation == 0){
+					$price = (float)$bookedTime[$j]*(float)$unitaryPrice;
+				}
+				else{
+					$price = (float)$resaNumber[$j]*(float)$unitaryPrice;
+				}
+				$totalHT += $price;
+				
+				// add the room
+				$curentLine++;
+				$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $resources[$j]["name"]); // resource name
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableCell);
+				
+				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, $resaNumber[$j]); // number of booking
+				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, $bookedTime[$j]); // number of hours
+				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, $unitaryPrice); // unitary price
+				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, $price); // price HT
+						
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);	
+			}	
+		}
+		
+		// add the bill to the bill manager
+		$modelBill = new SyBill();
+		$modelBill->addBill($number, date("Y-m-d", time()));
+		
+		// bilan
+		// total HT
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Total H.T.");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($totalHT,2), 2, ',', ' ')." €");
+		
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+		
+		// TVA 20p
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "T.V.A.:20%");
+		$honoraireTVA = 0.2*$totalHT;
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." €");
+		
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+		
+		// space
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "----");
+		
+		// TTC
+		$curentLine++;
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Total T.T.C.");
+		$honoraireTotal = 1.2*$totalHT;
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." €");
+		
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCellTotal);
+		
+		// Save the xls file
+		$filename = "bill_" . $number . ".xls";
+		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename='. $filename);
+		header('Cache-Control: max-age=0');
+		$objWriter->save('php://output');
+	}
 	
 	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
@@ -1652,9 +1973,126 @@ class SyBillGenerator extends Model {
 		
 		$writer->save('php://output');
 	}
-}
 	
-
-
+	protected function replaceBillNumber($objPHPExcel){
+		// replace the bill number
+		// calculate the number
+		$modelBill = new SyBill();
+		$bills = $modelBill->getBills("number");
+		$lastNumber = "";
+		$number = "";
+		if (count($bills) > 0){
+			$lastNumber = $bills[count($bills)-1]["number"];
+		}
+		if ($lastNumber != ""){
+			$lastNumber = explode("-", $lastNumber);
+			$lastNumberY = $lastNumber[0];
+			$lastNumberN = $lastNumber[1];
+		
+			if ($lastNumberY == date("Y", time())){
+				$lastNumberN = (int)$lastNumberN + 1;
+			}
+			$num = "".$lastNumberN."";
+			if ($lastNumberN < 10){
+				$num = "00" . $lastNumberN;
+			}
+			else if ($lastNumberN >= 10 && $lastNumberN < 100){
+				$num = "0" . $lastNumberN;
+			}
+			$number = $lastNumberY ."-". $num ;
+		}
+		else{
+			$number = date("Y", time())."-001";
+		}
+		// replace the number
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{nombre}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $number);
+		}
+		
+		$output = array();
+		$output[0] = $number; 
+		$output[1] = $objPHPExcel; 
+		return $output;
+	}
+	
+	protected function replaceDate($objPHPExcel){
+		// replace the date
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{date}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("d/m/Y", time()));
+		}
+		return $objPHPExcel;
+	}
+	
+	protected function getTableLine($objPHPExcel){
+		$insertLine = 0;
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		foreach($rowIterator as $row) {
+				
+			$rowIndex = $row->getRowIndex ();
+			$num = $objPHPExcel->getActiveSheet()->getCell("A".$rowIndex)->getValue();
+			if (strpos($num,"{table}") !== false){
+				$insertLine = $rowIndex;
+				break;
+			}
+		}
+		return $insertLine;
+	}
+	
+	public function replaceProject($objPHPExcel, $projectName){
+		// replace the date
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{projet}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $projectName);
+		}
+		return $objPHPExcel;
+	}
+}
 	
 ?>

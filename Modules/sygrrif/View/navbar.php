@@ -105,7 +105,20 @@ legend {
 					<button onclick="location.href='sygrrif/statauthorizations'"
 						class="btn btn-link" id="navlink">Statistics authorizations</button>
 					<button onclick="location.href='sygrrifbillmanager'"
-						class="btn btn-link" id="navlink">Bills manager</button>	
+						class="btn btn-link" id="navlink">Bills manager</button>
+						
+					<?php 
+					$ModulesManagerModel = new ModulesManager();
+					$use_project = $ModulesManagerModel->getDataMenusUserType("projects");
+					if ($use_project > 0){
+					?>	
+					<br/>
+							<button onclick="location.href='sygrrifstats/billproject'"
+						class="btn btn-link" id="navlink">bill project</button>
+					<?php 
+					}
+					?>
+							
 				</p>
 			</fieldset>
 		</div>

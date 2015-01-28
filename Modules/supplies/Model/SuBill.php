@@ -83,4 +83,9 @@ class SuBill extends Model {
 		$sql = "update su_bills set number=?, date_generated=?, date_paid=?, is_paid=?  where id=?";
 		$unit = $this->runRequest($sql, array($number, $date_generated, $date_paid, $is_paid, $id));
 	}
+	
+	public function removeEntry($id){
+		$sql="DELETE FROM su_bills WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }

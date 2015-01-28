@@ -613,7 +613,7 @@ class ControllerCalendar extends ControllerBooking {
 		$dateArray = explode("-", $mondayDate);
 		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
 		$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2]+7,$dateArray[0]);
-		$calEntries = $modelEntries->getEntriesForPeriodeAndArea($dateBegin, $dateEnd, $curentResource);
+		$calEntries = $modelEntries->getEntriesForPeriodeAndArea($dateBegin, $dateEnd, $curentAreaId);
 	
 		// curentdate unix
 		$temp = explode("-", $curentDate);
@@ -629,6 +629,8 @@ class ControllerCalendar extends ControllerBooking {
 				$_SESSION['id_user'], $_SESSION["user_status"], $curentDateUnix);
 		}
 		
+		
+		//echo "area id = "  . $curentAreaId . "</br>";
 		//print_r($calEntries);
 		//return;
 		
@@ -705,7 +707,7 @@ class ControllerCalendar extends ControllerBooking {
 		$projectsList = "";
 		if ($status > 0){
 			$modelProjects = new Project();
-			$projectsList = $modelProjects->projectsIDName(); 
+			$projectsList = $modelProjects->openedProjectsIDName(); 
 		}
 		
 		// set the view given the action		

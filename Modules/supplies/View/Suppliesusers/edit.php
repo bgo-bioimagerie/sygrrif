@@ -153,7 +153,7 @@
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='suppliesusers'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>
       

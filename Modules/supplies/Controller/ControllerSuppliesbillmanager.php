@@ -63,4 +63,18 @@ class ControllerSuppliesbillmanager extends ControllerSecureNav {
 		$this->redirect("suppliesbillmanager");
 		
 	}
+	
+	public function removeentry(){
+		$id = "";
+		if ($this->request->isParameterNotEmpty("actionid")) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+	
+		if ($id != ""){
+			$modelBillManager = new SuBill();
+			$modelBillManager->removeEntry($id);
+		}
+
+		$this->redirect("suppliesbillmanager");
+	}
 }

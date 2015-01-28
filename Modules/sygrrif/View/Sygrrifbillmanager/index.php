@@ -21,11 +21,11 @@
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="suppliesbillmanager/index/id">Id</a></td>
-					<td><a href="suppliesbillmanager/index/number">Number</a></td>
-					<td><a href="suppliesbillmanager/index/date_generated">Date Generated</a></td>
-					<td><a href="suppliesbillmanager/index/date_paid">Date Paid</a></td>
-					<td><a href="suppliesbillmanager/index/is_paid">Is Paid</a></td>
+					<td><a href="sygrrifbillmanager/index/id">Id</a></td>
+					<td><a href="sygrrifbillmanager/index/number">Number</a></td>
+					<td><a href="sygrrifbillmanager/index/date_generated">Date Generated</a></td>
+					<td><a href="sygrrifbillmanager/index/date_paid">Date Paid</a></td>
+					<td><a href="sygrrifbillmanager/index/is_paid">Is Paid</a></td>
 					<td></td>
 				</tr>
 			</thead>

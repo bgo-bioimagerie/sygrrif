@@ -28,19 +28,14 @@
 				<br> <small></small>
 			</h1>
 		</div>
-	
-		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">ID</label>
-			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="id" value="<?= $this->clean($billInfo["id"]) ?>" readonly/>
-			</div>
-		</div>
-
+		
+		<input class="form-control" id="id" type="hidden"  name="id" value="<?= $this->clean($billInfo["id"]) ?>" />
+		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4">Number</label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="number"
-				       value="<?=$this->clean($billInfo["number"]) ?>"  
+				       value="<?=$this->clean($billInfo["number"]) ?>" readonly  
 				/>
 			</div>
 		</div>
@@ -48,7 +43,7 @@
 			<label for="inputEmail" class="control-label col-xs-4">Date generated</label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="date_generated"
-				       value="<?=$this->clean($billInfo["date_generated"]) ?>"  
+				       value="<?=$this->clean($billInfo["date_generated"]) ?>" readonly 
 				/>
 			</div>
 		</div>
@@ -71,8 +66,12 @@
 				</select>
 			</div>
 		</div>
+	
+		<div class="col-xs-2 col-xs-offset-4" id="button-div">
+		<button type="button" onclick="location.href='sygrrifbillmanager/removeentry/<?=$this->clean($billInfo["id"])?>'" class="btn btn-danger" id="navlink">Delete</button>
+		</div>        			
 				
-		<div class="col-xs-3 col-xs-offset-9" id="button-div">
+		<div class="col-xs-3 col-xs-offset-3" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='sygrrifbillmanager'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>

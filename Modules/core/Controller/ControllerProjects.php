@@ -75,9 +75,11 @@ class ControllerProjects extends ControllerSecureNav {
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
 		$description = $this->request->getParameter ( "description" );
+		$status = $this->request->getParameter ( "status" );
 		
 		// get the user list
 		$projectsArray = $this->projectModel->editProject ( $id, $name, $description );
+		$this->projectModel->setStatus($id, $status);
 		
 		$this->redirect ( "projects" );
 	}

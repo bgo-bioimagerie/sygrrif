@@ -20,6 +20,7 @@ class Project extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(30) NOT NULL DEFAULT '',
 		`description` varchar(150) NOT NULL DEFAULT '',
+		`status` int(1) NOT NULL DEFAULT 1,		
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -74,6 +75,12 @@ class Project extends Model {
 	public function projectsIDName(){
 			
 		$sql = "select id, name from core_projects";
+		$projects = $this->runRequest($sql);
+		return $projects->fetchAll();
+	}
+	
+	public function openedProjectsIDName(){
+		$sql = "select id, name from core_projects where status=1 ORDER BY name";
 		$projects = $this->runRequest($sql);
 		return $projects->fetchAll();
 	}
@@ -172,6 +179,16 @@ class Project extends Model {
 		else{
 			return 0;
 		}
+	}
+	
+	/**
+	 * set the status of the project
+	 *
+	 * @param int $status 1 open or active, 0 closed or inactive
+	 */
+	public function setStatus($id, $status){
+		$sql = "update core_projects set status=? where id=?";
+		$this->runRequest($sql, array($status, $id));
 	}
 
 }

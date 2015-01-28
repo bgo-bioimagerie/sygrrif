@@ -44,6 +44,20 @@
 			</div>
 		</div>
 		
+		<div class="form-group ">
+			<label for="inputEmail" class="control-label col-xs-2">Status</label>
+			<div class="col-xs-10">
+			<?php $active = $this->clean($project["status"]); 
+				$selected = "selected=\"selected\"";
+  			?>
+  				<select class="form-control" name="status">
+  					<OPTION value="1" <?php if($active){echo $selected;} ?>> Open </OPTION>
+  					<OPTION value="0" <?php if(!$active){echo $selected;} ?>> Close </OPTION>
+  					
+  				</select>
+		    </div>
+		</div>
+		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='projects'" class="btn btn-default" id="navlink">Cancel</button>

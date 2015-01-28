@@ -200,7 +200,10 @@ $sufixStream = date("S", $time);
 		$isProjectMode = $ModulesManagerModel->getDataMenusUserType("projects");
 		
 		foreach($resourcesBase as $ResourceBase){
+			
 			$resourceCount++;
+			$resourceID = $resourcesBase[$resourceCount]["id"];
+			//echo "resource id = " . $resourcesBase[$resourceCount]["id"] . "</br>";
 			// resource title
 			?>
 			<div class="col-xs-12" id="colDivglobal">
@@ -263,7 +266,8 @@ $sufixStream = date("S", $time);
 								if ($isProjectMode){
 									$shortDescription = $moduleProject->getProjectName($entry['short_description']);
 								}
-								$text = $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'],
+								$text = date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) . "<br/>";
+								$text .= $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'],
 										$shortDescription, $entry['full_description'], false);
 								?>
 								<div class="text-center" id="tcellResa" style="background-color:#<?=$entry["color"]?>;">

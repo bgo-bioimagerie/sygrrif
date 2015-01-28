@@ -59,6 +59,12 @@ class ControllerSyncneurinfo extends Controller {
 		// last login 
 		$this->syncLastLogin($pdo_grr);
 		echo "sync last login </br>";
+
+		// close projects where last booking is one year before
+		//$this->closeOldProjects($pdo_grr);
+		//echo "close old projects </br>";
+		
+		
 	}
 	
 	public function syncAreas($pdo_grr){
@@ -288,6 +294,25 @@ class ControllerSyncneurinfo extends Controller {
 		$modelProject = new Project();
 		foreach($entry_old as $entry){
 			$modelProject->addProject($entry[0], "");
+		}
+	}
+	
+	public function closeOldProjects(){
+		
+		$modelProject = new Project();
+		$projects = $modelProject->projectsIDName();
+		
+		$modelCalEntry = new SyCalendarEntry();
+		$oneYearBefore = time() - 3600*24*173;
+		foreach ($projects as $project){
+			$id = $project["id"];
+			
+			$entries = $modelCalEntry->selectEntriesByDescription($id);
+			if (count($entries) > 0){
+				if ( $entries[0]["end_time"] < $oneYearBefore){
+					$modelProject->setStatus($id, 0);
+				}
+			}
 		}
 	}
 }

@@ -62,12 +62,15 @@ if (!$canEditReservation){
 					<select class="form-control" name="recipient_id" <?=$readOnlyGlobal?>>
 						<?php
 						if ($allowedBookForOther){
-							$curentUserId = $this->clean($curentuser['id']); 
+							$recipientID = $this->clean($reservationInfo["recipient_id"]);
+							if ($recipientID == "" && $recipientID == 0){
+								$recipientID = $this->clean($curentuser['id']); 
+							} 
 							foreach ($users as $user){
 								$userId = $this->clean($user['id']);
 								$userName = $this->clean($user['name']) . " " . $this->clean($user['firstname']);
 								$selected = "";
-								if ($userId == $curentUserId){
+								if ($userId == $recipientID){
 									$selected = "selected=\"selected\"";
 								}
 								?>
