@@ -38,7 +38,7 @@
 
 				<div class="col-md-12">
 					<button onclick="location.href='anticorps'" class="btn btn-link" id="navlink">Anticorps</button>
-					<button onclick="location.href='anticorps/add'" class="btn btn-link" id="navlink">Ajouter anticorps</button>
+					<button onclick="location.href='anticorps/edit'" class="btn btn-link" id="navlink">Ajouter anticorps</button>
 				</div>
 		</div>
 	</div>

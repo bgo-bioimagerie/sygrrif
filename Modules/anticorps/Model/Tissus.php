@@ -16,13 +16,16 @@ class Tissus extends Model {
 	 */
 	public function createTable(){
 	
-		$sql = "CREATE TABLE IF NOT EXISTS `ac_lien_tissu_anticorps` (
+		$sql = "CREATE TABLE IF NOT EXISTS `ac_j_tissu_anticorps` (
   				`id` int(11) NOT NULL AUTO_INCREMENT,
+				`id_anticorps` int(11) NOT NULL,
   				`espece` varchar(30) NOT NULL,
   				`organe` varchar(30) NOT NULL, 
   				`valide` enum('oui','non') NOT NULL,  
   				`ref_bloc` varchar(30) NOT NULL,
-  				`id_anticorps` int(11) NOT NULL,
+				`dilution` varchar(30) NOT NULL,
+				`temps_incubation` varchar(30) NOT NULL,
+  				`ref_protocol` varchar(30) NOT NULL,
   				PRIMARY KEY (`id`)
 				);";
 		
@@ -30,17 +33,23 @@ class Tissus extends Model {
 		return $pdo;
 	}
 	
-	public function addTissus($id, $espece, $organe, $valide, $ref_bloc){
-		$sql = "insert into ac_lien_tissu_anticorps(id_anticorps, espece, 
-				                                    organe, valide, ref_bloc)"
-				. " values(?, ?, ?, ?, ?)";
-		$this->runRequest($sql, array($id, $espece, $organe, $valide, $ref_bloc));
+	public function addTissus($id_anticorps, $espece, $organe, $valide, $ref_bloc, $dilution, $temps_incubation, $ref_protocol){
+		$sql = "insert into ac_j_tissu_anticorps(id_anticorps, espece, 
+				                                    organe, valide, ref_bloc,
+													dilution, temps_incubation, ref_protocol)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($id_anticorps, $espece, $organe, $valide, $ref_bloc, $dilution, $temps_incubation, $ref_protocol));
 	}
 	
-	public function getTissus($anticorpsId){
-		$sql = "select * from ac_lien_tissu_anticorps where id_anticorps=?";
-		$res = $this->runRequest($sql, array($anticorpsId));
+	public function getTissus($id_anticorps){
+		$sql = "select * from ac_j_tissu_anticorps where id_anticorps=?";
+		$res = $this->runRequest($sql, array($id_anticorps));
 		return $res->fetchAll();
+	}
+	
+	public function removeTissus($id){
+		$sql="DELETE FROM ac_j_tissu_anticorps WHERE id_anticorps = ?";
+		$req = $this->runRequest($sql, array($id));
 	}
 	
 }

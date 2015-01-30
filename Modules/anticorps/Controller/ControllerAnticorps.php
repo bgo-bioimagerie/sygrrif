@@ -30,17 +30,14 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$anticorpsModel = new Anticorps();
 		$anticorpsArray = $anticorpsModel->getAnticorpsInfo($sortentry);
 		
-		
 		$this->generateView ( array (
 				'navBar' => $navBar, 'anticorpsArray' => $anticorpsArray
 		) );
 	
 	}
 	
-	public function add(){
-		$navBar = $this->navBar();
-	
-		
+	public function edit(){
+
 		// Lists for the form	
 		// get isotypes list
 		$modelIsotype = new Isotype();
@@ -54,17 +51,34 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$modelUser = new User();
 		$users = $modelUser->getUsersSummary('name');
 			
-	
+		// get edit id
+		$editID = "";
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$editID = $this->request->getParameter ( "actionid" );
+		}
+		
+		$anticorps = array();
+		$modelAnticorps = new Anticorps();
+		if ($editID != ""){	
+			$anticorps = $modelAnticorps->getAnticorpsFromId($editID);
+		}
+		else{
+			$anticorps = $modelAnticorps->getDefaultAnticorps();
+		}
+		
+		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
 				'isotypesList' => $isotypesList,
 				'sourcesList' => $sourcesList,
+				'anticorps' => $anticorps,
 				'users' => $users  
 		) );
 	}
-	public function addquery(){
+	public function editquery(){
 		
 		// add in anticorps table
+		$id = $this->request->getParameterNoException("id");
 		$nom = $this->request->getParameter ("nom");
 		$no_h2p2 = $this->request->getParameter ("no_h2p2");
 		$date_recept = $this->request->getParameter ("date_recept");
@@ -75,41 +89,53 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$id_isotype = $this->request->getParameter ("id_isotype");
 		$id_source = $this->request->getParameter ("id_source");
 		$stockage = $this->request->getParameter ("stockage");
-		$No_Proto = $this->request->getParameter ("No_Proto");
 		$disponible = $this->request->getParameter ("disponible");
 		$id_proprietaire = $this->request->getParameter("id_proprietaire");
 		
-		// add anticorps to table
+		$espece = $this->request->getParameter ("espece");
+		$organe = $this->request->getParameter ("organe");
+		$valide = $this->request->getParameter ("valide");
+		$ref_bloc = $this->request->getParameter ("ref_bloc");
+		$dilution = $this->request->getParameter ("dilution");
+		$temps_incubation = $this->request->getParameter ("temps_incubation");
+		$ref_protocol = $this->request->getParameter ("ref_protocol");
+		
+		
 		$modelAnticorps = new Anticorps();
-		$id = $modelAnticorps->addAnticorps($nom, $no_h2p2, $date_recept, 
-		                              $reference, $clone, $fournisseur, 
-		                              $lot, $id_isotype, $id_source, $stockage, 
-		                              $No_Proto, $disponible);
+		$modelTissus = new Tissus();
+		if ($id == ""){
+			// add anticorps to table 
+			$id = $modelAnticorps->addAnticorps($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
+												$lot, $id_isotype, $stockage, $disponible, $date_recept);
+			
+		}
+		else{
+			
+			// update antibody
+			$modelAnticorps->updateAnticorps($id, $nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
+					$lot, $id_isotype, $stockage, $disponible, $date_recept);
+			
+			// remove all the owners
+			$modelAnticorps->removeOwners($id);
+			
+			// remove all the Tissus
+			$modelTissus->removeTissus($id);
+			
+		}
 		
 		// add the owner
-		$modelAnticorps->addOwner($id_proprietaire, $id);
-
-	    // add to the tissus table
-	    $espece = $this->request->getParameter ("espece");
-	    $organe = $this->request->getParameter ("organe");
-	    $valide = $this->request->getParameter ("valide");
-	    $ref_bloc = $this->request->getParameter ("ref_bloc");
-	    
-	    print_r($espece);
-	    print_r($organe);
-	    print_r($valide);
-	    print_r($ref_bloc);
-	    
-	    $modelTissus = new Tissus();
-	    for ($i = 0 ; $i <  count($espece) ; $i++){
-	    	$modelTissus->addTissus($id, $espece[$i], $organe[$i], $valide[$i], $ref_bloc[$i]);
-	    }
-	    
+		foreach ($id_proprietaire as $proprio){
+			$modelAnticorps->addOwner($proprio, $id);
+		}
+		// add to the tissus table
+		
+		for ($i = 0 ; $i <  count($espece) ; $i++){
+			$modelTissus->addTissus($id, $espece[$i], $organe[$i], $valide[$i], $ref_bloc[$i],
+					$dilution[$i], $temps_incubation[$i], $ref_protocol[$i]);
+		}
+		    
 	    // generate view
-	    $navBar = $this->navBar();
-	    $this->generateView ( array (
-	    		'navBar' => $navBar
-	    ) );
+	    $this->redirect("anticorps", "index");
 	    
 	}
 	

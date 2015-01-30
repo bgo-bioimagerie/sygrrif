@@ -22,20 +22,19 @@ class Anticorps extends Model {
   				`id` int(11) NOT NULL AUTO_INCREMENT,
   				`nom` varchar(30) NOT NULL DEFAULT '',
   				`no_h2p2` int(11) NOT NULL DEFAULT '0',
-  				`date_recept` DATE NOT NULL,
-  				`reference` varchar(30) NOT NULL DEFAULT '',
-  				`clone` varchar(30) NOT NULL DEFAULT '',
- 				`fournisseur` varchar(30) NOT NULL DEFAULT '',
-  				`lot` varchar(30) NOT NULL DEFAULT '',
-  				`id_isotype` int(11) NOT NULL DEFAULT '0',
-  				`id_source` int(11) NOT NULL DEFAULT '0',
-  				`stockage` varchar(30) NOT NULL DEFAULT '',
-  				`No_Proto` varchar(30) NOT NULL DEFAULT '',
-  				`disponible` enum('oui','non') NOT NULL,
+				`fournisseur` varchar(30) NOT NULL DEFAULT '',
+				`id_source` int(11) NOT NULL DEFAULT '0',
+				`reference` varchar(30) NOT NULL DEFAULT '',
+				`clone` varchar(30) NOT NULL DEFAULT '',
+ 				`lot` varchar(30) NOT NULL DEFAULT '',
+				`id_isotype` int(11) NOT NULL DEFAULT '0',
+				`stockage` varchar(30) NOT NULL DEFAULT '',
+				`disponible` enum('oui','non') NOT NULL,		
+				`date_recept` DATE NOT NULL,
   				PRIMARY KEY (`id`)
 				);
 				
-				CREATE TABLE IF NOT EXISTS `ac_lien_user_anticorps` (
+				CREATE TABLE IF NOT EXISTS `ac_j_user_anticorps` (
   				`id_anticorps` int(11) NOT NULL,
   				`id_utilisateur` int(11) NOT NULL,	
   				PRIMARY KEY (`id_anticorps`)
@@ -58,24 +57,45 @@ class Anticorps extends Model {
     	return $user->fetchAll();
 	}
 	
-	public function addAnticorps($nom, $no_h2p2, $date_recept, $reference, $clone,
-			                     $fournisseur, $lot, $id_isotype, $id_source, $stockage,
-			                     $No_Proto, $disponible ){
+	/**
+	 * Add an antibody to the database
+	 * 
+	 * @param unknown $nom
+	 * @param unknown $no_h2p2
+	 * @param unknown $fournisseur
+	 * @param unknown $id_source
+	 * @param unknown $reference
+	 * @param unknown $clone
+	 * @param unknown $lot
+	 * @param unknown $id_isotype
+	 * @param unknown $stockage
+	 * @param unknown $disponible
+	 * @param unknown $date_recept
+	 * @return string
+	 */
+	public function addAnticorps($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone, 
+								$lot, $id_isotype, $stockage, $disponible, $date_recept){
 		
 
-		$sql = "insert into ac_anticorps(nom, no_h2p2, date_recept, reference, clone,
-			                     fournisseur, lot, id_isotype, id_source, stockage,
-			                     No_Proto, disponible)"
-				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
-		$pdo = $this->runRequest($sql, array($nom, $no_h2p2, $date_recept, $reference, $clone,
-			                     $fournisseur, $lot, $id_isotype, $id_source, $stockage,
-			                     $No_Proto, $disponible));
+		$sql = "insert into ac_anticorps(nom, no_h2p2, fournisseur, id_source, reference, 
+										 clone, lot, id_isotype, stockage, disponible, date_recept)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$pdo = $this->runRequest($sql, array($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone, 
+								$lot, $id_isotype, $stockage, $disponible, $date_recept));
 		
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	public function updateAnticorps($id, $nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone, 
+									$lot, $id_isotype, $stockage, $disponible, $date_recept){
+		$sql = "UPDATE ac_anticorps SET nom=?, no_h2p2=?, fournisseur=?, id_source=?, reference=?, 
+										 clone=?, lot=?, id_isotype=?, stockage=?, disponible=?, date_recept=?
+									WHERE id=?";
+		$pdo = $this->runRequest($sql, array($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
+				$lot, $id_isotype, $stockage, $disponible, $date_recept, $id));
+	}
 	/**
-	 * Get the user info by changing the ids by names
+	 * Get the antibody info by changing the ids by names
 	 *
 	 * @param string $sortentry column used to sort the users
 	 * @return Ambigous <multitype:, boolean>
@@ -88,20 +108,21 @@ class Anticorps extends Model {
 		$sourceModel = new Source();
 		$tissusModel = new Tissus();
 		for ($i = 0 ; $i < count($ac) ; $i++){
-			$ac[$i]['isotype'] = $isotypeModel->getIsotype($ac[$i]['id_isotype'])['nom'];
-			$ac[$i]['source'] = $sourceModel->getSource($ac[$i]['id_source'])['nom'];
+			$tmp = $isotypeModel->getIsotype($ac[$i]['id_isotype']);
+			$ac[$i]['isotype'] = $tmp['nom'];
+			$tmp = $sourceModel->getSource($ac[$i]['id_source']);
+			$ac[$i]['source'] = $tmp['nom'];
 			$ac[$i]['tissus'] = $tissusModel->getTissus($ac[$i]['id']);
-			$ac[$i]['proprietaire'] = $this->getOwner($ac[$i]['id']);
+			$ac[$i]['proprietaire'] = $this->getOwners($ac[$i]['id']);
 			//print_r($ac[$i]['tissus']);
 		}
 		return $ac;
 	}
 
-	public function getOwner($acId){
-		//$sql = "select id_utilisateur from ac_lien_user_anticorps where id_anticorps=?";
-		
+	public function getOwners($acId){
+	
 		$sql = "SELECT firstname, name, id FROM core_users WHERE id IN 
-				(select id_utilisateur from ac_lien_user_anticorps where id_anticorps=?)";
+				(select id_utilisateur from ac_j_user_anticorps where id_anticorps=?)";
 		
 		$user = $this->runRequest($sql, array($acId));
 		return $user->fetchAll();
@@ -109,12 +130,51 @@ class Anticorps extends Model {
 	
 	public function addOwner($id_user, $id_anticorps){
 		
-		$sql = "insert into ac_lien_user_anticorps(id_utilisateur, id_anticorps)"
+		$sql = "insert into ac_j_user_anticorps(id_utilisateur, id_anticorps)"
 				. " values(?, ? )";
 		$pdo = $this->runRequest($sql, array($id_user, $id_anticorps));
 		
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	public function removeOwners($id){
+		$sql="DELETE FROM ac_j_user_anticorps WHERE id_anticorps = ?";
+		$req = $this->runRequest($sql, array($id));
+	} 
+	
+	public function getAnticorpsFromId($id){
+		$sql = "SELECT * FROM ac_anticorps WHERE id=?";
+		$req = $this->runRequest($sql, array($id));
+		$anticorps = $req->fetch();
+		
+		// get owners
+		$anticorps["proprietaire"] = $this->getOwners($id);
+		
+		// get tissus
+		$tissusModel = new Tissus();
+		$anticorps['tissus'] = $tissusModel->getTissus($id);
+		
+		return $anticorps;
+	}
+	
+	public function getDefaultAnticorps(){
+		
+		$anticorps["id"] = "";
+		$anticorps["nom"] = "";
+		$anticorps["no_h2p2"] = "";
+		$anticorps["fournisseur"] = "";
+		$anticorps["id_source"] = "";
+		$anticorps["reference"] = "";
+		$anticorps["clone"] = "";
+		$anticorps["lot"] = "";
+		$anticorps["id_isotype"] = "";
+		$anticorps["stockage"] = "";
+		$anticorps["disponible"] = "";
+		$anticorps["date_recept"] = "";
+		$anticorps["proprietaire"] = array();
+		$anticorps['tissus'] = array();
+		
+		return $anticorps;
+	}
 }
 

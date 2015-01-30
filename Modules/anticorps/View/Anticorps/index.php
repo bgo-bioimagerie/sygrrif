@@ -36,7 +36,7 @@
 					<td class="text-center"><a href="anticorps/index/lot">lot</a></td>
 					<td class="text-center"><a href="anticorps/index/id_isotype">Isotype</a></td>
 					<td class="text-center"><a href="anticorps/index/stockage">Stockage</a></td>
-					<td class="text-center"><a href="anticorps/"><p style="border-bottom: 1px solid #f1f1f1">Tissus</p> espèce - organe - validé - ref. bloc</a></td>
+					<td class="text-center"><a href="anticorps/"><p style="border-bottom: 1px solid #f1f1f1">Tissus</p> espèce - organe - validé - ref. bloc - dilution - temps d'incubation -  ref. protocol</a></td>
 					<td class="text-center"><a href="anticorps/index/disponible">Disponible</a></td>
 					<td class="text-center"><a href="anticorps/index/id">Propriétaires</a></td>
 					<td class="text-center"><a href="anticorps/index/date_recept">Date réception</a></td>
@@ -65,8 +65,11 @@
 				    		$val = $val . "<p>"  . $tissus[$i]['espece'] . " - "
 		                                . $tissus[$i]['organe'] . " - "
 		                                . $tissus[$i]['valide'] . " - "
-										. $tissus[$i]['ref_bloc'] . "</p>";  
-				    	}
+										. $tissus[$i]['ref_bloc'] . " - "
+										. $tissus[$i]['dilution'] . " - "
+										. $tissus[$i]['temps_incubation'] . " - "
+										. $tissus[$i]['ref_protocol'] . "</p>";  
+				    	}			    	
 					    echo $val;
 				    ?></td>
 				    <td class="text-center"><?= $this->clean ( $anticorps ['disponible'] ); ?></td>
