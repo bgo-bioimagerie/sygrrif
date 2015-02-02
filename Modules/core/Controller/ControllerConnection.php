@@ -42,6 +42,11 @@ class ControllerConnection extends Controller
                 $this->request->getSession()->setAttribut("login", $user['login']);
                 $this->request->getSession()->setAttribut("user_status", $user['id_status']);
                 
+                // add the user settings to the session
+                $modelUserSettings = new UserSettings();
+                $settings = $modelUserSettings->getUserSettings($user['idUser']);
+                $this->request->getSession()->setAttribut("user_settings", $settings);
+                
                 // update the user last connection
                 $this->user->updateLastConnection($user['idUser']);
                 

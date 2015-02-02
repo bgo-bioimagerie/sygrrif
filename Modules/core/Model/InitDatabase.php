@@ -8,6 +8,7 @@ require_once 'Modules/core/Model/Project.php';
 require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/core/Model/Status.php';
 require_once 'Modules/core/Model/CoreConfig.php';
+require_once 'Modules/core/Model/UserSettings.php';
 
 /**
  * Class defining methods to install and initialize the core database
@@ -50,6 +51,9 @@ class InitDatabase extends Model {
 		
 		$projectModel = new Project();
 		$projectModel->createTable();
+		
+		$UserSettingsModel = new UserSettings();
+		$UserSettingsModel->createTable();
 		
 		$message = 'success';
 		return $message;
