@@ -37,9 +37,7 @@
 					<td class="text-center"><a href="anticorps/index/id_isotype">Isotype</a></td>
 					<td class="text-center"><a href="anticorps/index/stockage">Stockage</a></td>
 					<td class="text-center"><a href="anticorps/"><p style="border-bottom: 1px solid #f1f1f1">Tissus</p> espèce - organe - validé - ref. bloc - dilution - temps d'incubation -  ref. protocol</a></td>
-					<td class="text-center"><a href="anticorps/index/disponible">Disponible</a></td>
-					<td class="text-center"><a href="anticorps/index/id">Propriétaires</a></td>
-					<td class="text-center"><a href="anticorps/index/date_recept">Date réception</a></td>
+					<td class="text-center"><a href="anticorps/"><p style="border-bottom: 1px solid #f1f1f1">Propriétaire</p> Nom - disponibilité - Date réception</a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -72,17 +70,26 @@
 				    	}			    	
 					    echo $val;
 				    ?></td>
-				    <td class="text-center"><?= $this->clean ( $anticorps ['disponible'] ); ?></td>
 				    <td class="text-center"><?php
 				    	$owner =  $anticorps ['proprietaire'];
-				    	if (count($owner) > 0){
-					    	$name = $owner[0]['firstname'] . " " . $owner[0]['name'];
-					    	$name = $this->clean ( $name ); 
-					        echo $name;
+				    	foreach ($owner as $ow){
+					    	$name = $ow['firstname'] . " " . $ow['name'];
+					    	$dispo = $ow['disponible'];
+					    	if ($dispo == 1){$dispo = "disponible";}
+					    	else if ($dispo == 2){$dispo = "épuisé";}
+					    	else if ($dispo == 3){$dispo = "récupéré par équipe";}
+					    	$date_recept = $ow['date_recept'];
+					    	$txt = $this->clean ( $name ) . " - " . $this->clean($dispo) . " - " . $this->clean($date_recept); 
+					    	
+					    	if ($this->clean($dispo) == "épuisé"){
+					    		echo '<p style="background-color:#ff0000; color:#fff">' . $txt . '</p>';
+					    	}
+					    	else{
+					    		echo '<p>' . $txt . '</p>';
+					    	}    
 				    	}
 				    	?>
 				    </td>
-				    <td class="text-center"><?= $this->clean ( $anticorps ['date_recept'] ); ?></td>
 				    <td><button onclick="location.href='anticorps/edit/<?= $anticorpsId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button></td>  
 	    		</tr>
 	    		<?php endforeach; ?>

@@ -1,20 +1,20 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
-require_once 'Modules/anticorps/Model/Isotype.php';
+require_once 'Modules/anticorps/Model/Espece.php';
 
-class ControllerIsotypes extends ControllerSecureNav {
+class ControllerEspeces extends ControllerSecureNav {
 	
 	/**
 	 * User model object
 	 */
-	private $isotypeModel;
+	private $especeModel;
 	
 	public function __construct() {
-		$this->isotypeModel = new Isotype ();
+		$this->especeModel = new Espece();
 	}
 	
-	// affiche la liste des isotypes
+	// affiche la liste des especes
 	public function index() {
 		$navBar = $this->navBar ();
 		
@@ -25,11 +25,11 @@ class ControllerIsotypes extends ControllerSecureNav {
 		}
 		
 		// get the user list
-		$isotypesArray = $this->isotypeModel->getIsotypes ( $sortentry );
+		$especesArray = $this->especeModel->getEspeces ( $sortentry );
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'isotypes' => $isotypesArray 
+				'especes' => $especesArray 
 		) );
 	}
 	
@@ -37,19 +37,19 @@ class ControllerIsotypes extends ControllerSecureNav {
 		$navBar = $this->navBar ();
 		
 		// get isotype id
-		$isotypeId = 0;
+		$especeId = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$isotypeId = $this->request->getParameter ( "actionid" );
+			$especeId = $this->request->getParameter ( "actionid" );
 		}
 		
 		// get isotype info
-		$isotype = $this->isotypeModel->getIsotype ( $isotypeId );
+		$espece = $this->especeModel->getEspece ( $especeId );
 		
 		//print_r ( $isotype );
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'isotype' => $isotype 
+				'espece' => $espece 
 		) );
 	}
 	
@@ -67,9 +67,9 @@ class ControllerIsotypes extends ControllerSecureNav {
 		$name = $this->request->getParameter ( "nom" );
 		
 		// add query
-		$isotypesArray = $this->isotypeModel->addIsotype ( $name );
+		$this->especeModel->addEspece ( $name );
 		
-		$this->redirect ( "isotypes" );
+		$this->redirect ( "especes" );
 	}
 	
 	public function editquery() {
@@ -78,11 +78,9 @@ class ControllerIsotypes extends ControllerSecureNav {
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "nom" );
 		
-		// add query
-		$isotypesArray = $this->isotypeModel->editIsotype ( $id, $name );
+		// edit query
+		$this->especeModel->editEspece ( $id, $name );
 		
-		$this->redirect ( "isotypes" );
+		$this->redirect ( "especes" );
 	}
-	
-	
 }

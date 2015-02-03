@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Framework/Controller.php';
+require_once 'Modules/core/Model/User.php';
 
 /**
  * Mather class for controller using secure connection
@@ -14,10 +15,23 @@ abstract class ControllerSecure extends Controller
     {
 
         if ($this->request->getSession()->isAttribut("id_user")) {
-            parent::runAction($action);
+        	
+        	$login = $this->request->getSession()->getAttribut("login");
+        	$pwd = $this->request->getSession()->getAttribut("pwd");
+        	 
+        	$modelUser = new User();
+        	$connect = $modelUser->connect2($login, $pwd);
+        	//echo "connect = " . $connect . "</br>";
+        	if ($connect == "allowed"){
+            	parent::runAction($action);
+        	}
+        	else{
+        		//echo "redirect to connection here";
+        		$this->redirect("connection");
+        	}
         }
         else {
-        	echo "redirect to connection";
+        	//echo "redirect to connection";
             $this->redirect("connection");
         }
     }

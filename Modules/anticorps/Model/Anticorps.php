@@ -29,14 +29,14 @@ class Anticorps extends Model {
  				`lot` varchar(30) NOT NULL DEFAULT '',
 				`id_isotype` int(11) NOT NULL DEFAULT '0',
 				`stockage` varchar(30) NOT NULL DEFAULT '',
-				`disponible` enum('oui','non') NOT NULL,		
-				`date_recept` DATE NOT NULL,
   				PRIMARY KEY (`id`)
 				);
 				
 				CREATE TABLE IF NOT EXISTS `ac_j_user_anticorps` (
   				`id_anticorps` int(11) NOT NULL,
   				`id_utilisateur` int(11) NOT NULL,	
+				`disponible` int(2) NOT NULL,		
+				`date_recept` DATE NOT NULL,
   				PRIMARY KEY (`id_anticorps`)
 				);
 				";
@@ -74,25 +74,25 @@ class Anticorps extends Model {
 	 * @return string
 	 */
 	public function addAnticorps($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone, 
-								$lot, $id_isotype, $stockage, $disponible, $date_recept){
+								$lot, $id_isotype, $stockage){
 		
 
 		$sql = "insert into ac_anticorps(nom, no_h2p2, fournisseur, id_source, reference, 
-										 clone, lot, id_isotype, stockage, disponible, date_recept)"
-				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+										 clone, lot, id_isotype, stockage)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$pdo = $this->runRequest($sql, array($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone, 
-								$lot, $id_isotype, $stockage, $disponible, $date_recept));
+								$lot, $id_isotype, $stockage));
 		
 		return $this->getDatabase()->lastInsertId();
 	}
 	
 	public function updateAnticorps($id, $nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone, 
-									$lot, $id_isotype, $stockage, $disponible, $date_recept){
+									$lot, $id_isotype, $stockage){
 		$sql = "UPDATE ac_anticorps SET nom=?, no_h2p2=?, fournisseur=?, id_source=?, reference=?, 
-										 clone=?, lot=?, id_isotype=?, stockage=?, disponible=?, date_recept=?
+										 clone=?, lot=?, id_isotype=?, stockage=?
 									WHERE id=?";
 		$pdo = $this->runRequest($sql, array($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
-				$lot, $id_isotype, $stockage, $disponible, $date_recept, $id));
+				$lot, $id_isotype, $stockage, $id));
 	}
 	/**
 	 * Get the antibody info by changing the ids by names
@@ -121,18 +121,22 @@ class Anticorps extends Model {
 
 	public function getOwners($acId){
 	
-		$sql = "SELECT firstname, name, id FROM core_users WHERE id IN 
-				(select id_utilisateur from ac_j_user_anticorps where id_anticorps=?)";
+		$sql = "SELECT ac_j_user_anticorps.id_utilisateur AS id_user, ac_j_user_anticorps.date_recept AS date_recept, 
+					   ac_j_user_anticorps.disponible AS disponible, core_users.name AS name, core_users.firstname AS firstname
+					FROM ac_j_user_anticorps
+					     INNER JOIN core_users on core_users.id = ac_j_user_anticorps.id_utilisateur
+				WHERE ac_j_user_anticorps.id_anticorps=?
+				ORDER BY core_users.name";
 		
 		$user = $this->runRequest($sql, array($acId));
 		return $user->fetchAll();
 	}
 	
-	public function addOwner($id_user, $id_anticorps){
+	public function addOwner($id_user, $id_anticorps, $date, $disponible){
 		
-		$sql = "insert into ac_j_user_anticorps(id_utilisateur, id_anticorps)"
-				. " values(?, ? )";
-		$pdo = $this->runRequest($sql, array($id_user, $id_anticorps));
+		$sql = "insert into ac_j_user_anticorps(id_utilisateur, id_anticorps, date_recept, disponible)"
+				. " values(?, ?, ?, ?)";
+		$pdo = $this->runRequest($sql, array($id_user, $id_anticorps, $date, $disponible));
 		
 		return $this->getDatabase()->lastInsertId();
 	}
@@ -169,8 +173,6 @@ class Anticorps extends Model {
 		$anticorps["lot"] = "";
 		$anticorps["id_isotype"] = "";
 		$anticorps["stockage"] = "";
-		$anticorps["disponible"] = "";
-		$anticorps["date_recept"] = "";
 		$anticorps["proprietaire"] = array();
 		$anticorps['tissus'] = array();
 		

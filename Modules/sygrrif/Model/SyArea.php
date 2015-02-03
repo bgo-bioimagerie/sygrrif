@@ -137,5 +137,9 @@ class SyArea extends Model {
 		return $tmp[0] ;
 	}
 	
+	public function delete($id){
+		$sql="DELETE FROM sy_areas WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 
 }

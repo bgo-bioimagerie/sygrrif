@@ -12,7 +12,7 @@ class SyResourceType extends Model {
   		`id` int(11) NOT NULL AUTO_INCREMENT,
   		`name` varchar(30) NOT NULL DEFAULT '',
 		`controller` varchar(50) NOT NULL DEFAULT '',
-		`edit_action` varchar(50) NOT NULL DEFAULT '',
+		`edit_action` varchar(50) NOT NULL DEFAULT '',		
 		`book_action` varchar(50) NOT NULL DEFAULT '',				
   		PRIMARY KEY (`id`)
 		);";

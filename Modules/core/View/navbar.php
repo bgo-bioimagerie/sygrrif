@@ -22,7 +22,7 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="home">Home</a></li>
+				<li><a href="<?= $_SESSION["user_settings"]["homepage"] ?>">Home</a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
@@ -60,6 +60,7 @@
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?= $userName ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
         				<li><a href=users/manageaccount > My Account </a></li>
+        				<li><a href=settings > Settings </a></li>
         				<li class="divider"></li>
         				<li><a href=connection/logout > logout </a></li>
 					</ul>

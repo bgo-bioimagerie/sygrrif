@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Database acoount"?>
+<?php $this->title = "SyGRRiF Database account"?>
 
 <?php echo $navBar?>
 
@@ -134,9 +134,6 @@
 	
 		
       </form>
-      
-      <br>
-      <div>
 	</div>
 </div>
 

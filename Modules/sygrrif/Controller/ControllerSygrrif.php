@@ -48,6 +48,18 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	public function deletearea(){
+		$id = "";
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$id = $this->request->getParameter("actionid");
+		}
+		
+		$model = new SyArea();
+		$model->delete($id);
+		
+		$this->redirect("sygrrif", "areas");
+	}
+	
 	public function editarea(){
 		$id = "";
 		if ($this->request->isParameterNotEmpty('actionid')){
@@ -441,6 +453,18 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "resourcescategory" );
 	}
 	
+	public function deleteresourcecategory(){
+		$id = "";
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$id = $this->request->getParameter("actionid");
+		}
+		
+		$model = new SyResourcesCategory();
+		$model->delete($id);
+		
+		$this->redirect("sygrrif", "resourcescategory");
+	}
+	
 	public function visa(){
 		
 		// get sort action
@@ -522,7 +546,7 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		// query
 		$authModel = new SyAuthorization();
-		$authorizationTable = $authModel->getAuthorizations ( $sortentry );
+		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry );
 		
 		// view
 		$navBar = $this->navBar();
@@ -530,6 +554,25 @@ class ControllerSygrrif extends ControllerBooking {
 				'navBar' => $navBar,
 				'authorizationTable' => $authorizationTable
 		) );
+	}
+	
+	public function uauthorizations(){
+		// get user id
+		$sortentry = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$sortentry = $this->request->getParameter ( "actionid" );
+		}
+	
+		// query
+		$authModel = new SyAuthorization();
+		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry,0 );
+	
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'authorizationTable' => $authorizationTable
+		),"authorizations" );
 	}
 	
 	public function addauthorization(){
@@ -611,9 +654,11 @@ class ControllerSygrrif extends ControllerBooking {
 		$date = $this->request->getParameter('date');
 		$visa_id = $this->request->getParameter('visa_id');
 		$resource_id = $this->request->getParameter('resource_id');
+		$is_active = $this->request->getParameter('is_active');
 		
 		$model = new SyAuthorization();
 		$model->editAuthorization($id, $date, $user_id, $unit_id, $visa_id, $resource_id);
+		$model->setActive($id, $is_active);
 		
 		$this->redirect ( "sygrrif", "authorizations" );
 	}
@@ -1011,11 +1056,12 @@ class ControllerSygrrif extends ControllerBooking {
 		// get form variables
 		$name = $this->request->getParameter ( "name" );
 		$color = $this->request->getParameter ( "color" );
+		$display_order = $this->request->getParameter ( "display_order" );
 		
 		
 		// get the user list
 		$ccModel = new SyColorCode();
-		$ccModel->addColorCode($name, $color);
+		$ccModel->addColorCode($name, $color, $display_order);
 	
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}
@@ -1046,11 +1092,26 @@ class ControllerSygrrif extends ControllerBooking {
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
 		$color = $this->request->getParameter ( "color" );
+		$display_order = $this->request->getParameter ( "display_order" );
 		
 		// get the user list
 		$ccModel = new SyColorCode();
 		$ccModel->editColorCode($id, $name, $color);
 	
+		$this->redirect ( "sygrrif", "colorcodes" );
+	}
+	
+	public function deletecolorcode(){
+		// get user id
+		$ccId = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$ccId = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get the user list
+		$ccModel = new SyColorCode();
+		$ccModel->delete($ccId);
+		
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}
 	

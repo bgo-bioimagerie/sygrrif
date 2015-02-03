@@ -322,8 +322,11 @@
 		</table>
 		</div>
 
-		<div class="col-xs-3 col-xs-offset-9" id="button-div">
+		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
+		        <?php if ($this->clean($id) != ""){ ?>
+		        	<button type="button" onclick="location.href='<?="calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger" id="navlink">Delete</button>
+				<?php } ?>
 				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>

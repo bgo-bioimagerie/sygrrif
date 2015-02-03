@@ -285,7 +285,7 @@ $sufixStream = date("S", $time);
 								$dateString = date("Y-m-d", $date_unix);
 								?>
 								<div class="text-center">
-								<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_"."8" ?>"></a>
+								<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_"."8"."_".$resourceID ?>"></a>
 								</div>
 								<?php 
 							}

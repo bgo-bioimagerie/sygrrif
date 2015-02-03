@@ -34,6 +34,11 @@
 				    <button onclick="location.href='isotypes/'" class="btn btn-link" id="navlink">Isotypes</button>
 					<button onclick="location.href='isotypes/add'" class="btn btn-link" id="navlink">Ajouter Isotype</button>
 				</div>
+				
+				<div class="col-md-12 ">
+				    <button onclick="location.href='especes/'" class="btn btn-link" id="navlink">Espèces</button>
+					<button onclick="location.href='especes/add'" class="btn btn-link" id="navlink">Ajouter Espèce</button>
+				</div>
 			
 
 				<div class="col-md-12">

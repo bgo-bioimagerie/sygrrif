@@ -2,6 +2,7 @@
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/UserSettings.php';
 
 /**
  * Controler managing the user connection 
@@ -40,6 +41,7 @@ class ControllerConnection extends Controller
                 $user = $this->user->getUser($login, $pwd);
                 $this->request->getSession()->setAttribut("id_user", $user['idUser']);
                 $this->request->getSession()->setAttribut("login", $user['login']);
+                $this->request->getSession()->setAttribut("pwd", $user['pwd']);
                 $this->request->getSession()->setAttribut("user_status", $user['id_status']);
                 
                 // add the user settings to the session
@@ -56,7 +58,8 @@ class ControllerConnection extends Controller
                 }
                 
                 // redirect
-                $this->redirect("home");
+        			
+                $this->redirect($_SESSION["user_settings"]["homepage"]);
             }
             else
                 $this->generateView(array('msgError' => $connect),

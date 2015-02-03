@@ -379,7 +379,7 @@ class ControllerSynchistop extends Controller {
 			$id = $room["id"];
 			$name = $room["room_name"];
 			$description = $room["description"];
-			$accessibility_id = 4; // who can book = admin by default
+			$accessibility_id = 2; // who can book = authorized users
 			$type_id = 1; // calendar
 			$category_id = 1;
 			$modelResource->importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id);

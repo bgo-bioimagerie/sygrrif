@@ -235,6 +235,16 @@
 				</select>
 			</div>
 		</div>	
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4">The user specify</label>
+			<div class="col-xs-8">
+				<select class="form-control" name="resa_time_setting">
+				<?php $resa_time_setting = $this->clean($resa_time_setting)?>
+					<OPTION value="0" <?php  if ($resa_time_setting == 0){echo "selected=\"selected\"";}?> > the booking duration </OPTION>
+					<OPTION value="1" <?php  if ($resa_time_setting == 1){echo "selected=\"selected\"";}?> > the date/time when reservation ends </OPTION>
+				</select>
+			</div>
+		</div>
 		
 		<div class="page-header">
 			<h3>
@@ -267,8 +277,11 @@
 		</table>
 		</div>
 
-		<div class="col-xs-3 col-xs-offset-9" id="button-div">
+		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
+		        <?php if ($this->clean($id) != ""){ ?>
+		        	<button type="button" onclick="location.href='<?="calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger" id="navlink">Delete</button>
+				<?php } ?>
 				<button type="button" onclick="location.href='visa'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>

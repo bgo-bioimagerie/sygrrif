@@ -158,4 +158,9 @@ class SyResource extends Model {
 		$sql = "update sy_resources set category_id=? where id=?";
 		$this->runRequest($sql, array($id_category, $id_resource));
 	}
+	
+	public function delete($id_resource){
+		$sql="DELETE FROM sy_resources WHERE id = ?";
+		$req = $this->runRequest($sql, array($id_resource));
+	}
 }

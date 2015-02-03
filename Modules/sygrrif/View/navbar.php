@@ -74,9 +74,11 @@ legend {
 						class="btn btn-link" id="navlink">Add</button>
 				<br/>
 					<button onclick="location.href='sygrrif/authorizations'"
-						class="btn btn-link" id="navlink">Authorizations</button>
+						class="btn btn-link" id="navlink">Active Authorizations</button>
+					<button onclick="location.href='sygrrif/uauthorizations'"
+						class="btn btn-link" id="navlink">Unactive Authorizations</button>
 					<button onclick="location.href='sygrrif/addauthorization'"
-						class="btn btn-link" id="navlink">Add</button>
+						class="btn btn-link" id="navlink">Add Authorizations</button>
 			</fieldset>
 		</div>
 		<div class='col-md-3 well'>
@@ -101,11 +103,13 @@ legend {
 					<button onclick="location.href='sygrrif/statistics'"
 						class="btn btn-link" id="navlink">Statistics Resources</button>
 					<button onclick="location.href='sygrrif/statpriceunits'"
-						class="btn btn-link" id="navlink">Statistics/pricing per unit</button>
+						class="btn btn-link" id="navlink">Bill per unit</button>
+					<button onclick="location.href='sygrrifbillmanager'"
+						class="btn btn-link" id="navlink">Bills manager</button>	
+					<button onclick="location.href='sygrrifstatsusers/statusers'"
+						class="btn btn-link" id="navlink">Statistics users</button>	
 					<button onclick="location.href='sygrrif/statauthorizations'"
 						class="btn btn-link" id="navlink">Statistics authorizations</button>
-					<button onclick="location.href='sygrrifbillmanager'"
-						class="btn btn-link" id="navlink">Bills manager</button>
 						
 					<?php 
 					$ModulesManagerModel = new ModulesManager();

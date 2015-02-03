@@ -214,4 +214,8 @@ class SyResourcesCategory extends Model {
 		$unit = $this->runRequest($sql, array($id_category, $id_resource));
 	}
 	
+	public function delete($id){
+		$sql="DELETE FROM sy_resourcescategory WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }

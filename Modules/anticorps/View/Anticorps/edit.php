@@ -9,7 +9,7 @@
 <script>
         function addRow(tableID) {
 
-        	var idx = 0;
+        	var idx = 1;
         	if(tableID == "dataTable"){
         		idx = 1;
             } 
@@ -45,7 +45,7 @@
         function deleteRow(tableID) {
             try {
 
-            var idx = 1;
+            var idx = 2;
             if(tableID == "dataTable"){
             	idx = 2;
             }     
@@ -215,7 +215,24 @@
 							?>
 							<tr>
 								<td><input type="checkbox" name="chk" /></td>
-								<td><input class="form-control" type="text" name="espece[]" value="<?= $tissus["espece"] ?>"/></td>
+								<td>
+									<select class="form-control" name="espece[]">
+									<?php 
+									$espacename = $this->clean($tissus["espece"]);
+									foreach ($especes as $espece){
+										$ide = $this->clean($espece["id"]);
+										$namee = $this->clean($espece["nom"]);
+										$selected = "";
+										if ($espacename == $namee){
+											$selected = "selected=\"selected\"";
+										}
+										?>
+										<OPTION value="<?=$ide?>" <?=$selected?>> <?= $namee ?> </OPTION>
+										<?php 
+									}	
+									?>
+									</select>
+								</td>
 								<td><input class="form-control" type="text" name="organe[]" value="<?= $tissus["organe"] ?>"/></td>
 								<td><select class="form-control" name="valide[]" >
 								<option value="oui" <?php if ($tissus["valide"] == "oui"){echo "selected=\"selected\"";}?>>oui</option>
@@ -234,7 +251,19 @@
 						?>
 						<tr>
 							<td><input type="checkbox" name="chk" /></td>
-							<td><input class="form-control" type="text" name="espece[]" /></td>
+							<td>
+								<select class="form-control" name="espece[]">
+									<?php
+									foreach ($especes as $espece){
+										$ide = $this->clean($espece["id"]);
+										$namee = $this->clean($espece["nom"]);
+										?>
+										<OPTION value="<?=$ide?>"> <?= $namee ?> </OPTION>
+										<?php 
+									}	
+									?>
+									</select>	
+							</td>
 							<td><input class="form-control" type="text" name="organe[]" /></td>
 							<td><select class="form-control" name="valide[]">
 							<option value="oui">oui</option>
@@ -259,35 +288,32 @@
 				</div>
 			</div>
 		</div>
-		
-		<!-- Disponible -->		
-		<br/>
-		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Disponible</label>
-			<div class="col-xs-10">
-				<select class="form-control" name="disponible">
-					<OPTION value="oui" <?php if($anticorps['disponible'] == "oui"){echo "selected=\"selected\"";}?>> oui </OPTION>
-					<OPTION value="non" <?php if($anticorps['disponible'] == "non"){echo "selected=\"selected\"";}?>> non </OPTION>
-				</select>
-			</div>
-		</div>
-		
+			
 		<!-- ADD HERE PROPRIO ADD  -->
 		<div class="form-group">
 			<label class="control-label col-xs-2">Propriétaire</label>
 			<div class="col-xs-10">
 				<table id="proprioTable" class="table table-striped">
+					<thead>
+						<tr>
+							<td></td>
+							<td>Propriétaire</td>
+							<td>Disponibilité</td>
+							<td>Date réception</td>
+						</tr>
+					</thead>
 					<tbody>
 						<tr>
 							<?php 
 							foreach ($anticorps['proprietaire'] as $proprio){
+								//print_r($proprio);
 								?>
 								<td><input type="checkbox" name="chk" /></td>
 								<td>
 									<select class="form-control" name="id_proprietaire[]">
 									<?php 
-								
-									$pid = $this->clean($proprio["id"]);
+									
+									$pid = $this->clean($proprio["id_user"]);
 									foreach ($users as $user){
 										$uid = $this->clean($user["id"]);	
 										$uname = $this->clean($user["name"]) . " " . $this->clean($user["firstname"]) ;
@@ -301,6 +327,16 @@
 									}	
 									?>
 									</select>	
+								</td>
+								<td>
+									<select class="form-control" name="disponible[]">
+										<OPTION value="1" <?php if ($proprio["disponible"] == 1){echo "selected=\"selected\"";}?>> disponible </OPTION>
+										<OPTION value="2" <?php if ($proprio["disponible"] == 2){echo "selected=\"selected\"";}?>> épuisé </OPTION>
+										<OPTION value="3" <?php if ($proprio["disponible"] == 3){echo "selected=\"selected\"";}?>> récupéré par équipe </OPTION>
+									</select>	
+								</td>
+								<td>
+									<input class="form-control" type="text" name="date_recept[]" value="<?= $proprio["date_recept"] ?>"/>	
 								</td>
 							<?php
 							} 
@@ -322,6 +358,16 @@
 									?>
 									</select>	
 								</td>
+								<td>
+									<select class="form-control" name="disponible[]">
+										<OPTION value="1"> disponible </OPTION>
+										<OPTION value="2"> épuisé </OPTION>
+										<OPTION value="3"> récupéré par équipe </OPTION>
+									</select>	
+								</td>
+								<td>
+									<input class="form-control" type="text" name="date_recept" />
+								</td>
 							<?php	
 							}
 							?>
@@ -339,7 +385,8 @@
 		</div>
 		
 		<br>
-		<!-- Date Reception -->
+		
+		<!-- Date Reception 
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2">Date Reception</label>
 			<div class="col-xs-10">
@@ -349,9 +396,9 @@
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-		        <script src="bootstrap/datepicker/js/moments.js"></script>
-				<script src="bootstrap/jquery-1.11.1.js"></script>
-				<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+		        <script src="externals/datepicker/js/moments.js"></script>
+				<script src="externals/jquery-1.11.1.js"></script>
+				<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
 	      		<script type="text/javascript">
 				$(function () {
 					$('#datetimepicker5').datetimepicker({
@@ -361,9 +408,10 @@
 			    </script>
 		    </div>
 		</div>
+		-->
 		
 		<!-- Buttons -->
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		<div class="col-xs-2 col-xs-offset-10" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 				<button type="button" onclick="location.href='anticorps'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>

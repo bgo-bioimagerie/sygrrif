@@ -137,6 +137,21 @@
 			</div>
 		</div>
 		
+		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Is active</label>
+			<div class="col-xs-10">
+				<select class="form-control" name="is_active">
+				<?php 
+				$is_active = $this->clean($authorization['is_active']);
+				?>
+				<OPTION value="1" <?php if ($is_active == 1){echo "selected=\"selected\"";} ?>> yes </OPTION>
+				<OPTION value="0" <?php if ($is_active == 0){echo "selected=\"selected\"";} ?>> no </OPTION>
+				</select>
+			</div>
+		</div>
+		
+		
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />

@@ -86,7 +86,10 @@ class SyGraph extends Model {
 			$sql = 'SELECT name FROM sy_resources WHERE id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);
 			$res = $req->fetchAll();
-			$nomMachine = $res[0][0];
+			$nomMachine = "-";
+			if (count($res) > 0){
+				$nomMachine = $res[0][0];
+			}
 				
 			$test .= '<text x="615" y="'.(90+40*$i).'" font-size="25" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$numMachinesFormes[$i][1].'</text>';
 			$test .= '</g>';

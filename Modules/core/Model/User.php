@@ -101,6 +101,24 @@ class User extends Model {
         }
     }
     
+    public function connect2($login, $pwd)
+    {
+    	$sql = "select id, is_active from core_users where login=? and pwd=?";
+    	$user = $this->runRequest($sql, array($login, $pwd));
+    	if ($user->rowCount() == 1){
+    		$req = $user->fetch();
+    		if ($req["is_active"] == 1){
+    			return "allowed";
+    		}
+    		else{
+    			return "Your account is not active";
+    		}
+    	}
+    	else{
+    		return "Login or password not correct";
+    	}
+    }
+    
     /**
      * Update the last login date attribut to the todau date
      * 
@@ -560,6 +578,19 @@ class User extends Model {
     	else{
     		return -1;
 		}
+    }
+    
+    public function getConventionList(){
+    	$sql = "select distinct convention from core_users order by convention";
+    	$req = $this->runRequest($sql);
+    	return $req->fetchAll();
+    }
+    
+    public function getUserConvention($id){
+    	$sql = "select convention from core_users where id=?";
+    	$req = $this->runRequest($sql, array($id));
+    	$tmp = $req->fetch();
+    	return $tmp[0];
     }
     
 }

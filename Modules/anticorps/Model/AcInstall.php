@@ -4,6 +4,7 @@ require_once 'Framework/Model.php';
 require_once 'Modules/anticorps/Model/Anticorps.php';
 require_once 'Modules/anticorps/Model/Isotype.php';
 require_once 'Modules/anticorps/Model/Source.php';
+require_once 'Modules/anticorps/Model/Espece.php';
 require_once 'Modules/anticorps/Model/Tissus.php';
 
 /**
@@ -28,6 +29,9 @@ class AcInstall extends Model {
 		
 		$sourceModel = new Source();
 		$sourceModel->createTable();
+		
+		$especeModel = new Espece();
+		$especeModel->createTable();
 		
 		$tissusModel = new Tissus();
 		$tissusModel->createTable();

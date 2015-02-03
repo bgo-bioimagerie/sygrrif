@@ -128,6 +128,17 @@ class ControllerSyncmicropicell extends Controller {
 	}
 	
 	public function syncEntryTypes($pdo_grr){
+		
+		$model = new SyColorCode();
+		$model->importColorCode(15, "Formation", "FFCCFF");
+		$model->importColorCode(19, "Manip", "C0E0FF");
+		$model->importColorCode(21, "Indisponible", "FF0000");
+		$model->importColorCode(22, "Maintenance", "FFBB20");
+		$model->importColorCode(32, "Démonstration", "8000FF");
+	}
+	
+	/*
+	public function syncEntryTypes($pdo_grr){
 	
 		$tab_couleur[1] = "FFCCFF"; # mauve pâle
 		$tab_couleur[2] = "99CCCC"; # bleu
@@ -171,6 +182,7 @@ class ControllerSyncmicropicell extends Controller {
 			$model->importColorCode($id, $name, $color);
 		}
 	}
+	*/
 	
 	public function syncResources($pdo_grr){
 		

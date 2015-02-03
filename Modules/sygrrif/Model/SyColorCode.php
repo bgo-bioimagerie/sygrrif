@@ -20,6 +20,7 @@ class SyColorCode extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(30) NOT NULL DEFAULT '',
 		`color` varchar(6) NOT NULL DEFAULT '',
+		`display_order` int(11) NOT NULL DEFAULT 0,
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -91,18 +92,18 @@ class SyColorCode extends Model {
 	 * @param string $name name of the SyColorCode
 	 * @param string $address address of the SyColorCode
 	 */
-	public function addColorCode($name, $color){
+	public function addColorCode($name, $color, $display_order=0){
 		
-		$sql = "insert into sy_color_codes(name, color)"
-				. " values(?, ?)";
-		$this->runRequest($sql, array($name, $color));		
+		$sql = "insert into sy_color_codes(name, color, display_order)"
+				. " values(?, ?, ?)";
+		$this->runRequest($sql, array($name, $color, $display_order));		
 	}
 	
-	public function importColorCode($id, $name, $color){
+	public function importColorCode($id, $name, $color, $display_order=0){
 		
-		$sql = "insert into sy_color_codes(id, name, color)"
-				. " values(?, ?, ?)";
-		$this->runRequest($sql, array($id, $name, $color));		
+		$sql = "insert into sy_color_codes(id, name, color,display_order)"
+				. " values(?, ?, ?, ?)";
+		$this->runRequest($sql, array($id, $name, $color, $display_order));		
 	}
 	
 	/**
@@ -112,10 +113,10 @@ class SyColorCode extends Model {
 	 * @param string $name New name of the SyColorCode
 	 * @param string $color New Address of the SyColorCode
 	 */
-	public function editColorCode($id, $name, $color){
+	public function editColorCode($id, $name, $color, $display_order){
 		
-		$sql = "update sy_color_codes set name=?, color=? where id=?";
-		$SyColorCode = $this->runRequest($sql, array("".$name."", "".$color."", $id));
+		$sql = "update sy_color_codes set name=?, color=?, display_order=? where id=?";
+		$SyColorCode = $this->runRequest($sql, array("".$name."", "".$color."", $display_order , $id));
 	}
 	
 	
@@ -128,9 +129,9 @@ class SyColorCode extends Model {
 			return false;
 	}
 	
-	public function setColorCode($name, $color){
+	public function setColorCode($name, $color, $display_order){
 		if (!$this->isColorCode($name)){
-			$this->addSyColorCode($name, $color);
+			$this->addSyColorCode($name, $color, $display_order);
 		}
 	}
 	
@@ -191,5 +192,10 @@ class SyColorCode extends Model {
 		}
 	}
 
+	public function delete($id){
+		$sql="DELETE FROM sy_color_codes WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
+	
 }
 

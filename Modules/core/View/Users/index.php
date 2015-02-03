@@ -15,7 +15,7 @@
 <br>
 <div class="contatiner">
 
-	<div class="col-md-10 col-md-offset-1">
+	<div class="col-lg-12">
 
 		<div class="page-header">
 			<h1>

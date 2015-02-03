@@ -19,7 +19,7 @@ class Tissus extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `ac_j_tissu_anticorps` (
   				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`id_anticorps` int(11) NOT NULL,
-  				`espece` varchar(30) NOT NULL,
+  				`espece` int(11) NOT NULL,
   				`organe` varchar(30) NOT NULL, 
   				`valide` enum('oui','non') NOT NULL,  
   				`ref_bloc` varchar(30) NOT NULL,
@@ -42,7 +42,21 @@ class Tissus extends Model {
 	}
 	
 	public function getTissus($id_anticorps){
-		$sql = "select * from ac_j_tissu_anticorps where id_anticorps=?";
+		
+		$sql = "SELECT ac_j_tissu_anticorps.id AS id, 
+					   ac_j_tissu_anticorps.id_anticorps AS id_anticorps, 	
+				       ac_j_tissu_anticorps.organe AS organe,
+				       ac_j_tissu_anticorps.valide AS valide,
+				       ac_j_tissu_anticorps.ref_bloc AS ref_bloc,
+				       ac_j_tissu_anticorps.dilution AS dilution,
+				       ac_j_tissu_anticorps.temps_incubation AS temps_incubation,
+					   ac_j_tissu_anticorps.ref_protocol AS ref_protocol,	
+					   ac_especes.nom AS espece	
+				FROM ac_j_tissu_anticorps
+				INNER JOIN ac_especes on ac_j_tissu_anticorps.espece = ac_especes.id
+				WHERE ac_j_tissu_anticorps.id_anticorps=?";
+		
+		//$sql = "select * from ac_j_tissu_anticorps where id_anticorps=?";
 		$res = $this->runRequest($sql, array($id_anticorps));
 		return $res->fetchAll();
 	}

@@ -3,6 +3,7 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/anticorps/Model/AcInstall.php';
 require_once 'Modules/anticorps/Model/Anticorps.php';
+require_once 'Modules/anticorps/Model/Espece.php';
 require_once 'Modules/core/Model/User.php';
 
 class ControllerAnticorps extends ControllerSecureNav {
@@ -47,6 +48,10 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$modelSource = new Source();
 		$sourcesList = $modelSource->getSources();
 		
+		// get especes list
+		$especesModel = new Espece();
+		$especes = $especesModel->getEspeces("nom");
+		
 		// get users List
 		$modelUser = new User();
 		$users = $modelUser->getUsersSummary('name');
@@ -72,6 +77,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'isotypesList' => $isotypesList,
 				'sourcesList' => $sourcesList,
 				'anticorps' => $anticorps,
+				'especes' => $especes,
 				'users' => $users  
 		) );
 	}
@@ -81,7 +87,6 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$id = $this->request->getParameterNoException("id");
 		$nom = $this->request->getParameter ("nom");
 		$no_h2p2 = $this->request->getParameter ("no_h2p2");
-		$date_recept = $this->request->getParameter ("date_recept");
 		$reference = $this->request->getParameter ("reference");
 		$clone = $this->request->getParameter ("clone");
 		$fournisseur = $this->request->getParameter ("fournisseur");
@@ -89,8 +94,10 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$id_isotype = $this->request->getParameter ("id_isotype");
 		$id_source = $this->request->getParameter ("id_source");
 		$stockage = $this->request->getParameter ("stockage");
-		$disponible = $this->request->getParameter ("disponible");
+		
 		$id_proprietaire = $this->request->getParameter("id_proprietaire");
+		$disponible = $this->request->getParameter ("disponible");
+		$date_recept = $this->request->getParameter ("date_recept");
 		
 		$espece = $this->request->getParameter ("espece");
 		$organe = $this->request->getParameter ("organe");
@@ -106,14 +113,14 @@ class ControllerAnticorps extends ControllerSecureNav {
 		if ($id == ""){
 			// add anticorps to table 
 			$id = $modelAnticorps->addAnticorps($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
-												$lot, $id_isotype, $stockage, $disponible, $date_recept);
+												$lot, $id_isotype, $stockage);
 			
 		}
 		else{
 			
 			// update antibody
 			$modelAnticorps->updateAnticorps($id, $nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
-					$lot, $id_isotype, $stockage, $disponible, $date_recept);
+					$lot, $id_isotype, $stockage);
 			
 			// remove all the owners
 			$modelAnticorps->removeOwners($id);
@@ -124,8 +131,10 @@ class ControllerAnticorps extends ControllerSecureNav {
 		}
 		
 		// add the owner
+		$i = -1;
 		foreach ($id_proprietaire as $proprio){
-			$modelAnticorps->addOwner($proprio, $id);
+			$i++;
+			$modelAnticorps->addOwner($proprio, $id, $date_recept[$i], $disponible[$i]);
 		}
 		// add to the tissus table
 		

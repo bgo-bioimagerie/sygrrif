@@ -8,12 +8,7 @@ $readOnlyGlobal = "";
 if (!$canEditReservation){
 	$readOnlyGlobal = "readonly";
 }
-
 ?>
-
-<header>
-<script src="externals/bootstrap/js/bootstrap.min.js"></script>
-</header>
 
 <br>
 <div class="container">
@@ -23,14 +18,15 @@ if (!$canEditReservation){
 	
 		<div class="page-header">
 			<h1>
-				Edit Reservation <br> <small></small>
+				<?php echo SyTranslator::Edit_Reservation($lang); ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
 	    <input class="form-control" id="id" type="hidden"  name="resource_id" value="<?=$this->clean($resourceBase['id']) ?>" <?=$readOnlyGlobal?>/>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Resource</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Resource($lang)?></label>
 				<div class="col-xs-8">
 				<input class="form-control" id="id" type="text"  name="resource_name" value="<?=$this->clean($resourceBase['name']) ?>" readonly/>
 			</div>
@@ -39,7 +35,7 @@ if (!$canEditReservation){
 		<?php if (isset($reservationInfo)){
 			?>
 			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4">Reservation number</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Reservation_number($lang)?></label>
 				<div class="col-xs-8">
 				<input class="form-control" id="id" type="text"  name="reservation_id" value="<?=$this->clean($reservationInfo['id']) ?>" readonly/>
 				</div>
@@ -50,7 +46,7 @@ if (!$canEditReservation){
 		?>
 	
 	    <div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">booking on behalf of</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::booking_on_behalf_of($lang)?></label>
 			<div class="col-xs-8">
 					<?php 
 					$allowedBookForOther = true;
@@ -90,7 +86,7 @@ if (!$canEditReservation){
 	
 		<?php if ($projectsList == ""){?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Short description</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Short_description($lang)?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="short_description"
 				       value="<?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['short_description']);} ?>" 
@@ -129,7 +125,7 @@ if (!$canEditReservation){
 		?>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Full description</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Full_description($lang)?></label>
 			<div class="col-xs-8">
 				<textarea class="form-control" id="name" type="text" name="full_description" <?=$readOnlyGlobal?>
 				><?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['full_description']);} ?></textarea>
@@ -149,7 +145,7 @@ if (!$canEditReservation){
 					$sm = $timeBegin['m'];
 				}
 				?>
-			<label for="inputEmail" class="control-label col-xs-4">Beginning of the reservation:</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Beginning_of_the_reservation($lang)?>:</label>
 			<div class="col-xs-8">
 				<div class='input-group date' id='datetimepicker6'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="begin_date"
@@ -173,7 +169,7 @@ if (!$canEditReservation){
 			<div class="col-xs-8 col-xs-offset-4">
 				<!-- time -->
 				<div class="col-xs-3">
-				<b>time:</b>
+				<b><?=SyTranslator::time($lang)?>:</b>
 				</div>
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="begin_hour"
@@ -208,7 +204,7 @@ if (!$canEditReservation){
 						$em = $timeEnd['m'];
 					}
 					?>
-				<label for="inputEmail" class="control-label col-xs-4">End of the reservation:</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::End_of_the_reservation($lang)?>:</label>
 				<div class="col-xs-8">
 					<div class='input-group date' id='datetimepicker7'>
 						<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="end_date"
@@ -232,7 +228,7 @@ if (!$canEditReservation){
 				<div class="col-xs-8 col-xs-offset-4">
 					<!-- time -->
 					<div class="col-xs-3">
-					<b>time:</b>
+					<b><?=SyTranslator::time($lang)?>:</b>
 					</div>
 					<div class="col-xs-3">
 					<input class="form-control" id="name" type="text" name="end_hour"
@@ -257,7 +253,7 @@ if (!$canEditReservation){
 			}
 			?>
 			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4">Duration (in minutes)</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Duration($lang)?></label>
 				<div class="col-xs-8">
 					<input class="form-control" id="name" type="text" name="duration"
 					       value="<?= $duration/60 ?>" 
@@ -268,7 +264,7 @@ if (!$canEditReservation){
 		}
 		?>
 		
-		<?php 
+		<?php  
 		if ($this->clean($resourceBase["type_id"])==2){ // is unitary
 		?>
 		<input class="form-control" id="id" type="hidden"  name="is_unitary" value="1" />
@@ -276,7 +272,13 @@ if (!$canEditReservation){
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?= $this->clean($resourceInfo["quantity_name"]) ?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="number"  name="quantity" value="<?=$this->clean($reservationInfo["quantity"])?>"
+				<?php 
+				$quantity = 1;
+				if (isset($reservationInfo)){
+					$quantity = $this->clean($reservationInfo["quantity"]);
+				}
+				?>
+				<input class="form-control" id="id" type="number"  name="quantity" value="<?=$quantity?>"
 				<?=$readOnlyGlobal?>/>
 			</div>
 		</div>
@@ -286,7 +288,7 @@ if (!$canEditReservation){
 		<br></br>
 		<!-- color code -->
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Color code</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Color_code($lang)?></label>
 			<div class="col-xs-8">
 			<select class="form-control" name="color_code_id" <?=$readOnlyGlobal?>>
 			<?php 
@@ -319,11 +321,11 @@ if (!$canEditReservation){
 		<div class="col-xs-1 col-xs-offset-11">
 		        <?php } if ($canEditReservation){
 				?>	
-				<input type="submit" class="btn btn-primary" value="Save" />
+				<input type="submit" class="btn btn-primary" value="<?=SyTranslator::Save($lang)?>" />
 				<?php if (isset($reservationInfo)){?>
 		        <button type="button" onclick="location.href='calendar/removeentry/<?=$this->clean($reservationInfo['id']) ?>'" class="btn btn-danger" id="navlink">Delete</button>
 		        <?php }} ?>
-				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'">Cancel</button>
+				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'"><?=SyTranslator::Cancel($lang)?></button>
 		</div>
       
       

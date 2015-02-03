@@ -33,14 +33,21 @@ legend {
 
 </head>
 
+<?php 
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"];
+?>
+
+
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h1>SyGRRif Booking</h1>
+		<h1><?= SyTranslator::SyGRRif_Booking($lang) ?></h1>
 
 		<form role="form" class="form-horizontal" action="sygrrif/booking" method="post" id="navform">
 		<div class='col-md-4' id="well">
 			<fieldset>
-				<legend>Area</legend>
+				<legend><?= SyTranslator::Area($lang) ?></legend>
 				<div >
 					<select class="form-control" name="id_area" onchange="getareaval(this);">
 						<?php 
@@ -67,7 +74,7 @@ legend {
 		</div>
 		<div class='col-md-4' id="well">
 			<fieldset>
-				<legend>Resource</legend>
+				<legend><?= SyTranslator::Resource($lang) ?></legend>
 				<div >
 					<select class="form-control" name="id_resource"  onchange="getresourceval(this);">
 						<option value="0" > ... </option>
@@ -95,7 +102,7 @@ legend {
 		</div>
 		<div class='col-md-3' id="well">
 			<fieldset>
-				<legend>Date</legend>
+				<legend><?= SyTranslator::Date($lang) ?></legend>
 				<div >
 				<div class='input-group date' id='datetimepicker5'>
 					<input id="date-daily" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="curentDate"

@@ -51,9 +51,18 @@
 				/>
 			</div>
 		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Display order</label>
+			<div class="col-xs-10">
+				<input class="form-control" id="name" type="number" name="display_order"
+				       value="<?= $colorcode['display_order'] ?>"  
+				/>
+			</div>
+		</div>
 		<br></br>
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
+		        <button type="button" onclick="location.href='sygrrif/deletecolorcode/<?= $colorcode['id'] ?>'" class="btn btn-danger" id="navlink">Delete</button>
 				<button type="button" onclick="location.href='sygrrif/colorcodes'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>

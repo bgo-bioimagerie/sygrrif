@@ -196,6 +196,24 @@ class ControllerCalendar extends ControllerBooking {
 		$this->redirect("sygrrif", "resources");
 	}
 	
+	public function deletecalendarresource(){
+		
+		$id_resource = "";
+		if ($this->request->isParameterNotEmpty("actionid")) {
+			$id_resource = $this->request->getParameter ( "actionid" );
+		}
+
+		// delete the calendar resource info
+		$modelCalendar = new SyResourceCalendar();
+		$modelCalendar->delete($id_resource);
+		
+		// delete from main resource tabl
+		$modelResource = new SyResource();
+		$modelResource->delete($id_resource);
+		
+		$this->redirect("sygrrif", "resources");
+	}
+	
 	public function editunitaryresource(){
 	
 		$id = "";
@@ -362,7 +380,6 @@ class ControllerCalendar extends ControllerBooking {
 	
 		$this->redirect("sygrrif", "resources");
 	}
-	
 	
 	public function book($message = ""){
 		
@@ -665,6 +682,10 @@ class ControllerCalendar extends ControllerBooking {
 		}
 		$contentAction = explode("_", $action);
 		
+		if (count($contentAction) > 3){
+			$_SESSION["id_resource"] = $contentAction[3];
+		}
+		
 		// get the menu info
 		$id_resource = $this->request->getSession()->getAttribut('id_resource');
 		$id_area = $this->request->getSession()->getAttribut('id_area');
@@ -817,10 +838,10 @@ class ControllerCalendar extends ControllerBooking {
 		}
 		
 		// get the series info
-		$series_type_id = $this->request->getParameter("series_type_id");
+		$series_type_id = $this->request->getParameterNoException("series_type_id");
 		
 		
-		if ($series_type_id == 0){
+		if ($series_type_id == 0 || $series_type_id == ""){
 		
 			$modelCalEntry = new SyCalendarEntry();
 			// test if a resa already exists on this periode

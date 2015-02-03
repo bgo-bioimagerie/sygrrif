@@ -61,7 +61,7 @@ class Session
             return $_SESSION[$name];
         }
         else {
-            throw new Exception("Cannot find the Attribut '$nom' in the session");
+            throw new Exception("Cannot find the Attribut '$name' in the session");
         }
     }
 

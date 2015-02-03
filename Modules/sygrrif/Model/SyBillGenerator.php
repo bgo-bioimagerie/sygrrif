@@ -1821,7 +1821,7 @@ class SyBillGenerator extends Model {
 		// Header
 		$objDrawing = new PHPExcel_Worksheet_HeaderFooterDrawing();
 		$objDrawing->setName('PHPExcel logo');
-		$objDrawing->setPath('./Themes/logo_h2p2.jpg');
+		$objDrawing->setPath('./Themes/logo.jpg');
 		$objDrawing->setHeight(60);
 		$objPHPExcel->getActiveSheet()->getHeaderFooter()->addImage($objDrawing, PHPExcel_Worksheet_HeaderFooter::IMAGE_HEADER_LEFT);
 		$sheet->getHeaderFooter()->setOddHeader('&L&G&R'.$header);

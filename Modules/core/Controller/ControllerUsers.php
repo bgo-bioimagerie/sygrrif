@@ -70,18 +70,25 @@ class ControllerUsers extends ControllerSecureNav {
 		$modelStatus = new Status();
 		$status = $modelStatus->statusIDName();
 
+		//print_r($status);
+		
 		// get units list
 		$modelUnit = new Unit();
 		$unitsList = $modelUnit->unitsIDName();
+		
+		$userModel = new User();
+		$conventionsList = $userModel->getConventionList();
 		
 		// responsible list
 		$respModel = new Responsible();
 		$respsList = $respModel->responsibleSummaries(); 
 		
 		$this->generateView ( array (
-				'navBar' => $navBar, 'statusList' => $status,
+				'navBar' => $navBar, 
+				'statusList' => $status,
 				'unitsList' => $unitsList, 
-				'respsList' => $respsList
+				'respsList' => $respsList,
+				'conventionsList' => $conventionsList
 		) );
 	}
 	
@@ -99,6 +106,21 @@ class ControllerUsers extends ControllerSecureNav {
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
+		
+		
+		// auto convention
+		if ($convention == -1){
+			// new convention for a responsible
+			if ($is_responsible != ''){
+				// get the last convention number
+				$conventionsList = $this->userModel->getConventionList();
+				$convention = $conventionsList[count($conventionsList)-1][0]+1;
+			}
+			else{
+				// get the responsible convention
+				$convention = $this->userModel->getUserConvention($id_responsible);
+			}
+		}
 		
 		
 		// add the user to the database

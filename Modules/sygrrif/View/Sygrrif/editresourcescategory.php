@@ -40,8 +40,9 @@
 			</div>
 		</div>
 		<br></br>
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
+		        <button type="button" onclick="location.href='<?="sygrrif/deleteresourcecategory/".$this->clean($rc['id']) ?>'" class="btn btn-danger" id="navlink">Delete</button>
 				<button type="button" onclick="location.href='resourcescategory'" class="btn btn-default" id="navlink">Cancel</button>
 		</div>
       </form>

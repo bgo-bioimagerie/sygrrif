@@ -67,4 +67,9 @@ class SyResourceCalendar extends Model {
 		return $data->fetch();
 	}
 	
+	public function delete($id_resource){
+		$sql="DELETE FROM sy_resources_calendar WHERE id_resource = ?";
+		$req = $this->runRequest($sql, array($id_resource));
+	}
+	
 }

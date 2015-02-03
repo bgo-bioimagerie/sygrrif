@@ -4,11 +4,11 @@
 
 <head>
 
-	<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-	<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	
-	<script src="bootstrap/datepicker/js/moments.js"></script>
-	<script src="bootstrap/jquery-1.11.1.js"></script>
+	<script src="externals/datepicker/js/moments.js"></script>
+	<script src="externals/jquery-1.11.1.js"></script>
 
 </head>
 
@@ -136,8 +136,14 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Convention</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="convention" type="text" name="convention"
-				/>
+				<select class="form-control" name="convention">
+					<OPTION value="-1" > auto </OPTION>
+					<?php foreach ($conventionsList as $convention):?>
+					    <?php $convention = $this->clean( $convention[0] );
+					    ?>
+						<OPTION value="<?= $convention ?>" > <?= $convention ?> </OPTION>
+					<?php endforeach; ?>
+				</select>
 			</div>
 		</div>
 		<br>
@@ -152,7 +158,7 @@
 					</span>
 				</div>
 			
-			<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
       		<script type="text/javascript">
 			$(function () {
 				$('#datetimepicker5').datetimepicker({
@@ -173,7 +179,7 @@
 					</span>
 				</div>
 			
-			<script src="bootstrap/datepicker/js/bootstrap-datetimepicker.min.js"></script>
+			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
       		<script type="text/javascript">
 			$(function () {
 				$('#datetimepicker6').datetimepicker({
