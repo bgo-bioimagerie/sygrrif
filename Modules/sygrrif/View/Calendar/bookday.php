@@ -63,9 +63,9 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 <div class="col-lg-12">
 
 <div class="col-md-8 text-left">
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/book/daybefore'"><</button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/book/dayafter'">></button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/book/today'">Today</button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/daybefore'"> &lt; </button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/dayafter'"> > </button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/today'">Today</button>
 <?php 
 $d = explode("-", $date);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);

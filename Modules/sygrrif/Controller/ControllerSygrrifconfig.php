@@ -32,6 +32,10 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		$modelBookingSettings = new SyBookingSettings();
 		$bookingSettings = $modelBookingSettings->entries();
 		
+		// series booking
+		$modelCoreConfig = new CoreConfig();
+		$seriesBooking = $modelCoreConfig->getParam("SySeriesBooking");
+		
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
@@ -46,7 +50,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     					                     'installError' => $installError,
     					                     'isSygrrifMenu' => $isSygrrifMenu,
     										 'isBookingMenu' => $isBookingMenu,
-    										 'bookingSettings' => $bookingSettings
+    										 'bookingSettings' => $bookingSettings,
+    										 'seriesBooking' => $seriesBooking
     			) );
     			return;
 			}
@@ -55,7 +60,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					                     'installSuccess' => $installSuccess,
 					                     'isSygrrifMenu' => $isSygrrifMenu,
 					                     'isBookingMenu' => $isBookingMenu,
-					                     'bookingSettings' => $bookingSettings
+					                     'bookingSettings' => $bookingSettings,
+										 'seriesBooking' => $seriesBooking
 			) );
 			return;
 		}
@@ -86,7 +92,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar,
 				                     'isSygrrifMenu' => $isSygrrifMenu,
 									 'isBookingMenu' => $isBookingMenu,
-									 'bookingSettings' => $bookingSettings
+									 'bookingSettings' => $bookingSettings,
+									 'seriesBooking' => $seriesBooking
 			) );
 			return;
 			
@@ -101,10 +108,30 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'isSygrrifMenu' => $isSygrrifMenu,
 					'isBookingMenu' => $isBookingMenu,
 					'bookingSettings' => $bookingSettings,
-					'templateMessage' => $templateMessage
+					'templateMessage' => $templateMessage,
+					'seriesBooking' => $seriesBooking
 			) );
 			return;
 		}
+		
+		// set series booking option
+		$seriesbookingquery = $this->request->getParameterNoException ( "seriesbookingquery");
+		if ($seriesbookingquery == "yes"){
+			
+			$seriesBooking = $this->request->getParameterNoException ( "seriesBooking" );
+			$modelCoreConfig = new CoreConfig();
+			$modelCoreConfig->setParam("SySeriesBooking", $seriesBooking);
+			
+			$this->generateView ( array ('navBar' => $navBar,
+					'isSygrrifMenu' => $isSygrrifMenu,
+					'isBookingMenu' => $isBookingMenu,
+					'bookingSettings' => $bookingSettings,
+					'seriesBooking' => $seriesBooking
+			) );
+			return;
+		}
+		
+		
 		
 		// set booking settings
 		$setbookingoptionsquery = $this->request->getParameterNoException ( "setbookingoptionsquery");
@@ -149,7 +176,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'isSygrrifMenu' => $isSygrrifMenu,
 					'isBookingMenu' => $isBookingMenu,
 					'bookingOptionMessage' => $bookingOptionMessage,
-					'bookingSettings' => $bookingSettings
+					'bookingSettings' => $bookingSettings,
+					'seriesBooking' => $seriesBooking
 			) );
 			return;
 		}
@@ -158,7 +186,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		$this->generateView ( array ('navBar' => $navBar,
 				                     'isSygrrifMenu' => $isSygrrifMenu,
 									 'isBookingMenu' => $isBookingMenu,
-									 'bookingSettings' => $bookingSettings
+									 'bookingSettings' => $bookingSettings,
+									 'seriesBooking' => $seriesBooking
 		) );
 	}
 	

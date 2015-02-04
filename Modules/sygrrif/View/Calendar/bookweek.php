@@ -124,7 +124,7 @@ $sufixStream = date("S", $time);
 
 
 <div class="col-md-4 text-right">
-<button type="button" onclick="location.href='calendar/book'" class="btn btn-default">Day</button>
+<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default">Day</button>
 <button type="button" class="btn btn-default active">Week</button>
 <button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default ">Week Area</button>
 

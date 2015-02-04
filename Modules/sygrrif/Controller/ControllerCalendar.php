@@ -383,6 +383,29 @@ class ControllerCalendar extends ControllerBooking {
 	
 	public function book($message = ""){
 		
+		$lastView = "";
+		if (isset($_SESSION['lastbookview'])){
+			$lastView = $_SESSION['lastbookview'];
+		}
+		//echo "lastView = " . $lastView . "</br>";
+		if ($lastView == "bookday"){
+			$this->bookday($message);
+			return;
+		}
+		else if ($lastView == "bookweek"){
+			$this->bookweek($message);
+			return;
+		}
+		else if ($lastView == "bookweekarea"){
+			$this->bookweekarea($message);
+			return;
+		}
+		$this->bookday($message);
+	}
+	
+	public function bookday($message = ""){
+		
+		$_SESSION['lastbookview'] = "bookday";
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
@@ -461,11 +484,12 @@ class ControllerCalendar extends ControllerBooking {
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
 				'message' => $message
-		),"book" );
+		),"bookday" );
 	}
 	
 	public function bookweek($message = ""){
 	
+		$_SESSION['lastbookview'] = "bookweek";
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
@@ -556,11 +580,13 @@ class ControllerCalendar extends ControllerBooking {
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
 				'message' => $message
-		));
+		), "bookweek");
 	}
 	
 	public function bookweekarea($message = ""){
 	
+		$_SESSION['lastbookview'] = "bookweekarea";
+		
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
@@ -602,7 +628,6 @@ class ControllerCalendar extends ControllerBooking {
 		$mondayDate = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i), $curentDateE[0]));
 		$sundayDate  = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i)+6, $curentDateE[0]));
 	
-	
 		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
 	
 		// save the menu info in the session
@@ -613,8 +638,6 @@ class ControllerCalendar extends ControllerBooking {
 		// get the area info
 		$modelArea = new SyArea();
 		$area = $modelArea->getArea($curentAreaId);
-		
-		
 		
 		// get the resource info
 		$modelRes = new SyResource();
@@ -668,7 +691,7 @@ class ControllerCalendar extends ControllerBooking {
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
 				'message' => $message
-		));
+		), "bookweekarea");
 	}
 	
 	
@@ -731,6 +754,16 @@ class ControllerCalendar extends ControllerBooking {
 			$projectsList = $modelProjects->openedProjectsIDName(); 
 		}
 		
+		// is user allowed to series
+		$modelCoreConfig = new CoreConfig();
+		$seriesBooking = $modelCoreConfig->getParam("SySeriesBooking");
+		$showSeries = false;
+		if ($seriesBooking > 0 && $_SESSION["user_status"]>=$seriesBooking){
+			$showSeries = true;
+		}
+		
+		
+		
 		// set the view given the action		
 		if ($contentAction[0] == "t"){ // add resa 
 			
@@ -758,7 +791,8 @@ class ControllerCalendar extends ControllerBooking {
 					'curentuser' => $curentuser,
 					'canEditReservation' => $canEditReservation,
 					'colorCodes' => $colorCodes,
-					'projectsList' => $projectsList
+					'projectsList' => $projectsList,
+					'showSeries' => $showSeries
 			) );
 		}
 		else{ // edit resa
@@ -791,7 +825,8 @@ class ControllerCalendar extends ControllerBooking {
 					'reservationInfo' => $reservationInfo,
 					'canEditReservation' => $canEditReservation,
 					'colorCodes' => $colorCodes,
-					'projectsList' => $projectsList
+					'projectsList' => $projectsList,
+					'showSeries' => $showSeries
 			));
 		}
 		

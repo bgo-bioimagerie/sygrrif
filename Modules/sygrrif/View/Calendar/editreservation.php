@@ -311,7 +311,7 @@ if (!$canEditReservation){
 			</select>
 			</div>
 		</div>		
-		</br>
+		
 		<?php if ($canEditReservation){
 			?>
 			<div class="col-xs-4 col-xs-offset-8">
@@ -330,10 +330,11 @@ if (!$canEditReservation){
       
       
       <?php 
-      $showSeries = true;
-      if (isset($reservationInfo['repeat_id']) && $reservationInfo['repeat_id'] == 0){
-      	$showSeries = false;
-      } 
+      if ($showSeries == true){
+	      if (isset($reservationInfo['repeat_id']) && $reservationInfo['repeat_id'] == 0){
+	      	$showSeries = false;
+	      } 
+      }
       if ($showSeries){
       ?>
       

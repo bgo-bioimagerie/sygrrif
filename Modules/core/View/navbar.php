@@ -18,7 +18,7 @@
 				<span class="icon-bar"></span>
 			</button>
 			<a class="navbar-brand" href=""><img style="height:45px; margin-top: -12px;"
-             src="Themes/logo.jpg">
+             src="Themes/logo.jpg"></a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">

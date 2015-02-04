@@ -335,6 +335,40 @@
 		  <?php 
 		  }
 		  ?>
+		  
+		  </div>
+		<div class="col-xs-12">
+			<div class="page-header">
+				<h2>
+					Series booking <br> <small></small>
+				</h2>
+			</div>
+		</div>
+		
+		<form role="form" class="form-horizontal" action="sygrrifconfig"
+		method="post">
+		
+		<div class="col-xs-10">
+			  <input class="form-control" type="hidden" name="seriesbookingquery" value="yes"
+			 	/>
+		</div>
+		
+		<div class="form-group col-xs-12">
+				<label for="inputEmail" class="control-label col-xs-4">Series Booking</label>
+				<div class="col-xs-6">
+					<select class="form-control" name="seriesBooking">
+					<OPTION value="0" <?php if($seriesBooking==0){echo "selected=\"selected\"";} ?> > nobody </OPTION>
+					<OPTION value="2" <?php if($seriesBooking==2){echo "selected=\"selected\"";} ?> > users </OPTION>
+					<OPTION value="3" <?php if($seriesBooking==3){echo "selected=\"selected\"";} ?> > manager </OPTION>
+					<OPTION value="4" <?php if($seriesBooking==4){echo "selected=\"selected\"";} ?> > admin </OPTION>
+				</select>
+			</div>
+		</div>
+
+		<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			<input type="submit" class="btn btn-primary" value="save" />
+		</div>
+      </form>
       
   </div>
 </div>    
