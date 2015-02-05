@@ -19,26 +19,27 @@
 
 		<div class="page-header">
 			<h1>
-				Users<br> <small></small>
+			<?= CoreTranslator::Users($lang) ?>
+			<br> <small></small>
 			</h1>
 		</div>
 	
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="users/index/id">Id</a></td>
-					<td><a href="users/index/name">Name</a></td>
-					<td><a href="users/index/firstname">Firstname</a></td>
-					<td><a href="users/index/login">Login</a></td>
-					<td><a href="users/index/email">Email</a></td>
-					<td><a href="users/index/tel">Phone</a></td>
-					<td><a href="users/index/id_unit">Unit</a></td>
-					<td><a href="users/index/id_responsible">Responsible</a></td>
-					<td><a href="users/index/id_status">Status</a></td>
-					<td><a href="users/index/id">Is responsible</a></td>
-					<td><a href="users/index/convention">Convention</a></td>
-					<td><a href="users/index/date_created">User from</a></td>
-					<td><a href="users/index/date_last_login">Last connection</a></td>
+					<td class="text-center"><a href="users/index/id">ID</a></td>
+					<td class="text-center"><a href="users/index/name"><?= CoreTranslator::Name($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/firstname"><?= CoreTranslator::Firstname($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/login"><?= CoreTranslator::Login($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/email"><?= CoreTranslator::Email($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/tel"><?= CoreTranslator::Phone($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/id_unit"><?= CoreTranslator::Unit($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/id_responsible"><?= CoreTranslator::Responsible($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/id_status"><?= CoreTranslator::Status($lang) ?></a></td>
+					<td class="text-center"><a href="users/index/id"><?= CoreTranslator::is_responsible($lang)?></a></td>
+					<td class="text-center"><a href="users/index/convention"><?= CoreTranslator::Convention($lang)?></a></td>
+					<td class="text-center"><a href="users/index/date_created"><?= CoreTranslator::User_from($lang) ?> </a></td>
+					<td class="text-center"><a href="users/index/date_last_login"><?= CoreTranslator::Last_connection($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -73,7 +74,7 @@
 				    </td>
 				    <td><?= $this->clean ( $user ['date_created'] ); ?></td>
 				    <td><?= $this->clean ( $user ['date_last_login'] ); ?></td>
-				    <td><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button></td>  
+				    <td><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button></td>  
 	    		</tr>
 	    		<?php }endforeach; ?>
 				

@@ -1,6 +1,9 @@
 
 
+<?php 
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"];
+?>
 <p>
-The Core module allows to manage the application
-settings and a user database
+<?php echo CoreTranslator::CoreConfigAbstract($lang); ?>
 </p>

@@ -14,20 +14,21 @@
 		
 		<div class="page-header">
 			<h1>
-				Change password <br> <small></small>
+				<?= CoreTranslator::Change_password($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Unable to change the password</p>
+			<p> <?= CoreTranslator::Unable_to_change_the_password($lang) ?></p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> The password has been successfully updated !</p>
+			<p> <?= CoreTranslator::The_password_has_been_successfully_updated($lang) ?></p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='users'" class="btn btn-success" id="navlink">Ok</button>
+			<button onclick="location.href='users'" class="btn btn-success" id="navlink"><?= CoreTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

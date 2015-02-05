@@ -14,18 +14,19 @@
 	
 		<div class="page-header">
 			<h1>
-				Sygrrif Bills<br> <small></small>
+			<?= SyTranslator::Sygrrif_Bills($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="sygrrifbillmanager/index/id">Id</a></td>
-					<td><a href="sygrrifbillmanager/index/number">Number</a></td>
-					<td><a href="sygrrifbillmanager/index/date_generated">Date Generated</a></td>
-					<td><a href="sygrrifbillmanager/index/date_paid">Date Paid</a></td>
-					<td><a href="sygrrifbillmanager/index/is_paid">Is Paid</a></td>
+					<td><a href="sygrrifbillmanager/index/id">ID</a></td>
+					<td><a href="sygrrifbillmanager/index/number"><?= SyTranslator::Number($lang) ?></a></td>
+					<td><a href="sygrrifbillmanager/index/date_generated"><?= SyTranslator::Date_Generated($lang) ?></a></td>
+					<td><a href="sygrrifbillmanager/index/date_paid"><?= SyTranslator::Date_Paid($lang) ?></a></td>
+					<td><a href="sygrrifbillmanager/index/is_paid"><?= SyTranslator::Is_Paid($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -46,7 +47,7 @@
 				    ?>
 				    <td><?= $is_active; ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrifbillmanager/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='sygrrifbillmanager/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

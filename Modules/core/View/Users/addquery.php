@@ -20,14 +20,14 @@
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Unable to add the user</p>
+			<p> <?= CoreTranslator::Unable_to_add_the_user($lang) ?></p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> The user had been successfully added !</p>
+			<p> <?= CoreTranslator::The_user_had_been_successfully_added($lang)?></p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='users'" class="btn btn-success" id="navlink">Ok</button>
+			<button onclick="location.href='users'" class="btn btn-success" id="navlink"><?= CoreTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

@@ -28,7 +28,7 @@
 	
 		<div class="page-header">
 			<h1>
-				Project bill <br> <small></small>
+				<?= SyTranslator::bill_project($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 		
@@ -41,7 +41,7 @@
 		<?php } ?>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date Start</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
 				<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker5'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_start" id="searchDate_start"
@@ -61,7 +61,7 @@
 		    </div>
 		</div>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date End</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
 				<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker6'>
 					<input id="test32" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_end" 
@@ -82,7 +82,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Project</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Project($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="project_id" id="project_id"
 						>
@@ -103,7 +103,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Pricing</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Pricing($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="pricing_id">
 					<OPTION value="0" > ... </OPTION>
@@ -121,18 +121,18 @@
 		</div>	
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Pricing by</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Pricing_by($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="pricing_type">
-					<OPTION value="0" > Time </OPTION>
-					<OPTION value="1" > Reservations number </OPTION>
+					<OPTION value="0" > <?= SyTranslator::Time2($lang) ?> </OPTION>
+					<OPTION value="1" > <?= SyTranslator::Reservations_number($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>	
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Ok" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

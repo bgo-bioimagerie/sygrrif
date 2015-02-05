@@ -7,11 +7,18 @@
 
 </style>
 
+<?php 
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"];
+?>
+
 <div class="col-lg-12">
 
 	<div class="page-header">
 		<h4>
-			Color code <br> <small></small>
+			<?= SyTranslator::color_code($lang) ?>
+			<br> <small></small>
 		</h4>
 	</div>
 

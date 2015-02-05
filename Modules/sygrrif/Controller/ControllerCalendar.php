@@ -384,10 +384,10 @@ class ControllerCalendar extends ControllerBooking {
 	public function book($message = ""){
 		
 		$lastView = "";
+		$lastView = $_SESSION["user_settings"]["calendarDefaultView"];
 		if (isset($_SESSION['lastbookview'])){
 			$lastView = $_SESSION['lastbookview'];
 		}
-		//echo "lastView = " . $lastView . "</br>";
 		if ($lastView == "bookday"){
 			$this->bookday($message);
 			return;

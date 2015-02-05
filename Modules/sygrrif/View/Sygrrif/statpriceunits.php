@@ -29,7 +29,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Statistics/Pricing Units <br> <small></small>
+				<?= SyTranslator::Pricing_Unit($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		
@@ -42,7 +43,7 @@
 		<?php } ?>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date Start</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
 				<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker5'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_start" id="searchDate_start"
@@ -62,7 +63,7 @@
 		    </div>
 		</div>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date End</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
 				<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker6'>
 					<input id="test32" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_end" 
@@ -83,7 +84,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);"
 						>
@@ -109,7 +110,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Responsible</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="responsible">
 					<OPTION value="0" > ... </OPTION>
@@ -127,20 +128,20 @@
 		</div>	
 		<br>
 				<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Export type</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Export_type($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="export_type">
 					<OPTION value="0" > ... </OPTION>
-					<OPTION value="1" > counting </OPTION>
-					<OPTION value="2" > detail </OPTION>
-					<OPTION value="3" > bill </OPTION>
+					<OPTION value="1" > <?= SyTranslator::counting($lang) ?> </OPTION>
+					<OPTION value="2" > <?= SyTranslator::detail($lang) ?> </OPTION>
+					<OPTION value="3" > <?= SyTranslator::bill($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>	
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Ok" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

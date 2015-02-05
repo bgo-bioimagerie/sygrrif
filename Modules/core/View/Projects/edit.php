@@ -21,7 +21,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Edit Project <br> <small></small>
+			<?= CoreTranslator::Edit_Project($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 	
@@ -37,30 +38,30 @@
 		</div>
 		<br></br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Description</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Description($lang)?></label>
 			<div class="col-xs-10">
-				<textarea class="form-control" id="description" type="textarea" name="description"
+				<textarea class="form-control" id="description" name="description"
 				><?= $project['description'] ?></textarea>
 			</div>
 		</div>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Status</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Status($lang)?></label>
 			<div class="col-xs-10">
 			<?php $active = $this->clean($project["status"]); 
 				$selected = "selected=\"selected\"";
   			?>
   				<select class="form-control" name="status">
-  					<OPTION value="1" <?php if($active){echo $selected;} ?>> Open </OPTION>
-  					<OPTION value="0" <?php if(!$active){echo $selected;} ?>> Close </OPTION>
+  					<OPTION value="1" <?php if($active){echo $selected;} ?>> <?= CoreTranslator::Open($lang) ?> </OPTION>
+  					<OPTION value="0" <?php if(!$active){echo $selected;} ?>><?= CoreTranslator::Close($lang) ?> </OPTION>
   					
   				</select>
 		    </div>
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='projects'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='projects'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

@@ -14,20 +14,21 @@
 		
 		<div class="page-header">
 			<h1>
-				Edit User <br> <small></small>
+			<?= CoreTranslator::Edit_User($lang) ?>
+			<br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Unable to update the user</p>
+			<p> <?= CoreTranslator::Unable_to_update_the_user($lang) ?></p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> The user had been successfully updated !</p>
+			<p> <?= CoreTranslator::The_user_had_been_successfully_updated($lang) ?></p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='users'" class="btn btn-success" id="navlink">Ok</button>
+			<button onclick="location.href='users'" class="btn btn-success" id="navlink"><?= CoreTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

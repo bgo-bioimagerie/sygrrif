@@ -18,14 +18,14 @@
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Unable to update the account</p>
+			<p> <?= CoreTranslator::Unable_to_update_the_account($lang) ?></p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> The account has been successfully updated !</p>
+			<p> <?= CoreTranslator::The_account_has_been_successfully_updated($lang)?></p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='home'" class="btn btn-success" id="navlink">Ok</button>
+			<button onclick="location.href='home'" class="btn btn-success" id="navlink"><?= CoreTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

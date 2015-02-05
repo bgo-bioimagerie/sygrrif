@@ -21,11 +21,12 @@
 	  <form role="form" class="form-horizontal" action="users/addquery" method="post">
 		<div class="page-header">
 			<h1>
-				Add User <br> <small></small>
+			<?= CoreTranslator::Add_User($lang) ?>
+			<br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Name</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name" 
 				/>
@@ -33,7 +34,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Firstname</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Firstname($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
 				/>
@@ -41,7 +42,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="login" class="control-label col-xs-2">Login</label>
+			<label for="login" class="control-label col-xs-2"><?= CoreTranslator::Login($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="login" type="text" name="login"
 				/>
@@ -49,18 +50,18 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="pwd" class="control-label col-xs-2">Password</label>
+			<label for="pwd" class="control-label col-xs-2"><?= CoreTranslator::Password($lang) ?></label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
 			</div>
-			<label for="pwdc" class="control-label col-xs-2">Confirm</label>
+			<label for="pwdc" class="control-label col-xs-2"><?= CoreTranslator::Confirm($lang) ?></label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="pwdc" name="pwdc" placeholder="Password">
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Email</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Email($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
 				/>
@@ -68,7 +69,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Phone</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Phone($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
 				/>
@@ -76,7 +77,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="unit">
 					<?php foreach ($unitsList as $unit):?>
@@ -90,7 +91,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Responsible</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="responsible">   
 					<?php foreach ($respsList as $resp):?>
@@ -113,14 +114,14 @@
 			<div class="col-xs-10">
 			  <div class="checkbox">
 			    <label>
-			      <input type="checkbox" name="is_responsible" > is responsible
+			      <input type="checkbox" name="is_responsible" > <?= CoreTranslator::is_responsible($lang) ?>
 			    </label>
               </div>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Status</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="status">
 					<?php foreach ($statusList as $status):?>
@@ -134,7 +135,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Convention</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="convention">
 					<OPTION value="-1" > auto </OPTION>
@@ -149,7 +150,7 @@
 		<br>
 		<div class="form-group ">
 		
-				<label for="inputEmail" class="control-label col-xs-2">Date convention</label>
+				<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang) ?></label>
 				<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker5'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_convention"/>
@@ -170,7 +171,7 @@
 		</div>
 		<br>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date end contract</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_end_contract($lang) ?></label>
 				<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker6'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_end_contract"/>
@@ -192,8 +193,8 @@
 		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)?>" />
+				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 

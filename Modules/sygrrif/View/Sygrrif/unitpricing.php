@@ -9,7 +9,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Pricing per unit<br> <small></small>
+			<?= SyTranslator::Pricing_Unit($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
@@ -17,8 +18,8 @@
 			<thead>
 				<tr>
 				    <td>ID</td>
-					<td>Name</td>
-					<td>Pricing</td>
+					<td><?= SyTranslator::Name($lang) ?></td>
+					<td><?= SyTranslator::Pricing($lang) ?></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -33,7 +34,7 @@
 				    <!--  tarif -->
 					<td><?= $this->clean ( $price ['pricing_name'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editunitpricing/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='sygrrif/editunitpricing/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

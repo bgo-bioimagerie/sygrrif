@@ -25,7 +25,7 @@ class ControllerModulesmanager extends ControllerSecureNav {
 				// name
 				$mods[$count]['name'] = $modules[$i];
 				// get abstract html text
-				$mods[$count]['abstract'] = file_get_contents($abstractFile);
+				$mods[$count]['abstract'] = $abstractFile;
 				// construct action
 				$action = $modules[$i] . "config";
 				$mods[$count]['action'] = $action;

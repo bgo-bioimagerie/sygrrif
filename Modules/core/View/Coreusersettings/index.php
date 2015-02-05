@@ -2,17 +2,23 @@
 
 <?php echo $navBar?>
 
+<?php 
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"];
+?>
+
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
 	  <form role="form" class="form-horizontal" action="coreusersettings/editsettings" method="post">
 		<div class="page-header">
 			<h1>
-				Language <br> <small></small>
+			<?= CoreTranslator::Language($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Language</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Language($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="language">
 					<OPTION value="En" <?php if($language == "En"){echo "selected=\"selected\""; }?>> English </OPTION>
@@ -23,20 +29,20 @@
 		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
       
       <form role="form" class="form-horizontal" action="coreusersettings/edithomepage" method="post">
 		<div class="page-header">
 			<h1>
-				Home page <br> <small></small>
+				<?= CoreTranslator::Home_page($lang)?> <br> <small></small>
 			</h1>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Home Page</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Home_page($lang)?></label>
 			<div class="col-xs-10">
 				<input type="text" class="form-control" name="homepage" value="<?= $homePage ?>" />
 			</div>
@@ -44,8 +50,8 @@
 		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
       

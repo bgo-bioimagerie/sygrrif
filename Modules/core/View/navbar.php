@@ -6,6 +6,12 @@
     <link href="Themes/navbar-fixed-top.css" rel="stylesheet">
     
 </head>
+
+<?php 
+require_once 'Modules/core/Model/CoreTranslator.php';
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"];
+?>
     
 <!-- Fixed navbar -->
 <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -22,16 +28,18 @@
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="<?= $_SESSION["user_settings"]["homepage"] ?>">Home</a></li>
+				<li><a href="<?= $_SESSION["user_settings"]["homepage"] ?>"><?= CoreTranslator::Home($lang) ?></a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Tools <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?= CoreTranslator::Tools($lang) ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 					<?php 
 					
         				foreach ($toolMenu as $tool) {
         					$key = $tool['link'];
         					$value = $tool['name'];
-        					echo "<li><a href= $key > $value </a></li>";
+        					?>
+        					<li><a href="<?=$key?>" > <?= CoreTranslator::MenuItem($value, $lang) ?> </a></li>
+        					<?php
         				}
         			?>
 					</ul>
@@ -41,7 +49,7 @@
 				if ($toolAdmin){
 				?>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Admin <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?= CoreTranslator::Admin($lang) ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 				      <?php 
         				foreach ($toolAdmin as $tool) {
@@ -59,10 +67,10 @@
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?= $userName ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-        				<li><a href=users/manageaccount > My Account </a></li>
-        				<li><a href=settings > Settings </a></li>
+        				<li><a href=users/manageaccount > <?= CoreTranslator::My_Account($lang) ?> </a></li>
+        				<li><a href=settings > <?= CoreTranslator::Settings($lang) ?> </a></li>
         				<li class="divider"></li>
-        				<li><a href=connection/logout > logout </a></li>
+        				<li><a href=connection/logout > <?= CoreTranslator::logout($lang) ?> </a></li>
 					</ul>
 				</li>
 

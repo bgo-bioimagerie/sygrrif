@@ -15,12 +15,13 @@
 	
 		<div class="page-header">
 			<h1>
-				Authorized users <br> <small></small>
+			<?= SyTranslator::Authorized_users($lang) ?>
+				 <br> <small></small>
 			</h1>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Resources Categories</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Resource_categories($lang) ?></label>
 			<div class="col-xs-8">
 					<select class="form-control" name="resource_id" id="resource_id"
 						>
@@ -37,8 +38,8 @@
 			</div>
 		</div>	
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Ok" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -51,7 +52,7 @@
 	
 		<div class="page-header">
 			<h1>
-				Active users <br> <small></small>
+				<?= SyTranslator::Active_users($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 		
@@ -60,15 +61,15 @@
 			<div class="col-xs-8">
 					<select class="form-control" name="user_type" id="user_type"
 						>
-					<OPTION value="1"> User </OPTION>
-					<OPTION value="2"> Responsible </OPTION>
-					<OPTION value="3"> User and Responsible </OPTION>
+					<OPTION value="1"> <?= SyTranslator::User($lang) ?> </OPTION>
+					<OPTION value="2"> <?= SyTranslator::Responsible($lang) ?> </OPTION>
+					<OPTION value="3"> <?= SyTranslator::User_and_Responsible($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>	
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Ok" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang)?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

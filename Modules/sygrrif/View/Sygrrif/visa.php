@@ -9,15 +9,16 @@
 	
 		<div class="page-header">
 			<h1>
-				VISA<br> <small></small>
+				<?= SyTranslator::Visa($lang)?>
+				<br> <small></small>
 			</h1>
 		</div>
 
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="sygrrif/visa/id">Id</a></td>
-					<td><a href="sygrrif/visa/name">Name</a></td>
+					<td><a href="sygrrif/visa/id">ID</a></td>
+					<td><a href="sygrrif/visa/name"><?= SyTranslator::Name($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -30,7 +31,7 @@
 					<td><?= $visaId ?></td>
 				    <td><?= $this->clean ( $visa ['name'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editvisa/<?= $visaId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='sygrrif/editvisa/<?= $visaId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php }endforeach; ?>

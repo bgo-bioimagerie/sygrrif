@@ -19,7 +19,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Name</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name" value=<?= $user['name'] ?>
 				/>
@@ -27,7 +27,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Firstname</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Firstname($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
 				       value = <?= $user['firstname'] ?>
@@ -36,7 +36,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="login" class="control-label col-xs-2">Login</label>
+			<label for="login" class="control-label col-xs-2"><?= CoreTranslator::Login($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="login" type="text" name="login"
 					   value = "<?= $user['login'] ?>" readonly
@@ -45,7 +45,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Email</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Email($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
 				       value = "<?= $user['email'] ?>"
@@ -54,7 +54,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Phone</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Phone($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
 				       value = "<?= $user['tel'] ?>"
@@ -63,7 +63,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
 				       value = "<?= $unit ?>" readonly
@@ -72,7 +72,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Responsible</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
 				       value = "<?= $resp ?>" readonly
@@ -96,7 +96,7 @@
 						} 
 				  ?>
 			      
-			      <input type="checkbox" name="is_responsible" <?= $checked ?> disabled="disabled"> is responsible
+			      <input type="checkbox" name="is_responsible" <?= $checked ?> disabled="disabled"><?= CoreTranslator::is_responsible($lang)?>
 			      
 			    </label>
               </div>
@@ -104,7 +104,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Status</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
 				       value = "<?= $status ?>" readonly
@@ -113,7 +113,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Convention</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="convention" type="text" name="convention" value = "<?= $user['convention'] ?>"
 				disabled="disabled" />
@@ -121,15 +121,15 @@
 		</div>
 		<br>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date convention</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" type="text" value = "<?= $user['date_convention'] ?>" name="date_convention" disabled="disabled">
 		    </div>
 		</div>
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)  ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang)?></button>
 		</div>
 	
 		
@@ -142,7 +142,8 @@
 	  <form role="form" class="form-horizontal" action="users/accountchangepwdquery" method="post">
 		<div class="page-header">
 			<h1>
-				Change password <br> <small></small>
+			<?= CoreTranslator::Change_password($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		 
@@ -150,20 +151,20 @@
 		<input class="form-control" id="login" type="hidden" name="login" value=<?= $user['login'] ?> >
 				
 		<div class="form-group">
-			<label for="pwd" class="control-label col-xs-2">Curent password</label>
+			<label for="pwd" class="control-label col-xs-2"><?= CoreTranslator::Curent_password($lang)  ?> </label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="previouspwd" name="previouspwd" placeholder="Password">
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="pwd" class="control-label col-xs-2">New password</label>
+			<label for="pwd" class="control-label col-xs-2"><?= CoreTranslator::New_password($lang)?></label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
 			</div>
 		<div class="form-group">
 		</div>
-			<label for="pwdc" class="control-label col-xs-2">Confirm</label>
+			<label for="pwdc" class="control-label col-xs-2"><?= CoreTranslator::Confirm($lang) ?></label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="pwdc" name="pwdc" placeholder="Password">
 			</div>
@@ -171,8 +172,8 @@
 		<br>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
 	  </form>
 	</div>

@@ -1,6 +1,9 @@
 
 
+<?php 
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"];
+?>
 <p>
-The SyGRRif module allows to manage a GRR Ressources and to 
-generate statistics and pricing
+<?php echo SyTranslator::SyConfigAbstract($lang); ?>
 </p>

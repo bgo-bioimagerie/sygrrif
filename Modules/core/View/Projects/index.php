@@ -15,17 +15,18 @@
 	
 		<div class="page-header">
 			<h1>
-				projects<br> <small></small>
+			<?= CoreTranslator::Projects($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="projects/index/id">Id</a></td>
-					<td><a href="projects/index/name">Name</a></td>
-					<td><a href="projects/index/description">Description</a></td>
-					<td><a href="projects/index/status">Status</a></td>
+					<td><a href="projects/index/id">ID</a></td>
+					<td><a href="projects/index/name"><?= CoreTranslator::Name($lang) ?></a></td>
+					<td><a href="projects/index/description"><?= CoreTranslator::Description($lang) ?></a></td>
+					<td><a href="projects/index/status"><?= CoreTranslator::Status($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -46,7 +47,7 @@
 				    	   ?>
 				    <td><?= $statusTxt ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='projects/edit/<?= $projectID ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='projects/edit/<?= $projectID ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

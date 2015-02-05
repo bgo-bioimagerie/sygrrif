@@ -26,6 +26,11 @@ font-size:10px;line-height:1.4;text-align:center;background-color:#f9f9f9;border
 
 </header>
 
+<?php 
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"];
+?>
+
 <div class="container">
 	<!-- Main component for a primary marketing message or call to action -->
 	
@@ -52,7 +57,7 @@ font-size:10px;line-height:1.4;text-align:center;background-color:#f9f9f9;border
        		<li>
         		<a href="<?=$key?>">
           			<span class="glyphicon <?=$icon?>" aria-hidden="true"></span>
-          			<span class="glyphicon-class"><?=$value?></span>
+          			<span class="glyphicon-class"><?=CoreTranslator::MenuItem($value, $lang)?></span>
         		</a>
         	</li>
         	<?php 
@@ -60,7 +65,7 @@ font-size:10px;line-height:1.4;text-align:center;background-color:#f9f9f9;border
         ?>
         </ul>
 		</div>
-
+	</div>
         
         <?php 
 		if ($toolAdmin){
@@ -86,8 +91,12 @@ font-size:10px;line-height:1.4;text-align:center;background-color:#f9f9f9;border
         	</li>
         <?php 
         }
+        ?>
+        </ul>
+        <?php 
 		}
         ?>
+        </div>
         
 </div> <!-- /container -->
 

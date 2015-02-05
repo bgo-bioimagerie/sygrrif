@@ -1,20 +1,9 @@
 <?php
 
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
-require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
-require_once 'Modules/sygrrif/Model/SyGraph.php';
-require_once 'Modules/sygrrif/Model/SyPricing.php';
-require_once 'Modules/sygrrif/Model/SyInstall.php';
-require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
-require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
-require_once 'Modules/sygrrif/Model/SyVisa.php';
-require_once 'Modules/sygrrif/Model/SyAuthorization.php';
-require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
-require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
-require_once 'Modules/sygrrif/Model/SyArea.php';
-require_once 'Modules/sygrrif/Model/SyResourceType.php';
+require_once 'Modules/core/Model/UserSettings.php';
+require_once 'Modules/core/Controller/ControllerSecureNav.php';
+
 
 class ControllerSygrrifusersettings extends ControllerSecureNav {
 
@@ -25,10 +14,28 @@ class ControllerSygrrifusersettings extends ControllerSecureNav {
 	public function index() {
 		
 		$navBar = $this->navBar();
+		
+		$user_id = $this->request->getSession()->getAttribut("id_user");
+		$userSettingsModel = new UserSettings();
+		$calendarDefaultView = $userSettingsModel->getUserSetting($user_id, "calendarDefaultView");
 
 		$this->generateView ( array (
-				'navBar' => $navBar
+				'navBar' => $navBar,
+				'calendarDefaultView' => $calendarDefaultView
 		) );
+	}
+	
+	public function editcalendarsettings(){
+		$calendarDefaultView = $this->request->getParameter("calendarDefaultView");
+		
+		$user_id = $this->request->getSession()->getAttribut("id_user");
+		
+		$userSettingsModel = new UserSettings();
+		$userSettingsModel->setSettings($user_id, "calendarDefaultView", $calendarDefaultView);
+		
+		$userSettingsModel->updateSessionSettingVariable();
+		
+		$this->redirect("sygrrifusersettings");
 	}
 	
 }
