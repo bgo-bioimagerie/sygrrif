@@ -2,6 +2,14 @@
 
 <?php echo $navBar?>
 
+<?php 
+require_once 'Modules/core/Model/CoreTranslator.php';
+$lang = "En";
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
+?>
+
 <head>
     <!-- Bootstrap core CSS -->
     <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">

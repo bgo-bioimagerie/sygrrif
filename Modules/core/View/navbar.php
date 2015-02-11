@@ -9,8 +9,10 @@
 
 <?php 
 require_once 'Modules/core/Model/CoreTranslator.php';
-$lang = $_SESSION["user_settings"];
-$lang = $lang["language"];
+$lang = "En";
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
 ?>
     
 <!-- Fixed navbar -->
@@ -28,7 +30,14 @@ $lang = $lang["language"];
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
-				<li><a href="<?= $_SESSION["user_settings"]["homepage"] ?>"><?= CoreTranslator::Home($lang) ?></a></li>
+				<?php 
+				$refHome = "Home";
+				if (isset($_SESSION["user_settings"]["homepage"])){
+						$refHome = $_SESSION["user_settings"]["homepage"];
+				}	
+				?>
+			
+				<li><a href="<?= $refHome ?>"><?= CoreTranslator::Home($lang) ?></a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?= CoreTranslator::Tools($lang) ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">

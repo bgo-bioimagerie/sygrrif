@@ -7,7 +7,6 @@
 </head>
 
 <?php include "Modules/core/View/Users/usersnavbar.php"; ?>
-
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
 	  <form role="form" action="users/addquery" method="post">
@@ -175,31 +174,7 @@
 	</div>
 </div>
 
-<script type="text/javascript">
-
-	$('.form_date_Fr').datetimepicker({
-        language:  'fr',
-        weekStart: 1,
-        todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0,
-		format: 'dd/mm/yyyy'
-    });
-	$('.form_date_En').datetimepicker({
-        language:  'us',
-        weekStart: 1,
-        todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		minView: 2,
-		forceParse: 0,
-		format: 'yyyy-mm-dd'
-    });
-</script>
+<?php include 'Modules/core/View/timepicker_script.php';?>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

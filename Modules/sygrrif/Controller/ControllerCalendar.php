@@ -385,7 +385,9 @@ class ControllerCalendar extends ControllerBooking {
 	public function book($message = ""){
 		
 		$lastView = "";
-		$lastView = $_SESSION["user_settings"]["calendarDefaultView"];
+		if (isset($_SESSION["user_settings"]["calendarDefaultView"])){
+			$lastView = $_SESSION["user_settings"]["calendarDefaultView"];
+		}
 		if (isset($_SESSION['lastbookview'])){
 			$lastView = $_SESSION['lastbookview'];
 		}
@@ -466,7 +468,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// get the entries for this resource
 		$modelEntries = new SyCalendarEntry();
-		echo "curent date line 470 = " . $curentDate . "<br/>";
+		//echo "curent date line 470 = " . $curentDate . "<br/>";
 		$dateArray = explode("-", $curentDate);
 		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
 		$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2],$dateArray[0]);

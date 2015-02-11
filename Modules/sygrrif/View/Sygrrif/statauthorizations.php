@@ -259,19 +259,19 @@ if (!$resultsVisible){
 		<?php 
 		
 		if (Configuration::get("saveImages") == "enable"){
-			$nameFile = "temp/camembert_authSVG.svg";
+			$nameFile = "data/temp/camembert_authSVG.svg";
 			$openFile = fopen($nameFile,"w");
 			$toWrite = $camembert;
 			fwrite($openFile, $toWrite);
 			fclose($openFile);
 		
-			exec('sudo /usr/bin/inkscape -D temp/camembert_authSVG.svg -e temp/camembert_authJPG.jpg -b "#ffffff" -h800');
+			exec('sudo /usr/bin/inkscape -D data/temp/camembert_authSVG.svg -e data/temp/camembert_authJPG.jpg -b "#ffffff" -h800');
 		}
 		?>
 		</div>
 		<br>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
-		<button type="button" onclick="location.href='temp/camembert_authJPG.jpg'" download="pie_chart_authorizations" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
+		<button type="button" onclick="location.href='data/temp/camembert_authJPG.jpg'" download="pie_chart_authorizations" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
 		<?php } ?>
 	  </div>
 	  <br>

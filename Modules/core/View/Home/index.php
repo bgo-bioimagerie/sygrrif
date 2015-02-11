@@ -27,8 +27,10 @@ font-size:10px;line-height:1.4;text-align:center;background-color:#f9f9f9;border
 </header>
 
 <?php 
-$lang = $_SESSION["user_settings"];
-$lang = $lang["language"];
+$lang = "En";
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
 ?>
 
 <div class="container">

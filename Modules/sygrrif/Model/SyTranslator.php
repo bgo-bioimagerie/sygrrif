@@ -357,7 +357,7 @@ class SyTranslator {
 		if ($lang == "Fr"){
 			return "Utilisateurs actifs";
 		}
-		return "Active_users";
+		return "Active users";
 	}
 	
 	public static function User($lang = ""){
@@ -1231,17 +1231,91 @@ class SyTranslator {
 		return "Today";
 	}
 	
-	public static function DateFromTime($time, $lang){
-		if ($lang == "Fr"){
-			setlocale(LC_TIME, 'fra_fra');
-			return utf8_encode(strftime('%A %d %B %Y', $time));
+	public static function translateDayFromEn($day, $lang){
+		
+		if($day == "Monday"){
+			return SyTranslator::Monday($lang);
 		}
-		// english
+		if($day == "Tuesday"){
+			return SyTranslator::Tuesday($lang);
+		}
+		if($day == "Wednesday"){
+			return SyTranslator::Wednesday($lang);
+		}
+		if($day == "Thursday"){
+			return SyTranslator::Thursday($lang);
+		}
+		if($day == "Friday"){
+			return SyTranslator::Friday($lang);
+		}
+		if($day == "Saturday"){
+			return SyTranslator::Saturday($lang);
+		}
+		if($day == "Sunday"){
+			return SyTranslator::Sunday($lang);
+		}
+	}
+	
+		public static function translateMonthFromEn($day, $lang){
+		
+		if ($lang == "Fr"){
+			if($day == "January"){
+				return "Janvier";
+			}
+			if($day == "February"){
+				return "Février";
+			}
+			if($day == "March"){
+				return "Mars";
+			}
+			if($day == "April"){
+				return "Avril";
+			}
+			if($day == "May"){
+				return "Mai";
+			}
+			if($day == "June"){
+				return "Juin";
+			}
+			if($day == "July"){
+				return "Juillet";
+			}
+			if($day == "August"){
+				return "Août";
+			}
+			if($day == "September"){
+				return "Septembre";
+			}
+			if($day == "October"){
+				return "Octobre";
+			}
+			if($day == "November"){
+				return "Novembre";
+			}
+			if($day == "December"){
+				return "Décembre";
+			}
+		}
+	}
+	
+	
+	public static function DateFromTime($time, $lang){
+	
 		$dayStream = date("l", $time);
 		$monthStream = date("F", $time);
 		$dayNumStream = date("d", $time);
 		$yearStream = date("Y", $time);
 		$sufixStream = date("S", $time);
+		
+		if ($lang == "Fr"){
+			
+			return SyTranslator::translateDayFromEn($dayStream, $lang) . " " . $dayNumStream . " " . SyTranslator::translateMonthFromEn($monthStream, $lang) . " " . $yearStream;
+			
+			//setlocale(LC_TIME, "fr_FR");
+			//return utf8_encode(strftime('%A %d %B %Y', $time));
+		}
+		// english
+
 		return $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream;
 	} 
 	

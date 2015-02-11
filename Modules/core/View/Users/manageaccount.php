@@ -2,6 +2,11 @@
 
 <?php echo $navBar?>
 
+<?php 
+$lang = $_SESSION["user_settings"];
+$lang = $lang["language"]; 
+?>
+
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
 	  <form role="form" class="form-horizontal" action="users/manageaccountquery" method="post">
