@@ -4,6 +4,9 @@
 
 <head>
 
+	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+	<link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	
 <style>
 #button-div{
 	padding-top: 20px;
@@ -43,17 +46,21 @@
 			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Date_generated($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="date_generated"
-				       value="<?=$this->clean($billInfo["date_generated"]) ?>" readonly 
+				       value="<?=CoreTranslator::dateFromEn($this->clean($billInfo["date_generated"]), $lang) ?>" readonly 
 				/>
 			</div>
 		</div>
-		<div class="form-group">
+		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Date_paid($lang) ?></label>
-			<div class="col-xs-8">
-				<input class="form-control" id="name" type="text" name="date_paid"
-				       value="<?=$this->clean($billInfo["date_paid"]) ?>"  
-				/>
-			</div>
+				<div class="col-xs-8">
+				<div class='input-group date form_date_<?= $lang ?>'>
+					<input id="test32" type='text' class="form-control" name="date_paid" 
+					       value="<?= CoreTranslator::dateFromEn($this->clean($billInfo["date_generated"]), $lang) ?>" />
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+				</div>
+		    </div>
 		</div>
 		
 		<div class="form-group">
@@ -80,6 +87,8 @@
 	      
 	</div>
 </div>
+
+<?php include 'Modules/core/View/timepicker_script.php'; ?>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

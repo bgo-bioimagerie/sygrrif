@@ -25,7 +25,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Edit pricing <br> <small></small>
+			<?= SyTranslator::Edit_pricing($lang) ?>
+				 <br> <small></small>
 			</h1>
 		</div>
 	
@@ -37,34 +38,34 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Name</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name" value="<?= $this->clean($pricing['tarif_name'])?>"
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unique price</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unique_price($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_unique">
 						<?php $unique = $this->clean($pricing['tarif_unique']) ?>
-						<OPTION value="oui" <?php if ($unique==1){echo "selected=\"selected\"";}?>> Oui </OPTION>
-						<OPTION value="non" <?php if ($unique==0){echo "selected=\"selected\"";}?>> Non </OPTION>
+						<OPTION value="oui" <?php if ($unique==1){echo "selected=\"selected\"";}?>> <?= SyTranslator::Yes($lang)?> </OPTION>
+						<OPTION value="non" <?php if ($unique==0){echo "selected=\"selected\"";}?>> <?= SyTranslator::No($lang)?> </OPTION>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Price night</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Price_night($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_nuit">
 					    <?php $tnuit = $this->clean($pricing['tarif_nuit']) ?>
-						<OPTION value="oui" <?php if ($tnuit==1){echo "selected=\"selected\"";}?>> Oui </OPTION>
-						<OPTION value="non" <?php if ($tnuit==0){echo "selected=\"selected\"";}?>> Non </OPTION>
+						<OPTION value="oui" <?php if ($tnuit==1){echo "selected=\"selected\"";}?>> <?= SyTranslator::Yes($lang)?> </OPTION>
+						<OPTION value="non" <?php if ($tnuit==0){echo "selected=\"selected\"";}?>> <?= SyTranslator::No($lang)?> </OPTION>
 				</select>
 			</div>
 			<br></br>
 			<div class="col-xs-10 col-xs-offset-2">
-				<label for="inputEmail" class="control-label col-xs-3">Night beginning</label>
+				<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Night_beginning($lang)?></label>
 				<div class="col-xs-2">
 				<select class="form-control col-xs-2" name="night_start">
 				    <?php $snight = $this->clean($pricing['night_start']) ?>
@@ -75,7 +76,7 @@
 					<OPTION value="22" <?php if ($snight==22){echo "selected=\"selected\"";}?>> 22h </OPTION>
 				</select>
 				</div>
-				<label for="inputEmail" class="control-label col-xs-3">Night end</label>
+				<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Night_end($lang)?></label>
 				<div class="col-xs-2">
 				<select class="form-control" name="night_end">
 				    <?php $enight = $this->clean($pricing['night_end']) ?>
@@ -88,12 +89,12 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Price weekend</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Price_weekend($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_we">
 					    <?php $tarif_we = $this->clean($pricing['tarif_we']) ?>
-						<OPTION value="oui" <?php if ($tarif_we==1){echo "selected=\"selected\"";}?>> Oui </OPTION>
-						<OPTION value="non" <?php if ($tarif_we==0){echo "selected=\"selected\"";}?>> Non </OPTION>
+						<OPTION value="oui" <?php if ($tarif_we==1){echo "selected=\"selected\"";}?>> <?= SyTranslator::Yes($lang)?> </OPTION>
+						<OPTION value="non" <?php if ($tarif_we==0){echo "selected=\"selected\"";}?>> <?= SyTranslator::No($lang)?> </OPTION>
 				</select>
 			</div>
 			
@@ -108,48 +109,48 @@
 			
 			?>
 			<div class="col-xs-10 col-xs-offset-2">
-				<label for="inputEmail" class="control-label col-xs-3">Weekend days</label>
+				<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Weekend_days($lang)?></label>
 				<div class="col-xs-2">
 					<div class="checkbox">
     				<label>
     				    <?php $lundi = $list[0]; ?>
-      					<input type="checkbox" name="lundi" <?php if ($lundi==1){echo "checked";}?>> Monday
+      					<input type="checkbox" name="lundi" <?php if ($lundi==1){echo "checked";}?>> <?= SyTranslator::Monday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $mardi = $list[1]; ?>
-      					<input type="checkbox" name="mardi" <?php if ($mardi==1){echo "checked";}?>> Tuesday
+      					<input type="checkbox" name="mardi" <?php if ($mardi==1){echo "checked";}?>> <?= SyTranslator::Tuesday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     					<?php $mercredi = $list[2]; ?>
-      					<input type="checkbox" name="mercredi" <?php if ($mercredi==1){echo "checked";}?>> Wednesday
+      					<input type="checkbox" name="mercredi" <?php if ($mercredi==1){echo "checked";}?>> <?= SyTranslator::Wednesday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $jeudi = $list[3]; ?>
-      					<input type="checkbox" name="jeudi" <?php if ($jeudi==1){echo "checked";}?>> Thursday
+      					<input type="checkbox" name="jeudi" <?php if ($jeudi==1){echo "checked";}?>> <?= SyTranslator::Thursday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $vendredi = $list[4]; ?>
-      					<input type="checkbox" name="vendredi" <?php if ($vendredi==1){echo "checked";}?>> Friday
+      					<input type="checkbox" name="vendredi" <?php if ($vendredi==1){echo "checked";}?>> <?= SyTranslator::Friday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $samedi = $list[5]; ?>
-      					<input type="checkbox" name="samedi" <?php if ($samedi==1){echo "checked";}?>> Saturday
+      					<input type="checkbox" name="samedi" <?php if ($samedi==1){echo "checked";}?>> <?= SyTranslator::Saturday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $dimanche = $list[6]; ?>
-      					<input type="checkbox" name="dimanche" <?php if ($dimanche==1){echo "checked";}?>> Sunday
+      					<input type="checkbox" name="dimanche" <?php if ($dimanche==1){echo "checked";}?>> <?= SyTranslator::Sunday($lang)?>
     				</label>
   					</div>
 				</div>
@@ -157,8 +158,8 @@
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='sygrrif/pricing'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang)?>" />
+				<button type="button" onclick="location.href='sygrrif/pricing'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

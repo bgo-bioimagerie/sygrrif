@@ -27,12 +27,12 @@
 	
 		<div class="page-header">
 			<h1>
-				Add Authorization <br> <small></small>
+				<?= SyTranslator::Add_Authorization($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">User</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::User($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="user_id">
 					<?php foreach ($users as $user):?>
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unit at the authorization date time</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unit_at_the_authorization_date_time($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="unit_id">
 					<?php foreach ($units as $unit):?>
@@ -58,28 +58,18 @@
 			</div>
 		</div>
 		<div class="form-group ">
-				<label for="inputEmail" class="control-label col-xs-2">Training date</label>
+				<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Training_date($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker5'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date"/>
+				<div class='input-group date form_date_<?= $lang ?>' >
+					<input type='text' class="form-control" name="date"/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-	        <script src="externals/datepicker/js/moments.js"></script>
-			<script src="externals/jquery-1.11.1.js"></script>
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-			$(function () {
-				$('#datetimepicker5').datetimepicker({
-					pickTime: false
-				});
-			});
-		    </script>
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Visa</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Visa($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="visa_id">
 					<?php foreach ($visas as $visa):?>
@@ -92,7 +82,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Resource</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Resource($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="resource_id">
 					<?php foreach ($resources as $resource):?>
@@ -107,12 +97,14 @@
 		
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Add" />
-				<button type="button" onclick="location.href='sygrrif/authorizations'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif/authorizations'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
+
+<?php include 'Modules/core/View/timepicker_script.php'?>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

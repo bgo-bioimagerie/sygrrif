@@ -32,7 +32,7 @@ class SyTranslator {
 	
 	public static function Resource_categories($lang = ""){
 		if ($lang == "Fr"){
-			return "Catégories de ressources";
+			return "Catégories ressources";
 		}
 		return "Resource categories";
 	}
@@ -43,6 +43,22 @@ class SyTranslator {
 		}
 		return "Color code";
 	}
+	
+	public static function color_codes($lang = ""){
+		if ($lang == "Fr"){
+			return "Codes couleur";
+		}
+		return "Color codes";
+	}
+	
+	public static function Color($lang = ""){
+		if ($lang == "Fr"){
+			return "Couleur";
+		}
+		return "Color";
+	}
+	
+	
 	
 	public static function Resources($lang = ""){
 		if ($lang == "Fr"){
@@ -193,7 +209,7 @@ class SyTranslator {
 	
 	public static function Reservation_number($lang){
 		if ($lang == "Fr"){
-			return "Identifiant";
+			return "Nombre de réservations";
 		}
 		return "Reservation number";
 	}
@@ -528,5 +544,732 @@ class SyTranslator {
 		return "bill";
 	}
 	
+	public static function Add_area($lang = ""){
+		if ($lang == "Fr"){
+			return "Ajouter un domaine";
+		}
+		return "Add area";
+	}
 	
+	public static function Is_resticted($lang = ""){
+		if ($lang == "Fr"){
+			return "Est restreint";
+		}
+		return "Is resticted";
+	}
+	
+	public static function Display_order($lang = ""){
+		if ($lang == "Fr"){
+			return "Ordre d'affichage";
+		}
+		return "Display order";
+	}
+	
+	public static function Add_Authorization($lang = ""){
+		if ($lang == "Fr"){
+			return "Ajouter une autorisation";
+		}
+		return "Add Authorization";
+	}
+	
+	public static function Unit_at_the_authorization_date_time($lang = ""){
+		if ($lang == "Fr"){
+			return "Unité au moment de la formation";
+		}
+		return "Unit at the authorization date time";
+	}
+	
+	public static function Training_date($lang = ""){
+		if ($lang == "Fr"){
+			return "Date de formation";
+		}
+		return "Training date";
+	}
+	
+	public static function Add_Color_Code($lang = ""){
+		if ($lang == "Fr"){
+			return "Ajouter un code couleur";
+		}
+		return "Add Color Code";
+	}
+	
+	public static function Color_diese($lang = ""){
+		if ($lang == "Fr"){
+			return "Couleur: #";
+		}
+		return "Color: #";
+	}
+	
+	public static function Add_pricing($lang = ""){
+		if ($lang == "Fr"){
+			return "Ajouter un tarif";
+		}
+		return "Add pricing";
+	}
+	
+	public static function Unique_price($lang = ""){
+		if ($lang == "Fr"){
+			return "Tarif unique";
+		}
+		return "Add pricing";
+	}
+	public static function Price_night($lang = ""){
+		if ($lang == "Fr"){
+			return "Tarif nuit";
+		}
+		return "Price night";
+	}
+	public static function Night_beginning($lang = ""){
+		if ($lang == "Fr"){
+			return "Début nuit";
+		}
+		return "Night beginning";
+	}
+	public static function Night_end($lang = ""){
+		if ($lang == "Fr"){
+			return "Fin nuit";
+		}
+		return "Night end";
+	}
+	public static function Price_weekend($lang = ""){
+		if ($lang == "Fr"){
+			return "Tarif weekend";
+		}
+		return "Price weekend";
+	}
+	public static function Weekend_days($lang = ""){
+		if ($lang == "Fr"){
+			return "Jours weekend";
+		}
+		return "Weekend days";
+	}
+	
+	public static function Monday($lang = ""){
+		if ($lang == "Fr"){
+			return "Lundi";
+		}
+		return "Monday";
+	}
+	public static function Tuesday($lang = ""){
+		if ($lang == "Fr"){
+			return "Mardi";
+		}
+		return "Tuesday";
+	}
+	public static function Wednesday($lang = ""){
+		if ($lang == "Fr"){
+			return "Mercredi";
+		}
+		return "Wednesday";
+	}
+	public static function Thursday($lang = ""){
+		if ($lang == "Fr"){
+			return "Jeudi";
+		}
+		return "Thursday";
+	}
+	public static function Friday($lang = ""){
+		if ($lang == "Fr"){
+			return "Vendredi";
+		}
+		return "Friday";
+	}
+	public static function Saturday($lang = ""){
+		if ($lang == "Fr"){
+			return "Samedi";
+		}
+		return "Saturday";
+	}
+	public static function Sunday($lang = ""){
+		if ($lang == "Fr"){
+			return "Dimanche";
+		}
+		return "Sunday";
+	}
+	
+	
+	public static function Unable_to_add_the_pricing($lang = ""){
+		if ($lang == "Fr"){
+			return "Impossible d'ajouter le tarif";
+		}
+		return "Unable to add the pricing";
+	}
+	
+	public static function The_pricing_has_been_successfully_added($lang = ""){
+		if ($lang == "Fr"){
+			return "Le tarif a été ajouté avec success !";
+		}
+		return "The pricing has been successfully added !";
+	}
+	
+	public static function Add_a_resource($lang = ""){
+		if ($lang == "Fr"){
+			return "Ajouter une ressource";
+		}
+		return "Add a resource";
+	}
+	
+	public static function Select_the_resource_type($lang = ""){
+		if ($lang == "Fr"){
+			return "Sélectioner le type de ressource";
+		}
+		return "Select the resource type";
+	}
+	
+	public static function Resource_type($lang = ""){
+		if ($lang == "Fr"){
+			return "Type de ressource";
+		}
+		return "Resource type";
+	}
+	
+	public static function Next($lang = ""){
+		if ($lang == "Fr"){
+			return "Suivant";
+		}
+		return "Next";
+	}
+	
+	public static function Add_a_resources_category($lang = ""){
+		if ($lang == "Fr"){
+			return "Aouter une catégorie de ressource";
+		}
+		return "Add a resources category";
+	}
+	
+	
+	public static function Associate_a_pricing_to_a_unit($lang = ""){
+		if ($lang == "Fr"){
+			return "Associer un tarif à une unité";
+		}
+		return "Associate a pricing to a unit";
+	}
+	
+	public static function Unable_to_associate_the_pricing_with_the_unit($lang = ""){
+		if ($lang == "Fr"){
+			return "Impossible d'associer le tarif à l'unité";
+		}
+		return "Unable to associate the pricing with the unit";
+	}
+	
+	public static function The_pricing_has_been_successfully_associated_to_the_unit($lang = ""){
+		if ($lang == "Fr"){
+			return "Le tarif a bien été associé à l'unité !";
+		}
+		return "The pricing has been successfully associated to the unit !";
+	}
+	
+	public static function Add_VISA($lang = ""){
+		if ($lang == "Fr"){
+			return "Ajouter un Visa";
+		}
+		return "Add VISA";
+	}
+
+	public static function Authorisations($lang = ""){
+		if ($lang == "Fr"){
+			return "Autorisations";
+		}
+		return "Authorization";
+	}
+	
+	public static function Firstname($lang = ""){
+		if ($lang == "Fr"){
+			return "Prénom";
+		}
+		return "Firstname";
+	}
+	
+	public static function Select_a_resource_on_the_navigation_bar($lang){
+		if ($lang == "Fr"){
+			return "Séléctionner une ressource dans la barre de navigation";
+		}
+		return "Select a resource on the navigation bar";
+	}
+	
+	public static function Edit_area($lang){
+		if ($lang == "Fr"){
+			return "Modifier domaine";
+		}
+		return "Edit area";
+	}
+	
+	public static function Edit_Authorization($lang){
+		if ($lang == "Fr"){
+			return "Editer une autorisation";
+		}
+		return "Edit_Authorization";
+	}
+	
+	public static function Is_active($lang){
+		if ($lang == "Fr"){
+			return "Est active";
+		}
+		return "Is active";
+	}
+	
+	public static function Edit_Color_Code($lang){
+		if ($lang == "Fr"){
+			return "Editer un code couleur";
+		}
+		return "Edit Color Code";
+	}
+	
+	public static function Edit_pricing($lang){
+		if ($lang == "Fr"){
+			return "Editer un tarif";
+		}
+		return "Edit pricing";
+	}
+	
+	public static function Unable_to_modify_the_pricing($lang){
+		if ($lang == "Fr"){
+			return "Imposible de modifier le tarif";
+		}
+		return "Unable to modify the pricing";
+	}
+	
+	public static function The_pricing_has_been_successfully_modified($lang){
+		if ($lang == "Fr"){
+			return "Le tarif a été modifié !";
+		}
+		return "The pricing has been successfully modified !";
+	}
+	
+	public static function Edit_a_resources_category($lang = ""){
+		if ($lang == "Fr"){
+			return "Editer une catégorie de ressource";
+		}
+		return "Edit a resources category";
+	}
+	
+	
+	public static function Edit_Visa($lang = ""){
+		if ($lang == "Fr"){
+			return "Editer Visa";
+		}
+		return "Edit Visa";
+	}
+	
+	public static function Description($lang = ""){
+		if ($lang == "Fr"){
+			return "Description";
+		}
+		return "Description";
+	}
+	
+	public static function Type($lang = ""){
+		if ($lang == "Fr"){
+			return "Type";
+		}
+		return "Type";
+	}
+	
+	public static function Category($lang = ""){
+		if ($lang == "Fr"){
+			return "Catégorie";
+		}
+		return "Category";
+	}
+	
+	public static function Curent_unit($lang = ""){
+		if ($lang == "Fr"){
+			return "Unité actuelle";
+		}
+		return "Curent unit";
+	}
+	
+	public static function Outputs($lang){
+		if ($lang == "Fr"){
+			return "Exports";
+		}
+		return "Outputs";
+	}
+	
+	public static function view_resources_pie_chart($lang){
+		if ($lang == "Fr"){
+			return "Camembert autorisations par resources";
+		}
+		return "view resources pie chart";
+	}
+	
+	public static function view_counting($lang){
+		if ($lang == "Fr"){
+			return "décompte";
+		}
+		return "view counting";
+	}
+	
+	public static function view_details($lang){
+		if ($lang == "Fr"){
+			return "détail";
+		}
+		return "view details";
+	}
+	
+	public static function Calculate($lang){
+		if ($lang == "Fr"){
+			return "Calculer";
+		}
+		return "Calculate";
+	}
+	
+	public static function Results($lang){
+		if ($lang == "Fr"){
+			return "Résultats";
+		}
+		return "Results";
+	}
+	public static function Export_as_jpeg($lang){
+		if ($lang == "Fr"){
+			return "Exporter en jpeg";
+		}
+		return "Export as jpeg";
+	}
+	
+	public static function Export_as_csv($lang){
+		if ($lang == "Fr"){
+			return "Exporter en csv";
+		}
+		return "Export as csv";
+	}
+	
+	public static function Search_criteria($lang){
+		if ($lang == "Fr"){
+			return "Critères de recherche";
+		}
+		return "Search criteria";
+	}
+	
+	public static function Number_of_training($lang){
+		if ($lang == "Fr"){
+			return "Nombre de formations";
+		}
+		return "Number of training";
+	}
+	
+	public static function Nomber_of_users($lang){
+		if ($lang == "Fr"){
+			return "Nombre d'utilisateurs";
+		}
+		return "Nomber of users";
+	}
+	
+	public static function Nomber_of_units($lang){
+		if ($lang == "Fr"){
+			return "Nombre d'unités";
+		}
+		return "Nomber of units";
+	}
+	
+	public static function Nomber_of_VISAs($lang){
+		if ($lang == "Fr"){
+			return "Nombre de Visas";
+		}
+		return "Nomber of VISAs";
+	}
+	
+	public static function Nomber_of_resources($lang){
+		if ($lang == "Fr"){
+			return "Nombre de ressources";
+		}
+		return "Nomber of resources";
+	}
+	
+	public static function Nomber_of_new_user($lang){
+		if ($lang == "Fr"){
+			return "Nombre de nouvel utilisateurs";
+		}
+		return "Nomber of new user";
+	}
+	
+	public static function Statistics($lang){
+		if ($lang == "Fr"){
+			return "Statistiques";
+		}
+		return "Statistics";
+	}
+	
+	public static function Year($lang){
+		if ($lang == "Fr"){
+			return "Année";
+		}
+		return "Year";
+	}
+	
+	public static function Annual_review_of_the_number_of_reservations_of($lang){
+		if ($lang == "Fr"){
+			return "Bilan annuel du nombre de réservations pour ";
+		}
+		return "Annual review of the number of reservations of ";
+	}
+	
+	public static function Jan($lang){
+		if ($lang == "Fr"){
+			return "Janv.";
+		}
+		return "Jan.";
+	}
+	public static function Feb($lang){
+		if ($lang == "Fr"){
+			return "Févr.";
+		}
+		return "Feb.";
+	}
+	
+	public static function Mar($lang){
+		if ($lang == "Fr"){
+			return "Mars.";
+		}
+		return "Mar.";
+	}
+	
+	public static function Apr($lang){
+		if ($lang == "Fr"){
+			return "Avri.";
+		}
+		return "Apr.";
+	}
+	public static function May($lang){
+		if ($lang == "Fr"){
+			return "Mai.";
+		}
+		return "May.";
+	}
+	public static function Jun($lang){
+		if ($lang == "Fr"){
+			return "Juin.";
+		}
+		return "Jun.";
+	}
+
+	public static function July($lang){
+		if ($lang == "Fr"){
+			return "Juil.";
+		}
+		return "July.";
+	}
+	
+	public static function Aug($lang){
+		if ($lang == "Fr"){
+			return "Août.";
+		}
+		return "Aug.";
+	}
+	
+	public static function Sept($lang){
+		if ($lang == "Fr"){
+			return "Sept.";
+		}
+		return "Sept.";
+	}
+	
+	public static function Oct($lang){
+		if ($lang == "Fr"){
+			return "Oct.";
+		}
+		return "Oct.";
+	}
+	
+	public static function Nov($lang){
+		if ($lang == "Fr"){
+			return "Nov.";
+		}
+		return "Nov.";
+	}
+	
+	public static function Dec($lang){
+		if ($lang == "Fr"){
+			return "Déc.";
+		}
+		return "Dec.";
+	}
+	
+	public static function Add_Unitary_Resource($lang){
+		if ($lang == "Fr"){
+			return "Ajouter ressource unitaire";
+		}
+		return "Add Unitary Resource";
+	}
+	
+	public static function Edit_Unitary_Resource($lang){
+		if ($lang == "Fr"){
+			return "Editer ressource unitaire";
+		}
+		return "Edit Unitary Resource";
+	}
+	
+	public static function Who_can_book($lang){
+		if ($lang == "Fr"){
+			return "Qui peut réserver";
+		}
+		return "Who can book";
+	}
+
+	public static function Manager($lang){
+		if ($lang == "Fr"){
+			return "Gestionnaire";
+		}
+		return "Manager";
+	}
+	 
+	public static function Admin($lang){
+		if ($lang == "Fr"){
+			return "Administrateur";
+		}
+		return "Admin";
+	}
+	
+	public static function Settings($lang){
+		if ($lang == "Fr"){
+			return "Paramètres";
+		}
+		return "Settings";
+	}
+	
+	public static function Quantity_name($lang){
+		if ($lang == "Fr"){
+			return "Intitulé de la quantité";
+		}
+		return "Quantity name";
+	}
+	
+	public static function Available_Days($lang){
+		if ($lang == "Fr"){
+			return "Jours disponibles";
+		}
+		return "Available Days";
+	}
+	
+	
+	public static function Day_beginning($lang){
+		if ($lang == "Fr"){
+			return "Début journée";
+		}
+		return "Day beginning";
+	}
+	
+	public static function Day_end($lang){
+		if ($lang == "Fr"){
+			return "Fin journée";
+		}
+		return "Day end";
+	}
+	
+	public static function Booking_size_bloc($lang){
+		if ($lang == "Fr"){
+			return "Résolution du bloc de réservation";
+		}
+		return "Booking size bloc";
+	}
+	
+	public static function The_user_specify($lang){
+		if ($lang == "Fr"){
+			return "L'utilisateur spécifie";
+		}
+		return "The user specify";
+	}
+	public static function the_booking_duration($lang){
+		if ($lang == "Fr"){
+			return "La durée de la réservaion";
+		}
+		return "the booking duration";
+	}
+	public static function the_date_time_when_reservation_ends($lang){
+		if ($lang == "Fr"){
+			return "La date et l'heure de fin de la réservation";
+		}
+		return "the date/time when reservation ends";
+	}
+	public static function Prices($lang){
+		if ($lang == "Fr"){
+			return "Prix";
+		}
+		return "Prices";
+	}
+	
+	public static function Add_Calendar_Resource($lang){
+		if ($lang == "Fr"){
+			return "Ajouter ressource calendaire";
+		}
+		return "Add Calendar Resource";
+	}
+	
+	public static function Edit_Calendar_Resource($lang){
+		if ($lang == "Fr"){
+			return "Editer ressource calendaire";
+		}
+		return "Edit Calendar Resource";
+	}
+	
+	public static function Max_number_of_people($lang){
+		if ($lang == "Fr"){
+			return "Nombre maximum de personnes";
+		}
+		return "Max number of people";
+	}
+	
+	public static function Price_day($lang){
+		if ($lang == "Fr"){
+			return "Tarif jour";
+		}
+		return "Price day";
+	}
+	
+	
+	public static function Price_w_e($lang){
+		if ($lang == "Fr"){
+			return "Tarif w.e";
+		}
+		return "Price w.e";
+	}
+	
+	public static function Today($lang){
+		if ($lang == "Fr"){
+			return "Aujourd'hui";
+		}
+		return "Today";
+	}
+	
+	public static function DateFromTime($time, $lang){
+		if ($lang == "Fr"){
+			setlocale(LC_TIME, 'fra_fra');
+			return utf8_encode(strftime('%A %d %B %Y', $time));
+		}
+		// english
+		$dayStream = date("l", $time);
+		$monthStream = date("F", $time);
+		$dayNumStream = date("d", $time);
+		$yearStream = date("Y", $time);
+		$sufixStream = date("S", $time);
+		return $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream;
+	} 
+	
+	public static function This_week($lang){
+		if ($lang == "Fr"){
+			return "Cette semaine";
+		}
+		return "This week";
+	}
+	
+	public static function Phone($lang){
+		if ($lang == "Fr"){
+			return "Tel";
+		}
+		return "Phone";
+	}
+	
+	public static function Short_desc($lang){
+		if ($lang == "Fr"){
+			return "courte desc";
+		}
+		return "Short desc";
+	}
+	
+	public static function Desc($lang){
+		if ($lang == "Fr"){
+			return "Desc";
+		}
+		return "Desc";
+	}
 }

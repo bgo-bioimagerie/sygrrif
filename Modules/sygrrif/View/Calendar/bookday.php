@@ -65,7 +65,7 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 <div class="col-md-8 text-left">
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/daybefore'"> &lt; </button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/dayafter'"> > </button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/today'">Today</button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/today'"><?= SyTranslator::Today($lang) ?></button>
 <?php 
 $d = explode("-", $date);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -81,14 +81,14 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 	}
 }
 ?>
-<b><?php echo $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream  ?></b>
+<b><?= SyTranslator::DateFromTime($time, $lang) ?></b>
 </div>
 
 
 <div class="col-md-4 text-right">
-<button type="button" class="btn btn-default active">Day</button>
-<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default ">Week</button>
-<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default ">Week Area</button>
+<button type="button" class="btn btn-default active"><?= SyTranslator::Day($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
 
 </div>
 </div>
@@ -138,7 +138,7 @@ $available_days = explode(",", $available_days);
 <div class="col-xs-11" id="colDiv">
 
 	<div id="tcelltop" style="height: 50px;">
-	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b></br><?= $this->clean($resourceBase['description']) ?></p>
+	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b><br/><?= $this->clean($resourceBase['description']) ?></p>
 	</div>
 
 	<?php 

@@ -10,7 +10,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Ressources<br> <small></small>
+				<?= SyTranslator::Resource($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
@@ -18,11 +19,11 @@
 			<thead>
 				<tr>
 					<td><a href="sygrrif/resources/id">ID</a></td>
-					<td><a href="sygrrif/resources/name">Name</a></td>
-					<td><a href="sygrrif/resources/description">description</a></td>
-					<td><a href="sygrrif/resources/area_name">Area</a></td>
-					<td><a href="sygrrif/resources/type_name">Type</a></td>
-					<td><a href="sygrrif/resources/category_name">Category</a></td>
+					<td><a href="sygrrif/resources/name"><?= SyTranslator::Name($lang) ?></a></td>
+					<td><a href="sygrrif/resources/description"><?= SyTranslator::Description($lang) ?></a></td>
+					<td><a href="sygrrif/resources/area_name"><?= SyTranslator::Area($lang)?></a></td>
+					<td><a href="sygrrif/resources/type_name"><?= SyTranslator::Type($lang)?></a></td>
+					<td><a href="sygrrif/resources/category_name"><?= SyTranslator::Category($lang)?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -37,7 +38,7 @@
 				    <td><?= $this->clean ( $resource ['type_name'] ); ?></td>
 				    <td><?= $this->clean ( $resource ['category_name'] ); ?></td>
 				    <td>	
-				      <button type='button' onclick="location.href='<?= $resource ["controller"]."/".$resource ["edit_action"]."/".$resourceId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='<?= $resource ["controller"]."/".$resource ["edit_action"]."/".$resourceId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

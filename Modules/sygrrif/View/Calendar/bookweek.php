@@ -73,7 +73,7 @@ img{
 <br></br>
 <div class="col-lg-12">
 <div class="col-lg-10 col-lg-offset-1">
-	<?php if ($message != ""): 
+	<?php if ($message != ""){ 
 		if (strpos($message, "Error") === false){?>
 			<div class="alert alert-success text-center">	
 		<?php 
@@ -86,7 +86,7 @@ img{
 	?>
     	<p><?= $message ?></p>
     	</div>
-	<?php endif; ?>
+	<?php } ?>
 
 </div>
 </div>
@@ -94,9 +94,9 @@ img{
 <div class="col-lg-12">
 
 <div class="col-md-8 text-left">
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/dayweekbefore'"><</button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/dayweekbefore'">&lt;</button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/dayweekafter'">></button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/thisWeek'">This week</button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/thisWeek'"><?= SyTranslator::This_week($lang) ?></button>
 <?php 
 $d = explode("-", $mondayDate);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -107,7 +107,7 @@ $yearStream = date("Y", $time);
 $sufixStream = date("S", $time);
 
 ?>
-<b><?php echo $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream  ?>  -  </b>
+<b> <?= SyTranslator::DateFromTime($time, $lang) ?> -  </b>
 <?php 
 $d = explode("-", $sundayDate);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -118,15 +118,15 @@ $yearStream = date("Y", $time);
 $sufixStream = date("S", $time);
 
 ?>
-<b><?php echo $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream  ?> </b>
+<b><?= SyTranslator::DateFromTime($time, $lang) ?> </b>
 
 </div>
 
 
 <div class="col-md-4 text-right">
-<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default">Day</button>
-<button type="button" class="btn btn-default active">Week</button>
-<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default ">Week Area</button>
+<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
+<button type="button" class="btn btn-default active"><?= SyTranslator::Week($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
 
 </div>
 </div>
@@ -199,7 +199,8 @@ $available_days = explode(",", $available_days);
 		$dayNumStream = date("d", $date_unix);
 		$sufixStream = date("S", $date_unix);
 		
-		$dayTitle = $dayStream . " " . $monthStream . ". " . $dayNumStream . $sufixStream;
+		$dayTitle = SyTranslator::DateFromTime($date_unix, $lang);
+		//$dayTitle = $dayStream . " " . $monthStream . ". " . $dayNumStream . $sufixStream;
 		
 		?>
 		
@@ -207,7 +208,7 @@ $available_days = explode(",", $available_days);
 		<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
 		
 		<div id="tcelltop" style="height: 50px;">
-		<p class="text-center"><b> <?= $dayTitle ?> </p>
+		<p class="text-center"><b> <?= $dayTitle ?></b> </p>
 		</div>
 		
 		<?php 
@@ -221,9 +222,7 @@ $available_days = explode(",", $available_days);
 		
 		</div>
 			<?php 
-		
 	}
-	
 	?>
 	</div>
 	

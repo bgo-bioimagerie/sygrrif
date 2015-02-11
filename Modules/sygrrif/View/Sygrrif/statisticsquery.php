@@ -24,9 +24,9 @@
 <!-- Plot the curve number reservations in a year -->
 <!-- -------------------------------------------- -->
 <?php
-$titre = '<text x="375" y="30" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">Annual review of the number of reservations of ' . Configuration::get("name") . '</text>';
-$stat = '<text x="670" y="110" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">Year ' . $annee . '</text>';
-$stat .= '<text x="670" y="130" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">Reservations number : ' . $numTotal . '</text>';
+$titre = '<text x="375" y="30" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">' . SyTranslator::Annual_review_of_the_number_of_reservations_of($lang) . Configuration::get("name") . '</text>';
+$stat = '<text x="670" y="110" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">' . SyTranslator::Year($lang) . ": " . $annee . '</text>';
+$stat .= '<text x="670" y="130" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="start">' . SyTranslator::Reservation_number($lang) . ": " . $numTotal . '</text>';
 
 $m = max ( $graph );
 if ($m == 0) {
@@ -73,22 +73,22 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		$gAnnee .= $stat;
 		$gAnnee .= '</g>';
 		$gAnnee .= '<g>';
-		$gAnnee .= '<text x="375" y="350" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">Year ' . $annee . '</text>';
-		$gAnnee .= '<text x="100" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Janv.</text>';
-		$gAnnee .= '<text x="150" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Févr.</text>';
-		$gAnnee .= '<text x="200" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Mars</text>';
-		$gAnnee .= '<text x="250" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Avri.</text>';
-		$gAnnee .= '<text x="300" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Mai</text>';
-		$gAnnee .= '<text x="350" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Juin</text>';
-		$gAnnee .= '<text x="400" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Juil</text>';
-		$gAnnee .= '<text x="450" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Août</text>';
-		$gAnnee .= '<text x="500" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Sept.</text>';
-		$gAnnee .= '<text x="550" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Oct.</text>';
-		$gAnnee .= '<text x="600" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Nov.</text>';
-		$gAnnee .= '<text x="650" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">Déc.</text>';
+		$gAnnee .= '<text x="375" y="350" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle">'. SyTranslator::Year($lang) . " " .  $annee . '</text>';
+		$gAnnee .= '<text x="100" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Jan($lang). '</text>';
+		$gAnnee .= '<text x="150" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Feb($lang). '</text>';
+		$gAnnee .= '<text x="200" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Mar($lang). '</text>';
+		$gAnnee .= '<text x="250" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Apr($lang). '</text>';
+		$gAnnee .= '<text x="300" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::May($lang). '</text>';
+		$gAnnee .= '<text x="350" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Jun($lang). '</text>';
+		$gAnnee .= '<text x="400" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::July($lang). '</text>';
+		$gAnnee .= '<text x="450" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Aug($lang). '</text>';
+		$gAnnee .= '<text x="500" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Sept($lang). '</text>';
+		$gAnnee .= '<text x="550" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Oct($lang). '</text>';
+		$gAnnee .= '<text x="600" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Nov($lang). '</text>';
+		$gAnnee .= '<text x="650" y="320" fill="black" stroke-width="0px" stroke="black" font-size="12px" text-anchor="middle">'. SyTranslator::Dec($lang). '</text>';
 		$gAnnee .= '</g>';
 		$gAnnee .= '<g>';
-		$gAnnee .= '<text x="60" y="175" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle" baseline-shift="-0.5ex" transform="rotate(-90,60,175)">Reservations number</text>';
+		$gAnnee .= '<text x="60" y="175" fill="black" stroke-width="0px" stroke="black" font-size="15px" text-anchor="middle" baseline-shift="-0.5ex" transform="rotate(-90,60,175)"> '. SyTranslator::Reservation_number($lang) .'</text>';
 		$gAnnee .= $axeY;
 		$gAnnee .= '</g>';
 		$gAnnee .= $points;
@@ -110,7 +110,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 	</div>
 	<?php if (Configuration::get("saveImages") == "enable"){ ?>
 	<div class='col-md-2 col-md-offset-1'>
-	<button type="button" onclick="location.href='data/temp/bilan_resaJPG.jpg'" download="bilan_reservations<?=$annee?>" class="btn btn-primary" id="navlink">Export as jpeg</button>
+	<button type="button" onclick="location.href='data/temp/bilan_resaJPG.jpg'" download="bilan_reservations<?=$annee?>" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
 	</div>
 	<?php } ?>
 <!-- -------------------------------------------- -->
@@ -121,7 +121,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 
 		<?php
 			$camembert = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="300" font-family="Verdana">';
-			$camembert .= '<title>Best Foods</title>';
+			$camembert .= '<title> </title>';
 			$camembert .= '<desc></desc>';
 			$camembert .= $camembertContent;		
 			$camembert .= '</svg>';
@@ -140,7 +140,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		</div>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<div class='col-md-2 col-md-offset-1'>
-		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?=$annee?>" class="btn btn-primary" id="navlink">Export as jpeg</button>
+		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?=$annee?>" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
 		</div>
 		<?php }?>
 </div>

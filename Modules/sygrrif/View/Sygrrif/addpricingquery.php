@@ -12,20 +12,21 @@
 		
 		<div class="page-header">
 			<h1>
-				Add pricing <br> <small></small>
+			<?= SyTranslator::Add_pricing($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> Unable to add the pricing</p>
+			<p> <?= SyTranslator::Unable_to_add_the_pricing($lang) ?> </p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> The pricing has been successfully added !</p>
+			<p> <?= SyTranslator::The_pricing_has_been_successfully_added($lang) ?></p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='sygrrif/pricing'" class="btn btn-success" id="navlink">Ok</button>
+			<button onclick="location.href='sygrrif/pricing'" class="btn btn-success" id="navlink"> <?= SyTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

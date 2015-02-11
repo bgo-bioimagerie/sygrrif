@@ -25,7 +25,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Edit Color Code <br> <small></small>
+			<?= SyTranslator::Edit_Color_Code($lang) ?>
+				 <br> <small></small>
 			</h1>
 		</div>
 	
@@ -36,7 +37,7 @@
 		</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Name</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name"
 				       value="<?= $colorcode['name'] ?>"  
@@ -44,7 +45,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Color: #</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Color_diese($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="color"
 				       value="<?= $colorcode['color'] ?>"  
@@ -52,7 +53,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Display order</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Display_order($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="number" name="display_order"
 				       value="<?= $colorcode['display_order'] ?>"  
@@ -61,9 +62,9 @@
 		</div>
 		<br></br>
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-		        <button type="button" onclick="location.href='sygrrif/deletecolorcode/<?= $colorcode['id'] ?>'" class="btn btn-danger" id="navlink">Delete</button>
-				<button type="button" onclick="location.href='sygrrif/colorcodes'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
+		        <button type="button" onclick="location.href='sygrrif/deletecolorcode/<?= $colorcode['id'] ?>'" class="btn btn-danger" id="navlink"><?= SyTranslator::Delete($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrif/colorcodes'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

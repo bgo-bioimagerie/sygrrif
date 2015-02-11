@@ -5,9 +5,6 @@
 <head>
 	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
 	<link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
-	<script src="externals/datepicker/js/moments.js"></script>
-	<script src="externals/jquery-1.11.1.js"></script>
 
 <style>
 #button-div{
@@ -18,7 +15,9 @@
 
 </head>
 	
-<?php include "Modules/sygrrif/View/navbar.php"; ?>
+<?php include "Modules/sygrrif/View/navbar.php"; 
+require_once 'Modules/core/Model/CoreTranslator.php';
+?>
 
 <br>
 <div class="container">
@@ -45,41 +44,25 @@
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker5'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_start" id="searchDate_start"
-					       value="<?=$searchDate_start?>" />
+				<div class='input-group date form_date_<?= $lang ?>'>
+					<input type='text' class="form-control" name="searchDate_start" id="searchDate_start"
+					       value="<?= CoreTranslator::dateFromEn($searchDate_start, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-			$(function () {
-				$('#datetimepicker5').datetimepicker({
-					pickTime: true
-				});
-			});
-		    </script>
 		    </div>
 		</div>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker6'>
-					<input id="test32" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_end" 
-					       value="<?= $searchDate_end ?>" />
+				<div class='input-group date form_date_<?= $lang ?>'>
+					<input id="test32" type='text' class="form-control" name="searchDate_end" 
+					       value="<?= CoreTranslator::dateFromEn($searchDate_end, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-  			$(function () {
-				$('#datetimepicker6').datetimepicker({
-					pickTime: false
-				});
-			});
-			</script>
 		    </div>
 		</div>
 		
@@ -146,6 +129,8 @@
       </form>
 	</div>
 </div>
+
+<?php include 'Modules/core/View/timepicker_script.php'; ?>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

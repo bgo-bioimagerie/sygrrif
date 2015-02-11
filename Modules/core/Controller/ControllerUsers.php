@@ -5,6 +5,7 @@ require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Status.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 
 class ControllerUsers extends ControllerSecureNav {
 	
@@ -107,7 +108,18 @@ class ControllerUsers extends ControllerSecureNav {
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
 		
-		
+		$lang = 'En';
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+			
+		if ($date_convention != ""){
+			$date_convention = CoreTranslator::dateToEn($date_convention, $lang);
+		}
+		if ($date_end_contract != ""){
+			$date_end_contract = CoreTranslator::dateToEn($date_end_contract, $lang);
+		}
+
 		// auto convention
 		if ($convention == -1){
 			// new convention for a responsible
@@ -200,6 +212,17 @@ class ControllerUsers extends ControllerSecureNav {
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
 		
+		$lang = 'En';
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+			
+		if ($date_convention != ""){
+			$date_convention = CoreTranslator::dateToEn($date_convention, $lang);
+		}
+		if ($date_end_contract != ""){
+			$date_end_contract = CoreTranslator::dateToEn($date_end_contract, $lang);
+		}
 		//echo "id_responsible = " . $id_responsible . "--";
 		
 		// update user

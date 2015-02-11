@@ -1,6 +1,10 @@
 
 <head>
-<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <link href="externals/datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+    
+
+    <script type="text/javascript" src="externals/datepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="externals/datepicker/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
 
 
 <style>
@@ -35,6 +39,7 @@ legend {
 
 <?php 
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 $lang = $_SESSION["user_settings"];
 $lang = $lang["language"];
 ?>
@@ -104,35 +109,18 @@ $lang = $lang["language"];
 			<fieldset>
 				<legend><?= SyTranslator::Date($lang) ?></legend>
 				<div >
-				<div class='input-group date' id='datetimepicker5'>
-					<input id="date-daily" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="curentDate"
-						value="<?= $menuData["curentDate"] ?>"
-					/>
-					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-				</div>
-		        <script src="externals/datepicker/js/moments.js"></script>
-				<script src="externals/jquery-1.11.1.js"></script>
-				<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-	      		<script type="text/javascript">
-				$(function () {
-					$('#datetimepicker5').datetimepicker({
-						pickTime: false
-					});
-				});
-			    </script>
-			    <script type="text/javascript">
-			    $('#datetimepicker5').datepicker().on('changeDate', function (ev) {
-	   				 $('#date-daily').change();
-				});
-				$('#date-daily').val('0000-00-00');
-				$('#date-daily').change(function () {
-					$( "#navform" ).submit();
-				});
-				</script>
-		    </div>
+					<div class='input-group date form_date_<?= $lang ?>'>
+						<input id="date-daily" type='text' class="form-control" name="curentDate"
+							value="<?= CoreTranslator::dateFromEn($menuData["curentDate"], $lang) ?>"
+						/>
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
+		    	</div>
+		    </fieldset>
 		 </div>
+		 
 		 <div class='col-md-1' id="well">
 			<fieldset>
 			<legend style="color:#337ab7; border:0px solid #337ab7;">.</legend>
@@ -145,4 +133,4 @@ $lang = $lang["language"];
 	</div>
 </div>
 
-
+<?php include "Modules/core/View/timepicker_script.php" ?>

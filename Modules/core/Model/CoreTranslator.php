@@ -9,6 +9,37 @@
  */
 class CoreTranslator {
 	
+	public static function dateToEn($date, $lang){
+		//echo "to translate = " . $date . "<br/>";
+		if ($lang == "Fr"){
+			$dateArray = explode("/", $date);
+			//print_r($dateArray);
+			$day = $dateArray[0];
+			$month = $dateArray[1];
+			$year = $dateArray[2];
+			//echo "translated = " . $year . "-" . $month . "-" . $day . "<br/>";
+			return $year . "-" . $month . "-" . $day; 
+		}
+		// En
+		return $date;
+	}
+	
+	public static function dateFromEn($date, $lang){
+		if ($lang == "Fr"){
+			$dateArray = explode("-", $date);
+			if (count($dateArray) == 3){
+				$day = $dateArray[2];
+				$month = $dateArray[1];
+				$year = $dateArray[0];
+				return  $day . "/" . $month . "/" . $year;
+			}
+			return $date;
+		}
+		// En
+		return $date;
+	}
+	
+	
 	public static function Home($lang = ""){
 		if ($lang == "Fr"){
 			return "Accueil";

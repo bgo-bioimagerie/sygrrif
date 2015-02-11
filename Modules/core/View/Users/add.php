@@ -3,28 +3,21 @@
 <?php echo $navBar?>
 
 <head>
-
-	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-	<link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	
-	<script src="externals/datepicker/js/moments.js"></script>
-	<script src="externals/jquery-1.11.1.js"></script>
-
+    <link href="externals/datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
-
 
 <?php include "Modules/core/View/Users/usersnavbar.php"; ?>
 
-<br>
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
-	  <form role="form" class="form-horizontal" action="users/addquery" method="post">
-		<div class="page-header">
+	  <form role="form" action="users/addquery" method="post">
+		<div class="page-header"> 
 			<h1>
 			<?= CoreTranslator::Add_User($lang) ?>
 			<br> <small></small>
-			</h1>
-		</div>
+			</h1> 
+		</div> 
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
@@ -32,7 +25,7 @@
 				/>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Firstname($lang) ?></label>
 			<div class="col-xs-10">
@@ -40,7 +33,7 @@
 				/>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="login" class="control-label col-xs-2"><?= CoreTranslator::Login($lang) ?></label>
 			<div class="col-xs-10">
@@ -48,7 +41,7 @@
 				/>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="pwd" class="control-label col-xs-2"><?= CoreTranslator::Password($lang) ?></label>
 			<div class="col-xs-4">
@@ -59,7 +52,7 @@
 				<input type="password" class="form-control" id="pwdc" name="pwdc" placeholder="Password">
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Email($lang) ?></label>
 			<div class="col-xs-10">
@@ -67,7 +60,7 @@
 				/>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Phone($lang) ?></label>
 			<div class="col-xs-10">
@@ -75,7 +68,7 @@
 				/>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
@@ -89,7 +82,7 @@
 				</select>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-10">
@@ -108,7 +101,7 @@
 				</select>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"></label>
 			<div class="col-xs-10">
@@ -119,7 +112,7 @@
               </div>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-10">
@@ -133,7 +126,7 @@
 				</select>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang) ?></label>
 			<div class="col-xs-10">
@@ -147,59 +140,66 @@
 				</select>
 			</div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group ">
 		
-				<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang) ?></label>
-				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker5'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_convention"/>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang) ?></label>
+			<div class="col-xs-10">
+				<div class='input-group date form_date_<?= $lang ?>'>
+					<input type='text' class="form-control" data-date="" name="date_convention"/>
 					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
+					<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-			$(function () {
-				$('#datetimepicker5').datetimepicker({
-					pickTime: false
-				});
-			});
-		    </script>
 		    </div>
 		</div>
-		<br>
+		<br/>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_end_contract($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker6'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_end_contract"/>
-					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
+					<div class='input-group date form_date_<?= $lang ?>' id='datetimepicker6'>
+						<input type='text' class="form-control" name="date_end_contract"/>
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+					</div>
 				</div>
-			
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-			$(function () {
-				$('#datetimepicker6').datetimepicker({
-					pickTime: false
-				});
-			});
-		    </script>
-		    </div>
 		</div>		
-		
-		<br>
+        <br/>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)?>" />
 				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
-      </form>
 
+	  </form>
 	</div>
 </div>
+
+<script type="text/javascript">
+
+	$('.form_date_Fr').datetimepicker({
+        language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+		format: 'dd/mm/yyyy'
+    });
+	$('.form_date_En').datetimepicker({
+        language:  'us',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		minView: 2,
+		forceParse: 0,
+		format: 'yyyy-mm-dd'
+    });
+</script>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

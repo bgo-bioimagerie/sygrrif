@@ -3,28 +3,12 @@
 <?php echo $navBar?>
 
 <head>
-	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-	<link href="externals/dist/css/bootstrap.min.css" rel="stylesheet">
-	
-	<script src="externals/datepicker/js/moments.js"></script>
-	<script src="externals/jquery-1.11.1.js"></script>
-	<script src="externals/bootstrap/js/bootstrap.min.js"></script>
 
 <style type="text/css">
     .box{
         display: none;
     }
 </style>
-<script type="text/javascript" src="externals/jquery-1.11.1.js"></script>
-<script type="text/javascript">
-    $(document).ready(function(){
-        $('input[type="checkbox"]').click(function(){
-            if($(this).attr("value")=="add to GRR"){
-                $(".grr").toggle();
-            }
-        });
-    });
-</script>
 
 </head>
 
@@ -37,7 +21,8 @@
 	  <form role="form" class="form-horizontal" action="users/editquery" method="post">
 		<div class="page-header">
 			<h1>
-				Edit User <br> <small></small>
+			<?= CoreTranslator::Edit_User($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
@@ -139,7 +124,7 @@
 			  <div class="checkbox">
 			    <label>
 			      <?php if ( $user['is_responsible'] ){  
-			      	$checked = "disabled=\"disabled\" checked"; 
+			      	$checked = "checked"; 
 			      ?>
 			      	<input type="hidden" value="true" name="is_responsible" />
 			      <?php
@@ -186,14 +171,14 @@
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang)?></label>
 			<div class="col-xs-10">
-				<input class="form-control" type="text" value = "<?= $user['date_convention'] ?>" name="date_convention">
+				<input class="form-control" type="text" value = "<?= CoreTranslator::dateFromEn($user['date_convention'], $lang) ?>" name="date_convention">
 		    </div>
 		</div>
 		<br>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_end_contract($lang)?></label>
 			<div class="col-xs-10">
-				<input class="form-control" type="text" value = "<?= $user['date_end_contract'] ?>" name="date_end_contract">
+				<input class="form-control" type="text" value = "<?= CoreTranslator::dateFromEn($user['date_end_contract'], $lang) ?>" name="date_end_contract">
 		    </div>
 		</div>
 		

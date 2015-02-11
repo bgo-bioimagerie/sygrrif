@@ -3,7 +3,6 @@
 <?php echo $navBar?>
 <?php 
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
-require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 ?>
 
 <head>
@@ -24,10 +23,18 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
     margin:0;
 }
 
+#colDiv2{
+	padding:0;
+    margin:0;
+    
+    border-left: 1px solid #f1f1f1;
+    border-right: 1px solid #f1f1f1;
+}
+
 #colDivglobal{
 	padding:0;
     margin:0;
-    border: 1px solid #f1f1f1;
+    border-bottom: 1px solid #f1f1f1;
 }
 
 #colDivleft{
@@ -45,6 +52,12 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 	-moz-border-radius: 9px;
 	border-radius: 9px;
 	border: 1px solid #f1f1f1;
+	
+	font-family: Arial;
+	font-size: 9px;
+	line-height: 9px;
+	letter-spacing: 1px;
+	font-weight: normal;
 }
 
 #resa_link{
@@ -72,39 +85,37 @@ img{
 </style>
 </head>
 
+
 <?php include "Modules/sygrrif/View/bookingnavbar.php"; ?>
-
-
 
 
 <!-- Add the table title -->
 <br></br>
 <div class="col-lg-12">
-<div class="col-lg-10 col-lg-offset-1">
-	<?php if ($message != ""): 
-		if (strpos($message, "Error") === false){?>
-			<div class="alert alert-success text-center">	
-		<?php 
-		}
-		else{
+	<div class="col-lg-10 col-lg-offset-1">
+		<?php if ($message != ""){
+				if (strpos($message, "Error") === false){?>
+					<div class="alert alert-success text-center">	
+				<?php 
+				}
+				else{
+				?>
+			 		<div class="alert alert-danger text-center">
+				<?php 
+				}
 		?>
-		 	<div class="alert alert-danger text-center">
-		<?php 
-		}
-	?>
-    	<p><?= $message ?></p>
-    	</div>
-	<?php endif; ?>
-
-</div>
+	    	<p><?= $message ?></p>
+	    	</div>
+		<?php } ?>
+	</div>
 </div>
 
 <div class="col-lg-11 col-lg-offset-1">
 
 <div class="col-md-8 text-left">
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweekarea/dayweekbefore'"><</button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweekarea/dayweekbefore'"> &lt; </button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweekarea/dayweekafter'">></button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweekarea/thisWeek'">This week</button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweekarea/thisWeek'"><?= SyTranslator::This_week($lang) ?></button>
 <?php 
 $d = explode("-", $mondayDate);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -115,7 +126,7 @@ $yearStream = date("Y", $time);
 $sufixStream = date("S", $time);
 
 ?>
-<b><?php echo $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream  ?>  -  </b>
+<b><?= SyTranslator::DateFromTime($time, $lang) ?>  -  </b>
 <?php 
 $d = explode("-", $sundayDate);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -126,14 +137,14 @@ $yearStream = date("Y", $time);
 $sufixStream = date("S", $time);
 
 ?>
-<b><?php echo $dayStream . ", " . $monthStream . " " .$dayNumStream. $sufixStream . " " .$yearStream  ?> </b>
+<b><?= SyTranslator::DateFromTime($time, $lang) ?> </b>
 
 </div>
 
 <div class="col-md-4 text-right">
-<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default">Day</button>
-<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default ">Week</button>
-<button type="button" class="btn btn-default active">Week Area</button>
+<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
+<button type="button" class="btn btn-default active"><?= SyTranslator::Week_Area($lang) ?></button>
 
 </div>
 </div>
@@ -147,11 +158,11 @@ $sufixStream = date("S", $time);
 	<div class="col-xs-1" id="colDiv"></div>
 	<div class="col-xs-11" id="colDiv">
 	<div id="tcelltop" style="height: 50px;">
-	<p class="text-center"><b><?= $this->clean($areaname) ?></p>
+	<p class="text-center"><b><?= $this->clean($areaname) ?></b></p>
 	</div>
 	</div>
 
-	<!--  days title -->
+		<!--  days title -->
 	<div class="col-xs-1" id="colDiv"></div>
 	<div class="col-xs-11" id="colDiv">
 		<div class="row seven-cols">
@@ -174,7 +185,8 @@ $sufixStream = date("S", $time);
 			$dayNumStream = date("d", $date_unix);
 			$sufixStream = date("S", $date_unix);
 			
-			$dayTitle = $dayStream . " " . $monthStream . ". " . $dayNumStream . $sufixStream;
+			$dayTitle = SyTranslator::DateFromTime($date_unix, $lang);
+			//$dayTitle = $dayStream . " " . $monthStream . ". " . $dayNumStream . $sufixStream;
 			
 			?>
 			
@@ -182,7 +194,7 @@ $sufixStream = date("S", $time);
 			<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
 			
 			<div id="tcelltop" style="height: 50px;">
-			<p class="text-center"><b> <?= $dayTitle ?> </p>
+			<p class="text-center"><b> <?= $dayTitle ?> </b> </p>
 			</div>
 		  </div>
 		<?php	
@@ -190,8 +202,11 @@ $sufixStream = date("S", $time);
 		?>
 	</div>
 	</div>
-	
-	<div class="col-xs-12" id="colDiv">
+</div>	
+
+<br/>
+<br/>
+<div class="col-lg-12" id="colDiv">
 	<?php 
 		$resourceCount = -1;
 		$modelBookingSetting = new SyBookingSettings();
@@ -206,106 +221,114 @@ $sufixStream = date("S", $time);
 			//echo "resource id = " . $resourcesBase[$resourceCount]["id"] . "</br>";
 			// resource title
 			?>
-			<div class="col-xs-12" id="colDivglobal">
-			<div class="col-xs-1" id="colDiv">
-			<div>
-				<p class="text-center"><b><?= $this->clean($ResourceBase['name']) ?></b></br><?= $this->clean($ResourceBase['description']) ?></p>
-			</div>
-			</div>
-			<div class="col-xs-11" id="colDiv">
-				<!-- Content of each day -->
-				<div class="row seven-cols">
-					<?php 
-					for ($d = 0 ; $d < 7 ; $d++){
-						
-						$idcss = "colDiv";
-						if ($d == 0){
-							$idcss = "colDivleft";
-						}
-						if ($d == 6){
-							$idcss = "colDivright";
-						}
-						
-						// day title
-						$temp = explode("-", $mondayDate);
-						$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
-						$dayStream = date("l", $date_unix);
-						$monthStream = date("M", $date_unix);
-						$dayNumStream = date("d", $date_unix);
-						$sufixStream = date("S", $date_unix);
-						
-						$dayTitle = $dayStream . " " . $monthStream . ". " . $dayNumStream . $sufixStream;
-						
-						?>
-						
-						
-						<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
-						
-						<div>
-						<!-- Print the reservations for the given day -->
-						<?php
-						$temp = explode("-", $mondayDate);
-						$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
-									
-						$day_begin = $this->clean($resourcesInfo[$resourceCount]['day_begin']);
-						$day_end = $this->clean($resourcesInfo[$resourceCount]['day_end']);
-						$size_bloc_resa = $this->clean($resourcesInfo[$resourceCount]['size_bloc_resa']);
-						$available_days = $this->clean($resourcesInfo[$resourceCount]['available_days']);
-						$available_days = explode(",", $available_days);
-						
-						$isDayAvailable = false;
-						if ($available_days[$d] == 1){
-							$isDayAvailable = true;
-						}
-							
-						// add here the reservations
-						foreach ($calEntries as $entry){
-							if ($entry["resource_id"] == $resourceID && $entry["start_time"] >= $date_unix && $entry["start_time"] <= $date_unix+86400){
-								// draw entry
-								$shortDescription = $entry['short_description'];
-								if ($isProjectMode){
-									$shortDescription = $moduleProject->getProjectName($entry['short_description']);
-								}
-								$text = date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) . "<br/>";
-								$text .= $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'],
-										$shortDescription, $entry['full_description'], false);
-								?>
-								<div class="text-center" id="tcellResa" style="background-color:#<?=$entry["color"]?>;">
-									<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $entry['id'] ?>"><?=$text?></a>
-								</div>
-								<?php 
-							}
-						}
-						
-						// plus button
-						?>
-						<?php 
-						if ($isDayAvailable){
-							if ($isUserAuthorizedToBook[$resourceCount]){
-								$dateString = date("Y-m-d", $date_unix);
-								?>
-								<div class="text-center">
-								<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_"."8"."_".$resourceID ?>"></a>
-								</div>
-								<?php 
-							}
-						}
-						?>
-						
-						</div>
-						</div>
-					<?php	
-					}	
-					?>
+			
+			<div class="row" id="colDivglobal" >
+				<div class="col-xs-1" id="colDiv"> 
+					
+				<b><?= $this->clean($ResourceBase['name']) ?></b>
+				
 				</div>
-			</div>	
-		  </div>
+				<div class="col-xs-11" id="colDiv2">
+					<!-- Content of each day -->
+					<div class="row seven-cols">
+						<?php 
+						for ($d = 0 ; $d < 7 ; $d++){
+							
+							$idcss = "colDiv";
+							if ($d == 0){
+								$idcss = "colDivleft";
+							}
+							if ($d == 6){
+								$idcss = "colDivright";
+							}
+							
+							// day title
+							$temp = explode("-", $mondayDate);
+							$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
+							$dayStream = date("l", $date_unix);
+							$monthStream = date("M", $date_unix);
+							$dayNumStream = date("d", $date_unix);
+							$sufixStream = date("S", $date_unix);
+							
+							$dayTitle = SyTranslator::DateFromTime($date_unix, $lang);
+							
+							?>
+							
+							<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">							
+								<!-- Print the reservations for the given day -->
+								<?php
+								$temp = explode("-", $mondayDate);
+								$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
+											
+								$day_begin = $this->clean($resourcesInfo[$resourceCount]['day_begin']);
+								$day_end = $this->clean($resourcesInfo[$resourceCount]['day_end']);
+								$size_bloc_resa = $this->clean($resourcesInfo[$resourceCount]['size_bloc_resa']);
+								$available_days = $this->clean($resourcesInfo[$resourceCount]['available_days']);
+								$available_days = explode(",", $available_days);
+								
+								$isDayAvailable = false;
+								if ($available_days[$d] == 1){
+									$isDayAvailable = true;
+								}
+									
+								
+								// add here the reservations
+								foreach ($calEntries as $entry){
+									if ($entry["resource_id"] == $resourceID && $entry["start_time"] >= $date_unix && $entry["start_time"] <= $date_unix+86400){
+										// draw entry
+										$shortDescription = $entry['short_description'];
+										if ($isProjectMode){
+											$shortDescription = $moduleProject->getProjectName($entry['short_description']);
+										}
+										$text = date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) . "<br />";
+										$text .= $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'],
+												$shortDescription, $entry['full_description'], false);
+										?>
+										<div class="text-center" id="tcellResa" style="background-color:#<?=$entry["color"]?>;">
+											<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $entry['id'] ?>"><?=$text?></a>
+										</div>
+										<?php 
+									}
+								}
+								
+								// plus button
+								?>
+								<?php 
+								if ($isDayAvailable){
+									if ($isUserAuthorizedToBook[$resourceCount]){
+										$dateString = date("Y-m-d", $date_unix);
+										?>
+										<div class="text-center">
+										<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_"."8"."_".$resourceID ?>"></a>
+										 </div>
+										<?php 
+									}
+								}
+								?>
+							</div> <!--  idss -->
+						<?php	
+						
+						}	
+						?>
+					</div> <!--  seven-cols -->
+					
+				</div>	<!-- col11 days --> 
+			  </div> <!-- col12 calendar -->
+			  
 		<?php 	
+
+		
 		}
 		?>
-	</div>
+</div>
 
+<div class="col-xs-12" style="color:#fff;">
+...<br/>
+</div>
 <?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
+
+
+
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

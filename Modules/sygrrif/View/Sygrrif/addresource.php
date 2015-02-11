@@ -20,15 +20,15 @@
 	<div class="col-md-6 col-md-offset-3">
 	<form role="form" class="form-horizontal" action="sygrrif/addresource"
 		method="post">
-	
 		<div class="page-header">
 				<h1>
-					Add a resource <br> <small>Select the resource type</small>
+				    <?= SyTranslator::Add_a_resource($lang) ?>
+					<br> <small><?= SyTranslator::Select_the_resource_type($lang) ?></small>
 				</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3">Resource type</label>
+			<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Resource_type($lang) ?></label>
 			<div class="col-xs-9">
 					<select class="form-control" name="resource_type">
 					<?php 
@@ -42,10 +42,11 @@
 			</div>
 		</div>
 		<br></br>
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <button type="button" onclick="location.href='resources'" class="btn btn-default" id="navlink">Cancel</button>
-		        <input type="submit" class="btn btn-primary" value="Next" />
+		<div class="col-xs-6 col-xs-offset-6" id="button-div">
+		        <button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Next($lang) ?>" />
 		</div>
+	</form>	
 	</div>
 </div>
 

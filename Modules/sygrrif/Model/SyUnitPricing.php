@@ -26,7 +26,8 @@ class SyUnitPricing extends Model {
 		return $data->fetchAll();
 	}
 	
-	public function allPricingTable(){
+	public function allPricingTable(){	
+		
 		$pricingsIds= $this->allPricing();
 		$pricingArray = array();
 		for($i = 0 ; $i < count($pricingsIds) ; ++$i){

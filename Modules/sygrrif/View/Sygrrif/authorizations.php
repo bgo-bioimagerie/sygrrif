@@ -8,8 +8,8 @@
 	<div class="col-md-6 col-md-offset-3">
 	
 		<div class="page-header">
-			<h1>
-				Autorisations<br> <small></small>
+			<h1> <?= SyTranslator::Active_Authorizations($lang) ?>
+			<br> <small></small>
 			</h1>
 		</div>
 
@@ -17,12 +17,12 @@
 			<thead>
 				<tr>
 					<td><a href="sygrrif/authorizations/id">ID</a></td>
-					<td><a href="sygrrif/authorizations/date">Date</a></td>
-					<td><a href="sygrrif/authorizations/userName">Name</a></td>
-					<td><a href="sygrrif/authorizations/userFirstname">Firstname</a></td>
-					<td><a href="sygrrif/authorizations/unit">Unit</a></td>
-					<td><a href="sygrrif/authorizations/visa">Visa</a></td>
-					<td><a href="sygrrif/authorizations/ressource">Resource</a></td>
+					<td><a href="sygrrif/authorizations/date"><?= SyTranslator::Date($lang) ?></a></td>
+					<td><a href="sygrrif/authorizations/userName"><?= SyTranslator::Name($lang) ?></a></td>
+					<td><a href="sygrrif/authorizations/userFirstname"><?= SyTranslator::Firstname($lang) ?></a></td>
+					<td><a href="sygrrif/authorizations/unit"><?= SyTranslator::Unit($lang) ?></a></td>
+					<td><a href="sygrrif/authorizations/visa"><?= SyTranslator::Visa($lang) ?></a></td>
+					<td><a href="sygrrif/authorizations/ressource"><?= SyTranslator::Resource($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -38,7 +38,7 @@
 				    <td><?= $this->clean ( $auth ['visa'] ); ?></td>
 				    <td><?= $this->clean ( $auth ['resource'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editauthorization/<?= $authId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='sygrrif/editauthorization/<?= $authId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

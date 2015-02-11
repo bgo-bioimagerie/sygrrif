@@ -4,7 +4,7 @@
 
     <!-- Custom styles for this template -->
     <link href="Themes/navbar-fixed-top.css" rel="stylesheet">
-    
+	
 </head>
 
 <?php 
@@ -23,7 +23,7 @@ $lang = $lang["language"];
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href=""><img style="height:45px; margin-top: -12px;"
+			<a class="navbar-brand" href=""><img style="height:35px; margin-top: -9px;"
              src="Themes/logo.jpg"></a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
@@ -73,7 +73,6 @@ $lang = $lang["language"];
         				<li><a href=connection/logout > <?= CoreTranslator::logout($lang) ?> </a></li>
 					</ul>
 				</li>
-
 			</ul>
 		</div><!--/.nav-collapse -->
 	</div>

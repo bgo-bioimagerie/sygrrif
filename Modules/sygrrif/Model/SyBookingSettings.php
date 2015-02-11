@@ -105,34 +105,34 @@ class SyBookingSettings extends Model {
 	}
 	
 	public function getSummary($user, $phone, $short_desc, $desc, $displayHorizontal = true){
+		$lang = $_SESSION["user_settings"]["language"];
 		$entryList = $this->entries("display_order");
-		//print_r($entryList);
-		//echo "count = " . count($entryList) . "</br>";
 		$summary = "";
 		// user
 		for ($i = 0; $i < count($entryList) ; $i++){
 			$last = false;
 			if ($i == 3){$last = true;}
 			if ($entryList[$i]['tag_name'] == "User"){
-				$summary = $this->summaryEntry($i, $summary, $entryList, $user, $displayHorizontal, $last);
+				$summary = $this->summaryEntry($i, $summary, $entryList, $user, $displayHorizontal, SyTranslator::User($lang), $last);
 			}
 			elseif ($entryList[$i]['tag_name'] == "Phone"){
-				$summary = $this->summaryEntry($i, $summary, $entryList, $phone, $displayHorizontal, $last);
+				$summary = $this->summaryEntry($i, $summary, $entryList, $phone, $displayHorizontal, SyTranslator::Phone($lang), $last);
 			}
 			elseif ($entryList[$i]['tag_name'] == "Short desc"){
-				$summary = $this->summaryEntry($i, $summary, $entryList, $short_desc, $displayHorizontal, $last);
+				$summary = $this->summaryEntry($i, $summary, $entryList, $short_desc, $displayHorizontal, SyTranslator::Short_desc($lang), $last);
 			}
 			elseif ($entryList[$i]['tag_name'] == "Desc"){
-				$summary = $this->summaryEntry($i, $summary, $entryList, $desc, $displayHorizontal, $last);
+				$summary = $this->summaryEntry($i, $summary, $entryList, $desc, $displayHorizontal, SyTranslator::Desc($lang), $last);
 			}
 		}
 		return $summary;
 	}
 	
-	protected function summaryEntry($i, $summary, $entryList, $content, $displayHorizontal, $last){
+	protected function summaryEntry($i, $summary, $entryList, $content, $displayHorizontal, $tagNameTr, $last){
+		
 		if ($entryList[$i]['is_visible'] == 1){
 			if ($entryList[$i]['is_tag_visible'] == 1){
-				$summary .= "<b>" . $entryList[$i]['tag_name']. ": </b>";
+				$summary .= "<b>" . $tagNameTr . ": </b>";
 			}
 			if ($entryList[$i]['font'] == "bold"){$summary .= "<b>";}
 			elseif ($entryList[$i]['font'] == "italic"){$summary .= "<i>";}
@@ -140,7 +140,7 @@ class SyBookingSettings extends Model {
 			if ($entryList[$i]['font'] == "bold"){$summary .= "</b>";}
 			elseif ($entryList[$i]['font'] == "italic"){$summary .= "</i>";}
 			if ($last == false){
-				if ($displayHorizontal){$summary .= " ";}else{$summary .= "</br>";}
+				if ($displayHorizontal){$summary .= " ";}else{$summary .= "<br/>";}
 			}
 		}
 		return $summary;

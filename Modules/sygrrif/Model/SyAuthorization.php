@@ -44,11 +44,25 @@ class SyAuthorization extends Model {
 	
 	public function setActive($id, $active){
 		$sql = "update sy_authorization set is_active=? where id=?";
-		$unit = $this->runRequest ( $sql, array (
+		$this->runRequest ( $sql, array (
 				$is_active,
 				$id
 		) );
 	}  
+	
+	public function unactivate($id){
+		$sql = "update sy_authorization set is_active=0 where id=?";
+		$this->runRequest ( $sql, array (
+				$id
+		) );
+	}
+	
+	public function activate($id){
+		$sql = "update sy_authorization set is_active=1 where id=?";
+		$this->runRequest ( $sql, array (
+				$id
+		) );
+	}
 	
 	public function desactivateAthorizationsForUser($userId){
 		$sql="select id from sy_authorization where user_id=?";
@@ -56,7 +70,7 @@ class SyAuthorization extends Model {
 		$auths = $req->fetchAll();
 		
 		foreach ($auths as $auth){
-			$this->setActive($auth["id"], 0);
+			$this->unactivate($auth["id"]);
 		}
 	} 
 	

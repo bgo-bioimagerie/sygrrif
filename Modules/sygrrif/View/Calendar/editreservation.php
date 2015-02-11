@@ -27,7 +27,7 @@ if (!$canEditReservation){
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Resource($lang)?></label>
-				<div class="col-xs-8">
+			<div class="col-xs-8">
 				<input class="form-control" id="id" type="text"  name="resource_name" value="<?=$this->clean($resourceBase['name']) ?>" readonly/>
 			</div>
 		</div>
@@ -127,7 +127,7 @@ if (!$canEditReservation){
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Full_description($lang)?></label>
 			<div class="col-xs-8">
-				<textarea class="form-control" id="name" type="text" name="full_description" <?=$readOnlyGlobal?>
+				<textarea class="form-control" id="name" name="full_description" <?=$readOnlyGlobal?>
 				><?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['full_description']);} ?></textarea>
 			</div>
 		</div>
@@ -147,30 +147,21 @@ if (!$canEditReservation){
 				?>
 			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Beginning_of_the_reservation($lang)?>:</label>
 			<div class="col-xs-8">
-				<div class='input-group date' id='datetimepicker6'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="begin_date"
-					       value="<?= $sdate ?>" <?=$readOnlyGlobal?>/>
+				<div class='input-group date form_date_<?= $lang ?>'>
+					<input type='text' class="form-control" name="begin_date"
+					       value="<?= CoreTranslator::dateFromEn($date, $lang) ?>" <?=$readOnlyGlobal?>/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-		        <script src="externals/datepicker/js/moments.js"></script>
-				<script src="externals/jquery-1.11.1.js"></script>
-				<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-		      	<script type="text/javascript">
-				$(function () {
-					$('#datetimepicker6').datetimepicker({
-						pickTime: false
-					});
-				});
-			    </script>
 		    </div>
-		    <br></br>
+		</div>
+		<div class="form-group">    
 			<div class="col-xs-8 col-xs-offset-4">
 				<!-- time -->
-				<div class="col-xs-3">
-				<b><?=SyTranslator::time($lang)?>:</b>
-				</div>
+				
+				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::time($lang)?>:</label>
+				
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="begin_hour"
 				       value="<?= $sh ?>" <?=$readOnlyGlobal?> 
@@ -206,35 +197,25 @@ if (!$canEditReservation){
 					?>
 				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::End_of_the_reservation($lang)?>:</label>
 				<div class="col-xs-8">
-					<div class='input-group date' id='datetimepicker7'>
+					<div class='input-group date form_date_<?= $lang ?>'>
 						<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="end_date"
-						       value="<?= $edate ?>" <?=$readOnlyGlobal?>/>
+						       value="<?= CoreTranslator::dateFromEn($edate, $lang) ?>" <?=$readOnlyGlobal?>/>
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>
 						</span>
 					</div>
-			        <script src="externals/datepicker/js/moments.js"></script>
-					<script src="externals/jquery-1.11.1.js"></script>
-					<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-		      		<script type="text/javascript">
-					$(function () {
-						$('#datetimepicker7').datetimepicker({
-							pickTime: false
-						});
-					});
-				    </script>
 			    </div>
-				</div>
+			</div>
+			<div class="form-group">
 				<div class="col-xs-8 col-xs-offset-4">
 					<!-- time -->
-					<div class="col-xs-3">
-					<b><?=SyTranslator::time($lang)?>:</b>
-					</div>
+					<label for="end_hour" class="control-label col-xs-4"><?=SyTranslator::time($lang)?>:</label>
+					
 					<div class="col-xs-3">
 					<input class="form-control" id="name" type="text" name="end_hour"
 					       value="<?= $eh ?>"  <?=$readOnlyGlobal?>
 					/>
-									</div>
+					</div>
 					<div class="col-xs-1">
 					<b>:</b>
 					</div>
@@ -242,6 +223,7 @@ if (!$canEditReservation){
 					<input class="form-control" id="name" type="text" name="end_min"
 					       value="<?= $em ?>"  <?=$readOnlyGlobal?>
 					/>
+					</div>
 				</div>
 			</div>
 		<?php 
@@ -285,7 +267,6 @@ if (!$canEditReservation){
 		<?php 	
 		}
 		?>
-		<br></br>
 		<!-- color code -->
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Color_code($lang)?></label>
@@ -440,14 +421,6 @@ if (!$canEditReservation){
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-			$(function () {
-				$('#datetimepicker5').datetimepicker({
-					pickTime: true
-				});
-			});
-		    </script>
 		    </div>
 		</div>
 		
@@ -472,6 +445,8 @@ if (!$canEditReservation){
       ?>
 	</div>
 </div>
+
+<?php include "Modules/core/View/timepicker_script.php"?>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

@@ -8,8 +8,8 @@
 	<div class="col-md-6 col-md-offset-3">
 	
 		<div class="page-header">
-			<h1>
-				Areas<br> <small></small>
+			<h1> <?= SyTranslator::Areas($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
@@ -17,9 +17,9 @@
 			<thead>
 				<tr>
 				    <td><a href="sygrrif/areas/id">ID</a></td>
-					<td><a href="sygrrif/areas/name">Name</a></td>
-					<td><a href="sygrrif/pricing/restricted">Is restricted</a></td>
-					<td><a href="sygrrif/pricing/display_order">Display order</a></td>
+					<td><a href="sygrrif/areas/name"><?= SyTranslator::Name($lang) ?></a></td>
+					<td><a href="sygrrif/pricing/restricted"> <?= SyTranslator::Is_resticted($lang) ?></a></td>
+					<td><a href="sygrrif/pricing/display_order"> <?= SyTranslator::Display_order($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -46,7 +46,7 @@
 				    <!--  Display order -->
 				    <td><?= $this->clean ( $area ['display_order'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editarea/<?= $areaId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='sygrrif/editarea/<?= $areaId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

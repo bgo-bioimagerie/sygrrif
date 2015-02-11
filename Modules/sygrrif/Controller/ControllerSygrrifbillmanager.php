@@ -2,6 +2,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyBill.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 
 class ControllerSygrrifbillmanager extends ControllerSecureNav {
 	
@@ -51,11 +52,20 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 	
 	public function editquery(){
 		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		$id = $this->request->getParameter("id");
 		$number = $this->request->getParameter("number");
 		$date_generated = $this->request->getParameter("date_generated");
 		$date_paid = $this->request->getParameter("date_paid");
 		$is_paid = $this->request->getParameter("is_paid");
+		
+		if ($date_paid != ""){
+			$date_paid = CoreTranslator::dateToEn($date_paid, $lang);
+		}
 		
 		$modelBillManager = new SyBill();
 		$modelBillManager->editBills($id, $number, $date_generated, $date_paid, $is_paid);

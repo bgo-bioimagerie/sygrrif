@@ -3,6 +3,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
@@ -313,16 +314,26 @@ class ControllerSygrrif extends ControllerBooking {
 			$unit_id = $this->request->getParameter ( "actionid" );
 		}
 		
+		echo "unit_id = " . $unit_id . "<br />";
+		
 		$modelUnit = new Unit();
 		$unitName = $modelUnit->getUnitName($unit_id);
 		
 		$modelPricing = new SyPricing();
 		$pricingList = $modelPricing->pricingsIDName();
-		$curentPricingId = $modelPricing->getPricing($unit_id);
+		
+		$modelUnitPricing = new SyUnitPricing();
+		$curentPricingId = $modelUnitPricing->getPricing($unit_id);
+		//$curentPricingId = $modelPricing->getPricing($unit_id);
+		//$curentPricingId = $curentPricingId[0];
+		
+		//echo "curentPricingId = " . $curentPricingId . "<br />";
+		//return;
+		print_r($pricingList);
 		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
-				'navBar' => $navBar, 'unitName' => $unitName[0],
+				'navBar' => $navBar, 'unitName' => $unitName,
 				'unitId' => $unit_id, 'curentPricingId' => $curentPricingId,
 				'pricingList' => $pricingList
 		) );
@@ -648,6 +659,12 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editauthorizationsquery(){
+		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		$id = $this->request->getParameter('id');
 		$user_id = $this->request->getParameter('user_id');
 		$unit_id = $this->request->getParameter('unit_id');
@@ -656,20 +673,40 @@ class ControllerSygrrif extends ControllerBooking {
 		$resource_id = $this->request->getParameter('resource_id');
 		$is_active = $this->request->getParameter('is_active');
 		
+		if ($date != ""){
+			$date = CoreTranslator::dateToEn($date, $lang);
+		}
+		
 		$model = new SyAuthorization();
 		$model->editAuthorization($id, $date, $user_id, $unit_id, $visa_id, $resource_id);
-		$model->setActive($id, $is_active);
+		//echo "is active = " . (int)$is_active . "<br/>";
+		if ($is_active > 0){
+			$model->activate($id);
+		}
+		else{
+			$model->unactivate($id);
+		}
+		//$model->setActive($id, (int)$is_active);
 		
 		$this->redirect ( "sygrrif", "authorizations" );
 	}
 	
 	public function addauthorizationsquery(){
 		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		$user_id = $this->request->getParameter('user_id');
 		$unit_id = $this->request->getParameter('unit_id');
 		$date = $this->request->getParameter('date');
 		$visa_id = $this->request->getParameter('visa_id');
 		$resource_id = $this->request->getParameter('resource_id');
+		
+		if ($date != ""){
+			$date = CoreTranslator::dateToEn($date, $lang);
+		}
 		
 		$model = new SyAuthorization();
 		$model->addAuthorization($date, $user_id, $unit_id, $visa_id, $resource_id);
@@ -679,12 +716,24 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function statpriceunits(){
 		
+		$lang = "En";
+		if ( isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		// get the form parameters
 		$searchDate_start = $this->request->getParameterNoException('searchDate_start');
 		$searchDate_end = $this->request->getParameterNoException('searchDate_end');
 		$unit_id = $this->request->getParameterNoException('unit');
 		$responsible_id = $this->request->getParameterNoException('responsible');
 		$export_type = $this->request->getParameterNoException('export_type');
+
+		if ($searchDate_start != ""){
+			$searchDate_start = CoreTranslator::dateToEn($searchDate_start, $lang);
+		}
+		if ($searchDate_end != ""){
+			$searchDate_end = CoreTranslator::dateToEn($searchDate_end, $lang);
+		}
 		
 		// get the selected unit
 		$selectedUnitId = 0;
@@ -767,6 +816,11 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function statauthorizations(){
 		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		// get form info
 		$searchDate_start = $this->request->getParameterNoException('searchDate_start');
 		$searchDate_end = $this->request->getParameterNoException('searchDate_end');
@@ -775,6 +829,13 @@ class ControllerSygrrif extends ControllerBooking {
 		$trainingunit_id = $this->request->getParameterNoException('trainingunit');
 		$visa_id = $this->request->getParameterNoException('visa');
 		$resource_id = $this->request->getParameterNoException('resource');
+		
+		if ($searchDate_start != ""){
+			$searchDate_start = CoreTranslator::dateToEn($searchDate_start, $lang);
+		}
+		if ($searchDate_end != ""){
+			$searchDate_end = CoreTranslator::dateToEn($searchDate_end, $lang);
+		}
 		
 		$view_pie_chart = $this->request->getParameterNoException('view_pie_chart');
 		$view_counting = $this->request->getParameterNoException('view_counting');
@@ -1021,6 +1082,7 @@ class ControllerSygrrif extends ControllerBooking {
 			
 			// call the action
 			$actionName = $typInfo['book_action'];	
+			//echo "book action = " . $actionName . "<br/>";
 			$controller->runAction($actionName);
 		
 	}

@@ -25,31 +25,32 @@
 	
 		<div class="page-header">
 			<h1>
-				Add area <br> <small></small>
+			<?= SyTranslator::Add_area($lang) ?>
+			<br> <small></small>
 			</h1>
 		</div>
 	
 		<input class="form-control" id="id" type="hidden"  name="id" />
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3">Name</label>
+			<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-9">
 				<input class="form-control" id="name" type="text" name="name"  
 				/>
 			</div>
 		</div>
 	    <div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3">Is resticted</label>
+			<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Is_resticted($lang) ?></label>
 			<div class="col-xs-9">
 					<select class="form-control" name="restricted">
 						<?php $restricted = $this->clean($area['restricted']) ?>
-						<OPTION value="1" > Yes </OPTION>
-						<OPTION value="0" selected="selected"> No </OPTION>
+						<OPTION value="1" > <?= SyTranslator::Yes($lang) ?> </OPTION>
+						<OPTION value="0" selected="selected"> <?= SyTranslator::No($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3">Display order</label>
+			<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Display_order($lang) ?></label>
 			<div class="col-xs-9">
 				<input class="form-control" id="name" type="number" name="display_order"  
 				/>
@@ -57,8 +58,8 @@
 		</div>
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Add" />
-				<button type="button" onclick="location.href='areas'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='areas'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

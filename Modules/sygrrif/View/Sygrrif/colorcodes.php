@@ -9,16 +9,17 @@
 	
 		<div class="page-header">
 			<h1>
-				Color codes<br> <small></small>
+			<?= SyTranslator::color_codes($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="sygrrif/colorcode/id">Id</a></td>
-					<td><a href="sygrrif/colorcode/name">Name</a></td>
-					<td><a href="sygrrif/colorcode/color">Color</a></td>
+					<td><a href="sygrrif/colorcode/id">ID</a></td>
+					<td><a href="sygrrif/colorcode/name"><?= SyTranslator::Name($lang) ?></a></td>
+					<td><a href="sygrrif/colorcode/color"><?= SyTranslator::Color($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -31,7 +32,7 @@
 				    <td><?= $this->clean ( $color ['name'] ); ?></td>
 				    <td><?= $this->clean ( $color ['color'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editcolorcode/<?= $colorId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='sygrrif/editcolorcode/<?= $colorId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

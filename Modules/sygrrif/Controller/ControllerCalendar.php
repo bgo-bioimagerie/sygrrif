@@ -3,6 +3,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Project.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
@@ -406,10 +407,16 @@ class ControllerCalendar extends ControllerBooking {
 	public function bookday($message = ""){
 		
 		$_SESSION['lastbookview'] = "bookday";
+		$lang = $_SESSION["user_settings"]["language"];
+		
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
+		
+		if ($curentDate != ""){
+			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
+		}
 		
 		if ($curentAreaId == ""){
 			$curentResource = $_SESSION['id_resource'];
@@ -449,11 +456,17 @@ class ControllerCalendar extends ControllerBooking {
 		$modelRescal = new SyResourceCalendar();
 		$resourceInfo = $modelRescal->resource($curentResource);
 		
+		if (count($resourceInfo) <=1 ){
+			$this->redirect("calendar", "booking");
+			return;
+		}
+		
 		$modelRes = new SyResource();
 		$resourceBase = $modelRes->resource($curentResource);
 		
 		// get the entries for this resource
 		$modelEntries = new SyCalendarEntry();
+		echo "curent date line 470 = " . $curentDate . "<br/>";
 		$dateArray = explode("-", $curentDate);
 		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
 		$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2],$dateArray[0]);
@@ -490,10 +503,16 @@ class ControllerCalendar extends ControllerBooking {
 	public function bookweek($message = ""){
 	
 		$_SESSION['lastbookview'] = "bookweek";
+		$lang = $_SESSION["user_settings"]["language"];
+		
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
+
+		if ($curentDate != ""){
+			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
+		}
 	
 		if ($curentAreaId == ""){
 			$curentResource = $_SESSION['id_resource'];
@@ -524,6 +543,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// get the closest monday to curent day
 		$i = 0;
+		//echo "curentDate = " . $curentDate . "<br/>";
 		$curentDateE = explode("-", $curentDate);
 		while(date('D',mktime(0,0,0,$curentDateE[1], $curentDateE[2]-$i, $curentDateE[0])) != "Mon") {
 			$i++;
@@ -542,6 +562,11 @@ class ControllerCalendar extends ControllerBooking {
 		// get the resource info
 		$modelRescal = new SyResourceCalendar();
 		$resourceInfo = $modelRescal->resource($curentResource);
+		
+		if (count($resourceInfo) <=1 ){
+			$this->redirect("calendar", "booking");
+			return;
+		}
 	
 		$modelRes = new SyResource();
 		$resourceBase = $modelRes->resource($curentResource);
@@ -586,18 +611,25 @@ class ControllerCalendar extends ControllerBooking {
 	public function bookweekarea($message = ""){
 	
 		$_SESSION['lastbookview'] = "bookweekarea";
+		$lang = $_SESSION["user_settings"]["language"]; 
 		
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
-	
+		
+		if ($curentDate != ""){
+			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
+		}
+		
 		if ($curentAreaId == ""){
 			$curentResource = $_SESSION['id_resource'];
 			$curentAreaId = $_SESSION['id_area'];
 			$curentDate = $_SESSION['curentDate'];
+			//echo "curent date n-2 = " . $curentDate . "<br/>";
 		}
 	
+		//echo "curent date n-1= " . $curentDate . "<br/>";
 		// change input if action
 		$action = "";
 		if ($this->request->isParameterNotEmpty("actionid")) {
@@ -619,6 +651,7 @@ class ControllerCalendar extends ControllerBooking {
 			$curentDate = date("Y-m-d", time());
 		}
 	
+		//echo "curent date n = " . $curentDate . "<br/>";
 		// get the closest monday to curent day
 		$i = 0;
 		$curentDateE = explode("-", $curentDate);
@@ -694,8 +727,6 @@ class ControllerCalendar extends ControllerBooking {
 		), "bookweekarea");
 	}
 	
-	
-	
 	public function editreservation(){
 		
 		// get the action
@@ -762,8 +793,6 @@ class ControllerCalendar extends ControllerBooking {
 			$showSeries = true;
 		}
 		
-		
-		
 		// set the view given the action		
 		if ($contentAction[0] == "t"){ // add resa 
 			
@@ -807,7 +836,7 @@ class ControllerCalendar extends ControllerBooking {
 				$seriesInfo = $modelSeries->getEntry($reservationInfo['repeat_id']);
 			}
 			
-			print_r($seriesInfo);
+			//print_r($seriesInfo);
 			
 			if ($_SESSION["user_status"] < 3 && $curentuserid != $reservationInfo["recipient_id"]){
 				$canEditReservation = false;
@@ -834,6 +863,11 @@ class ControllerCalendar extends ControllerBooking {
 	
 	public function editreservationquery(){
 		
+		$lang = "En";
+		if (isset($_SESSION['user_settings']['language'])){
+			$lang = $_SESSION['user_settings']['language'];
+		}
+	
 		// get reservation info
 		$reservation_id = $this->request->getParameterNoException('reservation_id');
 		$resource_id = $this->request->getParameter('resource_id');
@@ -853,12 +887,16 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// get reservation date
 		$beginDate = $this->request->getParameter('begin_date');
+		$beginDate = CoreTranslator::dateToEn($beginDate, $lang);
 		$beginDate = explode("-", $beginDate);
 		$begin_hour =  $this->request->getParameter('begin_hour');
 		$begin_min = $this->request->getParameter('begin_min');
 		$start_time = mktime($begin_hour, $begin_min, 0, $beginDate[1], $beginDate[2], $beginDate[0]);
 		
 		$endDate = $this->request->getParameterNoException('end_date');
+		if ($endDate != ""){
+			$endDate = CoreTranslator::dateToEn($endDate, $lang);
+		}
 		$endDate = explode("-", $endDate);
 		$end_hour =  $this->request->getParameterNoException('end_hour');
 		$end_min = $this->request->getParameterNoException('end_min');
@@ -960,6 +998,10 @@ class ControllerCalendar extends ControllerBooking {
 		$areaID = $modelResource->getAreaID($resource_id);
 		$_SESSION['id_area'] = $areaID;
 		$date = $this->request->getParameter('begin_date');
+		//echo "date = " . $date . "<br />";
+		if ($date != ""){
+			$date = CoreTranslator::dateToEn($date, $lang);
+		}
 		//echo "DATE = " .  $date . "--";
 		$_SESSION['curentDate'] = $date;
 		
@@ -995,5 +1037,23 @@ class ControllerCalendar extends ControllerBooking {
 		$message = $modelEntry->removeEntriesFromSeriesID($id);
 		
 		$this->book($message);
+	}
+	
+	public function booking(){
+		// get the menu info
+		$id_resource = $this->request->getSession()->getAttribut('id_resource');
+		$id_area = $this->request->getSession()->getAttribut('id_area');
+		$curentDate = $this->request->getSession()->getAttribut('curentDate');
+		
+		// navigation
+		$navBar = $this->navBar();
+		$menuData = $this->calendarMenuData($id_area, $id_resource, $curentDate);
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'menuData' => $menuData
+		));
 	}
 }

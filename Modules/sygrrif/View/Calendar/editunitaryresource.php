@@ -26,22 +26,22 @@
 		<div class="page-header">
 			<h1>
 			<?php if ($this->clean($id) == ""){
-				$buttonName = "Add";
+				$buttonName = SyTranslator::Add($lang);
 				echo "Add Unitary Resource";
 			}
 			else{
-				$buttonName = "Edit";
+				$buttonName = SyTranslator::Edit($lang);
 				echo "Edit Unitary Resource";
 			}
-				?>	
-				<br> <small></small>
+			?>	
+			<br> <small></small>
 			</h1>
 		</div>
 	
 	
 		<div class="page-header">
 			<h3>
-			Description
+			<?= SyTranslator::Description($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
@@ -60,7 +60,7 @@
 		}
 		?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Name</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Name($lang)?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="name"
 				       value="<?=$this->clean($name) ?>"  
@@ -68,14 +68,14 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Description</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Description($lang)?></label>
 			<div class="col-xs-8">
-				<textarea class="form-control" id="name" type="textarea" name="description"
+				<textarea class="form-control" id="name" name="description"
 				><?=$this->clean($description) ?></textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Category</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Category($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="category_id">
 					<OPTION value="0"> ... </OPTION>
@@ -93,7 +93,7 @@
 			</div>
 		</div>
 				<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Area</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Area($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="area_id">
 					<OPTION value="0"> ... </OPTION>
@@ -119,10 +119,10 @@
 			<div class="col-xs-8">
 					<select class="form-control" name="accessibility_id">
 						<?php $accessibility_id = $this->clean($accessibility_id) ?>
-						<OPTION value="1" <?php if ($accessibility_id==1){echo "selected=\"selected\"";}?>> User </OPTION>
-						<OPTION value="2" <?php if ($accessibility_id==2){echo "selected=\"selected\"";}?>> Authorized User </OPTION>
-						<OPTION value="3" <?php if ($accessibility_id==3){echo "selected=\"selected\"";}?>> Manager </OPTION>
-						<OPTION value="4" <?php if ($accessibility_id==4){echo "selected=\"selected\"";}?>> Admin </OPTION>
+						<OPTION value="1" <?php if ($accessibility_id==1){echo "selected=\"selected\"";}?>> <?= SyTranslator::User($lang) ?> </OPTION>
+						<OPTION value="2" <?php if ($accessibility_id==2){echo "selected=\"selected\"";}?>> <?= SyTranslator::Authorized_users($lang) ?></OPTION>
+						<OPTION value="3" <?php if ($accessibility_id==3){echo "selected=\"selected\"";}?>> <?= SyTranslator::Manager($lang) ?> </OPTION>
+						<OPTION value="4" <?php if ($accessibility_id==4){echo "selected=\"selected\"";}?>> <?= SyTranslator::Admin($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>
@@ -130,13 +130,13 @@
 
 		<div class="page-header">
 			<h3>
-			Settings
+			<?= SyTranslator::Settings($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Quantity name</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Quantity_name($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="quantity_name"
 				       value="<?=$this->clean($quantity_name) ?>"  
@@ -144,54 +144,54 @@
 			</div>
 		</div>
 		<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4">Available Days</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Available_Days($lang) ?></label>
 				<div class="col-xs-8">
 					<div class="checkbox">
     				<label>
     				    <?php $monday = $days_array[0]; ?>
-      					<input type="checkbox" name="monday" <?php if ($monday==1){echo "checked";}?>> Monday
+      					<input type="checkbox" name="monday" <?php if ($monday==1){echo "checked";}?>> <?= SyTranslator::Monday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $tuesday = $days_array[1]; ?>
-      					<input type="checkbox" name="tuesday" <?php if ($tuesday==1){echo "checked";}?>> Tuesday
+      					<input type="checkbox" name="tuesday" <?php if ($tuesday==1){echo "checked";}?>> <?= SyTranslator::Tuesday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     					<?php $wednesday = $days_array[2]; ?>
-      					<input type="checkbox" name="wednesday" <?php if ($wednesday==1){echo "checked";}?>> Wednesday
+      					<input type="checkbox" name="wednesday" <?php if ($wednesday==1){echo "checked";}?>> <?= SyTranslator::Wednesday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $thursday = $days_array[3]; ?>
-      					<input type="checkbox" name="thursday" <?php if ($thursday==1){echo "checked";}?>> Thursday
+      					<input type="checkbox" name="thursday" <?php if ($thursday==1){echo "checked";}?>> <?= SyTranslator::Thursday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $friday = $days_array[4]; ?>
-      					<input type="checkbox" name="friday" <?php if ($friday==1){echo "checked";}?>> Friday
+      					<input type="checkbox" name="friday" <?php if ($friday==1){echo "checked";}?>> <?= SyTranslator::Friday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $saturday = $days_array[5]; ?>
-      					<input type="checkbox" name="saturday" <?php if ($saturday==1){echo "checked";}?>> Saturday
+      					<input type="checkbox" name="saturday" <?php if ($saturday==1){echo "checked";}?>> <?= SyTranslator::Saturday($lang)?>
     				</label>
   					</div>
   					<div class="checkbox">
     				<label>
     				    <?php $sunday = $days_array[6]; ?>
-      					<input type="checkbox" name="sunday" <?php if ($sunday==1){echo "checked";}?>> Sunday
+      					<input type="checkbox" name="sunday" <?php if ($sunday==1){echo "checked";}?>> <?= SyTranslator::Sunday($lang)?>
     				</label>
   					</div>
 				</div>
 			</div>
 		<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4">Day beginning</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Day_beginning($lang)?></label>
 				<div class="col-xs-8">
 				<select class="form-control" name="day_begin">
 				    <?php $sday = $this->clean($day_begin); 
@@ -208,7 +208,7 @@
 			</div>
 		</div>
 			<div class="form-group">	
-				<label for="inputEmail" class="control-label col-xs-4">Day end</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Day_end($lang)?></label>
 				<div class="col-xs-8">
 				<select class="form-control" name="day_end">
 			    <?php $eday = $this->clean($day_end); 
@@ -225,7 +225,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Booking size bloc</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Booking_size_bloc($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="size_bloc_resa">
 				<?php $size_bloc_resa = $this->clean($size_bloc_resa)?>
@@ -236,19 +236,19 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">The user specify</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::The_user_specify($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="resa_time_setting">
 				<?php $resa_time_setting = $this->clean($resa_time_setting)?>
-					<OPTION value="0" <?php  if ($resa_time_setting == 0){echo "selected=\"selected\"";}?> > the booking duration </OPTION>
-					<OPTION value="1" <?php  if ($resa_time_setting == 1){echo "selected=\"selected\"";}?> > the date/time when reservation ends </OPTION>
+					<OPTION value="0" <?php  if ($resa_time_setting == 0){echo "selected=\"selected\"";}?> > <?= SyTranslator::the_booking_duration($lang)?> </OPTION>
+					<OPTION value="1" <?php  if ($resa_time_setting == 1){echo "selected=\"selected\"";}?> > <?= SyTranslator::the_date_time_when_reservation_ends($lang)?> </OPTION>
 				</select>
 			</div>
 		</div>
 		
 		<div class="page-header">
 			<h3>
-			Prices
+			<?= SyTranslator::Prices($lang)?>
 				<br> <small></small>
 			</h3>
 		</div>
@@ -280,9 +280,9 @@
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
 		        <?php if ($this->clean($id) != ""){ ?>
-		        	<button type="button" onclick="location.href='<?="calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger" id="navlink">Delete</button>
+		        	<button type="button" onclick="location.href='<?="calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger" id="navlink"><?= SyTranslator::Delete($lang)?></button>
 				<?php } ?>
-				<button type="button" onclick="location.href='visa'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='visa'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

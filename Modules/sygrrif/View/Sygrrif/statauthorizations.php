@@ -30,7 +30,8 @@
 	
 		<div class="page-header">
 			<h2>
-				Statistics authorizations <br> <small></small>
+				<?= SyTranslator::Statistics_authorizations($lang) ?>
+				<br> <small></small>
 			</h2>
 		</div>
 		
@@ -43,11 +44,11 @@
 		<?php } ?>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date Start</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker5'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_start" id="searchDate_start"
-					       value="<?=$searchDate_start?>" />
+				<div class='input-group date form_date_<?= $lang ?>' >
+					<input type='text' class="form-control" name="searchDate_start" id="searchDate_start"
+					       value="<?= CoreTranslator::dateFromEn($searchDate_start, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -63,27 +64,19 @@
 		    </div>
 		</div>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date End</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang)?></label>
 				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker6'>
-					<input id="test32" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_end" 
-					       value="<?= $searchDate_end ?>" />
+				<div class='input-group date form_date_<?= $lang ?>' >
+					<input id="test32" type='text' class="form-control" name="searchDate_end" 
+					       value="<?= CoreTranslator::dateFromEn($searchDate_end, $lang)  ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-  			$(function () {
-				$('#datetimepicker6').datetimepicker({
-					pickTime: false
-				});
-			});
-			</script>
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">User</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::User($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="user">
 					<?php 
@@ -103,7 +96,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Curent unit</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Curent_unit($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="curentunit">
 					<?php 
@@ -123,7 +116,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unit at training time</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unit_at_the_authorization_date_time($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="trainingunit">
 					<?php 
@@ -143,7 +136,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Visa</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Visa($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="visa">
 					<?php 
@@ -163,7 +156,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Resource</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Resource($lang)?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="resource">
 					<OPTION value="0"> -- </OPTION>
@@ -184,7 +177,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Outputs</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Outputs($lang)?></label>
 			<div class="col-xs-10">
 				<div class="checkbox">
 			    	<label>
@@ -194,7 +187,7 @@
 			    		$checked = "checked";
 			    	} 
 			    		?>
-			      	<input type="checkbox" name="view_pie_chart" <?= $checked ?>> view resources pie chart 
+			      	<input type="checkbox" name="view_pie_chart" <?= $checked ?>> <?= SyTranslator::view_resources_pie_chart($lang)?> 
 			    	</label>
                </div>
                <div class="checkbox">
@@ -205,7 +198,7 @@
 			    		$checked = "checked";
 			    	} 
 			    		?>
-			      	<input type="checkbox" name="view_counting" <?= $checked ?>> view counting 
+			      	<input type="checkbox" name="view_counting" <?= $checked ?>> <?= SyTranslator::view_counting($lang)?>
 			    	</label>
                </div>
                
@@ -217,7 +210,7 @@
 			    		$checked = "checked";
 			    	} 
 			    		?>
-			      	<input type="checkbox" name="view_details" <?= $checked ?>> view details 
+			      	<input type="checkbox" name="view_details" <?= $checked ?>> <?= SyTranslator::view_details($lang)?>
 			    	</label>
                </div>
   
@@ -225,7 +218,7 @@
 		</div>	
 			
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Calculate" />
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Calculate($lang)?>" />
 		</div>
       </form>
 	</div>
@@ -243,7 +236,7 @@ if (!$resultsVisible){
 	<div class="col-md-8 col-md-offset-2">
 	  <div class="page-header">
 		<h2>
-			Results <br> <small></small>
+			<?= SyTranslator::Results($lang)?> <br> <small></small>
 		</h2>
 	  </div>
 	
@@ -256,7 +249,8 @@ if (!$resultsVisible){
 	  <div>
 	  	  <div class="page-header">
 		<h3>
-			Authorizations during the periode <br> <small></small>
+			<?= SyTranslator::Authorisations($lang) ?>
+			<br> <small></small>
 		</h3>
 	  </div>
 	  <div id="camembert" class="text-center">
@@ -277,7 +271,7 @@ if (!$resultsVisible){
 		</div>
 		<br>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
-		<button type="button" onclick="location.href='temp/camembert_authJPG.jpg'" download="pie_chart_authorizations" class="btn btn-primary" id="navlink">Export as jpeg</button>
+		<button type="button" onclick="location.href='temp/camembert_authJPG.jpg'" download="pie_chart_authorizations" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
 		<?php } ?>
 	  </div>
 	  <br>
@@ -291,7 +285,7 @@ if (!$resultsVisible){
 	  <div>
 	  	  <div class="page-header">
 		<h3>
-			Counting <br> <small></small>
+			<?= SyTranslator::Counting($lang) ?> <br> <small></small>
 		</h3>
 	  </div>
 	  <?php 
@@ -305,8 +299,8 @@ if (!$resultsVisible){
 	  <table class="table table-striped table-bordered">
 	  <thead>
 	  <tr>
-	  	<td>Search criteria</td>
-	  	<td>Results</td>
+	  	<td><?= SyTranslator::Search_criteria($lang) ?></td>
+	  	<td><?= SyTranslator::Results($lang) ?></td>
 	  </tr>
 	  </thead>
 	  <tbody>
@@ -315,19 +309,19 @@ if (!$resultsVisible){
 	  		<p><?= $msData["criteres"] ?></p>
 	  	</td>
 	  	<td>
-	  	Number of training : <?= $msData["numOfRows"]?><br/>
-		Nomber of users : <?= $msData["distinct_nf"]?><br/>
-		Nomber of units : <?= $msData["distinct_laboratoire"]?><br/>
-		Nomber of VISAs : <?= $msData["distinct_visa"]?><br/>
-		Nomber of resources : <?= $msData["distinct_machine"]?><br/>
-		Nomber of new user : <?= $msData["new_people"]?>
+	  	<?= SyTranslator::Number_of_training($lang) ?> : <?= $msData["numOfRows"]?><br/>
+		<?= SyTranslator::Nomber_of_users($lang) ?> : <?= $msData["distinct_nf"]?><br/>
+		<?= SyTranslator::Nomber_of_units($lang) ?> : <?= $msData["distinct_laboratoire"]?><br/>
+		<?= SyTranslator::Nomber_of_VISAs($lang) ?> : <?= $msData["distinct_visa"]?><br/>
+		<?= SyTranslator::Nomber_of_resources($lang) ?> : <?= $msData["distinct_machine"]?><br/>
+		<?= SyTranslator::Nomber_of_new_user($lang) ?> : <?= $msData["new_people"]?>
 	  	</td>
 	  </tr>
 	  </tbody>
 	  </table>
 		<?php }?>
 		 <?php }?>
-		 <button type="button" onclick="location.href='sygrrif/statauthorizationscountingcsv'" class="btn btn-primary" id="navlink">Export as csv</button>
+		 <button type="button" onclick="location.href='sygrrif/statauthorizationscountingcsv'" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_csv($lang) ?></button>
 		 
 
 		
@@ -338,7 +332,8 @@ if (!$resultsVisible){
 	  <div>
 	  	  <div class="page-header">
 		<h3>
-			Details <br> <small></small>
+			<?= SyTranslator::detail($lang)?>
+			<br> <small></small>
 		</h3>
 	  </div>
 	  <?php 
@@ -353,12 +348,12 @@ if (!$resultsVisible){
 	  	<table class="table table-striped table-bordered">
 	  	<thead>
 			<tr>
-				<td> Date </td>
-				<td> User </td>
-				<td> Unit </td>
-				<td> Visa </td>
-				<td> Resource </td>
-				<td> Responsible </td>
+				<td> <?= SyTranslator::Date($lang) ?> </td>
+				<td> <?= SyTranslator::User($lang) ?> </td>
+				<td> <?= SyTranslator::Unit($lang) ?> </td>
+				<td> <?= SyTranslator::Visa($lang) ?> </td>
+				<td> <?= SyTranslator::Resource($lang) ?> </td>
+				<td> <?= SyTranslator::Responsible($lang) ?> </td>
 			</tr>
 		</thead>
 		<tbody>
@@ -384,9 +379,11 @@ if (!$resultsVisible){
 	?>
 	<?php }?>
 </div>
-<button type="button" onclick="location.href='sygrrif/statauthorizationsdetailcsv'" class="btn btn-primary" id="navlink">Export as csv</button>
+<button type="button" onclick="location.href='sygrrif/statauthorizationsdetailcsv'" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_csv($lang) ?></button>
 </div>
 </div>
+
+<?php include "Modules/core/View/timepicker_script.php" ?>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

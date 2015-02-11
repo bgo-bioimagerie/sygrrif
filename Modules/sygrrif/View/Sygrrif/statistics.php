@@ -24,12 +24,13 @@
 	
 		<div class="page-header">
 			<h1>
-				Statistics <br> <small></small>
+			<?= SyTranslator::Statistics($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Year</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Year($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="year">
 					<?php 
@@ -47,8 +48,8 @@
 			</div>
 		</div>	
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Ok" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

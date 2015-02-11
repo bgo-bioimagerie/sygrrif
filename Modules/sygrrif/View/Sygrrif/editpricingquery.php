@@ -9,7 +9,8 @@
 		
 		<div class="page-header">
 			<h1>
-				Edit a pricing <br> <small></small>
+				<?= SyTranslator::Edit_pricing($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		
@@ -22,7 +23,7 @@
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='sygrrif/pricing'" class="btn btn-success" id="navlink">Ok</button>
+			<button onclick="location.href='sygrrif/pricing'" class="btn btn-success" id="navlink"><?= SyTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

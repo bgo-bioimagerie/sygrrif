@@ -38,8 +38,8 @@
 					<?php $itemId = $this->clean ( $bill ['id'] ); ?>
 					<td><?= $itemId ?></td>
 				    <td><?= $this->clean ( $bill ['number'] ); ?></td>
-				    <td><?= $this->clean ( $bill ['date_generated'] ); ?></td>
-				    <td><?= $this->clean ( $bill ['date_paid'] ); ?></td>
+				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['date_generated'], $lang) ); ?></td>
+				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['date_paid'], $lang) ); ?></td>
 				    <?php 
 				    $is_active = $this->clean ( $bill ['is_paid'] );
 				    if ($is_active){$is_active = "yes";}

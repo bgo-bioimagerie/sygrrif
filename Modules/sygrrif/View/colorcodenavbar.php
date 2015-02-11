@@ -14,7 +14,8 @@ $lang = $lang["language"];
 ?>
 
 <div class="col-lg-12">
-
+<br/>
+<br/>
 	<div class="page-header">
 		<h4>
 			<?= SyTranslator::color_code($lang) ?>

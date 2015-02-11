@@ -1,13 +1,5 @@
 
 <head>
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css">
-
-
-<link href="data:text/css;charset=utf-8,"
-	data-href="bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet"
-	id="bs-theme-stylesheet">
-
 
 <style>
 .bs-docs-header {
@@ -45,7 +37,6 @@ $lang = $lang["language"];
 	<div class="container">
 		<h1>SyGRRif</h1>
 
-		
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?= SyTranslator::Area_and_Resources($lang) ?></legend>
@@ -58,15 +49,16 @@ $lang = $lang["language"];
 						class="btn btn-link" id="navlink"><?= SyTranslator::Resource_categories($lang) ?></button>
 					<button onclick="location.href='sygrrif/addresourcescategory'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Add($lang) ?></button>
-				<br/>
-					<button onclick="location.href='sygrrif/colorcodes'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::color_code($lang) ?></button>
-					<button onclick="location.href='sygrrif/addcolorcode'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::Add($lang) ?></button>
+						
 				<br/>
 					<button onclick="location.href='sygrrif/resources'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Resources($lang) ?></button>
 					<button onclick="location.href='sygrrif/addresource'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::Add($lang) ?></button>
+				<br/>
+					<button onclick="location.href='sygrrif/colorcodes'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::color_code($lang) ?></button>
+					<button onclick="location.href='sygrrif/addcolorcode'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Add($lang) ?></button>
 						
 			</fieldset>

@@ -1,7 +1,5 @@
 
 <head>
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css">
 
 <style>
 .bs-docs-header {
