@@ -1,8 +1,9 @@
 
 
-<?php 
-$lang = $_SESSION["user_settings"];
-$lang = $lang["language"];
+<?php
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
 ?>
 <p>
 <?php echo CoreTranslator::CoreConfigAbstract($lang); ?>

@@ -48,6 +48,7 @@ abstract class Model
             // Create connection
             self::$bdd = new PDO($dsn, $login, $pwd,
                     array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+            self::$bdd->exec("SET CHARACTER SET utf8");
         }
         return self::$bdd;
     }

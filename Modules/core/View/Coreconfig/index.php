@@ -3,8 +3,9 @@
 <?php echo $navBar ?>
 
 <?php
-$lang = $_SESSION["user_settings"];
-$lang = $lang["language"];
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
 ?>
 
 <div class="container">

@@ -45,7 +45,8 @@ if (isset($_SESSION["user_settings"]["language"])){
       
       	<div class="page-header">
 			<h2>
-				Tools <br> <small></small>
+			<?= CoreTranslator::Tools($lang) ?>
+				<br> <small></small>
 			</h2>
 		</div>
 		<div class="bs-glyphicons">
@@ -74,7 +75,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 		?>
 		<div class="page-header">
 			<h2>
-				Admin <br>
+			<?= CoreTranslator::Admin($lang) ?>
+			<br>
 			</h2>
 		</div>
 		<div class="bs-glyphicons">

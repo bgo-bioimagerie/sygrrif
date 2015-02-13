@@ -118,9 +118,9 @@ class SyTranslator {
 	
 	public static function Pricing_Unit($lang = ""){
 		if ($lang == "Fr"){
-			return "Tarif par unité";
+			return "Tarification par responsable";
 		}
-		return "Pricing/Unit";
+		return "Pricing/Responsible";
 	}
 	
 	public static function Export($lang = ""){
@@ -139,9 +139,9 @@ class SyTranslator {
 	
 	public static function Bill_per_unit($lang = ""){
 		if ($lang == "Fr"){
-			return "Facture par unité";
+			return "Facture par responsable";
 		}
-		return "Bill per unit";
+		return "Bill/Responsible";
 	}
 	
 	public static function Bills_manager($lang = ""){
@@ -212,6 +212,13 @@ class SyTranslator {
 			return "Nombre de réservations";
 		}
 		return "Reservation number";
+	}
+	
+	public static function Reservation_time($lang){
+		if ($lang == "Fr"){
+			return "Temps de réservations";
+		}
+		return "Reservation time";
 	}
 	
 	public static function booking_on_behalf_of($lang = ""){
@@ -934,6 +941,13 @@ class SyTranslator {
 		return "Export as csv";
 	}
 	
+	public static function Export_as_xls($lang){
+		if ($lang == "Fr"){
+			return "Exporter en xls";
+		}
+		return "Export as xls";
+	}
+	
 	public static function Search_criteria($lang){
 		if ($lang == "Fr"){
 			return "Critères de recherche";
@@ -1002,6 +1016,13 @@ class SyTranslator {
 			return "Bilan annuel du nombre de réservations pour ";
 		}
 		return "Annual review of the number of reservations of ";
+	}
+	
+	public static function Annual_review_of_the_time_of_reservations_of($lang){
+		if ($lang == "Fr"){
+			return "Bilan annuel temps de réservations pour ";
+		}
+		return "Annual review of the time of reservations of ";
 	}
 	
 	public static function Jan($lang){
@@ -1346,4 +1367,33 @@ class SyTranslator {
 		}
 		return "Desc";
 	}
+	
+	public static function Fromdate($lang){
+		if ($lang == "Fr"){
+			return "Période du";
+		}
+		return "From";
+	}
+	
+	public static function ToDate($lang){
+		if ($lang == "Fr"){
+			return "au";
+		}
+		return "To";
+	}
+	
+	public static function Booking_time_year($lang){
+		if ($lang == "Fr"){
+			return "Nombre d'heures de réservation par ressources dans l'année";
+		}
+		return "Time (in hours) of reservations for each resource in a year";
+	}
+	
+	public static function Booking_number_year($lang){
+		if ($lang == "Fr"){
+			return "Nombre de réservation par ressources dans l'année";
+		}
+		return "Number of reservations for each resource in a year";
+	}
+	
 }

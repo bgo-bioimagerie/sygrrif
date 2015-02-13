@@ -40,12 +40,17 @@ class SyBookingSettings extends Model {
 	
 	public function entries($sortEntry = "id"){
 		
-		if ($this->isTable("sy_booking_settings")){
+		try{
+		//if ($this->isTable("sy_booking_settings")){
 			$sql="select * from sy_booking_settings order by " . $sortEntry;
 			$req = $this->runRequest($sql);
 			return $req->fetchAll();
+		//}
+		//else{
+		//	return "";
+		//}
 		}
-		else{
+		catch (Exception $e){
 			return "";
 		}
 	}
@@ -105,7 +110,11 @@ class SyBookingSettings extends Model {
 	}
 	
 	public function getSummary($user, $phone, $short_desc, $desc, $displayHorizontal = true){
-		$lang = $_SESSION["user_settings"]["language"];
+		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
 		$entryList = $this->entries("display_order");
 		$summary = "";
 		// user

@@ -45,8 +45,11 @@
 			</div>
 		</div>
 		<br></br>
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
+		        <?php if ($this->clean($visa['id']) != ""){ ?>
+		        	<button type="button" onclick="location.href='<?="sygrrif/deletevisa/".$this->clean($visa['id']) ?>'" class="btn btn-danger" id="navlink"><?= SyTranslator::Delete($lang)?></button>
+				<?php } ?>
 				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>

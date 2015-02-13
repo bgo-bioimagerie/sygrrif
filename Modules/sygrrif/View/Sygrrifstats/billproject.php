@@ -41,49 +41,33 @@
 		<?php } ?>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
-				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker5'>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Date_Start($lang) ?></label>
+				<div class="col-xs-8">
+				<div class='input-group date form_date_<?= $lang ?>'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_start" id="searchDate_start"
-					       value="<?=$searchDate_start?>" />
+					       value="<?= CoreTranslator::dateFromEn($searchDate_start, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-			$(function () {
-				$('#datetimepicker5').datetimepicker({
-					pickTime: true
-				});
-			});
-		    </script>
 		    </div>
 		</div>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
-				<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker6'>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Date_End($lang) ?></label>
+				<div class="col-xs-8">
+				<div class='input-group date form_date_<?= $lang ?>'>
 					<input id="test32" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_end" 
-					       value="<?= $searchDate_end ?>" />
+					       value="<?= CoreTranslator::dateFromEn($searchDate_end, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
-			<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-      		<script type="text/javascript">
-  			$(function () {
-				$('#datetimepicker6').datetimepicker({
-					pickTime: false
-				});
-			});
-			</script>
 		    </div>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Project($lang) ?></label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Project($lang) ?></label>
+			<div class="col-xs-8">
 					<select class="form-control" name="project_id" id="project_id"
 						>
 					<?php 
@@ -103,8 +87,8 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Pricing($lang) ?></label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Pricing($lang) ?></label>
+			<div class="col-xs-8">
 					<select class="form-control" name="pricing_id">
 					<OPTION value="0" > ... </OPTION>
 					<?php 
@@ -121,8 +105,8 @@
 		</div>	
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Pricing_by($lang) ?></label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Pricing_by($lang) ?></label>
+			<div class="col-xs-8">
 					<select class="form-control" name="pricing_type">
 					<OPTION value="0" > <?= SyTranslator::Time2($lang) ?> </OPTION>
 					<OPTION value="1" > <?= SyTranslator::Reservations_number($lang) ?> </OPTION>
@@ -137,6 +121,8 @@
       </form>
 	</div>
 </div>
+
+<?php include "Modules/core/View/timepicker_script.php" ?>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

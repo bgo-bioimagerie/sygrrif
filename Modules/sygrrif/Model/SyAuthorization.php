@@ -42,6 +42,20 @@ class SyAuthorization extends Model {
 		) );
 	}
 	
+	public function setAuthorization($id, $date, $user_id, $lab_id, $visa_id, $resource_id, $is_active=1) {
+		$sql = "insert into sy_authorization(id, date, user_id, lab_id, visa_id, resource_id, is_active)" .
+			 " values(?,?,?,?,?,?,?)";
+		$this->runRequest ( $sql, array (
+				$id,
+				$date,
+				$user_id,
+				$lab_id,
+				$visa_id,
+				$resource_id,
+				$is_active
+		) );
+	}
+	
 	public function setActive($id, $active){
 		$sql = "update sy_authorization set is_active=? where id=?";
 		$this->runRequest ( $sql, array (
@@ -173,7 +187,6 @@ class SyAuthorization extends Model {
 			return true;  // get the first line of the result
 		else
 			return false;
-		
 	}
 	
 	public function minimalStatistics($searchDate_start, $searchDate_end, $user_id, $unit_id, 
@@ -209,7 +222,7 @@ class SyAuthorization extends Model {
 		$sql_search_3 = 'SELECT DISTINCT visa_id FROM sy_authorization WHERE ';
 		$sql_search_4 = 'SELECT DISTINCT resource_id FROM sy_authorization WHERE ';
 		
-		$criteres = "Date begin : ".$ddebut."<br/> Date end : ".$dfin."<br/>";
+		$criteres = "";
 		if ($user_id != "0") {
 			$sql='SELECT login, name, firstname from core_users WHERE id = ?';
 			$req = $this->runRequest($sql, array($user_id));
@@ -272,6 +285,8 @@ class SyAuthorization extends Model {
 					
 			$criteres .= "Resource : ".$machine."<br/>";
 		}
+		$criteres .= "Date begin : ".$ddebut."<br/> Date end : ".$dfin."<br/>";
+		
 		$sql_search_0 = $sql_search_0.$sql_search.'date >=:start AND date <= :end ORDER BY date';
 		$req = $this->runRequest($sql_search_0, $q_search);
 		$resultats = $req->fetchAll();
@@ -388,7 +403,7 @@ class SyAuthorization extends Model {
 			$sql = 'SELECT date,user_id,lab_id,visa_id,resource_id FROM sy_authorization WHERE date >=:start AND date <= :end ORDER BY date, user_id';
 			$req = $this->runRequest($sql, $q);		
 		
-			$nom_fic = "total_autorisations.csv";
+			$nom_fic = "total_autorisations.xls";
 		}
 		
 		else if (($nf != "0")) {
@@ -403,7 +418,7 @@ class SyAuthorization extends Model {
 			$sql = 'SELECT date,user_id,lab_id,visa_id,resource_id FROM sy_authorization WHERE user_id= :user_id AND date >=:start AND date<=:end order by date, user_id';
 			$req = $this->runRequest($sql, $q);
 		
-			$nom_fic = $login."_authorization.csv";
+			$nom_fic = $login."_authorization.xls";
 		}
 		
 		else if ($laboratoire != "0") {
@@ -412,7 +427,7 @@ class SyAuthorization extends Model {
 			$sql = 'SELECT date,user_id,lab_id,visa_id,resource_id FROM sy_authorization WHERE lab_id= :laboratoire AND date >=:start AND date<=:end order by date,user_id';
 			$req = $this->runRequest($sql, $q);
 		
-			$nom_fic = "unit_authorization.csv";
+			$nom_fic = "unit_authorization.xls";
 		}
 		
 		else if ($visa != "0") {
@@ -421,7 +436,7 @@ class SyAuthorization extends Model {
 			$sql = 'SELECT date,user_id,lab_id,visa_id,resource_id FROM sy_authorization WHERE visa_id= :visa AND date >=:start AND date<=:end order by date,user_id';
 			$req = $this->runRequest($sql, $q);
 		
-			$nom_fic = "visa_authorization.csv";
+			$nom_fic = "visa_authorization.xls";
 		}
 		else if ($machine != "0") {
 		
@@ -429,7 +444,7 @@ class SyAuthorization extends Model {
 			$sql = 'SELECT date,user_id,lab_id,visa_id,resource_id FROM sy_authorization WHERE resource_id= :machine AND date >=:start AND date<=:end order by date,user_id';
 			$req = $this->runRequest($sql, $q);
 		
-			$nom_fic = "resource_authorization.csv";
+			$nom_fic = "resource_authorization.xls";
 		}
 		
 		$numOfRows = $req->rowCount();

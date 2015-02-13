@@ -55,7 +55,7 @@
 				<div class="col-xs-8">
 				<div class='input-group date form_date_<?= $lang ?>'>
 					<input id="test32" type='text' class="form-control" name="date_paid" 
-					       value="<?= CoreTranslator::dateFromEn($this->clean($billInfo["date_generated"]), $lang) ?>" />
+					       value="<?= CoreTranslator::dateFromEn($this->clean($billInfo["date_paid"]), $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>

@@ -39,6 +39,7 @@ class ControllerSynchistop extends Controller {
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		
+		/*
 		// Visa
 		$visas_old = $this->getVisas($pdo_old);
 		$visaModel = new SyVisa();
@@ -117,6 +118,9 @@ class ControllerSynchistop extends Controller {
 		// last login
 		$this->syncLastLogin($pdo_grr);
 		echo "<p>add Last login</p>";
+		*/
+		$this->desactivateUserDoNotBookAYear();
+		echo "<p>desactivate users</p>";
 	}
 	
 	// /////////////////////////////////////////// //
@@ -154,12 +158,12 @@ class ControllerSynchistop extends Controller {
 			$name = $uo['name'];
 			$firstname = $uo['firstname']; 
 			$login = $uo['login']; 
-			$pwd = $uo['pass'];
+			$pwd = md5("*histop*");//$uo['pass'];
 			$email = $uo['courriel']; 
 			$phone = $uo['telephone'];
 			$id_unit = 1;
 			$id_responsible = 1;
-			$id_status = 1;
+			$id_status = 2; // user
 			$convention = $uo['convention'];
 			$date_convention = '';
 			$dateObj = DateTime::createFromFormat("d/m/Y", $uo['date_c']);
@@ -167,7 +171,8 @@ class ControllerSynchistop extends Controller {
 			{
 				$date_convention = $dateObj->format('Y-m-d');
 			}
-			$userModel->setUser($name, $firstname, $login, $pwd, 
+			
+			$userModel->setUserMd5($name, $firstname, $login, $pwd, 
 		           			$email, $phone, $id_unit, 
 		           			$id_responsible, $id_status,
     						$convention, $date_convention);
@@ -313,7 +318,7 @@ class ControllerSynchistop extends Controller {
 			
 			// set autorization
 			$maut = new SyAuthorization();
-			$maut->addAuthorization($date_convention, $idUser, $idUnit, $id_visa, $id_resourceCategory);
+			$maut->setAuthorization($aut['id'], $date_convention, $idUser, $idUnit, $id_visa, $id_resourceCategory);
 		}
 	}
 	
@@ -481,6 +486,30 @@ class ControllerSynchistop extends Controller {
 			
 			if ($end_time > $date_last_login){
 				$modelUser->setLastConnection($recipientID, $end_time);
+			}
+		}
+	}
+	
+	public function desactivateUserDoNotBookAYear(){
+		// get all the users
+		$ModelUser = new User();
+		$users = $ModelUser->getUsers();
+		
+		$modelCalEntry = new SyCalendarEntry();
+		$modelAuth = new SyAuthorization();
+		$today = time();
+		$aYearAgo = $today - 365*24*3600;
+		foreach( $users as $user){
+			// get his booking
+			$entries = $modelCalEntry->getUserBooking($user["id"]);
+			if (count($entries) > 0){
+				if ( $entries[0]["end_time"] < $aYearAgo ){
+					// desactivate user
+					$ModelUser->setactive($user["id"], 0);
+					
+					// desactivate autorisations
+					$modelAuth->desactivateAthorizationsForUser($user["id"]);
+				}
 			}
 		}
 	}

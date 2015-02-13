@@ -321,7 +321,7 @@ if (!$resultsVisible){
 	  </table>
 		<?php }?>
 		 <?php }?>
-		 <button type="button" onclick="location.href='sygrrif/statauthorizationscountingcsv'" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_csv($lang) ?></button>
+		 <button type="button" onclick="location.href='sygrrif/statauthorizationscountingcsv'" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_xls($lang) ?></button>
 		 
 
 		
@@ -363,7 +363,7 @@ if (!$resultsVisible){
 	  	 //print_r($dsData["data"]);
 		 foreach($dsData["data"] as $v){
 		?> <tr>
-			<td> <?= $v['Date'] ?> </td>
+			<td> <?= CoreTranslator::dateFromEn($v['Date'], $lang)  ?> </td>
 			<td> <?= $v['Utilisateur'] ?> </td>
 			<td> <?= $v['Laboratoire'] ?> </td>
 			<td> <?= $v['Visa'] ?> </td>
@@ -379,7 +379,7 @@ if (!$resultsVisible){
 	?>
 	<?php }?>
 </div>
-<button type="button" onclick="location.href='sygrrif/statauthorizationsdetailcsv'" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_csv($lang) ?></button>
+<button type="button" onclick="location.href='sygrrif/statauthorizationsdetailcsv'" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_xls($lang) ?></button>
 </div>
 </div>
 

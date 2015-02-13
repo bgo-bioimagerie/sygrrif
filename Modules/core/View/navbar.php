@@ -86,9 +86,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div><!--/.nav-collapse -->
 	</div>
 </nav>
-
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="externals/jquery-1.11.1.js"></script>
-<script src="externals/bootstrap/js/bootstrap.min.js"></script>
+<script src="externals/bootstrap/js/bootstrap.min.js"></script> 

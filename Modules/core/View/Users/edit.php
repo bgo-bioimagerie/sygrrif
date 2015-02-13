@@ -102,7 +102,7 @@
 					<?php foreach ($respsList as $resp):?>
 					    <?php   $respId = $this->clean( $resp['id'] );
 					    		if ($resp['id'] > 1){
-							    	$respSummary = $respId . " " . $this->clean( $resp['firstname'] ) . " " . $this->clean( $resp['name'] );
+							    	$respSummary = $this->clean( $resp['name'] ) . " " . $this->clean( $resp['firstname'] );
 					    		}
 					    		else{
 					    			$respSummary = "--";

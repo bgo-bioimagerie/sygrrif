@@ -26,10 +26,10 @@ if (isset($_SESSION["user_settings"]["language"])){
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> <?= CoreTranslator::Unable_to_change_the_password($lang); ?></p>
+			<p> <?= CoreTranslator::Unable_to_change_the_password($lang) ?></p>
 			<p> <?= $msgError ?></p>
 		<?php }else{?>
-			<p> CoreTranslator::The_password_has_been_successfully_updated($lang);</p>
+			<p> <?= CoreTranslator::The_password_has_been_successfully_updated($lang) ?></p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">

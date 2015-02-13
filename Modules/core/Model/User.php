@@ -238,6 +238,86 @@ class User extends Model {
      * @return Ambigous <multitype:, boolean>
      */
     public function getActiveUsersInfo($sortentry = 'id', $is_active=1){
+    	
+    	$sqlSort = "user.id";
+    	if ($sortentry == "name"){
+    		$sqlSort = "user.name";
+    	}
+    	else if ($sortentry == "firstname"){
+    		$sqlSort = "user.firstname";
+    	}
+    	else if ($sortentry == "login"){
+    		$sqlSort = "user.login";
+    	}
+    	else if ($sortentry == "email"){
+    		$sqlSort = "user.email";
+    	}
+    	else if ($sortentry == "tel"){
+    		$sqlSort = "user.tel";
+    	}
+    	else if ($sortentry == "unit"){
+    		$sqlSort = "core_units.name";
+    	}
+    	else if ($sortentry == "unit"){
+    		$sqlSort = "resp.name";
+    	}
+    	else if ($sortentry == "status"){
+    		$sqlSort = "core_status.name";
+    	}
+    	else if ($sortentry == "status"){
+    		$sqlSort = "core_status.name";
+    	}
+    	else if ($sortentry == "convention"){
+    		$sqlSort = "user.convention";
+    	}
+    	else if ($sortentry == "date_convention"){
+    		$sqlSort = "user.date_convention";
+    	}
+    	else if ($sortentry == "date_last_login"){
+    		$sqlSort = "user.date_last_login";
+    	}
+    	else if ($sortentry == "responsible"){
+    		$sqlSort = "resp.name";
+    	}
+    	
+    	
+    	$sql = "SELECT user.id AS id, user.login AS login, 
+    				   user.firstname AS firstname, user.name AS name, 
+    				   user.email AS email, user.tel AS tel,	
+    				   user.convention AS convention, user.date_convention AS date_convention,
+    			       user.date_created AS date_created, user.date_last_login AS date_last_login,
+    				   core_units.name AS unit, 
+    				   resp.name AS resp_name, resp.firstname AS resp_firstname,
+    				   core_status.name AS status
+    			FROM core_users AS user
+    			INNER JOIN core_users AS resp ON user.id_responsible = resp.id
+    			INNER JOIN core_units ON user.id_unit = core_units.id
+    			INNER JOIN core_status ON user.id_status = core_status.id
+    			WHERE user.is_active=".$is_active."
+    			ORDER BY ". $sqlSort . ";";
+	
+    	$req = $this->runRequest ( $sql );
+    	$users =  $req->fetchAll ();
+    	
+    	$respModel = new Responsible();
+    	for ($i = 0 ; $i < count($users) ; $i++){
+    		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
+    	}
+    	
+    	if ($sortentry == "is_responsible"){
+    		// get the is resp colomn
+    		foreach ($users as $key => $row) {
+    			$rang[$key]  = $row['is_responsible'];
+    		}
+    		
+    		// sort
+    		array_multisort($rang, SORT_DESC, $users);
+    	}
+    	
+    	return $users;
+    	
+    	/*
+    	
     	$users = $this->getActiveUsers($sortentry, $is_active);
     	 
     	 
@@ -252,6 +332,7 @@ class User extends Model {
     		$users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
     	}
     	return $users;
+    	*/
     }
     
 	/**
@@ -314,6 +395,25 @@ class User extends Model {
     		$this->addUser($name, $firstname, $login, $pwd, $email, $phone, 
     				$id_unit, $id_responsible, $id_status, $convention, $date_convention,
     				$date_end_contract, $is_active);
+    	}
+    }
+    
+    public function setUserMd5($name, $firstname, $login, $pwd,
+    		$email, $phone, $id_unit,
+    		$id_responsible, $id_status,
+    		$convention, $date_convention, $date_end_contract="",$is_active=1 ){
+    	 
+    	if (!$this->isUser($login)){
+    		
+    		$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
+    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active)"
+    			. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    	$this->runRequest($sql, array($login, $firstname, $name, $email, 
+    			                      $phone, $pwd, $id_unit, 
+    			                      $id_responsible, $id_status, "".date("Y-m-d")."",
+    			                      $convention, $date_convention, $date_end_contract,
+    			                      $is_active
+    	));
     	}
     }
     

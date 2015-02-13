@@ -2,6 +2,7 @@
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/Project.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
@@ -18,12 +19,25 @@ class ControllerSygrrifstats extends ControllerBooking {
 	// Affiche la liste de tous les billets du blog
 	public function billproject() {
 
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		// get the form parameters
 		$searchDate_start = $this->request->getParameterNoException('searchDate_start');
 		$searchDate_end = $this->request->getParameterNoException('searchDate_end');
 		$project_id = $this->request->getParameterNoException('project_id');
 		$pricing_type = $this->request->getParameterNoException('pricing_type');
 		$pricing_id = $this->request->getParameterNoException('pricing_id');
+		
+		if ($searchDate_start != ""){
+			$searchDate_start = CoreTranslator::dateToEn($searchDate_start, $lang);
+		}
+		if ($searchDate_end != ""){
+			$searchDate_end = CoreTranslator::dateToEn($searchDate_end, $lang);
+		}
+		
 		
 		// test if it needs to calculate output
 		$errorMessage = "";

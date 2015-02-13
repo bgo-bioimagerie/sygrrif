@@ -177,4 +177,33 @@ class SyCalendarEntry extends Model {
 		$req = $this->runRequest($sql, array($desciption));
 		return $req->fetchAll();
 	}
+	
+	public function hasResponsibleEntry($resp_id, $startdate, $enddate){
+		
+		//echo "resp_id = " . $resp_id . "<br/>";
+		$q = array('start'=>$startdate, 'end'=>$enddate);
+		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
+				(start_time >=:start AND start_time <= :end)';
+		$req = $this->runRequest($sql, $q);
+		$recs = $req->fetchAll();
+		
+		//print_r($recs);
+		
+		foreach ($recs as $rec){
+			$sql = "select id_responsible from core_users where id=".$rec[0];
+			$req = $this->runRequest($sql);
+			$resp_id_req = $req->fetch();
+			if ($resp_id_req == $resp_id || $rec[0]== $resp_id){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public function getUserBooking($user_id){
+		$sql = "select * from sy_calendar_entry where recipient_id=? order by end_time DESC;";
+		$req = $this->runRequest($sql, array($user_id));
+		return $req->fetchAll();
+	}
+		
 }

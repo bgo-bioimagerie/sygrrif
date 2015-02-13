@@ -4,6 +4,7 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
@@ -123,7 +124,9 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		$modelGraph = new SyGraph();
 		$graphArray = $modelGraph->getYearNumResGraph($year);
+		$graphTimeArray = $modelGraph->getYearNumHoursResGraph($year);
 		$camembertContent = $modelGraph->getCamembertContent($year, $graphArray['numTotal']);
+		$camembertTimeContent = $modelGraph->getCamembertTimeContent($year, $graphTimeArray['timeTotal']);
 		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -131,7 +134,9 @@ class ControllerSygrrif extends ControllerBooking {
 				'annee' => $year,
 				'numTotal' => $graphArray['numTotal'],
 		        'graph' => $graphArray['graph'],
-				'camembertContent' => $camembertContent
+				'graphTimeArray' => $graphTimeArray,
+				'camembertContent' => $camembertContent,
+				'camembertTimeContent' => $camembertTimeContent
 		) );
 	}
 	
@@ -535,7 +540,6 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editvisaquery(){
-		$navBar = $this->navBar ();
 		
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
@@ -547,6 +551,20 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		$this->redirect ( "sygrrif", "visa" );
 	} 
+	
+	public function deletevisa(){
+
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get the user list
+		$visaModel = new SyVisa();
+		$visaModel->delete( $id );
+		
+		$this->redirect ( "sygrrif", "visa" );
+	}
 	
 	public function authorizations(){
 		// get user id
@@ -745,7 +763,22 @@ class ControllerSygrrif extends ControllerBooking {
 		$responsiblesList = array();
 		if ($selectedUnitId > 0){
 			$modeluser = new User();
-			$responsiblesList = $modeluser->getResponsibleOfUnit($selectedUnitId);
+			$modelCalEntry = new SyCalendarEntry();
+			$responsiblesListInter = $modeluser->getResponsibleOfUnit($selectedUnitId);
+			foreach ($responsiblesListInter as $respi){
+				
+				//print_r($respi);
+				
+				$startdate = explode("-", $searchDate_start);
+				$startdate = mktime(0, 0, 0, $startdate[1], $startdate[2], $startdate[0]);
+				
+				$enddate = explode("-", $searchDate_end);
+				$enddate = mktime(23, 59, 59, $enddate[1], $enddate[2], $enddate[0]);
+				
+				if ( $modelCalEntry->hasResponsibleEntry($respi["id"], $startdate, $enddate) == true){
+					$responsiblesList[] = $respi;
+				}
+			}
 		}
 		
 		// test if it needs to calculate output
@@ -853,7 +886,7 @@ class ControllerSygrrif extends ControllerBooking {
 		if ($curentunit_id == 1){$curentunit_id = "0";}
 		if ($trainingunit_id == 1){$trainingunit_id = "0";}
 		if ($visa_id == 1){$visa_id = "0";}
-		if ($resource_id == 1){$resource_id = "0";}
+		//if ($resource_id == 0){$resource_id = "0";}
 		
 		// users
 		$modeluser = new User();
@@ -960,6 +993,11 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function statauthorizationsdetailcsv(){
 		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		$searchDate_start = $this->request->getSession()->getAttribut('searchDate_start');
 		$searchDate_end = $this->request->getSession()->getAttribut('searchDate_end');
 		$t = $this->request->getSession()->getAttribut('dsData');
@@ -969,15 +1007,26 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		header('Content-Type: text/csv;'); //Envoie le résultat du script dans une feuille excel
 		header('Content-Disposition: attachment; filename='.$filename.''); //Donne un nom au fichier exel
-		$i = 0;
+
+		// print table header
+		echo '"' . SyTranslator::Fromdate($lang). ' '. CoreTranslator::dateFromEn($searchDate_start, $lang) .' ' . SyTranslator::Todate($lang). ' ' . CoreTranslator::dateFromEn($searchDate_end, $lang) . '"'."\n";
+		echo SyTranslator::Date($lang) . ";";
+		echo SyTranslator::User($lang) . ";";
+		echo SyTranslator::Unit($lang) . ";";
+		echo SyTranslator::Visa($lang) . ";";
+		echo SyTranslator::Resource($lang) . ";";
+		echo SyTranslator::Responsible($lang) . ";";
+		echo "\n";	
 		foreach($datas as $v){
-			if($i==0){
-				echo '"From '.$searchDate_start.' to '.$searchDate_end.'"'."\n";
-				echo '"'.implode('";"',array_keys($v)).'"'."\n";
-			}
-			echo '"'.implode('";"',$v).'"'."\n";
-			$i++;
+			echo CoreTranslator::dateFromEn($v['Date'], $lang) . ";";
+			echo $v['Utilisateur'] . ";";
+			echo $v['Laboratoire'] . ";";
+			echo $v['Visa'] . ";";
+			echo $v['machine'] . ";";
+			echo $v['responsable'] . ";";
+			echo "\n";
 		}
+
 	}
 	
 	public function statauthorizationscountingcsv(){
@@ -985,20 +1034,25 @@ class ControllerSygrrif extends ControllerBooking {
 		$searchDate_end = $this->request->getSession()->getAttribut('searchDate_end');
 		$msData = $this->request->getSession()->getAttribut('msData');
 		
-		$filename = "authorizations_count.csv";
-		header('Content-Type: text/csv;'); //Envoie le résultat du script dans une feuille excel
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
+		$filename = "authorizations_count.xls";
+		header('Content-Type: text/csv; charset=utf-8;'); //Envoie le résultat du script dans une feuille excel
 		header('Content-Disposition: attachment; filename='.$filename.''); //Donne un nom au fichier exel
 		
-		echo "Search criteria \n";
+		echo  SyTranslator::Search_criteria($lang) . " \n";
 		echo str_replace("<br/>", "\n", $msData["criteres"]) ;
 		
-		echo    " \n Results \n";
-		echo   	"Number of training :" . $msData["numOfRows"] . "\n";
-		echo 	"Nomber of users :" . $msData["distinct_nf"]  . "\n";
-		echo 	"Nomber of units :" . $msData["distinct_laboratoire"]  . "\n";
-		echo 	"Nomber of VISAs :" . $msData["distinct_visa"]  . "\n";
-		echo 	"Nomber of resources :" . $msData["distinct_machine"] . "\n";
-		echo 	"Nomber of new user :" . $msData["new_people"] . "\n";
+		echo    " \n " . SyTranslator::Results($lang) . " \n";
+		echo   	SyTranslator::Number_of_training($lang) . ":" . $msData["numOfRows"] . "\n";
+		echo 	SyTranslator::Nomber_of_users($lang). ":" . $msData["distinct_nf"]  . "\n";
+		echo 	SyTranslator::Nomber_of_units($lang) . ":" . $msData["distinct_laboratoire"]  . "\n";
+		echo 	SyTranslator::Nomber_of_VISAs($lang) . ":" . $msData["distinct_visa"]  . "\n";
+		echo 	SyTranslator::Nomber_of_resources($lang) . ":" . $msData["distinct_machine"] . "\n";
+		echo 	SyTranslator::Nomber_of_users($lang) . ":" . $msData["new_people"] . "\n";
 		
 	}
 	

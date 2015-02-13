@@ -409,7 +409,11 @@ class ControllerCalendar extends ControllerBooking {
 	public function bookday($message = ""){
 		
 		$_SESSION['lastbookview'] = "bookday";
-		$lang = $_SESSION["user_settings"]["language"];
+		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
 		
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
@@ -612,8 +616,10 @@ class ControllerCalendar extends ControllerBooking {
 	
 	public function bookweekarea($message = ""){
 	
-		$_SESSION['lastbookview'] = "bookweekarea";
-		$lang = $_SESSION["user_settings"]["language"]; 
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
 		
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');

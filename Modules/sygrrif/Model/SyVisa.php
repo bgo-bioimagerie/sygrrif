@@ -158,4 +158,9 @@ class SyVisa extends Model {
 		else
 			throw new Exception("Cannot find the visa using the given name");
 	}
+	
+	public function delete($id){
+		$sql="DELETE FROM sy_visas WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }
