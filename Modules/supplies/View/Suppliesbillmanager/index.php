@@ -14,18 +14,19 @@
 	
 		<div class="page-header">
 			<h1>
-				Supplies Bills<br> <small></small>
+			<?= SuTranslator::Supplies_bill($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="suppliesbillmanager/index/id">Id</a></td>
-					<td><a href="suppliesbillmanager/index/number">Number</a></td>
-					<td><a href="suppliesbillmanager/index/date_generated">Date Generated</a></td>
-					<td><a href="suppliesbillmanager/index/date_paid">Date Paid</a></td>
-					<td><a href="suppliesbillmanager/index/is_paid">Is Paid</a></td>
+					<td><a href="suppliesbillmanager/index/id">ID</a></td>
+					<td><a href="suppliesbillmanager/index/number"><?= SuTranslator::Number($lang) ?></a></td>
+					<td><a href="suppliesbillmanager/index/date_generated"><?= SuTranslator::Date_Generated($lang) ?></a></td>
+					<td><a href="suppliesbillmanager/index/date_paid"><?= SuTranslator::Date_Paid($lang) ?></a></td>
+					<td><a href="suppliesbillmanager/index/is_paid"><?= SuTranslator::Is_Paid($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -46,7 +47,7 @@
 				    ?>
 				    <td><?= $is_active; ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliesbillmanager/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='suppliesbillmanager/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

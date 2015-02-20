@@ -16,16 +16,17 @@
 	
 		<div class="page-header">
 			<h1>
-				Units<br> <small></small>
+			<?= CoreTranslator::Units($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="suppliesunits/index/id">Id</a></td>
-					<td><a href="suppliesunits/index/name">Name</a></td>
-					<td><a href="suppliesunits/index/address">Address</a></td>
+					<td><a href="suppliesunits/index/id">ID</a></td>
+					<td><a href="suppliesunits/index/name"><?= CoreTranslator::Name($lang) ?></a></td>
+					<td><a href="suppliesunits/index/address"><?= CoreTranslator::Address($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -39,7 +40,7 @@
 				    <td><?= $this->clean ( $unit ['name'] ); ?></td>
 				    <td><?= $this->clean ( $unit ['address'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliesunits/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='suppliesunits/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php }endforeach; ?>

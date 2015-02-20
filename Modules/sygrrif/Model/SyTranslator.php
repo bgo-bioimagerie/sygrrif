@@ -118,9 +118,9 @@ class SyTranslator {
 	
 	public static function Pricing_Unit($lang = ""){
 		if ($lang == "Fr"){
-			return "Tarification par responsable";
+			return "Tarification par unité";
 		}
-		return "Pricing/Responsible";
+		return "Pricing/Unit";
 	}
 	
 	public static function Export($lang = ""){
@@ -1396,4 +1396,10 @@ class SyTranslator {
 		return "Number of reservations for each resource in a year";
 	}
 	
+	public static function email($lang){
+		if ($lang == "Fr"){
+			return "couriel";
+		}
+		return "email";
+	} 
 }

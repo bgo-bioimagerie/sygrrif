@@ -24,6 +24,17 @@
 				<tr>
 					<td><a href="sygrrifbillmanager/index/id">ID</a></td>
 					<td><a href="sygrrifbillmanager/index/number"><?= SyTranslator::Number($lang) ?></a></td>
+					<?php if ($projectStatus > 0){
+						?>
+						<td><a href="sygrrifbillmanager/index/id_project"><?= SyTranslator::Project($lang) ?></a></td>
+					<?php }
+					else{
+						?>
+						<td><a href="sygrrifbillmanager/index/unit"><?= SyTranslator::Unit($lang) ?></a></td>
+						<td><a href="sygrrifbillmanager/index/responsible"><?= SyTranslator::Responsible($lang) ?></a></td>
+						<?php
+					}
+					?>
 					<td><a href="sygrrifbillmanager/index/date_generated"><?= SyTranslator::Date_Generated($lang) ?></a></td>
 					<td><a href="sygrrifbillmanager/index/date_paid"><?= SyTranslator::Date_Paid($lang) ?></a></td>
 					<td><a href="sygrrifbillmanager/index/is_paid"><?= SyTranslator::Is_Paid($lang) ?></a></td>
@@ -38,12 +49,23 @@
 					<?php $itemId = $this->clean ( $bill ['id'] ); ?>
 					<td><?= $itemId ?></td>
 				    <td><?= $this->clean ( $bill ['number'] ); ?></td>
+				    <?php if ($projectStatus > 0){
+						?>
+						<td><?= $this->clean ( $bill ['id_project'] ); ?></td>
+					<?php }
+					else{
+						?>
+						<td><?= $this->clean ( $bill ['unit'] ); ?></td>
+						<td><?= $this->clean ( $bill ['resp_name'] . " " . $bill ['resp_firstname'] ); ?></td>
+						<?php
+					}
+					?>
 				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['date_generated'], $lang) ); ?></td>
 				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['date_paid'], $lang) ); ?></td>
 				    <?php 
 				    $is_active = $this->clean ( $bill ['is_paid'] );
-				    if ($is_active){$is_active = "yes";}
-				    else{$is_active = "no";}
+				    if ($is_active){$is_active = SyTranslator::Yes($lang);}
+				    else{$is_active = SyTranslator::No($lang);}
 				    ?>
 				    <td><?= $is_active; ?></td>
 				    <td>

@@ -13,6 +13,7 @@ require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
+require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
 
 class ControllerSynchistop extends Controller {
@@ -39,7 +40,6 @@ class ControllerSynchistop extends Controller {
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		
-		/*
 		// Visa
 		$visas_old = $this->getVisas($pdo_old);
 		$visaModel = new SyVisa();
@@ -118,9 +118,15 @@ class ControllerSynchistop extends Controller {
 		// last login
 		$this->syncLastLogin($pdo_grr);
 		echo "<p>add Last login</p>";
-		*/
+		
 		$this->desactivateUserDoNotBookAYear();
 		echo "<p>desactivate users</p>";
+		
+		$this->syncPrices($pdo_grr);
+		echo "<p>sync prices done</p>";
+		
+		$this->addNewResources();
+		echo "<p>add New Resources</p>";
 	}
 	
 	// /////////////////////////////////////////// //
@@ -416,11 +422,13 @@ class ControllerSynchistop extends Controller {
 			$name = $area["area_name"];;
 			$display_order = $area["order_display"];
 			
-			$restricted = 0;
-			if ($area["access"] == "r"){
-				$restricted = 1;
+			if ($name != "INTAVIS"){
+				$restricted = 0;
+				if ($area["access"] == "r"){
+					$restricted = 1;
+				}
+				$modelArea->importArea($id, $name, $display_order, $restricted);	
 			}
-			$modelArea->importArea($id, $name, $display_order, $restricted);	
 		}
 	}
 	
@@ -512,6 +520,76 @@ class ControllerSynchistop extends Controller {
 				}
 			}
 		}
+	}
+	
+	public function syncPrices($pdo_grr){
+		$sql = "select * from grr_room";
+		$entry_oldq = $pdo_grr->query($sql);
+		$entry_old = $entry_oldq->fetchAll();
+		
+		$modelRes = new SyResource();
+		$modelPricing = new SyResourcePricing();
+		foreach ($entry_old as $room){
+
+			//echo " room name = " . $room["room_name"] . "<br />";
+			
+			if ($room["room_name"] != "INTAVIS"){
+				// get the room ID
+				$res = $modelRes->getResourceFromName($room["room_name"]);
+				//print_r($res);
+				
+				// add the pricings
+				$modelPricing->setPricing($res["id"], 1, $room["tarif_biosit"], $room["tarif_biosit"], $room["tarif_biosit"]);
+				$modelPricing->setPricing($res["id"], 2, $room["tarif_ur1"], $room["tarif_ur1"], $room["tarif_ur1"]);
+				$modelPricing->setPricing($res["id"], 3, $room["tarif_public_sans_personnel"], $room["tarif_public_sans_personnel"], $room["tarif_public_sans_personnel"]);
+				$modelPricing->setPricing($res["id"], 4, $room["tarif_prive_ac_personnel"], $room["tarif_prive_ac_personnel"], $room["tarif_prive_ac_personnel"]);
+				}
+		}
+	}
+	
+	public function addNewResources(){
+		
+		// create INTAVIS TYPE
+		$resCat = new SyResourcesCategory();
+		$resCat->addResourcesCategory("Intavis");
+		
+		// INTAVIS
+		$name = "INTAVIS";
+		$description = "";
+		$accessibility_id = "4";
+		$type_id = "2";
+		$area_id = "4";
+		$category_id = "13";
+		
+		$available_days = "1,1,1,1,1,0,0";
+		$day_begin = "8";
+		$day_end = "19"; 
+		$size_bloc_resa = "1800";
+		$resa_time_setting = "0";
+		$quantity_name = "Nombre d'échantillons";
+		
+		$modelResource = new SyResource();
+		$id_resource = $modelResource->addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+		$modelCResource = new SyResourceCalendar();
+		$modelCResource->setResource($id_resource, 0, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name);
+		
+		// Automate d'impréniation
+		$name = "Inclusion parafine";
+		$description = "";
+		$accessibility_id = "2";
+		$type_id = "2";
+		$area_id = "1";
+		$category_id = "3";
+		
+		$available_days = "1,1,1,1,1,0,0";
+		$day_begin = "8";
+		$day_end = "19";
+		$size_bloc_resa = "1800";
+		$resa_time_setting = "0";
+		$quantity_name = "Nombre d'échantillons";
+		
+		$id_resource = $modelResource->addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+		$modelCResource->setResource($id_resource, 0, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name);
 	}
 }
 ?>

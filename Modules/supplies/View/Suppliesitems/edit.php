@@ -27,11 +27,11 @@
 			<h1>
 			<?php if ($this->clean($id) == ""){
 				$buttonName = "Add";
-				echo "Add Item";
+				echo SuTranslator::Add_Item($lang);
 			}
 			else{
 				$buttonName = "Edit";
-				echo "Edit Item";
+				echo SuTranslator::Edit_Item($lang);
 			}
 				?>	
 				<br> <small></small>
@@ -41,7 +41,7 @@
 	
 		<div class="page-header">
 			<h3>
-			Description
+			<?= SuTranslator::Description($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
@@ -60,7 +60,7 @@
 		}
 		?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Name</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::Name($lang) ?> </label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="name"
 				       value="<?=$this->clean($name) ?>"  
@@ -68,18 +68,18 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Description</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Description($lang) ?> </label>
 			<div class="col-xs-8">
-				<textarea class="form-control" id="name" type="textarea" name="description"
+				<textarea class="form-control" id="name" name="description"
 				><?=$this->clean($description) ?></textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Is active</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Is_active($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="is_active">
-					<option value="1" <?php if ($is_active==1){echo "selected=\"selected\"";} ?>> Yes </option>
-					<option value="0" <?php if ($is_active==0){echo "selected=\"selected\"";} ?>> No </option>
+					<option value="1" <?php if ($is_active==1){echo "selected=\"selected\"";} ?>> <?= CoreTranslator::yes($lang) ?> </option>
+					<option value="0" <?php if ($is_active==0){echo "selected=\"selected\"";} ?>> <?= CoreTranslator::no($lang) ?> </option>
 				</select>
 			</div>
 		</div>
@@ -116,7 +116,7 @@
 
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
-				<button type="button" onclick="location.href='suppliesitems'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='suppliesitems'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?> </button>
 		</div>
       </form>
 	</div>

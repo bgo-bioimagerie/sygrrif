@@ -28,7 +28,7 @@ class ControllerSyncmicropicell extends Controller {
 		$authorizeUsers = true;
 		
 		// connect to h2p2 grr 
-		$dsn_grr = 'mysql:host=localhost;dbname=myriam;charset=utf8';
+		$dsn_grr = 'mysql:host=localhost;dbname=grr_micropicell;charset=utf8';
 		$login_grr = "root";
 		$pwd_grr = "";
 		

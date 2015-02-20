@@ -1,6 +1,11 @@
 
-
+<?php
+include_once 'Modules/supplies/Model/SuTranslator.php';
+$lang = "En";
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
+?>
 <p>
-The supplies module allows to manage and bill supplies ordered by users. </br>
-The supplies module has its own user database 
+<?php echo SuTranslator::SuConfigAbstract($lang); ?>
 </p>

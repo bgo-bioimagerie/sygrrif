@@ -3,6 +3,7 @@
 <?php echo $navBar ?>
 
 <?php
+$lang = "En";
 if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
@@ -131,7 +132,35 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
-      
+      <!-- admin email -->
+      <div>
+		  <div class="page-header">
+			<h2>
+				<?= CoreTranslator::email($lang) ?> <br> <small></small>
+			</h2>
+		  </div>
+		
+		  <form role="form" class="form-horizontal" action="coreconfig"
+		  method="post">
+		  
+		    <div class="col-xs-12">
+			  <input class="form-control" type="hidden" name="setadminemailquery" value="yes"
+			 	/>
+		    </div>
+		    
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::email($lang) ?></label>
+			<div class="col-xs-6">
+				<input class="form-control" id="email" type="text" name="email" value="<?= $this->clean($admin_email) ?>"
+				/>
+			</div>
+		</div>
+		  
+		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+		    </div>
+		  </form>
+      </div>
       
       <!-- desable user-->
       <div>

@@ -1,4 +1,4 @@
-<?php $this->title = "Supplies Edit Order"?>
+<?php $this->title = "Supplies"?>
 
 <?php echo $navBar?>
 
@@ -25,12 +25,12 @@
 		<div class="page-header">
 			<h1>
 			<?php if ($this->clean($entry["id"]) == ""){
-				$buttonName = "Add";
-				echo "Add Order";
+				$buttonName = CoreTranslator::Add($lang);
+				echo SuTranslator::Add_Order($lang);
 			}
 			else{
-				$buttonName = "Edit";
-				echo "Edit Order";
+				$buttonName = CoreTranslator::Edit($lang);;
+				echo SuTranslator::Edit_Order($lang);
 			}
 				?>	
 				<br> <small></small>
@@ -40,12 +40,11 @@
 	
 		<div class="page-header">
 			<h3>
-			Description
+			<?= SuTranslator::Description($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
 	
-		
 		<?php if ($this->clean($entry["id"]) != ""){
 			?>
 			<div class="form-group">
@@ -59,7 +58,7 @@
 		}
 		?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">User</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::User($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="id_user">
 				<?php foreach($users as $user){ 
@@ -77,41 +76,41 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Status</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="id_status">
 				<?php
 					$selected = "selected=\"selected\"";
 					$status = $this->clean($entry["id_status"]);
 					?>
-					<option value="1" <?php if ($status==1){echo $selected;}?>> Open </option>
-					<option value="0" <?php if ($status==0){echo $selected;}?>> Closed </option>
+					<option value="1" <?php if ($status==1){echo $selected;}?>> <?= CoreTranslator::Open($lang) ?>  </option>
+					<option value="0" <?php if ($status==0){echo $selected;}?>> <?= CoreTranslator::Close($lang) ?> </option>
 				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Opened date</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Opened_date($lang) ?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_open" value="<?=$this->clean($entry["date_open"]) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_open" value="<?= CoreTranslator::dateFromEn($this->clean($entry["date_open"]), $lang) ?>" readonly/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Closed date</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Closed_date($lang)?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_close" value="<?=$this->clean($entry["date_close"]) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_close" value="<?= CoreTranslator::dateFromEn($this->clean($entry["date_close"]), $lang) ?>" readonly/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">Last modified date</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Last_modified_date($lang)?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_last_modified" value="<?=$this->clean($entry["date_last_modified"]) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_last_modified" value="<?= CoreTranslator::dateFromEn($this->clean($entry["date_last_modified"]), $lang) ?>" readonly/>
 			</div>
 		</div>
 		
 		<div class="page-header">
 			<h3>
-			Order
+			<?= SuTranslator::Order($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
@@ -138,7 +137,7 @@
 		
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
-				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

@@ -25,7 +25,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Edit pricing <br> <small></small>
+			<?= SuTranslator::Edit_pricing($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 	
@@ -37,7 +38,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Name</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name" value="<?= $this->clean($pricing['tarif_name'])?>"
 				/>
@@ -45,8 +46,8 @@
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='suppliespricing'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='suppliespricing'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

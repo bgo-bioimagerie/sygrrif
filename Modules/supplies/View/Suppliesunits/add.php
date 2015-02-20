@@ -22,12 +22,13 @@
 	
 		<div class="page-header">
 			<h1>
-				Add Unit <br> <small></small>
+			<?= CoreTranslator::Add_unit($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Name</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name"
 				/>
@@ -35,7 +36,7 @@
 		</div>
 		<br></br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Address</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Address($lang) ?></label>
 			<div class="col-xs-10">
 				<textarea class="form-control" id="address" type="textarea" name="address"
 				></textarea>
@@ -43,8 +44,8 @@
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Add" />
-				<button type="button" onclick="location.href='suppliesunits'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='suppliesunits'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

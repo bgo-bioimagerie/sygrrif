@@ -3,6 +3,7 @@
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/supplies/Model/SuEntry.php';
 require_once 'Modules/supplies/Model/SuItem.php';
 
@@ -140,6 +141,12 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 	
 	public function editquery(){
 		
+		// Lang
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		// get form content
 		$id = $this->request->getParameterNoException("id");
 		$id_user = $this->request->getParameter("id_user"); 
@@ -147,6 +154,16 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$date_open = $this->request->getParameter("date_open");
 		$date_close = $this->request->getParameter("date_close");
 		$date_last_modified = $this->request->getParameter("date_last_modified"); 
+		
+		if ($date_open != ""){
+			$date_open = CoreTranslator::dateToEn($date_open, $lang);
+		}
+		if ($date_close != ""){
+			$date_close = CoreTranslator::dateToEn($date_close, $lang);
+		}
+		if ($date_last_modified != ""){
+			$date_last_modified = CoreTranslator::dateToEn($date_last_modified, $lang);
+		}
 		
 		// get items content
 		$modelItem = new SuItem();

@@ -35,70 +35,79 @@ legend {
 
 </head>
 
+<?php
+include_once 'Modules/core/Model/CoreTranslator.php';
+include_once 'Modules/supplies/Model/SuTranslator.php';
+$lang = "En";
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
+?>
+
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h1>Supplies</h1>
+		<h1> <?= SuTranslator::Supplies($lang) ?> </h1>
 
 		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Users/units</legend>
+				<legend><?= CoreTranslator::Users_Institutions($lang) ?> </legend>
 					<button onclick="location.href='suppliesusers/index'"
-						class="btn btn-link" id="navlink">Users</button>
+						class="btn btn-link" id="navlink"><?= CoreTranslator::Users($lang) ?></button>
 					<button onclick="location.href='suppliesusers/edit'"
-						class="btn btn-link" id="navlink">Add</button>
+						class="btn btn-link" id="navlink"><?= CoreTranslator::Add($lang)?></button>
 				<br/>
 					<button onclick="location.href='suppliesunits/index'"
-						class="btn btn-link" id="navlink">Units</button>
+						class="btn btn-link" id="navlink"><?= CoreTranslator::Units($lang)?></button>
 					<button onclick="location.href='suppliesunits/add'"
-						class="btn btn-link" id="navlink">Add</button>
+						class="btn btn-link" id="navlink"><?= CoreTranslator::Add($lang)?></button>
 
 			</fieldset>
 		</div>
 		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Supplies/Pricing</legend>	
+				<legend><?= SuTranslator::Supplies_Pricing($lang)?></legend>	
 							
 					<button onclick="location.href='suppliespricing'"
-						class="btn btn-link" id="navlink">Pricing</button>
+						class="btn btn-link" id="navlink"><?= SuTranslator::Pricing($lang)?></button>
 					<button onclick="location.href='suppliespricing/addpricing'"
-						class="btn btn-link" id="navlink">Add</button>
+						class="btn btn-link" id="navlink"><?= CoreTranslator::Add($lang)?></button>
 				<br/>
 					<button onclick="location.href='suppliespricing/unitpricing'"
-						class="btn btn-link" id="navlink">Pricing per unit</button>
+						class="btn btn-link" id="navlink"><?= SuTranslator::Pricing_per_unit($lang) ?></button>
 					<button onclick="location.href='suppliespricing/addunitpricing'"
-						class="btn btn-link" id="navlink">Add</button>
+						class="btn btn-link" id="navlink"><?= CoreTranslator::Add($lang)?></button>
 				<br/>
 					<button onclick="location.href='suppliesItems/index'"
-						class="btn btn-link" id="navlink">Items</button>
+						class="btn btn-link" id="navlink"><?= SuTranslator::Items($lang) ?></button>
 					<button onclick="location.href='suppliesItems/edit'"
-						class="btn btn-link" id="navlink">Add</button>
+						class="btn btn-link" id="navlink"><?= CoreTranslator::Add($lang)?></button>
 				
 			</fieldset>
 		</div>
 		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Orders</legend>
+				<legend><?= SuTranslator::Orders($lang)?></legend>
 					<button onclick="location.href='suppliesentries'"
-						class="btn btn-link" id="navlink">All orders</button>
+						class="btn btn-link" id="navlink"><?= SuTranslator::All_orders($lang)?></button>
 				</br>
 					<button onclick="location.href='suppliesentries/openedentries'"
-						class="btn btn-link" id="navlink">Opened orders</button>
+						class="btn btn-link" id="navlink"><?= SuTranslator::Opened_orders($lang)?></button>
 				</br>
 					<button onclick="location.href='suppliesentries/closedentries'"
-						class="btn btn-link" id="navlink">Closed orders</button>	
+						class="btn btn-link" id="navlink"><?= SuTranslator::Closed_orders($lang)?></button>	
 				</br>
 					<button onclick="location.href='suppliesentries/editentries'"
-						class="btn btn-link" id="navlink">New orders</button>			
+						class="btn btn-link" id="navlink"><?= SuTranslator::New_orders($lang)?></button>			
 			</fieldset>
 		</div>
 		<div class='col-md-3 well'>
 			<fieldset>
-				<legend>Stats & Bills</legend>
+				<legend><?= SuTranslator::Billing($lang)?></legend>
 					<button onclick="location.href='suppliesbill'"
-						class="btn btn-link" id="navlink">Bill</button>
+						class="btn btn-link" id="navlink"><?= SuTranslator::Bill($lang)?></button>
 				</br>		
 					<button onclick="location.href='Suppliesbillmanager'"
-						class="btn btn-link" id="navlink">Bills manager</button>
+						class="btn btn-link" id="navlink"><?= SuTranslator::Bills_manager($lang)?></button>
 						
 			</fieldset>
 			

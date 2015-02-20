@@ -16,17 +16,18 @@
 	
 		<div class="page-header">
 			<h1>
-				Supplies Items<br> <small></small>
+			<?= SuTranslator::Supplies_Items($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
 		<table id="dataTable" class="table table-striped">
 			<thead>
 				<tr>
-					<td><a href="suppliesitems/index/id">Id</a></td>
-					<td><a href="suppliesitems/index/name">Name</a></td>
-					<td><a href="suppliesitems/index/name">Description</a></td>
-					<td><a href="suppliesitems/index/name">Is Active</a></td>
+					<td><a href="suppliesitems/index/id">ID</a></td>
+					<td><a href="suppliesitems/index/name"><?= CoreTranslator::Name($lang) ?></a></td>
+					<td><a href="suppliesitems/index/name"><?= CoreTranslator::Description($lang) ?></a></td>
+					<td><a href="suppliesitems/index/name"><?= SuTranslator::Is_active($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -46,7 +47,7 @@
 				    ?>
 				    <td><?= $is_active; ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliesitems/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='suppliesitems/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

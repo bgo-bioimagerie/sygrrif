@@ -44,6 +44,7 @@ class ControllerSuppliesitems extends ControllerSecureNav {
 		// default values
 		$name = "";
 		$description = "";
+		$is_active = "";
 		
 		
 		if ($id != ""){ // get the resource informations

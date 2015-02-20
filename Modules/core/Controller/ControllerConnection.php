@@ -20,17 +20,24 @@ class ControllerConnection extends Controller
 
     public function index()
     {
-        $this->generateView();
+    	
+    	$modelConfig = new CoreConfig();
+    	$admin_email = $modelConfig->getParam("admin_email");
+    	
+        $this->generateView( array("admin_email" => $admin_email));
     }
 
     public function login()
     {
+    	$modelConfig = new CoreConfig();
+    	$admin_email = $modelConfig->getParam("admin_email");
+    	
         if ($this->request->isparameter("login") && $this->request->isParameter("pwd")) {
             $login = $this->request->getParameter("login");
             $pwd = $this->request->getparameter("pwd");
             
             if ($login == "--"){
-            	$this->generateView(array('msgError' => 'Login not correct'), "index");
+            	$this->generateView(array('msgError' => 'Login not correct', "admin_email" => $admin_email), "index");
             	return;
             }
          
@@ -62,7 +69,7 @@ class ControllerConnection extends Controller
                 $this->redirect($_SESSION["user_settings"]["homepage"]);
             }
             else
-                $this->generateView(array('msgError' => $connect),
+                $this->generateView(array('msgError' => $connect, "admin_email" => $admin_email),
                         "index");
         }
         else

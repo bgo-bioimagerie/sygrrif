@@ -21,14 +21,24 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 			$sortentry = $this->request->getParameter ( "actionid" );
 		}
 		
+		$ModulesManagerModel = new ModulesManager();
+		$projectStatus = $ModulesManagerModel->getDataMenusUserType("projects");
+		
 		// get bill list
 		$modelBillManager = new SyBill();
-		$billsList = $modelBillManager->getBills($sortentry);
+		$billsList = array();
+		if ($projectStatus > 0){
+			$billsList = $modelBillManager->getBills($sortentry);
+		}
+		else{
+			$billsList = $modelBillManager->getBillsUnit($sortentry);
+		}
 		
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'billsList' => $billsList
+				'billsList' => $billsList,
+				'projectStatus' => $projectStatus
 		) );
 	}
 	

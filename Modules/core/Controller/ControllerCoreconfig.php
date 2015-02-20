@@ -36,6 +36,10 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		$modelCoreConfig = new CoreConfig();
 		$activeUserSetting = $modelCoreConfig->getParam('user_desactivate');
 		
+		// admin email
+		$modelCoreConfig = new CoreConfig();
+		$admin_email = $modelCoreConfig->getParam("admin_email");
+		
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
@@ -49,7 +53,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
     			$this->generateView ( array ('navBar' => $navBar, 
     					                     'installError' => $installError,
     					                     'menus' => $menus,
-    										 'activeUserSetting' => $activeUserSetting 	
+    										 'activeUserSetting' => $activeUserSetting,
+    										 'admin_email' => $admin_email 	
     			) );
     			return;
 			}
@@ -57,7 +62,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
 					                     'menus' => $menus,
-										 'activeUserSetting' => $activeUserSetting
+										 'activeUserSetting' => $activeUserSetting,
+										 'admin_email' => $admin_email
 			) );
 			return;
 		}
@@ -79,7 +85,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			
 			$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus,
-									 'activeUserSetting' => $activeUserSetting
+									 'activeUserSetting' => $activeUserSetting,
+									 'admin_email' => $admin_email
 									 	
 			) );
 			return;
@@ -96,11 +103,20 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			
 			$this->generateView ( array ('navBar' => $navBar,
 					'menus' => $menus,
-					'activeUserSetting' => $activeUserSetting
-						
+					'activeUserSetting' => $activeUserSetting,
+					'admin_email' => $admin_email
 			) );
 			return;
 		}
+		
+		// email admin
+		$setadminemailquery = $this->request->getParameterNoException("setadminemailquery");
+		if($setadminemailquery == "yes"){
+			$admin_email = $this->request->getParameterNoException("email");
+			$modelCoreConfig->setParam("admin_email", $admin_email);
+			
+		}
+		
 		
 		// backup
 		$setactivebackupquery = $this->request->getParameterNoException("setactivebackupquery");
@@ -113,7 +129,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus, 
-									 'activeUserSetting' => $activeUserSetting
+									 'activeUserSetting' => $activeUserSetting,
+									 'admin_email' => $admin_email
 		) );
 	}
 	

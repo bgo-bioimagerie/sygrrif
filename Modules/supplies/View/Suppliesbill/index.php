@@ -26,7 +26,7 @@
 	
 		<div class="page-header">
 			<h1>
-				Supplies bill <br> <small></small>
+				<?= SuTranslator::Supplies_bill($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 		
@@ -39,7 +39,7 @@
 		<?php } ?>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?> </label>
 			<div class="col-xs-10">
 					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);"
 						>
@@ -65,7 +65,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Responsible</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang)?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="responsible">
 					<OPTION value="0" > ... </OPTION>
@@ -83,8 +83,8 @@
 		</div>	
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Ok" />
-				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

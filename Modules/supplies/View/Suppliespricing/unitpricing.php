@@ -9,7 +9,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Pricing per unit<br> <small></small>
+			<?= SuTranslator::Pricing_per_unit($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
@@ -17,8 +18,8 @@
 			<thead>
 				<tr>
 				    <td>ID</td>
-					<td>Name</td>
-					<td>Pricing</td>
+					<td><?= CoreTranslator::Name($lang) ?></td>
+					<td><?= SuTranslator::Pricing($lang) ?></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -33,7 +34,7 @@
 				    <!--  tarif -->
 					<td><?= $this->clean ( $price ['pricing_name'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliespricing/editunitpricing/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='suppliespricing/editunitpricing/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

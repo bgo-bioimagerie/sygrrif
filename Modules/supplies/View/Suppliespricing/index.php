@@ -9,7 +9,8 @@
 	
 		<div class="page-header">
 			<h1>
-				Supplies Pricing<br> <small></small>
+			<?= SuTranslator::Pricing($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 
@@ -17,7 +18,7 @@
 			<thead>
 				<tr>
 				    <td><a href="suppliespricing/index/id">ID</a></td>
-					<td><a href="suppliespricing/index/tarif_name">Name</a></td>
+					<td><a href="suppliespricing/index/tarif_name"><?= CoreTranslator::Name($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -31,7 +32,7 @@
 				    <td><?= $this->clean ( $price ['tarif_name'] ); ?></td>
 				    
 				    <td>
-				      <button type='button' onclick="location.href='suppliespricing/editpricing/<?= $pricingId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='suppliespricing/editpricing/<?= $pricingId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

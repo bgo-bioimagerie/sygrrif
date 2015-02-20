@@ -214,10 +214,17 @@ class SuBillGenerator extends Model {
 			if ($lastNumberY == date("Y", time())){
 				$lastNumberN = (int)$lastNumberN + 1;
 			}
-			$number = $lastNumberY ."-".$lastNumberN;
+			$num = "".$lastNumberN."";
+			if ($lastNumberN < 10){
+				$num = "00" . $lastNumberN;
+			}
+			else if ($lastNumberN >= 10 && $lastNumberN < 100){
+				$num = "0" . $lastNumberN;
+			}
+			$number = $lastNumberY ."-". $num ;
 		}
 		else{
-			$number = date("Y", time()) . "-1";
+			$number = date("Y", time()) . "-001";
 		}
 		// replace the number
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -275,7 +282,7 @@ class SuBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Utilisateur");
 		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
 		
-		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre de commandes");
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre de \n commandes");
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
 		
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Quantité");
@@ -401,11 +408,12 @@ class SuBillGenerator extends Model {
 			// add the item title	
 			//echo "addedline=".$addedLine."<br/>";
 			if ($addedLine > 0){
-				$curentLine++;
+				$curentLine ++;//= $addedLine -1;
 				$roomspan = $curentLine + $addedLine -1;
 				$objPHPExcel->getActiveSheet()->mergeCells('A'.$curentLine.':A'.$roomspan);
 				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $itemName); // item name
 				$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableCell);
+				$curentLine += $addedLine -1;
 			}
 		}
 		

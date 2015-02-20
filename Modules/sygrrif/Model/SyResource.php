@@ -163,4 +163,10 @@ class SyResource extends Model {
 		$sql="DELETE FROM sy_resources WHERE id = ?";
 		$req = $this->runRequest($sql, array($id_resource));
 	}
+	
+	public function getResourceFromName($name){
+		$sql = "select * from sy_resources where name=?";
+		$data = $this->runRequest($sql, array($name));
+		return $data->fetch();
+	}
 }

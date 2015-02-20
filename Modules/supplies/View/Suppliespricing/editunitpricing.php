@@ -24,28 +24,27 @@
 	
 		<div class="page-header">
 			<h1>
-				Associate a pricing to a unit <br> <small></small>
+			<?= SuTranslator::Associate_a_pricing_to_a_unit($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">ID Unit</label>
+			<label for="inputEmail" class="control-label col-xs-2">ID <?= CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="id_unit" type="text" name="id_unit" value="<?= $this->clean($unitId)?>" readonly
 				/>
-				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Name Unit</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="unit_name" type="text" name="unit_name" value="<?= $this->clean($unitName)?>" readonly
 				/>
-				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Pricing</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SuTranslator::Pricing($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_pricing">
 						<?php 
@@ -65,8 +64,8 @@
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='suppliespricing/unitpricing'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='suppliespricing/unitpricing'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

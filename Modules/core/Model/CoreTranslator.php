@@ -90,6 +90,9 @@ class CoreTranslator {
 			if($item == "users/institutions"){
 				return "utilisateurs";
 			}
+			if($item == "supplies"){
+				return "consommables";
+			}
 		}
 		return $item;
 	}

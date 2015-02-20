@@ -24,11 +24,12 @@
 	
 		<div class="page-header">
 			<h1>
-				Associate a pricing to a unit <br> <small></small>
+			<?= SuTranslator::Associate_a_pricing_to_a_unit($lang) ?>
+				<br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Unit</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_unit">
 						<?php 
@@ -42,7 +43,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Pricing</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= SuTranslator::Pricing($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_pricing">
 						<?php 
@@ -57,8 +58,8 @@
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Add" />
-				<button type="button" onclick="location.href='suppliespricing/unitpricing'" class="btn btn-default" id="navlink">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='suppliespricing/unitpricing'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

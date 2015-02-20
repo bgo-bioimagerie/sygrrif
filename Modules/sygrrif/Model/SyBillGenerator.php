@@ -377,6 +377,7 @@ class SyBillGenerator extends Model {
 		$beneficiaire = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
 		
 		$i=0;
+		$people[0] = "";
 		foreach($beneficiaire as $b){
 			// user info
 			$modelUser = new User();
@@ -391,8 +392,9 @@ class SyBillGenerator extends Model {
 				$i++;
 			}
 		}
-		array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);
-		
+		if (count($people[0]) >= 1){
+			array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);
+		}
 		$sql = 'SELECT * FROM sy_resources ORDER BY name';
 		$req = $this->runRequest($sql);
 		$equipement = $req->fetchAll();
@@ -642,6 +644,7 @@ class SyBillGenerator extends Model {
 		
 		
 			}
+			$room = array();
 			if ($numResTotal != 0){
 				$room[0][$i] = $e[0]; 					//id de la room
 				$room[1][$i] = $e[1]; 					//nom de la room
@@ -660,8 +663,10 @@ class SyBillGenerator extends Model {
 				$i++;
 			}
 		}
-		$numOfEquipement = count($room[0]);
-		
+		$numOfEquipement = 0;
+		if (count($room) > 0){
+			$numOfEquipement = count($room[0]);
+		}
 		
 		// /////////////////////////////////////////// //
 		//             xls output                      //
@@ -771,6 +776,26 @@ class SyBillGenerator extends Model {
 		}
 		if ($keyfound){
 			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("d/m/Y", time()));
+		}
+		// replace the year
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{annee}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("Y", time()));
 		}
 		// replace the responsible
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -1100,7 +1125,7 @@ class SyBillGenerator extends Model {
 		}
 		
 		// add the bill to the bill manager
-		$modelBill->addBill($number, date("Y-m-d", time()));
+		$modelBill->addBillUnit($number, date("Y-m-d", time()), $unit_id, $responsible_id);
 		
 		// bilan
 		// total HT
