@@ -70,7 +70,7 @@
 				<?php $authId = $this->clean ( $auth ['id'] ); ?> 
 				<tr>
 					<td><?= $authId ?></td>
-				    <td><?= $this->clean ( $auth ['date'] ); ?></td>
+				    <td><?= CoreTranslator::dateFromEn($this->clean ( $auth ['date'] ), $lang) ?></td>
 				    <td><?= $this->clean ( $auth ['userName'] ); ?></td>
 				    <td><?= $this->clean ( $auth ['userFirstname'] ); ?></td>
 				    <td><?= $this->clean ( $auth ['unitName'] ); ?></td>

@@ -180,9 +180,12 @@ class SyCalendarEntry extends Model {
 	
 	public function hasResponsibleEntry($resp_id, $startdate, $enddate){
 		
+		//echo "startdate = " . $startdate . "<br />";
+		//echo "endate = " . $enddate . "<br />";
+		
 		//echo "resp_id = " . $resp_id . "<br/>";
 		$q = array('start'=>$startdate, 'end'=>$enddate);
-		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
+		$sql = 'SELECT DISTINCT recipient_id, id FROM sy_calendar_entry WHERE
 				(start_time >=:start AND start_time <= :end)';
 		$req = $this->runRequest($sql, $q);
 		$recs = $req->fetchAll();
@@ -190,10 +193,15 @@ class SyCalendarEntry extends Model {
 		//print_r($recs);
 		
 		foreach ($recs as $rec){
-			$sql = "select id_responsible from core_users where id=".$rec[0];
+			//echo "reservation id = " . $rec["id"] . "<br />";
+			//echo "reservation recipient id = " . $rec["recipient_id"] . "<br />";
+			//echo "resp id = " . $resp_id . "<br />";
+			$sql = "select id_responsible from core_users where id=".$rec["recipient_id"];
 			$req = $this->runRequest($sql);
 			$resp_id_req = $req->fetch();
-			if ($resp_id_req == $resp_id || $rec[0]== $resp_id){
+			$resp_id_req = $resp_id_req[0];
+			//echo "resp_id_req = " . $resp_id_req . "<br />";
+			if ($resp_id_req == $resp_id || $rec["recipient_id"]== $resp_id){
 				return true;
 			}
 		}
@@ -203,6 +211,12 @@ class SyCalendarEntry extends Model {
 	public function getUserBooking($user_id){
 		$sql = "select * from sy_calendar_entry where recipient_id=? order by end_time DESC;";
 		$req = $this->runRequest($sql, array($user_id));
+		return $req->fetchAll();
+	}
+	
+	public function getUserBookingResource($user_id, $resource_id){
+		$sql = "select * from sy_calendar_entry where recipient_id=? and resource_id=? order by end_time DESC;";
+		$req = $this->runRequest($sql, array($user_id, $resource_id));
 		return $req->fetchAll();
 	}
 		

@@ -11,14 +11,14 @@ class SuTranslator {
 	
 	public static function Supplies($lang){
 		if ($lang == "Fr"){
-			return "Consomables";
+			return "consommables";
 		}
 		return "Supplies";
 	}
 	
 	public static function Supplies_Pricing($lang){
 		if ($lang == "Fr"){
-			return "Consomables/Tarifs";
+			return "consommables/Tarifs";
 		}
 		return "Supplies/Pricing";
 	}
@@ -39,7 +39,7 @@ class SuTranslator {
 	
 	public static function Items($lang){
 		if ($lang == "Fr"){
-			return "Consomables";
+			return "consommables";
 		}
 		return "Items";
 	}
@@ -102,7 +102,7 @@ class SuTranslator {
 	
 	public static function Supplies_bill($lang){
 		if ($lang == "Fr"){
-			return "Facture consomables";
+			return "Facture consommables";
 		}
 		return "Supplies bill";
 	}
@@ -144,8 +144,8 @@ class SuTranslator {
 	
 	public static function SuConfigAbstract($lang){
 		if ($lang == "Fr"){
-			return "<p>Le module \"consomables\" permet de gérer et des facturer des flux de consomables <br\>
-					Le module \"consomables\" possède sa propre base de donnée utilisateurs </p>";
+			return "<p>Le module \"consommables\" permet de gérer et des facturer des flux de consommables <br\>
+					Le module \"consommables\" possède sa propre base de donnée utilisateurs </p>";
 		}
 		return "<p> The supplies module allows to manage and bill supplies ordered by users. <br/>
 				The supplies module has its own user database </p>";
@@ -153,7 +153,7 @@ class SuTranslator {
 	
 	public static function Supplies_configuration($lang){
 		if ($lang == "Fr"){
-			return "Configuration consomables";
+			return "Configuration consommables";
 		}
 		return "Supplies configuration";
 	}
@@ -262,14 +262,14 @@ class SuTranslator {
 	
 	public static function Add_Item($lang){
 		if ($lang == "Fr"){
-			return "Ajouter un consomable";
+			return "Ajouter un consommable";
 		}
 		return "Add_Item";
 	}
 	
 	public static function Edit_Item($lang){
 		if ($lang == "Fr"){
-			return "Modifier un consomable";
+			return "Modifier un consommable";
 		}
 		return "Edit Item";
 	}
@@ -283,7 +283,7 @@ class SuTranslator {
 	
 	public static function Supplies_Items($lang){
 		if ($lang == "Fr"){
-			return "Consomables";
+			return "consommables";
 		}
 		return "Supplies Items";
 	}

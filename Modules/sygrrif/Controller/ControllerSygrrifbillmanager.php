@@ -73,6 +73,10 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		$date_paid = $this->request->getParameter("date_paid");
 		$is_paid = $this->request->getParameter("is_paid");
 		
+		
+		if ($date_generated != ""){
+			$date_generated = CoreTranslator::dateToEn($date_generated, $lang);
+		}
 		if ($date_paid != ""){
 			$date_paid = CoreTranslator::dateToEn($date_paid, $lang);
 		}

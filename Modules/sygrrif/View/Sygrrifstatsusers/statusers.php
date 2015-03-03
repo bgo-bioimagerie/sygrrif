@@ -45,6 +45,7 @@
 	</div>
 </div>
 
+<!-- 
 <div class="container">
 	<div class="col-md-8 col-md-offset-2">
 	<form role="form" class="form-horizontal" action="sygrrifstatsusers/userquery"
@@ -74,7 +75,7 @@
       </form>
 	</div>
 </div>
-
+ -->
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>
 <?php endif; ?>

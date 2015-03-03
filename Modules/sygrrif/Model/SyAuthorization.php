@@ -43,18 +43,31 @@ class SyAuthorization extends Model {
 	}
 	
 	public function setAuthorization($id, $date, $user_id, $lab_id, $visa_id, $resource_id, $is_active=1) {
-		$sql = "insert into sy_authorization(id, date, user_id, lab_id, visa_id, resource_id, is_active)" .
-			 " values(?,?,?,?,?,?,?)";
-		$this->runRequest ( $sql, array (
-				$id,
-				$date,
-				$user_id,
-				$lab_id,
-				$visa_id,
-				$resource_id,
-				$is_active
-		) );
+		
+		if (!$this->isAuthorisation($id)){	
+			$sql = "insert into sy_authorization(id, date, user_id, lab_id, visa_id, resource_id, is_active)" .
+				 " values(?,?,?,?,?,?,?)";
+			$this->runRequest ( $sql, array (
+					$id,
+					$date,
+					$user_id,
+					$lab_id,
+					$visa_id,
+					$resource_id,
+					$is_active
+			) );
+		}
 	}
+	
+	public function isAuthorisation($id){
+		$sql = "select * from sy_authorization where id=?;";
+		$data = $this->runRequest($sql, array($id));
+		if ($data->rowCount() == 1)
+			return true;
+		else
+			return false;
+	}
+	
 	
 	public function setActive($id, $active){
 		$sql = "update sy_authorization set is_active=? where id=?";
@@ -107,6 +120,13 @@ class SyAuthorization extends Model {
 				$id 
 		) );
 	}
+	
+	public function getAuths(){
+		$sql="select * from sy_authorization";
+		$req = $this->runRequest($sql);
+		return $req->fetchAll();
+	}
+	
 	public function getAuthorizations($sortentry = 'id') {
 		
 		$sqlSort = "sy_authorization.id";
@@ -557,7 +577,7 @@ class SyAuthorization extends Model {
 					     INNER JOIN core_units on sy_authorization.lab_id = core_units.id
 					     INNER JOIN sy_visas on sy_authorization.visa_id = sy_visas.id
 					     INNER JOIN sy_resourcescategory on sy_authorization.resource_id = sy_resourcescategory.id
-				WHERE sy_authorization.resource_id=? 
+				WHERE sy_authorization.resource_id=? AND sy_authorization.is_active=1
 				ORDER BY core_users.name;";
 		$req = $this->runRequest($sql, array($resource_id));
 		return $req->fetchAll();

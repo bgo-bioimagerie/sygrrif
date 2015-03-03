@@ -376,9 +376,16 @@ class SyBillGenerator extends Model {
 		$req = $this->runRequest($sql, $q);
 		$beneficiaire = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
 		
+		//print_r($beneficiaire);
+		//return;
+		
 		$i=0;
 		$people[0] = "";
 		foreach($beneficiaire as $b){
+			
+			//print_r($b);
+			//return;
+			
 			// user info
 			$modelUser = new User();
 			$nomPrenom = $modelUser->getUserFromlup(($b[0]), $unit_id, $responsible_id);
@@ -392,6 +399,10 @@ class SyBillGenerator extends Model {
 				$i++;
 			}
 		}
+		
+		//print_r($people);
+		//return;
+
 		if (count($people[0]) >= 1){
 			array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);
 		}
@@ -400,6 +411,7 @@ class SyBillGenerator extends Model {
 		$equipement = $req->fetchAll();
 		
 		$i=0;
+		$room = array();
 		foreach($equipement as $e){
 			$numResTotal = 0;
 			$heureTotal = 0;
@@ -417,6 +429,7 @@ class SyBillGenerator extends Model {
 			$resourceID = $e[0];
 			$modelResource = new SyResource();
 			$resourceType = $modelResource->getResourceType($resourceID);
+			
 			for ($j = 0; $j < count($people[0]); $j++) {
 				$descriptionTarif = $pricingModel->getPricing($people[4][$j]);
 
@@ -493,10 +506,13 @@ class SyBillGenerator extends Model {
 				
 				//---------
 				//ResIn : Réservation qui commence ET se termine dans la période sélectionnée
-				$sql = 'SELECT start_time, end_time FROM sy_calendar_entry WHERE start_time >=:start AND end_time <= :end AND resource_id=:room_id AND recipient_id=:beneficiaire';
+				$sql = 'SELECT start_time, end_time, quantity FROM sy_calendar_entry WHERE start_time >=:start AND end_time <= :end AND resource_id=:room_id AND recipient_id=:beneficiaire';
 				$req = $this->runRequest($sql, $q);
 				$resIn = $req->fetchAll();
 				$numResIn = $req->rowCount();
+				
+				//print_r($resIn);
+				//return;
 				
 				$heureIn = 0;
 				if ($resourceType == 1){ // calendar
@@ -538,6 +554,8 @@ class SyBillGenerator extends Model {
 				}
 				else if ($resourceType == 2){ // unitary calendar
 					foreach($resIn as $rB){
+						//print_r($rB);
+						//return;
 						$heureIn += $rB[2];
 					}
 				}	
@@ -545,7 +563,7 @@ class SyBillGenerator extends Model {
 				
 				//---------
 				//ResAfter : Réservation qui commence dans la période sélectionnée et se termine après la période sélectionnée
-				$sql = 'SELECT start_time, end_time FROM sy_calendar_entry WHERE start_time >=:start AND start_time<:end AND end_time > :end AND resource_id=:room_id AND recipient_id=:beneficiaire';
+				$sql = 'SELECT start_time, end_time, quantity FROM sy_calendar_entry WHERE start_time >=:start AND start_time<:end AND end_time > :end AND resource_id=:room_id AND recipient_id=:beneficiaire';
 				$req = $this->runRequest($sql, $q);
 				$resAfter = $req->fetchAll();
 				$numResAfter = $req->rowCount();
@@ -644,7 +662,7 @@ class SyBillGenerator extends Model {
 		
 		
 			}
-			$room = array();
+			
 			if ($numResTotal != 0){
 				$room[0][$i] = $e[0]; 					//id de la room
 				$room[1][$i] = $e[1]; 					//nom de la room
@@ -661,9 +679,13 @@ class SyBillGenerator extends Model {
 				$room[11][$i] = $heureResTotalWeNuitVrai;
 		
 				$i++;
-			}
+			}			
 		}
 		$numOfEquipement = 0;
+		
+		//print_r($room);
+		//return;
+		
 		if (count($room) > 0){
 			$numOfEquipement = count($room[0]);
 		}

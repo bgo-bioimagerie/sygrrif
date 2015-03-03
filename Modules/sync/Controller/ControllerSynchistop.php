@@ -40,6 +40,7 @@ class ControllerSynchistop extends Controller {
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		
+		/*
 		// Visa
 		$visas_old = $this->getVisas($pdo_old);
 		$visaModel = new SyVisa();
@@ -119,14 +120,14 @@ class ControllerSynchistop extends Controller {
 		$this->syncLastLogin($pdo_grr);
 		echo "<p>add Last login</p>";
 		
-		$this->desactivateUserDoNotBookAYear();
-		echo "<p>desactivate users</p>";
-		
 		$this->syncPrices($pdo_grr);
 		echo "<p>sync prices done</p>";
 		
 		$this->addNewResources();
 		echo "<p>add New Resources</p>";
+		*/
+		$this->desactivateUserDoNotBookAYear();
+		echo "<p>desactivate users</p>";
 	}
 	
 	// /////////////////////////////////////////// //
@@ -317,7 +318,13 @@ class ControllerSynchistop extends Controller {
 
 			// convert date
 			$date_convention = '';
-			$dateObj = DateTime::createFromFormat("d/m/Y", $aut['date']);
+			// when only the year change it to 01/01/YYYY
+			$db_date = $aut['date'];
+			if (iconv_strlen($db_date) < 8){
+				$db_date = "01/01/".$db_date;
+			}
+			
+			$dateObj = DateTime::createFromFormat("d/m/Y", $db_date);
 			if ($dateObj){
 				$date_convention = $dateObj->format('Y-m-d');
 			}
@@ -498,6 +505,44 @@ class ControllerSynchistop extends Controller {
 		}
 	}
 	
+	
+	public function desactivateUserDoNotBookAYear(){
+		
+		// activate all authorizations
+		
+		$modelAuth = new SyAuthorization();
+		$auths = $modelAuth->getAuths();
+		
+		$ModelUser = new User();
+		
+		$ayearago = date("Y-m-d", time()-3600*24*365);
+		$modelCalEntry = new SyCalendarEntry();
+		foreach($auths as $auth){
+			$authID = $auth["id"];
+			$userID = $auth["user_id"];
+			$authDate = $auth["date"];
+			$resource_id = $auth["resource_id"];
+			$modelAuth->activate($authID);
+			
+			if ($authDate < $ayearago){
+				$entries = $modelCalEntry->getUserBookingResource($userID, $resource_id);
+				if (count($entries) > 0){
+					if ( $entries[0]["end_time"] < $ayearago ){
+						// desactivate user
+						$ModelUser->setactive($userID, 0);
+							
+						// desactivate autorisations
+						$modelAuth->unactivate($authID);
+					}
+				}
+				else{
+					$modelAuth->unactivate($authID);
+				}
+			}
+		}
+	}
+	
+	/*
 	public function desactivateUserDoNotBookAYear(){
 		// get all the users
 		$ModelUser = new User();
@@ -521,6 +566,7 @@ class ControllerSynchistop extends Controller {
 			}
 		}
 	}
+	*/
 	
 	public function syncPrices($pdo_grr){
 		$sql = "select * from grr_room";
