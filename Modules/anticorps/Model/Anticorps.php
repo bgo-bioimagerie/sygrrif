@@ -36,8 +36,7 @@ class Anticorps extends Model {
   				`id_anticorps` int(11) NOT NULL,
   				`id_utilisateur` int(11) NOT NULL,	
 				`disponible` int(2) NOT NULL,		
-				`date_recept` DATE NOT NULL,
-  				PRIMARY KEY (`id_anticorps`)
+				`date_recept` DATE NOT NULL
 				);
 				";
 		

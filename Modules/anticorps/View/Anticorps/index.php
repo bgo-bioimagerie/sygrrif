@@ -19,7 +19,7 @@
 
 		<div class="page-header">
 			<h1>
-				Users<br> <small></small>
+				Anticorps<br> <small></small>
 			</h1>
 		</div>
 	
@@ -78,7 +78,7 @@
 					    	if ($dispo == 1){$dispo = "disponible";}
 					    	else if ($dispo == 2){$dispo = "épuisé";}
 					    	else if ($dispo == 3){$dispo = "récupéré par équipe";}
-					    	$date_recept = $ow['date_recept'];
+					    	$date_recept = CoreTranslator::dateFromEn($ow['date_recept'], $lang);
 					    	$txt = $this->clean ( $name ) . " - " . $this->clean($dispo) . " - " . $this->clean($date_recept); 
 					    	
 					    	if ($this->clean($dispo) == "épuisé"){

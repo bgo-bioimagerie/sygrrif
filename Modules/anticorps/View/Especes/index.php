@@ -16,7 +16,7 @@
 	
 		<div class="page-header">
 			<h1>
-				Especes<br> <small></small>
+				Espèces Tissus<br> <small></small>
 			</h1>
 		</div>
 

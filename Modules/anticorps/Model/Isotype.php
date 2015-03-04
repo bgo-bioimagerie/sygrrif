@@ -76,7 +76,7 @@ class Isotype extends Model {
 	 */
 	public function editIsotype($id, $name){
 	
-		$sql = "update ac_isotypes set nom=?where id=?";
+		$sql = "update ac_isotypes set nom=? where id=?";
 		$this->runRequest($sql, array("".$name."", $id));
 	}
 	

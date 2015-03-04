@@ -339,11 +339,13 @@ class SyBillGenerator extends Model {
 		//        get the input informations           //
 		// /////////////////////////////////////////// //
 		// convert start date to unix date
+		$period_begin = $searchDate_start;
 		$tabDate = explode("-",$searchDate_start);
 		$date_debut = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
 		$searchDate_start= mktime(0,0,0,$tabDate[1],$tabDate[2],$tabDate[0]);
 		
 		// convert end date to unix date
+		$period_end = $searchDate_end;
 		$tabDate = explode("-",$searchDate_end);
 		$date_fin = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
 		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
@@ -1147,7 +1149,7 @@ class SyBillGenerator extends Model {
 		}
 		
 		// add the bill to the bill manager
-		$modelBill->addBillUnit($number, date("Y-m-d", time()), $unit_id, $responsible_id);
+		$modelBill->addBillUnit($number, $period_begin, $period_end, date("Y-m-d", time()), $unit_id, $responsible_id);
 		
 		// bilan
 		// total HT
@@ -1232,15 +1234,15 @@ class SyBillGenerator extends Model {
 		
 		// Save the xls file
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+		$nom = date('Y-m-d')."_facture_sygrrif.xls";
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="bill.xls"');
+		header('Content-Disposition: attachment;filename="'.$nom.'"');
 		header('Cache-Control: max-age=0');
 		$objWriter->save('php://output');
 			
 	}
 
 	public function generateCounting($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
-	
 		
 		require_once ("externals/PHPExcel/Classes/PHPExcel.php");
 		require_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");

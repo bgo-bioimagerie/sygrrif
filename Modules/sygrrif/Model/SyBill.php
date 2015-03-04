@@ -14,6 +14,8 @@ class SyBill extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_bills` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 	    `number` varchar(50) NOT NULL,		
+		`period_begin` DATE NOT NULL,		
+		`period_end` DATE NOT NULL,
 		`date_generated` DATE NOT NULL,	
 		`date_paid` DATE NOT NULL,			
 		`is_paid` int(1) NOT NULL,
@@ -41,17 +43,17 @@ class SyBill extends Model {
 	}
 	
 	
-	public function addBillUnit($number, $date_generated, $id_unit, $id_responsible, $date_paid="", $is_paid=0){
-		$sql = "insert into sy_bills(number, date_generated, id_unit, id_responsible, date_paid, is_paid)"
-				. " values(?, ?, ?, ?, ?, ?)";
-		$this->runRequest($sql, array($number, $date_generated, $id_unit, $id_responsible, $date_paid, $is_paid));
+	public function addBillUnit($number, $period_begin, $period_end, $date_generated, $id_unit, $id_responsible, $date_paid="", $is_paid=0){
+		$sql = "insert into sy_bills(number, period_begin, period_end, date_generated, id_unit, id_responsible, date_paid, is_paid)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($number, $period_begin, $period_end, $date_generated, $id_unit, $id_responsible, $date_paid, $is_paid));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
-	public function addBillProject($number, $date_generated, $id_project, $date_paid="", $is_paid=0){
-		$sql = "insert into sy_bills(number, date_generated, id_project, date_paid, is_paid)"
-				. " values(?, ?, ?, ?, ?)";
-		$this->runRequest($sql, array($number, $date_generated, $id_project, $date_paid, $is_paid));
+	public function addBillProject($number, $period_begin, $period_end, $date_generated, $id_project, $date_paid="", $is_paid=0){
+		$sql = "insert into sy_bills(number, period_begin, period_end, date_generated, id_project, date_paid, is_paid)"
+				. " values(?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($number, $period_begin, $period_end, $date_generated, $id_project, $date_paid, $is_paid));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -94,7 +96,9 @@ class SyBill extends Model {
 			$sqlSort = "core_users.name";
 		}
 		
-		$sql = "SELECT sy_bills.id AS id, sy_bills.number AS number, 
+		$sql = "SELECT sy_bills.id AS id, sy_bills.number AS number,
+				       sy_bills.period_begin AS period_begin, 
+					   sy_bills.period_end AS period_end, 
 					   sy_bills.date_generated AS date_generated, 
 					   sy_bills.date_paid AS date_paid, 
 					   sy_bills.is_paid AS is_paid,

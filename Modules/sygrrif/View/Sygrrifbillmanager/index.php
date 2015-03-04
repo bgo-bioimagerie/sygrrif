@@ -10,7 +10,7 @@
 
 <br>
 <div class="contatiner">
-	<div class="col-md-6 col-md-offset-3">
+	<div class="col-md-8 col-md-offset-2">
 	
 		<div class="page-header">
 			<h1>
@@ -24,6 +24,8 @@
 				<tr>
 					<td><a href="sygrrifbillmanager/index/id">ID</a></td>
 					<td><a href="sygrrifbillmanager/index/number"><?= SyTranslator::Number($lang) ?></a></td>
+					<td><a href="sygrrifbillmanager/index/period_begin"><?= SyTranslator::Period_begin($lang) ?></a></td>
+					<td><a href="sygrrifbillmanager/index/period_end"><?= SyTranslator::Period_end($lang) ?></a></td>
 					<?php if ($projectStatus > 0){
 						?>
 						<td><a href="sygrrifbillmanager/index/id_project"><?= SyTranslator::Project($lang) ?></a></td>
@@ -49,6 +51,8 @@
 					<?php $itemId = $this->clean ( $bill ['id'] ); ?>
 					<td><?= $itemId ?></td>
 				    <td><?= $this->clean ( $bill ['number'] ); ?></td>
+				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['period_begin'], $lang) ); ?></td>
+				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['period_end'], $lang) ); ?></td>
 				    <?php if ($projectStatus > 0){
 						?>
 						<td><?= $this->clean ( $bill ['id_project'] ); ?></td>

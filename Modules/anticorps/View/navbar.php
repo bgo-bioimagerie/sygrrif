@@ -1,4 +1,12 @@
 
+<?php 
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
+$lang = "En";
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
+?>
+
 <head>
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
 	type="text/css">
@@ -36,8 +44,13 @@
 				</div>
 				
 				<div class="col-md-12 ">
-				    <button onclick="location.href='especes/'" class="btn btn-link" id="navlink">Espèces</button>
-					<button onclick="location.href='especes/add'" class="btn btn-link" id="navlink">Ajouter Espèce</button>
+				    <button onclick="location.href='especes/'" class="btn btn-link" id="navlink">Espèces Tissus</button>
+					<button onclick="location.href='especes/add'" class="btn btn-link" id="navlink">Ajouter Espèce Tissus</button>
+				</div>
+				
+				<div class="col-md-12 ">
+				    <button onclick="location.href='protocols/'" class="btn btn-link" id="navlink">Protocoles</button>
+					<button onclick="location.href='protocols/edit'" class="btn btn-link" id="navlink">Ajouter Protocoles</button>
 				</div>
 			
 

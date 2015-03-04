@@ -5,6 +5,7 @@ require_once 'Modules/anticorps/Model/AcInstall.php';
 require_once 'Modules/anticorps/Model/Anticorps.php';
 require_once 'Modules/anticorps/Model/Espece.php';
 require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 
 class ControllerAnticorps extends ControllerSecureNav {
 	
@@ -52,6 +53,10 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$especesModel = new Espece();
 		$especes = $especesModel->getEspeces("nom");
 		
+		// get proto list
+		$protoModel = new AcProtocol();
+		$protocols = $protoModel->getProtocolsNo();
+		
 		// get users List
 		$modelUser = new User();
 		$users = $modelUser->getUsersSummary('name');
@@ -78,10 +83,16 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'sourcesList' => $sourcesList,
 				'anticorps' => $anticorps,
 				'especes' => $especes,
-				'users' => $users  
+				'users' => $users,
+				'protocols' => $protocols	  
 		) );
 	}
 	public function editquery(){
+		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
 		
 		// add in anticorps table
 		$id = $this->request->getParameterNoException("id");
@@ -134,7 +145,8 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$i = -1;
 		foreach ($id_proprietaire as $proprio){
 			$i++;
-			$modelAnticorps->addOwner($proprio, $id, $date_recept[$i], $disponible[$i]);
+			$date_r = CoreTranslator::dateToEn($date_recept[$i], $lang); 
+			$modelAnticorps->addOwner($proprio, $id, $date_r, $disponible[$i]);
 		}
 		// add to the tissus table
 		

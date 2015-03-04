@@ -241,7 +241,23 @@
 								<td><input class="form-control" type="text" name="ref_bloc[]" value="<?= $tissus["ref_bloc"] ?>"/></td>
 								<td><input class="form-control" type="text" name="dilution[]" value="<?= $tissus["dilution"] ?>"/></td>
 								<td><input class="form-control" type="text" name="temps_incubation[]" value="<?= $tissus["temps_incubation"] ?>"/></td>
-								<td><input class="form-control" type="text" name="ref_protocol[]" value="<?= $tissus["ref_protocol"] ?>"/></td>
+								<td>
+									<select class="form-control" name="ref_protocol[]">
+									<?php 
+									$ref_proto = $this->clean($tissus["ref_protocol"]);
+									foreach ($protocols as $protocol){
+										$no_proto = $this->clean($protocol[0]);
+										$selected = "";
+										if ($ref_proto == $no_proto){
+											$selected = "selected=\"selected\"";
+										}
+										?>
+										<OPTION value="<?=$no_proto?>" <?=$selected?>> <?= $no_proto ?> </OPTION>
+										<?php 
+									}	
+									?>
+									</select>
+								</td>
 							</tr>
 							<?php
 						}
@@ -272,7 +288,18 @@
 							<td><input class="form-control" type="text" name="ref_bloc[]" /></td>
 							<td><input class="form-control" type="text" name="dilution[]" /></td>
 							<td><input class="form-control" type="text" name="temps_incubation[]" /></td>
-							<td><input class="form-control" type="text" name="ref_protocol[]" /></td>
+							<td>
+								<select class="form-control" name="ref_protocol[]">
+									<?php 
+									foreach ($protocols as $protocol){
+										$no_proto = $this->clean($protocol[0]);
+										?>
+										<OPTION value="<?=$no_proto?>"> <?= $no_proto ?> </OPTION>
+										<?php 
+									}	
+									?>
+								</select>
+							</td>
 						</tr>
 						<?php 
 						}
@@ -303,11 +330,13 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						
 							<?php 
 							foreach ($anticorps['proprietaire'] as $proprio){
+								
 								//print_r($proprio);
 								?>
+								<tr>
 								<td><input type="checkbox" name="chk" /></td>
 								<td>
 									<select class="form-control" name="id_proprietaire[]">
@@ -336,8 +365,9 @@
 									</select>	
 								</td>
 								<td>
-									<input class="form-control" type="text" name="date_recept[]" value="<?= $proprio["date_recept"] ?>"/>	
+									<input class="form-control" type="text" name="date_recept[]" value="<?= CoreTranslator::dateFromEn($proprio["date_recept"], $lang) ?>"/>	
 								</td>
+								<tr />
 							<?php
 							} 
 							?>	
@@ -391,7 +421,7 @@
 			<label for="inputEmail" class="control-label col-xs-2">Date Reception</label>
 			<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker5'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_recept" value="<?= $anticorps['date_recept'] ?>"/>
+					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_recept" value="<?= CoreTranslator::dateFromEn($anticorps['date_recept'], $lang) ?>"/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>

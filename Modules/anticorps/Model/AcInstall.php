@@ -6,6 +6,7 @@ require_once 'Modules/anticorps/Model/Isotype.php';
 require_once 'Modules/anticorps/Model/Source.php';
 require_once 'Modules/anticorps/Model/Espece.php';
 require_once 'Modules/anticorps/Model/Tissus.php';
+require_once 'Modules/anticorps/Model/AcProtocol.php';
 
 /**
  * Class defining methods to install and initialize the core database
@@ -35,6 +36,9 @@ class AcInstall extends Model {
 		
 		$tissusModel = new Tissus();
 		$tissusModel->createTable();
+		
+		$protoModel = new AcProtocol();
+		$protoModel->createTable(); 
 		
 		$message = 'success';
 		return $message;

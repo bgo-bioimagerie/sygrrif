@@ -1402,4 +1402,18 @@ class SyTranslator {
 		}
 		return "email";
 	} 
+	
+	public static function Period_begin($lang){
+		if ($lang == "Fr"){
+			return "Début période";
+		}
+		return "Period begin";
+	}
+	
+	public static function Period_end($lang){
+		if ($lang == "Fr"){
+			return "Fin période";
+		}
+		return "Period end";
+	}
 }
