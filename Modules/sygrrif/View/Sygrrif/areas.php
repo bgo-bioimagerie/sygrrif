@@ -13,14 +13,14 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped text-center">
+		<table id="dataTable" class="table table-striped text-center table-bordered">
 			<thead>
 				<tr>
-				    <td><a href="sygrrif/areas/id">ID</a></td>
-					<td><a href="sygrrif/areas/name"><?= SyTranslator::Name($lang) ?></a></td>
-					<td><a href="sygrrif/pricing/restricted"> <?= SyTranslator::Is_resticted($lang) ?></a></td>
-					<td><a href="sygrrif/pricing/display_order"> <?= SyTranslator::Display_order($lang) ?></a></td>
-					<td></td>
+				    <th><a href="sygrrif/areas/id">ID</a></th>
+					<th><a href="sygrrif/areas/name"><?= SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/restricted"> <?= SyTranslator::Is_resticted($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/display_order"> <?= SyTranslator::Display_order($lang) ?></a></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>

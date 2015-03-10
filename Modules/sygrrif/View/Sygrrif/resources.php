@@ -15,16 +15,16 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped">
+		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<td><a href="sygrrif/resources/id">ID</a></td>
-					<td><a href="sygrrif/resources/name"><?= SyTranslator::Name($lang) ?></a></td>
-					<td><a href="sygrrif/resources/description"><?= SyTranslator::Description($lang) ?></a></td>
-					<td><a href="sygrrif/resources/area_name"><?= SyTranslator::Area($lang)?></a></td>
-					<td><a href="sygrrif/resources/type_name"><?= SyTranslator::Type($lang)?></a></td>
-					<td><a href="sygrrif/resources/category_name"><?= SyTranslator::Category($lang)?></a></td>
-					<td></td>
+					<th><a href="sygrrif/resources/id">ID</a></th>
+					<th><a href="sygrrif/resources/name"><?= SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/resources/description"><?= SyTranslator::Description($lang) ?></a></th>
+					<th><a href="sygrrif/resources/area_name"><?= SyTranslator::Area($lang)?></a></th>
+					<th><a href="sygrrif/resources/type_name"><?= SyTranslator::Type($lang)?></a></th>
+					<th><a href="sygrrif/resources/category_name"><?= SyTranslator::Category($lang)?></a></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>

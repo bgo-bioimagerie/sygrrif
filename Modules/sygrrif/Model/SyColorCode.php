@@ -101,9 +101,14 @@ class SyColorCode extends Model {
 	
 	public function importColorCode($id, $name, $color, $display_order=0){
 		
-		$sql = "insert into sy_color_codes(id, name, color,display_order)"
-				. " values(?, ?, ?, ?)";
-		$this->runRequest($sql, array($id, $name, $color, $display_order));		
+		if ($this->isColorCodeId($id)){
+			$this->editColorCode($id, $name, $color, $display_order);
+		}
+		else{	
+			$sql = "insert into sy_color_codes(id, name, color,display_order)"
+					. " values(?, ?, ?, ?)";
+			$this->runRequest($sql, array($id, $name, $color, $display_order));		
+		}
 	}
 	
 	/**
@@ -123,6 +128,15 @@ class SyColorCode extends Model {
 	public function isColorCode($name){
 		$sql = "select * from sy_color_codes where name=?";
 		$SyColorCode = $this->runRequest($sql, array($name));
+		if ($SyColorCode->rowCount() == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	public function isColorCodeId($id){
+		$sql = "select * from sy_color_codes where id=?";
+		$SyColorCode = $this->runRequest($sql, array($id));
 		if ($SyColorCode->rowCount() == 1)
 			return true;
 		else

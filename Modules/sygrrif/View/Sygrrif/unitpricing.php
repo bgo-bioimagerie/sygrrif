@@ -14,13 +14,13 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped text-center">
+		<table id="dataTable" class="table table-striped text-center table-bordered">
 			<thead>
 				<tr>
-				    <td>ID</td>
-					<td><?= SyTranslator::Name($lang) ?></td>
-					<td><?= SyTranslator::Pricing($lang) ?></td>
-					<td></td>
+				    <th>ID</th>
+					<th class="text-center"><?= SyTranslator::Name($lang) ?></th>
+					<th class="text-center"><?= SyTranslator::Pricing($lang) ?></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>

@@ -14,15 +14,15 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped text-center">
+		<table id="dataTable" class="table table-striped text-center table-bordered">
 			<thead>
 				<tr>
-				    <td><a href="sygrrif/pricing/id">ID</a></td>
-					<td><a href="sygrrif/pricing/tarif_name"><?= SyTranslator::Name($lang) ?></a></td>
-					<td><a href="sygrrif/pricing/tarif_unique"><?= SyTranslator::Unique_price($lang) ?></a></td>
-					<td><a href="sygrrif/pricing/tarif_night"><?= SyTranslator::Price_night($lang) ?></a></td>
-					<td><a href="sygrrif/pricing/tarif_we"><?= SyTranslator::Price_weekend($lang) ?></a></td>
-					<td></td>
+				    <th><a href="sygrrif/pricing/id">ID</a></td>
+					<th><a href="sygrrif/pricing/tarif_name"><?= SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/tarif_unique"><?= SyTranslator::Unique_price($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/tarif_night"><?= SyTranslator::Price_night($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/tarif_we"><?= SyTranslator::Price_weekend($lang) ?></a></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>

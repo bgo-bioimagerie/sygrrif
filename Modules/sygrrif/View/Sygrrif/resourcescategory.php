@@ -14,12 +14,12 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped">
+		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<td><a href="sygrrif/resourcescategory/id">ID</a></td>
-					<td><a href="sygrrif/resourcescategory/name"><?= SyTranslator::Name($lang) ?></a></td>
-					<td></td>
+					<th><a href="sygrrif/resourcescategory/id">ID</a></th>
+					<th><a href="sygrrif/resourcescategory/name"><?= SyTranslator::Name($lang) ?></a></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,7 +29,7 @@
 				<tr>
 					<td><?= $categoryId ?></td>
 				    <td><?= $this->clean ( $category ['name'] ); ?></td>
-				    <td>
+				    <td class="text-center">
 				      <button type='button' onclick="location.href='sygrrif/editresourcescategory/<?= $categoryId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>

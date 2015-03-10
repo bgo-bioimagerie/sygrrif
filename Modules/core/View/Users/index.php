@@ -7,6 +7,7 @@
 <link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
 <style>
+/*
         table {
             width: 100%;
         }
@@ -22,8 +23,6 @@
 
         thead th {
             height: 30px;
-
-            /*text-align: left;*/
         }
 
         tbody {
@@ -32,13 +31,14 @@
         }
 
         thead {
-            /* fallback */
+            /* fallback 
         }
 
         tbody td, thead th {
-            /*width: 7.12%;*/
+            /*width: 7.12%;
             float: left;
         }   
+        */
 </style>
 
 </head>
@@ -57,7 +57,7 @@
 			</h1>
 		</div>
 	
-		<table id="dataTable" class="table table-striped" >
+		<table id="dataTable" class="table table-striped table-bordered" >
 			<thead>
 				<tr>
 					<th class="text-center" style="width:2%"><a href="users/index/id">ID</a></th>
@@ -94,11 +94,11 @@
 				    <td style="width:7.12%"> 
 				    	<?php 
 				    	$convno = $this->clean ( $user ['convention'] );
-				    	if ($convno == 0){
-				    		$convTxt = "no convention";	
+				    	if ($convno == 0 || $user ['date_convention']=="0000-00-00"){
+				    		$convTxt = CoreTranslator::Not_signed($lang);	
 				    	}
 				    	else{
-				    		$convTxt = "<p> No:" . $convno . "</p>"
+				    		$convTxt = "<p>" . CoreTranslator::Signed_the($lang) . "</p>"
 				    				   ."<p>" . CoreTranslator::dateFromEn($this->clean ( $user ['date_convention']), $lang) . "</p>";
 				    	}
 				    	?>

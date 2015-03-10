@@ -125,7 +125,10 @@ class ControllerSynchistop extends Controller {
 		
 		$this->addNewResources();
 		echo "<p>add New Resources</p>";
-		*/
+		// */
+		$this->desactivateAuthorizationDoNotBookAYear();
+		echo "<p>desactivate authorizations</p>";
+		
 		$this->desactivateUserDoNotBookAYear();
 		echo "<p>desactivate users</p>";
 	}
@@ -357,6 +360,10 @@ class ControllerSynchistop extends Controller {
 			$req = $pdo_old->query($sql);
 			$color_type_id = $req->fetch()[0];
 			
+			if (!$color_type_id){
+				$color_type_id = 3; // autres
+			}
+			
 			//echo " color_type_id = " . $color_type_id; 
 			
 			// add the reservation
@@ -366,7 +373,7 @@ class ControllerSynchistop extends Controller {
 			$booked_by_id = $creatorID; 
 			$recipient_id = $recipientID;
 			$last_update = $entry['timestamp'];
-			$color_type_id = $color_type_id+1; 
+			$color_type_id = $color_type_id; 
 			$short_description = $entry['description'];
 			$full_description = $entry['description'];
 			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
@@ -413,7 +420,7 @@ class ControllerSynchistop extends Controller {
 			$day_begin = $area_info["morningstarts_area"];
 			$day_end = $area_info["eveningends_area"];
 			$size_bloc_resa = $area_info["resolution_area"];
-			$modelResourceCal->addResource($id, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, 0);
+			$modelResourceCal->setResource($id, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, 0);
 		}
 	}
 
@@ -477,7 +484,7 @@ class ControllerSynchistop extends Controller {
 		$model = new SyColorCode();
 		foreach ($type_old as $typeo){
 			
-			$id = $typeo["id"] + 1;
+			$id = $typeo["id"];
 			$name = $typeo["type_name"];
 			$color = $tab_couleur[$typeo["couleur"]];
 			$model->importColorCode($id, $name, $color);
@@ -506,7 +513,7 @@ class ControllerSynchistop extends Controller {
 	}
 	
 	
-	public function desactivateUserDoNotBookAYear(){
+	public function desactivateAuthorizationDoNotBookAYear(){
 		
 		// activate all authorizations
 		
@@ -515,34 +522,55 @@ class ControllerSynchistop extends Controller {
 		
 		$ModelUser = new User();
 		
-		$ayearago = date("Y-m-d", time()-3600*24*365);
+		$ayearago = time()-3600*24*365;
 		$modelCalEntry = new SyCalendarEntry();
+		$modelResources = new SyResource();
 		foreach($auths as $auth){
 			$authID = $auth["id"];
 			$userID = $auth["user_id"];
 			$authDate = $auth["date"];
-			$resource_id = $auth["resource_id"];
+			$resourceCat_id = $auth["resource_id"];
 			$modelAuth->activate($authID);
 			
 			if ($authDate < $ayearago){
-				$entries = $modelCalEntry->getUserBookingResource($userID, $resource_id);
-				if (count($entries) > 0){
-					if ( $entries[0]["end_time"] < $ayearago ){
-						// desactivate user
-						$ModelUser->setactive($userID, 0);
-							
-						// desactivate autorisations
-						$modelAuth->unactivate($authID);
+				
+				// get all the resources of the category
+				$resources_id = $modelResources->resourcesFromCategory($resourceCat_id);
+				$desactivate = 0;
+				//print_r($resources_id);
+				
+				$resources_count = 0;
+				foreach ($resources_id as $resource_id){
+					$resources_count++;
+					$entries = $modelCalEntry->getUserBookingResource($userID, $resource_id["id"]);
+					if ( ( $resource_id["id"] == 2 || $resource_id["id"] == 9 ) && $userID == 155 ){
+						echo "anglade " .  "<br/>" ;
+						if (count($entries) > 0){
+							echo "last booking anglade = " . date("Y-m-d", $entries[0]["end_time"]) . ", id= " . $entries[0]["id"] . "<br/>";
+						}  
+					}
+					if (count($entries) > 0){
+						//echo "count > 0 <br />" ;
+						if ( $entries[0]["end_time"] < $ayearago ){
+							echo "last booking anglade = " . date("Y-m-d", $entries[0]["end_time"]) . "is more than a year ago";
+							$desactivate++;
+						}
+					}
+					else{
+						$desactivate++;
 					}
 				}
-				else{
+				if ($desactivate == $resources_count){
+					// desactivate autorisations
+					if ($userID == 155){
+						echo "desactivate anglade for " . $authID . "<br/>";
+					}
 					$modelAuth->unactivate($authID);
 				}
 			}
 		}
 	}
 	
-	/*
 	public function desactivateUserDoNotBookAYear(){
 		// get all the users
 		$ModelUser = new User();
@@ -553,6 +581,7 @@ class ControllerSynchistop extends Controller {
 		$today = time();
 		$aYearAgo = $today - 365*24*3600;
 		foreach( $users as $user){
+			$ModelUser->setactive($user["id"], 1);
 			// get his booking
 			$entries = $modelCalEntry->getUserBooking($user["id"]);
 			if (count($entries) > 0){
@@ -560,13 +589,17 @@ class ControllerSynchistop extends Controller {
 					// desactivate user
 					$ModelUser->setactive($user["id"], 0);
 					
+					if ($user["id"] == 155){
+						echo "desactivate anglade, ";
+						echo "because last booking = " . date();
+					}
+					
 					// desactivate autorisations
-					$modelAuth->desactivateAthorizationsForUser($user["id"]);
+					//$modelAuth->desactivateAthorizationsForUser($user["id"]);
 				}
 			}
 		}
 	}
-	*/
 	
 	public function syncPrices($pdo_grr){
 		$sql = "select * from grr_room";

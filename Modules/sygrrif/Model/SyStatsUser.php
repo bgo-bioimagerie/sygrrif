@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 
 /**
  * Class defining methods for statistics calculation for users
@@ -216,7 +217,7 @@ class SyStatsUser extends Model {
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
 			$colonne++;
 			//$date=date('d/m/Y', $r[2]); // date
-			$sheet->SetCellValue($colonne.$ligne,$r["date"]);
+			$sheet->SetCellValue($colonne.$ligne, CoreTranslator::dateFromEn($r["date"], "Fr") );
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);

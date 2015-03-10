@@ -14,7 +14,6 @@ if (isset($_SESSION["user_settings"]["language"])){
 <style>
 .bs-docs-header {
 	position: relative;
-	padding: 30px 15px;
 	color: #cdbfe3;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 	background-color: #337ab7;
@@ -24,40 +23,57 @@ if (isset($_SESSION["user_settings"]["language"])){
 	color: #cdbfe3;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
+
+.well {
+	color: #cdbfe3;
+	background-color: #337ab7;
+	border: none;
+}
+
+legend {
+	color: #ffffff;
+}
 </style>
+
 
 </head>
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
 		<h2>Anticorps</h2>
-		<div class="col-md-9 col-md-offset-3">
+		<div class="col-md-10 col-md-offset-1">
 		
-				<div class="col-md-12">
+		<div class='col-md-6 well'>
+			<fieldset>
+				<!--  <legend></legend>  -->
 				    <button onclick="location.href='sources/'" class="btn btn-link" id="navlink">Sources</button>
 					<button onclick="location.href='sources/add'" class="btn btn-link" id="navlink">Ajouter source</button>
-				</div>
-	
-				<div class="col-md-12 ">
+				<br/>
 				    <button onclick="location.href='isotypes/'" class="btn btn-link" id="navlink">Isotypes</button>
 					<button onclick="location.href='isotypes/add'" class="btn btn-link" id="navlink">Ajouter Isotype</button>
-				</div>
-				
-				<div class="col-md-12 ">
+				<br/>	
 				    <button onclick="location.href='especes/'" class="btn btn-link" id="navlink">Espèces Tissus</button>
 					<button onclick="location.href='especes/add'" class="btn btn-link" id="navlink">Ajouter Espèce Tissus</button>
-				</div>
+				<br/>		
+				    <button onclick="location.href='organes/'" class="btn btn-link" id="navlink">Organes</button>
+					<button onclick="location.href='organes/add'" class="btn btn-link" id="navlink">Ajouter organe</button>	
+			</fieldset>
+		</div>
+		
+		<div class='col-md-6 well'>
+			<fieldset>
+				<!--  <legend></legend>  -->
 				
-				<div class="col-md-12 ">
 				    <button onclick="location.href='protocols/'" class="btn btn-link" id="navlink">Protocoles</button>
 					<button onclick="location.href='protocols/edit'" class="btn btn-link" id="navlink">Ajouter Protocoles</button>
-				</div>
-			
-
-				<div class="col-md-12">
+				<br/>
 					<button onclick="location.href='anticorps'" class="btn btn-link" id="navlink">Anticorps</button>
 					<button onclick="location.href='anticorps/edit'" class="btn btn-link" id="navlink">Ajouter anticorps</button>
-				</div>
+					
+			</fieldset>
+		</div>
+				
+	
 		</div>
 	</div>
 </div>

@@ -6,6 +6,7 @@
 <head>
 
 <style>
+/*
         table {
             width: 100%;
         }
@@ -22,7 +23,7 @@
         thead th {
             height: 30px;
 
-            /*text-align: left;*/
+            /*text-align: left;
         }
 
         tbody {
@@ -31,13 +32,14 @@
         }
 
         thead {
-            /* fallback */
+            /* fallback 
         }
 
         tbody td, thead th {
             width: 12.5%;
             float: left;
-        }   
+        }
+        */   
 </style>
 
 </head>
@@ -47,21 +49,32 @@
 	<div class="col-md-8 col-md-offset-2">
 	
 		<div class="page-header">
-			<h1> <?= SyTranslator::Active_Authorizations($lang) ?>
+			<h1> 
+			<?php
+			$linkcontroller = "authorizations";
+			if (isset($isInactive)){
+				$linkcontroller = "uauthorizations";
+				echo SyTranslator::Unactive_Authorizations($lang);
+			}
+			else{
+				echo SyTranslator::Active_Authorizations($lang);
+			}
+			
+			?>
 			<br> <small></small>
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped">
+		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th><a href="sygrrif/authorizations/id">ID</a></th>
-					<th><a href="sygrrif/authorizations/date"><?= SyTranslator::Date($lang) ?></a></th>
-					<th><a href="sygrrif/authorizations/userName"><?= SyTranslator::Name($lang) ?></a></th>
-					<th><a href="sygrrif/authorizations/userFirstname"><?= SyTranslator::Firstname($lang) ?></a></th>
-					<th><a href="sygrrif/authorizations/unit"><?= SyTranslator::Unit($lang) ?></a></th>
-					<th><a href="sygrrif/authorizations/visa"><?= SyTranslator::Visa($lang) ?></a></th>
-					<th><a href="sygrrif/authorizations/ressource"><?= SyTranslator::Resource($lang) ?></a></th>
+					<th><a href="sygrrif/<?= $linkcontroller ?>/id">ID</a></th>
+					<th><a href="sygrrif/<?= $linkcontroller ?>/date"><?= SyTranslator::Date($lang) ?></a></th>
+					<th><a href="sygrrif/<?= $linkcontroller ?>/userName"><?= SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/<?= $linkcontroller ?>/userFirstname"><?= SyTranslator::Firstname($lang) ?></a></th>
+					<th><a href="sygrrif/<?= $linkcontroller ?>/unit"><?= SyTranslator::Unit($lang) ?></a></th>
+					<th><a href="sygrrif/<?= $linkcontroller ?>/visa"><?= SyTranslator::Visa($lang) ?></a></th>
+					<th><a href="sygrrif/<?= $linkcontroller ?>/ressource"><?= SyTranslator::Resource($lang) ?></a></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -76,7 +89,7 @@
 				    <td><?= $this->clean ( $auth ['unitName'] ); ?></td>
 				    <td><?= $this->clean ( $auth ['visa'] ); ?></td>
 				    <td><?= $this->clean ( $auth ['resource'] ); ?></td>
-				    <td>
+				    <td class="text-center">
 				      <button type='button' onclick="location.href='sygrrif/editauthorization/<?= $authId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>

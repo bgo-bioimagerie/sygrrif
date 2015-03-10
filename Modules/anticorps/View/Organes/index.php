@@ -1,10 +1,11 @@
-<?php $this->title = "Anticorps: Isotypes"?>
+<?php $this->title = "Anticorps: organes"?>
 
 <?php echo $navBar?>
 
 <head>
 <!-- Bootstrap core CSS -->
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 
 
@@ -16,26 +17,26 @@
 	
 		<div class="page-header">
 			<h1>
-				Isotypes<br> <small></small>
+				organes<br> <small></small>
 			</h1>
 		</div>
 
 		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th><a href="isotypes/index/id">Id</a></th>
-					<th><a href="isotypes/index/nom">Name</a></th>
-					<th></td>
+					<th><a href="organes/index/id">Id</a></th>
+					<th><a href="organes/index/nom">Name</a></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ( $isotypes as $isotype ) : ?> 
+				<?php foreach ( $organes as $organe ) : ?> 
 				<tr>
-					<?php $isotypeId = $this->clean ( $isotype ['id'] ); ?>
-					<td><?= $isotypeId ?></td>
-				    <td><?= $this->clean ( $isotype ['nom'] ); ?></td>
+					<?php $organeId = $this->clean ( $organe ['id'] ); ?>
+					<td><?= $organeId ?></td>
+				    <td><?= $this->clean ( $organe ['nom'] ); ?></td>
 				    <td class="text-center">
-				      <button type='button' onclick="location.href='isotypes/edit/<?= $isotypeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='organes/edit/<?= $organeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

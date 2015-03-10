@@ -10,7 +10,7 @@
 class CoreTranslator {
 	
 	public static function dateToEn($date, $lang){
-		//echo "to translate = " . $date . "<br/>";
+		echo "to translate = " . $date . "<br/>";
 		if ($lang == "Fr"){
 			$dateArray = explode("/", $date);
 			//print_r($dateArray);
@@ -639,5 +639,54 @@ class CoreTranslator {
 			return "Installer";
 		}
 		return "Install";
+	}
+	
+	public static function Not_signed($lang){
+		if ($lang == "Fr"){
+			return "Non signée";
+		}
+		return "Not signed";
+	}
+	
+	public static function Signed_the($lang){
+		if ($lang == "Fr"){
+			return "Signée le";
+		}
+		return "Signed on";
+	}
+	
+	public static function Export($lang){
+		if ($lang == "Fr"){
+			return "Exporter";
+		}
+		return "Export";
+	}
+	
+	public static function ExportResponsibles($lang){
+		if ($lang == "Fr"){
+			return "Exporter Responsables";
+		}
+		return "Export Responsibles";
+	}
+	
+	public static function All($lang){
+		if ($lang == "Fr"){
+			return "Tous";
+		}
+		return "All";
+	}
+
+	public static function Active($lang){
+		if ($lang == "Fr"){
+			return "Actifs";
+		}
+		return "Active";
+	}
+	
+	public static function Unactive($lang){
+		if ($lang == "Fr"){
+			return "Inactifs";
+		}
+		return "unactive";
 	}
 }

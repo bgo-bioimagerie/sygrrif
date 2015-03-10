@@ -20,7 +20,7 @@ class Tissus extends Model {
   				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`id_anticorps` int(11) NOT NULL,
   				`espece` int(11) NOT NULL,
-  				`organe` varchar(30) NOT NULL, 
+  				`organe` int(11) NOT NULL, 
   				`valide` enum('oui','non') NOT NULL,  
   				`ref_bloc` varchar(30) NOT NULL,
 				`dilution` varchar(30) NOT NULL,

@@ -107,7 +107,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 					<button onclick="location.href='sygrrifbillmanager'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Bills_manager($lang) ?></button>	
 					<button onclick="location.href='sygrrifstatsusers/statusers'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::Statistics_users($lang) ?></button>	
+						class="btn btn-link" id="navlink"><?= SyTranslator::Authorized_users($lang) ?></button>	
 					<button onclick="location.href='sygrrif/statauthorizations'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Statistics_authorizations($lang) ?></button>
 						

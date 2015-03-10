@@ -20,12 +20,12 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped">
+		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<td><a href="sources/index/id">Id</a></td>
-					<td><a href="sources/index/nom">Name</a></td>
-					<td></td>
+					<th><a href="sources/index/id">Id</a></th>
+					<th><a href="sources/index/nom">Name</a></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -34,7 +34,7 @@
 					<?php $sourceId = $this->clean ( $source ['id'] ); ?>
 					<td><?= $sourceId ?></td>
 				    <td><?= $this->clean ( $source ['nom'] ); ?></td>
-				    <td>
+				    <td class="text-center">
 				      <button type='button' onclick="location.href='sources/edit/<?= $sourceId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>

@@ -4,6 +4,7 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/anticorps/Model/AcInstall.php';
 require_once 'Modules/anticorps/Model/Anticorps.php';
 require_once 'Modules/anticorps/Model/Espece.php';
+require_once 'Modules/anticorps/Model/Organe.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 
@@ -53,6 +54,10 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$especesModel = new Espece();
 		$especes = $especesModel->getEspeces("nom");
 		
+		// get especes list
+		$organesModel = new Organe();
+		$organes = $organesModel->getOrganes("nom");
+		
 		// get proto list
 		$protoModel = new AcProtocol();
 		$protocols = $protoModel->getProtocolsNo();
@@ -83,6 +88,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'sourcesList' => $sourcesList,
 				'anticorps' => $anticorps,
 				'especes' => $especes,
+				'organes' => $organes,
 				'users' => $users,
 				'protocols' => $protocols	  
 		) );
@@ -145,6 +151,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$i = -1;
 		foreach ($id_proprietaire as $proprio){
 			$i++;
+			echo "date proprio = " . $date_recept[$i];
 			$date_r = CoreTranslator::dateToEn($date_recept[$i], $lang); 
 			$modelAnticorps->addOwner($proprio, $id, $date_r, $disponible[$i]);
 		}

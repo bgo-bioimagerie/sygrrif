@@ -218,12 +218,12 @@
 								<td>
 									<select class="form-control" name="espece[]">
 									<?php 
-									$espacename = $this->clean($tissus["espece"]);
+									$espaceid = $this->clean($tissus["espece"]);
 									foreach ($especes as $espece){
 										$ide = $this->clean($espece["id"]);
 										$namee = $this->clean($espece["nom"]);
 										$selected = "";
-										if ($espacename == $namee){
+										if ($espaceid == $ide){
 											$selected = "selected=\"selected\"";
 										}
 										?>
@@ -233,7 +233,24 @@
 									?>
 									</select>
 								</td>
-								<td><input class="form-control" type="text" name="organe[]" value="<?= $tissus["organe"] ?>"/></td>
+								<td>
+									<select class="form-control" name="organe[]">
+									<?php 
+									$organe_id = $this->clean($tissus["organe"]);
+									foreach ($organes as $organe){
+										$ide = $this->clean($organe["id"]);
+										$namee = $this->clean($organe["nom"]);
+										$selected = "";
+										if ($organe_id == $ide){
+											$selected = "selected=\"selected\"";
+										}
+										?>
+										<OPTION value="<?=$ide?>" <?=$selected?>> <?= $namee ?> </OPTION>
+										<?php 
+									}	
+									?>
+									</select>
+								</td>
 								<td><select class="form-control" name="valide[]" >
 								<option value="oui" <?php if ($tissus["valide"] == "oui"){echo "selected=\"selected\"";}?>>oui</option>
 								<option value="non" <?php if ($tissus["valide"] == "non"){echo "selected=\"selected\"";}?>>non</option>
@@ -280,7 +297,19 @@
 									?>
 									</select>	
 							</td>
-							<td><input class="form-control" type="text" name="organe[]" /></td>
+							<td>
+								<select class="form-control" name="organe[]">
+									<?php 
+									foreach ($organes as $organe){
+										$ide = $this->clean($organe["id"]);
+										$namee = $this->clean($organe["nom"]);
+										?>
+										<OPTION value="<?=$ide?>" > <?= $namee ?> </OPTION>
+										<?php 
+									}	
+									?>
+									</select>
+							</td>
 							<td><select class="form-control" name="valide[]">
 							<option value="oui">oui</option>
 							<option value="non">non</option>
@@ -396,7 +425,7 @@
 									</select>	
 								</td>
 								<td>
-									<input class="form-control" type="text" name="date_recept" />
+									<input class="form-control" type="text" name="date_recept[]" />
 								</td>
 							<?php	
 							}
@@ -443,7 +472,7 @@
 		<!-- Buttons -->
 		<div class="col-xs-2 col-xs-offset-10" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='anticorps'" class="btn btn-default" id="navlink">Cancel</button>
+				<button type="button" onclick="location.href='anticorps'" class="btn btn-default">Cancel</button>
 		</div>
       </form>
 </div>

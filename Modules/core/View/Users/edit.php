@@ -199,7 +199,7 @@
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)?>" />
-				<button type="button" onclick="location.href='users'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang)?></button>
+				<button type="button" onclick="location.href='users'" class="btn btn-default"><?= CoreTranslator::Cancel($lang)?></button>
 		</div>
 		
       </form>
@@ -214,7 +214,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-4" id="button-div">
-				<button type="button" onclick="location.href='users/changepwd/<?=$user['id']?>'" class="btn btn-default" id="navlink"><?= CoreTranslator::Change_password($lang) ?></button>
+				<button type="button" onclick="location.href='users/changepwd/<?=$user['id']?>'" class="btn btn-default"><?= CoreTranslator::Change_password($lang) ?></button>
 			</div>
 		</div>
 	  </div>

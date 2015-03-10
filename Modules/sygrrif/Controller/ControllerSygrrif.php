@@ -600,7 +600,8 @@ class ControllerSygrrif extends ControllerBooking {
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'authorizationTable' => $authorizationTable
+				'authorizationTable' => $authorizationTable,
+				'isInactive' => true
 		),"authorizations" );
 	}
 	

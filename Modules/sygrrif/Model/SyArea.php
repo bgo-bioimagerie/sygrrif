@@ -85,14 +85,28 @@ class SyArea extends Model {
 	
 	public function importArea($id, $name, $display_order, $restricted){
 	
-		$sql = "insert into sy_areas(id, name, display_order, restricted)"
+		if ($this->isAreaId($id)){
+			$this->updateArea($id, $name, $display_order, $restricted);
+		}
+		else{
+			$sql = "insert into sy_areas(id, name, display_order, restricted)"
 				. " values(?,?,?,?)";
-		$user = $this->runRequest($sql, array($id, $name, $display_order, $restricted));
+			$user = $this->runRequest($sql, array($id, $name, $display_order, $restricted));
+		}
 	}
 	
 	public function isArea($name){
 		$sql = "select * from sy_areas where name=?";
 		$unit = $this->runRequest($sql, array($name));
+		if ($unit->rowCount() == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	public function isAreaId($id){
+		$sql = "select * from sy_areas where id=?";
+		$unit = $this->runRequest($sql, array($id));
 		if ($unit->rowCount() == 1)
 			return true;
 		else

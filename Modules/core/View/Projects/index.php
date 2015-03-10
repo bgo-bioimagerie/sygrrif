@@ -20,7 +20,7 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped">
+		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
 					<td><a href="projects/index/id">ID</a></td>

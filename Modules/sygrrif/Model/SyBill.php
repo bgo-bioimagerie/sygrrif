@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Framework/Model.php';
+require_once 'Modules/core/Model/Unit.php';
+require_once 'Modules/core/Model/User.php';
 
 /**
  * Class defining the Bill model. It is used to store the history 
@@ -152,7 +154,6 @@ class SyBill extends Model {
 		$sql = "update sy_bills set number=?, date_generated=?, date_paid=?, is_paid=?  where id=?";
 		$unit = $this->runRequest($sql, array($number, $date_generated, $date_paid, $is_paid, $id));
 	}
-	
 
 	public function editBillUnit($id, $number, $date_generated, $id_unit, $id_responsible, $date_paid, $is_paid){
 	
@@ -169,5 +170,275 @@ class SyBill extends Model {
 	public function removeEntry($id){
 		$sql="DELETE FROM sy_bills WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
+	}
+	
+	public function export($searchDate_start, $searchDate_end){
+		// select 
+		
+		$lang = "En";
+		if (isset( $_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
+		$start_date_unix = $searchDate_start;
+		$end_date_unix = $searchDate_end;
+
+		$sql = "select * from sy_bills where period_begin >= ? AND period_end <= ?";
+		//echo "sql = " . $sql . "</br>";
+		$req = $this->runRequest($sql, array($start_date_unix, $end_date_unix));
+		$res = $req->fetchAll();
+		
+		//print_r($res);
+		//return;
+		
+		// write to xls file
+		include_once ("externals/PHPExcel/Classes/PHPExcel.php");
+		include_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
+		include_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php");
+		
+		// header
+		$today=date('d/m/Y');
+		$header = "Date d'édition de ce document : \n".$today;
+		$titre = "Liste des factures émise comprises dans la periode du : ". CoreTranslator::dateFromEn($searchDate_start, $lang) . " au " . CoreTranslator::dateFromEn($searchDate_end, $lang);
+		$avertissement = "";
+		$reservation = "";
+		
+		// file name
+		$nom = date('Y-m-d-H-i')."_liste_factures.xlsx";
+		$teamName = Configuration::get("name");
+		$footer = $teamName."/exportFiles/".$nom;
+		
+		// Création de l'objet
+		$objPHPExcel = new PHPExcel();
+		
+		// Définition de quelques propriétés
+		$objPHPExcel->getProperties()->setCreator($teamName);
+		$objPHPExcel->getProperties()->setLastModifiedBy($teamName);
+		$objPHPExcel->getProperties()->setTitle("Liste factures");
+		$objPHPExcel->getProperties()->setSubject("periode du : ". CoreTranslator::dateFromEn($searchDate_start, $lang)  . " au " . CoreTranslator::dateFromEn($searchDate_end, $lang) );
+		$objPHPExcel->getProperties()->setDescription("Fichier genere avec PHPExel depuis la base de donnees");
+		
+		$center=array('alignment'=>array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER));
+		$gras=array('font' => array('bold' => true));
+		$border=array(
+				'borders'=>array(
+						'top'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN),
+						'left'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN),
+						'right'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN),
+						'bottom'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN)));
+		$borderLR=array(
+				'borders'=>array(
+						'top'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_NONE),
+						'left'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN),
+						'right'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN),
+						'bottom'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_NONE)));
+		
+		$borderG=array(
+				'borders'=>array(
+						'top'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_MEDIUM),
+						'left'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_MEDIUM),
+						'right'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_MEDIUM),
+						'bottom'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_MEDIUM)));
+		
+		$borderLRB=array(
+				'borders'=>array(
+						'top'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_NONE),
+						'left'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN),
+						'right'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN),
+						'bottom'=>array(
+								'style'=>PHPExcel_Style_Border::BORDER_THIN)));
+		
+		$style = array(
+				'font'  => array(
+						'bold'  => false,
+						'color' => array('rgb' => '000000'),
+						'size'  => 15,
+						'name'  => 'Calibri'
+				));
+		
+		$style2 = array(
+				'font'  => array(
+						'bold'  => false,
+						'color' => array('rgb' => '000000'),
+						'size'  => 10,
+						'name'  => 'Calibri'
+				));
+		
+		// Nommage de la feuille
+		$objPHPExcel->setActiveSheetIndex(0);
+		$sheet=$objPHPExcel->getActiveSheet();
+		$sheet->setTitle('Liste factures');
+		
+		// Mise en page de la feuille
+		$sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+		$sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+		$sheet->setBreak( 'A55' , PHPExcel_Worksheet::BREAK_ROW );
+		$sheet->setBreak( 'E55' , PHPExcel_Worksheet::BREAK_COLUMN );
+		$sheet->setBreak( 'A110' , PHPExcel_Worksheet::BREAK_ROW );
+		$sheet->setBreak( 'E110' , PHPExcel_Worksheet::BREAK_COLUMN );
+		$sheet->setBreak( 'A165' , PHPExcel_Worksheet::BREAK_ROW );
+		$sheet->setBreak( 'E165' , PHPExcel_Worksheet::BREAK_COLUMN );
+		$sheet->setBreak( 'A220' , PHPExcel_Worksheet::BREAK_ROW );
+		$sheet->setBreak( 'E220' , PHPExcel_Worksheet::BREAK_COLUMN );
+		//$sheet->getPageSetup()->setFitToWidth(1);
+		//$sheet->getPageSetup()->setFitToHeight(10);
+		$sheet->getPageMargins()->SetTop(0.9);
+		$sheet->getPageMargins()->SetBottom(0.5);
+		$sheet->getPageMargins()->SetLeft(0.2);
+		$sheet->getPageMargins()->SetRight(0.2);
+		$sheet->getPageMargins()->SetHeader(0.2);
+		$sheet->getPageMargins()->SetFooter(0.2);
+		$sheet->getPageSetup()->setHorizontalCentered(true);
+		//$sheet->getPageSetup()->setVerticalCentered(false);
+		
+		$sheet->getColumnDimension('A')->setWidth(16);
+		$sheet->getColumnDimension('B')->setWidth(16);
+		$sheet->getColumnDimension('C')->setWidth(16);
+		$sheet->getColumnDimension('D')->setWidth(30);
+		$sheet->getColumnDimension('E')->setWidth(30);
+		$sheet->getColumnDimension('F')->setWidth(16);
+		$sheet->getColumnDimension('G')->setWidth(16);
+		$sheet->getColumnDimension('H')->setWidth(16);
+		
+		// Header
+		$objDrawing = new PHPExcel_Worksheet_HeaderFooterDrawing();
+		$objDrawing->setName('PHPExcel logo');
+		$objDrawing->setPath('./Themes/logo.jpg');
+		$objDrawing->setHeight(60);
+		$objPHPExcel->getActiveSheet()->getHeaderFooter()->addImage($objDrawing, PHPExcel_Worksheet_HeaderFooter::IMAGE_HEADER_LEFT);
+		$sheet->getHeaderFooter()->setOddHeader('&L&G&R'.$header);
+		
+		// Titre
+		$ligne=1;
+		$colonne='A';
+		$sheet->getRowDimension($ligne)->setRowHeight(30);
+		$sheet->SetCellValue($colonne.$ligne, $titre);
+		$sheet->getStyle($colonne.$ligne)->applyFromArray($style);
+		$sheet->getStyle($colonne.$ligne)->applyFromArray($gras);
+		$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+		$sheet->getStyle($colonne.$ligne)->getAlignment()->setWrapText(true);
+		$sheet->mergeCells($colonne.$ligne.':H'.$ligne);
+		
+		$ligne=2;
+		$sheet->SetCellValue('A'.$ligne,"Numéro");
+		$sheet->getStyle('A'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('A'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('A'.$ligne)->applyFromArray($gras);
+		$sheet->SetCellValue('B'.$ligne,"Responsable");
+		$sheet->getStyle('B'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('B'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('B'.$ligne)->applyFromArray($gras);
+		$sheet->SetCellValue('C'.$ligne,"Unité");
+		$sheet->getStyle('C'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('C'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('C'.$ligne)->applyFromArray($gras);
+		$sheet->SetCellValue('D'.$ligne,"Début période");
+		$sheet->getStyle('D'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('D'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('D'.$ligne)->applyFromArray($gras);
+		$sheet->SetCellValue('E'.$ligne,"Fin période");
+		$sheet->getStyle('E'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('E'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('E'.$ligne)->applyFromArray($gras);
+		$sheet->SetCellValue('F'.$ligne,"Date d'émission");
+		$sheet->getStyle('F'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('F'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('F'.$ligne)->applyFromArray($gras);
+		$sheet->SetCellValue('G'.$ligne,"Date règlement");
+		$sheet->getStyle('G'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('G'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('G'.$ligne)->applyFromArray($gras);
+		$sheet->SetCellValue('H'.$ligne,"Est réglée");
+		$sheet->getStyle('H'.$ligne)->applyFromArray($border);
+		$sheet->getStyle('H'.$ligne)->applyFromArray($center);
+		$sheet->getStyle('H'.$ligne)->applyFromArray($gras);
+		
+		$ligne=3;
+		$modelUser = new User();
+		$modelUnit = new Unit();
+		foreach($res as $r){
+			$colonne='A';
+			$sheet->getRowDimension($ligne)->setRowHeight(13);
+			
+			$sheet->SetCellValue($colonne.$ligne, $r["number"] ); // number
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$ufn = $modelUser->getUserFUllName($r["id_responsible"]);
+			$sheet->SetCellValue($colonne.$ligne, $ufn); // resp
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$un = $modelUnit->getUnitName($r["id_unit"]);
+			$sheet->SetCellValue($colonne.$ligne, $un ); // unit
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$sheet->SetCellValue($colonne.$ligne, CoreTranslator::dateFromEn($r["period_begin"], $lang) ); // period_begin
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$sheet->SetCellValue($colonne.$ligne, CoreTranslator::dateFromEn($r["period_end"], $lang) ); // period_end
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$sheet->SetCellValue($colonne.$ligne, CoreTranslator::dateFromEn($r["date_generated"], $lang) ); // date_generated
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$sheet->SetCellValue($colonne.$ligne, CoreTranslator::dateFromEn($r["date_paid"], $lang) ); // date_paid
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$isPaid = "Non";
+			if ($r["is_paid"]){
+				$isPaid = "Oui";
+			}
+			$sheet->SetCellValue($colonne.$ligne, $isPaid ); // is_paid
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
+			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
+			$colonne++;
+			
+			$ligne++;
+		}
+		
+		$writer = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+		
+		$writer->save('./data/'.$nom);
+		header('Content-Type: application/vnd.ms-excel');
+		header('Content-Disposition: attachment;filename="'.$nom.'"');
+		header('Cache-Control: max-age=0');
+		
+		$writer->save('php://output');
 	}
 }

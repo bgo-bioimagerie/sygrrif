@@ -348,9 +348,9 @@ class SyTranslator {
 	
 	public static function Authorized_users($lang = ""){
 		if ($lang == "Fr"){
-			return "Autorisations utilisateurs";
+			return "Listing autorisations";
 		}
-		return "Authorized users";
+		return "Authorized users list";
 	}
 	
 	public static function Ok($lang = ""){
@@ -1415,5 +1415,13 @@ class SyTranslator {
 			return "Fin période";
 		}
 		return "Period end";
+	}
+	
+	
+	public static function BillListExport($lang){
+		if ($lang == "Fr"){
+			return "Export liste facture";
+		}
+		return "Bill list export";
 	}
 }

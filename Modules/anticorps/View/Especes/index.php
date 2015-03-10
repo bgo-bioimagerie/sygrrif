@@ -20,12 +20,12 @@
 			</h1>
 		</div>
 
-		<table id="dataTable" class="table table-striped">
+		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<td><a href="especes/index/id">Id</a></td>
-					<td><a href="especes/index/nom">Name</a></td>
-					<td></td>
+					<th><a href="especes/index/id">Id</a></th>
+					<th><a href="especes/index/nom">Name</a></th>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>

@@ -39,9 +39,15 @@ class SyResource extends Model {
 	}
 	
 	public function importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0){
-		$sql = "INSERT INTO sy_resources (id, name, description, accessibility_id, type_id, area_id, category_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
-		$this->runRequest($sql, array($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id));
-		return $this->getDatabase()->lastInsertId();
+		
+		if( $this->isResource($id)){
+			$this->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+		}
+		else{
+			$sql = "INSERT INTO sy_resources (id, name, description, accessibility_id, type_id, area_id, category_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
+			$this->runRequest($sql, array($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id));
+			return $this->getDatabase()->lastInsertId();
+		}
 	}
 	
 	public function isResource($id){
@@ -168,5 +174,11 @@ class SyResource extends Model {
 		$sql = "select * from sy_resources where name=?";
 		$data = $this->runRequest($sql, array($name));
 		return $data->fetch();
+	}
+	
+	public function resourcesFromCategory($category){
+		$sql = "select id from sy_resources where category_id=?";
+		$data = $this->runRequest($sql, array($category));
+		return $data->fetchAll();
 	}
 }

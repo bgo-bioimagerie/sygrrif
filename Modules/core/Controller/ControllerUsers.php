@@ -406,4 +406,25 @@ class ControllerUsers extends ControllerSecureNav {
 		$this->redirect("users", "index");
 	}
 	
+	public function exportresponsable(){
+		
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
+	public function exportresponsablequery(){
+	
+		$idType = 0;
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$idType = $this->request->getParameter("actionid");
+		};
+		
+		$this->userModel->exportResponsible($idType);
+		return;
+		
+	}
+	
 }
