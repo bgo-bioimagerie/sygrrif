@@ -85,5 +85,18 @@ class ControllerSources extends ControllerSecureNav {
 		$this->redirect ( "sources" );
 	}
 	
+	public function delete(){
+		
+		// get source id
+		$sourceId = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$sourceId = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get source info
+		$source = $this->sourceModel->delete($sourceId );
+		
+		$this->redirect ( "sources" );
+	}
 	
 }

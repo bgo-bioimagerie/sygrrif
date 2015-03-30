@@ -80,4 +80,20 @@ class Espece extends Model {
 		$this->runRequest($sql, array("".$name."", $id));
 	}
 	
+	public function getIdFromName($name){
+		$sql = "select id from ac_especes where nom=?";
+		$unit = $this->runRequest($sql, array($name));
+		if ($unit->rowCount() == 1){
+			$tmp = $unit->fetch();
+			return $tmp[0];
+		}
+		else{
+			return 0;
+		}
+	}
+	
+	public function delete($id){
+		$sql="DELETE FROM ac_especes WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }

@@ -443,8 +443,17 @@ class SyBillGenerator extends Model {
 				$tarif_we = $descriptionTarif['tarif_we'];
 				$night_start = $descriptionTarif['night_start'];
 				$night_end = $descriptionTarif['night_end'];
-				$we_array = explode(",", $descriptionTarif['choice_we']);
+				$we_array1 = explode(",", $descriptionTarif['choice_we']);
+				$we_array = array();
+				for($s = 0 ; $s < count($we_array1) ; $s++ ){
+					if ($we_array1[$s] > 0){
+						$we_array[] = $s+1;
+					}
+				}
 				
+				//print_r($we_array1);
+				//print_r($we_array);
+				//return;
 				// get the price for the curent resource
 				$modelRessourcePricing = new SyResourcePricing();
 				$res = $modelRessourcePricing->getPrice($e[0], $tarif_id);
@@ -990,7 +999,134 @@ class SyBillGenerator extends Model {
 		// table content
 		$honoraireTotal = 0;
 		for ($j = 0; $j < $numOfEquipement; $j++) {
+	
+			// gather the information into a matrix
+			$nBeArray = array();
+			$nBe = 0;
+			if($beneficiaire[0][$room[0][$j]][2] == 1){ // tarif unique = tarif jour
+				$jour = $room[3][$j];
+				$honoraire = $jour*$beneficiaire[0][$room[0][$j]][10];
+				$honoraireTotal += $honoraire;
+				for ($p = 0; $p < count($people[0]); $p++) {
+					if ($beneficiaire[$p][$room[0][$j]][0] != 0){
+						$nBeArray[$nBe][0] = $people[0][$p].' '.$people[1][$p]; // nom prénon utilisateur
+						$nBeArray[$nBe][1] = $beneficiaire[$p][$room[0][$j]][0]; // nombre de séances
+						$nBeArray[$nBe][2] = $beneficiaire[$p][$room[0][$j]][1]; // quantité: nbre d'heures
+						$nBeArray[$nBe][3] = $beneficiaire[0][$room[0][$j]][10]; // prix unitaire
+						$nBeArray[$nBe][4] = $beneficiaire[$p][$room[0][$j]][1]*$beneficiaire[$p][$room[0][$j]][10]; // Total
+						$nBe++;
+					}
+				}
+			}
+			else{
+				if (($beneficiaire[0][$room[0][$j]][3] == 1) && ($beneficiaire[0][$room[0][$j]][4] == 0)){			// tarif jour + tarif nuit (pas de tarif we)
+					$jour = $room[4][$j]+2.0*$room[6][$j]; // tarif horaire jour
+					$nuit = 2.0*$room[5][$j]+2.0*$room[7][$j]; // tarif horaire nuit
+					$honoraire_jour = $jour*$beneficiaire[0][$room[0][$j]][10]; // honoraires jour
+					$honoraire_nuit = $nuit*$beneficiaire[0][$room[0][$j]][11]; // honoarires nuit
+					$honoraireTotal += $honoraire_jour + $honoraire_nuit; // honoraires total
+					for ($p = 0; $p < count($people[0]); $p++) {
+						if ($beneficiaire[$p][$room[0][$j]][0] != 0){
+							$nBeArray[$nBe][0] = $people[0][$p].' '.$people[1][$p]; // nom prénon utilisateur
+							$nBeArray[$nBe][1] = $beneficiaire[$p][$room[0][$j]][0]; // nombre de séances
+							$nBeArray[$nBe][2] = $beneficiaire[$p][$room[0][$j]][5] . "hj " . $beneficiaire[$p][$room[0][$j]][6]*2.0 . "hn"; // quantité: nbre d'heures
+							$nBeArray[$nBe][3] = $beneficiaire[0][$room[0][$j]][10] . "hj " . $beneficiaire[0][$room[0][$j]][11] . "hn "; // prix unitaire
+							
+							$totalJour = $beneficiaire[$p][$room[0][$j]][5]*$beneficiaire[$p][$room[0][$j]][10];
+							$totalNuit = 2.0*$beneficiaire[$p][$room[0][$j]][6]*$beneficiaire[$p][$room[0][$j]][11];
+							
+							$nBeArray[$nBe][4] = $totalJour + $totalNuit; // Total
+							$nBe++;
+						}
+					}
+				} 
+				else if (($beneficiaire[0][$room[0][$j]][3] == 0) && ($beneficiaire[0][$room[0][$j]][4] == 1)){		// tarif jour + tarif week-end
+					$semaine = $room[4][$j]+$room[5][$j]*2.0;
+					$we = 2.0*$room[6][$j]+2.0*$room[7][$j];
+					$honoraire_semaine = $semaine*$beneficiaire[0][$room[0][$j]][10];
+					$honoraire_we = $we*$beneficiaire[0][$room[0][$j]][12];
+					$honoraireTotal += $honoraire_semaine + $honoraire_we;
+					
+					for ($p = 0; $p < count($people[0]); $p++) {
+						if ($beneficiaire[$p][$room[0][$j]][0] != 0){
+							$nBeArray[$nBe][0] = $people[0][$p].' '.$people[1][$p]; // nom prénon utilisateur
+							$nBeArray[$nBe][1] = $beneficiaire[$p][$room[0][$j]][0]; // nombre de séances
+							
+							$sem = $beneficiaire[$p][$room[0][$j]][5] + $beneficiaire[$p][$room[0][$j]][6];
+							$we = 2.0*($beneficiaire[$p][$room[0][$j]][8] + $beneficiaire[$p][$room[0][$j]][9]);
+							$nBeArray[$nBe][2] = $sem . "hj " . $we . "hwe" ; // quantité: nbre d'heures
+							
+							$nBeArray[$nBe][3] = $beneficiaire[0][$room[0][$j]][10] . "hj " . $beneficiaire[0][$room[0][$j]][12] . "hwe ";; // prix unitaire
+							
+							$totalSem = $sem*$beneficiaire[0][$room[0][$j]][10];
+							$totalWe = $we*$beneficiaire[0][$room[0][$j]][12];
+							$nBeArray[$nBe][4] = $totalSem + $totalWe; // Total
+							
+							$nBe++;
+						}
+					}
+					
+				}
+				else if (($beneficiaire[0][$room[0][$j]][3] == 1) && ($beneficiaire[0][$room[0][$j]][4] == 1)){ 	// tarif jour + tarif nuit + tarif week-end
+					$jour = $room[4][$j];
+					$nuit = 2.0*$room[5][$j];
+					$we = 2.0*($room[6][$j] + $room[7][$j]);
+					$honoraire_jour = $jour*$beneficiaire[0][$room[0][$j]][10];
+					$honoraire_nuit = $nuit*$beneficiaire[0][$room[0][$j]][11];
+					$honoraire_we = $we*$beneficiaire[0][$room[0][$j]][12];
+					$honoraireTotal += $honoraire_jour + $honoraire_nuit + $honoraire_we;
+					
+					for ($p = 0; $p < count($people[0]); $p++) {
+						if ($beneficiaire[$p][$room[0][$j]][0] != 0){
+							$nBeArray[$nBe][0] = $people[0][$p].' '.$people[1][$p]; // nom prénon utilisateur
+							$nBeArray[$nBe][1] = $beneficiaire[$p][$room[0][$j]][0]; // nombre de séances
+								
+							$jour = $beneficiaire[$p][$room[0][$j]][5];
+							$nuit = 2.0*$beneficiaire[$p][$room[0][$j]][6];
+							$we = 2.0*($beneficiaire[$p][$room[0][$j]][8] + $beneficiaire[$p][$room[0][$j]][9]);
+							$nBeArray[$nBe][2] = $jour . "hj " . $nuit . "hn " . $we . "hwe" ; // quantité: nbre d'heures
+								
+							$nBeArray[$nBe][3] = $beneficiaire[0][$room[0][$j]][10] . "hj " . $beneficiaire[0][$room[0][$j]][11] . "hn ". $beneficiaire[0][$room[0][$j]][12] . "hwe ";; // prix unitaire
+								
+							$totalJ = $jour*$beneficiaire[0][$room[0][$j]][10];
+							$totalN = $nuit*$beneficiaire[0][$room[0][$j]][11];
+							$totalW = $we*$beneficiaire[0][$room[0][$j]][12];
+							
+							$nBeArray[$nBe][4] = $totalJ + $totalN + $totalW; // Total
+								
+							$nBe++;
+						}
+					}
+				}
+			}
 			
+			// print into xls table
+			$curentLine++;
+			$roomspan = $nBe + $curentLine-1;
+			$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, $nBe);
+			$objPHPExcel->getActiveSheet()->mergeCells('A'.$curentLine.':A'.$roomspan);
+			$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $room[1][$j]); // room name
+			$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableCell);
+			
+			for ($i = 0; $i < $nBe; $i++) {
+				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, $nBeArray[$i][0]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, $nBeArray[$i][1]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, $nBeArray[$i][2]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, $nBeArray[$i][3]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($nBeArray[$i][4],2), 2, ',', ' '));
+					
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+					
+				if ($i<$nBe-1){
+					$curentLine++;
+				}
+			}
+			
+			/*			
 			// tarif unique = tarif jour
 			if ($beneficiaire[0][$room[0][$j]][2] == 1){ 						// tarif unique = tarif jour
 				$jour = $room[3][$j];
@@ -1008,6 +1144,7 @@ class SyBillGenerator extends Model {
 						$nBe++;
 					}
 				}
+				
 				// add the room
 				$curentLine++;
 				$roomspan = $nBe + $curentLine-1;
@@ -1036,25 +1173,18 @@ class SyBillGenerator extends Model {
 
 			// tarif jour + tarif nuit
 			} else {
-				/*
 				if (($beneficiaire[0][$room[0][$j]][3] == 1) && ($beneficiaire[0][$room[0][$j]][4] == 0)){			// tarif jour + tarif nuit
-					$jour = $room[4][$j]+$room[6][$j];
-					$nuit = $room[5][$j]+$room[7][$j];
-					$honoraire_jour = $jour*$beneficiaire[0][$room[0][$j]][10];
-					$honoraire_nuit = $nuit*$beneficiaire[0][$room[0][$j]][11];
-					$honoraireTotal += $honoraire_jour + $honoraire_nuit;
-					echo '<td class="resultat" style="width: 15%">'.$jour.' (Jour)<br/>'.$nuit.' (Nuit)</td>';
-					echo '<td class="resultat" style="width: 20%">'.$beneficiaire[0][$room[0][$j]][10].' (Jour)<br/>'.$beneficiaire[0][$room[0][$j]][11].' (Nuit)</td>';
-					echo '<td class="resultat" style="width: 20%">'.$honoraire_jour.'<br/>'.$honoraire_nuit.'</td>';
+					$jour = $room[4][$j]+$room[6][$j]; // tarif horaire jour
+					$nuit = $room[5][$j]+$room[7][$j]; // tarif horaire nuit
+					$honoraire_jour = $jour*$beneficiaire[0][$room[0][$j]][10]; // honoraires jour
+					$honoraire_nuit = $nuit*$beneficiaire[0][$room[0][$j]][11]; // honoarires nuit
+					$honoraireTotal += $honoraire_jour + $honoraire_nuit; // honoraires total
 				} else if (($beneficiaire[0][$room[0][$j]][3] == 0) && ($beneficiaire[0][$room[0][$j]][4] == 1)){	// tarif jour + tarif week-end
 					$semaine = $room[4][$j]+$room[5][$j];
 					$we = $room[6][$j]+$room[7][$j];
 					$honoraire_semaine = $semaine*$beneficiaire[0][$room[0][$j]][10];
 					$honoraire_we = $we*$beneficiaire[0][$room[0][$j]][12];
 					$honoraireTotal += $honoraire_semaine + $honoraire_we;
-					echo '<td class="resultat" style="width: 15%">'.$semaine.' (Semaine)<br/>'.$we.' (Week-end)</td>';
-					echo '<td class="resultat" style="width: 20%">'.$beneficiaire[0][$room[0][$j]][10].' (Semaine)<br/>'.$beneficiaire[0][$room[0][$j]][12].' (Week-end)</td>';
-					echo '<td class="resultat" style="width: 20%">'.$honoraire_semaine.'<br/>'.$honoraire_we.'</td>';
 				} else if (($beneficiaire[0][$room[0][$j]][3] == 1) && ($beneficiaire[0][$room[0][$j]][4] == 1)){ 	// tarif jour + tarif nuit + tarif week-end
 					$jour = $room[4][$j];
 					$nuit = $room[5][$j];
@@ -1144,8 +1274,9 @@ class SyBillGenerator extends Model {
 					echo '<td class="resultat" style="width: 20%">'.$beneficiaire[0][$room[0][$j]][10].'</td>';
 					echo '<td class="resultat" style="width: 20%">'.$honoraire.'</td>';
 				}
-				*/
+			//
 			}
+			*/
 		}
 		
 		// add the bill to the bill manager
@@ -1163,6 +1294,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
 		
 		// frais de gestion
+		/*
 		if ($people[4][0] != "1"){
 			$curentLine++;
 			$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
@@ -1202,6 +1334,7 @@ class SyBillGenerator extends Model {
 			$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
 			$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
 		}
+		*/
 		
 		// TVA 20p
 		$curentLine++;
@@ -1234,7 +1367,8 @@ class SyBillGenerator extends Model {
 		
 		// Save the xls file
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-		$nom = date('Y-m-d')."_facture_sygrrif.xls";
+		$nom = $unitName . '_' . $responsibleFullName . "_" . date("d-m-Y", $searchDate_start) . "_" . date("d-m-Y", $searchDate_end-3600) ."_facture_sygrrif.xls";
+		
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$nom.'"');
 		header('Cache-Control: max-age=0');

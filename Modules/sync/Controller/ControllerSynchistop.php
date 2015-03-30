@@ -125,12 +125,14 @@ class ControllerSynchistop extends Controller {
 		
 		$this->addNewResources();
 		echo "<p>add New Resources</p>";
-		// */
+		*/
+		// /*
 		$this->desactivateAuthorizationDoNotBookAYear();
 		echo "<p>desactivate authorizations</p>";
 		
 		$this->desactivateUserDoNotBookAYear();
 		echo "<p>desactivate users</p>";
+		// */
 	}
 	
 	// /////////////////////////////////////////// //
@@ -376,7 +378,8 @@ class ControllerSynchistop extends Controller {
 			$color_type_id = $color_type_id; 
 			$short_description = $entry['description'];
 			$full_description = $entry['description'];
-			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
+			//$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
+			$modelCalEntry->setEntry($entry["id"], $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $short_description, $full_description);
 		}
 	}
 	
@@ -529,10 +532,23 @@ class ControllerSynchistop extends Controller {
 			$authID = $auth["id"];
 			$userID = $auth["user_id"];
 			$authDate = $auth["date"];
+			
+			//echo "auth date = " . $authDate . "<br />";
+			
+			$authDate = explode("-", $authDate);
+			//echo "auth date = " . print_r($authDate) . "<br />";
+			$authDate = mktime(0,0,0, $authDate[1], $authDate[2], $authDate[0]);
 			$resourceCat_id = $auth["resource_id"];
 			$modelAuth->activate($authID);
 			
+			if ($authID == 433){
+				echo "authDate = " . $authDate . "<br/>";
+				echo "ayearago = " . $ayearago . "<br/>";
+			}
+			
 			if ($authDate < $ayearago){
+				
+				//echo " coucou <br/>";
 				
 				// get all the resources of the category
 				$resources_id = $modelResources->resourcesFromCategory($resourceCat_id);
@@ -552,7 +568,7 @@ class ControllerSynchistop extends Controller {
 					if (count($entries) > 0){
 						//echo "count > 0 <br />" ;
 						if ( $entries[0]["end_time"] < $ayearago ){
-							echo "last booking anglade = " . date("Y-m-d", $entries[0]["end_time"]) . "is more than a year ago";
+							//echo "last booking anglade = " . date("Y-m-d", $entries[0]["end_time"]) . "is more than a year ago";
 							$desactivate++;
 						}
 					}
@@ -560,11 +576,13 @@ class ControllerSynchistop extends Controller {
 						$desactivate++;
 					}
 				}
+				echo "desactivate = " . $desactivate . "<br/>";
 				if ($desactivate == $resources_count){
 					// desactivate autorisations
-					if ($userID == 155){
-						echo "desactivate anglade for " . $authID . "<br/>";
+					if ($userID == 114){
+						echo "desactivate sicard for " . $authID . "<br/>";
 					}
+					echo "desactivate authorisation";
 					$modelAuth->unactivate($authID);
 				}
 			}
@@ -587,12 +605,14 @@ class ControllerSynchistop extends Controller {
 			if (count($entries) > 0){
 				if ( $entries[0]["end_time"] < $aYearAgo ){
 					// desactivate user
-					$ModelUser->setactive($user["id"], 0);
+					//$ModelUser->setactive($user["id"], 0);
 					
+					/*
 					if ($user["id"] == 155){
 						echo "desactivate anglade, ";
 						echo "because last booking = " . date();
 					}
+					*/
 					
 					// desactivate autorisations
 					//$modelAuth->desactivateAthorizationsForUser($user["id"]);

@@ -126,7 +126,7 @@
 			      <?php if ( $user['is_responsible'] ){  
 			      	$checked = "checked"; 
 			      ?>
-			      	<input type="hidden" value="true" name="is_responsible" />
+			      	<!--  <input type="hidden" value="true" name="is_responsible" /> -->
 			      <?php
 						} 
 						else {

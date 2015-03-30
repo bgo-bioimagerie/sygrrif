@@ -85,5 +85,17 @@ class ControllerOrganes extends ControllerSecureNav {
 		$this->redirect ( "organes" );
 	}
 	
+	public function delete(){
 	
+		// get source id
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+	
+		// get source info
+		$source = $this->organeModel->delete($id );
+	
+		$this->redirect ( "organes" );
+	}
 }

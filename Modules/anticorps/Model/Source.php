@@ -53,7 +53,7 @@ class Source extends Model {
 		if ($unit->rowCount() == 1)
 			return $unit->fetch();
 		else
-			throw new Exception("Cannot find the source using the given id");
+			throw new Exception("Cannot find the source using the given id:" . $id . "<br/>");
 	}
 	
 	/**
@@ -79,6 +79,22 @@ class Source extends Model {
 	
 		$sql = "update ac_sources set nom=?where id=?";
 		$this->runRequest($sql, array("".$name."", $id));
+	}
+	
+	public function getIdFromName($name){
+		$sql = "select id from ac_sources where nom=?";
+		$req = $this->runRequest($sql, array($name));
+		if ($req->rowCount() == 1){
+			$tmp = $req->fetch();
+			return $tmp[0];
+		}
+		else
+			return 0;
+	}
+	
+	public function delete($id){
+		$sql="DELETE FROM ac_sources WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
 	}
 	
 }

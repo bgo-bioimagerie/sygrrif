@@ -70,10 +70,19 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					?>
 						<div class="text-center" id="tcell" style="height: 25px;">
 						<?php if ($isDayAvailable){?>
-						<?php if ($isUserAuthorizedToBook){
-							$h2 = str_replace(".", "-", $h);?>
+						<?php if ($isUserAuthorizedToBook){		
+							$h2 = str_replace(".", "-", $h);
+							$he = explode("-", $h2);
+							if (count($he) == 1){$he[1] = "00";}
+							if ($he[1] == "25"){$he[1] = "15";}
+							if ($he[1] == "50"){$he[1] = "30";}
+							if ($he[1] == "75"){$he[1] = "45";}
+							if ($he[0] < 10){$he[0] = "0". $he[0];}
+							$hed = $he[0] . "-" .$he[1];
+							if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
+							?>
 						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
-						<?php }}?>
+						<?php }}}?>
 						</div>
 					<?php 
 					}	
@@ -136,9 +145,16 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 				<div class="text-center" id="tcell" style="height: 25px;">
 				<?php if ($isDayAvailable){?>
 				<?php if ($isUserAuthorizedToBook){
-				$h2 = str_replace(".", "-", $h);?>
-				<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
-				<?php }}?>
+					$h2 = str_replace(".", "-", $h);
+					$he = explode("-", $h2);
+					if (count($he) == 1){$he[1] = "00";}
+					if ($he[1] == "5"){$he[1] = "30";}
+					if ($he[0] < 10){$he[0] = "0". $he[0];}
+					$hed = $he[0] . "-" .$he[1];
+					if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
+						?>
+						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
+				<?php }}}?>
 				</div>
 			<?php 
 			}	
@@ -201,9 +217,18 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						<div class="text-center" id="tcell" style="height: 50px;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){
-						$h2 = str_replace(".", "-", $h);?>
+						$h2 = str_replace(".", "-", $h);
+						$he = explode("-", $h2);
+						if (count($he) == 1){$he[1] = "00";}
+						if ($he[1] == "25"){$he[1] = "15";}
+						if ($he[1] == "50"){$he[1] = "30";}
+						if ($he[1] == "75"){$he[1] = "45";}
+						if ($he[0] < 10){$he[0] = "0". $he[0];}
+						$hed = $he[0] . "-" .$he[1];
+						if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
+							?>
 						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
-						<?php }}?>
+						<?php }}}?>
 						</div>
 					<?php 
 					}	

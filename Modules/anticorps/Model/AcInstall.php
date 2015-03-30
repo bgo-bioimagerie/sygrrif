@@ -8,6 +8,7 @@ require_once 'Modules/anticorps/Model/Espece.php';
 require_once 'Modules/anticorps/Model/Tissus.php';
 require_once 'Modules/anticorps/Model/AcProtocol.php';
 require_once 'Modules/anticorps/Model/Organe.php';
+require_once 'Modules/anticorps/Model/Prelevement.php';
 
 /**
  * Class defining methods to install and initialize the core database
@@ -43,6 +44,10 @@ class AcInstall extends Model {
 		
 		$organeModel = new Organe();
 		$organeModel->createTable();
+		
+		$organePrelevement = new Prelevement();
+		$organePrelevement->createTable();
+		
 		
 		$message = 'success';
 		return $message;

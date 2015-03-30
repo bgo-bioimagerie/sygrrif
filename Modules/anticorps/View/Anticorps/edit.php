@@ -75,7 +75,7 @@
     </script>
 
 </head>
-
+									
 <br>
 <div class="col-lg-10 col-lg-offset-1">
 	  <form role="form" class="form-horizontal" action="anticorps/editquery" method="post">
@@ -204,6 +204,7 @@
 						<td>Organe</td>
 						<td>Validé</td>
 						<td>Référence bloc</td>
+						<td>Prélèvement</td>
 						<td>Dilution</td>
 						<td>Temps d'incubation</td>
 						<td>Référence protoole</td>
@@ -212,13 +213,14 @@
 					<tbody>
 						<?php 
 						foreach ($anticorps['tissus'] as $tissus){
+													
 							?>
 							<tr>
 								<td><input type="checkbox" name="chk" /></td>
 								<td>
 									<select class="form-control" name="espece[]">
 									<?php 
-									$espaceid = $this->clean($tissus["espece"]);
+									$espaceid = $this->clean($tissus["espece_id"]);
 									foreach ($especes as $espece){
 										$ide = $this->clean($espece["id"]);
 										$namee = $this->clean($espece["nom"]);
@@ -236,7 +238,8 @@
 								<td>
 									<select class="form-control" name="organe[]">
 									<?php 
-									$organe_id = $this->clean($tissus["organe"]);
+									$organe_id = $this->clean($tissus["organe_id"]);
+									
 									foreach ($organes as $organe){
 										$ide = $this->clean($organe["id"]);
 										$namee = $this->clean($organe["nom"]);
@@ -251,11 +254,30 @@
 									?>
 									</select>
 								</td>
-								<td><select class="form-control" name="valide[]" >
-								<option value="oui" <?php if ($tissus["valide"] == "oui"){echo "selected=\"selected\"";}?>>oui</option>
-								<option value="non" <?php if ($tissus["valide"] == "non"){echo "selected=\"selected\"";}?>>non</option>
+								<td><select class="form-control" name="status[]" >
+								<option value="1" <?php if ($tissus["status"] == "1"){echo "selected=\"selected\"";}?>>Validé</option>
+								<option value="2" <?php if ($tissus["status"] == "2"){echo "selected=\"selected\"";}?>>Non validé</option>
+								<option value="3" <?php if ($tissus["status"] == "3"){echo "selected=\"selected\"";}?>>Non testé</option>
 								</select></td>
 								<td><input class="form-control" type="text" name="ref_bloc[]" value="<?= $tissus["ref_bloc"] ?>"/></td>
+								<td>
+									<select class="form-control" name="prelevement[]">
+									<?php 
+									$prelev = $this->clean($tissus["prelevement_id"]);
+									foreach ($prelevements as $prelevement){
+										$id_prelevement = $this->clean($prelevement["id"]);
+										$nom_prelevement = $this->clean($prelevement["nom"]);
+										$selected = "";
+										if ($prelev == $id_prelevement){
+											$selected = "selected=\"selected\"";
+										}
+										?>
+										<OPTION value="<?=$id_prelevement?>" <?=$selected?>> <?= $nom_prelevement ?> </OPTION>
+										<?php 
+									}	
+									?>
+									</select>
+								</td>
 								<td><input class="form-control" type="text" name="dilution[]" value="<?= $tissus["dilution"] ?>"/></td>
 								<td><input class="form-control" type="text" name="temps_incubation[]" value="<?= $tissus["temps_incubation"] ?>"/></td>
 								<td>
@@ -310,20 +332,36 @@
 									?>
 									</select>
 							</td>
-							<td><select class="form-control" name="valide[]">
-							<option value="oui">oui</option>
-							<option value="non">non</option>
+							<td><select class="form-control" name="status">
+							<option value="1" >Validé</option>
+							<option value="2" >Non validé</option>
+							<option value="3" selected="selected">Non testé</option>
+							
 							</select></td>
 							<td><input class="form-control" type="text" name="ref_bloc[]" /></td>
+							<td>
+								<select class="form-control" name="prelevement[]">
+								<?php 
+								foreach ($prelevements as $prelevement){
+									$id_prelevement = $this->clean($prelevement["id"]);
+									$nom_prelevement = $this->clean($prelevement["nom"]);
+									?>
+									<OPTION value="<?=$id_prelevement?>"> <?= $nom_prelevement ?> </OPTION>
+									<?php 
+								}	
+								?>
+								</select>
+							</td>
 							<td><input class="form-control" type="text" name="dilution[]" /></td>
 							<td><input class="form-control" type="text" name="temps_incubation[]" /></td>
 							<td>
 								<select class="form-control" name="ref_protocol[]">
 									<?php 
 									foreach ($protocols as $protocol){
-										$no_proto = $this->clean($protocol[0]);
+										$no_proto = $this->clean($protocol["no_proto"]);
+										$idproto = $this->clean($protocol["id"]);
 										?>
-										<OPTION value="<?=$no_proto?>"> <?= $no_proto ?> </OPTION>
+										<OPTION value="<?=$idproto?>"> <?= $no_proto ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -356,6 +394,7 @@
 							<td>Propriétaire</td>
 							<td>Disponibilité</td>
 							<td>Date réception</td>
+							<td>No Dossier</td>
 						</tr>
 					</thead>
 					<tbody>
@@ -396,6 +435,9 @@
 								<td>
 									<input class="form-control" type="text" name="date_recept[]" value="<?= CoreTranslator::dateFromEn($proprio["date_recept"], $lang) ?>"/>	
 								</td>
+								<td>
+									<input class="form-control" type="text" name="no_dossier[]" value="<?= CoreTranslator::dateFromEn($proprio["no_dossier"], $lang) ?>"/>	
+								</td>
 								<tr />
 							<?php
 							} 
@@ -403,6 +445,7 @@
 							<?php 
 							if(count($anticorps['proprietaire']) < 1){
 							?>
+								<tr>
 							    <td><input type="checkbox" name="chk" /></td>
 								<td>
 									<select class="form-control" name="id_proprietaire[]">
@@ -427,10 +470,14 @@
 								<td>
 									<input class="form-control" type="text" name="date_recept[]" />
 								</td>
+								<td>
+									<input class="form-control" type="text" name="no_dossier[]"/>	
+								</td>
+								<tr />
 							<?php	
 							}
 							?>
-						</tr>	
+				
 					</tbody>
 				</table>
 				

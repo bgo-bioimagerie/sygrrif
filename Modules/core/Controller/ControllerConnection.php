@@ -65,8 +65,15 @@ class ControllerConnection extends Controller
                 }
                 
                 // redirect
-        			
-                $this->redirect($_SESSION["user_settings"]["homepage"]);
+        		$redirectController = "Home";
+        		if (in_array("sygrrif", Configuration::get(modules))){
+        			$redirectController = "sygrrif/booking";
+        		}
+        		if(isset($_SESSION["user_settings"]["homepage"])){
+        			$redirectController = $_SESSION["user_settings"]["homepage"];
+        		}	
+                
+                $this->redirect($redirectController);
             }
             else
                 $this->generateView(array('msgError' => $connect, "admin_email" => $admin_email),

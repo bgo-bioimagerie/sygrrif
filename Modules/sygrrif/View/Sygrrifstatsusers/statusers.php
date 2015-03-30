@@ -39,7 +39,7 @@
 		</div>	
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -70,7 +70,7 @@
 		</div>	
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang)?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang)?></button>
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?= SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

@@ -51,9 +51,10 @@
 			</div>
 		</div>
 		<br></br>		
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='especes'" class="btn btn-default" id="navlink">Cancel</button>
+		        <button type="button" onclick="location.href='<?="especes/delete/".$espece['id'] ?>'" class="btn btn-danger"><?= SyTranslator::Delete($lang)?></button>
+				<button type="button" onclick="location.href='especes'" class="btn btn-default">Cancel</button>
 		</div>
       </form>
 	</div>

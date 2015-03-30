@@ -41,7 +41,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Id</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="id" type="text" name="id" disabled
+				<input class="form-control" id="id" type="text" name="id" readonly
 				       value="<?= $protocol['id'] ?>"  
 				/>
 			</div>
@@ -155,12 +155,26 @@
 				       value="<?= $this->clean ( $protocol ['inc2'] ); ?>"  
 				/>
 			</div>
+		</div>	
+		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Est associé</label>
+			<div class="col-xs-10">
+				<select class="form-control" name="associate">
+					
+					<OPTION value="1" <?php if($protocol ['associe'] == 1){echo "selected=\"selected\"";}?>> Associé </OPTION>
+					<OPTION value="0" <?php if($protocol ['associe'] == 0){echo "selected=\"selected\"";}?>> Général </OPTION>
+				</select>
+			</div>
 		</div>			    
 
 		<br></br>		
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='protocols'" class="btn btn-default" id="navlink">Cancel</button>
+		        <?php if($protocol['id'] != ""){ ?>
+		        	<button type="button" onclick="location.href='<?="protocols/delete/".$protocol['id'] ?>'" class="btn btn-danger"><?= SyTranslator::Delete($lang)?></button>
+				<?php }?>
+				<button type="button" onclick="location.href='protocols'" class="btn btn-default">Cancel</button>
 		</div>
       </form>
 	</div>

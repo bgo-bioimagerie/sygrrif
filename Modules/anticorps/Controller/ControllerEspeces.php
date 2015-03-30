@@ -83,4 +83,18 @@ class ControllerEspeces extends ControllerSecureNav {
 		
 		$this->redirect ( "especes" );
 	}
+	
+	public function delete(){
+	
+		// get source id
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+	
+		// get source info
+		$source = $this->especeModel->delete($id );
+	
+		$this->redirect ( "especes" );
+	}
 }

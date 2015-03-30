@@ -25,12 +25,30 @@ class ControllerProtocols extends ControllerSecureNav {
 		}
 		
 		// get the user list
-		$protocolesArray = $this->protocolModel->getProtocols( $sortentry );
+		$protocolesArray = $this->protocolModel->getProtocols2( $sortentry );
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
 				'protocols' => $protocolesArray 
 		) );
+	}
+	
+	public function protoref(){
+		$protocolRef = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$protocolRef = $this->request->getParameter ( "actionid" );
+		}
+		
+		// get the user list
+		$protocolesArray = $this->protocolModel->getProtocolsByRef($protocolRef);
+		
+		
+		// view
+		$navBar = $this->navBar ();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'protocols' => $protocolesArray
+		), "index" );
 	}
 	
 	public function edit() {
@@ -55,6 +73,7 @@ class ControllerProtocols extends ControllerSecureNav {
 		$protocol ['inc'] = "";
 		$protocol ['acll'] = "";
 		$protocol ['inc2'] = "";
+		$protocol ['associe'] = "";
 		
 		if ($protocolId != 0){
 			// get isotype info
@@ -85,20 +104,30 @@ class ControllerProtocols extends ControllerSecureNav {
 		$inc = $this->request->getParameter ( "inc" );
 		$acll = $this->request->getParameter ( "acll" );
 		$inc2 = $this->request->getParameter ( "inc2" );
-		
-		
-		echo "proto = " . $proto . "<br />";
+		$associe = $this->request->getParameter ( "associate" );
 		
 		// add query
 		if ($id == ""){
-			$this->protocolModel->addProtocol($kit, $no_proto, $proto, $fixative, $option, $enzyme, $dem, $acl_inc, $linker, $inc, $acll, $inc2);
+			$this->protocolModel->addProtocol($kit, $no_proto, $proto, $fixative, $option, $enzyme, $dem, $acl_inc, $linker, $inc, $acll, $inc2, $associe);
 		}
 		else{
-			$this->protocolModel->editProtocol($id, $kit, $no_proto, $proto, $fixative, $option, $enzyme, $dem, $acl_inc, $linker, $inc, $acll, $inc2);
+			$this->protocolModel->editProtocol($id, $kit, $no_proto, $proto, $fixative, $option, $enzyme, $dem, $acl_inc, $linker, $inc, $acll, $inc2, $associe);
 		}
 		
 		$this->redirect ( "protocols" );
 	}
 	
+	public function delete(){
 	
+		// get source id
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+	
+		// get source info
+		$source = $this->protocolModel->delete($id );
+	
+		$this->redirect ( "protocols" );
+	}
 }

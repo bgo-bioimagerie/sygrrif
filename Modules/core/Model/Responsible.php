@@ -49,7 +49,7 @@ class Responsible extends Model {
 	public function addResponsible($id_user){
 		
 		// test if the user is already responsible
-		$sql = "SELECT EXISTS(SELECT 1 FROM core_responsibles WHERE id = ?)";
+		$sql = "SELECT EXISTS(SELECT 1 FROM core_responsibles WHERE id_users = ?)";
 		
 		$exists = $this->runRequest($sql, array($id_user));
 		$out = $exists->fetch();
@@ -58,6 +58,21 @@ class Responsible extends Model {
 			$sql = "insert into core_responsibles(id_users)"
 				   . " values(?)";
 			$insertpdo = $this->runRequest($sql, array($id_user));	
+		}
+	}
+	
+	public function removeResponsible($id_user){
+		// test if the user is already responsible
+		$sql = "SELECT EXISTS(SELECT 1 FROM core_responsibles WHERE id_users = ?)";
+		
+		$exists = $this->runRequest($sql, array($id_user));
+		$out = $exists->fetch();
+		
+		echo "exists = " . $out[0] . "<br/>";
+		
+		if ($out[0] != 0){
+			$sql="DELETE FROM core_responsibles WHERE id_users = ?";
+			$req = $this->runRequest($sql, array($id_user));
 		}
 	}
 	

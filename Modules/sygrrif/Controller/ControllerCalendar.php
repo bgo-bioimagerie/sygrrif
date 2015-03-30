@@ -619,6 +619,8 @@ class ControllerCalendar extends ControllerBooking {
 	
 	public function bookweekarea($message = ""){
 	
+		$_SESSION['lastbookview'] = "bookweekarea";
+		
 		$lang = "En";
 		if (isset($_SESSION["user_settings"]["language"])){
 			$lang = $_SESSION["user_settings"]["language"];
@@ -779,14 +781,19 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// a user cannot delete a reservation in the past
 		$canEditReservation = false;
+		//echo "can edit reservation = " . $canEditReservation . " <br/>";
 		$temp = explode("-", $curentDate);
-		$curentDateUnix = mktime(0,0,0,$temp[1], $temp[2], $temp[0]);
+		$H = date("H", time());
+		$min = date("i", time());
+		$curentDateUnix = mktime($H,$min+1,0,$temp[1], $temp[2], $temp[0]);
 		if ($curentDateUnix >= time() && $_SESSION["user_status"] < 3 ){
 			$canEditReservation = true;
 		}
 		if ($_SESSION["user_status"] >= 3){
 			$canEditReservation = true;
 		}
+		//echo "can edit reservation = " . $canEditReservation . "<br/>";
+		
 		
 		$ModulesManagerModel = new ModulesManager();
 		$status = $ModulesManagerModel->getDataMenusUserType("projects");
@@ -818,6 +825,9 @@ class ControllerCalendar extends ControllerBooking {
 			$timeBegin = array('h'=> $h, 'm' => $m);
 			$timeEnd = array('h'=> $h, 'm' => $m);
 			
+			// navigation
+			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
+			
 			// view
 			$this->generateView ( array (
 					'navBar' => $navBar,
@@ -840,6 +850,18 @@ class ControllerCalendar extends ControllerBooking {
 			
 			$modelResa = new SyCalendarEntry();
 			$reservationInfo = $modelResa->getEntry($reservation_id);
+			$resourceBase = $modelRes->resource($reservationInfo["resource_id"]);
+			//print_r($reservationInfo);
+			
+			// navigation
+			$_SESSION["id_resource"] = $reservationInfo["resource_id"];
+			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
+			
+			
+			//print_r($reservationInfo);
+			if ($_SESSION["user_status"] < 3 && $reservationInfo["start_time"] <= time() ){
+				$canEditReservation = false;
+			}
 			
 			$seriesInfo = "";
 			if ($reservationInfo['repeat_id'] > 0){
@@ -926,7 +948,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		
 		if ($series_type_id == 0 || $series_type_id == ""){
-		
+			
 			$modelCalEntry = new SyCalendarEntry();
 			// test if a resa already exists on this periode
 			$conflict = $modelCalEntry->isConflict($start_time, $end_time, $resource_id, $reservation_id);

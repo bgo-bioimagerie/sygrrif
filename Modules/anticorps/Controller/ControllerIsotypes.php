@@ -84,5 +84,18 @@ class ControllerIsotypes extends ControllerSecureNav {
 		$this->redirect ( "isotypes" );
 	}
 	
+	public function delete(){
+	
+		// get source id
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+	
+		// get source info
+		$source = $this->isotypeModel->delete($id );
+	
+		$this->redirect ( "isotypes" );
+	}
 	
 }

@@ -25,6 +25,15 @@ class ControllerUsers extends ControllerSecureNav {
 	// Affiche la liste de tous les billets du blog
 	public function index() {
 		
+		$searchColumn = "0";
+		$searchTxt = "";
+		if ( isset($_SESSION["user_searchColumn"])){
+			$this->searchquery();
+			return;
+		}
+		
+		
+		
 		$navBar = $this->navBar();
 		
 		// get sort action
@@ -38,7 +47,8 @@ class ControllerUsers extends ControllerSecureNav {
 		
 		
 		$this->generateView ( array (
-				'navBar' => $navBar, 'usersArray' => $usersArray 
+				'navBar' => $navBar, 'usersArray' => $usersArray,
+				'searchColumn' => $searchColumn, "searchTxt" => $searchTxt 
 		) );
 	}
 	
@@ -206,7 +216,7 @@ class ControllerUsers extends ControllerSecureNav {
 		$phone = $this->request->getParameter ( "phone");
 		$id_unit = $this->request->getParameter ( "id_unit");
 		$id_responsible = $this->request->getParameter ( "id_responsible");
-		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
+		$is_responsible = $this->request->getParameterNoException ("is_responsible");
 		$id_status = $this->request->getParameter ( "id_status");
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
@@ -231,10 +241,16 @@ class ControllerUsers extends ControllerSecureNav {
 				                     $convention, $date_convention, $date_end_contract);
 
 		// update responsible
-		if ($is_responsible != ''){
+		
+		echo "is_responsible = " . $is_responsible . "<br/>";
+		if ($is_responsible != ""){
 			$respModel = new Responsible();
 			$respModel->addResponsible($id);
 		} 
+		else{
+			$respModel = new Responsible();
+			$respModel->removeResponsible($id);
+		}
 		
 		// update the active/unactive
 		$is_active = $this->request->getParameterNoException ( "is_active");
@@ -417,14 +433,58 @@ class ControllerUsers extends ControllerSecureNav {
 	
 	public function exportresponsablequery(){
 	
-		$idType = 0;
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$idType = $this->request->getParameter("actionid");
-		};
+		$idType = $this->request->getParameterNoException("id_type");
 		
+		//echo "idType = " . $idType . "<br/>";
+		//return;
 		$this->userModel->exportResponsible($idType);
 		return;
-		
 	}
 	
+	public function searchquery(){
+	
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+	
+		$searchColumn = $this->request->getParameterNoException("searchColumn");
+		$searchTxt = $this->request->getParameterNoException("searchTxt");
+		
+		if ($searchColumn == ""){
+			$searchColumn = $_SESSION["user_searchColumn"];
+			$searchTxt = $_SESSION["user_searchTxt"];
+		}
+		
+		$_SESSION["user_searchColumn"] = $searchColumn;
+		$_SESSION["user_searchTxt"] = $searchTxt;
+	
+		$usersArray = array();
+		if($searchColumn == "0"){
+			$usersArray = $this->userModel->getActiveUsersInfo("id");
+		}
+		else if($searchColumn == "name"){
+			$usersArray = $this->userModel->getUsersInfoSearch("name", $searchTxt);
+		}
+		else if($searchColumn == "firstname"){
+			$usersArray = $this->userModel->getUsersInfoSearch("firstname", $searchTxt);
+		}
+		else if($searchColumn == "unit"){
+			$usersArray = $this->userModel->getUsersUnitInfoSearch("name", $searchTxt);
+		}
+		else if($searchColumn == "id_status"){
+			$usersArray = $this->userModel->getUsersStatusInfoSearch("name", $searchTxt);
+		}
+		else if( $searchColumn == "responsible"){
+			$usersArray = $this->userModel->getUsersResponsibleInfoSearch("name", $searchTxt);
+			
+		}
+	
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 'usersArray' => $usersArray,
+				'searchColumn' => $searchColumn, 'searchTxt' => $searchTxt
+		), "index" );
+	
+	}
 }

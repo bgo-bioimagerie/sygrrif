@@ -49,6 +49,26 @@ class SyCalendarEntry extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	
+	public function setEntry($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
+							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
+		
+		if(!$this->isEntry($id)){
+			$this->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+							$last_update, $color_type_id, $short_description, $full_description, $quantity);
+		}
+	}
+	
+	public function isEntry($id){
+		$sql = "select * from sy_calendar_entry where id=?";
+		$req = $this->runRequest($sql, array($id));
+		if ($req->rowCount() == 1)
+			return true;
+		else
+			return false;
+	}
+	
+	
 	public function setRepeatID($id, $repeat_id){
 		$sql = "update sy_calendar_entry set repeat_id=?
 									  where id=?";

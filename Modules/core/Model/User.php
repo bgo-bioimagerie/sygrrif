@@ -182,6 +182,12 @@ class User extends Model {
 		return $user->fetchAll ();
 	}
 	
+	public function getAllActifEmails(){
+		$sql = "select email from core_users where is_active=1 order by name ASC;";
+		$user = $this->runRequest ( $sql );
+		return $user->fetchAll ();
+	}
+	
 	/**
 	 * Get the users information
 	 *
@@ -323,24 +329,126 @@ class User extends Model {
 		}
 		
 		return $users;
+	}
+	
+	public function getUsersInfoSearch($selectEntry, $searchTxt){
+		$sql = "SELECT user.id AS id, user.login AS login,
+    				   user.firstname AS firstname, user.name AS name,
+    				   user.email AS email, user.tel AS tel,
+    				   user.convention AS convention, user.date_convention AS date_convention,
+    			       user.date_created AS date_created, user.date_last_login AS date_last_login,
+    				   core_units.name AS unit,
+    				   resp.name AS resp_name, resp.firstname AS resp_firstname,
+    				   core_status.name AS status
+    			FROM core_users AS user
+    			
+				INNER JOIN core_users AS resp ON user.id_responsible = resp.id
+    			INNER JOIN core_units ON user.id_unit = core_units.id
+    			INNER JOIN core_status ON user.id_status = core_status.id
+    			WHERE user.".$selectEntry." LIKE '%$searchTxt%'";
 		
-		/*
-		 *
-		 * $users = $this->getActiveUsers($sortentry, $is_active);
-		 *
-		 *
-		 * $unitModel = new Unit();
-		 * $statusModel = new Status();
-		 * $respModel = new Responsible();
-		 * for ($i = 0 ; $i < count($users) ; $i++){
-		 * $users[$i]['unit'] = $unitModel->getUnitName($users[$i]['id_unit']);
-		 * $tmp = $statusModel->getStatusName($users[$i]['id_status']);
-		 * $users[$i]['status'] = $tmp[0];
-		 * $users[$i]['fullname'] = $this->getUserFUllName($users[$i]['id_responsible']);
-		 * $users[$i]['is_responsible'] = $respModel->isResponsible($users[$i]['id']);
-		 * }
-		 * return $users;
-		 */
+		//echo "sql = " . $sql;
+		$req = $this->runRequest ( $sql );
+		$users = $req->fetchAll ();
+		
+		//echo "<p> count users = " . count($users) . "</p>";
+		
+		$respModel = new Responsible ();
+		for($i = 0; $i < count ( $users ); $i ++) {
+			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
+		}
+		
+		return $users;
+	}
+	
+	public function getUsersUnitInfoSearch($selectEntry, $searchTxt){
+		$sql = "SELECT user.id AS id, user.login AS login,
+    				   user.firstname AS firstname, user.name AS name,
+    				   user.email AS email, user.tel AS tel,
+    				   user.convention AS convention, user.date_convention AS date_convention,
+    			       user.date_created AS date_created, user.date_last_login AS date_last_login,
+    				   core_units.name AS unit,
+    				   resp.name AS resp_name, resp.firstname AS resp_firstname,
+    				   core_status.name AS status
+    			FROM core_users AS user
+    
+				INNER JOIN core_users AS resp ON user.id_responsible = resp.id
+    			INNER JOIN core_units ON user.id_unit = core_units.id
+    			INNER JOIN core_status ON user.id_status = core_status.id
+    			WHERE core_units.".$selectEntry." LIKE '%$searchTxt%'";
+	
+		//echo "sql = " . $sql;
+		$req = $this->runRequest ( $sql );
+		$users = $req->fetchAll ();
+	
+		//echo "<p> count users = " . count($users) . "</p>";
+	
+		$respModel = new Responsible ();
+		for($i = 0; $i < count ( $users ); $i ++) {
+			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
+		}
+	
+		return $users;
+	}
+	
+	public function getUsersStatusInfoSearch($selectEntry, $searchTxt){
+		$sql = "SELECT user.id AS id, user.login AS login,
+    				   user.firstname AS firstname, user.name AS name,
+    				   user.email AS email, user.tel AS tel,
+    				   user.convention AS convention, user.date_convention AS date_convention,
+    			       user.date_created AS date_created, user.date_last_login AS date_last_login,
+    				   core_units.name AS unit,
+    				   resp.name AS resp_name, resp.firstname AS resp_firstname,
+    				   core_status.name AS status
+    			FROM core_users AS user
+	
+				INNER JOIN core_users AS resp ON user.id_responsible = resp.id
+    			INNER JOIN core_units ON user.id_unit = core_units.id
+    			INNER JOIN core_status ON user.id_status = core_status.id
+    			WHERE core_status.".$selectEntry." LIKE '%$searchTxt%'";
+	
+		//echo "sql = " . $sql;
+		$req = $this->runRequest ( $sql );
+		$users = $req->fetchAll ();
+	
+		//echo "<p> count users = " . count($users) . "</p>";
+	
+		$respModel = new Responsible ();
+		for($i = 0; $i < count ( $users ); $i ++) {
+			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
+		}
+	
+		return $users;
+	}
+	
+	public function getUsersResponsibleInfoSearch($selectEntry, $searchTxt){
+		$sql = "SELECT user.id AS id, user.login AS login,
+    				   user.firstname AS firstname, user.name AS name,
+    				   user.email AS email, user.tel AS tel,
+    				   user.convention AS convention, user.date_convention AS date_convention,
+    			       user.date_created AS date_created, user.date_last_login AS date_last_login,
+    				   core_units.name AS unit,
+    				   resp.name AS resp_name, resp.firstname AS resp_firstname,
+    				   core_status.name AS status
+    			FROM core_users AS user
+		
+				INNER JOIN core_users AS resp ON user.id_responsible = resp.id
+    			INNER JOIN core_units ON user.id_unit = core_units.id
+    			INNER JOIN core_status ON user.id_status = core_status.id
+    			WHERE resp.".$selectEntry." LIKE '%$searchTxt%'";
+		
+		//echo "sql = " . $sql;
+		$req = $this->runRequest ( $sql );
+		$users = $req->fetchAll ();
+		
+		//echo "<p> count users = " . count($users) . "</p>";
+		
+		$respModel = new Responsible ();
+		for($i = 0; $i < count ( $users ); $i ++) {
+			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
+		}
+		
+		return $users;
 	}
 	
 	/**
@@ -658,8 +766,10 @@ class User extends Model {
 			$contractDate = $user ["date_end_contract"];
 			$today = date ( "Y-m-d", time () );
 			
-			if ($contractDate < $today) {
-				$this->setactive ( $id, 0 );
+			if ($contractDate != "0000-00-00"){
+				if ($contractDate < $today) {
+					$this->setactive ( $user["id"], 0 );
+				}
 			}
 		}
 	}
@@ -740,13 +850,13 @@ class User extends Model {
 			$req = $this->runRequest ( $sql );
 			$resps = $req->fetchAll ();
 		} else if ($idType == 1) { // active
-			$sql = "SELECT * FROM core_users WHERE id IN (SELECT id_users FROM core_responsibles) AND is_active=1 ORDER BY name ASC";
-			$req = $this->runRequest ( $sql );
+			$sql = "SELECT * FROM core_users WHERE id IN (SELECT id_users FROM core_responsibles) AND is_active=? ORDER BY name ASC";
+			$req = $this->runRequest ( $sql, array(1));
 			$resps = $req->fetchAll ();
 			$typeResp = "actifs";
 		} else if ($idType == 2) { // inactive
 			$sql = "SELECT * FROM core_users WHERE id IN (SELECT id_users FROM core_responsibles) AND is_active=0 ORDER BY name ASC";
-			$req = $this->runRequest ( $sql );
+			$req = $this->runRequest ( $sql, array(0) );
 			$resps = $req->fetchAll ();
 			$typeResp = "inactifs";
 		}
@@ -1110,12 +1220,34 @@ class User extends Model {
 		
 		$writer = PHPExcel_IOFactory::createWriter ( $objPHPExcel, 'Excel2007' );
 		
-		$writer->save ( './data/' . $nom );
+		//$writer->save ( './data/' . $nom );
 		header ( 'Content-Type: application/vnd.ms-excel' );
 		header ( 'Content-Disposition: attachment;filename="' . $nom . '"' );
 		header ( 'Cache-Control: max-age=0' );
 		
 		$writer->save ( 'php://output' );
+	}
+	
+	public function findFromAC($resp){
+		
+		// extract Name
+		$respArray = explode(" ", $resp);
+		if ( count($respArray) > 1){
+			$name = $respArray[count($respArray) -1];
+			
+			$sql = "select id from core_users where name=?";
+			$user = $this->runRequest ( $sql, array (
+					$name
+			) );
+			
+			if ($user->rowCount () == 1) {
+				$tmp = $user->fetch ();
+				return $tmp [0];
+			} else {
+				return - 1;
+			}
+		}
+		return -1;
 	}
 }
 

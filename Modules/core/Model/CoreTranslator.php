@@ -10,7 +10,7 @@
 class CoreTranslator {
 	
 	public static function dateToEn($date, $lang){
-		echo "to translate = " . $date . "<br/>";
+		//echo "to translate = " . $date . "<br/>";
 		if ($lang == "Fr"){
 			$dateArray = explode("/", $date);
 			//print_r($dateArray);
@@ -688,5 +688,12 @@ class CoreTranslator {
 			return "Inactifs";
 		}
 		return "unactive";
+	}
+	
+	public static function Search($lang){
+		if ($lang == "Fr"){
+			return "Rechercher";
+		}
+		return "Search";
 	}
 }

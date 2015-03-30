@@ -19,11 +19,12 @@
 				Protocoles<br> <small></small>
 			</h1>
 		</div>
-
+	
 		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th><a href="protocols/index/id">Id</a></th>
+					<th><a href="protocols/index/anticorps">Anticorps</a></th>
+					<th><a href="protocols/index/no_h2p2">No H2P2</a></th>
 					<th><a href="protocols/index/kit">KIT</a></th>
 					<th><a href="protocols/index/no_proto">No Proto</a></th>
 					<th><a href="protocols/index/proto">Proto</a></th>
@@ -42,9 +43,22 @@
 			</thead>
 			<tbody>
 				<?php foreach ( $protocols as $protocol ) : ?> 
+				
 				<tr>
 					<?php $protocolId = $this->clean ( $protocol ['id'] ); ?>
-					<td><?= $protocolId ?></td>
+					<?php if(  $protocol ['associe'] == 1){
+						?>
+							<td><?= $protocol ['anticorps'] ?></td>
+							<td><?= $protocol ['no_h2p2'] ?></td>
+						<?php
+					}
+					else{
+						?>
+						<td colspan="2" class="text-center">Général</td>
+						<?php
+					}
+					?>
+					
 				    <td><?= $this->clean ( $protocol ['kit'] ); ?></td>
 				    <td><?= $this->clean ( $protocol ['no_proto'] ); ?></td>
 				    <td><?= $this->clean ( $protocol ['proto'] ); ?></td>

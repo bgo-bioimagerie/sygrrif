@@ -36,7 +36,8 @@ class Anticorps extends Model {
   				`id_anticorps` int(11) NOT NULL,
   				`id_utilisateur` int(11) NOT NULL,	
 				`disponible` int(2) NOT NULL,		
-				`date_recept` DATE NOT NULL
+				`date_recept` DATE NOT NULL,
+				`no_dossier` varchar(12) NOT NULL
 				);
 				";
 		
@@ -54,6 +55,25 @@ class Anticorps extends Model {
     	$sql = "select * from ac_anticorps order by " . $sortentry . " ASC;";
     	$user = $this->runRequest($sql);
     	return $user->fetchAll();
+	}
+	
+	public function getLargerNoH2P2(){
+		$sql = "select no_h2p2 from ac_anticorps order by no_h2p2 DESC;";
+		$user = $this->runRequest($sql);
+		$tmp = $user->fetch();
+		return $tmp[0];
+		
+	}
+	
+	public function isAnticorps($no_h2p2){
+		$sql = "select * from ac_anticorps where no_h2p2=?";
+		$user = $this->runRequest($sql, array($no_h2p2));
+		if ($user->rowCount() == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	/**
@@ -102,7 +122,11 @@ class Anticorps extends Model {
 	public function getAnticorpsInfo($sortentry = 'id'){
 		$ac = $this->getAnticorps($sortentry);
 		 
-		 
+		 return $this->anticorpsInfo($ac);
+		
+	}
+	
+	private function anticorpsInfo($ac){
 		$isotypeModel = new Isotype();
 		$sourceModel = new Source();
 		$tissusModel = new Tissus();
@@ -117,11 +141,170 @@ class Anticorps extends Model {
 		}
 		return $ac;
 	}
+	
+	public function getAnticorpsInfoSearch($columnName, $searchTxt){
+		$sql = "select * from ac_anticorps where ". $columnName . " LIKE '%$searchTxt%'";
+    	$user = $this->runRequest($sql, array($searchTxt));
+    	$ac =  $user->fetchAll();
+    	
+    	return $this->anticorpsInfo($ac);
+	}
+	
+	public function getAnticorpsProprioSearch($columnName, $searchTxt){
+		
+		$acs = $this->getAnticorpsInfo();
+		
+		if ($columnName == "nom_proprio"){
+			$anticorps = array();
+			foreach ($acs as $as){
 
+				foreach($as["proprietaire"] as $proprio){
+					if (strstr($proprio["name"], $searchTxt)){
+						$anticorps[] = $as; 
+						break;
+					}	
+				}
+			}
+			return $anticorps;
+		} 
+		elseif ($columnName == "disponibilite"){
+			$anticorps = array();
+			foreach ($acs as $as){
+			
+				foreach($as["proprietaire"] as $proprio){
+					if (strstr($proprio["disponible"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+		elseif ($columnName == "date_recept"){
+			$anticorps = array();
+			foreach ($acs as $as){
+				//print_r($as);
+				foreach($as["proprietaire"] as $proprio){
+					if (strstr($proprio["date_recept"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}		
+	}
+	
+	public function getAnticorpsTissusSearch($columnName, $searchTxt){
+	
+		/*
+		`espece` int(11) NOT NULL,
+		`organe` int(11) NOT NULL,
+		`valide` enum('oui','non') NOT NULL,
+				`ref_bloc` varchar(30) NOT NULL,
+		*/
+		
+		$acs = $this->getAnticorpsInfo();
+	
+		if ($columnName == "dilution"){
+			$anticorps = array();
+			foreach ($acs as $as){
+	
+				foreach($as["tissus"] as $proprio){
+					if (strstr($proprio["dilution"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+		elseif ($columnName == "temps_incubation"){
+			$anticorps = array();
+			foreach ($acs as $as){
+					
+				foreach($as["tissus"] as $proprio){
+					if (strstr($proprio["temps_incubation"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+		elseif ($columnName == "ref_protocol"){
+			$anticorps = array();
+			foreach ($acs as $as){
+				//print_r($as);
+				foreach($as["tissus"] as $proprio){
+					if (strstr($proprio["ref_protocol"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+		elseif ($columnName == "espece"){
+			$anticorps = array();
+			foreach ($acs as $as){
+				//print_r($as);
+				foreach($as["tissus"] as $proprio){
+					if (strstr($proprio["espece"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+		elseif ($columnName == "organe"){
+			$anticorps = array();
+			foreach ($acs as $as){
+				//print_r($as);
+				foreach($as["tissus"] as $proprio){
+					if (strstr($proprio["organe"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+		elseif ($columnName == "valide"){
+			$anticorps = array();
+			foreach ($acs as $as){
+				//print_r($as);
+				foreach($as["tissus"] as $proprio){
+					if (strstr($proprio["valide"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+		elseif ($columnName == "ref_bloc"){
+			$anticorps = array();
+			foreach ($acs as $as){
+				//print_r($as);
+				foreach($as["tissus"] as $proprio){
+					if (strstr($proprio["ref_bloc"], $searchTxt)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			return $anticorps;
+		}
+	
+	}
+	
 	public function getOwners($acId){
 	
 		$sql = "SELECT ac_j_user_anticorps.id_utilisateur AS id_user, ac_j_user_anticorps.date_recept AS date_recept, 
-					   ac_j_user_anticorps.disponible AS disponible, core_users.name AS name, core_users.firstname AS firstname
+					   ac_j_user_anticorps.disponible AS disponible, ac_j_user_anticorps.no_dossier AS no_dossier, 
+					   core_users.name AS name, core_users.firstname AS firstname
 					FROM ac_j_user_anticorps
 					     INNER JOIN core_users on core_users.id = ac_j_user_anticorps.id_utilisateur
 				WHERE ac_j_user_anticorps.id_anticorps=?
@@ -131,11 +314,11 @@ class Anticorps extends Model {
 		return $user->fetchAll();
 	}
 	
-	public function addOwner($id_user, $id_anticorps, $date, $disponible){
+	public function addOwner($id_user, $id_anticorps, $date, $disponible, $no_dossier){
 		
-		$sql = "insert into ac_j_user_anticorps(id_utilisateur, id_anticorps, date_recept, disponible)"
-				. " values(?, ?, ?, ?)";
-		$pdo = $this->runRequest($sql, array($id_user, $id_anticorps, $date, $disponible));
+		$sql = "insert into ac_j_user_anticorps(id_utilisateur, id_anticorps, date_recept, disponible, no_dossier)"
+				. " values(?, ?, ?, ?, ?)";
+		$pdo = $this->runRequest($sql, array($id_user, $id_anticorps, $date, $disponible, $no_dossier));
 		
 		return $this->getDatabase()->lastInsertId();
 	}
@@ -160,11 +343,19 @@ class Anticorps extends Model {
 		return $anticorps;
 	}
 	
+	public function getAnticorpsIdFromNoH2p2($no_h2p2){
+		$sql = "SELECT id FROM ac_anticorps WHERE no_h2p2=?";
+		$req = $this->runRequest($sql, array($no_h2p2));
+		$anticorps = $req->fetch();
+		
+		return $anticorps;
+	}
+	
 	public function getDefaultAnticorps(){
 		
 		$anticorps["id"] = "";
 		$anticorps["nom"] = "";
-		$anticorps["no_h2p2"] = "";
+		$anticorps["no_h2p2"] = $this->getLargerNoH2P2() + 1;
 		$anticorps["fournisseur"] = "";
 		$anticorps["id_source"] = "";
 		$anticorps["reference"] = "";
@@ -176,6 +367,94 @@ class Anticorps extends Model {
 		$anticorps['tissus'] = array();
 		
 		return $anticorps;
+	}
+	
+	public function searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp){
+		
+		$acs = $this->getAnticorpsInfo();
+			
+		if ($searchName != ""){	
+			$anticorps = array();
+			foreach ($acs as $as){
+				if ( stristr($as["nom"], $searchName) ){
+					$anticorps[] = $as;
+				}
+			}
+			$acs = $anticorps;
+		}
+		if ($searchNoH2P2 != ""){
+			$anticorps = array();
+			foreach ($acs as $as){
+				if ( $as["no_h2p2"] == $searchNoH2P2 ){
+					$anticorps[] = $as;
+				}
+			}
+			$acs = $anticorps;
+		}
+		if ($searchSource != ""){
+			$anticorps = array();
+			foreach ($acs as $as){
+				if ( $as["source"] == $searchSource ){
+					$anticorps[] = $as;
+				}
+			}
+			$acs = $anticorps;
+		}
+		if ($searchCible != ""){
+			$anticorps = array();
+			foreach ($acs as $as){
+				foreach ($as["tissus"] as $tissus){
+					if ( $tissus["espece"] == $searchCible ){
+						$anticorps[] = $as;
+					}
+				}
+			}
+			$acs = $anticorps;
+		}
+		
+		if ($searchValide != 0){
+			$anticorps = array();
+			foreach ($acs as $as){
+				foreach ($as["tissus"] as $tissus){
+					if ( $tissus["status"] == $searchValide ){
+						$anticorps[] = $as;
+					}
+				}
+			}
+			$acs = $anticorps;
+		}
+		if ($searchResp != ""){
+			$anticorps = array();
+			foreach ($acs as $as){
+				foreach($as["proprietaire"] as $proprio){
+					if (strstr($proprio["name"], $searchResp)){
+						$anticorps[] = $as;
+						break;
+					}
+				}
+			}
+			$acs = $anticorps;
+		}
+		return $acs;
+		
+		/*
+		$sql = "SELECT ac_anticorps.id AS id
+				FROM ac_anticorps
+				INNER JOIN ac_j_tissu_anticorps on ac_anticorps.id = ac_j_tissu_anticorps.id_anticops
+				INNER JOIN ac_j_user_anticorps on ac_organes.id = ac_j_user_anticorps.id_anticops
+				INNER JOIN ac_sources on ac_anticorps.id_source = ac_source.id
+				INNER JOIN core_user on ac_j_user_anticorps.id_utilisateur = core_user.id
+				WHERE ac_anticorps.nom LIKE ?
+				AND   ac_anticorps.no_h2p2 LIKE ?
+				AND   ac_source.name LIKE ?
+				AND   ac_j_tissu_anticorps.
+				
+				";
+		
+		//$sql = "select * from ac_j_tissu_anticorps where id_anticorps=?";
+		$res = $this->runRequest($sql, array($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp));
+		return $res->fetchAll();
+		*/
 	}
 }
 

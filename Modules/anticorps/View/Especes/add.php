@@ -42,7 +42,7 @@
 		<br>		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Ajouter" />
-				<button type="button" onclick="location.href='especes'" class="btn btn-default" id="navlink">Annuler</button>
+				<button type="button" onclick="location.href='especes'" class="btn btn-default">Annuler</button>
 		</div>
       </form>
 	</div>

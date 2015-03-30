@@ -43,7 +43,7 @@ abstract class ControllerBooking extends ControllerSecureNav {
 		//echo "resource access = " . $resourceAccess . "</br>"; 
 		//echo "userStatus = " . $userStatus . "</br>";
 		// user cannot book in the past
-		if ($curentDateUnix < time() && $userStatus < 3){
+		if ($curentDateUnix < mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()) ) && $userStatus < 3){
 			return false;
 		}
 		
