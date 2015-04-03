@@ -59,7 +59,10 @@ font-size: 12px;
 						<OPTION value="Isotype" <?php if($searchColumn=="Isotype"){echo $selected;} ?> > Isotype </OPTION>
 						<OPTION value="Stockage" <?php if($searchColumn=="Stockage"){echo $selected;} ?> > Stockage </OPTION>					
 						<OPTION value="dilution" <?php if($searchColumn=="dilution"){echo $selected;} ?> > dilution </OPTION>
+						
+						<!-- 
 						<OPTION value="temps_incub" <?php if($searchColumn=="temps_incub"){echo $selected;} ?> > temps d'incubation </OPTION>
+						 -->
 						<OPTION value="ref_proto" <?php if($searchColumn=="ref_proto"){echo $selected;} ?> > ref. protocol </OPTION>
 						<OPTION value="espece" <?php if($searchColumn=="espece"){echo $selected;} ?> > espece </OPTION>
 						<OPTION value="organe" <?php if($searchColumn=="organe"){echo $selected;} ?> > organe </OPTION>
@@ -169,7 +172,7 @@ font-size: 12px;
 			<thead>
 				<tr>
 					<th class="text-center" colspan="9"><a href="anticorps/">Anticorps</a></th>
-					<th class="text-center" colspan="3" style="background-color: #ffeeee;"><a href="anticorps/">Protocole</a></th>
+					<th class="text-center" colspan="2" style="background-color: #ffeeee;"><a href="anticorps/">Protocole</a></th>
 					<th class="text-center" colspan="5" style="background-color: #eeffee;"><a href="anticorps/">Tissus</a></th>
 					<th class="text-center" colspan="4" style="background-color: #eeeeff;"><a href="anticorps/">Propriétaire</a></th>
 					<th></th>
@@ -186,9 +189,12 @@ font-size: 12px;
 					<th class="text-center"><a href="anticorps/index/id_isotype">Isotype</a></th>
 					<th class="text-center"><a href="anticorps/index/stockage">Stockage</a></th>
 					
-					<th class="text-center" style="background-color: #ffeeee;"><a href="anticorps/">ref. protocol</a></th>
-					<th class="text-center" style="background-color: #ffeeee";><a href="anticorps/">dilution</a></th>
+					<th class="text-center" style="min-width: 5em; background-color: #ffeeee;"><a href="anticorps/">ref. protocol</a></th>
+					<th class="text-center" style="background-color: #ffeeee";><a href="anticorps/">AcI dilution</a></th>
+					
+					<!-- 
 					<th class="text-center" style="background-color: #ffeeee";><a href="anticorps/">temps d'incubation</a></th>
+					-->
 					
 					<th class="text-center" style="background-color: #eeffee;"><a href="anticorps/">espèce</a></th>
 					<th class="text-center" style="background-color: #eeffee;"><a href="anticorps/">organe</a></th>
@@ -248,6 +254,7 @@ font-size: 12px;
 					    echo $val;
 				    ?></td>
 				    
+				    <!-- 
 				    <td class="text-left" style="background-color: #ffeeee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
@@ -258,7 +265,7 @@ font-size: 12px;
 				    	}			    	
 					    echo $val;
 				    ?></td>
-				    
+				     -->
 				    
 				    <!-- TISSUS -->
 				    <td class="text-left" style="background-color: #eeffee;"><?php 

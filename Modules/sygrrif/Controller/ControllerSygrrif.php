@@ -20,11 +20,25 @@ require_once 'Modules/sygrrif/Model/SyResourceType.php';
 
 class ControllerSygrrif extends ControllerBooking {
 
+	
+	private function secureCheck(){
+		if ( $_SESSION["user_status"] < 3){
+			echo "Permission denied "; 
+			return true;
+		}
+		return false;
+	}
+	
 	public function __construct() {
 	}
 
 	// Affiche la liste de tous les billets du blog
 	public function index() {
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		
 		$navBar = $this->navBar();
 
@@ -34,6 +48,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function areas(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		$sort = "id";
 		if ($this->request->isParameterNotEmpty('actionid')){
@@ -51,6 +69,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function deletearea(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$id = "";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$id = $this->request->getParameter("actionid");
@@ -63,6 +86,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editarea(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$id = "";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$id = $this->request->getParameter("actionid");
@@ -79,6 +107,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editareaquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
 		$display_order = $this->request->getParameter ( "display_order" );
@@ -91,6 +124,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addarea(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar
@@ -98,6 +136,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addareaquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
 		$display_order = $this->request->getParameter ( "display_order" );
@@ -112,6 +155,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function statistics(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar
@@ -120,6 +167,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function statisticsquery(){
 
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$year = $this->request->getParameter ( "year" );
 		
 		$modelGraph = new SyGraph();
@@ -143,6 +194,10 @@ class ControllerSygrrif extends ControllerBooking {
 	// pricing
 	public function pricing(){	
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$sort = "id";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$sort = $this->request->getParameter("actionid");
@@ -160,6 +215,11 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	
 	public function addpricing(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar
@@ -167,6 +227,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addpricingquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 
 		// get form variables
 		$nom = $this->request->getParameter ( "name" );
@@ -214,6 +278,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function editpricing(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get user id
 		$id = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -231,6 +299,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editpricingquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$nom = $this->request->getParameter ( "name" );
@@ -274,6 +347,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function unitpricing(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$modelUnitPricing = new SyUnitPricing();
 		$pricingArray = $modelUnitPricing->allPricingTable();
 		
@@ -284,6 +361,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addunitpricing(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		$modelUnit = new Unit();
 		$unitsList = $modelUnit->unitsIDName();
@@ -299,6 +380,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addunitpricingquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get form variables
 		$id_unit = $this->request->getParameter ( "id_unit" );
 		$id_pricing = $this->request->getParameter ( "id_pricing" );
@@ -313,6 +399,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editunitpricing(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get unit id
 		$unit_id = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -345,6 +436,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editunitpricingquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get form variables
 		$id_unit = $this->request->getParameter ( "id_unit" );
 		$id_pricing = $this->request->getParameter ( "id_pricing" );
@@ -359,6 +455,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function resources(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		$sortEntry = 'id';
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -376,6 +476,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addresource(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		$resource_type = "";
 		if ($this->request->isParameterNotEmpty ( 'resource_type' )) {
@@ -400,6 +504,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function resourcescategory(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get sort action
 		$sortentry = "id";
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -419,6 +528,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function addresourcescategory(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
@@ -427,6 +540,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function addresourcescategoryquery(){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get form variables
 		$name = $this->request->getParameter ( "name" );
 	
@@ -439,6 +556,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function editresourcescategory(){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get user id
 		$rcId = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -458,6 +579,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function editresourcescategoryquery(){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
@@ -470,6 +595,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function deleteresourcecategory(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$id = "";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$id = $this->request->getParameter("actionid");
@@ -482,6 +612,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function visa(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		// get sort action
 		$sortentry = "id";
@@ -502,6 +636,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function addvisa(){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
@@ -509,6 +647,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addvisaquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		// get form variables
 		$name = $this->request->getParameter ( "name" );
@@ -521,6 +663,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function editvisa(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		// get user id
 		$visaId = 0;
@@ -541,6 +687,10 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	public function editvisaquery(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
@@ -553,6 +703,10 @@ class ControllerSygrrif extends ControllerBooking {
 	} 
 	
 	public function deletevisa(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 
 		$id = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -567,6 +721,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function authorizations(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get user id
 		$sortentry = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -586,6 +745,11 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function uauthorizations(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get user id
 		$sortentry = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
@@ -606,6 +770,10 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	public function addauthorization(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		// get users list
 		$modelUser = new User();

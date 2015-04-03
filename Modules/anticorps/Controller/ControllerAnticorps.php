@@ -125,7 +125,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$ref_bloc = $this->request->getParameter ("ref_bloc");
 		$prelevement = $this->request->getParameter ("prelevement");
 		$dilution = $this->request->getParameter ("dilution");
-		$temps_incubation = $this->request->getParameter ("temps_incubation");
+		$temps_incubation = $this->request->getParameterNoException ("temps_incubation");
 		$ref_protocol = $this->request->getParameter ("ref_protocol");
 		
 		$modelAnticorps = new Anticorps();

@@ -36,8 +36,7 @@
 					<th><a href="protocols/index/linker">Linker</a></th>
 					<th><a href="protocols/index/inc">Linker Inc</a></th>
 					<th><a href="protocols/index/acll">acII</a></th>
-					<th><a href="protocols/index/inc2">Inc</a></th>
-					
+					<th><a href="protocols/index/inc2">acII Inc</a></th>
 					<th></th>
 				</tr>
 			</thead>

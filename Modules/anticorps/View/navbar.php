@@ -81,7 +81,7 @@ legend {
 		
 		<div class='col-md-2 well'>
 			<fieldset>
-				<legend>Protocoles </legend>	
+				<legend>Détails Proto </legend>	
 				    <button onclick="location.href='kit/'" class="btn btn-link" id="navlink">KIT</button>
 					<button onclick="location.href='kit/add'" class="btn btn-link" id="navlink">+</button>
 				<br/>		
@@ -111,7 +111,7 @@ legend {
 				    <button onclick="location.href='linker/'" class="btn btn-link" id="navlink">Linker</button>
 					<button onclick="location.href='linker/add'" class="btn btn-link" id="navlink">+</button>	
 				<br/>		
-				    <button onclick="location.href='inc/'" class="btn btn-link" id="navlink">Inc</button>
+				    <button onclick="location.href='inc/'" class="btn btn-link" id="navlink">Linker Inc</button>
 					<button onclick="location.href='inc/add'" class="btn btn-link" id="navlink">+</button>
 				<br/>		
 				    <button onclick="location.href='acii/'" class="btn btn-link" id="navlink">acII</button>

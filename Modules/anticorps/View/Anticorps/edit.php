@@ -77,7 +77,7 @@
 </head>
 									
 <br>
-<div class="col-lg-10 col-lg-offset-1">
+<div class="col-lg-12">
 	  <form role="form" class="form-horizontal" action="anticorps/editquery" method="post">
 		<div class="page-header">
 			<h1>
@@ -87,8 +87,8 @@
 		
 		<?php if($anticorps['id'] != ""){?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Id</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Id</label>
+			<div class="col-xs-11">
 			    <input class="form-control" id="id" type="text" name="id" value="<?= $anticorps['id'] ?>" readonly
 				/>
 			</div>
@@ -96,24 +96,24 @@
 		<?php } ?>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Nom</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Nom</label>
+			<div class="col-xs-11">
 				<input class="form-control" id="nom" type="text" name="nom" value="<?= $anticorps['nom'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">No H2P2</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">No H2P2</label>
+			<div class="col-xs-11">
 				<input class="form-control" id="no_h2p2" type="text" name="no_h2p2" value="<?= $anticorps['no_h2p2'] ?>"
 				/>
 			</div>
 		</div>
 		<br/>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Fournisseur</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Fournisseur</label>
+			<div class="col-xs-11">
 				<input class="form-control" id="fournisseur" type="text" name="fournisseur" value="<?= $anticorps['fournisseur'] ?>"
 				/>
 			</div>
@@ -122,8 +122,8 @@
 		<!-- Source -->
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Source</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Source</label>
+			<div class="col-xs-11">
 				<select class="form-control" name="id_source">
 					<?php foreach($sourcesList as $source){
 						$sourceID = $this->clean($source["id"]);
@@ -140,24 +140,24 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Référence</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Référence</label>
+			<div class="col-xs-11">
 				<input class="form-control" id="reference" type="text" name="reference" value="<?= $anticorps['reference'] ?>"
 				/>
 			</div>
 		</div>
 				<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Clone</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Clone</label>
+			<div class="col-xs-11">
 				<input class="form-control" id="clone" type="text" name="clone" value="<?= $anticorps['clone'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Lot</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Lot</label>
+			<div class="col-xs-11">
 				<input class="form-control" id="lot" type="text" name="lot" value="<?= $anticorps['lot'] ?>"
 				/>
 			</div>
@@ -165,8 +165,8 @@
 		<br/>
 		<!-- Isotype -->
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Isotype</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Isotype</label>
+			<div class="col-xs-11">
 				<select class="form-control" name="id_isotype">
 					<?php foreach($isotypesList as $isotype){
 						$isotypeID = $this->clean($isotype["id"]);
@@ -185,8 +185,8 @@
 		<br>
 		<!-- Stockage -->
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Stockage</label>
-			<div class="col-xs-10">
+			<label for="inputEmail" class="control-label col-xs-1">Stockage</label>
+			<div class="col-xs-11">
 				<input class="form-control" id="stockage" type="text" name="stockage" value="<?= $anticorps['stockage'] ?>"
 				/>
 			</div>
@@ -194,20 +194,20 @@
 		
 		<!--   TISSUS    -->
 		<div class="form-group">
-			<label class="control-label col-xs-2">Tissus</label>
-			<div class="col-xs-10">
+			<label class="control-label col-xs-1">Tissus</label>
+			<div class="col-xs-11">
 				<table id="dataTable" class="table table-striped">
 				<thead>
 					<tr>
 						<td></td>
-						<td>Espece</td>
-						<td>Organe</td>
-						<td>Validé</td>
-						<td>Référence bloc</td>
-						<td>Prélèvement</td>
-						<td>Dilution</td>
-						<td>Temps d'incubation</td>
-						<td>Référence protoole</td>
+						<td style="min-width:10em;">Espece</td>
+						<td style="min-width:10em;">Organe</td>
+						<td style="min-width:10em;">Validé</td>
+						<td style="min-width:10em;">Référence bloc</td>
+						<td style="min-width:10em;">Prélèvement</td>
+						<td style="min-width:10em;">Dilution</td>
+						<!-- <td>Temps d'incubation</td>  -->
+						<td style="min-width:10em;">Référence protoole</td>
 					</tr>
 				</thead>
 					<tbody>
@@ -279,7 +279,11 @@
 									</select>
 								</td>
 								<td><input class="form-control" type="text" name="dilution[]" value="<?= $tissus["dilution"] ?>"/></td>
+								
+								<!-- 
 								<td><input class="form-control" type="text" name="temps_incubation[]" value="<?= $tissus["temps_incubation"] ?>"/></td>
+								 -->
+								
 								<td>
 									<select class="form-control" name="ref_protocol[]">
 									<?php 
@@ -354,7 +358,9 @@
 								</select>
 							</td>
 							<td><input class="form-control" type="text" name="dilution[]" /></td>
+							<!-- 
 							<td><input class="form-control" type="text" name="temps_incubation[]" /></td>
+							 -->
 							<td>
 								<select class="form-control" name="ref_protocol[]">
 									<?php 
@@ -386,8 +392,8 @@
 			
 		<!-- ADD HERE PROPRIO ADD  -->
 		<div class="form-group">
-			<label class="control-label col-xs-2">Propriétaire</label>
-			<div class="col-xs-10">
+			<label class="control-label col-xs-1">Propriétaire</label>
+			<div class="col-xs-11">
 				<table id="proprioTable" class="table table-striped">
 					<thead>
 						<tr>
@@ -518,7 +524,7 @@
 		-->
 		
 		<!-- Buttons -->
-		<div class="col-xs-2 col-xs-offset-10" id="button-div">
+		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Edit" />
 		        <?php if($anticorps['id'] != ""){ ?>
 		        	<button type="button" onclick="location.href='<?="anticorps/delete/".$anticorps['id'] ?>'" class="btn btn-danger">Supprimer</button>
