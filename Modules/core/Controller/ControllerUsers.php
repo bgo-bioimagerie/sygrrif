@@ -242,7 +242,7 @@ class ControllerUsers extends ControllerSecureNav {
 
 		// update responsible
 		
-		echo "is_responsible = " . $is_responsible . "<br/>";
+		//echo "is_responsible = " . $is_responsible . "<br/>";
 		if ($is_responsible != ""){
 			$respModel = new Responsible();
 			$respModel->addResponsible($id);

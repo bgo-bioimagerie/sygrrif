@@ -87,6 +87,7 @@ class SyResource extends Model {
 		$sql = "select * from sy_resources order by " . $sortEntry . " ASC;";
 		$data = $this->runRequest($sql);
 		return $data->fetchAll();
+		
 	}
 	
 	public function resourcesInfo($sortentry = "id"){

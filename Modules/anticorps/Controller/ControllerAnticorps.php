@@ -18,7 +18,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 	public function index() {
 		
 		// get sort action
-		$sortentry = "id";
+		$sortentry = "no_h2p2";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$sortentry = $this->request->getParameter("actionid");
 		}
@@ -60,6 +60,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 		// get users List
 		$modelUser = new User();
 		$users = $modelUser->getUsersSummary('name');
+		
 		
 		// get prelevements list
 		$modelPrelevement = new Prelevement();
@@ -283,6 +284,21 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'searchValide' => $searchValide, 
 				'searchResp' => $searchResp
 		), "index" );
+	}
+	
+	public function delete(){
+	
+		// get source id
+		$id = 0;
+		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+	
+		// get source info
+		$anticorpsModel = new Anticorps();
+		$source = $anticorpsModel->delete($id);
+	
+		$this->redirect ( "anticorps" );
 	}
 	
 }

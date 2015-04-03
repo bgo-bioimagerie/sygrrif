@@ -17,94 +17,9 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 	overflow:hidden;
 }
 
-.seven-cols [class*="col-"] {
-	float: none;
-	display: table-cell;
-	vertical-align: top;
-}
-
-#tcell {
-	border-left: 1px solid #d1d1d1;
-	border-right: 1px solid #d1d1d1;
-	border-bottom: 1px solid #d1d1d1;
-}
-
-#tcelltop {
-	padding: 0;
-	margin: 0;
-	display: table-row;
-	width: 100%;
-	border-left: 1px solid #d1d1d1;
-	border-top: 1px solid #d1d1d1;
-}
-
-#colDiv {
-	padding: 0;
-	margin: 0;
-}
-
-#colDiv2 {
-	padding: 0;
-	margin: 0;
-	
-}
-
-#colDivglobal {
-	padding: 0;
-	margin: 0;
-	border-bottom: 1px solid #d1d1d1;
-}
-
-#colDivleft {
-	padding-right: 0px;
-	margin-right: 0px;
-}
-
-#colDivRight {
-	padding-left: 0px;
-	margin-left: 0px;
-}
-
-#colDiv2left {
-	padding-right: 0px;
-	margin-right: 0px;
-	border-left: 1px solid #d1d1d1;
-}
-
-#colDiv2 {
-	padding-right: 0px;
-	margin-right: 0px;
-	border-left: 1px solid #d1d1d1;
-	display: table;
-	width: 100%;
-	height: 100%;
-	text-align:center;
-	min-height: 60px;
-	
-}
-
-#colDivResourceTitle{
-	padding: 0;
-	margin: 0;
-	display: table-row;
-	height: 100%;
-}
-
-#colDiv2Right {
-	padding-left: 0px;
-	margin-left: 0px;
-	border-left: 1px solid #d1d1d1;
-	display: table-row;
-	width: 100%;
-	height: 100%;
-}
-
-.colDivCell{
-	height: 100%;
-	padding-left: 0px;
-	margin-left: 0px;
-	border-left: 1px solid #d1d1d1;
-	border-right: 1px solid #d1d1d1;
+.row-cell{
+ 	margin-bottom: -99999px;
+    padding-bottom: 99999px;
 }
 
 #tcellResa {
@@ -116,6 +31,8 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 	line-height: 9px;
 	letter-spacing: 1px;
 	font-weight: normal;
+	padding:0px;
+    margin:0px;
 }
 
 #resa_link {
@@ -125,16 +42,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 	letter-spacing: 1px;
 	font-weight: normal;
 }
-@media ( min-width : 1200px) {
-	.seven-cols .col-md-1, .seven-cols .col-sm-1, .seven-cols .col-lg-1 {
-		width: 14.285714285714285714285714285714%;
-		*width: 14.285714285714285714285714285714%;
-	}
-}
-/* 14% = 100% (full-width row) divided by 7 */
-img {
-	max-width: 100%;
-}
+
 </style>
 </head>
 
@@ -217,13 +125,13 @@ img {
 <!-- hours reservation -->
 
 <div class="container">
-<div class="col-lg-12" id="colDiv">
+<div class="col-lg-12" id="colDiv0">
 
 	<!--  Area title -->
 	
-	<div class="col-xs-1" id="colDiv">
+	<div class="col-lg-2" id="colDiv0">
 	</div>
-	<div class="col-xs-11" id="colDiv">
+	<div class="col-lg-8" id="colDiv0">
 		<div style="height: 50px;">
 			<p class="text-center">
 				<b><?= $this->clean($areaname) ?></b>
@@ -233,8 +141,8 @@ img {
 </div>	
 </div>
 
-<div class="container">
-<div class="col-lg-12" id="colDiv">
+<div class="">
+<div class=row-same-height">
 	<?php
 	$resourceCount = - 1;
 	$modelBookingSetting = new SyBookingSettings ();
@@ -252,38 +160,47 @@ img {
 		// echo "resource id = " . $resourcesBase[$resourceCount]["id"] . "</br>";
 		// resource title
 		?>
+		
+		<?php 
+			$styleLine = "";
+			if (!($i%2)){
+				$styleLine = "style=\"background-color:#f1f1f1; border-right: 1px solid #a1a1a1;\"";
+			}
+			else{
+				$styleLine = "style=\"background-color:#ffffff; border-right: 1px solid #a1a1a1;\"";
+			}
+			?>
 			
-			<div class="container" id="colDivglobal">
-			<div class="col-xs-1" id="colDivResourceTitle">
-				<?php 
-				if ( $i > -1){
-				?>
-				<b><?= $this->clean($resourcesBase[$i]['name']) ?></b>
-				<?php	
-				}
-				else{
-					echo "<p> </p>";	
-				}
-				?>
-			</div>
-			<div class="col-xs-11" id="colDiv">
+			<div class="row" > <!-- id="colDivglobal" -->
+			
+			<div class="col-lg-12" id="colDiv">
 				<!-- Content of each day -->
-				<div class="row seven-cols">
+				<div class="">
+				
+					<!-- Title -->
+					<?php 
+					if ( $i > -1){
+					?>
+					<div class="col-lg-1 col-lg-offset-2 row-cell" <?= $styleLine ?> >
+					<p>
+					<b><?= $this->clean($resourcesBase[$i]['name']) ?></b>
+					</p>
+					</div>
+					<?php	
+					}
+					else{
+						?>
+						<div class="col-lg-1 col-lg-offset-2 row-cell" <?= $styleLine ?>>
+						<p> </p>
+						</div>
+						<?php	
+					}
+					?>	
 				
 					<?php
+					
 					for($d = 0; $d < 7; $d ++) {
-						$idcss = "colDiv";
-						$idcss2 = "colDiv2";
-						if ($d == 0) {
-							$idcss = "colDivleft";
-							//$idcss2 = "colDiv2left";
-						}
-						if ($d == 6) {
-							$idcss = "colDivRight";
-							//$idcss2 = "colDiv2right";
-						}
 						?>
-						
 						<?php 
 						if ( $i == -1 ){
 							// day title
@@ -296,10 +213,11 @@ img {
 								
 							$dayTitle = SyTranslator::DateFromTime ( $date_unix, $lang );
 							
+							
 						?>
-							<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
+							<div class="col-lg-1 row-cell" <?= $styleLine ?>>
 
-								<div id="tcelltop" style="height: 60px;">
+								<div id="tcelltop" style="height: 60px;" class="text-center">
 									<p class="text-center">
 									<b> <?= $dayTitle ?> </b>
 									</p>
@@ -309,7 +227,7 @@ img {
 						}
 						else{
 						?>
-							<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
+							<div class="col-lg-1 row-cell" <?= $styleLine ?>>
 								<!-- Print the reservations for the given day -->
 							<?php
 							$resourceCount = $i;
@@ -330,6 +248,31 @@ img {
 							// add here the reservations
 							$foundEntry = false;
 							foreach ( $calEntries as $entry ) {
+								
+								if($entry ["resource_id"] == $resourceID && $entry['start_time']<=$date_unix && $entry['end_time'] >= $date_unix){
+										$foundEntry = true;
+										// draw entry
+										$shortDescription = $entry ['short_description'];
+										if ($isProjectMode) {
+											$shortDescription = $moduleProject->getProjectName ( $entry ['short_description'] );
+										}
+										
+										$txtEndTime = date ( "H:i", $entry ["end_time"] );
+										if (  $entry['end_time'] - $date_unix > 3600*24){
+											$txtEndTime = "23:59";
+										}
+										
+										$text = "00:00". " - " . $txtEndTime . "<br />";
+										$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'], false );
+										?>
+										<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color']?>;"> 
+											<a class="text-center" id="resa_link"href="calendar/editreservation/r_<?= $entry['id'] ?>">
+												<?=$text?>
+											</a>
+										</div>
+										<?php
+								}
+								
 								if ($entry ["resource_id"] == $resourceID && $entry ["start_time"] >= $date_unix && $entry ["start_time"] <= $date_unix + 86400) {
 									$foundEntry = true;
 									// draw entry
@@ -337,7 +280,13 @@ img {
 									if ($isProjectMode) {
 										$shortDescription = $moduleProject->getProjectName ( $entry ['short_description'] );
 									}
-									$text = date ( "H:i", $entry ["start_time"] ) . " - " . date ( "H:i", $entry ["end_time"] ) . "<br />";
+									
+									$txtEndTime = date ( "H:i", $entry ["end_time"] );
+									if (date ( "d", $entry ["end_time"] ) > date ( "d", $date_unix )){
+										$txtEndTime = "23:59";
+									}
+									
+									$text = date ( "H:i", $entry ["start_time"] ) . " - " . $txtEndTime . "<br />";
 									$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'], false );
 									?>
 									<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color']?>;"> 
@@ -358,7 +307,7 @@ img {
 										$styleTxt = "style=\"height: 60px;\"";
 									}
 									?>
-									<div class="text-center" id="<?= $idcss2 ?>">
+									<div class="text-center">
 										<a class="glyphicon glyphicon-plus"
 											href="calendar/editreservation/t_<?= $dateString."_"."8"."_".$resourceID ?>">
 										</a>
@@ -367,7 +316,7 @@ img {
 								}
 								else{
 								?>
-								<div class="text-center" id="<?= $idcss2 ?>">
+								<div class="text-center">
 								<p></p>
 								</div>
 								<?php 	
@@ -375,7 +324,7 @@ img {
 							}
 							else{
 								?>
-								<div class="text-center" id="<?= $idcss2 ?>">
+								<div class="text-center">
 								<p></p>
 								</div>
 								<?php 

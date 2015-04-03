@@ -149,7 +149,7 @@ if (!$canEditReservation){
 			<div class="col-xs-8">
 				<div class='input-group date form_date_<?= $lang ?>'>
 					<input type='text' class="form-control" name="begin_date"
-					       value="<?= CoreTranslator::dateFromEn($date, $lang) ?>" <?=$readOnlyGlobal?>/>
+					       value="<?= CoreTranslator::dateFromEn($sdate, $lang) ?>" <?=$readOnlyGlobal?>/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>

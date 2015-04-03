@@ -754,6 +754,9 @@ class ControllerSygrrif extends ControllerBooking {
 			$searchDate_end = CoreTranslator::dateToEn($searchDate_end, $lang);
 		}
 		
+		//echo "date start = " . $searchDate_start . "<br/>";
+		//echo "date end = " . $searchDate_end . "<br/>";
+		
 		// get the selected unit
 		$selectedUnitId = 0;
 		if ($unit_id != ""){
@@ -762,14 +765,14 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		// get the responsibles for this unit
 		$responsiblesList = array();
+		$modelCalEntry = new SyCalendarEntry();
 		if ($selectedUnitId > 0){
 			$modeluser = new User();
-			$modelCalEntry = new SyCalendarEntry();
+			
 			$responsiblesListInter = $modeluser->getResponsibleOfUnit($selectedUnitId);
 			foreach ($responsiblesListInter as $respi){
 				
 				//print_r($respi);
-				
 				$startdate = explode("-", $searchDate_start);
 				$startdate = mktime(0, 0, 0, $startdate[1], $startdate[2], $startdate[0]);
 				
@@ -812,7 +815,23 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		// get units list
 		$modelUnit = new Unit();
-		$unitsList = $modelUnit->unitsIDName();
+		$unitsListTmp = $modelUnit->unitsIDName();
+		$unitsList = array();
+		
+		if (	$searchDate_start!= "" && $searchDate_end!= "" ){
+			$startdate = explode("-", $searchDate_start);
+			$startdate = mktime(0, 0, 0, $startdate[1], $startdate[2], $startdate[0]);
+			$enddate = explode("-", $searchDate_end);
+			$enddate = mktime(0, 0, 0, $enddate[1], $enddate[2], $enddate[0]);
+			foreach ($unitsListTmp as $unit){
+				if ($modelCalEntry->hasUnitEntry($unit["id"], $startdate, $enddate) == true){
+					$unitsList[] = $unit;
+				}
+			}
+		}
+		
+		//echo "date start = " . $searchDate_start . "<br/>";
+		//echo "date end = " . $searchDate_end . "<br/>";
 		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -1232,4 +1251,94 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}
 	
+	public function blockresources($errormessage = ""){
+		
+		$modelResources = new SyResource();
+		$resources = $modelResources->resources("name");
+		
+		$modelColor = new SyColorCode();
+		$colorCodes = $modelColor->getColorCodes();
+		
+		$navBar = $this->navBar ();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'resources' => $resources,
+				'colorCodes' => $colorCodes,
+				'errormessage' => $errormessage
+		) );
+	}
+	
+	public function blockresourcesquery(){
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		$navBar = $this->navBar ();
+		
+		// get form variables
+		$short_description = $this->request->getParameter ( "short_description" );
+		$resources = $this->request->getParameter ( "resources" );
+		$begin_date = $this->request->getParameter ( "begin_date" );
+		$begin_hour = $this->request->getParameter ( "begin_hour" );
+		$begin_min = $this->request->getParameter ( "begin_min" );
+		$end_date = $this->request->getParameter ( "end_date" );
+		$end_hour = $this->request->getParameter ( "end_hour" );
+		$end_min = $this->request->getParameter ( "end_min" );
+		$color_type_id = $this->request->getParameter ( "color_code_id" );
+		
+		$beginDate = CoreTranslator::dateToEn($begin_date, $lang);
+		$beginDate = explode("-", $beginDate);
+		$start_time = mktime(intval($begin_hour), intval($begin_min), 0, $beginDate[1], $beginDate[2], $beginDate[0]);
+		
+		$endDate = CoreTranslator::dateToEn($end_date, $lang);
+		$endDate = explode("-", $endDate);
+		$end_time = mktime(intval($end_hour), intval($end_min), 0, $endDate[1], $endDate[2], $endDate[0]);
+		
+		if ($end_time <= $start_time){
+			$errormessage = "Error: The begin time must be before the end time";
+			$modelResources = new SyResource();
+			$resources = $modelResources->resources("name");
+			$modelColor = new SyColorCode();
+			$colorCodes = $modelColor->getColorCodes();
+			$this->generateView ( array (
+				'navBar' => $navBar,
+				'resources' => $resources,
+				'colorCodes' => $colorCodes,	
+				'errormessage' => $errormessage
+			),"blockresources");
+			return;
+		}
+		
+		// Add the booking
+		$modelCalEntry = new SyCalendarEntry();
+		$userID = $_SESSION["id_user"];
+		foreach ($resources as $resource_id){
+		
+			$conflict = $modelCalEntry->isConflict($start_time, $end_time, $resource_id);
+				
+			if ($conflict){
+				$errormessage = "Error: There is already a reservation for the given slot, please remove it before booking";
+				$modelResources = new SyResource();
+				$resources = $modelResources->resources("name");
+				$modelColor = new SyColorCode(); 
+				$colorCodes = $modelColor->getColorCodes();
+				$this->generateView ( array (
+					'navBar' => $navBar,
+					'resources' => $resources,
+					'colorCodes' => $colorCodes,	
+					'errormessage' => $errormessage
+				),"blockresources");
+				return;
+			}
+			$booked_by_id = $userID;
+			$recipient_id = $userID;
+			$last_update = date("Y-m-d H:i:s", time()); 
+			$full_description = "";
+			$quantity = "";
+			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+						$last_update, $color_type_id, $short_description, $full_description, $quantity);
+		}
+		
+		$this->redirect ( "sygrrif" );
+	}
 }

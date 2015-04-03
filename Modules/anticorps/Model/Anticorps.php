@@ -76,6 +76,17 @@ class Anticorps extends Model {
 		}
 	}
 	
+	public function isAnticorpsID($id){
+		$sql = "select * from ac_anticorps where id=?";
+		$user = $this->runRequest($sql, array($id));
+		if ($user->rowCount() == 1){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	/**
 	 * Add an antibody to the database
 	 * 
@@ -102,6 +113,19 @@ class Anticorps extends Model {
 		$pdo = $this->runRequest($sql, array($nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone, 
 								$lot, $id_isotype, $stockage));
 		
+		return $this->getDatabase()->lastInsertId();
+	}
+	
+	public function importAnticorps($id, $nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
+			$lot, $id_isotype, $stockage){
+	
+	
+		$sql = "insert into ac_anticorps(id, nom, no_h2p2, fournisseur, id_source, reference,
+										 clone, lot, id_isotype, stockage)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$pdo = $this->runRequest($sql, array($id, $nom, $no_h2p2, $fournisseur, $id_source, $reference, $clone,
+				$lot, $id_isotype, $stockage));
+	
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -455,6 +479,11 @@ class Anticorps extends Model {
 		$res = $this->runRequest($sql, array($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp));
 		return $res->fetchAll();
 		*/
+	}
+	
+	public function delete($id){
+		$sql="DELETE FROM ac_anticorps WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
 	}
 }
 

@@ -68,6 +68,13 @@ class Isotype extends Model {
 		$this->runRequest($sql, array($name));
 	}
 	
+	public function importIsotype($id, $name){
+	
+		$sql = "insert into ac_isotypes(id, nom)"
+				. " values(?,?)";
+		$this->runRequest($sql, array($id, $name));
+	}
+	
 	/**
 	 * update the information of a isotype
 	 *

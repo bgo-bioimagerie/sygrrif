@@ -69,6 +69,13 @@ class Source extends Model {
 		$this->runRequest($sql, array($name));
 	}
 	
+	public function importSource($id, $name){
+	
+		$sql = "insert into ac_sources(id, nom)"
+				. " values(?, ?)";
+		$this->runRequest($sql, array($id, $name));
+	}
+	
 	/**
 	 * update the information of a source
 	 *

@@ -15,7 +15,6 @@
 
 </head>
 
-
 <?php include "Modules/anticorps/View/navbar.php"; ?>
 
 <br>
@@ -47,14 +46,26 @@
 			</div>
 		</div>
 		<?php } ?>
-		
+						
 	
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">KIT</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="kit" type="text" name="kit"
-				       value="<?= $this->clean ( $protocol ['kit'] ); ?>"  
-				/>
+				<select class="form-control" name="kit">
+					<?php 
+					foreach ($kits as $kit){
+						$kitId = $kit["id"];
+						$kitName = $kit["nom"];
+						$selected = "";
+						if ($protocol["kit"] == $kitId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $kitId ?>" <?= $selected ?>> <?= $kitName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 	
@@ -70,90 +81,211 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Proto</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="proto" type="text" name="proto"
-				       value="<?= $this->clean ( $protocol ['proto'] ); ?>"  
-				/>
+				<select class="form-control" name="proto">
+					<?php 
+					foreach ($protos as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["proto"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Fixative</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="fixative" type="text" name="fixative"
-				       value="<?= $this->clean ( $protocol ['fixative'] ); ?>"  
-				/>
+				<select class="form-control" name="fixative">
+					<?php 
+					foreach ($fixatives as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["fixative"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Option</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="option" type="text" name="option"
-				       value="<?= $this->clean ( $protocol ['option_'] ); ?>"  
-				/>
+				<select class="form-control" name="option">
+					<?php 
+					foreach ($options as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["option_"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">enzyme</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="enzyme" type="text" name="enzyme"
-				       value="<?= $this->clean ( $protocol ['enzyme'] ); ?>"  
-				/>
+				<select class="form-control" name="enzyme">
+					<?php 
+					foreach ($enzymes as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["enzyme"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">dém</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="dem" type="text" name="dem"
-				       value="<?= $this->clean ( $protocol ['dem'] ); ?>"  
-				/>
+				<select class="form-control" name="dem">
+					<?php 
+					foreach ($dems as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["dem"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">AcI Inc</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="acl_inc" type="text" name="acl_inc"
-				       value="<?= $this->clean ( $protocol ['acl_inc'] ); ?>"  
-				/>
+				<select class="form-control" name="acl_inc">
+					<?php 
+					foreach ($aciincs as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["acl_inc"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Linker</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="acl_inc" type="text" name="linker"
-				       value="<?= $this->clean ( $protocol ['linker'] ); ?>"  
-				/>
+				<select class="form-control" name="linker">
+					<?php 
+					foreach ($linkers as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["acl_inc"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Inc</label>
+			<label for="inputEmail" class="control-label col-xs-2">Linker Inc</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="inc" type="text" name="inc"
-				       value="<?= $this->clean ( $protocol ['inc'] ); ?>"  
-				/>
+				<select class="form-control" name="inc">
+					<?php 
+					foreach ($incs as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["inc"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">AcII</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="acll" type="text" name="acll"
-				       value="<?= $this->clean ( $protocol ['acll'] ); ?>"  
-				/>
+				<select class="form-control" name="acll">
+					<?php 
+					foreach ($aciis as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["acll"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Inc</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="inc2" type="text" name="inc2"
-				       value="<?= $this->clean ( $protocol ['inc2'] ); ?>"  
-				/>
+			
+				<select class="form-control" name="inc2">
+					<?php 
+					foreach ($incs as $var){
+						$varId = $var["id"];
+						$varName = $var["nom"];
+						$selected = "";
+						if ($protocol["inc2"] == $varId){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+					<?php 
+					}	
+					?>
+				</select>
 			</div>
 		</div>	
 		

@@ -22,7 +22,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= MailerTranslator::From($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="from" type="text" name="from" value=<?= $from ?> readonly
+				<input class="form-control" id="from" type="text" name="from" value="<?= $from ?>" readonly
 				/>
 			</div>
 		</div>
@@ -38,6 +38,14 @@ if (isset($_SESSION["user_settings"]["language"])){
 					    ?>
 						<OPTION value="a_<?= $areaId ?>" > <?= SyTranslator::Area($lang)  . ": " .  $areaname ?> </OPTION>
 					<?php endforeach; ?>
+					
+					<?php foreach ($resourcesList as $resourceArea){?>
+						<?php foreach ($resourceArea as $resource){?>
+					    <?php $areaname = $this->clean( $resource['name'] );
+					          $areaId = $this->clean( $resource['id'] );
+					    ?>
+						<OPTION value="r_<?= $areaId ?>" > <?= SyTranslator::Resource($lang)  . ": " .  $areaname ?> </OPTION>
+					<?php }} ?>
 				</select>
 			</div>
 		</div>

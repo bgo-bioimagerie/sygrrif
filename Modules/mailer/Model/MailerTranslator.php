@@ -32,7 +32,7 @@ class MailerTranslator {
 
 	public static function Subject($lang = ""){
 		if ($lang == "Fr"){
-			return "Object";
+			return "Objet";
 		}
 		return "Subject";
 	}

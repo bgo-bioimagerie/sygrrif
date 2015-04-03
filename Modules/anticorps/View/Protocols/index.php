@@ -1,4 +1,4 @@
-<?php $this->title = "Anticorps: Isotypes"?>
+<?php $this->title = "Anticorps: Protocoles"?>
 
 <?php echo $navBar?>
 
@@ -34,7 +34,7 @@
 					<th><a href="protocols/index/dem">Dém</a></th>
 					<th><a href="protocols/index/acl_inc">AcI Inc</a></th>
 					<th><a href="protocols/index/linker">Linker</a></th>
-					<th><a href="protocols/index/inc">Inc</a></th>
+					<th><a href="protocols/index/inc">Linker Inc</a></th>
 					<th><a href="protocols/index/acll">acII</a></th>
 					<th><a href="protocols/index/inc2">Inc</a></th>
 					

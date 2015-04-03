@@ -69,6 +69,13 @@ class Organe extends Model {
 		$this->runRequest($sql, array($name));
 	}
 	
+	public function importOrgane($id, $name){
+	
+		$sql = "insert into ac_organes(id, nom)"
+				. " values(?,?)";
+		$this->runRequest($sql, array($id, $name));
+	}
+	
 	/**
 	 * update the information of a source
 	 *

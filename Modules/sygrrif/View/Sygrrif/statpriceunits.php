@@ -57,7 +57,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
 				<div class="col-xs-10">
 				<div class='input-group date form_date_<?= $lang ?>'>
-					<input id="test32" type='text' class="form-control" name="searchDate_end" 
+					<input id="test32" type='text' class="form-control" name="searchDate_end"
 					       value="<?= CoreTranslator::dateFromEn($searchDate_end, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
@@ -71,6 +71,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 			<div class="col-xs-10">
 					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);"
 						>
+					<OPTION value=""> -- </OPTION>	
 					<?php 
 					foreach ($unitsList as $unit){
 						$unitId = $this->clean( $unit['id'] );	
@@ -124,7 +125,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

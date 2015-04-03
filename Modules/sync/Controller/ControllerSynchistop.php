@@ -125,7 +125,7 @@ class ControllerSynchistop extends Controller {
 		
 		$this->addNewResources();
 		echo "<p>add New Resources</p>";
-		*/
+		// */
 		// /*
 		$this->desactivateAuthorizationDoNotBookAYear();
 		echo "<p>desactivate authorizations</p>";

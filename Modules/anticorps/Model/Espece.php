@@ -68,6 +68,13 @@ class Espece extends Model {
 		$this->runRequest($sql, array($name));
 	}
 	
+	public function importEspece($id, $name){
+	
+		$sql = "insert into ac_especes(id, nom)"
+				. " values(?,?)";
+		$this->runRequest($sql, array($id, $name));
+	}
+	
 	/**
 	 * update the information of a 
 	 *

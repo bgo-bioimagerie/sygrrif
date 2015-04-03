@@ -2,6 +2,17 @@
 
 require_once 'Framework/Model.php';
 
+require_once 'Modules/anticorps/Model/Kit.php';
+require_once 'Modules/anticorps/Model/Proto.php';
+require_once 'Modules/anticorps/Model/Fixative.php';
+require_once 'Modules/anticorps/Model/AcOption.php';
+require_once 'Modules/anticorps/Model/Enzyme.php';
+require_once 'Modules/anticorps/Model/Dem.php';
+require_once 'Modules/anticorps/Model/Aciinc.php';
+require_once 'Modules/anticorps/Model/Linker.php';
+require_once 'Modules/anticorps/Model/Inc.php';
+require_once 'Modules/anticorps/Model/Acii.php';
+
 /**
  * Class defining the Isotype model
  *
@@ -18,18 +29,18 @@ class AcProtocol extends Model {
 	
 		$sql = "CREATE TABLE IF NOT EXISTS `ac_protocol` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
-				`kit` varchar(30) NOT NULL,
-				`no_proto` varchar(30) NOT NULL,
-				`proto` varchar(30) NOT NULL,
-				`fixative` varchar(30) NOT NULL,
-				`option_` varchar(30) NOT NULL,
-				`enzyme` varchar(30) NOT NULL,
-				`dem` varchar(30) NOT NULL,
-				`acl_inc` varchar(30) NOT NULL,
-				`linker` varchar(30) NOT NULL,
-				`inc` varchar(30) NOT NULL,
-				`acll` varchar(30) NOT NULL,
-				`inc2` varchar(30) NOT NULL,
+				`kit` int(11) NOT NULL,
+				`no_proto` int(11) NOT NULL,
+				`proto` int(11) NOT NULL,
+				`fixative` int(11) NOT NULL,
+				`option_` int(11) NOT NULL,
+				`enzyme` int(11) NOT NULL,
+				`dem` int(11) NOT NULL,
+				`acl_inc` int(11) NOT NULL,
+				`linker` int(11) NOT NULL,
+				`inc` int(11) NOT NULL,
+				`acll` int(11) NOT NULL,
+				`inc2` int(11) NOT NULL,
 				`associe` int(1) NOT NULL,
 				PRIMARY KEY (`id`)
 				);";
@@ -84,6 +95,42 @@ class AcProtocol extends Model {
 	
 	private function getAssociateAnticorpsInfo($protos){
 		for ($i=0 ; $i < count($protos) ; $i++){
+			
+			// no to names
+			$model = new Kit();
+			$protos[$i]["kit"] = $model->getNameFromId($protos[$i]["kit"]); 
+			
+			$model = new Proto();
+			$protos[$i]["proto"] = $model->getNameFromId($protos[$i]["proto"]);
+
+			$model = new Fixative();
+			$protos[$i]["fixative"] = $model->getNameFromId($protos[$i]["fixative"]);
+			
+			$model = new AcOption();
+			$protos[$i]["option_"] = $model->getNameFromId($protos[$i]["option_"]);
+				
+			$model = new Enzyme();
+			$protos[$i]["enzyme"] = $model->getNameFromId($protos[$i]["enzyme"]);
+				
+			$model = new Dem();
+			$protos[$i]["dem"] = $model->getNameFromId($protos[$i]["dem"]);
+				
+			$model = new Aciinc();
+			$protos[$i]["acl_inc"] = $model->getNameFromId($protos[$i]["acl_inc"]);
+
+			$model = new Linker();
+			$protos[$i]["linker"] = $model->getNameFromId($protos[$i]["linker"]);
+				
+			$model = new Inc();
+			$protos[$i]["inc"] = $model->getNameFromId($protos[$i]["inc"]);
+			
+			$model = new Acii();
+			$protos[$i]["acll"] = $model->getNameFromId($protos[$i]["acll"]);
+				
+			$model = new Inc();
+			$protos[$i]["inc2"] = $model->getNameFromId($protos[$i]["inc2"]);
+		
+			
 			if ($protos[$i]["associe"] == 1 ){
 		
 				$sql = "select id_anticorps from ac_j_tissu_anticorps where ref_protocol=?";
@@ -161,6 +208,16 @@ class AcProtocol extends Model {
 		$this->runRequest($sql, array($kit, $no_proto, $proto, $fixative, $option , $enzyme, $dem, $acl_inc, $linker, $inc, $acll, $inc2, $associe));
 	}
 	
+	public function importProtocol($id, $kit, $no_proto, $proto, $fixative, $option, $enzyme, $dem, $acl_inc, $linker, $inc, $acll, $inc2, $associe = ""){
+	
+		//, `no_proto`, proto, fixative, option, enzyme, dem, `acl_inc`, linker, inc, acll
+		// ,?,?,?,?,?,?,?,?,?,?,?
+		$sql = "insert into ac_protocol(id, kit, no_proto, proto, fixative, option_, enzyme, dem, acl_inc, linker, inc, acll, inc2, associe)"
+				. " values(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	
+		$this->runRequest($sql, array($id, $kit, $no_proto, $proto, $fixative, $option , $enzyme, $dem, $acl_inc, $linker, $inc, $acll, $inc2, $associe));
+	}
+	
 	/**
 	 * update the information of a isotype
 	 *
@@ -176,6 +233,17 @@ class AcProtocol extends Model {
 	public function delete($id){
 		$sql="DELETE FROM ac_protocol WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
+	}
+	
+	public function isProtocolOfID($id){
+		$sql = "select * from ac_protocol where id=?";
+		$req = $this->runRequest($sql, array($id));
+		if ($req->rowCount() > 0){
+			return true;
+		}
+		else{
+			return false;
+		}
 	}
 	
 	public function existsProtocol($kit, $no_proto){

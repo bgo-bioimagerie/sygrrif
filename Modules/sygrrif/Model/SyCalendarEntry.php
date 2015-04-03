@@ -97,7 +97,7 @@ class SyCalendarEntry extends Model {
 		
 		$q = array('start'=>$dateBegin, 'end'=>$dateEnd);
 		$sql = 'SELECT * FROM sy_calendar_entry WHERE
-				(start_time >=:start AND end_time <= :end) 
+				(start_time <=:end AND end_time >= :start) 
 				ORDER BY start_time';
 		$req = $this->runRequest($sql, $q);
 		return $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
@@ -116,7 +116,7 @@ class SyCalendarEntry extends Model {
 		
 		$q = array('start'=>$dateBegin, 'end'=>$dateEnd, 'res'=>$resource_id);
 		$sql = 'SELECT * FROM sy_calendar_entry WHERE
-				(start_time >=:start AND start_time <= :end) AND resource_id = :res
+				(start_time <=:end AND end_time >= :start) AND resource_id = :res
 				ORDER BY start_time';
 		$req = $this->runRequest($sql, $q);
 		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
@@ -228,6 +228,26 @@ class SyCalendarEntry extends Model {
 		return false;
 	}
 	
+	public function hasUnitEntry($unit_id, $startdate, $enddate){
+		$q = array('start'=>$startdate, 'end'=>$enddate);
+		$sql = 'SELECT DISTINCT recipient_id, id FROM sy_calendar_entry WHERE
+				(start_time >=:start AND start_time <= :end)';
+		$req = $this->runRequest($sql, $q);
+		$recs = $req->fetchAll();
+		
+		foreach ($recs as $rec){
+			$sql = "select id_unit from core_users where id=".$rec["recipient_id"];
+			$req = $this->runRequest($sql);
+			$resp_id_req = $req->fetch();
+			$resp_id_req = $resp_id_req[0];
+			//echo "resp_id_req = " . $resp_id_req . "<br />";
+			if ($resp_id_req == $unit_id){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public function getUserBooking($user_id){
 		$sql = "select * from sy_calendar_entry where recipient_id=? order by end_time DESC;";
 		$req = $this->runRequest($sql, array($user_id));
@@ -237,6 +257,28 @@ class SyCalendarEntry extends Model {
 	public function getUserBookingResource($user_id, $resource_id){
 		$sql = "select * from sy_calendar_entry where recipient_id=? and resource_id=? order by end_time DESC;";
 		$req = $this->runRequest($sql, array($user_id, $resource_id));
+		return $req->fetchAll();
+	}
+	
+	public function getEmailsBookerResource($resource_id){
+				
+		$sql = "SELECT DISTINCT user.email AS email 
+				FROM core_users AS user
+				INNER JOIN sy_calendar_entry AS sy_calendar_entry ON user.id = sy_calendar_entry.recipient_id
+				WHERE sy_calendar_entry.resource_id=?
+				;";
+		$req = $this->runRequest($sql, array($resource_id));
+		return $req->fetchAll();
+	}
+	
+	public function getEmailsBookerArea($area_id){
+
+		$sql = "SELECT DISTINCT user.email AS email
+				FROM core_users AS user
+				INNER JOIN sy_calendar_entry AS sy_calendar_entry ON user.id = sy_calendar_entry.recipient_id
+				WHERE sy_calendar_entry.resource_id IN (select id from sy_resources where area_id=?)  
+				;";
+		$req = $this->runRequest($sql, array($area_id));
 		return $req->fetchAll();
 	}
 		

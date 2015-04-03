@@ -27,9 +27,11 @@ class ControllerProtocols extends ControllerSecureNav {
 		// get the user list
 		$protocolesArray = $this->protocolModel->getProtocols2( $sortentry );
 		
+		
+		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'protocols' => $protocolesArray 
+				'protocols' => $protocolesArray
 		) );
 	}
 	
@@ -80,11 +82,42 @@ class ControllerProtocols extends ControllerSecureNav {
 			$protocol = $this->protocolModel->getProtocol ( $protocolId );
 		}
 		
-		//print_r ( $isotype );
+		// lists
+		$modelKit = new Kit();
+		$modelProto = new Proto();
+		$modelFixative = new Fixative();
+		$modelOption = new AcOption();
+		$modelEnzyme = new Enzyme();
+		$modelDem = new Dem();
+		$modelAciinc = new Aciinc();
+		$modelLinker = new Linker();
+		$modelInc = new Inc();
+		$modelAcii = new Acii();
+		
+		$kits = $modelKit->getKits("id");
+		$protos = $modelProto->getProtos("id");
+		$fixatives = $modelFixative->getFixatives("id");
+		$options = $modelOption->getOptions("id");
+		$enzymes = $modelEnzyme->getEnzymes("id");
+		$dems = $modelDem->getDems("id");
+		$aciincs = $modelAciinc->getAciincs("id");
+		$linkers = $modelLinker->getLinkers("id");
+		$incs = $modelInc->getIncs("id");
+		$aciis = $modelAcii->getAciis("id");
 		
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'protocol' => $protocol 
+				'protocol' => $protocol,
+				'kits' => $kits,
+				'protos' => $protos,
+				'fixatives' => $fixatives,
+				'options' => $options,
+				'enzymes' => $enzymes,
+				'dems' => $dems,
+				'aciincs' => $aciincs,
+				'linkers' => $linkers,
+				'incs' => $incs,
+				'aciis' => $aciis
 		) );
 	}
 	

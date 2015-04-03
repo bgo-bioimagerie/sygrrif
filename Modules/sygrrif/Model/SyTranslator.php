@@ -1424,4 +1424,13 @@ class SyTranslator {
 		}
 		return "Bill list export";
 	}
+	
+	public static function block_resources($lang){
+		if ($lang == "Fr"){
+			return "Bloquer ressources";
+		}
+		return "Block resources";
+	}
+	
+	
 }

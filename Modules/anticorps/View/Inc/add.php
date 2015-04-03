@@ -1,4 +1,4 @@
-<?php $this->title = "Anticorps: Add Isotype"?>
+<?php $this->title = "Anticorps: Ajouter Prélèvement"?>
 
 <?php echo $navBar?>
 
@@ -22,13 +22,13 @@
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="isotypes/addquery"
+	<form role="form" class="form-horizontal" action="inc/addquery"
 		method="post">
 	
 	
 		<div class="page-header">
 			<h1>
-				Ajouter Isotype <br> <small></small>
+				Ajouter Inc <br> <small></small>
 			</h1>
 		</div>
 	
@@ -42,7 +42,7 @@
 		<br>		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Ajouter" />
-				<button type="button" onclick="location.href='isotypes'" class="btn btn-default" id="navlink">Annuler</button>
+				<button type="button" onclick="location.href='linkers'" class="btn btn-default">Annuler</button>
 		</div>
       </form>
 	</div>

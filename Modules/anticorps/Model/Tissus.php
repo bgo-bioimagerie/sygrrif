@@ -42,6 +42,14 @@ class Tissus extends Model {
 		$this->runRequest($sql, array($id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement));
 	}
 	
+	public function importTissus($id, $id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement){
+		$sql = "insert into ac_j_tissu_anticorps(id, id_anticorps, espece,
+				                                    organe, status, ref_bloc,
+													dilution, temps_incubation, ref_protocol, prelevement)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($id, $id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement));
+	}
+	
 	public function getTissus($id_anticorps){
 		
 		$sql = "SELECT ac_j_tissu_anticorps.id AS id, 
@@ -50,7 +58,7 @@ class Tissus extends Model {
 				       ac_j_tissu_anticorps.ref_bloc AS ref_bloc,
 				       ac_j_tissu_anticorps.dilution AS dilution,
 				       ac_j_tissu_anticorps.temps_incubation AS temps_incubation,
-					   ac_j_tissu_anticorps.ref_protocol AS ref_protocol,	
+					   ac_j_tissu_anticorps.ref_protocol AS ref_protocol,		
 					   ac_especes.nom AS espece, ac_especes.id AS espece_id,
 					   ac_organes.nom AS organe, ac_organes.id AS organe_id,
 					   ac_prelevements.nom AS prelevement, ac_prelevements.id AS prelevement_id 			

@@ -62,7 +62,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 						class="btn btn-link" id="navlink"><?= SyTranslator::color_code($lang) ?></button>
 					<button onclick="location.href='sygrrif/addcolorcode'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Add($lang) ?></button>
-						
+				<br/>
+					<button onclick="location.href='sygrrif/blockresources'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::block_resources($lang) ?></button>		
 			</fieldset>
 		</div>
 		<div class='col-md-3 well'>

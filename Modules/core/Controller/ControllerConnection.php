@@ -66,7 +66,7 @@ class ControllerConnection extends Controller
                 
                 // redirect
         		$redirectController = "Home";
-        		if (in_array("sygrrif", Configuration::get(modules))){
+        		if (in_array("sygrrif", Configuration::get("modules"))){
         			$redirectController = "sygrrif/booking";
         		}
         		if(isset($_SESSION["user_settings"]["homepage"])){

@@ -4,6 +4,7 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
+require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 
 class ControllerMailer extends ControllerSecureNav {
 
@@ -63,13 +64,14 @@ class ControllerMailer extends ControllerSecureNav {
 			$toEx = explode("_", $to);
 			if ($toEx[0] == "a"){ // area
 				// get all the adresses of users who book in this area
+				$modelCalEntry = new SyCalendarEntry();
+				$toAdress = $modelCalEntry->getEmailsBookerArea($toEx[1]);
 				
-				$toAdress = "";
 			}
 			elseif($toEx[0] == "r"){
 				// get all the adresses of users who book in this resource
-				
-				$toAdress = "";
+				$modelCalEntry = new SyCalendarEntry();
+				$toAdress = $modelCalEntry->getEmailsBookerResource($toEx[1]);
 			}
 		}
 		
@@ -86,7 +88,10 @@ class ControllerMailer extends ControllerSecureNav {
 		$mail->Body = $content;
 		
 		foreach($toAdress as $addres){
-			$mail->AddAddress($addres[0]);
+			if ($addres[0] && $addres[0] != ""){
+				echo $addres[0] . "<br/>";
+				$mail->AddAddress($addres[0]);
+			}
 		}
 		
 		if(!$mail->Send()) {

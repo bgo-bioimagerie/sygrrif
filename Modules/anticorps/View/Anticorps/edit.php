@@ -285,7 +285,8 @@
 									<?php 
 									$ref_proto = $this->clean($tissus["ref_protocol"]);
 									foreach ($protocols as $protocol){
-										$no_proto = $this->clean($protocol[0]);
+										$id_proto = $this->clean($protocol["id"]);
+										$no_proto = $this->clean($protocol["no_proto"]);
 										$selected = "";
 										if ($ref_proto == $no_proto){
 											$selected = "selected=\"selected\"";
@@ -361,7 +362,7 @@
 										$no_proto = $this->clean($protocol["no_proto"]);
 										$idproto = $this->clean($protocol["id"]);
 										?>
-										<OPTION value="<?=$idproto?>"> <?= $no_proto ?> </OPTION>
+										<OPTION value="<?=$no_proto?>"> <?= $no_proto ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -518,8 +519,11 @@
 		
 		<!-- Buttons -->
 		<div class="col-xs-2 col-xs-offset-10" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="Save" />
-				<button type="button" onclick="location.href='anticorps'" class="btn btn-default">Cancel</button>
+		        <input type="submit" class="btn btn-primary" value="Edit" />
+		        <?php if($anticorps['id'] != ""){ ?>
+		        	<button type="button" onclick="location.href='<?="anticorps/delete/".$anticorps['id'] ?>'" class="btn btn-danger">Supprimer</button>
+				<?php }?>
+				<button type="button" onclick="location.href='anticorps'" class="btn btn-default">Annuler</button>
 		</div>
       </form>
 </div>

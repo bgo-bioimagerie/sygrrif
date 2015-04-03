@@ -68,6 +68,13 @@ class Prelevement extends Model {
 		$this->runRequest($sql, array($name));
 	}
 	
+	public function importPrelevement($id, $name){
+	
+		$sql = "insert into ac_prelevements(id, nom)"
+				. " values(?,?)";
+		$this->runRequest($sql, array($id, $name));
+	}
+	
 	/**
 	 * update the information of a 
 	 *

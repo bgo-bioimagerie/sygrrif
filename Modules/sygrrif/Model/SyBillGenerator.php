@@ -890,6 +890,7 @@ class SyBillGenerator extends Model {
 		}
 		if ($keyfound){
 			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitAddress);
+			$objPHPExcel->getActiveSheet()->getStyle($insertCol.$insertLine)->getAlignment()->setWrapText(true);
 		}
 		// replace the bill number
 		// calculate the number
@@ -985,6 +986,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
 		
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre de \n séances");
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->getAlignment()->setWrapText(true);
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
 		
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Quantité");
@@ -1898,7 +1900,7 @@ class SyBillGenerator extends Model {
 		$nom = date('Y-m-d')."_detail_heures_sygrrif.xlsx";
 		$today=date('d/m/Y');
 		$header = "Date d'édition de ce document : \n".$today;
-		$titre = "Détail des heures réservés du ".$date_debut." inclu au ".$date_fin." inclu";
+		$titre = "Détail des heures réservés du ".$date_debut." inclus au ".$date_fin." inclus";
 		
 		$footer = $nom;
 		

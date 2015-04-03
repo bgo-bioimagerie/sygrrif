@@ -68,7 +68,7 @@ class Responsible extends Model {
 		$exists = $this->runRequest($sql, array($id_user));
 		$out = $exists->fetch();
 		
-		echo "exists = " . $out[0] . "<br/>";
+		//echo "exists = " . $out[0] . "<br/>";
 		
 		if ($out[0] != 0){
 			$sql="DELETE FROM core_responsibles WHERE id_users = ?";
