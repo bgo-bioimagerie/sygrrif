@@ -17,11 +17,13 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 
 #tcelltop{
 	border: 1px solid #f1f1f1;
+	position: relative;
 }
 
 #colDiv{
-	padding:0;
-    margin:0;
+	padding:0px;
+    margin:0px;
+    position: relative;
 }
 
 #tcellResa{
@@ -89,7 +91,7 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 <button type="button" class="btn btn-default active"><?= SyTranslator::Day($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-
+<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
 </div>
 </div>
 

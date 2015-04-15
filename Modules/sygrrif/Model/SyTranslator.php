@@ -339,6 +339,12 @@ class SyTranslator {
 		}
 		return "Week";
 	}
+	public static function Month($lang = ""){
+		if ($lang == "Fr"){
+			return "Mois";
+		}
+		return "Month";
+	}
 	public static function Week_Area($lang = ""){
 		if ($lang == "Fr"){
 			return "Semainier";
@@ -1432,5 +1438,45 @@ class SyTranslator {
 		return "Block resources";
 	}
 	
+	public static function grr_report($lang){
+		if ($lang == "Fr"){
+			return "Statistiques GRR";
+		}
+		return "GRR report";
+	}
+	
+	public static function query($lang){
+		if ($lang == "Fr"){
+			return "Requête";
+		}
+		return "Query";
+	}
+	
+	public static function Recipient($lang){
+		if ($lang == "Fr"){
+			return "Bénéficiaire";
+		}
+		return "Recipient";
+	}
+	
+	public static function Contains($lang){
+		if ($lang == "Fr"){
+			return "Contient";
+		}
+		return "Contains";
+	}
+	public static function Does_not_contain($lang){
+		if ($lang == "Fr"){
+			return "Ne contient pas";
+		}
+		return "Does not contain";
+	}
+	
+	public static function Output($lang){
+		if ($lang == "Fr"){
+			return "Export";
+		}
+		return "Output";
+	}
 	
 }

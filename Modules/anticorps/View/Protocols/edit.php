@@ -213,7 +213,7 @@
 						$varId = $var["id"];
 						$varName = $var["nom"];
 						$selected = "";
-						if ($protocol["acl_inc"] == $varId){
+						if ($protocol["linker"] == $varId){
 							$selected = "selected=\"selected\"";
 						}
 						?>

@@ -51,11 +51,36 @@ if (!$canEditReservation){
 					<?php 
 					$allowedBookForOther = true;
 					if ( $this->clean($curentuser['id_status']) < 3){
-						$readonly = false;
+						$allowedBookForOther = false;
 					}
+					
+					$recipientID = 0;
+					if(isset($reservationInfo)){
+						$recipientID = $this->clean($reservationInfo["recipient_id"]);
+					}
+					if ($allowedBookForOther==false && isset($reservationInfo) && $recipientID != $this->clean($curentuser['id'])){
+						?>
+						<select class="form-control" name="recipient_id" disabled="disabled">
+							<?php
+							foreach ($users as $user){
+								$userId = $this->clean($user['id']);
+								$userName = $this->clean($user['name']) . " " . $this->clean($user['firstname']);
+								$selected = "";
+								if ($userId == $recipientID){
+									?>
+									<OPTION value="<?= $userId ?>"> <?= $userName?> </OPTION>
+									<?php
+								} 
+							}
+							?>
+						</select>
+						
+						<?php
+					}
+					else{
 					?>
-			
-					<select class="form-control" name="recipient_id" <?=$readOnlyGlobal?>>
+					
+					<select class="form-control" name="recipient_id">
 						<?php
 						if ($allowedBookForOther){
 							$recipientID = $this->clean($reservationInfo["recipient_id"]);
@@ -79,6 +104,7 @@ if (!$canEditReservation){
 							<OPTION value="<?= $this->clean($curentuser['id']) ?>"> <?=$this->clean($curentuser['name']) . " " . $this->clean($curentuser['firstname'])?> </OPTION>
 							<?php
 						}
+					}
 						?>
 				</select>
 			</div>

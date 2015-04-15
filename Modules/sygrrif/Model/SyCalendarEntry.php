@@ -115,9 +115,16 @@ class SyCalendarEntry extends Model {
 		//$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2],$dateArray[0]);
 		
 		$q = array('start'=>$dateBegin, 'end'=>$dateEnd, 'res'=>$resource_id);
+		
 		$sql = 'SELECT * FROM sy_calendar_entry WHERE
 				(start_time <=:end AND end_time >= :start) AND resource_id = :res
 				ORDER BY start_time';
+		
+		/*
+		$sql = 'SELECT * FROM sy_calendar_entry WHERE
+				(start_time >=:start AND end_time <= :end) AND resource_id = :res
+				ORDER BY start_time';
+		*/
 		$req = $this->runRequest($sql, $q);
 		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
 		

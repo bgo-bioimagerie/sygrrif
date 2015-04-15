@@ -587,6 +587,125 @@ class ControllerCalendar extends ControllerBooking {
 		$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2]+7,$dateArray[0]);
 		$calEntries = $modelEntries->getEntriesForPeriodeAndResource($dateBegin, $dateEnd, $curentResource);
 		
+		//echo "Cal entry count = " . count($calEntries) . "</br>";
+		
+		
+		// curentdate unix
+		$temp = explode("-", $curentDate);
+		$curentDateUnix = mktime(0,0,0,$temp[1], $temp[2], $temp[0]);
+	
+		// color code
+		$modelColor = new SyColorCode();
+		$colorcodes = $modelColor->getColorCodes("name");
+	
+		// isUserAuthorizedToBook
+		$isUserAuthorizedToBook = $this->hasAuthorization($resourceBase["category_id"], $resourceBase["accessibility_id"],
+				$_SESSION['id_user'], $_SESSION["user_status"], $curentDateUnix);
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'menuData' => $menuData,
+				'resourceInfo' => $resourceInfo,
+				'resourceBase' => $resourceBase,
+				'date' => $curentDate,
+				'date_unix' => $curentDateUnix,
+				'mondayDate' => $mondayDate,
+				'sundayDate' => $sundayDate,
+				'calEntries' => $calEntries,
+				'colorcodes' => $colorcodes,
+				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
+				'message' => $message
+		), "bookweek");
+		
+	}
+	
+	public function bookmonth($message = ""){
+	
+		$_SESSION['lastbookview'] = "bookmonth";
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+	
+		// get inputs
+		$curentResource = $this->request->getParameterNoException('id_resource');
+		$curentAreaId = $this->request->getParameterNoException('id_area');
+		$curentDate = $this->request->getParameterNoException('curentDate');
+	
+		if ($curentDate != ""){
+			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
+		}
+	
+		if ($curentAreaId == ""){
+			$curentResource = $_SESSION['id_resource'];
+			$curentAreaId = $_SESSION['id_area'];
+			$curentDate = $_SESSION['curentDate'];
+		}
+	
+		// change input if action
+		$action = "";
+		if ($this->request->isParameterNotEmpty("actionid")) {
+			$action = $this->request->getParameter ( "actionid" );
+		}
+		if ($action == "daymonthbefore" ){
+			$curentDate = explode("-", $curentDate);
+			$curentTime = mktime(0,0,0,$curentDate[1], $curentDate[2], $curentDate[0] );
+			$curentTime = $curentTime - 86400*30;
+			$curentDate = date("Y-m-d", $curentTime);
+		}
+		if ($action == "daymonthafter" ){
+			$curentDate = explode("-", $curentDate);
+			$curentTime = mktime(0,0,0,$curentDate[1], $curentDate[2], $curentDate[0] );
+			$curentTime = $curentTime + 86400*30;
+			$curentDate = date("Y-m-d", $curentTime);
+		}
+		if ($action == "thisMonth" ){
+			$curentDate = date("Y-m-d", time());
+			$curentTime = time();
+		}
+	
+		// get the closest monday to curent day
+		
+		$i = 0;
+		//echo "curentDate = " . $curentDate . "<br/>";
+		$curentDateE = explode("-", $curentDate);
+		while(date('d',mktime(0,0,0,$curentDateE[1], $curentDateE[2]-$i, $curentDateE[0])) != 1) {
+			$i++;
+		}
+		$mondayDate = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i), $curentDateE[0]));
+		$sundayDate  = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i)+31, $curentDateE[0]));
+	
+		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+	
+		// save the menu info in the session
+		$_SESSION['id_resource'] = $curentResource;
+		$_SESSION['id_area'] = $curentAreaId;
+		$_SESSION['curentDate'] = $curentDate;
+	
+		// get the resource info
+		$modelRescal = new SyResourceCalendar();
+		$resourceInfo = $modelRescal->resource($curentResource);
+	
+		if (count($resourceInfo) <=1 ){
+			$this->redirect("calendar", "booking");
+			return;
+		}
+	
+		$modelRes = new SyResource();
+		$resourceBase = $modelRes->resource($curentResource);
+	
+		// get the entries for this resource
+		$modelEntries = new SyCalendarEntry();
+		$dateArray = explode("-", $mondayDate);
+		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
+		$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2]+31,$dateArray[0]);
+		$calEntries = $modelEntries->getEntriesForPeriodeAndResource($dateBegin, $dateEnd, $curentResource);
+	
+		//echo "Cal entry count = " . count($calEntries) . "</br>";
+	
+	
 		// curentdate unix
 		$temp = explode("-", $curentDate);
 		$curentDateUnix = mktime(0,0,0,$temp[1], $temp[2], $temp[0]);
@@ -607,6 +726,8 @@ class ControllerCalendar extends ControllerBooking {
 				'resourceInfo' => $resourceInfo,
 				'resourceBase' => $resourceBase,
 				'date' => $curentDate,
+				'month' => date("n", $curentTime),
+				'year' => date("Y", $curentTime),
 				'date_unix' => $curentDateUnix,
 				'mondayDate' => $mondayDate,
 				'sundayDate' => $sundayDate,
@@ -614,7 +735,7 @@ class ControllerCalendar extends ControllerBooking {
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
 				'message' => $message
-		), "bookweek");
+		), "bookmonth");
 	}
 	
 	public function bookweekarea($message = ""){

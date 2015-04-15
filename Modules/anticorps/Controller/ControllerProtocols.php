@@ -36,13 +36,14 @@ class ControllerProtocols extends ControllerSecureNav {
 	}
 	
 	public function protoref(){
-		$protocolRef = 0;
+		$anticorpsId = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$protocolRef = $this->request->getParameter ( "actionid" );
+			$anticorpsId = $this->request->getParameter ( "actionid" );
 		}
 		
 		// get the user list
-		$protocolesArray = $this->protocolModel->getProtocolsByRef($protocolRef);
+		//echo "action id = " . $anticorpsId . "<br />";
+		$protocolesArray = $this->protocolModel->getProtocolsByAnticorps($anticorpsId);
 		
 		
 		// view

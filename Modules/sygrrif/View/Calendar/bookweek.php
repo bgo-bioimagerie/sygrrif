@@ -20,18 +20,21 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 }
 
 #colDiv{
-	padding:0;
-    margin:0;
+	padding:0px;
+    margin:0px;
+    position:relative;
 }
 
 #colDivleft{
 	padding-right:0px;
 	margin-right:0px;
+	position:relative;
 }
 
 #colDivright{
 	padding-left:0px;
 	margin-left:0px;
+	position:relative;
 }
 
 
@@ -127,7 +130,7 @@ $sufixStream = date("S", $time);
 <button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
 <button type="button" class="btn btn-default active"><?= SyTranslator::Week($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-
+<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
 </div>
 </div>
 
@@ -217,7 +220,9 @@ $available_days = explode(",", $available_days);
 		if ($available_days[$d] == 1){
 			$isDayAvailable = true;
 		}
+		
 		bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable);
+		
 		?>
 		
 		</div>

@@ -231,11 +231,11 @@ font-size: 12px;
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
 				    		
-				    		if($tissus[$i]['ref_protocol'] == 0){
+				    		if($tissus[$i]['ref_protocol'] == "0"){
 				    			$val .= "<p>Manuel</p>";
 				    		}
 				    		else{
-				    			$val .= "<p><a href=\"protocols/protoref/" . $tissus[$i]['ref_protocol'] . "\">"  
+				    			$val .= "<p><a href=\"protocols/protoref/" . $anticorps ['id'] . "\">"  
 										. $tissus[$i]['ref_protocol'] . "</a></p>";
 				    		}  
 				    	}			    	

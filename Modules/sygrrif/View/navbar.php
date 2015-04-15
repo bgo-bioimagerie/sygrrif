@@ -104,15 +104,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<p>
 					<button onclick="location.href='sygrrif/statistics'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Statistics_Resources($lang) ?></button>
-					<button onclick="location.href='sygrrif/statpriceunits'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::Bill_per_unit($lang) ?></button>
-					<button onclick="location.href='sygrrifbillmanager'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::Bills_manager($lang) ?></button>	
-					<button onclick="location.href='sygrrifstatsusers/statusers'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::Authorized_users($lang) ?></button>	
-					<button onclick="location.href='sygrrif/statauthorizations'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::Statistics_authorizations($lang) ?></button>
-						
+					
 					<?php 
 					$ModulesManagerModel = new ModulesManager();
 					$use_project = $ModulesManagerModel->getDataMenusUserType("projects");
@@ -123,7 +115,21 @@ if (isset($_SESSION["user_settings"]["language"])){
 						class="btn btn-link" id="navlink"><?= SyTranslator::bill_project($lang) ?></button>
 					<?php 
 					}
+					else{
+						?>
+						<button onclick="location.href='sygrrif/statpriceunits'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::Bill_per_unit($lang) ?></button>
+					<?php	
+					}
 					?>
+					<button onclick="location.href='sygrrifbillmanager'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::Bills_manager($lang) ?></button>	
+					<button onclick="location.href='sygrrifstatsusers/statusers'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::Authorized_users($lang) ?></button>	
+					<button onclick="location.href='sygrrif/statauthorizations'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::Statistics_authorizations($lang) ?></button>
+					<button onclick="location.href='sygrrifstats/report'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::grr_report($lang) ?></button>
 							
 				</p>
 			</fieldset>

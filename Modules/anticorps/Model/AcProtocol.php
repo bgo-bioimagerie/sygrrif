@@ -30,7 +30,7 @@ class AcProtocol extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `ac_protocol` (
 				`id` int(11) NOT NULL AUTO_INCREMENT,
 				`kit` int(11) NOT NULL,
-				`no_proto` int(11) NOT NULL,
+				`no_proto` varchar(11) NOT NULL,
 				`proto` int(11) NOT NULL,
 				`fixative` int(11) NOT NULL,
 				`option_` int(11) NOT NULL,
@@ -165,6 +165,17 @@ class AcProtocol extends Model {
 	public function getProtocolsByRef($protocolRef){
 		$sql = "select * from ac_protocol where no_proto=?";
 		$req = $this->runRequest($sql, array($protocolRef));
+		$protos = $req->fetchAll();
+		
+		return $this->getAssociateAnticorpsInfo($protos);
+	}
+	
+	public function getProtocolsByAnticorps($anticorpsId){
+		
+		$sql = "SELECT * FROM ac_protocol WHERE no_proto IN (SELECT ref_protocol		 			
+				FROM ac_j_tissu_anticorps
+				WHERE id_anticorps=?)";
+		$req = $this->runRequest($sql, array($anticorpsId));
 		$protos = $req->fetchAll();
 		
 		return $this->getAssociateAnticorpsInfo($protos);

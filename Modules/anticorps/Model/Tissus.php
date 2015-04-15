@@ -25,7 +25,7 @@ class Tissus extends Model {
   				`ref_bloc` varchar(30) NOT NULL,
 				`dilution` varchar(30) NOT NULL,
 				`temps_incubation` varchar(30) NOT NULL,
-  				`ref_protocol` varchar(30) NOT NULL,
+  				`ref_protocol` varchar(11) NOT NULL,
 				`prelevement` int(1) NOT NULL,
   				PRIMARY KEY (`id`)
 				);";

@@ -59,9 +59,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
 							//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 						}
+						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
 						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
+							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.25 - 0.25;								
@@ -95,9 +96,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
 						//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 					}
+					$linkAdress = "calendar/editreservation/r_" . $calEntry['id']; 
 					?>
 								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
+								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*0.25 - 0.25;
@@ -118,8 +120,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							if ($he[0] < 10){$he[0] = "0". $he[0];}
 							$hed = $he[0] . "-" .$he[1];
 							if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
-							?>
-						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
+								$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2;
+								?>
+						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
 						<?php }}}?>
 						</div>
 					<?php 
@@ -127,6 +130,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 				}
 	}
 	elseif ($size_bloc_resa == 1800){
+		
+		//echo "case 1800 <br/>";
 		// resa
 		$caseTimeBegin = $date_unix + $day_begin*3600 - 1800;
 		$caseTimeEnd = $date_unix + $day_begin*3600;
@@ -144,9 +149,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			$foundStartEntry = false;
 			foreach ($calEntries as $calEntry){
 				
-				if($h == $day_begin &&  $calEntry['start_time']<=$caseTimeBegin){
+				if($h == $day_begin &&  $calEntry['start_time']<$caseTimeBegin){
 						
 					if ( $calEntry['end_time'] >= $caseTimeBegin ){
+						//echo "should not enter here <br/>";
 				
 						$foundStartEntry = true;
 						$blocNumber = ($calEntry['end_time'] - $caseTimeBegin)/($caseTimeLength);
@@ -172,9 +178,11 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
 							//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 						}
+						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
 						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
+							
+							<a class="text-center" id="resa_link" href=<?=$linkAdress?>><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.5 - 0.5;								
@@ -207,9 +215,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
 						//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 					}	
+					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
 						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-						<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
+						<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 					<?php
 					$h+= $blocNumber*0.5 - 0.5;
@@ -228,8 +237,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					if ($he[0] < 10){$he[0] = "0". $he[0];}
 					$hed = $he[0] . "-" .$he[1];
 					if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
+						$linkAdress = "calendar/editreservation/t_" . $dateString . "_" . $h2;
 						?>
-						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
+						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
 				<?php }}}?>
 				</div>
 			<?php 
@@ -282,9 +292,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
 							//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 						}
+						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
 						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
+							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*1 - 1;
@@ -318,9 +329,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
 						//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 					}
+					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
 								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="calendar/editreservation/r_<?= $calEntry['id'] ?>"><?=$text?></a>
+								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*1 - 1;
@@ -341,8 +353,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						if ($he[0] < 10){$he[0] = "0". $he[0];}
 						$hed = $he[0] . "-" .$he[1];
 						if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
+							$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2;
 							?>
-						<a class="glyphicon glyphicon-plus" href="calendar/editreservation/t_<?= $dateString."_".$h2 ?>"></a>
+						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
 						<?php }}}?>
 						</div>
 					<?php 
