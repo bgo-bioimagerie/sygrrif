@@ -104,7 +104,7 @@
 					<th class="text-center" style="width:7.12%"><a href="users/index/firstname"><?= CoreTranslator::Firstname($lang) ?></a></th>
 					<th class="text-center" style="width:7.12%"><a href="users/index/login"><?= CoreTranslator::Login($lang) ?></a></tH>
 					<th class="text-center" style="width:12.12%"><a href="users/index/email"><?= CoreTranslator::Email($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/tel"><?= CoreTranslator::Phone($lang) ?></a></tH>
+					<th class="text-center" style="width:7.12%"><a href="users/index/tel"><?= CoreTranslator::Phone($lang) ?></a></th>
 					<th class="text-center" style="width:7.12%"><a href="users/index/unit"><?= CoreTranslator::Unit($lang) ?></a></th>
 					<th class="text-center" style="width:7.12%"><a href="users/index/responsible"><?= CoreTranslator::Responsible($lang) ?></a></th>
 					<th class="text-center" style="width:7.12%"><a href="users/index/id_status"><?= CoreTranslator::Status($lang) ?></a></th>
@@ -121,7 +121,7 @@
 				<tr>
 					<?php $userId = $this->clean ( $user ['id'] ); ?>
 					<td style="width:2%"><?= $userId ?></td>
-				    <td style="width:7.12%"><?= $this->clean ( $user ['name'] ); ?></td>
+				    <td style="width:7.12%"><a href="users/edit/<?= $userId ?>" > <?= $this->clean ( $user ['name'] ); ?></a></td>
 				    <td style="width:7.12%"><?= $this->clean ( $user ['firstname'] ); ?></td>
 				    <td style="width:7.12%"><?= $this->clean ( $user ['login'] ); ?></td>
 				    <td style="width:13.12%"><?= $this->clean ( $user ['email'] ); ?></td>
@@ -146,7 +146,7 @@
 				    </td>
 				    <td style="width:7.12%"><?= CoreTranslator::dateFromEn( $this->clean ( $user ['date_created']) , $lang) ?></td>
 				    <td style="width:7.12%"><?= CoreTranslator::dateFromEn( $this->clean ( $user ['date_last_login'] ), $lang) ?></td>
-				    <td style="width:2.12%"><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button></td>  
+				    <td style="width:2.12%"><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?></button></td>  
 	    		</tr>
 	    		<?php }endforeach; ?>
 				

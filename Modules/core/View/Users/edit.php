@@ -154,19 +154,22 @@
 					          	$active = "selected=\"selected\"";
 					          }
 					    ?>
-						<OPTION value="<?= $statusid ?>" <?= $active ?>> <?= $statusname ?> </OPTION>
+						<OPTION value="<?= $statusid ?>" <?= $active ?>> <?= CoreTranslator::Translate_status($lang, $statusname)  ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 		<br>
+		<!-- 
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang)?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="convention" type="text" name="convention" value = "<?= $user['convention'] ?>"
+				
 				/>
 			</div>
 		</div>
+		-->
+		<input class="form-control" id="convention" type="hidden" name="convention" value = "<?= $user['convention'] ?>"
 		<br>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang)?></label>
@@ -200,6 +203,7 @@
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)?>" />
 				<button type="button" onclick="location.href='users'" class="btn btn-default"><?= CoreTranslator::Cancel($lang)?></button>
+				<button type="button" onclick="location.href='<?="users/delete/".$this->clean($user['id']) ?>'" class="btn btn-danger"><?= CoreTranslator::Delete($lang) ?></button>
 		</div>
 		
       </form>

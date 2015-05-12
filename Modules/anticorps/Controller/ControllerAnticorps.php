@@ -17,6 +17,13 @@ class ControllerAnticorps extends ControllerSecureNav {
 	// Affiche la liste de tous les billets du blog
 	public function index() {
 		
+		
+		if ( isset($_SESSION["ac_advSearch"])){
+			$this->advsearchquery("index");
+			//echo "go to adv search";
+			return;
+		}
+		
 		// get sort action
 		$sortentry = "no_h2p2";
 		if ($this->request->isParameterNotEmpty('actionid')){
@@ -261,14 +268,36 @@ class ControllerAnticorps extends ControllerSecureNav {
 
 	}
 	
-	public function advsearchquery(){
+	public function advsearchquery($source = ""){
 		
-		$searchName = $this->request->getParameterNoException("searchName");
-		$searchNoH2P2 = $this->request->getParameterNoException ("searchNoH2P2");
-		$searchSource = $this->request->getParameterNoException ("searchSource");
-		$searchCible = $this->request->getParameterNoException ("searchCible");
-		$searchValide = $this->request->getParameterNoException ("searchValide");
-		$searchResp = $this->request->getParameterNoException ("searchResp");
+		
+		if ($source == "index"){
+			
+			//print_r($_SESSION["ac_advSearch"]);
+			//return;
+			$searchName = $_SESSION["ac_advSearch"]["searchName"];
+			$searchNoH2P2 = $_SESSION["ac_advSearch"]["searchNoH2P2"];
+			$searchSource = $_SESSION["ac_advSearch"]["searchSource"];
+			$searchCible = $_SESSION["ac_advSearch"]["searchCible"];
+			$searchValide = $_SESSION["ac_advSearch"]["searchValide"];
+			$searchResp = $_SESSION["ac_advSearch"]["searchResp"];
+			
+		}
+		else{
+			$searchName = $this->request->getParameterNoException("searchName");
+			$searchNoH2P2 = $this->request->getParameterNoException ("searchNoH2P2");
+			$searchSource = $this->request->getParameterNoException ("searchSource");
+			$searchCible = $this->request->getParameterNoException ("searchCible");
+			$searchValide = $this->request->getParameterNoException ("searchValide");
+			$searchResp = $this->request->getParameterNoException ("searchResp");
+		}
+		
+		$_SESSION["ac_advSearch"] = array(  "searchName" => $searchName,
+											"searchNoH2P2" => $searchNoH2P2,
+											"searchSource" => $searchSource,
+											"searchCible" => $searchCible,
+											"searchValide" => $searchValide,
+											"searchResp" => $searchResp);
 		
 		$anticorpsModel = new Anticorps();
 		$anticorpsArray = $anticorpsModel->searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp);

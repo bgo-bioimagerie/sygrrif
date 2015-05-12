@@ -146,7 +146,7 @@ class SyTranslator {
 	
 	public static function Bills_manager($lang = ""){
 		if ($lang == "Fr"){
-			return "Gestionnaire de facture";
+			return "Gestionnaire de factures";
 		}
 		return "Bills manager";
 	}
@@ -235,6 +235,7 @@ class SyTranslator {
 		return "Short description";
 	}
 	
+	
 	public static function Full_description($lang = ""){
 		if ($lang == "Fr"){
 			return "Description complète";
@@ -261,6 +262,27 @@ class SyTranslator {
 			return "Durée (en minutes)";
 		}
 		return "Duration (in minutes)";
+	}
+	
+	public static function Minutes($lang = ""){
+		if ($lang == "Fr"){
+			return "Minutes";
+		}
+		return "Minutes";
+	}
+	
+	public static function Hours($lang = ""){
+		if ($lang == "Fr"){
+			return "Heures";
+		}
+		return "Hours";
+	}
+	
+	public static function Days($lang = ""){
+		if ($lang == "Fr"){
+			return "Jours";
+		}
+		return "Days";
 	}
 	
 	public static function Edit_series($lang = ""){
@@ -1479,4 +1501,38 @@ class SyTranslator {
 		return "Output";
 	}
 	
+	public static function TotalHT($lang){
+		if ($lang == "Fr"){
+			return "Total HT";
+		}
+		return "Total HT";
+	}
+	
+	static public function Default_color($lang){
+		if ($lang == "Fr"){
+			return "Couleur par défaut";
+		}
+		return "Default color";
+	}
+	
+	static public function Supplies($lang){
+		if ($lang == "Fr"){
+			return "Consommables";
+		}
+		return "Supplies";
+	}
+	
+	static public function Remove($lang){
+		if ($lang == "Fr"){
+			return "Suprimer";
+		}
+		return "Remove";
+	}
+	
+	static public function Prices_for($lang){
+		if ($lang == "Fr"){
+			return "Tarifs pour ";
+		}
+		return "Prices for";
+	}
 }

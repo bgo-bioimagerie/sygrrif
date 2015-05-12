@@ -64,7 +64,7 @@
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
 		        <button type="button" onclick="location.href='sygrrif/deletecolorcode/<?= $colorcode['id'] ?>'" class="btn btn-danger" id="navlink"><?= SyTranslator::Delete($lang) ?></button>
-				<button type="button" onclick="location.href='sygrrif/colorcodes'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrif/colorcodes'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

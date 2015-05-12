@@ -393,6 +393,37 @@ class Anticorps extends Model {
 		return $anticorps;
 	}
 	
+	
+	private function endsWith($haystack, $needle)
+	{
+		$length = strlen($needle);
+		if ($length == 0) {
+			return true;
+		}
+	
+		//echo "last char = " . substr($haystack, -$length) . "<br/>";
+		return (substr($haystack, -$length) === $needle);
+	}
+	
+	private function compare($str, $serach){
+		
+		//echo "compare <br/>";
+		
+		if ( $this->endsWith($serach,"*")){
+			$search2 = substr($serach, 0, -1);
+			
+			//echo "sub string = " . $search2 . "<br/>";
+			
+			if ($str === $search2){
+				return true;
+			}
+			return false;
+		} 
+		else{
+			return stristr($str, $serach);
+		}
+	}
+	
 	public function searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp){
 		
 		$acs = $this->getAnticorpsInfo();
@@ -400,7 +431,7 @@ class Anticorps extends Model {
 		if ($searchName != ""){	
 			$anticorps = array();
 			foreach ($acs as $as){
-				if ( stristr($as["nom"], $searchName) ){
+				if ( $this->compare($as["nom"], $searchName) ){
 					$anticorps[] = $as;
 				}
 			}
@@ -424,11 +455,12 @@ class Anticorps extends Model {
 			}
 			$acs = $anticorps;
 		}
+				
 		if ($searchCible != ""){
 			$anticorps = array();
 			foreach ($acs as $as){
 				foreach ($as["tissus"] as $tissus){
-					if ( $tissus["espece"] == $searchCible ){
+					if ( $this->compare($tissus["organe"], $searchCible) ){
 						$anticorps[] = $as;
 					}
 				}
@@ -451,7 +483,7 @@ class Anticorps extends Model {
 			$anticorps = array();
 			foreach ($acs as $as){
 				foreach($as["proprietaire"] as $proprio){
-					if (strstr($proprio["name"], $searchResp)){
+					if ($this->compare($proprio["name"], $searchResp)){
 						$anticorps[] = $as;
 						break;
 					}

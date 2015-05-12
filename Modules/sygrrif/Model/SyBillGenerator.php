@@ -1281,8 +1281,6 @@ class SyBillGenerator extends Model {
 			*/
 		}
 		
-		// add the bill to the bill manager
-		$modelBill->addBillUnit($number, $period_begin, $period_end, date("Y-m-d", time()), $unit_id, $responsible_id);
 		
 		// bilan
 		// total HT
@@ -1294,6 +1292,10 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+		
+		// add the bill to the bill manager
+		$modelBill->addBillUnit($number, $period_begin, $period_end, date("Y-m-d", time()), $unit_id, $responsible_id, $honoraireTotal);
+		
 		
 		// frais de gestion
 		/*
@@ -1429,14 +1431,17 @@ class SyBillGenerator extends Model {
 			// user info
 			$modelUser = new User();
 			$nomPrenom = $modelUser->getUserFromIdUnit(($b[0]), $unit_id);
-			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){
-				$people[0][$i] = $nomPrenom[0]["name"]; 	//Nom du beneficiaire
-				$people[1][$i] = $nomPrenom[0]["firstname"]; 	//Prénom du bénéficiaire
-				$people[2][$i] = $b[0];				//Login du bénéficiaire
-				$people[3][$i] = $modelUser->getUserFUllName($nomPrenom[0]["id_responsible"]);	//Responsable du bénéficiaire
-				$people[4][$i] = $unitName;	//laboratoire du bénificiaire
-				$i++;
+				
+				if ($responsible_id == $modelUser->getUserResponsible($b[0])){
+					// name, firstname, id_responsible
+					$people[0][$i] = $nomPrenom[0]["name"]; 	//Nom du beneficiaire
+					$people[1][$i] = $nomPrenom[0]["firstname"]; 	//Prénom du bénéficiaire
+					$people[2][$i] = $b[0];				//Login du bénéficiaire
+					$people[3][$i] = $modelUser->getUserFUllName($nomPrenom[0]["id_responsible"]);	//Responsable du bénéficiaire
+					$people[4][$i] = $unitName;	//laboratoire du bénificiaire
+					$i++;
+				}
 			}
 		}
 		array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);

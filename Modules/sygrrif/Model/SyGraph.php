@@ -58,6 +58,68 @@ class SyGraph extends Model {
 		return $graphData;
 	}
 	
+	public function getCamembertArray($year){
+		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
+		$req = $this->runRequest($sql);
+		$numMachinesFormesTotal = $req->rowCount();
+		$machinesFormesListe = $req->fetchAll();
+		
+		$machineFormes = array();
+		$i = -1;
+		foreach($machinesFormesListe as $mFL) {
+			$i++;
+			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
+			$req = $this->runRequest($sql);
+			$numMachinesFormes[$i][0] = $mFL[0];
+			$numMachinesFormes[$i][1] = $req->rowCount();
+			
+			$sql = 'SELECT name FROM sy_resources WHERE id ="'.$mFL[0].'"';
+			$req = $this->runRequest($sql);
+			$res = $req->fetchAll();
+			$nomMachine = "-";
+			if (count($res) > 0){
+				$nomMachine = $res[0][0];
+			}
+
+			$numMachinesFormes[$i][0] = $nomMachine;
+			
+		}
+		return $numMachinesFormes;
+	}
+	
+	public function getCamembertTimeArray($year){
+		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
+		$req = $this->runRequest($sql);
+		$numMachinesFormesTotal = $req->rowCount();
+		$machinesFormesListe = $req->fetchAll();
+		
+		$i=-1;
+		foreach($machinesFormesListe as $mFL) {
+			$i++;
+			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
+			$req = $this->runRequest($sql);
+				
+			$resas = $req->fetchAll();
+			$timeResa = 0.0;
+			foreach($resas as $resa){
+				$timeResa += (float)($resa["end_time"] - $resa["start_time"]) / (float)3600;
+			}
+			$numMachinesFormes[$i][1] = $timeResa;
+			
+			$sql = 'SELECT name FROM sy_resources WHERE id ="'.$mFL[0].'"';
+			$req = $this->runRequest($sql);
+			$res = $req->fetchAll();
+			$nomMachine = "-";
+			if (count($res) > 0){
+				$nomMachine = $res[0][0];
+			}
+			
+			$numMachinesFormes[$i][0] = $nomMachine;
+		}
+		
+		return $numMachinesFormes;
+	}
+	
 	public function getCamembertContent($year, $numTotal){
 		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
@@ -100,7 +162,6 @@ class SyGraph extends Model {
 			}
 			else{
 				$angle += $curentAngle;
-
 			}
 			
 			$arriveeX = 300+250*cos($angle);

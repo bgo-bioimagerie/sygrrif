@@ -120,7 +120,7 @@
 					    <?php $statusname = $this->clean( $status['name'] );
 					          $statusid = $this->clean( $status['id'] );
 					    ?>
-						<OPTION value="<?= $statusid ?>"> <?= $statusname ?> </OPTION>
+						<OPTION value="<?= $statusid ?>"> <?= CoreTranslator::Translate_status($lang, $statusname) ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>

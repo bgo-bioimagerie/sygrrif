@@ -25,7 +25,8 @@ class SyResourceCalendar extends Model {
 		`day_begin` int(11) NOT NULL,		
 		`day_end` int(11) NOT NULL,		
 		`size_bloc_resa` int(11) NOT NULL,
-		`resa_time_setting` int(1) NOT NULL,		
+		`resa_time_setting` int(1) NOT NULL,	
+		`default_color_id` int(11) NOT NULL,			
 		PRIMARY KEY (`id_resource`)
 		);";
 
@@ -33,19 +34,20 @@ class SyResourceCalendar extends Model {
 		return $pdo;
 	}
 
-	public function addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = ""){
-		$sql = "INSERT INTO sy_resources_calendar (id_resource, nb_people_max, available_days, day_begin, day_end, size_bloc_resa, resa_time_setting, quantity_name) 
-				VALUES(?,?,?,?,?,?,?,?)";
-		$pdo = $this->runRequest($sql, array($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name));
+	public function addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0){
+		$sql = "INSERT INTO sy_resources_calendar (id_resource, nb_people_max, available_days, day_begin, day_end, size_bloc_resa, resa_time_setting, quantity_name, default_color_id) 
+				VALUES(?,?,?,?,?,?,?,?,?)";
+		$pdo = $this->runRequest($sql, array($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id));
 		return $pdo;
 	}
 	
-	public function setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = ""){
+	
+	public function setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0){
 		if (!$this->isResource($id_resource)){
-			$this->addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name);
+			$this->addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id);
 		}
 		else{
-			$this->updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name);
+			$this->updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id);
 		}
 	}
 	
@@ -55,10 +57,10 @@ class SyResourceCalendar extends Model {
 		return ($req->rowCount() == 1);
 	}
 	
-	public function updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = ""){
-		$sql = "update sy_resources_calendar set nb_people_max=?, available_days=?, day_begin=?, day_end=?, size_bloc_resa=?, resa_time_setting=?,quantity_name=? 
+	public function updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0){
+		$sql = "update sy_resources_calendar set nb_people_max=?, available_days=?, day_begin=?, day_end=?, size_bloc_resa=?, resa_time_setting=?,quantity_name=?, default_color_id=? 
 		        where id_resource=?";
-		$this->runRequest($sql, array($nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $id_resource));
+		$this->runRequest($sql, array($nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id, $id_resource));
 	}
 	
 	public function resource($id_resource){

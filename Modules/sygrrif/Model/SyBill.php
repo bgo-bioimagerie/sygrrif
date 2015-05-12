@@ -23,6 +23,7 @@ class SyBill extends Model {
 		`is_paid` int(1) NOT NULL,
 		`id_unit` int(11) NOT NULL,
 		`id_responsible` int(11) NOT NULL,
+		`total_ht` int(11) NOT NULL,		
 		`id_project` int(11) NOT NULL,						
 		PRIMARY KEY (`id`)
 		);";
@@ -45,10 +46,10 @@ class SyBill extends Model {
 	}
 	
 	
-	public function addBillUnit($number, $period_begin, $period_end, $date_generated, $id_unit, $id_responsible, $date_paid="", $is_paid=0){
-		$sql = "insert into sy_bills(number, period_begin, period_end, date_generated, id_unit, id_responsible, date_paid, is_paid)"
-				. " values(?, ?, ?, ?, ?, ?, ?, ?)";
-		$this->runRequest($sql, array($number, $period_begin, $period_end, $date_generated, $id_unit, $id_responsible, $date_paid, $is_paid));
+	public function addBillUnit($number, $period_begin, $period_end, $date_generated, $id_unit, $id_responsible, $totalHT, $date_paid="", $is_paid=0){
+		$sql = "insert into sy_bills(number, period_begin, period_end, date_generated, id_unit, id_responsible, total_ht, date_paid, is_paid)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($number, $period_begin, $period_end, $date_generated, $id_unit, $id_responsible, $totalHT, $date_paid, $is_paid));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -97,6 +98,10 @@ class SyBill extends Model {
 		else if ($sortentry == "responsible"){
 			$sqlSort = "core_users.name";
 		}
+		else if ($sortentry == "total_ht"){
+			$sqlSort = "sy_bills.total_ht";
+		}
+		
 		
 		$sql = "SELECT sy_bills.id AS id, sy_bills.number AS number,
 				       sy_bills.period_begin AS period_begin, 
@@ -104,6 +109,7 @@ class SyBill extends Model {
 					   sy_bills.date_generated AS date_generated, 
 					   sy_bills.date_paid AS date_paid, 
 					   sy_bills.is_paid AS is_paid,
+					   sy_bills.total_ht AS total_ht, 
 					   core_units.name AS unit,
 					   core_users.name AS resp_name,
 					   core_users.firstname AS resp_firstname
@@ -149,10 +155,10 @@ class SyBill extends Model {
 	 * @param int $id Id of the item to update
 	 * @param string $name New name of the item
 	 */
-	public function editBills($id, $number, $date_generated, $date_paid, $is_paid){
+	public function editBills($id, $number, $date_generated, $total_ht, $date_paid, $is_paid){
 	
-		$sql = "update sy_bills set number=?, date_generated=?, date_paid=?, is_paid=?  where id=?";
-		$unit = $this->runRequest($sql, array($number, $date_generated, $date_paid, $is_paid, $id));
+		$sql = "update sy_bills set number=?, date_generated=?, total_ht=?, date_paid=?, is_paid=?  where id=?";
+		$unit = $this->runRequest($sql, array($number, $date_generated, $total_ht, $date_paid, $is_paid, $id));
 	}
 
 	public function editBillUnit($id, $number, $date_generated, $id_unit, $id_responsible, $date_paid, $is_paid){

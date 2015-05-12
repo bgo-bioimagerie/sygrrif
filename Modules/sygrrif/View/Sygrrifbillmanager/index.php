@@ -43,6 +43,7 @@
 					<td><a href="sygrrifbillmanager/index/period_begin"><?= SyTranslator::Period_begin($lang) ?></a></td>
 					<td><a href="sygrrifbillmanager/index/period_end"><?= SyTranslator::Period_end($lang) ?></a></td>
 					<td><a href="sygrrifbillmanager/index/date_generated"><?= SyTranslator::Date_Generated($lang) ?></a></td>
+					<td><a href="sygrrifbillmanager/index/total_ht"><?= SyTranslator::TotalHT($lang) ?></a></td>
 					<td><a href="sygrrifbillmanager/index/date_paid"><?= SyTranslator::Date_Paid($lang) ?></a></td>
 					<td><a href="sygrrifbillmanager/index/is_paid"><?= SyTranslator::Is_Paid($lang) ?></a></td>
 					<td></td>
@@ -70,6 +71,7 @@
 				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['period_begin'], $lang) ); ?></td>
 				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['period_end'], $lang) ); ?></td>
 				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['date_generated'], $lang) ); ?></td>
+				    <td><?= $this->clean ( $bill ['total_ht'] ); ?></td>
 				    <td><?= $this->clean ( CoreTranslator::dateFromEn( $bill ['date_paid'], $lang) ); ?></td>
 				    <?php 
 				    $is_active = $this->clean ( $bill ['is_paid'] );

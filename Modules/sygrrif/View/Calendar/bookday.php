@@ -3,12 +3,17 @@
 <?php echo $navBar?>
 <?php 
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
-require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
+require_once 'Modules/sygrrif/View/Calendar/bookfunction.php';
 ?>
 
 <head>
-
+ 
 <style>
+
+a{
+	width: 100%;
+}
+
 #tcell{
 	border-left: 1px solid #f1f1f1;
 	border-right: 1px solid #f1f1f1;
@@ -153,10 +158,14 @@ $available_days = explode(",", $available_days);
 	?>
 	
 </div>
+</div>
+
+<div class="col-xs-12">
 
 <?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
 
 </div>
+
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>
 <?php endif; ?>

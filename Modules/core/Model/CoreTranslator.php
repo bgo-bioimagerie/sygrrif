@@ -199,9 +199,9 @@ class CoreTranslator {
 	}
 	public static function Date_convention($lang){
 		if ($lang == "Fr"){
-			return "Date charte";
+			return "Charte signée le";
 		}
-		return "Date convention";
+		return "Convention signed on";
 	}
 	public static function Date_end_contract($lang){
 		if ($lang == "Fr"){
@@ -695,5 +695,55 @@ class CoreTranslator {
 			return "Rechercher";
 		}
 		return "Search";
+	}
+	
+	public static function Delete_User($lang){
+		if ($lang == "Fr"){
+			return "Suprimer utilisateur";
+		}
+		return "Delete user";
+	}
+	
+	public static function Delete($lang){
+		if ($lang == "Fr"){
+			return "Suprimer";
+		}
+		return "Delete";
+	}
+	
+	public static function Delete_User_Warning($lang, $userName){
+		if ($lang == "Fr"){
+			return "Êtes-vous sûr de vouloir supprimer définitivement l'utilisateur: " . $userName . " ?" . 
+				   "<br> Attention: Cela supprimera uniquement l'utilisateur de la base de données. Toute référence faite
+				    à cet utilisateur dans un autre module sera corrompu.";
+		}
+		return "Delete user: " . $userName . " ?" .
+		       "<br> Warning: This will remove the user of the database. Any reference to this user in another module will be corrupted";
+	}
+	
+	public static function The_user_has_been_deleted($lang){
+		if ($lang == "Fr"){
+			return "L'utilisateur a été suprimé";
+		}
+		return "The user has been deleted";
+	}
+	
+	public static function Translate_status($lang, $status){
+		if ($lang == "Fr"){
+			if ($status == "visitor"){
+				return "visiteur";
+			}
+			else if($status == "user"){
+				return "utilisateur";
+			}
+			else if($status == "manager"){
+				return "gestionnaire";
+			}
+			else if($status == "admin"){
+				return "administrateur";
+			}
+			return $status;
+		}
+		return $status;
 	}
 }

@@ -28,6 +28,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 	color: #cdbfe3;
 	background-color: #337ab7;
 	border: none;
+    margin-bottom:0px;
 }
 
 legend {
@@ -38,24 +39,23 @@ legend {
 
 </head>
 
-<div class="bs-docs-header" id="content">
+<div class="bs-docs-header" id="content" style="margin-bottom:-20px">
 	<div class="container">
 		<h2>Anticorps</h2>
 		<div class="col-md-12">
-		
 				<div class='col-md-2 well'>
-			<fieldset>
+			<fieldset style="margin-bottom:-20px">
 				<legend>Listing </legend>
-				    <button onclick="location.href='protocols/'" class="btn btn-link" id="navlink">Protocoles</button>
-					<button onclick="location.href='protocols/edit'" class="btn btn-link" id="navlink">+</button>
-				<br/>
 					<button onclick="location.href='anticorps'" class="btn btn-link" id="navlink">Anticorps</button>
 					<button onclick="location.href='anticorps/edit'" class="btn btn-link" id="navlink">+</button>
+				<br/>
+					<button onclick="location.href='protocols/'" class="btn btn-link" id="navlink">Protocoles</button>
+					<button onclick="location.href='protocols/edit'" class="btn btn-link" id="navlink">+</button>
 			</fieldset>
 		</div>
 		
 		<div class='col-md-2 well'>
-			<fieldset>
+			<fieldset style="margin-bottom:-20px">
 			    <legend>Référence </legend>
 				    <button onclick="location.href='sources/'" class="btn btn-link" id="navlink">Sources</button>
 					<button onclick="location.href='sources/add'" class="btn btn-link" id="navlink">+</button>
@@ -66,7 +66,7 @@ legend {
 		</div>
 		
 		<div class='col-md-3 well'>
-			<fieldset>
+			<fieldset style="margin-bottom:-20px">
 				<legend>Tissus </legend>	
 				    <button onclick="location.href='especes/'" class="btn btn-link" id="navlink">Espèces</button>
 					<button onclick="location.href='especes/add'" class="btn btn-link" id="navlink">+</button>
@@ -80,7 +80,7 @@ legend {
 		</div>
 		
 		<div class='col-md-2 well'>
-			<fieldset>
+			<fieldset style="margin-bottom:-20px">
 				<legend>Détails Proto </legend>	
 				    <button onclick="location.href='kit/'" class="btn btn-link" id="navlink">KIT</button>
 					<button onclick="location.href='kit/add'" class="btn btn-link" id="navlink">+</button>
@@ -100,7 +100,7 @@ legend {
 		</div>
 		
 		<div class='col-md-2 well'>
-			<fieldset>
+			<fieldset style="margin-bottom:-20px">
 				<legend> ... </legend>	
 				    <button onclick="location.href='dem/'" class="btn btn-link" id="navlink">Dém</button>
 					<button onclick="location.href='dem/add'" class="btn btn-link" id="navlink">+</button>

@@ -72,6 +72,7 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		$date_generated = $this->request->getParameter("date_generated");
 		$date_paid = $this->request->getParameter("date_paid");
 		$is_paid = $this->request->getParameter("is_paid");
+		$total_ht = $this->request->getParameter("total_ht");
 		
 		
 		if ($date_generated != ""){
@@ -82,7 +83,7 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		}
 		
 		$modelBillManager = new SyBill();
-		$modelBillManager->editBills($id, $number, $date_generated, $date_paid, $is_paid);
+		$modelBillManager->editBills($id, $number, $date_generated, $total_ht, $date_paid, $is_paid);
 		
 		$this->redirect("sygrrifbillmanager");
 		

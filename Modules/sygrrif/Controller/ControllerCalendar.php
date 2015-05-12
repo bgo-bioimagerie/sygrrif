@@ -43,6 +43,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_end = 19;
 		$size_bloc_resa = 1800;
 		$resa_time_setting = 0;
+		$default_color_id = 0;
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -68,7 +69,12 @@ class ControllerCalendar extends ControllerBooking {
 			$day_end = $resourceCInfo["day_end"];
 			$size_bloc_resa = $resourceCInfo["size_bloc_resa"];
 			$resa_time_setting = $resourceCInfo["resa_time_setting"];
+			$default_color_id = $resourceCInfo["default_color_id"];
 		}
+		
+		// colors
+		$colorModel = new SyColorCode();
+		$colors = $colorModel->getColorCodes("display_order");
 		
 		// parse de days
 		$days_array = explode(",", $available_days);
@@ -115,7 +121,9 @@ class ControllerCalendar extends ControllerBooking {
 				'pricingTable'=> $pricingTable,
 				'cateoriesList' => $cateoriesList,
 				'areasList' => $areasList,
-				'area_id' => $area_id
+				'area_id' => $area_id,
+				'colors' => $colors,
+				'default_color_id' => $default_color_id
 		) );
 		
 	}
@@ -149,6 +157,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_end = $this->request->getParameter("day_end");
 		$size_bloc_resa = $this->request->getParameter("size_bloc_resa");
 		$resa_time_setting = $this->request->getParameter('resa_time_setting');
+		$default_color_id = $this->request->getParameter("default_color_id");
 
 		$lundi = $this->request->getParameterNoException ( "monday");
 		$mardi = $this->request->getParameterNoException ( "tuesday");
@@ -168,8 +177,12 @@ class ControllerCalendar extends ControllerBooking {
 		
 		$available_days = $lundi . "," . $mardi . "," . $mercredi . "," . $jeudi . "," . $vendredi . "," . $samedi . "," . $dimanche;
 		
+		
+		//echo "default_color_id = " . $default_color_id . "<br/>";
+		
+		
 		$modelCResource = new SyResourceCalendar();
-		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting);
+		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting,"", $default_color_id);
 		
 		// pricing
 		$modelResourcePricing = new SyResourcePricing();
@@ -341,6 +354,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_end = $this->request->getParameter("day_end");
 		$size_bloc_resa = $this->request->getParameter("size_bloc_resa");
 		$resa_time_setting = $this->request->getParameter("resa_time_setting");
+		$default_color_id = $this->request->getParameter("default_color_id");
 	
 		$lundi = $this->request->getParameterNoException ( "monday");
 		$mardi = $this->request->getParameterNoException ( "tuesday");
@@ -361,7 +375,7 @@ class ControllerCalendar extends ControllerBooking {
 		$available_days = $lundi . "," . $mardi . "," . $mercredi . "," . $jeudi . "," . $vendredi . "," . $samedi . "," . $dimanche;
 	
 		$modelCResource = new SyResourceCalendar();
-		$modelCResource->setResource($id_resource, 0, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name);
+		$modelCResource->setResource($id_resource, 0, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id);
 	
 		// pricing
 		$modelResourcePricing = new SyResourcePricing();
@@ -379,6 +393,262 @@ class ControllerCalendar extends ControllerBooking {
 			$modelResourcePricing->setPricing($id_resource, $pid, $priceDay, $price_night, $price_we);
 		}
 	
+		$this->redirect("sygrrif", "resources");
+	}
+	
+	public function edittimeunitaryresource(){
+		
+		$id = "";
+		if ($this->request->isParameterNotEmpty("actionid")) {
+			$id = $this->request->getParameter ( "actionid" );
+		}
+		
+		// default values
+		$name = "";
+		$description = "";
+		$accessibility_id = 4;
+		$category_id = 0;
+		$area_id = 0;
+		// default values specific
+		$quantity_name = "Quantity";
+		$available_days = "1,1,1,1,1,1,1";
+		$day_begin = 8;
+		$day_end = 19;
+		$size_bloc_resa = 1800;
+		$resa_time_setting = 0;
+		$supplies = array();
+		$default_color_id = 1;
+		
+		if ($id != ""){
+			// get common info
+			$modelResource = new SyResource();
+			$resourceInfo = $modelResource->resource($id);
+			$name = $resourceInfo["name"];
+			$description = $resourceInfo["description"];
+			$accessibility_id = $resourceInfo["accessibility_id"];
+			$type_id = $resourceInfo["type_id"];
+			$category_id = $resourceInfo["category_id"];
+			$area_id = $resourceInfo["area_id"];
+			
+			
+			$modelCResource = new SyResourceCalendar();
+			$resourceCInfo = $modelCResource->resource($id);
+			$quantity_name = $resourceCInfo["quantity_name"];
+			$supplies = explode(",", $quantity_name);
+			$available_days = $resourceCInfo["available_days"];
+			$day_begin = $resourceCInfo["day_begin"];
+			$day_end = $resourceCInfo["day_end"];
+			$size_bloc_resa = $resourceCInfo["size_bloc_resa"];
+			$resa_time_setting = $resourceCInfo["resa_time_setting"];
+			$default_color_id = $resourceCInfo["default_color_id"];
+		}
+		
+		// parse de days
+		$days_array = explode(",", $available_days);
+		
+		// type id
+		$mrs = new SyResourceType();
+		$type_id = $mrs->getTypeId("Calendar");
+		
+		// resources categories
+		$modelcategory = new SyResourcesCategory();
+		$cateoriesList = $modelcategory->getResourcesCategories("name");
+		
+		// areas list
+		$modelArea = new SyArea();
+		$areasList = $modelArea->getAreasIDName();
+		
+		// colors
+		$colorModel = new SyColorCode();
+		$colors = $colorModel->getColorCodes("display_order");
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'id' => $id,
+				'name' => $name,
+				'description' => $description,
+				'accessibility_id' => $accessibility_id,
+				'type_id' => $type_id,
+				'category_id' => $category_id,
+				'quantity_name' => $quantity_name,
+				'available_days' => $available_days,
+				'day_begin' => $day_begin,
+				'day_end' => $day_end,
+				'size_bloc_resa' => $size_bloc_resa,
+				'resa_time_setting' => $resa_time_setting,
+				'days_array' => $days_array,
+				'cateoriesList' => $cateoriesList,
+				'areasList' => $areasList,
+				'area_id' => $area_id,
+				'supplies' => $supplies,
+				'colors' => $colors,
+				'default_color_id' => $default_color_id
+		) );
+	}
+	
+	
+	private function getResourceBase(){
+		// general data
+		$id = $this->request->getParameterNoException('id');
+		$name = $this->request->getParameter("name");
+		$description = $this->request->getParameter("description");
+		$accessibility_id = $this->request->getParameter("accessibility_id");
+		$category_id = $this->request->getParameter("category_id");
+		$area_id = $this->request->getParameter("area_id");
+		
+		// type id
+		$mrs = new SyResourceType();
+		$type_id = $mrs->getTypeId("Unitary Calendar");
+		
+		$resource_base = array( "id" => $id, "name" => $name, "description" => $description,
+				"accessibility_id" => $accessibility_id, "category_id" => $category_id,
+				"area_id" => $area_id);
+		return $resource_base;
+	}
+	
+	private function getResourceInfo(){
+		// specific to calendar query
+		$supplynames = $this->request->getParameter("supplynames");
+		$day_begin = $this->request->getParameter("day_begin");
+		$day_end = $this->request->getParameter("day_end");
+		$size_bloc_resa = $this->request->getParameter("size_bloc_resa");
+		$resa_time_setting = $this->request->getParameter("resa_time_setting");
+		$default_color_id = $this->request->getParameter("default_color_id");
+		
+		$lundi = $this->request->getParameterNoException ( "monday");
+		$mardi = $this->request->getParameterNoException ( "tuesday");
+		$mercredi = $this->request->getParameterNoException ( "wednesday");
+		$jeudi = $this->request->getParameterNoException ( "thursday");
+		$vendredi = $this->request->getParameterNoException ( "friday");
+		$samedi = $this->request->getParameterNoException ( "saturday");
+		$dimanche = $this->request->getParameterNoException ( "sunday");
+		
+		if ($lundi != ""){$lundi = "1";}else{$lundi = "0";}
+		if ($mardi != ""){$mardi = "1";}else{$mardi = "0";}
+		if ($mercredi != ""){$mercredi = "1";}else{$mercredi = "0";}
+		if ($jeudi != ""){$jeudi = "1";}else{$jeudi = "0";}
+		if ($vendredi != ""){$vendredi = "1";}else{$vendredi = "0";}
+		if ($samedi != ""){$samedi = "1";}else{$samedi = "0";}
+		if ($dimanche != ""){$dimanche = "1";}else{$dimanche = "0";}
+		
+		$available_days = $lundi . "," . $mardi . "," . $mercredi . "," . $jeudi . "," . $vendredi . "," . $samedi . "," . $dimanche;
+		
+		$resource_info = array( "supplynames" => $supplynames, "day_begin" => $day_begin, "day_end" => $day_end,
+				"size_bloc_resa" => $size_bloc_resa, "resa_time_setting" => $resa_time_setting,
+				"default_color_id" => $default_color_id, "available_days" => $available_days);
+		
+		return $resource_info;
+	}
+	
+	public function edittimeunitaryresourceprices(){
+		
+		// general data
+		$resource_base = $this->getResourceBase();
+		$modelResource = new SyResource();
+		
+		// specific info
+		$resource_info = $this->getResourceInfo();
+		
+		// pricing
+		$modelPricing = new SyPricing();
+		$pricingTable = $modelPricing->getPrices();
+		
+		// fill the pricing table with the prices for this resource
+		$modelResourcesPricing = new SyResourcePricing();
+		for ($i = 0 ; $i < count($pricingTable) ; ++$i){
+			$pid = $pricingTable[$i]['id'];
+			$inter = $modelResourcesPricing->getPrice($resource_base["id"], $pid);
+			$prices = explode(",", $inter['price_day']);
+		
+			$pricingTable[$i]['val_day'] = $prices[0];
+			$pricingTable[$i]['val_night'] = $inter['price_night'];
+			$pricingTable[$i]['val_we'] = $inter['price_we'];
+			
+			$count = 0;
+			foreach($prices as $price){
+				if ($count > 0){
+					$suppliesPrices[] = $price;
+				}
+				$count++;
+			}
+		}
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'resource_base' => $resource_base,
+ 				'resource_info' => $resource_info,
+				'pricingTable' => $pricingTable,
+				'suppliesPrices' => $suppliesPrices
+				
+		) ); 
+	}
+	
+	public function edittimeunitaryresourcequery(){
+	
+		// general data
+		$resource_base = $this->getResourceBase();
+		$id = $resource_base["id"];
+		$id_resource = $id;
+		$modelResource = new SyResource();
+		if ($id == ""){
+			$id_resource = $modelResource->addResource($resource_base["name"], $resource_base["description"], $resource_base["accessibility_id"], 
+					                                   3, $resource_base["area_id"], $resource_base["category_id"]);
+		}
+		else{
+			$modelResource->editResource($resource_base["id"], $resource_base["name"], $resource_base["description"], 
+					                     $resource_base["accessibility_id"], 3, $resource_base["area_id"], 
+					                     $resource_base["category_id"]);
+		}
+	
+		// specific info
+		$resource_info = $this->getResourceInfo();
+		$modelCResource = new SyResourceCalendar();
+		
+		$quatity_name = "";
+		$supplynames = $this->request->getParameter("supplynames");
+		foreach ($supplynames as $supply){
+			$quatity_name .= $supply . ","; 
+		}
+		$modelCResource->setResource($id_resource, 0, $resource_info["available_days"], $resource_info["day_begin"], 
+				                     $resource_info["day_end"], $resource_info["size_bloc_resa"], $resource_info["resa_time_setting"], 
+				                     $quatity_name, $resource_info["default_color_id"]);
+	
+		// pricing
+		$modelResourcePricing = new SyResourcePricing();
+		$modelPricing = new SyPricing();
+		$pricingTable = $modelPricing->getPrices();
+		foreach ($pricingTable as $pricing){
+			$pid = $pricing['id'];
+			
+			// time pricing
+			$pname = $pricing['tarif_name'];
+			$punique = $pricing['tarif_unique'];
+			$pnight = $pricing['tarif_night'];
+			$pwe = $pricing['tarif_we'];
+			$priceDay = $this->request->getParameter ($pid. "_day");
+			$price_night = 0;
+			if ($pnight){
+				$price_night = $this->request->getParameter ($pid . "_night");
+			}
+			$price_we = 0;
+			if ($pwe){
+				$price_we = $this->request->getParameter ($pid . "_we");
+			}
+
+			$count = 0;
+			foreach ($supplynames as $supply){
+				$priceDay .= "," . $this->request->getParameter ($pid. "_" . $count);	
+				$count++;
+			}
+			
+			$modelResourcePricing->setPricing($id_resource, $pid, $priceDay, $price_night, $price_we);
+		}
+		
+		// view
 		$this->redirect("sygrrif", "resources");
 	}
 	
@@ -649,6 +919,7 @@ class ControllerCalendar extends ControllerBooking {
 		if ($this->request->isParameterNotEmpty("actionid")) {
 			$action = $this->request->getParameter ( "actionid" );
 		}
+		$curentTime = time();
 		if ($action == "daymonthbefore" ){
 			$curentDate = explode("-", $curentDate);
 			$curentTime = mktime(0,0,0,$curentDate[1], $curentDate[2], $curentDate[0] );
@@ -898,7 +1169,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// color types
 		$colorCodeModel = new SyColorCode();
-		$colorCodes = $colorCodeModel->getColorCodes();
+		$colorCodes = $colorCodeModel->getColorCodes("display_order");
 		
 		// a user cannot delete a reservation in the past
 		$canEditReservation = false;
@@ -944,7 +1215,29 @@ class ControllerCalendar extends ControllerBooking {
 			if ($m == 0.5){$m=30;}
 			if ($m == 0.75){$m=45;}
 			$timeBegin = array('h'=> $h, 'm' => $m);
-			$timeEnd = array('h'=> $h, 'm' => $m);
+			
+			
+			$timeEnd = array('h'=> $h+1, 'm' => $m);
+			if( $resourceInfo["size_bloc_resa"] == 1800 ){
+				if ( $m < 30){
+					$m += 30;
+				}
+				else if($m >= 30){
+					$m -= 30;
+					$h += 1;
+				}
+				$timeEnd = array('h'=> $h, 'm' => $m);
+			}
+			if( $resourceInfo["size_bloc_resa"] == 900 ){
+				if ( $m < 45){
+					$m += 15;
+				}
+				else if($m >= 45){
+					$m -= 45;
+					$h += 1;
+				}
+				$timeEnd = array('h'=> $h, 'm' => $m);
+			}
 			
 			// navigation
 			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
@@ -1012,6 +1305,24 @@ class ControllerCalendar extends ControllerBooking {
 					'showSeries' => $showSeries
 			));
 		}
+	}
+	
+	
+	private function isMinutes($val){
+		if (intval($val) < 0 || intval($val) > 60){
+			//echo "minut not in [0, 60] <br/>";
+			return false;
+		}
+		return true;
+		
+	}
+	
+	private function isHour($val){
+		
+		if (intval($val) < 0 || intval($val) > 23){
+			return false;
+		}
+		return true;
 		
 	}
 	
@@ -1029,14 +1340,22 @@ class ControllerCalendar extends ControllerBooking {
 		$recipient_id = $this->request->getParameter('recipient_id');
 		$last_update = date("Y-m-d H:i:s", time());
 		$color_type_id = $this->request->getParameter('color_code_id');
-		$short_description = $this->request->getParameter('short_description');
-		$full_description = $this->request->getParameter('full_description');
+		$short_description = $this->request->getParameterNoException('short_description');
+		$full_description = $this->request->getParameterNoException('full_description');
 		$is_unitary = $this->request->getParameterNoException('is_unitary');
+		$is_timeandunitary = $this->request->getParameterNoException('is_timeandunitary');
 		$repeat_id = $this->request->getParameterNoException('repeat_id');
 		
 		$quantity = 0;
 		if ($is_unitary != ""){
 			$quantity = $this->request->getParameter('quantity');
+		}
+		if ($is_timeandunitary != ""){
+			$quantities = $this->request->getParameter('quantity');
+			$quantity = "";
+			foreach ($quantities as $quant){
+				$quantity .= $quant . ",";
+			}
 		}
 		
 		// get reservation date
@@ -1044,7 +1363,21 @@ class ControllerCalendar extends ControllerBooking {
 		$beginDate = CoreTranslator::dateToEn($beginDate, $lang);
 		$beginDate = explode("-", $beginDate);
 		$begin_hour =  $this->request->getParameter('begin_hour');
+		$begin_hour = intval($begin_hour);
+		//echo "begin hour = " . $begin_hour . "<br/>";
+		if (!$this->isHour($begin_hour)){
+			$this->book("Error: The start hour you gave is not correct");
+			return;
+		}
 		$begin_min = $this->request->getParameter('begin_min');
+		$begin_min = intval($begin_min);
+		if ($begin_min == ""){
+			$begin_min = 0;
+		}
+		if (!$this->isMinutes($begin_min)){
+			$this->book("Error: The start minute you gave is not correct");
+			return;
+		}
 		$start_time = mktime($begin_hour, $begin_min, 0, $beginDate[1], $beginDate[2], $beginDate[0]);
 		
 		$endDate = $this->request->getParameterNoException('end_date');
@@ -1053,15 +1386,46 @@ class ControllerCalendar extends ControllerBooking {
 		}
 		$endDate = explode("-", $endDate);
 		$end_hour =  $this->request->getParameterNoException('end_hour');
+		$end_hour = intval($end_hour);
+		if (!$this->isHour($end_hour)){
+			$this->book("Error: The end hour you gave is not correct");
+			return;
+		}
 		$end_min = $this->request->getParameterNoException('end_min');
+		if ($end_min == ""){
+			$end_min = 0;
+		}
+		$end_min = intval($end_min);
+		//echo "end min = " . $end_min . "<br/>";
+		if (!$this->isMinutes($end_min)){
+			$this->book("Error: The end minute you gave is not correct");
+			return;
+		}
+
 		
 		if (count($endDate) > 2){
 			$end_time = mktime($end_hour, $end_min, 0, $endDate[1], $endDate[2], $endDate[0]);
 		}
 		
 		$duration = $this->request->getParameterNoException('duration');
+		$duration_step = $this->request->getParameterNoException('duration_step');
 		if ($duration != ""){
-			$end_time = $start_time + $duration*60;
+			$coef = 60;
+			if ($duration_step == 1){
+				$coef = 60;
+			}
+			if ($duration_step == 2){
+				$coef = 3600;
+			}
+			if ($duration_step == 3){
+				$coef = 3600*24;
+			}
+			$end_time = $start_time + $duration*$coef;
+		}
+		
+		if ($start_time >= $end_time ){
+			$this->book("Error: The start time you gave is after the end time");
+			return;
 		}
 		
 		// get the series info

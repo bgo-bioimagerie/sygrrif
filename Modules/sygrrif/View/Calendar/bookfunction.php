@@ -227,7 +227,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			if (!$foundStartEntry){
 				$leftBlocks--;
 			?>
-				<div class="text-center" id="tcell" style="height: 25px;">
+			   
+				<div class="text-center" id="tcell" style="height: 25px;"> 
 				<?php if ($isDayAvailable){?>
 				<?php if ($isUserAuthorizedToBook){
 					$h2 = str_replace(".", "-", $h);
@@ -239,9 +240,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
 						$linkAdress = "calendar/editreservation/t_" . $dateString . "_" . $h2;
 						?>
-						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
+						 <a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
 				<?php }}}?>
-				</div>
+				  </div>
+				
 			<?php 
 			}	
 		}

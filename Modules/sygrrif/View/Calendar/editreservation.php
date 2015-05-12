@@ -109,18 +109,35 @@ if (!$canEditReservation){
 				</select>
 			</div>
 		</div>
-	
-		<?php if ($projectsList == ""){?>
-		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Short_description($lang)?></label>
-			<div class="col-xs-8">
-				<input class="form-control" id="name" type="text" name="short_description"
-				       value="<?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['short_description']);} ?>" 
-				       <?=$readOnlyGlobal?> 
-				/>
-			</div>
-		</div>
+		
+		
 		<?php 
+		$modelCoreConfig = new CoreConfig();
+		$editBookingDescriptionSettings = $modelCoreConfig->getParam("SyDescriptionFields");
+	
+		$shortDescName = SyTranslator::Short_description($lang);
+		$fullDescName = SyTranslator::Full_description($lang);
+		if ($editBookingDescriptionSettings > 1){
+			$shortDescName = SyTranslator::Description($lang);
+			$fullDescName = SyTranslator::Description($lang);
+		}
+		
+		?>
+		
+		<?php if ($projectsList == ""){?>
+		
+			<?php if ($editBookingDescriptionSettings == 1 || $editBookingDescriptionSettings == 2){?>
+			<div class="form-group">
+				<label for="inputEmail" class="control-label col-xs-4"><?= $shortDescName ?></label>
+				<div class="col-xs-8">
+					<input class="form-control" id="name" type="text" name="short_description"
+					       value="<?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['short_description']);} ?>" 
+					       <?=$readOnlyGlobal?> 
+					/>
+				</div>
+			</div>
+			<?php 
+			}
 		}
 		else{
 			?>
@@ -140,7 +157,6 @@ if (!$canEditReservation){
 					?>
 					<OPTION value="<?= $projectID ?>" <?= $selected ?>> <?= $projectName?> </OPTION>
 					<?php
-					
 				}
 				?>
 				</select>
@@ -150,13 +166,15 @@ if (!$canEditReservation){
 		}
 		?>
 		
+		<?php if ($editBookingDescriptionSettings == 1 || $editBookingDescriptionSettings == 3){?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Full_description($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?= $fullDescName ?></label>
 			<div class="col-xs-8">
 				<textarea class="form-control" id="name" name="full_description" <?=$readOnlyGlobal?>
 				><?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['full_description']);} ?></textarea>
 			</div>
 		</div>
+		<?php }?>
 		<div class="form-group">
 				<?php 
 				if (isset($reservationInfo)){
@@ -259,13 +277,31 @@ if (!$canEditReservation){
 			if (isset($reservationInfo)){
 				$duration = $this->clean($reservationInfo['end_time']) - $this->clean($reservationInfo['start_time']);
 			}
+			
+			$viewDuration = 1;
+			$durationPrint = $duration/60;
+			if ( $duration/60 > 120 ){
+				$viewDuration = 2;
+				$durationPrint = $duration/3600;
+			}
+			if ( $duration/(3600) > 48 ){
+				$viewDuration = 3;
+				$durationPrint = $duration/(3600*24);
+			}
 			?>
 			<div class="form-group">
 				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Duration($lang)?></label>
-				<div class="col-xs-8">
+				<div class="col-xs-4">
 					<input class="form-control" id="name" type="text" name="duration"
-					       value="<?= $duration/60 ?>" 
+					       value="<?= $durationPrint ?>" 
 					/>
+				</div>
+				<div class="col-xs-4">
+					<select class="form-control" name="duration_step">
+						<OPTION value="1" <?php if($viewDuration==1){echo "selected=\"selected\"";} ?>> <?= SyTranslator::Minutes($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($viewDuration==2){echo "selected=\"selected\"";} ?>> <?= SyTranslator::Hours($lang) ?> </OPTION>
+						<OPTION value="3" <?php if($viewDuration==3){echo "selected=\"selected\"";} ?>> <?= SyTranslator::Days($lang) ?> </OPTION>
+					</select>
 				</div>
 			</div>
 		<?php
@@ -292,17 +328,61 @@ if (!$canEditReservation){
 		</div>
 		<?php 	
 		}
+		if ($this->clean($resourceBase["type_id"])==3){ // is time and unitary
 		?>
+			<input class="form-control" id="id" type="hidden"  name="is_timeandunitary" value="1" />
+			<br></br>
+			<?php 
+			$quantitiesNames = explode(",", $this->clean($resourceInfo["quantity_name"]));
+			$quantities = array();
+			for($t = 0 ; $t < count($quantitiesNames) ; $t++){
+				$quantities[$t] = 0;
+			}
+			if (isset($reservationInfo)){
+				$quantity = $this->clean($reservationInfo["quantity"]);
+				$quantities = explode(",", $quantity);
+			}
+			
+			for($i = 0 ; $i < count($quantitiesNames) ; $i++){	
+				if ($quantitiesNames[$i] != "" && $quantitiesNames[$i] != " "){			
+				?>
+				<div class="form-group">
+					<label for="inputEmail" class="control-label col-xs-4"><?= $this->clean($quantitiesNames[$i]) ?></label>
+					<div class="col-xs-8">
+						<?php 
+						$quantity = 0;
+						?>
+						<input class="form-control" id="id" type="number"  name="quantity[]" value="<?=$quantities[$i]?>"
+						<?=$readOnlyGlobal?>/>
+					</div>
+				</div>
+				<?php
+				}
+			}
+			?>
+		<?php 	
+		}
+		?>
+				
+		
+		
 		<!-- color code -->
+		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Color_code($lang)?></label>
 			<div class="col-xs-8">
 			<select class="form-control" name="color_code_id" <?=$readOnlyGlobal?>>
 			<?php 
-			$colorID = 1;
+			$colorID = $resourceInfo["default_color_id"];
+			
+			
 			if (isset($reservationInfo)){
 				$colorID = $this->clean($reservationInfo["color_type_id"]);
 			}
+			else{
+				
+			}		
+			
 			foreach ($colorCodes as $colorCode){
 				$codeID = $this->clean($colorCode["id"]);
 				$codeName = $this->clean($colorCode["name"]);
@@ -330,7 +410,7 @@ if (!$canEditReservation){
 				?>	
 				<input type="submit" class="btn btn-primary" value="<?=SyTranslator::Save($lang)?>" />
 				<?php if (isset($reservationInfo)){?>
-		        <button type="button" onclick="location.href='calendar/removeentry/<?=$this->clean($reservationInfo['id']) ?>'" class="btn btn-danger" id="navlink">Delete</button>
+		        <button type="button" onclick="location.href='calendar/removeentry/<?=$this->clean($reservationInfo['id']) ?>'" class="btn btn-danger">Delete</button>
 		        <?php }} ?>
 				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'"><?=SyTranslator::Cancel($lang)?></button>
 		</div>
@@ -461,7 +541,7 @@ if (!$canEditReservation){
 				?>	
 				<input type="submit" class="btn btn-primary" value="Save" />
 				<?php if (isset($reservationInfo)){?>
-		        <button type="button" onclick="location.href='calendar/removeseries/<?=$this->clean($seriesInfo['id']) ?>'" class="btn btn-danger" id="navlink">Delete</button>
+		        <button type="button" onclick="location.href='calendar/removeseries/<?=$this->clean($seriesInfo['id']) ?>'" class="btn btn-danger">Delete</button>
 		        <?php }} ?>
 				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'">Cancel</button>
 		</div>

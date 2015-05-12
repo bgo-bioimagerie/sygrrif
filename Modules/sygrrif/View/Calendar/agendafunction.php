@@ -83,7 +83,7 @@ function drawAgenda($mois, $annee, $entries){
 				$found = true;
 				$shortDescription = $entry['short_description'];
 				if ($isProjectMode){
-					$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					$shortDescription = $moduleProject->getProjectName($entry['short_description']);
 				}
 				?>
 				<a href="agenda/events/<?=$entry["id"] ?>">

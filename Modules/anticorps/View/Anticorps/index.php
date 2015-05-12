@@ -3,21 +3,110 @@
 <?php echo $navBar?>
 
 <head>
-<!-- Bootstrap core CSS -->
-<link href="bootstrap/datepicker/css/bootstrap-datetimepicker.min.css"
-	rel="stylesheet">
-<link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="externals/bootstrap/css/bootstrap.min.css">
+<link rel="stylesheet" href="externals/fixedHeaderTable/dataTables.bootstrap.css">
+<link rel="stylesheet" href="externals/fixedHeaderTable/dataTables.fixedHeader.css">
+
+<script src="externals/jquery-1.11.1.js"></script>
+<script src="externals/fixedHeaderTable/jquery.dataTables.js"></script>
+<script src="externals/fixedHeaderTable/dataTables.fixedHeader.min.js"></script>
+<script src="externals/fixedHeaderTable/dataTables.bootstrap.js"></script>
 
 <style>
+body { font-size: 120%; padding: 1em; margin-top:30px; margin-left: -15px;}
+div.FixedHeader_Cloned table { margin: 0 !important }
 
 table{
-font-size: 12px;
+  white-space: nowrap;
+}
+
+thead tr{
+  height: 50px;
 }
 
 </style>
 
-</head>
+<script>
+$(document).ready( function() {
+	       $('#example').dataTable( {
+	       "aoColumns": [
+	                     { "bSearchable": false },
+	                     null,
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false }
+	                   ],
+	       "lengthMenu": [[100, 200, 300, -1], [100, 200, 300, "All"]]
+	       }
+	        );
+	     } );
+</script>
 
+<!-- 
+<script>
+$(document).ready( function() {
+	       $('#example').dataTable( {
+	         "lengthMenu": [[100, 200, 300, -1], [100, 200, 300, "All"]]
+
+	       "aoColumns": [
+	                     { "bSearchable": false },
+	                     null,
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false },
+	                     { "bSearchable": false }
+	                   ]
+
+	       } 
+
+
+	       );
+	     } );
+</script>
+ -->
+<script>
+$(document).ready(function() {
+    var table = $('#example').DataTable();
+    new $.fn.dataTable.FixedHeader( table, {
+        alwaysCloneTop: true
+    });
+
+} );
+</script>
+
+
+
+</head>
 
 <?php include "Modules/anticorps/View/navbar.php"; ?>
 
@@ -25,13 +114,13 @@ font-size: 12px;
 <div class="contatiner">
 
 	<div class="col-md-12">
-
-		<div class="page-header">
+		<div class="page-header" style="margin-top: -20px;">
 			<h1>
 				Anticorps<br> <small></small>
 			</h1>
 		</div>
 		
+		<!-- 
 		<div class="col-md-12">
 			<form role="form" class="form-horizontal" action="anticorps/searchquery"
 				  method="post">
@@ -44,7 +133,7 @@ font-size: 12px;
 				$searchTxt = "";
 			}
 			?>
-				<label for="inputEmail" class="control-label col-md-2">Rechercher:</label>
+				<label for="inputEmail" class="control-label col-md-1">Recherche:</label>
 				<div class="col-md-3">
 					<select class="form-control" name="searchColumn">
 						<?php $selected = "selected=\"selected\""; ?>
@@ -60,9 +149,6 @@ font-size: 12px;
 						<OPTION value="Stockage" <?php if($searchColumn=="Stockage"){echo $selected;} ?> > Stockage </OPTION>					
 						<OPTION value="dilution" <?php if($searchColumn=="dilution"){echo $selected;} ?> > dilution </OPTION>
 						
-						<!-- 
-						<OPTION value="temps_incub" <?php if($searchColumn=="temps_incub"){echo $selected;} ?> > temps d'incubation </OPTION>
-						 -->
 						<OPTION value="ref_proto" <?php if($searchColumn=="ref_proto"){echo $selected;} ?> > ref. protocol </OPTION>
 						<OPTION value="espece" <?php if($searchColumn=="espece"){echo $selected;} ?> > espece </OPTION>
 						<OPTION value="organe" <?php if($searchColumn=="organe"){echo $selected;} ?> > organe </OPTION>
@@ -84,10 +170,8 @@ font-size: 12px;
 				</div>
       		</form>
 		</div>
-		
-		<div class="col-md-12" style="margin-top: 25px;">
-			<br/>
-		</div>
+		-->
+
 		
 		<div class="col-md-12">
 			<form role="form" class="form-horizontal" action="anticorps/advsearchquery"
@@ -114,119 +198,153 @@ font-size: 12px;
 				}
 				
 				?>
-				<label class="control-label col-md-2">Recherche Avancée:</label>
+				<div class="col-md-12">
+					<label class="control-label col-md-1">Recherche Avancée:</label>
+					
+					<div class="col-md-9">
+						<label class="control-label col-md-1" style="margin:0px;">Nom:</label>
+						<div class="col-md-3">
+							<input class="form-control" id="searchName" type="text" name="searchName" value="<?= $searchName ?>"
+							/>
+						</div>
+						<label for="inputEmail" class="control-label col-md-1">No H2P2:</label>
+						<div class="col-md-2">
+							<input class="form-control" id="searchNoH2P2" type="text" name="searchNoH2P2" value="<?= $searchNoH2P2 ?>"
+							/>
+						</div>
+						<label for="inputEmail" class="control-label col-md-2">Source:</label>
+						<div class="col-md-3">
+							<input class="form-control" id="searchSource" type="text" name="searchSource" value="<?= $searchSource ?>"
+							/>
+						</div>
+					</div>
+					<label class="control-label col-md-2"></label>
+				</div>
 				
-				<div class="col-md-8">
-					<label class="control-label col-md-1" style="margin:0px;">Nom:</label>
-					<div class="col-md-3">
-						<input class="form-control" id="searchName" type="text" name="searchName" value="<?= $searchName ?>"
-						/>
+				<div class="col-md-12">
+					<label class="control-label col-md-1"></label>
+					<div class="col-md-9">	
+						<label for="inputEmail" class="control-label col-md-1">Tissu cible:</label>
+						<div class="col-md-3">
+							<input class="form-control" id="searchCible" type="text" name="searchCible" value="<?= $searchCible ?>"
+							/>
+						</div>
+						
+						<label for="inputEmail" class="control-label col-md-1">Statut:</label>
+						<div class="col-md-2">
+							<select class="form-control" id="searchValide" type="text" name="searchValide">
+								<OPTION value="0" <?php if($searchColumn=="0"){echo $selected;} ?> >  </OPTION>
+								<OPTION value="1" <?php if($searchValide=="1"){echo $selected;} ?> > Validé </OPTION>
+								<OPTION value="2" <?php if($searchValide=="2"){echo $selected;} ?> > Non validé </OPTION>
+								<OPTION value="3" <?php if($searchValide=="3"){echo $selected;} ?> > Non testé </OPTION>
+							</select>
+						</div>
+						
+						<label for="inputEmail" class="control-label col-md-2">Propriétaire:</label>
+						<div class="col-md-3">
+							<input class="form-control" id="searchResp" type="text" name="searchResp" value="<?= $searchResp ?>"
+							/>
+						</div>
 					</div>
-					<label for="inputEmail" class="control-label col-md-1">No H2P2:</label>
-					<div class="col-md-3">
-						<input class="form-control" id="searchNoH2P2" type="text" name="searchNoH2P2" value="<?= $searchNoH2P2 ?>"
-						/>
-					</div>
-					<label for="inputEmail" class="control-label col-md-1">Source:</label>
-					<div class="col-md-3">
-						<input class="form-control" id="searchSource" type="text" name="searchSource" value="<?= $searchSource ?>"
-						/>
-					</div>
-				</div>
-				<div class="col-md-8 col-md-offset-2">	
-					<label for="inputEmail" class="control-label col-md-1">Tissu cible:</label>
-					<div class="col-md-3">
-						<input class="form-control" id="searchCible" type="text" name="searchCible" value="<?= $searchCible ?>"
-						/>
-					</div>
-					
-					<label for="inputEmail" class="control-label col-md-1">Status:</label>
-					<div class="col-md-3">
-						<select class="form-control" id="searchValide" type="text" name="searchValide">
-							<OPTION value="0" <?php if($searchColumn=="0"){echo $selected;} ?> >  </OPTION>
-							<OPTION value="1" <?php if($searchValide=="1"){echo $selected;} ?> > Validé </OPTION>
-							<OPTION value="2" <?php if($searchValide=="2"){echo $selected;} ?> > Non validé </OPTION>
-							<OPTION value="3" <?php if($searchValide=="3"){echo $selected;} ?> > Non testé </OPTION>
-						</select>
-					</div>
-					
-					<label for="inputEmail" class="control-label col-md-1">Propriétaire:</label>
-					<div class="col-md-3">
-						<input class="form-control" id="searchResp" type="text" name="searchResp" value="<?= $searchResp ?>"
-						/>
-					</div>
-				</div>
 			
-				<div class="col-md-2" id="button-div">
-		        	<input type="submit" class="btn btn-primary" value="Rechercher" />
+					<div class="col-md-2" id="button-div">
+			        	<input type="submit" class="btn btn-primary" value="Rechercher" />
+					</div>
 				</div>
       		</form>
 		</div>
 		
-		<div class="col-md-12" style="margin-top: 25px;">
-			<br/>
+				<div class="col-md-12" style="margin-top: 15px;">
+			<p></p><br/>
 		</div>
 	
-	<div>
-		<table id="dataTable" class="table table-striped table-bordered">
+	<div class="col-md-12">
+		<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+		<!-- <table class="fixed_headers">   -->
 			<thead>
+				 
 				<tr>
-					<th class="text-center" colspan="9"><a href="anticorps/">Anticorps</a></th>
-					<th class="text-center" colspan="2" style="background-color: #ffeeee;"><a href="anticorps/">Protocole</a></th>
-					<th class="text-center" colspan="5" style="background-color: #eeffee;"><a href="anticorps/">Tissus</a></th>
-					<th class="text-center" colspan="4" style="background-color: #eeeeff;"><a href="anticorps/">Propriétaire</a></th>
-					<th></th>
-				</tr>
-				<tr>
-					<!--  <th class="text-center"><a href="anticorps/index/id">ID</a></th>  -->
-					<th class="text-center"><a href="anticorps/index/nom">Nom</a></th>
-					<th class="text-center"><a href="anticorps/index/no_h2p2">No H2P2</a></th>
-					<th class="text-center"><a href="anticorps/index/fournisseur">Fournisseur</a></th>
-					<th class="text-center"><a href="anticorps/index/id_source">Source</a></th>
-					<th class="text-center"><a href="anticorps/index/reference">Référence</a></th>
-					<th class="text-center"><a href="anticorps/index/clone">Clone</a></th>
-					<th class="text-center"><a href="anticorps/index/lot">lot</a></th>
-					<th class="text-center"><a href="anticorps/index/id_isotype">Isotype</a></th>
-					<th class="text-center"><a href="anticorps/index/stockage">Stockage</a></th>
+					<th class="text-center" colspan="9" style="width:45%; color:#337AB7;">Anticorps</th>
+					<th class="text-center" colspan="2" style="width:10%; background-color: #ffeeee; color:#337AB7;">Protocole</th>
+					<th class="text-center" colspan="5" style="width:25%; background-color: #eeffee; color:#337AB7;">Tissus</th>
+					<th class="text-center" colspan="4" style="width:20%; background-color: #eeeeff; color:#337AB7;">Propriétaire</th>
 					
-					<th class="text-center" style="min-width: 5em; background-color: #ffeeee;"><a href="anticorps/">ref. protocol</a></th>
-					<th class="text-center" style="background-color: #ffeeee";><a href="anticorps/">AcI dilution</a></th>
+				</tr>
+				 
+				<tr>
+					<!-- 
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/nom">Nom</a></th>
+					<th class="text-center" style="width:1em;"><a href="anticorps/index/no_h2p2">No H2P2</a></th>
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/fournisseur">Fournisseur</a></th>
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/id_source">Source</a></th>
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/reference">Référence</a></th>
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/clone">Clone</a></th>
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/lot">lot</a></th>
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/id_isotype">Isotype</a></th>
+					<th class="text-center" style="width:5%;"><a href="anticorps/index/stockage">Stockage</a></th>
+					 -->
+					
+					<th class="text-center" style="width:1em; color:#337AB7;">No H2P2</th> 
+					<th class="text-center" style="width:5%; color:#337AB7;">Nom</th>
+					<th class="text-center" style="width:5%; color:#337AB7;">Fournisseur</th>
+					<th class="text-center" style="width:5%; color:#337AB7;">Source</th>
+					<th class="text-center" style="width:5%; color:#337AB7;">Référence</th>
+					<th class="text-center" style="width:5%; color:#337AB7;">Clone</th>
+					<th class="text-center" style="width:5%; color:#337AB7;">lot</th>
+					<th class="text-center" style="width:5%; color:#337AB7;">Isotype</th>
+					<th class="text-center" style="width:5%; color:#337AB7;">Stockage</th>
+					
+					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">ref. protocol</th>
+					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">AcI dilution</th>
+					
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">espèce</th>
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">organe</th>
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">statut</th>
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">ref. bloc</th>
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">prélèvement</th>	
+					
+					<th class="text-center" style="width:5em; background-color: #eeeeff; color:#337AB7;">Nom</th>
+					<th class="text-center" style="width:5%; background-color: #eeeeff; color:#337AB7;">disponibilité</th>
+					<th class="text-center" style="width:5%; background-color: #eeeeff; color:#337AB7;">Date réception</th>
+					<th class="text-center" style="width:5%; background-color: #eeeeff; color:#337AB7;">No Dossier</th>
+					
 					
 					<!-- 
-					<th class="text-center" style="background-color: #ffeeee";><a href="anticorps/">temps d'incubation</a></th>
-					-->
+					<th class="text-center" style="width:5%; background-color: #ffeeee;"><a href="anticorps/">ref. protocol</a></th>
+					<th class="text-center" style="width:5%; background-color: #ffeeee";><a href="anticorps/">AcI dilution</a></th>
 					
-					<th class="text-center" style="background-color: #eeffee;"><a href="anticorps/">espèce</a></th>
-					<th class="text-center" style="background-color: #eeffee;"><a href="anticorps/">organe</a></th>
-					<th class="text-center" style="background-color: #eeffee;"><a href="anticorps/">status</a></th>
-					<th class="text-center" style="min-width: 10em; background-color: #eeffee;"><a href="anticorps/">ref. bloc</a></th>
-					<th class="text-center" style="background-color: #eeffee;"><a href="anticorps/">prélèvement</a></th>	
+					<th class="text-center" style="width:5%; background-color: #eeffee;"><a href="anticorps/">espèce</a></th>
+					<th class="text-center" style="width:5%; background-color: #eeffee;"><a href="anticorps/">organe</a></th>
+					<th class="text-center" style="width:5%; background-color: #eeffee;"><a href="anticorps/">statut</a></th>
+					<th class="text-center" style="width:5%; background-color: #eeffee;"><a href="anticorps/">ref. bloc</a></th>
+					<th class="text-center" style="width:5%; background-color: #eeffee;"><a href="anticorps/">prélèvement</a></th>	
 					
-					<th class="text-center" style="background-color: #eeeeff;"><a href="anticorps/">Nom</a></th>
-					<th class="text-center" style="background-color: #eeeeff;"><a href="anticorps/">disponibilité</a></th>
-					<th class="text-center" style="background-color: #eeeeff;"><a href="anticorps/">Date réception</a></th>
-					<th class="text-center" style="background-color: #eeeeff;"><a href="anticorps/">No Dossier</a></th>
-					<th></th>
+					<th class="text-center" style="width:5em; background-color: #eeeeff;"><a href="anticorps/">Nom</a></th>
+					<th class="text-center" style="width:5%; background-color: #eeeeff;"><a href="anticorps/">disponibilité</a></th>
+					<th class="text-center" style="width:5%; background-color: #eeeeff;"><a href="anticorps/">Date réception</a></th>
+					<th class="text-center" style="width:5%; background-color: #eeeeff;"><a href="anticorps/">No Dossier</a></th>
+					 -->
 				</tr>
 			</thead>
+			
 			<tbody>
 				<?php foreach ( $anticorpsArray as $anticorps ) : ?> 
 				<tr>
 					<?php $anticorpsId = $this->clean ( $anticorps['id'] ); ?>
-					<!--  <td class="text-left"><?= $anticorpsId ?></td> -->
-					<td class="text-left"><?= $this->clean ( $anticorps ['nom'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['no_h2p2'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['fournisseur'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['source'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['reference'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['clone'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['lot'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['isotype'] ); ?></td>
-				    <td class="text-left"><?= $this->clean ( $anticorps ['stockage'] ); ?></td>
+					
+					<td style="width:1em;" class="text-left"><a href="anticorps/edit/<?= $anticorpsId ?>"><?= $this->clean ( $anticorps ['no_h2p2'] ); ?></a></td>
+					<td width="5%" class="text-left"><a href="anticorps/edit/<?= $anticorpsId ?>"><?= $this->clean ( $anticorps ['nom'] ); ?></a></td>
+				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['fournisseur'] ); ?></td>
+				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['source'] ); ?></td>
+				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['reference'] ); ?></td>
+				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['clone'] ); ?></td>
+				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['lot'] ); ?></td>
+				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['isotype'] ); ?></td>
+				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['stockage'] ); ?></td>
 				    
 				    
 				    <!--  PROTOCOLE -->
-				     <td class="text-left" style="background-color: #ffeeee;"><?php 
+				     <td width="5%" class="text-left" style="background-color: #ffeeee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
@@ -243,7 +361,7 @@ font-size: 12px;
 				    ?></a></td>
 				    
 				    
-				    <td class="text-left" style="background-color: #ffeeee;"><?php 
+				    <td width="5%" class="text-left" style="background-color: #ffeeee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
@@ -254,21 +372,9 @@ font-size: 12px;
 					    echo $val;
 				    ?></td>
 				    
-				    <!-- 
-				    <td class="text-left" style="background-color: #ffeeee;"><?php 
-				    	$tissus = $anticorps ['tissus'];
-				    	$val = "";
-				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
-				    		$val = $val . "<p>"  
-										. $tissus[$i]['temps_incubation'] 
-										. "</p>";  
-				    	}			    	
-					    echo $val;
-				    ?></td>
-				     -->
 				    
 				    <!-- TISSUS -->
-				    <td class="text-left" style="background-color: #eeffee;"><?php 
+				    <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
@@ -278,7 +384,7 @@ font-size: 12px;
 					    echo $val;
 				    ?></td>
 				    
-				     <td class="text-left" style="background-color: #eeffee;"><?php 
+				     <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
@@ -289,7 +395,7 @@ font-size: 12px;
 					    echo $val;
 				    ?></td>
 				    
-				     <td class="text-left" style="background-color: #eeffee;"><?php 
+				     <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
@@ -309,7 +415,7 @@ font-size: 12px;
 				    ?></td>
 				    
 				    
-				     <td class="text-left" style="background-color: #eeffee;"><?php 
+				     <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
@@ -320,7 +426,7 @@ font-size: 12px;
 					    echo $val;
 				    ?></td>
 				    
-				    <td class="text-left" style="background-color: #eeffee;"><?php 
+				    <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
@@ -334,7 +440,7 @@ font-size: 12px;
 				    
 				   
 
-				    <td class="text-left" style="background-color: #eeeeff;"><?php
+				    <td width="5%" class="text-left" style="width:5em; background-color: #eeeeff;"><?php
 				    	$owner =  $anticorps ['proprietaire'];
 				    	foreach ($owner as $ow){
 				    		$name = $ow['name'] . " " . $ow['firstname'];
@@ -355,7 +461,7 @@ font-size: 12px;
 				    	?>
 				    </td>
 				    
-				    <td class="text-left" style="background-color: #eeeeff;"><?php
+				    <td width="5%" class="text-left" style="background-color: #eeeeff;"><?php
 				    	$owner =  $anticorps ['proprietaire'];
 				    	foreach ($owner as $ow){
 					    	$dispo = $ow['disponible'];
@@ -375,7 +481,7 @@ font-size: 12px;
 				    	?>
 				    </td>
 				    
-				    <td class="text-left" style="background-color: #eeeeff;"><?php
+				    <td width="5%" class="text-left" style="background-color: #eeeeff;"><?php
 				    	$owner =  $anticorps ['proprietaire'];
 				    	foreach ($owner as $ow){
 					    	$name = $ow['name'] . " " . $ow['firstname'];
@@ -395,8 +501,8 @@ font-size: 12px;
 				    	}
 				    	?>
 				    </td>
-				    
-				    <td class="text-left" style="background-color: #eeeeff;"><?php
+				   
+				    <td width="5%" class="text-left" style="background-color: #eeeeff;"><?php
 				    	$owner =  $anticorps ['proprietaire'];
 				    	foreach ($owner as $ow){
 					    	$name = $ow['name'] . " " . $ow['firstname'];
@@ -416,12 +522,11 @@ font-size: 12px;
 				    	}
 				    	?>
 				    </td>
-				    
-				    <td><button onclick="location.href='anticorps/edit/<?= $anticorpsId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button></td>  
 	    		</tr>
 	    		<?php endforeach; ?>
 				
 			</tbody>
+			
 		</table>
 		</div>
 	</div>

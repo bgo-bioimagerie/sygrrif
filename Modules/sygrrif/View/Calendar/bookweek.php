@@ -233,7 +233,10 @@ $available_days = explode(",", $available_days);
 	
 </div>
 
+<div class="col-xs-12">
+
 <?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
+</div>
 
 </div>
 <?php if (isset($msgError)): ?>

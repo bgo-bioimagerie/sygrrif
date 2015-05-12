@@ -485,6 +485,36 @@ class ControllerUsers extends ControllerSecureNav {
 				'navBar' => $navBar, 'usersArray' => $usersArray,
 				'searchColumn' => $searchColumn, 'searchTxt' => $searchTxt
 		), "index" );
+	}
 	
+	public function delete(){
+		
+		$userId = 0;
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$userId = $this->request->getParameter("actionid");
+		};
+		
+		$userName = $this->userModel->getUserFUllName($userId);
+		
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar, 
+				'userName' => $userName,
+				'userId' => $userId
+		) );
+	}
+	
+	public function deletequery(){
+		
+		$userId = $this->request->getParameter("id");
+		
+		$user = $this->userModel->delete($userId);
+		
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
 	}
 }

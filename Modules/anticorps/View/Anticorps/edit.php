@@ -524,12 +524,15 @@
 		-->
 		
 		<!-- Buttons -->
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		
+		<div class="col-xs-2 col-xs-offset-10" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Edit" />
+				<button type="button" onclick="location.href='anticorps'" class="btn btn-default">Annuler</button>
+		</div>
+		<div class="col-xs-11 col-xs-offset-1" id="button-div">
 		        <?php if($anticorps['id'] != ""){ ?>
 		        	<button type="button" onclick="location.href='<?="anticorps/delete/".$anticorps['id'] ?>'" class="btn btn-danger">Supprimer</button>
 				<?php }?>
-				<button type="button" onclick="location.href='anticorps'" class="btn btn-default">Annuler</button>
 		</div>
       </form>
 </div>

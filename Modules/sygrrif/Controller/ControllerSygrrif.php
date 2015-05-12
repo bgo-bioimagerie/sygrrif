@@ -166,29 +166,82 @@ class ControllerSygrrif extends ControllerBooking {
 	} 
 	
 	public function statisticsquery(){
+		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
 
 		if($this->secureCheck()){
 			return;
 		}
 		
 		$year = $this->request->getParameter ( "year" );
+		$export_type = $this->request->getParameter ( "export_type" );
 		
 		$modelGraph = new SyGraph();
 		$graphArray = $modelGraph->getYearNumResGraph($year);
 		$graphTimeArray = $modelGraph->getYearNumHoursResGraph($year);
-		$camembertContent = $modelGraph->getCamembertContent($year, $graphArray['numTotal']);
-		$camembertTimeContent = $modelGraph->getCamembertTimeContent($year, $graphTimeArray['timeTotal']);
 		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'annee' => $year,
-				'numTotal' => $graphArray['numTotal'],
-		        'graph' => $graphArray['graph'],
-				'graphTimeArray' => $graphTimeArray,
-				'camembertContent' => $camembertContent,
-				'camembertTimeContent' => $camembertTimeContent
-		) );
+		if($export_type == 1){
+			
+			$camembertContent = $modelGraph->getCamembertContent($year, $graphArray['numTotal']);
+			$camembertTimeContent = $modelGraph->getCamembertTimeContent($year, $graphTimeArray['timeTotal']);
+			
+			$navBar = $this->navBar();
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'annee' => $year,
+					'numTotal' => $graphArray['numTotal'],
+			        'graph' => $graphArray['graph'],
+					'graphTimeArray' => $graphTimeArray,
+					'camembertContent' => $camembertContent,
+					'camembertTimeContent' => $camembertTimeContent
+			) );
+		}
+		else{
+			
+			$camembertCount = $modelGraph->getCamembertArray($year);
+			$camembertTimeCount = $modelGraph->getCamembertTimeArray($year);
+			
+			header("Content-Type: application/csv-tab-delimited-table");
+			header("Content-disposition: filename=rapport.csv");
+			
+			$content = "";
+			// annual number
+			$content .= SyTranslator::Annual_review_of_the_number_of_reservations_of($lang) . " " . Configuration::get("name") . "\r\n";
+			$i = 0;
+			foreach ($graphArray['graph'] as $g){
+				$i++;
+				$content .= $i . " ; " . $g . "\r\n"; 
+			}
+			
+			// annual number
+			$content .= "\r\n";
+			$content .= SyTranslator::Annual_review_of_the_time_of_reservations_of($lang) . " " . Configuration::get("name") . "\r\n";
+			$i=0;
+			foreach ($graphTimeArray['graph'] as $g){
+				$i++;
+				$content .= $i . " ; " . $g . "\r\n";
+			}
+			
+			// annual resources
+			$content .= "\r\n";
+			$content .= SyTranslator::Booking_number_year($lang) . " " . Configuration::get("name") . "\r\n";
+			foreach ($camembertCount as $g){
+				$content .= $g[0] . " ; " . $g[1] . "\r\n";
+			}
+			
+			// annual resources
+			$content .= "\r\n";
+			$content .= SyTranslator::Booking_time_year($lang) . " " . Configuration::get("name") . "\r\n";
+			foreach ($camembertTimeCount as $g){
+				$content .= $g[0] . " ; " . $g[1] . "\r\n";
+			}
+			echo $content;
+			return;
+			
+		}
 	}
 	
 	// pricing
@@ -1400,7 +1453,7 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		// get the user list
 		$ccModel = new SyColorCode();
-		$ccModel->editColorCode($id, $name, $color);
+		$ccModel->editColorCode($id, $name, $color, $display_order);
 	
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}

@@ -43,7 +43,7 @@
 		</div>
 		<br></br>
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
-		        <button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Next($lang) ?>" />
 		</div>
 	</form>	

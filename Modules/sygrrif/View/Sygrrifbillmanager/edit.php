@@ -50,6 +50,14 @@
 				/>
 			</div>
 		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::TotalHT($lang) ?></label>
+			<div class="col-xs-8">
+				<input class="form-control" id="name" type="text" name="total_ht"
+				       value="<?=CoreTranslator::dateFromEn($this->clean($billInfo["total_ht"]), $lang) ?>" 
+				/>
+			</div>
+		</div>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Date_paid($lang) ?></label>
 				<div class="col-xs-8">

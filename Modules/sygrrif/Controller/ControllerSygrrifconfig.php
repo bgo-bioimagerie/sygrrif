@@ -36,6 +36,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		$modelCoreConfig = new CoreConfig();
 		$seriesBooking = $modelCoreConfig->getParam("SySeriesBooking");
 		
+		// edit reservatin fields
+		$editBookingDescriptionSettings = $modelCoreConfig->getParam("SyDescriptionFields");
+		
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
@@ -51,7 +54,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     					                     'isSygrrifMenu' => $isSygrrifMenu,
     										 'isBookingMenu' => $isBookingMenu,
     										 'bookingSettings' => $bookingSettings,
-    										 'seriesBooking' => $seriesBooking
+    										 'seriesBooking' => $seriesBooking,
+											 'editBookingDescriptionSettings' => $editBookingDescriptionSettings
     			) );
     			return;
 			}
@@ -61,7 +65,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					                     'isSygrrifMenu' => $isSygrrifMenu,
 					                     'isBookingMenu' => $isBookingMenu,
 					                     'bookingSettings' => $bookingSettings,
-										 'seriesBooking' => $seriesBooking
+										 'seriesBooking' => $seriesBooking,
+					                     'editBookingDescriptionSettings' => $editBookingDescriptionSettings
 			) );
 			return;
 		}
@@ -93,7 +98,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 				                     'isSygrrifMenu' => $isSygrrifMenu,
 									 'isBookingMenu' => $isBookingMenu,
 									 'bookingSettings' => $bookingSettings,
-									 'seriesBooking' => $seriesBooking
+									 'seriesBooking' => $seriesBooking,
+									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings
 			) );
 			return;
 			
@@ -109,7 +115,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'isBookingMenu' => $isBookingMenu,
 					'bookingSettings' => $bookingSettings,
 					'templateMessage' => $templateMessage,
-					'seriesBooking' => $seriesBooking
+					'seriesBooking' => $seriesBooking,
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
 			) );
 			return;
 		}
@@ -126,12 +133,29 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'isSygrrifMenu' => $isSygrrifMenu,
 					'isBookingMenu' => $isBookingMenu,
 					'bookingSettings' => $bookingSettings,
-					'seriesBooking' => $seriesBooking
+					'seriesBooking' => $seriesBooking,
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
 			) );
 			return;
 		}
 		
-		
+		// set editbookingdescriptionquery
+		$editbookingdescriptionquery = $this->request->getParameterNoException ( "editbookingdescriptionquery");
+		if ($editbookingdescriptionquery == "yes"){
+			
+			$editBookingDescriptionSettings = $this->request->getParameterNoException ( "description_fields" );
+			$modelCoreConfig = new CoreConfig();
+			$modelCoreConfig->setParam("SyDescriptionFields", $editBookingDescriptionSettings);
+				
+			$this->generateView ( array ('navBar' => $navBar,
+					'isSygrrifMenu' => $isSygrrifMenu,
+					'isBookingMenu' => $isBookingMenu,
+					'bookingSettings' => $bookingSettings,
+					'seriesBooking' => $seriesBooking,
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+			) );
+			return;
+		}
 		
 		// set booking settings
 		$setbookingoptionsquery = $this->request->getParameterNoException ( "setbookingoptionsquery");
@@ -177,7 +201,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'isBookingMenu' => $isBookingMenu,
 					'bookingOptionMessage' => $bookingOptionMessage,
 					'bookingSettings' => $bookingSettings,
-					'seriesBooking' => $seriesBooking
+					'seriesBooking' => $seriesBooking,
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
 			) );
 			return;
 		}
@@ -187,7 +212,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 				                     'isSygrrifMenu' => $isSygrrifMenu,
 									 'isBookingMenu' => $isBookingMenu,
 									 'bookingSettings' => $bookingSettings,
-									 'seriesBooking' => $seriesBooking
+									 'seriesBooking' => $seriesBooking,
+									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings
 		) );
 	}
 	

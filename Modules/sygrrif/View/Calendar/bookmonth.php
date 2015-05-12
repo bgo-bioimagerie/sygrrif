@@ -19,7 +19,7 @@ drawAgenda($month, $year, $calEntries);
 ?>
 <div>
 
-<div class="col-lg-12">
+<div class="col-xs-12">
 <?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
 </div>
 

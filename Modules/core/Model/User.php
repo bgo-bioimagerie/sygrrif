@@ -169,6 +169,20 @@ class User extends Model {
 			throw new Exception ( "Cannot find the user using the given parameters" );
 	}
 	
+	public function userLogin($id){
+		$sql = "select login from core_users where id=?";
+		$user = $this->runRequest ( $sql, array (
+				$id
+		) );
+		if ($user->rowCount () == 1){
+			$tmp = $user->fetch ();
+			return $tmp[0]; // get the first line of the result
+		}
+		else{
+			throw new Exception ( "Cannot find the user login using the given id" );
+		}
+	}
+	
 	/**
 	 * Get the users information
 	 *
@@ -233,6 +247,13 @@ class User extends Model {
 			return $userf ['name'] . " " . $userf ['firstname'];
 		} else
 			return "";
+	}
+	
+	public function getUserResponsible($id){
+		$sql = "select id_responsible from core_users where id=?";
+		$user = $this->runRequest ( $sql, array ($id) );
+		$userf = $user->fetch ();
+		return $userf [0];
 	}
 	
 	/**
@@ -1249,5 +1270,11 @@ class User extends Model {
 		}
 		return -1;
 	}
+	
+	public function delete($id){
+		$sql="DELETE FROM core_users WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
+	
 }
 

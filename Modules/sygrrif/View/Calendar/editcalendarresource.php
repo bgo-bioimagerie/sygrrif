@@ -246,13 +246,33 @@
 			</div>
 		</div>	
 		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Default_color($lang)?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="default_color_id">
+					<?php foreach( $colors as $color ){
+						$idColor = $this->clean($color["id"]);
+						$nameColor = $this->clean($color["name"]);
+						$selected = "";
+						if ($this->clean($default_color_id) == $idColor){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $idColor ?>" <?= $selected ?> > <?= $nameColor ?> </OPTION>
+					<?php 
+					}
+					?>
+				</select>
+			</div>
+		</div>	
+		
 		<div class="page-header">
 			<h3>
 			<?= SyTranslator::Prices($lang)?>
 				<br> <small></small>
 			</h3>
 		</div>
-				<div class="form-group">
+		<div class="form-group">
 		<table class="table table-striped text-center">
 		<?php 
 		foreach ($pricingTable as $pricing){
@@ -326,7 +346,7 @@
 		<div class="col-xs-5 col-xs-offset-7" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
 		        <?php if ($this->clean($id) != ""){ ?>
-		        	<button type="button" onclick="location.href='<?="calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger" id="navlink"><?= SyTranslator::Delete($lang) ?></button>
+		        	<button type="button" onclick="location.href='<?="calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger"><?= SyTranslator::Delete($lang) ?></button>
 				<?php } ?>
 				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
