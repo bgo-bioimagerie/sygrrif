@@ -5,6 +5,8 @@ require_once 'Modules/core/Model/User.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
+require_once 'Modules/mailer/Model/MailerSend.php';
+require_once 'Modules/core/Model/ModulesManager.php';
 
 class ControllerMailer extends ControllerSecureNav {
 
@@ -22,23 +24,24 @@ class ControllerMailer extends ControllerSecureNav {
 			$sortentry = $this->request->getParameter("actionid");
 		}
 			
-		$modelArea = new SyArea();
-		$areasList = $modelArea->getUnrestrictedAreasIDName(); 
-		
-		$modelResource = new SyResource();
+		$areasList = array();
 		$resourcesList = array();
-		foreach($areasList as $area){
-			$resourcesList[] = $modelResource->resourceIDNameForArea($area["id"]);
+		
+		$moduleManager = new ModulesManager();
+		if ( $moduleManager->isDataMenu("sygrrif") ){
+			$modelArea = new SyArea();
+			$areasList = $modelArea->getUnrestrictedAreasIDName(); 
+			
+			$modelResource = new SyResource();
+			$resourcesList = array();
+			foreach($areasList as $area){
+				$resourcesList[] = $modelResource->resourceIDNameForArea($area["id"]);
+			}
 		}
 		
 		$modelUser = new User();
 		$user = $modelUser->userAllInfo($_SESSION["id_user"]);
 		$from = $user["email"];
-		
-		// From
-		// To
-		// Object
-		// Content
 		
 		$this->generateView ( array (
 				'navBar' => $navBar, 
@@ -66,41 +69,23 @@ class ControllerMailer extends ControllerSecureNav {
 				// get all the adresses of users who book in this area
 				$modelCalEntry = new SyCalendarEntry();
 				$toAdress = $modelCalEntry->getEmailsBookerArea($toEx[1]);
-				
 			}
-			elseif($toEx[0] == "r"){
+			elseif($toEx[0] == "r"){ // resource
 				// get all the adresses of users who book in this resource
 				$modelCalEntry = new SyCalendarEntry();
 				$toAdress = $modelCalEntry->getEmailsBookerResource($toEx[1]);
 			}
 		}
 		
-		//print_r($toAdress);
-		
 		// send the email
-		require("externals/PHPMailer/class.phpmailer.php");
+		$mailerModel = new MailerSend();
+		$message = $mailerModel->sendEmail($from, Configuration::get("name"), $toAdress, $subject, $content);
 		
-		$mail = new PHPMailer();
-		$mail->IsHTML(true);
-		$mail->CharSet = "utf-8";
-		$mail->SetFrom('$from', 'Expéditeur');
-		$mail->Subject = $subject;
-		$mail->Body = $content;
-		
-		foreach($toAdress as $addres){
-			if ($addres[0] && $addres[0] != ""){
-				echo $addres[0] . "<br/>";
-				$mail->AddAddress($addres[0]);
-			}
-		}
-		
-		if(!$mail->Send()) {
-			echo 'Message was not sent.';
-			echo 'Mailer error: ' . $mail->ErrorInfo;
-		} else {
-			echo 'Message has been sent.';
-		}
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'message' => $message
+		) );
 		
 	}
-	
 }

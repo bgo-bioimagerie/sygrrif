@@ -64,5 +64,25 @@ class MailerTranslator {
 		return "Content";
 	}
 	
+	public static function Send_email($lang){
+		if ($lang == "Fr"){
+			return "Envoie d'email";
+		}
+		return "Send email";
+	}
 	
+	public static function Message_Send($lang){
+		if ($lang == "Fr"){
+			return "Le message a bien été envoyé. Vous devriez en recevoir une copie par email.";
+		}
+		return "Message has been sent. You should recieve a copy of this email in your email box";	
+	}
+	
+	public static function Message_Not_Send($lang){
+		if ($lang == "Fr"){
+			return "Le message n'a pa pu être envoyé. <br/> Erreur : ";
+		}
+		return "Message was not sent <br/>' . 'Mailer error: ";
+		
+	}
 }
