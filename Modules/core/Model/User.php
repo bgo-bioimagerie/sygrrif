@@ -256,6 +256,13 @@ class User extends Model {
 		return $userf [0];
 	}
 	
+	public function getUserEmail($id){
+		$sql = "select email from core_users where id=?";
+		$user = $this->runRequest ( $sql, array ($id) );
+		$userf = $user->fetch ();
+		return $userf [0];
+	}
+	
 	/**
 	 * Get the user info by changing the ids by names
 	 *

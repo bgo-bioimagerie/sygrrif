@@ -3,6 +3,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/UserSettings.php';
+require_once 'Modules/core/Model/ModulesManager.php';
 
 /**
  * Controler managing the user connection 
@@ -66,7 +67,8 @@ class ControllerConnection extends Controller
                 
                 // redirect
         		$redirectController = "Home";
-        		if (in_array("sygrrif", Configuration::get("modules"))){
+        		$modulesManager = new ModulesManager();
+        		if ($modulesManager->isDataMenu("sygrrif")){
         			$redirectController = "sygrrif/booking";
         		}
         		if(isset($_SESSION["user_settings"]["homepage"])){

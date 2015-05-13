@@ -3,7 +3,19 @@
 <?php echo $navBar?>
 <?php 
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
-require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
+require_once 'Modules/sygrrif/View/Calendar/bookfunction.php';
+		
+$available_days = $this->clean($resourceInfo['available_days']);
+$available_days = explode(",", $available_days);
+
+$dayWidth = 0;
+for($c = 0 ; $c < count($available_days) ; $c++){
+	if ($available_days[$c] > 0){
+		$dayWidth++;
+	}
+}
+
+$dayWidth = 100/$dayWidth;
 ?>
 
 <head>
@@ -56,8 +68,8 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
   .seven-cols .col-lg-1 {
-    width: 14.285714285714285714285714285714%;
-    *width: 14.285714285714285714285714285714%;
+    width: <?=$dayWidth?>%;
+    *width: <?=$dayWidth?>%;
   }
 }
 /* 14% = 100% (full-width row) divided by 7 */
@@ -186,47 +198,47 @@ $available_days = explode(",", $available_days);
 	<?php 
 	for ($d = 0 ; $d < 7 ; $d++){
 		
-		$idcss = "colDiv";
-		if ($d == 0){
-			$idcss = "colDivleft";
-		}
-		if ($d == 6){
-			$idcss = "colDivright";
-		}
-		
-		// day title
-		$temp = explode("-", $mondayDate);
-		$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
-		$dayStream = date("l", $date_unix);
-		$monthStream = date("M", $date_unix);
-		$dayNumStream = date("d", $date_unix);
-		$sufixStream = date("S", $date_unix);
-		
-		$dayTitle = SyTranslator::DateFromTime($date_unix, $lang);
-		//$dayTitle = $dayStream . " " . $monthStream . ". " . $dayNumStream . $sufixStream;
-		
-		?>
-		
-		
-		<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
-		
-		<div id="tcelltop" style="height: 50px;">
-		<p class="text-center"><b> <?= $dayTitle ?></b> </p>
-		</div>
-		
-		<?php 
 		// test if the day is available
 		$isDayAvailable = false;
 		if ($available_days[$d] == 1){
 			$isDayAvailable = true;
-		}
 		
-		bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable);
 		
-		?>
-		
-		</div>
+			$idcss = "colDiv";
+			if ($d == 0){
+				$idcss = "colDivleft";
+			}
+			if ($d == 6){
+				$idcss = "colDivright";
+			}
+			
+			// day title
+			$temp = explode("-", $mondayDate);
+			$date_unix = mktime(0,0,0,$temp[1], $temp[2]+$d, $temp[0]);
+			$dayStream = date("l", $date_unix);
+			$monthStream = date("M", $date_unix);
+			$dayNumStream = date("d", $date_unix);
+			$sufixStream = date("S", $date_unix);
+			
+			$dayTitle = SyTranslator::DateFromTime($date_unix, $lang);
+			//$dayTitle = $dayStream . " " . $monthStream . ". " . $dayNumStream . $sufixStream;
+			
+			?>
+			
+			
+			<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
+			
+			<div id="tcelltop" style="height: 50px;">
+			<p class="text-center"><b> <?= $dayTitle ?></b> </p>
+			</div>
+			
 			<?php 
+			bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable);
+			?>
+			
+			</div>
+				<?php
+		} 
 	}
 	?>
 	</div>

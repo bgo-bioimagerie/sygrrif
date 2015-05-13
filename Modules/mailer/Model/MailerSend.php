@@ -13,7 +13,7 @@ class MailerSend extends Model {
 
 	
 	
-	public function sendEmail($from, $fromName, $toAdress, $subject, $content ){
+	public function sendEmail($from, $fromName, $toAdress, $subject, $content, $sentCopyToFrom = true ){
 		
 		// send the email
 		$mail = new PHPMailer();
@@ -22,7 +22,10 @@ class MailerSend extends Model {
 		$mail->SetFrom($from, $fromName);
 		$mail->Subject = $subject;
 		$mail->Body = $content;
-		$mail->AddCC($from);
+		
+		if ($sentCopyToFrom){
+			$mail->AddCC($from);
+		}
 		
 		if (is_array ($toAdress)){
 			foreach($toAdress as $addres){

@@ -1183,6 +1183,13 @@ class SyTranslator {
 		return "Quantity name";
 	}
 	
+	public static function Quantity($lang){
+		if ($lang == "Fr"){
+			return "Quantité";
+		}
+		return "Quantity";
+	}
+	
 	public static function Available_Days($lang){
 		if ($lang == "Fr"){
 			return "Jours disponibles";
@@ -1535,4 +1542,55 @@ class SyTranslator {
 		}
 		return "Prices for";
 	}
+	
+	static public function Beginning($lang){
+		if ($lang == "Fr"){
+			return "Début";
+		}
+		return "Beginning";
+	}
+	
+	static public function End($lang){
+		if ($lang == "Fr"){
+			return "Fin";
+		}
+		return "End";
+	}
+	
+	static public function Edited_by($lang){
+		if ($lang == "Fr"){
+			return "Edité par";
+		}
+		return "Edited by";
+	}
+	
+	static public function Your_reservation($lang){
+		if ($lang == "Fr"){
+			return "Votre réservation";
+		}
+		return "Your reservation";
+	}
+	
+	static public function Your_reservation_has_been_added($lang){
+		if ($lang == "Fr"){
+			return "Une réservation a été ajoutée à votre nom";
+		}
+		return "Your reservation has been added";
+	}
+	
+	static public function Your_reservation_has_been_modified($lang){
+		if ($lang == "Fr"){
+			return "Votre réservation à été modifiée";
+		}
+		return "Your reservation has been modified";
+	}
+	
+	static public function Your_reservation_has_been_deleted($lang){
+		if ($lang == "Fr"){
+			return "Votre réservation à été suprimée";
+		}
+		return "Your reservation has been deleted";
+	}
+	
+	
 }
