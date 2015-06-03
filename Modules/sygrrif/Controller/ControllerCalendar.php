@@ -1328,7 +1328,7 @@ class ControllerCalendar extends ControllerBooking {
 		return true;
 		
 	}
-	
+		
 	public function editreservationquery(){
 		
 		$lang = "En";
@@ -1452,7 +1452,8 @@ class ControllerCalendar extends ControllerBooking {
 				
 				if ($booked_by_id != $recipient_id){
 					$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							                        $short_description, $full_description, $quantity, "add");
+					                       $short_description, $full_description, $quantity, "add");
+					
 				}
 			}
 			else{
@@ -1461,7 +1462,8 @@ class ControllerCalendar extends ControllerBooking {
 						                   $full_description, $quantity);
 				
 				$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
-						$short_description, $full_description, $quantity, "edit");
+					$short_description, $full_description, $quantity, "edit");
+				
 			}
 		}
 		else{
@@ -1543,60 +1545,64 @@ class ControllerCalendar extends ControllerBooking {
 						$short_description, $full_description, $quantity, $editstatus){
 		
 		
-		$modelUser = new User();
-		$fromEmail = $modelUser->getUserEmail($booked_by_id);
-		$toEmail = $modelUser->getUserEmail($recipient_id);
+		$modelConfig = new CoreConfig();
+		if ( $modelConfig->getParam("SyEditBookingMailing") >= 2){
 		
-		if ($fromEmail != "" && $toEmail!= ""){
+			$modelUser = new User();
+			$fromEmail = $modelUser->getUserEmail($booked_by_id);
+			$toEmail = $modelUser->getUserEmail($recipient_id);
 			
-			$modelUserSettings = new UserSettings();
-			$settings = $modelUserSettings->getUserSettings($recipient_id);
-			$lang = "En";
-			if (isset($settings["language"])){
-				$lang = $settings["language"];
+			if ($fromEmail != "" && $toEmail!= ""){
+				
+				$modelUserSettings = new UserSettings();
+				$settings = $modelUserSettings->getUserSettings($recipient_id);
+				$lang = "En";
+				if (isset($settings["language"])){
+					$lang = $settings["language"];
+				}
+				
+				$subject = SyTranslator::Your_reservation($lang);
+				$content = "";
+				if ($editstatus == "add"){
+					$content .= SyTranslator::Your_reservation_has_been_added($lang) . ": <br/>";
+				}
+				else if($editstatus == "edit"){
+					$content .= SyTranslator::Your_reservation_has_been_modified($lang) . ": <br/>";
+				}
+				else if($editstatus == "deleted"){
+					$content .= SyTranslator::Your_reservation_has_been_deleted($lang) . ": <br/>";
+				}
+				
+				$modelResource = new SyResource();
+				$resourceInfo = $modelResource->resource($resource_id);
+				
+				$content .= "<br/>";
+				$content .= "<b>" . SyTranslator::Edited_by($lang) . ": </b> " . $modelUser->getUserFUllName($booked_by_id). "<br/>";
+				$content .= "<b>" . SyTranslator::Recipient($lang) . ": </b> " . $modelUser->getUserFUllName($recipient_id). "<br/>";
+				$content .= "<b>" . SyTranslator::Resource($lang) . "</b> " . $resourceInfo["name"]. "<br/>";
+				$content .= "<b>" . SyTranslator::Beginning($lang) . ": </b> " . date("F j, Y, g:i a", $start_time). "<br/>";
+				$content .= "<b>" . SyTranslator::End($lang) . ": </b> " . date("F j, Y, g:i a", $end_time). "<br/>";
+				
+				if ($short_description != ""){
+					$content .= "<b>" . SyTranslator::Short_description($lang) . ": </b> " . $short_description . "<br/>";
+				}
+				if ($short_description != ""){
+					$content .= "<b>" . SyTranslator::Full_description($lang) . ": </b> " . $full_description . "<br/>";
+				}
+				if ($quantity != ""){
+					$content .= "<b>" . SyTranslator::Quantity($lang) . ": </b> " . $quantity . "<br/>";
+				}
+				
+				/*
+				echo "fromEmail = " . $fromEmail . "<br/>";
+				echo "toEmail = " . $toEmail . "<br/>";
+				echo "subject = " . $subject . "<br/>";
+				echo "content = " . $content . "<br/>";
+				*/
+				
+				$modelMailer = new MailerSend();
+				$modelMailer->sendEmail($fromEmail, Configuration::get("name"), $toEmail, $subject, $content, false);
 			}
-			
-			$subject = SyTranslator::Your_reservation($lang);
-			$content = "";
-			if ($editstatus == "add"){
-				$content .= SyTranslator::Your_reservation_has_been_added($lang) . ": <br/>";
-			}
-			else if($editstatus == "edit"){
-				$content .= SyTranslator::Your_reservation_has_been_modified($lang) . ": <br/>";
-			}
-			else if($editstatus == "deleted"){
-				$content .= SyTranslator::Your_reservation_has_been_deleted($lang) . ": <br/>";
-			}
-			
-			$modelResource = new SyResource();
-			$resourceInfo = $modelResource->resource($resource_id);
-			
-			$content .= "<br/>";
-			$content .= "<b>" . SyTranslator::Edited_by($lang) . ": </b> " . $modelUser->getUserFUllName($booked_by_id). "<br/>";
-			$content .= "<b>" . SyTranslator::Recipient($lang) . ": </b> " . $modelUser->getUserFUllName($recipient_id). "<br/>";
-			$content .= "<b>" . SyTranslator::Resource($lang) . "</b> " . $resourceInfo["name"]. "<br/>";
-			$content .= "<b>" . SyTranslator::Beginning($lang) . ": </b> " . date("F j, Y, g:i a", $start_time). "<br/>";
-			$content .= "<b>" . SyTranslator::End($lang) . ": </b> " . date("F j, Y, g:i a", $end_time). "<br/>";
-			
-			if ($short_description != ""){
-				$content .= "<b>" . SyTranslator::Short_description($lang) . ": </b> " . $short_description . "<br/>";
-			}
-			if ($short_description != ""){
-				$content .= "<b>" . SyTranslator::Full_description($lang) . ": </b> " . $full_description . "<br/>";
-			}
-			if ($quantity != ""){
-				$content .= "<b>" . SyTranslator::Quantity($lang) . ": </b> " . $quantity . "<br/>";
-			}
-			
-			/*
-			echo "fromEmail = " . $fromEmail . "<br/>";
-			echo "toEmail = " . $toEmail . "<br/>";
-			echo "subject = " . $subject . "<br/>";
-			echo "content = " . $content . "<br/>";
-			*/
-			
-			$modelMailer = new MailerSend();
-			$modelMailer->sendEmail($fromEmail, Configuration::get("name"), $toEmail, $subject, $content, false);
 		}
 		
 	}

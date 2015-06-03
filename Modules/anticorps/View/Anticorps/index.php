@@ -232,7 +232,7 @@ $(document).ready(function() {
 						
 						<label for="inputEmail" class="control-label col-md-1">Statut:</label>
 						<div class="col-md-2">
-							<select class="form-control" id="searchValide" type="text" name="searchValide">
+							<select class="form-control" id="searchValide" name="searchValide">
 								<OPTION value="0" <?php if($searchColumn=="0"){echo $selected;} ?> >  </OPTION>
 								<OPTION value="1" <?php if($searchValide=="1"){echo $selected;} ?> > Validé </OPTION>
 								<OPTION value="2" <?php if($searchValide=="2"){echo $selected;} ?> > Non validé </OPTION>
@@ -358,7 +358,7 @@ $(document).ready(function() {
 				    		}  
 				    	}			    	
 					    echo $val;
-				    ?></a></td>
+				    ?></td>
 				    
 				    
 				    <td width="5%" class="text-left" style="background-color: #ffeeee;"><?php 

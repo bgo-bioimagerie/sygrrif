@@ -61,7 +61,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= MailerTranslator::Content($lang) ?></label>
 			<div class="col-xs-10">
-				<textarea class="form-control" id="content" type="text" name="content"
+				<textarea class="form-control" id="content" name="content"
 				>
 				</textarea>
 			</div>

@@ -35,6 +35,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		// series booking
 		$modelCoreConfig = new CoreConfig();
 		$seriesBooking = $modelCoreConfig->getParam("SySeriesBooking");
+		$editBookingMailing = $modelCoreConfig->getParam("SySeriesBooking");
 		
 		// edit reservatin fields
 		$editBookingDescriptionSettings = $modelCoreConfig->getParam("SyDescriptionFields");
@@ -55,7 +56,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     										 'isBookingMenu' => $isBookingMenu,
     										 'bookingSettings' => $bookingSettings,
     										 'seriesBooking' => $seriesBooking,
-											 'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+											 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+    										 'editBookingMailing' => $editBookingMailing
     			) );
     			return;
 			}
@@ -66,7 +68,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					                     'isBookingMenu' => $isBookingMenu,
 					                     'bookingSettings' => $bookingSettings,
 										 'seriesBooking' => $seriesBooking,
-					                     'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+					                     'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+    								     'editBookingMailing' => $editBookingMailing
 			) );
 			return;
 		}
@@ -99,7 +102,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 									 'isBookingMenu' => $isBookingMenu,
 									 'bookingSettings' => $bookingSettings,
 									 'seriesBooking' => $seriesBooking,
-									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+    								 'editBookingMailing' => $editBookingMailing
 			) );
 			return;
 			
@@ -116,7 +120,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'bookingSettings' => $bookingSettings,
 					'templateMessage' => $templateMessage,
 					'seriesBooking' => $seriesBooking,
-					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+					'editBookingMailing' => $editBookingMailing
 			) );
 			return;
 		}
@@ -134,7 +139,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'isBookingMenu' => $isBookingMenu,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
-					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+					'editBookingMailing' => $editBookingMailing
 			) );
 			return;
 		}
@@ -152,7 +158,27 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'isBookingMenu' => $isBookingMenu,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
-					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+    				'editBookingMailing' => $editBookingMailing
+			) );
+			return;
+		}
+		
+		// set editbookingmailingquery
+		$editbookingmailingquery = $this->request->getParameterNoException ( "editbookingmailingquery");
+		if ($editbookingmailingquery == "yes"){
+			
+			$editBookingMailing = $this->request->getParameterNoException ( "email_when" );
+			$modelCoreConfig = new CoreConfig();
+			$modelCoreConfig->setParam("SyEditBookingMailing", $editBookingMailing);
+			
+			$this->generateView ( array ('navBar' => $navBar,
+					'isSygrrifMenu' => $isSygrrifMenu,
+					'isBookingMenu' => $isBookingMenu,
+					'bookingSettings' => $bookingSettings,
+					'seriesBooking' => $seriesBooking,
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+					'editBookingMailing' => $editBookingMailing
 			) );
 			return;
 		}
@@ -202,7 +228,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'bookingOptionMessage' => $bookingOptionMessage,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
-					'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+    				'editBookingMailing' => $editBookingMailing
 			) );
 			return;
 		}
@@ -213,7 +240,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 									 'isBookingMenu' => $isBookingMenu,
 									 'bookingSettings' => $bookingSettings,
 									 'seriesBooking' => $seriesBooking,
-									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings
+									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+    								 'editBookingMailing' => $editBookingMailing
 		) );
 	}
 	

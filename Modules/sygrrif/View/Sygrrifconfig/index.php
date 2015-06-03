@@ -339,7 +339,6 @@
 		</div>
 		
 		<!-- Booking options -->
-		
 		<form role="form" class="form-horizontal" action="sygrrifconfig"
 		method="post">
 		<div class="col-xs-12">
@@ -358,7 +357,8 @@
 		  <?php 
 		  	$tag_desc = $this->clean($editBookingDescriptionSettings);
 		  ?>
-		  <div class="col-xs-3"><label class="control-label">Description fields:</label></div>
+		  <div class="col-xs-3"><label class="control-label">Description fields:</label>
+		  </div>
 		    <div class="col-xs-6"><select class="form-control" name="description_fields">
 				<OPTION value="1" <?php if ($tag_desc == 1){echo "selected=\"selected\"";}?>> Both short and full description </OPTION>
 				<OPTION value="2" <?php if ($tag_desc == 2){echo "selected=\"selected\"";}?>> Only short description </OPTION>
@@ -371,8 +371,44 @@
 		  </div>
 		  
 		  </div>
+		  </div>
         </form>  
 		
+		<!-- Booking mailing -->
+		<form role="form" class="form-horizontal" action="sygrrifconfig"
+		method="post">
+		<div class="col-xs-12">
+		<div class="col-xs-10">
+			  <input class="form-control" type="hidden" name="editbookingmailingquery" value="yes"
+			 	/>
+		</div>
+		
+        <div>
+		  <div class="page-header">
+			<h2>
+				Edit Booking Mailing <br> <small></small>
+			</h2>
+		  </div>
+		  
+		  <?php 
+		  	$tag_mail = $this->clean($editBookingMailing);
+		  ?>
+		  <div class="col-xs-3"><label class="control-label">Send emails:</label>
+		  </div>
+		    <div class="col-xs-6">
+		      <select class="form-control" name="email_when">
+				<OPTION value="1" <?php if ($tag_mail == 1){echo "selected=\"selected\"";}?>> Never </OPTION>
+				<OPTION value="2" <?php if ($tag_mail == 2){echo "selected=\"selected\"";}?>> When manager/admin edit a reservation </OPTION>
+			  </select>
+		  </div>
+		  
+		  <div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="save" />
+		  </div>
+		  
+		  </div>
+		  </div>
+        </form>
 		
 		<!-- Series booking -->
 		<div class="col-xs-12">

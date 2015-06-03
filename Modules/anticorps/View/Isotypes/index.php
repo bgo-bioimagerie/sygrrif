@@ -25,7 +25,7 @@
 				<tr>
 					<th><a href="isotypes/index/id">Id</a></th>
 					<th><a href="isotypes/index/nom">Name</a></th>
-					<th></td>
+					<th></th>
 				</tr>
 			</thead>
 			<tbody>

@@ -169,7 +169,7 @@
 			</div>
 		</div>
 		-->
-		<input class="form-control" id="convention" type="hidden" name="convention" value = "<?= $user['convention'] ?>"
+		<input class="form-control" id="convention" type="hidden" name="convention" value = "<?= $user['convention'] ?>">
 		<br>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang)?></label>

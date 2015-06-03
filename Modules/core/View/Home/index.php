@@ -41,6 +41,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 	<!-- icones: glyphicon-calendar, glyphicon-user, glyphicon-signal, glyphicon-th-large -->
 	
 	<div class="bs-glyphicons">
+    
     <ul class="bs-glyphicons-list">
       
       	<div class="page-header">
@@ -68,6 +69,7 @@ if (isset($_SESSION["user_settings"]["language"])){
         ?>
         </ul>
 		</div>
+		</ul>
 	</div>
         
         <?php 
