@@ -543,7 +543,7 @@ class CoreTranslator {
 	
 	public static function Activate_desactivate_menus($lang = ""){
 		if ($lang == "Fr"){
-			return "Activer/d√©sactivre les menus";
+			return utf8_encode("Activer/DÈsactiver les menus");
 		}
 		return "Activate/desactivate menus";
 	}

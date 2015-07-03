@@ -234,6 +234,7 @@ class ControllerSygrrif extends ControllerBooking {
 
 		// get form variables
 		$nom = $this->request->getParameter ( "name" );
+		$montant =$this->request->getParameter("montant");
 		$tarif_unique = $this->request->getParameter ( "tarif_unique" );
 		$tarif_nuit = $this->request->getParameter ( "tarif_nuit" );
 		$night_start = $this->request->getParameter ( "night_start" );

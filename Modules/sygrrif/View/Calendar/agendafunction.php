@@ -1,6 +1,6 @@
 <?php
 
-function drawAgenda($mois, $annee, $entries){
+function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
 	
 	$lang = "En";
 	if (isset($_SESSION["user_settings"]["language"])){
@@ -28,7 +28,95 @@ function drawAgenda($mois, $annee, $entries){
 	<!-- 
 	<caption><?= $mois_fr[$mois] . " " . $annee ?></caption>
 	 -->
+	 <?php if ($isneurinfo){?>
+	 <table class="tableau">
+	<caption>
+	
+	<div class="col-md-3" style="text-align: left;">
+		<button type="button" onclick="location.href='calendar/bookmonth/daymonthbefore'" class="btn btn-default"> &lt; </button>
+		<button type="button" onclick="location.href='calendar/bookmonth/daymonthafter'" class="btn btn-default"> > </button>
+		<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"> Ce mois</button>
+	</div>
+	<div class="col-md-4">
+		<p ><strong> <?= $mois_fr[$mois] . " " . $annee ?></strong></p>
+	</div>
+	<div class="col-md-5" style="text-align: right;">	
+		<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default"><?= SyTranslator::Week($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
+		<button type="button" class="btn btn-default active"><?= SyTranslator::Month($lang) ?></button>
+	</div>
+	</div>
+	</caption>
+	<tr><th>Lun</th><th>Mar</th><th>Mer</th><th>Jeu</th><th>Ven</th><th>Sam</th><th>Dim</th></tr>
+	<tr>
+	<?php
+	$case=0;
+	if($x>1)
+	for($i=1;$i<$x;$i++)
+	{
+		echo '<td class="desactive">&nbsp;</td>';
+		$case++;
+	}
+	for($i=1;$i<($l_day+1);$i++)
+	{
+		$f=$y=date("N", mktime(0, 0, 0, $mois,$i , $annee));
+		$da=$annee."-".$mois."-".$i;
+		echo "<td>";
+	
+		?>
+		<div style="text-align:right; font-size:12px; color:#999999;"> <?= $i ?> </div>
+		<?php 
+		$found = false;
+		$modelBookingSetting = new SyBookingSettings();
+		$modelparametre = new Projet_Calendar_Parametre();
+		$moduleProject = new Project();
+		$ModulesManagerModel = new ModulesManager();
+		$isProjectMode = $ModulesManagerModel->getDataMenusUserType("projects");
+		if ($isProjectMode > 0){
+			$isProjectMode = true;
+		}
+		else{
+			$isProjectMode = false;
+		}
+		foreach ($calRes as $entry){
+			if (date("d", $entry["start_time"]) == $i){
+				$found = true;
+				
+				?>
+				<a href="agenda/events/<?=$entry["id"] ?>">
+				
+				<div style="background-color: #<?=$entry["color"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
+				<p style="border-bottom: thin solid #818181; font-size:10px; color:#313131;" >
+				 <?= date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) ?></p>
+				 <?php $text = $modelparametre->getSummary($entry["recipient_fullname"],  $entry['acronyme'], $entry['codeanonyma'], $entry['commentaire'], $entry['numerovisite'], true); ?>
+				<p style="font-size:10px; color:#313131;"><?= $text ?></p>
+				</div>
+				</a>
+				<?php
+			}
+		}
+		if($found == false){
+			?>
+			<div style="height:45px;"> </div>
+			<?php 
+		}
+		
+		echo "</td>";
+		$case++;
+		if($case%7==0)
+			echo "</tr><tr>";
+		
+	}
+	if($y!=7)
+		for($i=$y;$i<7;$i++)
+		{
+			echo '<td class="desactive">&nbsp;</td>';
+		}
+	?></tr>
+	</table>
 	 
+	 <?php } else {?>
 	<table class="tableau">
 	<caption>
 	
@@ -78,12 +166,12 @@ function drawAgenda($mois, $annee, $entries){
 		else{
 			$isProjectMode = false;
 		}
-		foreach ($entries as $entry){
+		foreach ($calEntries as $entry){
 			if (date("d", $entry["start_time"]) == $i){
 				$found = true;
 				$shortDescription = $entry['short_description'];
 				if ($isProjectMode){
-					$shortDescription = $moduleProject->getProjectName($calEntry['short_description']);
+					$shortDescription = $moduleProject->getProjectName($entry['short_description']);
 				}
 				?>
 				<a href="agenda/events/<?=$entry["id"] ?>">
@@ -116,7 +204,7 @@ function drawAgenda($mois, $annee, $entries){
 			echo '<td class="desactive">&nbsp;</td>';
 		}
 	?></tr>
-	</table>
+	</table><?php }?>
 	<?php 
 }
 ?>

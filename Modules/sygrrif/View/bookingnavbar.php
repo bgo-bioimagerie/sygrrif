@@ -12,7 +12,7 @@
 	position: relative;
 	color: #cdbfe3;
 	text-shadow: 0 0px 0 rgba(0, 0, 0, .1);
-	background-color: #337ab7;
+	background-color: #00E0B0;
 	border:0px solid #337ab7;
 }
 
@@ -26,18 +26,20 @@
 	margin-top:10px;
 	margin-bottom:25px;
 	color: #cdbfe3;
-	background-color: #337ab7;
+	background-color: #00E0B0;
 	border:0px solid #337ab7;
 }
 
 legend {
-	color: #ffffff;
+	 
+color:#fff;
 }
 </style>
 
 </head>
 
 <?php 
+
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 $lang = "En";
@@ -49,7 +51,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h1><?= SyTranslator::SyGRRif_Booking($lang) ?></h1>
+		<h1 style="color:#fff"><?= SyTranslator::SyGRRif_Booking($lang) ?></h1>
 
 		<form role="form" class="form-horizontal" action="sygrrif/booking" method="post" id="navform">
 		<div class='col-md-4' id="well">
@@ -113,7 +115,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<div >
 					<div class='input-group date form_date_<?= $lang ?>'>
 						<input id="date-daily" type='text' class="form-control" name="curentDate"
-							value="<?= CoreTranslator::dateFromEn($menuData["curentDate"], $lang) ?>"
+						value="<?= CoreTranslator::dateFromEn($menuData["curentDate"], $lang) ?>"
 						/>
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>

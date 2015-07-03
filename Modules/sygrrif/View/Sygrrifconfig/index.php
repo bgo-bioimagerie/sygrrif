@@ -1,13 +1,18 @@
 <?php $this->title = "SyGRRiF Database" ?>
-
+<?php require_once 'Modules/sygrrif/Model/SyTranslator.php';?>
 <?php echo $navBar ?>
-
+<?php 
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
+?>
 <div class="container">
     	<div class="col-md-10 col-md-offset-1">
     	
     	<div class="page-header">
 			<h1>
-				SyGRRif configuration <br> <small></small>
+				Configuration de SyGRRif  <br> <small></small>
 			</h1>
 		</div>
 		
@@ -15,13 +20,12 @@
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
-				Install/Repair database <br> <small></small>
+				Installer/Reparer la base de donnée <br> <small></small>
 			</h2>
 		</div>
 		</div>
 		
-		<form role="form" class="form-horizontal" action="sygrrifconfig"
-		method="post">
+<form role="form" class="form-horizontal" action="sygrrifconfig" method="post">
 		
 		<?php if (isset($installError)): ?>
         <div class="alert alert-danger" role="alert">
@@ -48,7 +52,7 @@
 		<div class="col-xs-2 col-xs-offset-10" id="button-div">
 			<input type="submit" class="btn btn-primary" value="Install" />
 		</div>
-      </form>
+ </form>
       
       
       <!-- Sygrrif Menu -->
@@ -59,7 +63,7 @@
 			</h2>
 		  </div>
 		
-		  <form role="form" class="form-horizontal" action="sygrrifconfig"
+<form role="form" class="form-horizontal" action="sygrrifconfig"
 		  method="post">
 		  
 		    <div class="col-xs-10">
@@ -89,7 +93,7 @@
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
 			  <input type="submit" class="btn btn-primary" value="save" />
 		    </div>
-		  </form>
+	</form>
       </div>
       
       <!-- set bill template section -->
@@ -121,7 +125,7 @@
 		}
 		?>
 			
-      <form action="sygrrifconfig" method="post" enctype="multipart/form-data">
+    <form action="sygrrifconfig" method="post" enctype="multipart/form-data">
       <div class="col-xs-10">
 			<input class="form-control" type="hidden" name="templatequery" value="yes"
 				/>
@@ -139,7 +143,7 @@
       <div class="col-xs-2 col-xs-offset-10" id="button-div">
     	<input class="btn btn-primary" type="submit" value="Upload" name="submit">
       </div>
-	  </form>
+ </form>
 	  
 	  <br></br>	
 	  <br></br>
@@ -164,18 +168,220 @@
 		
 		  ?>
 		  
-		  <?php 
-		  if (isset($bookingSettings) && $bookingSettings != ""){
-		  ?>
-		  <form role="form" class="form-horizontal" action="sygrrifconfig"
+		  
+	<form role="form" class="form-horizontal" action="sygrrifconfig"
 		  method="post">
 		  
 		    <div class="col-xs-10">
 			  <input class="form-control" type="hidden" name="setbookingoptionsquery" value="yes"
 			 	/>
 		    </div>
+		    <?php if($isneurinfo){?>
+		    <?php 
+		  if (isset($parametre) && $parametre!= ""){
+		  ?>
+ <!-- recipient name --> 
+		    <?php 
+		    //$tagName = $this->clean($bookingSettings[$i]['tag_name']);
+		    $i=0;
+			$tag_visible = $this->clean($parametre[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($parametre[$i]['is_tag_visible']);
+			$tag_position = $this->clean($parametre[$i]['display_order']);
+			$tag_font = $this->clean($parametre[$i]['font']);
+			?>
+			
+		    <div class="col-xs-12">
 		    
-		    <!-- recipient name -->
+		    <div class="col-xs-3"><label class="control-label"><?= SyTranslator::Recipient($lang)?></label></div>
+		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rname">
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_rname">
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_position_rname">
+				<?php 
+				for ($j = 0 ; $j < count($parametre) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_font_rname">
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
+			</select></div>
+		    </div> 
+
+<!-- acronyme - acronyme-->
+		    <?php 
+		    $i=1;
+			$tag_visible = $this->clean($parametre[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($parametre[$i]['is_tag_visible']);
+			$tag_position = $this->clean($parametre[$i]['display_order']);
+			$tag_font = $this->clean($parametre[$i]['font']);
+			?>
+			
+			<div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Acronyme:</label></div>
+		    <div class="col-xs-2"><select class="form-control" name="tag_visible_acronyme">
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_acronyme">
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_position_acronyme">
+				<?php 
+				for ($j = 0 ; $j < count($parametre) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_font_acronyme">
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
+			</select></div>
+		    </div> 
+		   <!-- numero de visite - numvisite -->
+			  <?php 
+		    $i=2;
+			$tag_visible = $this->clean($parametre[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($parametre[$i]['is_tag_visible']);
+			$tag_position = $this->clean($parametre[$i]['display_order']);
+			$tag_font = $this->clean($parametre[$i]['font']);
+			?>
+			
+			<div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Numero de visite:</label></div>
+		    <div class="col-xs-2"><select class="form-control" name="tag_visible_numvisite">
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_numvisite">
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_position_numvisite">
+				<?php 
+				for ($j = 0 ; $j < count($parametre) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_font_numvisite">
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
+			</select></div>
+		    </div> 
+			<!-- code d'anonymisation - codeanonyma -->
+		    <?php 
+		    $i=3;
+			$tag_visible = $this->clean($parametre[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($parametre[$i]['is_tag_visible']);
+			$tag_position = $this->clean($parametre[$i]['display_order']);
+			$tag_font = $this->clean($parametre[$i]['font']);
+			?>
+			
+			 <div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Code d'annonymisation:</label></div>
+		    <div class="col-xs-2"><select class="form-control" name="tag_visible_codeanonyma">
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_codeanonyma">
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_position_codeanonyma">
+				<?php 
+				for ($j = 0 ; $j < count($parametre) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_font_codeanonyma">
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
+			</select></div>
+			</div>
+		<!-- Commentaire --> 
+		    <?php 
+		    $i=4;
+			$tag_visible = $this->clean($parametre[$i]['is_visible']);			
+			$tag_title_visible = $this->clean($parametre[$i]['is_tag_visible']);
+			$tag_position = $this->clean($parametre[$i]['display_order']);
+			$tag_font = $this->clean($parametre[$i]['font']);
+			?>
+			
+		    <div class="col-xs-12">
+		   <div class="col-xs-3"><label class="control-label">Commentaire:</label></div>
+		    <div class="col-xs-2"><select class="form-control" name="tag_visible_commentaire">
+				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_commentaire">
+				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_position_commentaire">
+				<?php 
+				for ($j = 0 ; $j < count($parametre) ; $j++){
+					$selected = "";
+					if ($tag_position == $j+1){
+						$selected = "selected=\"selected\"";
+					}
+					?>
+					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<?php 				
+				}
+				?>
+			</select></div>
+			<div class="col-xs-2"><select class="form-control" name="tag_font_commentaire">
+				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
+				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
+				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
+			</select></div>
+		    </div> 
+				<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="Enregistrer" />
+		    </div><?php }?>
+			<?php }else{?>
+			<?php 
+		  if (isset($bookingSettings) && $bookingSettings != ""){
+		  ?>
+		  
+			<!-- recipient name --> 
 		    <?php 
 		    //$tagName = $this->clean($bookingSettings[$i]['tag_name']);
 		    $i=0;
@@ -184,6 +390,7 @@
 			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
 			$tag_font = $this->clean($bookingSettings[$i]['font']);
 			?>
+			
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Recipient name:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rname">
@@ -213,15 +420,8 @@
 				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
 			</select></div>
 		    </div> 
-
-		    <!-- recipient phone - rphone-->
-		    <?php 
-		    $i=1;
-			$tag_visible = $this->clean($bookingSettings[$i]['is_visible']);			
-			$tag_title_visible = $this->clean($bookingSettings[$i]['is_tag_visible']);
-			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
-			$tag_font = $this->clean($bookingSettings[$i]['font']);
-			?>
+			
+ <!-- recipient phone - rphone-->
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Recipient phone:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rphone">
@@ -251,16 +451,9 @@
 				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
 			</select></div>
 		    </div> 
-		    
-		    
-		    <!-- short description - sdesc -->
-		    <?php 
-		    $i=2;
-			$tag_visible = $this->clean($bookingSettings[$i]['is_visible']);			
-			$tag_title_visible = $this->clean($bookingSettings[$i]['is_tag_visible']);
-			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
-			$tag_font = $this->clean($bookingSettings[$i]['font']);
-			?>
+		   
+		  
+<!-- short description - sdesc -->
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Short description:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_sdesc">
@@ -291,14 +484,8 @@
 			</select></div>
 		    </div> 
 		    
-		    <!-- description - desc -->
-		    <?php 
-		    $i=3;
-			$tag_visible = $this->clean($bookingSettings[$i]['is_visible']);			
-			$tag_title_visible = $this->clean($bookingSettings[$i]['is_tag_visible']);
-			$tag_position = $this->clean($bookingSettings[$i]['display_order']);
-			$tag_font = $this->clean($bookingSettings[$i]['font']);
-			?>
+		  
+<!-- description - desc -->
 		    <div class="col-xs-12">
 		    <div class="col-xs-3"><label class="control-label">Description:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_desc">
@@ -326,15 +513,16 @@
 				<OPTION value="normal" <?php if ($tag_font == "normal"){echo "selected=\"selected\"";}?>> normal </OPTION>
 				<OPTION value="bold" <?php if ($tag_font == "bold"){echo "selected=\"selected\"";}?>> bold </OPTION>
 				<OPTION value="italic" <?php if ($tag_font == "italic"){echo "selected=\"selected\"";}?>> italic </OPTION>
-			</select></div>
+			</select></div><?php }?>
 		    <br></br>
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
 			  <input type="submit" class="btn btn-primary" value="save" />
-		    </div>
-		  </form>
-		  <?php 
+		    </div> <?php 
 		  }
 		  ?>
+		  
+		  </form>
+		 
 		  
 		  </div>
 		<div class="col-xs-12">
@@ -373,6 +561,3 @@
   </div>
 </div>    
 
-<?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
-<?php endif; ?>

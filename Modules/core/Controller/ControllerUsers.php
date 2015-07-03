@@ -6,7 +6,7 @@ require_once 'Modules/core/Model/Status.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
-
+require_once 'Modules/core/Model/ModulesManager.php';
 class ControllerUsers extends ControllerSecureNav {
 	
 	/**
@@ -32,7 +32,8 @@ class ControllerUsers extends ControllerSecureNav {
 			return;
 		}
 		
-		
+		$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
 		
 		$navBar = $this->navBar();
 		
@@ -48,7 +49,8 @@ class ControllerUsers extends ControllerSecureNav {
 		
 		$this->generateView ( array (
 				'navBar' => $navBar, 'usersArray' => $usersArray,
-				'searchColumn' => $searchColumn, "searchTxt" => $searchTxt 
+				'searchColumn' => $searchColumn, "searchTxt" => $searchTxt,
+				'isneurinfo'=>$isneurinfo
 		) );
 	}
 	
@@ -80,7 +82,8 @@ class ControllerUsers extends ControllerSecureNav {
 		// get status list
 		$modelStatus = new Status();
 		$status = $modelStatus->statusIDName();
-
+	$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
 		//print_r($status);
 		
 		// get units list
@@ -99,7 +102,8 @@ class ControllerUsers extends ControllerSecureNav {
 				'statusList' => $status,
 				'unitsList' => $unitsList, 
 				'respsList' => $respsList,
-				'conventionsList' => $conventionsList
+				'conventionsList' => $conventionsList,
+				'isneurinfo'=>$isneurinfo
 		) );
 	}
 	
@@ -176,7 +180,8 @@ class ControllerUsers extends ControllerSecureNav {
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$userId = $this->request->getParameter("actionid");
 		}
-		
+		$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
 		// get user info
 		$user = $this->userModel->userAllInfo($userId);	
 		
@@ -201,7 +206,8 @@ class ControllerUsers extends ControllerSecureNav {
 		$this->generateView ( array (
 				'navBar' => $navBar, 'statusList' => $status,
 				'unitsList' => $unitsList,
-				'respsList' => $respsList, 'user' => $user
+				'respsList' => $respsList, 'user' => $user,
+				'isneurinfo'=>$isneurinfo
 		) );
 	}
 	
@@ -447,7 +453,8 @@ class ControllerUsers extends ControllerSecureNav {
 		if (isset($_SESSION["user_settings"]["language"])){
 			$lang = $_SESSION["user_settings"]["language"];
 		}
-	
+	$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
 		$searchColumn = $this->request->getParameterNoException("searchColumn");
 		$searchTxt = $this->request->getParameterNoException("searchTxt");
 		
@@ -483,6 +490,7 @@ class ControllerUsers extends ControllerSecureNav {
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar, 'usersArray' => $usersArray,
+				'isneurinfo'=>$isneurinfo,
 				'searchColumn' => $searchColumn, 'searchTxt' => $searchTxt
 		), "index" );
 	

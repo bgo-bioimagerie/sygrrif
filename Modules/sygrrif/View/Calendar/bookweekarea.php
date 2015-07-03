@@ -4,6 +4,8 @@
 <?php
 
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
+require_once 'Modules/projet/Model/Projet_Calendar_Parametre.php';
+require_once 'Modules/projet/Model/Projet_Calendar_Parametre.php'
 ?>
 
 <head>
@@ -35,14 +37,16 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
     margin:0px;
 }
 
-#resa_link {
+
+#resa_link{
 	font-family: Arial;
-	font-size: 9px;
+	font-size: 12px;
 	line-height: 9px;
 	letter-spacing: 1px;
 	font-weight: normal;
+	color: #002070;
+	font-weight : bold;
 }
-
 </style>
 </head>
 
@@ -143,6 +147,205 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 </div>
 
 <div class="">
+<?php if($isneurinfo){?>
+<div class=row-same-height">
+	<?php
+	$resourceCount = - 1;
+	$modelBookingSetting = new SyBookingSettings ();
+	$parametreclalendrier= new Projet_Calendar_Parametre();
+	$modelParametre = new Projet_Calendar_Parametre();
+	$moduleProject = new Project ();
+	$ModulesManagerModel = new ModulesManager ();
+	$isProjectMode = $ModulesManagerModel->getDataMenusUserType ( "projects" );
+	
+	for ($i=-1 ; $i < count($resourcesBase) ; $i++){
+	//foreach ( $resourcesBase as $ResourceBase ) {
+		
+		$resourceID = -1;
+		if( $i >=0 ){
+			$resourceID = $resourcesBase [$i] ["id"];
+		}
+		// echo "resource id = " . $resourcesBase[$resourceCount]["id"] . "</br>";
+		// resource title
+		?>
+		
+		<?php 
+			$styleLine = "";
+			if (!($i%2)){
+				$styleLine = "style=\"background-color:#f1f1f1; border-right: 1px solid #a1a1a1;\"";
+			}
+			else{
+				$styleLine = "style=\"background-color:#ffffff; border-right: 1px solid #a1a1a1;\"";
+			}
+			?>
+			
+			<div class="row" > <!-- id="colDivglobal" -->
+			
+			<div class="col-lg-12" id="colDiv">
+				<!-- Content of each day -->
+				<div class="">
+				
+					<!-- Title -->
+					<?php 
+					if ( $i > -1){
+					?>
+					<div class="col-lg-1 col-lg-offset-2 row-cell" <?= $styleLine ?> >
+					<p>
+					<b><?= $this->clean($resourcesBase[$i]['name']) ?></b>
+					</p>
+					</div>
+					<?php	
+					}
+					else{
+						?>
+						<div class="col-lg-1 col-lg-offset-2 row-cell" <?= $styleLine ?>>
+						<p> </p>
+						</div>
+						<?php	
+					}
+					?>	
+				
+					<?php
+					
+					for($d = 0; $d < 7; $d ++) {
+						?>
+						<?php 
+						if ( $i == -1 ){
+							// day title
+							$temp = explode ( "-", $mondayDate );
+							$date_unix = mktime ( 0, 0, 0, $temp [1], $temp [2] + $d, $temp [0] );
+							$dayStream = date ( "l", $date_unix );
+							$monthStream = date ( "M", $date_unix );
+							$dayNumStream = date ( "d", $date_unix );
+							$sufixStream = date ( "S", $date_unix );
+								
+							$dayTitle = SyTranslator::DateFromTime ( $date_unix, $lang );
+							
+							
+						?>
+							<div class="col-lg-1 row-cell" <?= $styleLine ?>>
+
+								<div id="tcelltop" style="height: 60px;" class="text-center">
+									<p class="text-center">
+									<b> <?= $dayTitle ?> </b>
+									</p>
+								</div>
+							</div>
+						<?php
+						}
+						else{
+						?>
+							<div class="col-lg-1 row-cell" <?= $styleLine ?>>
+								<!-- Print the reservations for the given day -->
+							<?php
+							$resourceCount = $i;
+							$temp = explode ( "-", $mondayDate );
+							$date_unix = mktime ( 0, 0, 0, $temp [1], $temp [2] + $d, $temp [0] );
+							
+							$day_begin = $this->clean ( $resourcesInfo [$resourceCount] ['day_begin'] );
+							$day_end = $this->clean ( $resourcesInfo [$resourceCount] ['day_end'] );
+							$size_bloc_resa = $this->clean ( $resourcesInfo [$resourceCount] ['size_bloc_resa'] );
+							$available_days = $this->clean ( $resourcesInfo [$resourceCount] ['available_days'] );
+							$available_days = explode ( ",", $available_days );
+							
+							$isDayAvailable = false;
+							if ($available_days [$d] == 1) {
+								$isDayAvailable = true;
+							}
+				
+							// add here the reservations
+							$foundEntry = false;
+							foreach ( $calRes as $entry ) {
+								
+								if($entry ["resource_id"] == $resourceID && $entry['start_time']<=$date_unix && $entry['end_time'] >= $date_unix){
+										$foundEntry = true;
+										// draw entry
+										
+										
+										$txtEndTime = date ( "H:i", $entry ["end_time"] );
+										if (  $entry['end_time'] - $date_unix > 3600*24){
+											$txtEndTime = "23:59";
+										}
+										
+										$text = "00:00". " - " . $txtEndTime . "<br />";
+										$text .= $parametreclalendrier->getSummary ( $entry ["recipient_fullname"], $entry ['acronyme'], $entry['codeanonyma'], $entry ['commentaire'], $entry['numerovisite'],  false );
+										?>
+										<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color']?>;"> 
+											<a class="text-center" id="resa_link"href="calendar/editreservation/r_<?= $entry['id'] ?>">
+												<?=$text?>
+											</a>
+										</div>
+										<?php
+								}
+								
+								if ($entry ["resource_id"] == $resourceID && $entry ["start_time"] >= $date_unix && $entry ["start_time"] <= $date_unix + 86400) {
+									$foundEntry = true;
+									// draw entry
+									
+									
+									$txtEndTime = date ( "H:i", $entry ["end_time"] );
+									if (date ( "d", $entry ["end_time"] ) > date ( "d", $date_unix )){
+										$txtEndTime = "23:59";
+									}
+									
+									$text = date ( "H:i", $entry ["start_time"] ) . " - " . $txtEndTime . "<br />";
+										$text .= $parametreclalendrier->getSummary ( $entry ["recipient_fullname"], $entry ['acronyme'], $entry['codeanonyma'], $entry ['commentaire'], $entry['numerovisite'],  false );
+																		?>
+									<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color']?>;"> 
+											<a class="text-center" id="resa_link"href="calendar/editreservation/r_<?= $entry['id'] ?>">
+											<?=$text?>
+											</a>
+									</div>
+									<?php
+								}
+							}
+							// plus button
+							if ($isDayAvailable) {
+								if ($isUserAuthorizedToBook [$resourceCount]) {
+									$dateString = date ( "Y-m-d", $date_unix );
+									
+									$styleTxt = "";
+									if (!$foundEntry){
+										$styleTxt = "style=\"height: 60px;\"";
+									}
+									?>
+									<div class="text-center">
+										<a class="glyphicon glyphicon-plus"
+											href="calendar/editreservation/t_<?= $dateString."_"."8"."_".$resourceID ?>">
+										</a>
+									</div>
+									<?php
+								}
+								else{
+								?>
+								<div class="text-center">
+								<p></p>
+								</div>
+								<?php 	
+								}
+							}
+							else{
+								?>
+								<div class="text-center">
+								<p></p>
+								</div>
+								<?php 
+							}
+							?>
+							</div>
+					<?php
+						} 
+					}
+					?>
+				</div> <!--  seven-cols -->
+			</div> <!-- col11 days --> 
+			</div> 
+	<?php
+	}
+	?>
+</div>
+
+<?php }else{?>
 <div class=row-same-height">
 	<?php
 	$resourceCount = - 1;
@@ -248,7 +451,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 				
 							// add here the reservations
 							$foundEntry = false;
-							foreach ( $calEntries as $entry ) {
+							foreach ($calEntries as $entry) {
 								
 								if($entry ["resource_id"] == $resourceID && $entry['start_time']<=$date_unix && $entry['end_time'] >= $date_unix){
 										$foundEntry = true;
@@ -264,7 +467,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 										}
 										
 										$text = "00:00". " - " . $txtEndTime . "<br />";
-										$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'], false );
+										$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'],  false );
 										?>
 										<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color']?>;"> 
 											<a class="text-center" id="resa_link"href="calendar/editreservation/r_<?= $entry['id'] ?>">
@@ -343,6 +546,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 	}
 	?>
 </div>
+<?php }?>
 </div>
 
 <?php if (isset($msgError)): ?>

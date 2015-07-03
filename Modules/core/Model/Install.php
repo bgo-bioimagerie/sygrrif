@@ -26,6 +26,7 @@ class Install extends Model {
 			$dsn = 'mysql:host=' . $sql_host . ';dbname=' . $db_name .';charset=utf8';
 			$connection = new PDO( $dsn, $login, $password,
 					array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+			$connection -> exec("SET CHARACTER SET utf8");
 			return 'success';
 			
 		} catch ( Exception $e ) {

@@ -44,6 +44,7 @@ if ($language == "fr"){
             </div>
             <br></br>
             <a href="mailto:<?= $admin_email ?>" class="text-center new-account"><?= CoreTranslator::Contact_the_administrator($language) ?></a>
+            <br/>
         </div>
     </div>
 </div>

@@ -31,6 +31,15 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 	border-radius: 9px;
 	border: 1px solid #f1f1f1;
 }
+#resa_link{
+	font-family: Arial;
+	font-size: 12px;
+	line-height: 9px;
+	letter-spacing: 1px;
+	font-weight: normal;
+	color: #002070;
+	font-weight : bold;
+}
 
 </style>
 </head>
@@ -121,10 +130,10 @@ $available_days = explode(",", $available_days);
 			$heightCol = "100px";
 		}
 		else if($size_bloc_resa == 1800){
-			$heightCol = "50px";
+			$heightCol = "150px";
 		}
 		else if($size_bloc_resa == 3600){
-			$heightCol = "50px";
+			$heightCol = "150px";
 		}
 		?>
 	
@@ -149,7 +158,7 @@ $available_days = explode(",", $available_days);
 		$isAvailableDay = true;
 	}
 	
-	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isAvailableDay);
+	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $calRes, $isUserAuthorizedToBook, $isAvailableDay);
 	?>
 	
 </div>

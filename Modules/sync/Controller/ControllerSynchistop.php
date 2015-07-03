@@ -307,11 +307,11 @@ class ControllerSynchistop extends Controller {
 			if (!$mrc->isResourcesCategory($aut['machine'])){
 				$mrc->addResourcesCategory($aut['machine']);
 			}
-			$id_resourceCategory = $mrc->getResourcesCategoryId($aut['machine'])[0];
+			$id_resourceCategory = $mrc->getResourcesCategoryId($aut['machine'][0]);
 			
 			// get visa id
 			$mv = new SyVisa();
-			$id_visa = $mv->getVisaId($aut['visa'])[0];
+			$id_visa = $mv->getVisaId($aut['visa'][0]);
 			
 			// get unit id
 			$mu = new Unit();
@@ -360,7 +360,7 @@ class ControllerSynchistop extends Controller {
 			$sql = "select id from grr_type_area where type_letter='".$type."'";
 			//echo "sql = " . $sql ."</br>";
 			$req = $pdo_old->query($sql);
-			$color_type_id = $req->fetch()[0];
+			$color_type_id = $req->fetch();
 			
 			if (!$color_type_id){
 				$color_type_id = 3; // autres

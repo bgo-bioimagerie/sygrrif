@@ -3,7 +3,8 @@
 <?php echo $navBar?>
 <?php 
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
-require_once 'Modules/sygrrif/View/Calendar/agendafunction.php'
+require_once 'Modules/sygrrif/View/Calendar/agendafunction.php';
+require_once 'Modules/projet/Model/Projet_Calendar_Parametre.php';
 ?>
 
 <head>
@@ -15,7 +16,7 @@ require_once 'Modules/sygrrif/View/Calendar/agendafunction.php'
 	
 <div class="col-lg-12">	
 <?php 	
-drawAgenda($month, $year, $calEntries);
+drawAgenda($month, $year, $calEntries, $calRes, $isneurinfo);
 ?>
 <div>
 

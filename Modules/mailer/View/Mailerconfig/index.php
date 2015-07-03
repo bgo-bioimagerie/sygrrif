@@ -18,7 +18,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</h1>
 		</div>
 		
-		<!-- 
+		
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
@@ -53,7 +53,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			<input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Install($lang) ?>" />
 		</div>
       </form>
-       -->
+       
       
       <!-- Sygrrif Menu -->
       <div>
@@ -63,8 +63,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</h2>
 		  </div>
 		
-		  <form role="form" class="form-horizontal" action="mailerconfig"
-		  method="post">
+		  <form role="form" class="form-horizontal" action="mailerconfig" method="post">
 		  
 		    <div class="col-xs-12">
 			  <input class="form-control" type="hidden" name="setmenusquery" value="yes"

@@ -1,5 +1,5 @@
 <?php
 require_once 'vendor/autoload.php';
-spl_autoload_register(function ($class) {
+function  spl_autoload_register ($class) {
     require_once strtr($class, '\\_', '//').'.php';
-});
+}

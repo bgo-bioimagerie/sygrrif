@@ -57,7 +57,21 @@ class SyCalendarSeries extends Model {
 							 $short_description, $full_description, $quantity));
 		return $this->getDatabase()->lastInsertId();
 	}
-	
+	public function addres($start_time, $end_time, $series_type_id, $end_date, $days_option,
+							 $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id,
+							  $acronyme, $codeanonym, $commentaire, $numerovisite, $quantity = 0){
+		
+		$sql = "insert into reservation(
+				start_time,	end_time, series_type_id, end_date, days_option,
+				resource_id, booked_by_id, recipient_id, last_update, color_type_id,
+				 acronyme, codeanonyma, commentaire, numerovisite, quantity
+				)"
+				. " values(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		$this->runRequest($sql, array($start_time, $end_time, $series_type_id, $end_date, $days_option,
+							 $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id,
+							 $acronyme, $codeanonym, $commentaire, $numerovisite, $quantity));
+		return $this->getDatabase()->lastInsertId();
+	}
 	public function getEntry($id){
 		$sql = "select * from sy_calendar_series where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -76,7 +90,19 @@ class SyCalendarSeries extends Model {
 							 $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id,
 							 $short_description, $full_description, $quantity, $id));
 	}
-
+	public function updateRes($id, $start_time, $end_time, $series_type_id, $end_date, $days_option,
+							 $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id,
+							  $acronyme, $codeanonym, $commentaire, $numerovisite, $quantity=0){
+		$sql = "update sy_calendar_entry set 
+				start_time=?, end_time=?, series_type_id=?, end_date=?, days_option=?,
+				resource_id=?, booked_by_id=?, recipient_id=?, last_update=?, color_type_id=?,
+				acronyme=?, codeanonyma=?, commentaire=?, numerovisite=?, quantity=?
+									  where id=?";
+		$this->runRequest($sql, array($start_time, $end_time, $series_type_id, $end_date, $days_option,
+							 $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id,
+							 $acronyme, $codeanonym, $commentaire, $numerovisite, $quantity, $id));
+	}
+	
 	public function entriesDates($start_time, $end_time, $series_type_id, $days_option, $seriesEndDate){
 		
 		$seriesEndDate = explode("-", $seriesEndDate);

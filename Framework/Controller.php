@@ -14,6 +14,7 @@ abstract class Controller
     /** Action to run */
     private $action;
 
+
     /** recieved request */
     protected $request;
 

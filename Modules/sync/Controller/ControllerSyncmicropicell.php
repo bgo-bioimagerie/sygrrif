@@ -189,7 +189,7 @@ class ControllerSyncmicropicell extends Controller {
 
 		$sql = "select id from grr_area where area_name='PF-MicroPiCell'";
 		$req = $pdo_grr->query($sql);
-		$area_id = $req->fetch()[0];
+		$area_id = $req->fetch();
 		
 		
 		$sql = "select * from grr_room where area_id=".$area_id;
@@ -239,7 +239,7 @@ class ControllerSyncmicropicell extends Controller {
 		
 		$sql = "select id from grr_area where area_name='PF-MicroPiCell'";
 		$req = $pdo_grr->query($sql);
-		$area_id = $req->fetch()[0];
+		$area_id = $req->fetch();
 		
 		$sql = "select distinct beneficiaire from grr_entry where room_id in (select id from grr_room where area_id=".$area_id.")";
 		$entry_oldq = $pdo_grr->query($sql);
@@ -310,7 +310,7 @@ class ControllerSyncmicropicell extends Controller {
 		// get the area ID
 		$sql = "select id from grr_area where area_name='PF-MicroPiCell'";
 		$req = $pdo_old->query($sql);
-		$area_id = $req->fetch()[0];
+		$area_id = $req->fetch();
 		
 		// get all authorizations from old db
 		$sql = "select * from grr_entry where room_id in (select id from grr_room where area_id=".$area_id.")";
@@ -331,7 +331,7 @@ class ControllerSyncmicropicell extends Controller {
 			$sql = "select id from grr_type_area where type_letter='".$type."'";
 			//echo "sql = " . $sql ."</br>";
 			$req = $pdo_old->query($sql);
-			$color_type_id = $req->fetch()[0];
+			$color_type_id = $req->fetch();
 				
 			//echo " color_type_id = " . $color_type_id;
 				
@@ -357,7 +357,7 @@ class ControllerSyncmicropicell extends Controller {
 		// get the area ID
 		$sql = "select id from grr_area where area_name='PF-MicroPiCell'";
 		$req = $pdo_grr->query($sql);
-		$area_id = $req->fetch()[0];
+		$area_id = $req->fetch();
 		
 		// get all authorizations from old db
 		$sql = "select * from grr_entry where room_id in (select id from grr_room where area_id=".$area_id.")";
@@ -453,7 +453,7 @@ class ControllerSyncmicropicell extends Controller {
 				else{
 					//echo "found an already existing user, id=" . $id . "</br>";
 					$modelResponsible->setResponsible($id);
-					$modelUser->userAllInfo($id)['login'];
+					$modelUser->userAllInfo($id['login']);
 					$modelUser->setUnitId($login, $id_unit);
 				}
 			}
@@ -533,7 +533,7 @@ class ControllerSyncmicropicell extends Controller {
 					}
 					else{
 						$modelUser->setResponsible($id, $id_responsible);
-						$modelUser->userAllInfo($id)['login'];
+						$modelUser->userAllInfo($id['login']);
 						$modelUser->setUnitId($login, $id_unit);
 					}
 				}
@@ -613,7 +613,7 @@ class ControllerSyncmicropicell extends Controller {
 					$id_responsible, $id_status, $convention, $date_convention);
 				}
 				else{
-					$modelUser->userAllInfo($id)['login'];
+					$modelUser->userAllInfo($id['login']);
 					$modelUser->setUnitId($login, $id_unit);
 				}
 			}

@@ -7,6 +7,7 @@
   height: 35px;
   left: 0px;
   background: #fff;
+  	
 }
 
 #navbarUser {
@@ -32,6 +33,7 @@
         -moz-box-shadow: 0 2px 1px #9c9c9c;
         -webkit-box-shadow: 0 2px 1px #9c9c9c; 
         box-shadow: 0 1px 1px #9c9c9c; */
+ 		
 }
 
 #navbar li{
@@ -87,6 +89,7 @@
     -moz-border-radius: 5px;
     border-radius: 5px;
 	*/
+
 }
 
 #navbar ul li{

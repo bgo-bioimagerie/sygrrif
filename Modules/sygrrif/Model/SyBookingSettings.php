@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Framework/Model.php';
-
+require_once 'Modules/sygrrif/Controller/ControllerSygrrifconfig.php';
 /**
  * Class defining the booking settings model
  *
@@ -31,11 +31,18 @@ class SyBookingSettings extends Model {
 		return $pdo;
 	}
 	
+	
 	public function defaultEntries(){
 		$this->setEntry("User", 1, 1, 1, "normal");
 		$this->setEntry("Phone", 1, 1, 2, "normal");
 		$this->setEntry("Short desc", 1, 1, 3, "normal");
 		$this->setEntry("Desc", 0, 0, 4, "normal");
+		if(isset($isneurinfo)){
+		$this->setEntry("Acronyme", 1, 1, 1, "normal");
+		$this->setEntry("Numéro de visite", 1, 1, 2, "normal");
+		$this->setEntry("Code d'anonymation", 1, 1, 3, "normal");}
+		$this->setEntry("Desc", 0, 0, 4, "normal");
+				
 	}
 	
 	public function entries($sortEntry = "id"){
@@ -136,6 +143,8 @@ class SyBookingSettings extends Model {
 		}
 		return $summary;
 	}
+		
+	
 	
 	protected function summaryEntry($i, $summary, $entryList, $content, $displayHorizontal, $tagNameTr, $last){
 		

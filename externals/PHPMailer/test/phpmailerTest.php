@@ -677,9 +677,9 @@ class PHPMailerTest extends PHPUnit_Framework_TestCase
     {
         $this->Mail->WordWrap = 40;
         $my_body = str_repeat(
-            '飛兒樂 團光茫 飛兒樂 團光茫 飛兒樂 團光茫 飛兒樂 團光茫 ' .
-            '飛飛兒樂 團光茫兒樂 團光茫飛兒樂 團光飛兒樂 團光茫飛兒樂 團光茫兒樂 團光茫 ' .
-            '飛兒樂 團光茫飛兒樂 團飛兒樂 團光茫光茫飛兒樂 團光茫. ',
+            'é£›å…’æ¨‚ åœ˜å…‰èŒ« é£›å…’æ¨‚ åœ˜å…‰èŒ« é£›å…’æ¨‚ åœ˜å…‰èŒ« é£›å…’æ¨‚ åœ˜å…‰èŒ« ' .
+            'é£›é£›å…’æ¨‚ åœ˜å…‰èŒ«å…’æ¨‚ åœ˜å…‰èŒ«é£›å…’æ¨‚ åœ˜å…‰é£›å…’æ¨‚ åœ˜å…‰èŒ«é£›å…’æ¨‚ åœ˜å…‰èŒ«å…’æ¨‚ åœ˜å…‰èŒ« ' .
+            'é£›å…’æ¨‚ åœ˜å…‰èŒ«é£›å…’æ¨‚ åœ˜é£›å…’æ¨‚ åœ˜å…‰èŒ«å…‰èŒ«é£›å…’æ¨‚ åœ˜å…‰èŒ«. ',
             10
         );
         $nBodyLen = strlen($my_body);
@@ -840,10 +840,10 @@ EOT;
         <title>HTML email test</title>
     </head>
     <body>
-        <p>Chinese text: 郵件內容為空</p>
-        <p>Russian text: Пустое тело сообщения</p>
-        <p>Armenian text: Հաղորդագրությունը դատարկ է</p>
-        <p>Czech text: Prázdné tělo zprávy</p>
+        <p>Chinese text: éƒµä»¶å…§å®¹ç‚ºç©º</p>
+        <p>Russian text: ÐŸÑƒÑ�Ñ‚Ð¾Ðµ Ñ‚ÐµÐ»Ð¾ Ñ�Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ�</p>
+        <p>Armenian text: Õ€Õ¡Õ²Õ¸Ö€Õ¤Õ¡Õ£Ö€Õ¸Ö‚Õ©ÕµÕ¸Ö‚Õ¶Õ¨ Õ¤Õ¡Õ¿Õ¡Ö€Õ¯ Õ§</p>
+        <p>Czech text: PrÃ¡zdnÃ© tÄ›lo zprÃ¡vy</p>
     </body>
 </html>
 EOT;
@@ -869,10 +869,10 @@ EOT;
         <title>HTML email test</title>
     </head>
     <body>
-        <p>Chinese text: 郵件內容為空</p>
-        <p>Russian text: Пустое тело сообщения</p>
-        <p>Armenian text: Հաղորդագրությունը դատարկ է</p>
-        <p>Czech text: Prázdné tělo zprávy</p>
+        <p>Chinese text: éƒµä»¶å…§å®¹ç‚ºç©º</p>
+        <p>Russian text: ÐŸÑƒÑ�Ñ‚Ð¾Ðµ Ñ‚ÐµÐ»Ð¾ Ñ�Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ�</p>
+        <p>Armenian text: Õ€Õ¡Õ²Õ¸Ö€Õ¤Õ¡Õ£Ö€Õ¸Ö‚Õ©ÕµÕ¸Ö‚Õ¶Õ¨ Õ¤Õ¡Õ¿Õ¡Ö€Õ¯ Õ§</p>
+        <p>Czech text: PrÃ¡zdnÃ© tÄ›lo zprÃ¡vy</p>
         Embedded Image: <img alt="phpmailer" src="cid:my-attach">
     </body>
 </html>
@@ -898,10 +898,10 @@ EOT;
         $this->Mail->CharSet = 'UTF-8';
 
         $this->Mail->Body = <<<EOT
-Chinese text: 郵件內容為空
-Russian text: Пустое тело сообщения
-Armenian text: Հաղորդագրությունը դատարկ է
-Czech text: Prázdné tělo zprávy
+Chinese text: éƒµä»¶å…§å®¹ç‚ºç©º
+Russian text: ÐŸÑƒÑ�Ñ‚Ð¾Ðµ Ñ‚ÐµÐ»Ð¾ Ñ�Ð¾Ð¾Ð±Ñ‰ÐµÐ½Ð¸Ñ�
+Armenian text: Õ€Õ¡Õ²Õ¸Ö€Õ¤Õ¡Õ£Ö€Õ¸Ö‚Õ©ÕµÕ¸Ö‚Õ¶Õ¨ Õ¤Õ¡Õ¿Õ¡Ö€Õ¯ Õ§
+Czech text: PrÃ¡zdnÃ© tÄ›lo zprÃ¡vy
 EOT;
         $this->buildBody();
         $this->assertTrue($this->Mail->send(), $this->Mail->ErrorInfo);
@@ -928,9 +928,9 @@ EOT;
 
         //Again, using a custom HTML to text converter
         $this->Mail->AltBody = '';
-        $this->Mail->msgHTML($message, '../examples', function ($html) {
-            return strtoupper(strip_tags($html));
-        });
+      // $this->Mail->msgHTML($message, '../examples', function ($html) {
+         //  return strtoupper(strip_tags($html));
+       // });
         $this->Mail->Subject .= ' + custom html2text';
         $this->assertNotEmpty($this->Mail->AltBody, 'Custom AltBody not set by msgHTML');
 
@@ -1593,24 +1593,24 @@ EOT;
         $this->assertTrue($this->Mail->set('AllowEmpty', null), 'Null property set failed');
         $this->assertTrue($this->Mail->set('AllowEmpty', false), 'Valid property set of null property failed');
         //Test pathinfo
-        $a = '/mnt/files/飛兒樂 團光茫.mp3';
+        $a = '/mnt/files/é£›å…’æ¨‚ åœ˜å…‰èŒ«.mp3';
         $q = PHPMailer::mb_pathinfo($a);
         $this->assertEquals($q['dirname'], '/mnt/files', 'UNIX dirname not matched');
-        $this->assertEquals($q['basename'], '飛兒樂 團光茫.mp3', 'UNIX basename not matched');
+        $this->assertEquals($q['basename'], 'é£›å…’æ¨‚ åœ˜å…‰èŒ«.mp3', 'UNIX basename not matched');
         $this->assertEquals($q['extension'], 'mp3', 'UNIX extension not matched');
-        $this->assertEquals($q['filename'], '飛兒樂 團光茫', 'UNIX filename not matched');
+        $this->assertEquals($q['filename'], 'é£›å…’æ¨‚ åœ˜å…‰èŒ«', 'UNIX filename not matched');
         $this->assertEquals(
             PHPMailer::mb_pathinfo($a, PATHINFO_DIRNAME),
             '/mnt/files',
             'Dirname path element not matched'
         );
-        $this->assertEquals(PHPMailer::mb_pathinfo($a, 'filename'), '飛兒樂 團光茫', 'Filename path element not matched');
-        $a = 'c:\mnt\files\飛兒樂 團光茫.mp3';
+        $this->assertEquals(PHPMailer::mb_pathinfo($a, 'filename'), 'é£›å…’æ¨‚ åœ˜å…‰èŒ«', 'Filename path element not matched');
+        $a = 'c:\mnt\files\é£›å…’æ¨‚ åœ˜å…‰èŒ«.mp3';
         $q = PHPMailer::mb_pathinfo($a);
         $this->assertEquals($q['dirname'], 'c:\mnt\files', 'Windows dirname not matched');
-        $this->assertEquals($q['basename'], '飛兒樂 團光茫.mp3', 'Windows basename not matched');
+        $this->assertEquals($q['basename'], 'é£›å…’æ¨‚ åœ˜å…‰èŒ«.mp3', 'Windows basename not matched');
         $this->assertEquals($q['extension'], 'mp3', 'Windows extension not matched');
-        $this->assertEquals($q['filename'], '飛兒樂 團光茫', 'Windows filename not matched');
+        $this->assertEquals($q['filename'], 'é£›å…’æ¨‚ åœ˜å…‰èŒ«', 'Windows filename not matched');
     }
 
     /**

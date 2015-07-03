@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Booking"?>
+﻿<?php $this->title = "SyGRRiF Booking"?>
 
 <?php echo $navBar?>
 <?php 
@@ -42,22 +42,25 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 	-moz-border-radius: 9px;
 	border-radius: 9px;
 	border: 1px solid #f1f1f1;
+	
 }
 
 #resa_link{
 	font-family: Arial;
-	font-size: 9px;
-	line-height: 9px;
+	font-size: 10px;
+	line-height: 6px;
 	letter-spacing: 1px;
 	font-weight: normal;
+	color: #002070;
+	font-weight : bold;
 }
 
 @media (min-width: 1200px) {
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
   .seven-cols .col-lg-1 {
-    width: 14.285714285714285714285714285714%;
-    *width: 14.285714285714285714285714285714%;
+    width: 20%;
+    *width: 20%;
   }
 }
 /* 14% = 100% (full-width row) divided by 7 */
@@ -155,7 +158,7 @@ $available_days = explode(",", $available_days);
 	for ($h = $day_begin ; $h < $day_end ; $h++){
 		$heightCol = "0px";
 		if ($size_bloc_resa == 900){
-			$heightCol = "100px";
+			$heightCol = "140px";
 		}
 		else if($size_bloc_resa == 1800){
 			$heightCol = "50px";
@@ -185,6 +188,10 @@ $available_days = explode(",", $available_days);
 	
 	<?php 
 	for ($d = 0 ; $d < 7 ; $d++){
+	$isDayAvailable = false;
+		if ($available_days[$d] == 1){
+			$isDayAvailable = true;
+		
 		
 		$idcss = "colDiv";
 		if ($d == 0){
@@ -216,17 +223,16 @@ $available_days = explode(",", $available_days);
 		
 		<?php 
 		// test if the day is available
-		$isDayAvailable = false;
-		if ($available_days[$d] == 1){
-			$isDayAvailable = true;
-		}
 		
-		bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable);
+		
+		bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $calRes, $isUserAuthorizedToBook, $isDayAvailable);
+		
 		
 		?>
 		
 		</div>
 			<?php 
+		}
 	}
 	?>
 	</div>

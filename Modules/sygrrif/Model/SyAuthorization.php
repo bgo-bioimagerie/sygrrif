@@ -541,7 +541,7 @@ class SyAuthorization extends Model {
 			$numMachinesFormes[1][$i] = $req->rowCount();
 			$i++;
 		}
-		array_multisort($numMachinesFormes[1],SORT_DESC,$numMachinesFormes[0]);
+		array_multisort($numMachinesFormes[1], SORT_DESC, $numMachinesFormes[0]);
 		
 		$test_jpg = $test;
 		for ($i = 0; $i < $numMachinesFormesTotal; $i++){

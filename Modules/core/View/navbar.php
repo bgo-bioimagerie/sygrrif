@@ -16,10 +16,10 @@ if (isset($_SESSION["user_settings"]["language"])){
 ?>
     
 <!-- Fixed navbar -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-	<div class="container">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation" style="padding-left:90px; padding-right:90px;">
+	<div class="container-fluid">
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" >
 				<span class="sr-only">Toggle navigation</span>
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
@@ -28,7 +28,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			<a class="navbar-brand" href=""><img style="height:35px; margin-top: -9px;"
              src="Themes/logo.jpg"></a>
 		</div>
-		<div id="navbar" class="navbar-collapse collapse">
+		<div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 				<?php 
 				$refHome = "Home";

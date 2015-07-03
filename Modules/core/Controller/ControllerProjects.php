@@ -64,7 +64,7 @@ class ControllerProjects extends ControllerSecureNav {
 		$description = $this->request->getParameter ( "description" );
 		
 		// get the user list
-		$projectsArray = $this->projectModel->addProject ( $name, $description );
+		$projectsArray = $this->projectModel->addProject( $name, $description );
 		
 		$this->redirect ( "projects" );
 	}

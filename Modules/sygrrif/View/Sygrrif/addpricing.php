@@ -38,6 +38,13 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Montant</label>
+			<div class="col-xs-10">
+				<input class="form-control" id="montant" type="text" name="montant"
+				/>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unique_price($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_unique">

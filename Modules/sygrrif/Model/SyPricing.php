@@ -13,6 +13,7 @@ class SyPricing extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_pricing` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`tarif_name` varchar(100) NOT NULL DEFAULT '',
+		`tarif_montant` varchar(100) NOT NULL, 
 		`tarif_print` varchar(100) NOT NULL DEFAULT '',
 		`tarif_unique` int(11) NOT NULL DEFAULT 1,
 		`tarif_night` int(3) NOT NULL DEFAULT 0,

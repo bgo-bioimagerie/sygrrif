@@ -1,7 +1,7 @@
 <?php
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/CoreConfig.php';
-
+require_once 'Modules/core/Model/ModulesManager.php';
 /**
  * Class defining the User model
  *
@@ -44,7 +44,9 @@ class User extends Model {
 	 *
 	 * @return PDOStatement
 	 */
+	
 	public function createDefaultUser() {
+				
 		if (! $this->isUser ( "--" )) {
 			
 			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit,

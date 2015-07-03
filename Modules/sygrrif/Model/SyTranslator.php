@@ -29,6 +29,69 @@ class SyTranslator {
 		}
 		return "Areas";
 	}
+
+//report.php
+
+	public static function detailsreservation($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Détails des réservations");
+		}
+		return "Reservation's Details ";
+	}
+	public static function resume($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Résumé statistique");
+		}
+		return "Statistical Summary ";
+	}
+	public static function detailresume($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Détails des réservations et résumé");
+		}
+		return "Reservation's details and summary ";
+	}
+	public static function csvres($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Fichier CSV des réservations ");
+		}
+		return "CSV Reservation ";
+	}
+	public static function csvresume($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Fichier CSV du résumé");
+		}
+		return "CSV Summary";
+	}
+	public static function resumen($lang=""){
+		if($lang="Fr"){
+			return utf8_encode("Résumé");
+		}
+		return "Summarry";
+	}
+public static function resumepar($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Résumé par (ne concerne que les résumés");
+		}
+		return "Summary by ( concerns only abstracts)";
+	}
+	public static function validettcondition($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Valide toutes les conditions suivantes");
+		}
+		return "Valid all the following conditions)";
+	}
+public static function validecondition($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Valide au moins une des conditions suivantes");
+		}
+		return "Valid for at least one of the following";
+	}
+	public static function resertrouve($lang=""){
+		if($lang=="Fr"){
+			return utf8_encode("Réservations Trouvées");
+		}
+		return "Reservations Found";
+	}
 	
 	public static function Resource_categories($lang = ""){
 		if ($lang == "Fr"){
@@ -108,6 +171,13 @@ class SyTranslator {
 		}
 		return "Pricing";
 	}
+	public static function Full_description($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Description complète");
+		}
+		return "Full description";
+	}
+	
 	
 	public static function Pricings($lang = ""){
 		if ($lang == "Fr"){
@@ -228,18 +298,25 @@ class SyTranslator {
 		return "booking on behalf of";
 	}
 	
-	public static function Short_description($lang = ""){
+	public static function Acronyme($lang = ""){
 		if ($lang == "Fr"){
-			return "Description courte";
+			return "Acronyme";
 		}
-		return "Short description";
+		return "Acronym";
 	}
 	
-	public static function Full_description($lang = ""){
+	public static function codeanonymation($lang = ""){
 		if ($lang == "Fr"){
-			return "Description complÃ¨te";
+			return "Code anonymation";
 		}
-		return "Full description";
+		return "Anonimation code";
+	}
+	public static function numreservation($lang=""){
+		if($lang=="Fr")
+		{
+			return utf8_encode("Numéro de réservation");
+		}
+		return "Reservation number";
 	}
 	
 	public static function Beginning_of_the_reservation($lang = ""){
@@ -1362,16 +1439,22 @@ class SyTranslator {
 	
 	public static function Short_desc($lang){
 		if ($lang == "Fr"){
-			return "courte desc";
+			return "Courte description";
 		}
-		return "Short desc";
+		return "Short description";
+	}
+public static function Short_description($lang){
+		if ($lang == "Fr"){
+			return "Courte description";
+		}
+		return "Short description";
 	}
 	
 	public static function Desc($lang){
 		if ($lang == "Fr"){
-			return "Desc";
+			return "Description";
 		}
-		return "Desc";
+		return "Description";
 	}
 	
 	public static function Fromdate($lang){
@@ -1452,12 +1535,7 @@ class SyTranslator {
 		return "Query";
 	}
 	
-	public static function Recipient($lang){
-		if ($lang == "Fr"){
-			return "BÃ©nÃ©ficiaire";
-		}
-		return "Recipient";
-	}
+	
 	
 	public static function Contains($lang){
 		if ($lang == "Fr"){
@@ -1479,4 +1557,45 @@ class SyTranslator {
 		return "Output";
 	}
 	
+	// for sygrrifconfig 
+	public static function Recipient($lang){
+		if($lang=="Fr"){
+			return Utf8_encode("Nom de l'émetteur") ;
+		}
+		else{
+			return "Recipient name";
+		}
+	}
+public static function visible($lang){
+		if($lang=="Fr"){
+			return Utf8_encode("Visible") ;
+		}
+		else{
+			return "Visible";
+		}
+	}
+public static function hidden($lang){
+		if($lang=="Fr"){
+			return Utf8_encode("Cacher") ;
+		}
+		else{
+			return "Hidden";
+		}
+	}
+public static function taghidden($lang){
+		if($lang=="Fr"){
+			return Utf8_encode("Balise Cachée") ;
+		}
+		else{
+			return "Tag Hidden";
+		}
+	}
+public static function tagvisible($lang){
+		if($lang=="Fr"){
+			return Utf8_encode("Balise Visible") ;
+		}
+		else{
+			return "Tag Visible";
+		}
+	}
 }

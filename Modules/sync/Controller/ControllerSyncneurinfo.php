@@ -25,14 +25,15 @@ class ControllerSyncneurinfo extends Controller {
 	public function index() {
 		
 		// connect to h2p2 grr 
-		$dsn_grr = 'mysql:host=localhost;dbname=grr_neurinfo;charset=utf8';
+		$dsn_grr = 'mysql:host=localhost;dbname=grr;charset=utf8';
 		$login_grr = "root";
-		$pwd_grr = "";
+		$pwd_grr = "@neurinfo@";
 		
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		
-		// area
+		// area 
+		
 		$this->syncAreas($pdo_grr);
 		echo "sync area </br>";
 		
@@ -59,7 +60,9 @@ class ControllerSyncneurinfo extends Controller {
 		// last login 
 		$this->syncLastLogin($pdo_grr);
 		echo "sync last login </br>";
-
+		
+		$this->syncReservationEntry($pdo_grr);
+		echo "sync resrvation </br>";
 		// close projects where last booking is one year before
 		//$this->closeOldProjects($pdo_grr);
 		//echo "close old projects </br>";
@@ -243,7 +246,7 @@ class ControllerSyncneurinfo extends Controller {
 			$sql = "select id from grr_type_area where type_letter='".$type."'";
 			//echo "sql = " . $sql ."</br>";
 			$req = $pdo_old->query($sql);
-			$color_type_id = $req->fetch()[0];
+			$color_type_id = $req->fetch();
 				
 			//echo " color_type_id = " . $color_type_id;
 				
@@ -264,7 +267,51 @@ class ControllerSyncneurinfo extends Controller {
 			$modelCalEntry->setRepeatID($id, $repeat_id);
 		}
 	}
+	public function syncReservationEntry($pdo_old){
+		// get all authorizations from old db
+		$sql = "select * from grr_entry";
+		$entry_oldq = $pdo_old->query($sql);
+		$entry_old = $entry_oldq->fetchAll();
 	
+		$modelUser = new User();
+		$modelCalEntry = new SyCalendarEntry();
+		$modelProject = new Project();
+		foreach ($entry_old as $entry){
+			// get the recipient ID
+			$recipientID = $modelUser->userIdFromLogin($entry['beneficiaire']);
+				
+			// get the creator ID
+			$creatorID = $modelUser->userIdFromLogin($entry['create_by']);
+				
+			// get the color id
+			$type = $entry['type'];
+			$sql = "select id from grr_type_area where type_letter='".$type."'";
+			//echo "sql = " . $sql ."</br>";
+			$req = $pdo_old->query($sql);
+			$color_type_id = $req->fetch();
+			$color_type_id = $color_type_id[0] ;
+				
+			//echo " color_type_id = " . $color_type_id;
+				
+			// add the reservation
+			$start_time = $entry['start_time'];
+			$end_time = $entry['end_time'];
+			$resource_id = $entry['room_id'];
+			$booked_by_id = $creatorID;
+			$recipient_id = $recipientID;
+			$last_update = $entry['timestamp'];
+			$color_type_id = ($color_type_id)+1;
+			$projectID = $modelProject->getProjectId($entry['name']);
+			$acronyme = $entry['description'];
+			
+			$commentaire = $entry['description'];
+			
+			$id = $modelCalEntry->addresgrr($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $acronyme, $commentaire);
+		
+			$repeat_id = $entry['repeat_id'];
+			$modelCalEntry->setRepeatID($id, $repeat_id);
+		}
+	}
 	public function syncLastLogin($pdo_grr){
 		$sql = "select * from grr_entry";
 		$entry_oldq = $pdo_grr->query($sql);

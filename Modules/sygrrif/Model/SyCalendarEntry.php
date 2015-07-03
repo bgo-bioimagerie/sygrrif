@@ -2,6 +2,7 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
+require_once 'Modules/projet/Model/neurinfoprojet.php';
 
 /**
  * Class defining the GRR area model
@@ -29,6 +30,7 @@ class SyCalendarEntry extends Model {
 		`color_type_id` int(11) NOT NULL,						
 		`short_description` varchar(100) NOT NULL,	
 		`full_description` text NOT NULL,
+		
 		`quantity` int(11) NOT NULL,
 		`repeat_id` int(11) NOT NULL DEFAULT 0,									
 		PRIMARY KEY (`id`)
@@ -37,25 +39,44 @@ class SyCalendarEntry extends Model {
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
-	
+	//fonction qui prend codeanonyma, numerovisite, codecouleur de la fiche projet, une fois le protocol selectionn� -- retour des infos relatifs
+	public function getInfosRes($protocol1) {
+		$sql= "select numerovisite, codecouleur from neurinfo where acronyme=?;";
+		$req = $this->runRequest($sql, array($protocol1));
+		return $req->fetch();
+	}
 	public function addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
+							$last_update, $color_type_id, $short_description, $full_description,  $quantity = 0){
 		
 		$sql = "insert into sy_calendar_entry(start_time, end_time, resource_id, booked_by_id, recipient_id, 
-							last_update, color_type_id, short_description, full_description, quantity)"
+							last_update, color_type_id, short_description, full_description,  quantity)"
 				. " values(?,?,?,?,?,?,?,?,?,?)";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 							$last_update, $color_type_id, $short_description, $full_description, $quantity));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	public function addres($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $acronyme, $codeanonym, $commentaire, $numerovisite, $quantity=0)
+	{
+		$sql = "insert into reservation(start_time, end_time, resource_id, booked_by_id, recipient_id, last_update, color_type_id, acronyme, codeanonyma, commentaire, numerovisite, quantity)"
+				. " values(?,?,?,?,?,?,?,?,?,?,?,?)";
+		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $acronyme, $codeanonym, $commentaire, $numerovisite, $quantity));
+		return $this->getDatabase()->lastInsertId();
+ }
+	public function addresgrr($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $acronyme, $commentaire)
+	{
+		$sql = "insert into reservation(start_time, end_time, resource_id, booked_by_id, recipient_id, last_update, color_type_id, acronyme, commentaire)"
+				. " values(?,?,?,?,?,?,?,?,?)";
+		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id, $acronyme, $commentaire));
+		return $this->getDatabase()->lastInsertId();
+ }
 	
 	public function setEntry($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
+							$last_update, $color_type_id, $short_description, $full_description,  $quantity = 0){
 		
 		if(!$this->isEntry($id)){
 			$this->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
-							$last_update, $color_type_id, $short_description, $full_description, $quantity);
+							$last_update, $color_type_id, $short_description, $full_description,  $quantity);
 		}
 	}
 	
@@ -81,15 +102,29 @@ class SyCalendarEntry extends Model {
 		return $req->fetch();
 	}
 	
+	public function getDonne($id){
+		$sql ="select * from reservation where id=?";
+		$req = $this->runRequest($sql, array($id));
+		return $req->fetch();
+	}
+	
 	public function updateEntry($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity=0){
+							$last_update, $color_type_id, $short_description, $full_description,  $quantity=0){
 		$sql = "update sy_calendar_entry set start_time=?, end_time=?, resource_id=?, booked_by_id=?, recipient_id=?, 
-							last_update=?, color_type_id=?, short_description=?, full_description=?, quantity=?
+							last_update=?, color_type_id=?, short_description=?, full_description=?,  quantity=?
 									  where id=?";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 							$last_update, $color_type_id, $short_description, $full_description, $quantity, $id));
 	}
-	
+
+	public function updateres($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
+							$last_update, $color_type_id, $acronyme, $codeanonym, $commentaire, $numerovisite, $quantity=0){
+		$sql = "update reservation set start_time=?, end_time=?, resource_id=?, booked_by_id=?, recipient_id=?, 
+							last_update=?, color_type_id=?, acronyme=?, codeanonyma=?,  commentaire=?, numerovisite=?, quantity=?
+									  where id=?";
+		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
+							$last_update, $color_type_id, $acronyme, $codeanonym, $commentaire, $numerovisite,  $quantity, $id));
+	}
 	public function getEntriesForDay($curentDate){
 		$dateArray = explode("-", $curentDate);
 		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
@@ -149,7 +184,41 @@ class SyCalendarEntry extends Model {
 		}
 		return $data;
 	}
+	public function getEntriesNeurinfo($dateBegin, $dateEnd, $resource_id){
 	
+		$q = array('start'=>$dateBegin, 'end'=>$dateEnd, 'res'=>$resource_id);
+		
+		$sql = 'SELECT * FROM reservation WHERE
+				(start_time <=:end AND end_time >= :start) AND resource_id = :res
+				ORDER BY start_time';
+		
+		
+		$req = $this->runRequest($sql, $q);
+		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
+		
+	
+		$modelUser = new User();
+		$modelColor = new SyColorCode();
+		$modelres = new neurinfoprojet();
+		for ($i = 0 ; $i < count($data) ; $i++){
+			//echo "color id = " . $data[$i]["color_type_id"] . "</br>";
+			$rid = $data[$i]["recipient_id"];
+			if ($rid > 0){
+				$userInfo = $modelUser->userAllInfo($rid);
+				$data[$i]["recipient_fullname"] = $userInfo["name"] . " " . $userInfo["firstname"];
+				
+				$data[$i]["color"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+					
+			}
+			else{
+				$data[$i]["recipient_fullname"] = "";
+				
+				$data[$i]["color"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+				
+			} 
+		}
+		return $data;
+	}
 	public function getEntriesForPeriodeAndArea($dateBegin, $dateEnd, $areaId){
 		
 		$modelResource = new SyResource();
@@ -164,9 +233,46 @@ class SyCalendarEntry extends Model {
 		
 		return $data;
 	}
-	
+public function getEntriesForPeriodeNeurinfo($dateBegin, $dateEnd, $areaId){
+		
+		$modelResource = new SyResource();
+		$resources = $modelResource->resourceIDNameForArea($areaId);
+		
+		$data= array();
+		foreach ($resources as $resource){
+			$id = $resource["id"];
+			
+			$dataInter = $this->getEntriesNeurinfo($dateBegin, $dateEnd, $id);
+			$data = array_merge($data, $dataInter);
+		}
+		
+		return $data;
+	}
 	public function isConflict($start_time, $end_time, $resource_id, $reservation_id = ""){
 		$sql="SELECT id FROM sy_calendar_entry WHERE
+			  ((start_time >=:start AND start_time < :end) OR	
+			  (end_time >:start AND end_time <= :end)) 
+			AND resource_id = :res;";
+		$q = array('start'=>$start_time, 'end'=>$end_time, 'res'=>$resource_id);	
+		$req = $this->runRequest($sql, $q);
+		if ($req->rowCount() > 0){
+			if ($reservation_id != "" && $req->rowCount() == 1){
+				$tmp = $req->fetch();  
+				$id = $tmp[0];
+				if ($id == $reservation_id){
+					return false;
+				}
+				else{
+					return true;
+				}
+			}
+			return true;
+		}
+		else
+			return false;
+	}
+public function ifresa($start_time, $end_time, $resource_id, $reservation_id){
+		$sql="SELECT id FROM reservation WHERE
 			  ((start_time >=:start AND start_time < :end) OR	
 			  (end_time >:start AND end_time <= :end)) 
 			AND resource_id = :res;";

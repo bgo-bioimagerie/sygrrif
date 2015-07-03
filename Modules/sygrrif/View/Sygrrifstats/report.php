@@ -1,7 +1,7 @@
 <?php $this->title = "SyGRRiF Project bill"?>
 
-<?php echo $navBar?>
 
+ 
 <head>
 	<link href="externals/datepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
 	<link href="externals/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -17,13 +17,12 @@
 </style>
 
 </head>
-	
+<?php echo $navBar?>
 <?php include "Modules/sygrrif/View/navbar.php"; ?>
 
-<br>
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
-	<form role="form" class="form-horizontal" action="sygrrifstats/report"
+	<form name="form" class="form-horizontal" action="sygrrifstats/report"
 		method="post" id="statform">
 	
 		<div class="page-header">
@@ -115,7 +114,7 @@
 					<OPTION value="area" <?= $checkedArea ?>> <?= SyTranslator::Area($lang) ?> </OPTION>
 					<OPTION value="resource" <?= $checkedRes ?>> <?= SyTranslator::Resource($lang) ?> </OPTION>
 					<OPTION value="color_code" <?= $checkedC ?>> <?= SyTranslator::Color_code($lang) ?> </OPTION>
-					<OPTION value="short_description" <?= $checkedS ?>> <?= SyTranslator::Short_description($lang) ?> </OPTION>
+					<OPTION value="short_description" <?= $checkedS ?>> <?= SyTranslator::Short_desc($lang) ?> </OPTION>
 					<OPTION value="full_description" <?= $checkedF ?>> <?= SyTranslator::Full_description($lang) ?> </OPTION>
 					<OPTION value="recipient" <?= $checkedRec ?>> <?= SyTranslator::recipient($lang) ?> </OPTION>
 				</select>
@@ -150,17 +149,17 @@
 						
 					}
 					?>
-					<OPTION value="1" <?php if (isset($output) && $output == 1){echo "selected=\"selected\"";}?>> Détails des réservations </OPTION>
-					<OPTION value="2" <?php if (isset($output) && $output == 2){echo "selected=\"selected\"";}?>> Résumé statistique </OPTION>
-					<OPTION value="3" <?php if (isset($output) && $output == 3){echo "selected=\"selected\"";}?>> Détails des réservations et résumé </OPTION>
-					<OPTION value="4" <?php if (isset($output) && $output == 4){echo "selected=\"selected\"";}?>> Fichier CSV des réservations </OPTION>
-					<OPTION value="5" <?php if (isset($output) && $output == 5){echo "selected=\"selected\"";}?>> Fichier CSV du résumé </OPTION>
+					<OPTION value="1" <?php if (isset($output) && $output == 1){echo "selected=\"selected\"";}?>> <?=SyTranslator::detailsreservation($lang)?> </OPTION>
+					<OPTION value="2" <?php if (isset($output) && $output == 2){echo "selected=\"selected\"";}?>> <?=SyTranslator::resume($lang)?> </OPTION>
+					<OPTION value="3" <?php if (isset($output) && $output == 3){echo "selected=\"selected\"";}?>><?=SyTranslator::detailresume($lang)?> </OPTION>
+					<OPTION value="4" <?php if (isset($output) && $output == 4){echo "selected=\"selected\"";}?>><?=SyTranslator::csvres($lang)?></OPTION>
+					<OPTION value="5" <?php if (isset($output) && $output == 5){echo "selected=\"selected\"";}?>> <?=SyTranslator::csvresume($lang)?> </OPTION>
 				</select>
 			</div>
 		</div>	
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2">Résumé par (ne concerne que les résumés) :</label>
+			<label for="inputEmail" class="control-label col-xs-2"><?=SyTranslator::resumepar($lang)?> :</label>
 			<div class="col-xs-10">
 				<select class="form-control" name="summary_rq">
 					<?php 
@@ -181,7 +180,7 @@
 					}
 					?>
 					<OPTION value="recipient" <?= $checkedRec ?>> <?= SyTranslator::recipient($lang) ?> </OPTION>
-					<OPTION value="short_description" <?= $checkedS ?>> <?= SyTranslator::Short_description($lang) ?> </OPTION>
+					<OPTION value="short_description" <?= $checkedS ?>> <?= SyTranslator::Short_desc($lang) ?> </OPTION>
 					<OPTION value="color_code" <?= $checkedC ?>> <?= SyTranslator::Color_code($lang) ?> </OPTION>
 				</select>
 			</div>
@@ -204,11 +203,11 @@ if(isset($table)){
 <table class="table table-striped text-center table-bordered">
    <caption><?= count($table) ?> réservations trouvées </caption>
 
-   <thead> <!-- En-tête du tableau -->
+   <thead> 
        <tr>				
            <th><?= SyTranslator::Area($lang) ?></th>
            <th><?= SyTranslator::Resource($lang) ?></th>
-           <th><?= SyTranslator::Short_description($lang) ?></th>
+           <th><?= SyTranslator::Short_desc($lang) ?></th>
            <th><?= SyTranslator::Date($lang) ?></th> 
            <th> <?= SyTranslator::Full_description($lang) ?> </th>
            <th> <?= SyTranslator::Color_code($lang) ?> </th>
@@ -216,7 +215,7 @@ if(isset($table)){
        </tr>
    </thead>
 
-   <tbody> <!-- Corps du tableau -->
+   <tbody> 
    	   <?php
 	   foreach ($table as $t){
    	   ?>
@@ -340,6 +339,10 @@ if(isset($summaryTable)){
 ?>
 
 </div>
+
+
+<br>
+
 
 
 <?php include "Modules/core/View/timepicker_script.php" ?>

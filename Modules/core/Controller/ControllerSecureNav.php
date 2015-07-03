@@ -19,7 +19,6 @@ abstract class ControllerSecureNav extends ControllerSecure
     
     public function getToolsMenu(){
     	$user_status_id = $_SESSION["user_status"];
-    	 
     	$modulesModel = new ModulesManager();
     	$toolMenu = $modulesModel->getDataMenus($user_status_id);
     	return $toolMenu;

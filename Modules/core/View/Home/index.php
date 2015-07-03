@@ -8,7 +8,7 @@
 <style>
 .bs-glyphicons{margin:0 -10px 20px;overflow:hidden}
 .bs-glyphicons-list{padding-left:0;list-style:none}
-.bs-glyphicons li{float:left;width:25%;height:115px;padding:25px;
+.bs-glyphicons li{float:left;width:25%;height:115px;padding:25px;}
 font-size:10px;line-height:1.4;text-align:center;background-color:#f9f9f9;border:1px solid #fff}
 
 .bs-glyphicons .glyphicon{margin-top:5px;margin-bottom:10px;font-size:24px}
@@ -49,17 +49,18 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<br> <small></small>
 			</h2>
 		</div>
-		<div class="bs-glyphicons">
-    	<ul class="bs-glyphicons-list">
+		<div >
+    	<ul >
 		<?php 
 		foreach ($toolMenu as $tool) {
         	$key = $tool['link'];
        		$value = $tool['name'];
        		$icon = $tool['icon'];
        		?>
-       		<li>
-        		<a href="<?=$key?>">
-          			<span class="glyphicon <?=$icon?>" aria-hidden="true"></span>
+       		<li >
+       		
+        		<a href="<?=$key?>"  class="btn btn-warning">
+          			<span  class="glyphicon <?=$icon?>" aria-hidden="true"></span>
           			<span class="glyphicon-class"><?=CoreTranslator::MenuItem($value, $lang)?></span>
         		</a>
         	</li>
@@ -88,7 +89,7 @@ if (isset($_SESSION["user_settings"]["language"])){
         	$icon = $tool['icon'];
         	?>
         	<li>
-        		<a href="<?=$key?>">
+        		<a href="<?=$key?>" class="btn btn-success">
         	    	<span class="glyphicon <?=$icon?>" aria-hidden="true"></span>
         	   		<span class="glyphicon-class"><?=$value?></span>
         		</a>

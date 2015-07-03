@@ -8,6 +8,7 @@ require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyReport.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
+require_once 'Modules/projet/Model/Pr_stat.php';
 
 class ControllerSygrrifstats extends ControllerBooking {
 
@@ -107,6 +108,7 @@ class ControllerSygrrifstats extends ControllerBooking {
 			$lang = $_SESSION["user_settings"]["language"];
 		}
 		
+		
 		$isrequest = $this->request->getParameterNoException('is_request');
 		if ($isrequest == "y"){
 		
@@ -146,7 +148,8 @@ class ControllerSygrrifstats extends ControllerBooking {
 						'navBar' => $navBar,
 						'errorMessage' => $errormessage,
 						'searchDate_start' => $searchDate_start,
-						'searchDate_end' => $searchDate_end
+						'searchDate_end' => $searchDate_end,
+						'isneurinfo'=> $isneurinfo
 				) );
 				return;
 			}
@@ -178,7 +181,8 @@ class ControllerSygrrifstats extends ControllerBooking {
 						'text' => $text,
 						'summary_rq' => $entrySummary,
 						'output' => $outputType,
-						'table' => $table
+						'table' => $table,
+						
 				) );
 				return;
 			}
@@ -194,7 +198,8 @@ class ControllerSygrrifstats extends ControllerBooking {
 						'text' => $text,
 						'summary_rq' => $entrySummary,
 						'output' => $outputType,
-						'summaryTable' => $summaryTable
+						'summaryTable' => $summaryTable,
+						
 				) );
 				return;
 			}
@@ -210,17 +215,18 @@ class ControllerSygrrifstats extends ControllerBooking {
 						'summary_rq' => $entrySummary,
 						'output' => $outputType,
 						'table' => $table,
-						'summaryTable' => $summaryTable
+						'summaryTable' => $summaryTable,
+						
 				) );
 				return;
 			}
 			else if ($outputType == 4){ // details csv
-				$this->exportDetailsCSV($table, $lang);
+				$this->exportDetailsCSVNI($table, $lang);
 				return;	
 			}
 			else if ($outputType == 5){ // summary csv
 				$summaryTable = $reportModel->summaryseReportStats($table, $entrySummary);
-				$this->exportSummaryCSV($summaryTable, $lang);
+				$this->exportSummaryCSVNI($summaryTable, $lang);
 				return;
 			}
 		}
@@ -228,6 +234,7 @@ class ControllerSygrrifstats extends ControllerBooking {
 		$this->generateView ( array (
 				'navBar' => $navBar
 		) );
+	
 	}
 	
 	private function exportDetailsCSV($table, $lang){
@@ -261,6 +268,7 @@ class ControllerSygrrifstats extends ControllerBooking {
 	   }
 	   echo $content;
 	}
+	
 	
 	private function exportSummaryCSV($summaryTable, $lang){
 		header("Content-Type: application/csv-tab-delimited-table");
@@ -318,4 +326,5 @@ class ControllerSygrrifstats extends ControllerBooking {
 		$content .= " \r\n ";
 		echo $content;
 	}
+	
 }
