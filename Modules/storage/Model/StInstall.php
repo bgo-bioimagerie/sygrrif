@@ -17,13 +17,6 @@ class StInstall extends Model {
 	 * @return boolean True if the base is created successfully
 	 */
 	public function createDatabase(){
-		
-		$model = new StUserQuota();
-		$model->createTable();
-		
-		$model = new StUploader();
-		$model->createTable();
-		
 	}
 }
 	

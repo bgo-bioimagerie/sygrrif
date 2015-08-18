@@ -39,9 +39,9 @@ class StTranslator {
 	
 	public static function Download($lang){
 		if ($lang == "Fr"){
-			return "TÃ©lÃ©charger";
+			return "Télécharger";
 		}
-		return "Upload";
+		return "Download";
 	}
 	
 	public static function Delete($lang){
@@ -53,7 +53,7 @@ class StTranslator {
 	
 	public static function Repository($lang){
 		if ($lang == "Fr"){
-			return "RÃ©pertoire";
+			return "Répertoire";
 		}
 		return "Repository";
 	}
@@ -67,9 +67,9 @@ class StTranslator {
 	
 	public static function ManageFiles($lang){
 		if ($lang == "Fr"){
-			return "Gestion des fichiers ";
+			return "Stockage ";
 		}
-		return "Manage files ";
+		return "Storage ";
 	}
 	
 	public static function LocalDirDownload($lang){
@@ -135,6 +135,13 @@ class StTranslator {
 			return "ParamÃ¨tres FTP";
 		}
 		return "FTP settings";
+	}
+	
+	public static function noUserDirMessage($lang, $login){
+		if ($lang == "Fr"){
+			return "Il n'y a pas de répertoire " . $login . " sur le serveur de stocakage";
+		}
+		return "Cannot find any " . $login . " directory on the storage server";
 	}
 	
 }

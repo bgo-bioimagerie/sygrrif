@@ -1,5 +1,4 @@
 <?php
-
 require_once 'Framework/Model.php';
 
 /**
@@ -8,221 +7,175 @@ require_once 'Framework/Model.php';
  * @author Sylvain Prigent
  */
 class StUploader extends Model {
-
-	
-public function createTable(){
-			
-		$sql = "CREATE TABLE IF NOT EXISTS `st_ftp` (
-		`id` int(1) NOT NULL AUTO_INCREMENT,
-		`host` varchar(150) NOT NULL DEFAULT '',
-		`port` int(11) NOT NULL,
-		`login` varchar(30) NOT NULL DEFAULT '',
-		`pwd` varchar(30) NOT NULL DEFAULT '',
-		PRIMARY KEY (`id`)
-		);";
-		
-		$pdo = $this->runRequest($sql);
-		
-		$sql = "insert into st_ftp(id, host, port, login, pwd)"
-				. " values(?, ?, ?, ?, ?)";
-		$user = $this->runRequest($sql, array(1, "", "", "", ""));
-	}
-	
-	public function getFtpSettings(){
-		
-		try{
-			$sql = "select * from st_ftp where id=1";
-			$req = $this->runRequest($sql);
-			if ($req->rowCount() == 1){
-				$tmp = $req->fetch();
-				return $tmp;  // get the first line of the result
-			}
-			else{
-				throw new Exception("Cannot find the ftp settings");
-			}
-		}
-		catch(Exception $e){
-			$ftp = array();
-			$ftp["host"] = "";
-			$ftp["port"] = 21;
-			$ftp["login"] = "";
-			$ftp["pwd"] = "";
-			return $ftp;
-		}
-	}
-	
-	public function setFtpSettings($host, $port, $login, $pwd){
-		$sql = "update st_ftp set host=?, port=?, login=?, pwd=? where id=1";
-		$unit = $this->runRequest($sql, array($host, $port, $login, $pwd));
-	}
-	
-	public function getFtpLogin(){
-		$sql = "select login from st_ftp where id=1";
-		$req = $this->runRequest($sql);
-		if ($req->rowCount() == 1){
-			$tmp = $req->fetch();
-			return $tmp[0];  // get the first line of the result
-		}
-		else{
-			throw new Exception("Cannot find the ftp settings");
-		}
-		
-		//return "mric";
-	}
-	
-	public function getFtpPwd(){
-		$sql = "select pwd from st_ftp where id=1";
-		$req = $this->runRequest($sql);
-		if ($req->rowCount() == 1){
-			$tmp = $req->fetch();
-			return $tmp[0];  // get the first line of the result
-		}
-		else{
-			throw new Exception("Cannot find the ftp settings");
-		}
-		//return "*mric*";
-	}
-	
-	public function getHost(){
-		$sql = "select host from st_ftp where id=1";
-		$req = $this->runRequest($sql);
-		if ($req->rowCount() == 1){
-			$tmp = $req->fetch();
-			return $tmp[0];  // get the first line of the result
-		}
-		else{
-			throw new Exception("Cannot find the ftp settings");
-		}
-		//return "localhost";
-	}
-	
-	public function getPort(){
-		$sql = "select port from st_ftp where id=1";
-		$req = $this->runRequest($sql);
-		if ($req->rowCount() == 1){
-			$tmp = $req->fetch();
-			return $tmp[0];  // get the first line of the result
-		}
-		else{
-			throw new Exception("Cannot find the ftp settings");
-		}
-		//return 21;
-	}
-
 	
 	/**
 	 * get directory files
-	 * 
-	 * @param string $dir directory to explore
+	 *
+	 * @param string $dir
+	 *        	directory to explore
 	 * @return multitype: array
 	 */
-	public function getFiles($dir){
+	public function getFiles($dir) {
 		
-		$ftp = ftp_connect($this->getHost(), $this->getPort());
-		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
+		$files = array ();
 		
-		//echo "connected <br/>";
-		
-		$filesdir = ftp_nlist($ftp, "./".$dir);
-		
-		$files = array();
-		$i = 0;
-		foreach($filesdir as $file){
-			if ($file != "." && $file != ".."){
-				$files[$i]["name"] = $file;
-				$files[$i]["size"] = $this->formatFileSize(ftp_size($ftp, $file));
-				$i++;
+		if (is_dir ( $dir )) {	
+			$filesdir = scandir ( $dir );
+			$i = 0;
+			foreach ( $filesdir as $file ) {
+				if ($file != "." && $file != ".." && ! is_dir ( $dir . "/" . $file )) {
+					$files [$i] ["name"] = $file;
+					$fp = fopen ( $dir . "/" . $file, "r" );
+					$files [$i] ["size"] = $this->formatFileSize ( $this->my_filesize ( $fp ) );
+					fclose ( $fp );
+					$files [$i] ["mtime"] = filemtime($dir . "/" . $file);
+					$i ++;
+				}
 			}
 		}
-		
 		return $files;
-		
-		foreach($liste_fichiers as $fichier)
-		{
-			echo '<a href="?filename=' .$fichier. '">' .$fichier. '</a><br/>';
-		}
-		
-		ftp_close($ftp);
 	}
-	
-	public function getUsage($userlogin){
+	public function getUsage($userdir) {
+		$filesdir = scandir ( $userdir );
 		
-		$ftp = ftp_connect($this->getHost(), $this->getPort());
-		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
-		
-		$filesdir = ftp_nlist($ftp, "./".$userlogin);
-		
-		$files = array();
 		$usage = 0;
-		foreach($filesdir as $file){
-			if ($file != "." && $file != ".."){
-				$usage += ftp_size($ftp, $file);
+		foreach ( $filesdir as $file ) {
+			if ($file != "." && $file != ".." && ! is_dir ( $userdir . "/" . $file )) {
+				$fp = fopen ( $userdir . "/" . $file, "r" );
+				$usage += $this->my_filesize ( $fp );
+				fclose ( $fp );
 			}
 		}
+		
 		return $usage;
-		
 	}
-	
-	public function downloadFile($localURL, $file){
+	public function outputFile($file, $name, $mime_type = '') {
+		$fileChunkSize = 1024 * 30;
 		
+		// echo "file = " . $file . "<br/>";
 		
-		//echo "download file = " . $file . "<br/>";
-		$ftp = ftp_connect($this->getHost(), $this->getPort());
-		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
-		//ob_start();
-		$result = ftp_get($ftp, $localURL, $file, FTP_BINARY);
-		//$data = ob_get_contents();
-		//ob_end_clean();
-		ftp_close($ftp);
-		//echo "download file = " . $file . " done <br/>";
+		if (! is_readable ( $file ))
+			die ( 'File not found or inaccessible!' );
+		
+		$fp = fopen ( $file, "rb" );
+		$size = $this->my_filesize ( $fp );
+		fclose ( $fp );
+		// echo "file size = " . $size . "-<br/>";
+		$name = rawurldecode ( $name );
+		// return;
+		
+		$known_mime_types = array (
+				"pdf" => "application/pdf",
+				"txt" => "text/plain",
+				"html" => "text/html",
+				"htm" => "text/html",
+				"exe" => "application/octet-stream",
+				"zip" => "application/zip",
+				"doc" => "application/msword",
+				"xls" => "application/vnd.ms-excel",
+				"ppt" => "application/vnd.ms-powerpoint",
+				"gif" => "image/gif",
+				"png" => "image/png",
+				"jpeg" => "image/jpg",
+				"jpg" => "image/jpg",
+				"php" => "text/plain" 
+		);
+		
+		if ($mime_type == '') {
+			$file_extension = strtolower ( substr ( strrchr ( $file, "." ), 1 ) );
+			if (array_key_exists ( $file_extension, $known_mime_types ))
+				$mime_type = $known_mime_types [$file_extension];
+			else
+				$mime_type = "application/force-download";
+		}
+		
+		@ob_end_clean ();
+		
+		if (ini_get ( 'zlib.output_compression' ))
+			ini_set ( 'zlib.output_compression', 'Off' );
+		
+		header ( 'Content-Type: ' . $mime_type );
+		header ( 'Content-Disposition: attachment; filename="' . $name . '"' );
+		header ( "Content-Transfer-Encoding: binary" );
+		header ( 'Accept-Ranges: bytes' );
+		header ( "Cache-control: private" );
+		header ( 'Pragma: private' );
+		header ( "Expires: Mon, 26 Jul 1997 05:00:00 GMT" );
+		
+		if (isset ( $_SERVER ['HTTP_RANGE'] )) {
+			list ( $a, $range ) = explode ( "=", $_SERVER ['HTTP_RANGE'], 2 );
+			list ( $range ) = explode ( ",", $range, 2 );
+			list ( $range, $range_end ) = explode ( "-", $range );
+			$range = intval ( $range );
+			if (! $range_end)
+				$range_end = $size - 1;
+			else
+				$range_end = intval ( $range_end );
+			
+			$new_length = $range_end - $range + 1;
+			header ( "HTTP/1.1 206 Partial Content" );
+			header ( "Content-Length: $new_length" );
+			header ( "Content-Range: bytes $range-$range_end/$size" );
+		} else {
+			$new_length = $size;
+			header ( "Content-Length: " . $size );
+		}
+		
+		$chunksize = 1 * ($fileChunkSize);
+		$bytes_send = 0;
+		if ($file = fopen ( $file, 'rb' )) {
+			if (isset ( $_SERVER ['HTTP_RANGE'] ))
+				fseek ( $file, $range );
+			
+			while ( ! feof ( $file ) && (! connection_aborted ()) && ($bytes_send < $new_length) ) {
+				$buffer = fread ( $file, $chunksize );
+				print ($buffer) ;
+				flush ();
+				$bytes_send += strlen ( $buffer );
+			}
+			fclose ( $file );
+		} else
+			die ( 'Error - can not open file.' );
+		
+		die ();
 	}
-	
-	public function uploadFile($file, $adressServer){
-	
-		
-		$ftp = ftp_connect($this->getHost(), $this->getPort());
-		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
-		
-		ftp_put($ftp, $adressServer, $file, FTP_BINARY);
-		
-		ftp_close($ftp);
-		
-	}
-	
-	public function formatFileSize($size){
-		if ($size < 1000){
-			return number_format($size, 2, ',', '') . " octets";
-		}
-		else if ($size >= 1000 && $size < 1000000 ){
-			return number_format($size/1000, 2, ',', '') . " Ko";
-		}
-		else if ($size >= 1000000 && $size < 1000000000 ){
-			return number_format($size/1000000, 2, ',', '') . " Mo";
-		}
-		else if ($size >= 1000000000 && $size < 1000000000000 ){
-			return number_format($size/1000000000, 2, ',', '') . " Go";
+	public function formatFileSize($size) {
+		if ($size < 1000) {
+			return number_format ( $size, 2, ',', '' ) . " octets";
+		} else if ($size >= 1000 && $size < 1000000) {
+			return number_format ( $size / 1000, 2, ',', '' ) . " Ko";
+		} else if ($size >= 1000000 && $size < 1000000000) {
+			return number_format ( $size / 1000000, 2, ',', '' ) . " Mo";
+		} else if ($size >= 1000000000 && $size < 1000000000000) {
+			return number_format ( $size / 1000000000, 2, ',', '' ) . " Go";
 		}
 	}
-	
-	public function deleteFile($file){
-
-		$ftp = ftp_connect($this->getHost(), $this->getPort());
-		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
-		
-		ftp_delete ( $ftp , $file );
-		
-		ftp_close($ftp);
-	}
-
-	public function initializeDirectory($userlogin){
-		
-		$ftp = ftp_connect($this->getHost(), $this->getPort());
-		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
-		
-		if (!ftp_chdir($ftp, $userlogin)){
-			ftp_mkdir($ftp, $userlogin);
+	public function my_filesize($fp) {
+		$return = false;
+		if (is_resource ( $fp )) {
+			// echo "is ressource";
+			if (PHP_INT_SIZE < 8) {
+				// echo "php 32bits";
+				// 32bit
+				if (0 === fseek ( $fp, 0, SEEK_END )) {
+					$return = 0.0;
+					$step = 0x7FFFFFFF;
+					while ( $step > 0 ) {
+						if (0 === fseek ( $fp, - $step, SEEK_CUR )) {
+							$return += floatval ( $step );
+						} else {
+							$step >>= 1;
+						}
+					}
+				}
+			} elseif (0 === fseek ( $fp, 0, SEEK_END )) {
+				echo "php 64bits";
+				// 64bit
+				$return = ftell ( $fp );
+			}
 		}
-
+		// echo "no ressource: " . $fp;
+		return $return;
 	}
 }
 

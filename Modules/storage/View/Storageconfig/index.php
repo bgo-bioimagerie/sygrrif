@@ -123,54 +123,6 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    </div>
 		  </form>
       </div>
-      
-      <!-- Default storage quota -->
-      <div>
-		  <div class="page-header">
-			<h2>
-				<?= StTranslator::ftp_settings($lang) ?> <br> <small></small>
-			</h2>
-		  </div>
-		
-		  <form role="form" class="form-horizontal" action="storageconfig" method="post">
-		  
-		    <div class="col-xs-12">
-			  <input class="form-control" type="hidden" name="setftpquery" value="yes"
-			 	/>
-		    </div>
-		    
-		    <div class="col-xs-12">
-			    <label class="control-label col-xs-2 col-xs-offset-2">Hostname</label>
-			    <div class="col-xs-6">
-			    <input class="form-control" type="text" name="host" value="<?= $ftp["host"] ?>" />
-			    </div>	
-		    </div>
-		    <div class="col-xs-12">
-			    <label class="control-label col-xs-2  col-xs-offset-2">Port</label>
-			    <div class="col-xs-6">
-			    <input class="form-control" type="text" name="port" value="<?= $ftp["port"] ?>" />	
-			    </div>
-		    </div>
-		    <div class="col-xs-12">
-			    <label class="control-label col-xs-2  col-xs-offset-2">Login</label>
-			    <div class="col-xs-6">
-			    <input class="form-control" type="text" name="login" value="<?= $ftp["login"] ?>" />
-			    </div>	
-		    </div>
-		    <div class="col-xs-12">
-			    <label class="control-label col-xs-2  col-xs-offset-2">Password</label>
-			    <div class="col-xs-6">
-			    <input class="form-control" type="password" name="pwd" value="<?= $ftp["pwd"] ?>" />	
-			    </div>
-		    </div>
-		    
-		  
-		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-		    </div>
-		  </form>
-      </div>
-      
        
   </div>
 </div>    

@@ -33,13 +33,6 @@ class ControllerStorageconfig extends ControllerSecureNav {
 		$status = $ModulesManagerModel->getDataMenusUserType("storage");
 		$menuStatus = array("name" => "storage", "status" => $status);
 		
-		$moduleCoreConfig = new CoreConfig();
-		$quota = $moduleCoreConfig->getParam("storage_quota");
-		
-		$modelUploader = new StUploader();
-		$ftp = $modelUploader->getFtpSettings();
-		
-		
 		// install database
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
@@ -52,18 +45,14 @@ class ControllerStorageconfig extends ControllerSecureNav {
 				$installSuccess = "<b>Success:</b> the database have been successfully installed";
 				$this->generateView ( array ('navBar' => $navBar,
 						'installError' => $installError,
-						'menuStatus' => $menuStatus,
-						'quota' => $quota,
-						'ftp' => $ftp
+						'menuStatus' => $menuStatus
 				) );
 				return;
 			}
 			$installSuccess = "<b>Success:</b> the database have been successfully installed";
 			$this->generateView ( array ('navBar' => $navBar,
 					'installSuccess' => $installSuccess,
-					'menuStatus' => $menuStatus,
-					'quota' => $quota,
-					'ftp' => $ftp
+					'menuStatus' => $menuStatus
 			) );
 			return;
 		}
@@ -80,46 +69,15 @@ class ControllerStorageconfig extends ControllerSecureNav {
 			$menuStatus = array("name" => "storage", "status" => $status);
 			
 			$this->generateView ( array ('navBar' => $navBar,
-					'menuStatus' => $menuStatus,
-					'quota' => $quota,
-					'ftp' => $ftp
+					'menuStatus' => $menuStatus
 						
 			) );
-			return;
-				
+			return;		
 		}
 		
-		// set default quta
-		$setquotaquery = $this->request->getParameterNoException("setquotaquery");
-		if ($setquotaquery == "yes"){
-			
-			$quota = $this->request->getParameterNoException("quota");
-			
-			$moduleCoreConfig = new CoreConfig();
-			$moduleCoreConfig->setParam("storage_quota", $quota);
-			$quota = $moduleCoreConfig->getParam("storage_quota");
-		}
-		
-		// set default quta
-		$setftpquery = $this->request->getParameterNoException("setftpquery");
-		if ($setftpquery == "yes"){
-				
-			$host = $this->request->getParameterNoException("host");
-			$port = $this->request->getParameterNoException("port");
-			$login = $this->request->getParameterNoException("login");
-			$pwd = $this->request->getParameterNoException("pwd");
-				
-			$modelUploader->setFtpSettings($host, $port, $login, $pwd);
-			$ftp = $modelUploader->getFtpSettings();
-			
-		}
-		
-	
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				                     'menuStatus' => $menuStatus,
-				                     'quota' => $quota,
-									 'ftp' => $ftp
+				                     'menuStatus' => $menuStatus
 		) );
 	}
 }
