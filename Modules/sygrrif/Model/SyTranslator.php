@@ -1592,5 +1592,11 @@ class SyTranslator {
 		return "Your reservation has been deleted";
 	}
 	
+	static public function Authorisations_menu_location($lang){
+		if ($lang == "Fr"){
+			return "Localisation du menu autorisations";
+		}
+		return "Authorisations menu location";
+	}
 	
 }

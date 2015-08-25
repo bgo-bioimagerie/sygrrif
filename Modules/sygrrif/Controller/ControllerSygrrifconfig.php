@@ -4,6 +4,7 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/sygrrif/Model/SyInstall.php';
+require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 
 
 class ControllerSygrrifconfig extends ControllerSecureNav {
@@ -25,8 +26,10 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 
 		// activated menus list
 		$ModulesManagerModel = new ModulesManager();
-		$isSygrrifMenu = $ModulesManagerModel->isDataMenu("sygrrif");
-		$isBookingMenu = $ModulesManagerModel->isDataMenu("booking");
+		$status = $ModulesManagerModel->getDataMenusUserType("sygrrif");
+		$menus[0] = array("name" => "sygrrif", "status" => $status);
+		$status = $ModulesManagerModel->getDataMenusUserType("booking");
+		$menus[1] = array("name" => "booking", "status" => $status);
 		
 		// booking settings
 		$modelBookingSettings = new SyBookingSettings();
@@ -37,9 +40,17 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		$seriesBooking = $modelCoreConfig->getParam("SySeriesBooking");
 		$editBookingMailing = $modelCoreConfig->getParam("SySeriesBooking");
 		
+		$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
+		
 		// edit reservatin fields
 		$editBookingDescriptionSettings = $modelCoreConfig->getParam("SyDescriptionFields");
 		
+		// cal sups
+		$calSups = Array();
+		if ( $ModulesManagerModel->isDataMenu("sygrrif")){
+			$modelCalSups = new SyCalSupplementary();
+			$calSups = $modelCalSups->calSups("name");
+		}
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
@@ -51,25 +62,27 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     			$installError =  $e->getMessage();
     			$installSuccess = "<b>Success:</b> the database have been successfully installed";
     			$this->generateView ( array ('navBar' => $navBar, 
-    					                     'installError' => $installError,
-    					                     'isSygrrifMenu' => $isSygrrifMenu,
-    										 'isBookingMenu' => $isBookingMenu,
+    					                     'menus' => $menus,    										 
     										 'bookingSettings' => $bookingSettings,
     										 'seriesBooking' => $seriesBooking,
 											 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    										 'editBookingMailing' => $editBookingMailing
+    										 'editBookingMailing' => $editBookingMailing,
+    										 'authorisations_location' => $authorisations_location,
+    					                     'calSups' => $calSups,
+    										 'installError' => $installError
     			) );
     			return;
 			}
 			$installSuccess = "<b>Success:</b> the database have been successfully installed";
 			$this->generateView ( array ('navBar' => $navBar, 
-					                     'installSuccess' => $installSuccess,
-					                     'isSygrrifMenu' => $isSygrrifMenu,
-					                     'isBookingMenu' => $isBookingMenu,
+					                     'menus' => $menus,					                     
 					                     'bookingSettings' => $bookingSettings,
 										 'seriesBooking' => $seriesBooking,
 					                     'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    								     'editBookingMailing' => $editBookingMailing
+    								     'editBookingMailing' => $editBookingMailing,
+										 'authorisations_location' => $authorisations_location,
+									     'calSups' => $calSups,
+										 'installSuccess' => $installSuccess
 			) );
 			return;
 		}
@@ -77,33 +90,31 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		// set menus section
 		$setmenusquery = $this->request->getParameterNoException ( "setmenusquery");
 		if ($setmenusquery == "yes"){
+			
+			$menusStatus = $this->request->getParameterNoException("menus");
+			
 			$ModulesManagerModel = new ModulesManager();
+			$ModulesManagerModel->setDataMenu("sygrrif", "sygrrif", $menusStatus[0], "glyphicon-signal");
+			$ModulesManagerModel->setDataMenu("booking", "sygrrif/booking", $menusStatus[1], "glyphicon-calendar");
 			
-			// sygrrif data menu
-			$sygrrifDataMenu = $this->request->getParameterNoException ("sygrrifdatamenu");
-			if ($sygrrifDataMenu != ""){
-				if (!$ModulesManagerModel->isDataMenu("sygrrif")){
-					$ModulesManagerModel->addDataMenu("sygrrif", "sygrrif", 3, "glyphicon-signal");
-					$isSygrrifMenu = true;
-				}
-			}
+			$status = $ModulesManagerModel->getDataMenusUserType("sygrrif");
+			$menus[0] = array("name" => "sygrrif", "status" => $status);
+			$status = $ModulesManagerModel->getDataMenusUserType("booking");
+			$menus[1] = array("name" => "booking", "status" => $status);
 			
-			// booking menu
-			$bookingMenu = $this->request->getParameterNoException ("bookingmenu");
-			if ($sygrrifDataMenu != ""){
-				if (!$ModulesManagerModel->isDataMenu("booking")){
-					$ModulesManagerModel->addDataMenu("booking", "sygrrif/booking", 1, "glyphicon-calendar");
-					$isBookingMenu = true;
-				}
-			}
+			
+			$authorisations_location = $this->request->getParameterNoException ( "authorisations_location" );
+			$modelCoreConfig = new CoreConfig();
+			$modelCoreConfig->setParam("sy_authorisations_location", $authorisations_location);
 				
 			$this->generateView ( array ('navBar' => $navBar,
-				                     'isSygrrifMenu' => $isSygrrifMenu,
-									 'isBookingMenu' => $isBookingMenu,
+				                     'menus' => $menus,
 									 'bookingSettings' => $bookingSettings,
 									 'seriesBooking' => $seriesBooking,
 									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    								 'editBookingMailing' => $editBookingMailing
+    								 'editBookingMailing' => $editBookingMailing,
+									 'authorisations_location' => $authorisations_location,
+									 'calSups' => $calSups
 			) );
 			return;
 			
@@ -115,13 +126,15 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		if ($templatequery == "yes"){
 			$templateMessage = $this->uploadTemplate();
 			$this->generateView ( array ('navBar' => $navBar,
-					'isSygrrifMenu' => $isSygrrifMenu,
-					'isBookingMenu' => $isBookingMenu,
+					'menus' => $menus,
 					'bookingSettings' => $bookingSettings,
 					'templateMessage' => $templateMessage,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-					'editBookingMailing' => $editBookingMailing
+					'editBookingMailing' => $editBookingMailing,
+					'authorisations_location' => $authorisations_location,
+					'calSups' => $calSups
+					
 			) );
 			return;
 		}
@@ -135,12 +148,55 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$modelCoreConfig->setParam("SySeriesBooking", $seriesBooking);
 			
 			$this->generateView ( array ('navBar' => $navBar,
-					'isSygrrifMenu' => $isSygrrifMenu,
-					'isBookingMenu' => $isBookingMenu,
+					'menus' => $menus,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-					'editBookingMailing' => $editBookingMailing
+					'editBookingMailing' => $editBookingMailing, 
+					'authorisations_location' => $authorisations_location,
+					'calSups' => $calSups
+			) );
+			return;
+		}
+		
+		// set cal suplementary
+		$setcalsupsquery = $this->request->getParameterNoException ( "setcalsupsquery");
+		if ($setcalsupsquery == "yes"){
+			
+			$names = $this->request->getParameter ( "name" );
+			$ismandatory = $this->request->getParameter ( "ismandatory" );
+
+			for($i = 0 ; $i < count($names) ; $i++){
+				if ($modelCalSups->isCalSup($names[$i])){
+					$id = $modelCalSups->getCalSupFromName($names[$i]);
+					$modelCalSups->updateCalSup($id, $names[$i], $ismandatory[$i]);
+				}
+				else{
+					$modelCalSups->addCalSup($names[$i], $ismandatory[$i]);
+				}
+			}
+			
+			$calSups = $modelCalSups->calSups("name");
+			foreach ($calSups as $calsup){
+				$found = false;
+				for($i = 0 ; $i < count($names) ; $i++){
+					if ( $names[$i] == $calsup["name"]){
+						$found = true;
+					}
+				}
+				if (!$found){
+					$modelCalSups->delete($calsup['id']);
+				}	
+			}
+			
+			$this->generateView ( array ('navBar' => $navBar,
+					'menus' => $menus,
+					'bookingSettings' => $bookingSettings,
+					'seriesBooking' => $seriesBooking,
+					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+					'editBookingMailing' => $editBookingMailing,
+					'authorisations_location' => $authorisations_location,
+					'calSups' => $calSups
 			) );
 			return;
 		}
@@ -154,12 +210,13 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$modelCoreConfig->setParam("SyDescriptionFields", $editBookingDescriptionSettings);
 				
 			$this->generateView ( array ('navBar' => $navBar,
-					'isSygrrifMenu' => $isSygrrifMenu,
-					'isBookingMenu' => $isBookingMenu,
+					'menus' => $menus,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    				'editBookingMailing' => $editBookingMailing
+    				'editBookingMailing' => $editBookingMailing, 
+					'authorisations_location' => $authorisations_location,
+					'calSups' => $calSups
 			) );
 			return;
 		}
@@ -173,12 +230,13 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$modelCoreConfig->setParam("SyEditBookingMailing", $editBookingMailing);
 			
 			$this->generateView ( array ('navBar' => $navBar,
-					'isSygrrifMenu' => $isSygrrifMenu,
-					'isBookingMenu' => $isBookingMenu,
+					'menus' => $menus,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-					'editBookingMailing' => $editBookingMailing
+					'editBookingMailing' => $editBookingMailing, 
+					'authorisations_location' => $authorisations_location,
+					'calSups' => $calSups
 			) );
 			return;
 		}
@@ -223,25 +281,27 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$bookingSettings = $modelBookingSettings->entries();
 		
 			$this->generateView ( array ('navBar' => $navBar,
-					'isSygrrifMenu' => $isSygrrifMenu,
-					'isBookingMenu' => $isBookingMenu,
+					'menus' => $menus,
 					'bookingOptionMessage' => $bookingOptionMessage,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    				'editBookingMailing' => $editBookingMailing
+    				'editBookingMailing' => $editBookingMailing, 
+					'authorisations_location' => $authorisations_location,
+					'calSups' => $calSups
 			) );
 			return;
 		}
 		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				                     'isSygrrifMenu' => $isSygrrifMenu,
-									 'isBookingMenu' => $isBookingMenu,
+				                     'menus' => $menus,
 									 'bookingSettings' => $bookingSettings,
 									 'seriesBooking' => $seriesBooking,
 									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    								 'editBookingMailing' => $editBookingMailing
+    								 'editBookingMailing' => $editBookingMailing, 
+									 'authorisations_location' => $authorisations_location, 
+									 'calSups' => $calSups
 		) );
 	}
 	
@@ -272,6 +332,5 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 				return "Error, there was an error uploading your file.";
 			}
 		}
-	
 	}
 }

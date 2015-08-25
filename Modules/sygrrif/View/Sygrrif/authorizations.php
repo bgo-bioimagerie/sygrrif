@@ -1,48 +1,18 @@
 <?php $this->title = "SyGRRiF Authorizations"?>
 
 <?php echo $navBar?>
-<?php include "Modules/sygrrif/View/navbar.php"; ?>
 
-<head>
+<?php
+$modelCoreConfig = new CoreConfig();
+$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
 
-<style>
-/*
-        table {
-            width: 100%;
-        }
-
-        thead, tbody, tr, td, th { display: block; }
-
-        tr:after {
-            content: ' ';
-            display: block;
-            visibility: hidden;
-            clear: both;
-        }
-
-        thead th {
-            height: 30px;
-
-            /*text-align: left;
-        }
-
-        tbody {
-            height: 1000px;
-            overflow-y: auto;
-        }
-
-        thead {
-            /* fallback 
-        }
-
-        tbody td, thead th {
-            width: 12.5%;
-            float: left;
-        }
-        */   
-</style>
-
-</head>
+if ($authorisations_location == 2){
+	include "Modules/core/View/Users/usersnavbar.php";
+}
+else{
+	include "Modules/sygrrif/View/navbar.php"; 
+}
+?>
 
 <br>
 <div class="contatiner">

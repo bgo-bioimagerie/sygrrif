@@ -50,7 +50,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 <div class="bs-docs-header" id="content">
 	<div class="container">
 		<!-- <h2><?= CoreTranslator::Users_Institutions($lang) ?></h2>  -->
-		
+		<h2>Storage</h2>
 		
 		<div class='col-md-4 well'>
 			<fieldset>

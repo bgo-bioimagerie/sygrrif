@@ -1,9 +1,13 @@
 <?php 
+
+require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
+
 function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable){
 	
 	$dateString = date("Y-m-d", $date_unix);
 	$moduleProject = new Project();
 	$ModulesManagerModel = new ModulesManager();
+	$modelBookingSupplemetary = new SyCalSupplementary();
 	$isProjectMode = $ModulesManagerModel->getDataMenusUserType("projects");
 	if ($isProjectMode > 0){
 		$isProjectMode = true;
@@ -53,10 +57,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$text = "";
 						if ($blocNumber <= 2){
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
+							$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 							//$text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 						}
 						else{
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
+							$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 							//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
@@ -90,10 +96,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$text = "";
 					if ($blocNumber <= 2){
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
+						$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 						//$text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 					}
 					else{
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
+						$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 						//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id']; 
@@ -172,10 +180,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$text = "";
 						if ($blocNumber <= 2){
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
+							$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 							//$text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 						}
 						else{
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
+							$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 							//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
@@ -209,10 +219,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$text = "";
 					if ($blocNumber <= 2){
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
+						$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 						//$text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 					}
 					else{
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
+						$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 						//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 					}	
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
@@ -288,10 +300,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$text = "";
 						if ($blocNumber <= 2){
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
+							$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 							//$text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 						}
 						else{
 							$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
+							$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 							//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
@@ -325,10 +339,12 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					$text = "";
 					if ($blocNumber <= 2){
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], true);
+						$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 						//$text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", <b>Phone:</b>".$calEntry['phone']. ", <b>Desc:</b> " .$calEntry['short_description']."";
 					}
 					else{
 						$text = $modelBookingSetting->getSummary($calEntry["recipient_fullname"], $calEntry['phone'], $shortDescription, $calEntry['full_description'], false);
+						$text .= $modelBookingSupplemetary->getSummary($calEntry["id"]);
 						//$text = $text = "<b>User: </b>". $calEntry["recipient_fullname"] . ", </br><b>Phone:</b>".$calEntry['phone']. ", </br><b>Desc:</b> " .$calEntry['short_description']."";
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];

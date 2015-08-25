@@ -33,13 +33,21 @@ $lang = "En";
 if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
+
+$modelCoreConfig = new CoreConfig();
+$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
+
+$classWell = 'col-md-3 well';
+if ($authorisations_location == 2){
+	$classWell = 'col-md-4 well';
+}
 ?>
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
 		<h1>SyGRRif</h1>
 
-		<div class='col-md-3 well'>
+		<div class=<?=$classWell?> >
 			<fieldset>
 				<legend><?= SyTranslator::Area_and_Resources($lang) ?></legend>
 					<button onclick="location.href='sygrrif/areas'"
@@ -67,7 +75,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 						class="btn btn-link" id="navlink"><?= SyTranslator::block_resources($lang) ?></button>		
 			</fieldset>
 		</div>
-		<div class='col-md-3 well'>
+		
+		<?php if ($authorisations_location == 1 || $authorisations_location == "" ){ ?>
+		<div class=<?=$classWell?> >
 			<fieldset>
 				<legend><?= SyTranslator::Users_Authorizations($lang) ?></legend>
 					<button onclick="location.href='sygrrif/visa'"
@@ -83,7 +93,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 						class="btn btn-link" id="navlink"><?= SyTranslator::Add_Authorizations($lang) ?></button>
 			</fieldset>
 		</div>
-		<div class='col-md-3 well'>
+		<?php } ?>
+		<div class=<?=$classWell?> >
 			<fieldset>
 				<legend><?= SyTranslator::Pricing($lang) ?> </legend>
 					<button onclick="location.href='sygrrif/pricing'"
@@ -98,7 +109,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</fieldset> 
 		</div>
 
-		<div class='col-md-3 well'>
+		<div class=<?=$classWell?> >
 			<fieldset>
 				<legend><?= SyTranslator::Export($lang) ?></legend>
 				<p>

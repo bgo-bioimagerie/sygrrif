@@ -83,4 +83,31 @@ class ControllerUnits extends ControllerSecureNav {
 		
 		$this->redirect ( "units" );
 	}
+		
+	public function delete(){
+	
+		$unitId = 0;
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$unitId = $this->request->getParameter("actionid");
+		};
+	
+		$unitName = $this->unitModel->getUnitName($unitId);
+	
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'unitName' => $unitName,
+				'unitId' => $unitId
+		) );
+	}
+	
+	public function deletequery(){
+	
+		$unitId = $this->request->getParameter("id");
+		$user = $this->unitModel->delete($unitId);
+	
+		// generate view
+		$this->redirect("units");
+	}
 }

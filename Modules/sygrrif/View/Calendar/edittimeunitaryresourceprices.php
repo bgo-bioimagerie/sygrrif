@@ -40,7 +40,7 @@
 		<input class="form-control" type="hidden" name="accessibility_id" value="<?=$this->clean($resource_base["accessibility_id"]); ?>"/> 
 		<input class="form-control" type="hidden" name="category_id" value="<?=$this->clean($resource_base["category_id"]); ?>"/> 
 		<input class="form-control" type="hidden" name="area_id" value="<?=$this->clean($resource_base["area_id"]); ?>"/> 
-		<input class="form-control" type="hidden" name="area_id" value="<?=$this->clean($resource_base["area_id"]); ?>"/> 
+		<input class="form-control" type="hidden" name="display_order" value="<?=$this->clean($resource_base["display_order"]); ?>"/> 
 		
 		<?php foreach($resource_info["supplynames"] as $suppliesN){?>
 		<input class="form-control" type="hidden" name="supplynames[]" value="<?= $suppliesN ?>"/> 

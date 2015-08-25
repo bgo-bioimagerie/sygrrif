@@ -359,7 +359,17 @@ class User extends Model {
 		return $users;
 	}
 	
-	public function getUsersInfoSearch($selectEntry, $searchTxt){
+	public function getUsersInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
+		
+		if ($sortentry == "responsible"){
+			$sortentry = "resp_name";
+		}
+		$sortIsResp = false;
+		if ($sortentry == "is_responsible"){
+			$sortentry = "id";
+			$sortIsResp = true;
+		}
+		
 		$sql = "SELECT user.id AS id, user.login AS login,
     				   user.firstname AS firstname, user.name AS name,
     				   user.email AS email, user.tel AS tel,
@@ -373,7 +383,11 @@ class User extends Model {
 				INNER JOIN core_users AS resp ON user.id_responsible = resp.id
     			INNER JOIN core_units ON user.id_unit = core_units.id
     			INNER JOIN core_status ON user.id_status = core_status.id
-    			WHERE user.".$selectEntry." LIKE '%$searchTxt%'";
+    			WHERE user.".$selectEntry." LIKE '%$searchTxt%' ";
+		
+		if ($sortentry != ""){
+			$sql .= " ORDER BY " . $sortentry;
+		}
 		
 		//echo "sql = " . $sql;
 		$req = $this->runRequest ( $sql );
@@ -386,10 +400,26 @@ class User extends Model {
 			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
 		}
 		
+		if ($sortIsResp){
+			foreach ($users as $key => $row) {
+				$isresp[$key]  = $row['is_responsible'];
+			}
+			array_multisort($isresp, SORT_ASC, $users);
+		}
 		return $users;
 	}
 	
-	public function getUsersUnitInfoSearch($selectEntry, $searchTxt){
+	public function getUsersUnitInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
+		
+		if ($sortentry == "responsible"){
+			$sortentry = "resp_name";
+		}
+		$sortIsResp = false;
+		if ($sortentry == "is_responsible"){
+			$sortentry = "id";
+			$sortIsResp = true;
+		}
+		
 		$sql = "SELECT user.id AS id, user.login AS login,
     				   user.firstname AS firstname, user.name AS name,
     				   user.email AS email, user.tel AS tel,
@@ -404,6 +434,10 @@ class User extends Model {
     			INNER JOIN core_units ON user.id_unit = core_units.id
     			INNER JOIN core_status ON user.id_status = core_status.id
     			WHERE core_units.".$selectEntry." LIKE '%$searchTxt%'";
+		
+		if ($sortentry != ""){
+			$sql .= " ORDER BY " . $sortentry;
+		}
 	
 		//echo "sql = " . $sql;
 		$req = $this->runRequest ( $sql );
@@ -415,11 +449,28 @@ class User extends Model {
 		for($i = 0; $i < count ( $users ); $i ++) {
 			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
 		}
+		
+		if ($sortIsResp){
+			foreach ($users as $key => $row) {
+				$isresp[$key]  = $row['is_responsible'];
+			}
+			array_multisort($isresp, SORT_ASC, $users);
+		}
 	
 		return $users;
 	}
 	
-	public function getUsersStatusInfoSearch($selectEntry, $searchTxt){
+	public function getUsersStatusInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
+		
+		if ($sortentry == "responsible"){
+			$sortentry = "resp_name";
+		}
+		$sortIsResp = false;
+		if ($sortentry == "is_responsible"){
+			$sortentry = "id";
+			$sortIsResp = true;
+		}
+		
 		$sql = "SELECT user.id AS id, user.login AS login,
     				   user.firstname AS firstname, user.name AS name,
     				   user.email AS email, user.tel AS tel,
@@ -434,6 +485,10 @@ class User extends Model {
     			INNER JOIN core_units ON user.id_unit = core_units.id
     			INNER JOIN core_status ON user.id_status = core_status.id
     			WHERE core_status.".$selectEntry." LIKE '%$searchTxt%'";
+		
+		if ($sortentry != ""){
+			$sql .= " ORDER BY " . $sortentry;
+		}
 	
 		//echo "sql = " . $sql;
 		$req = $this->runRequest ( $sql );
@@ -445,11 +500,27 @@ class User extends Model {
 		for($i = 0; $i < count ( $users ); $i ++) {
 			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
 		}
+		if ($sortIsResp){
+			foreach ($users as $key => $row) {
+				$isresp[$key]  = $row['is_responsible'];
+			}
+			array_multisort($isresp, SORT_ASC, $users);
+		}
 	
 		return $users;
 	}
 	
-	public function getUsersResponsibleInfoSearch($selectEntry, $searchTxt){
+	public function getUsersResponsibleInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
+		
+		if ($sortentry == "responsible"){
+			$sortentry = "resp_name";
+		}
+		$sortIsResp = false;
+		if ($sortentry == "is_responsible"){
+			$sortentry = "id";
+			$sortIsResp = true;
+		}
+		
 		$sql = "SELECT user.id AS id, user.login AS login,
     				   user.firstname AS firstname, user.name AS name,
     				   user.email AS email, user.tel AS tel,
@@ -465,6 +536,10 @@ class User extends Model {
     			INNER JOIN core_status ON user.id_status = core_status.id
     			WHERE resp.".$selectEntry." LIKE '%$searchTxt%'";
 		
+		if ($sortentry != ""){
+			$sql .= " ORDER BY " . $sortentry;
+		}
+		
 		//echo "sql = " . $sql;
 		$req = $this->runRequest ( $sql );
 		$users = $req->fetchAll ();
@@ -475,7 +550,12 @@ class User extends Model {
 		for($i = 0; $i < count ( $users ); $i ++) {
 			$users [$i] ['is_responsible'] = $respModel->isResponsible ( $users [$i] ['id'] );
 		}
-		
+		if ($sortIsResp){
+			foreach ($users as $key => $row) {
+				$isresp[$key]  = $row['is_responsible'];
+			}
+			array_multisort($isresp, SORT_ASC, $users);
+		}
 		return $users;
 	}
 	
@@ -495,7 +575,7 @@ class User extends Model {
 		if ($user->rowCount () == 1)
 			return $user->fetch (); // get the first line of the result
 		else
-			throw new Exception ( "Cannot find the user using the given parameters" );
+			throw new Exception ( "Cannot find the user using the given parameters: " . $id );
 	}
 	
 	/**

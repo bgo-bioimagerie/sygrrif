@@ -50,6 +50,7 @@ $(document).ready( function() {
 	                     { "bSearchable": false },
 	                     { "bSearchable": false },
 	                     { "bSearchable": false },
+	                     { "bSearchable": false },
 	                     { "bSearchable": false }
 	                   ],
 	       "lengthMenu": [[100, 200, 300, -1], [100, 200, 300, "All"]]
@@ -266,7 +267,7 @@ $(document).ready(function() {
 				<tr>
 					<th class="text-center" colspan="9" style="width:45%; color:#337AB7;">Anticorps</th>
 					<th class="text-center" colspan="2" style="width:10%; background-color: #ffeeee; color:#337AB7;">Protocole</th>
-					<th class="text-center" colspan="5" style="width:25%; background-color: #eeffee; color:#337AB7;">Tissus</th>
+					<th class="text-center" colspan="6" style="width:25%; background-color: #eeffee; color:#337AB7;">Tissus</th>
 					<th class="text-center" colspan="4" style="width:20%; background-color: #eeeeff; color:#337AB7;">Propriétaire</th>
 					
 				</tr>
@@ -284,7 +285,7 @@ $(document).ready(function() {
 					<th class="text-center" style="width:5%;"><a href="anticorps/index/stockage">Stockage</a></th>
 					 -->
 					
-					<th class="text-center" style="width:1em; color:#337AB7;">No H2P2</th> 
+					<th class="text-center" style="width:1em; color:#337AB7;">No<br/>H2P2</th> 
 					<th class="text-center" style="width:5%; color:#337AB7;">Nom</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Fournisseur</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Source</th>
@@ -301,7 +302,8 @@ $(document).ready(function() {
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">organe</th>
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">statut</th>
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">ref. bloc</th>
-					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">prélèvement</th>	
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">prélèvement</th>
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">commentaire</th>	
 					
 					<th class="text-center" style="width:5em; background-color: #eeeeff; color:#337AB7;">Nom</th>
 					<th class="text-center" style="width:5%; background-color: #eeeeff; color:#337AB7;">disponibilité</th>
@@ -399,6 +401,16 @@ $(document).ready(function() {
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
+				    		
+				    		$statusTxt = "";
+				    		$background = "#ffffff";
+				    		foreach($status as $stat){
+				    			if ($tissus[$i]['status'] == $stat["id"]){
+				    				$statusTxt = $stat['nom'];
+				    				$background = $stat["color"];
+				    			}
+				    		}
+				    		/*
 				    		$statusTxt = "Non testé";
 				    		if ($tissus[$i]['status'] == 1){
 				    			$statusTxt = "Validé";
@@ -406,8 +418,9 @@ $(document).ready(function() {
 				    		if ($tissus[$i]['status'] == 2){
 				    			$statusTxt = "Non validé";
 				    		}
+				    		*/
 				    		
-				    		$val = $val . "<p>" 
+				    		$val = $val . "<p style=\"background-color: #".$background."\">" 
 		                                . $statusTxt
 										. "</p>";  
 				    	}			    	
@@ -437,6 +450,16 @@ $(document).ready(function() {
 					    echo $val;
 				    ?></td>
 				    
+				    <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
+				    	$tissus = $anticorps ['tissus'];
+				    	$val = "";
+				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
+				    		$val = $val . "<p>" 
+										. $tissus[$i]['comment']
+										. "</p>";  
+				    	}			    	
+					    echo $val;
+				    ?></td>
 				    
 				   
 

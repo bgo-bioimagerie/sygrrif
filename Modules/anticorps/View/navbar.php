@@ -76,6 +76,9 @@ legend {
 				<br/>		
 				    <button onclick="location.href='prelevements/'" class="btn btn-link" id="navlink">Prélèvements</button>
 					<button onclick="location.href='prelevements/add'" class="btn btn-link" id="navlink">+</button>	
+				<br/>		
+				    <button onclick="location.href='status/'" class="btn btn-link" id="navlink">Status</button>
+					<button onclick="location.href='status/add'" class="btn btn-link" id="navlink">+</button>	
 			</fieldset>
 		</div>
 		

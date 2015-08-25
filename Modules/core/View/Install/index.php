@@ -46,7 +46,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">password</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="password" type="text" name="password" />
+				<input class="form-control" id="password" type="password" name="password" />
 			</div>
 		</div>
 		<div class="form-group">

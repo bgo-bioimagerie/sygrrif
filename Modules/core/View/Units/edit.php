@@ -46,9 +46,10 @@
 			</div>
 		</div>
 		
-		<div class="col-xs-4 col-xs-offset-8" id="button-div">
+		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
 				<button type="button" onclick="location.href='units'" class="btn btn-default"><?= CoreTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='<?="units/delete/".$this->clean($unit['id']) ?>'" class="btn btn-danger"><?= CoreTranslator::Delete($lang) ?></button>
 		</div>
       </form>
 	</div>

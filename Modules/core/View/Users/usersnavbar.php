@@ -45,13 +45,22 @@ $lang = "En";
 if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
+
+$modelCoreConfig = new CoreConfig();
+$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
+
+$classWell = 'col-md-4 well';
+if ($authorisations_location == 2){
+	require_once 'Modules/sygrrif/Model/SyTranslator.php';
+	$classWell = 'col-md-3 well';
+}
 ?>
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
 		<h2><?= CoreTranslator::Users_Institutions($lang) ?></h2>
 		
-		<div class='col-md-4 well'>
+		<div class=<?= $classWell ?> >
 			<fieldset>
 				<legend><?= CoreTranslator::Units($lang) ?></legend>
 					<button onclick="location.href='units/'" class="btn btn-link" id="navlink"><?= CoreTranslator::Units($lang) ?></button>
@@ -60,7 +69,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</fieldset>
 		</div>
 		
-		<div class='col-md-4 well'>
+		<div class=<?= $classWell ?>>
 			<fieldset>
 				<legend><?= CoreTranslator::Users($lang) ?></legend>
 					<button onclick="location.href='users'" class="btn btn-link" id="navlink"><?= CoreTranslator::Active_Users($lang) ?> </button>
@@ -71,12 +80,19 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</fieldset>
 		</div>
 		
-		<div class='col-md-4 well'>
+		<div class=<?= $classWell ?>>
 			<fieldset>
 				<legend><?= CoreTranslator::Export($lang) ?></legend>
 					<button onclick="location.href='users/exportresponsable'" class="btn btn-link" id="navlink"><?= CoreTranslator::Responsible($lang) ?> </button>
 			</fieldset>
 		</div>
+		
+		<?php if ($authorisations_location == 2){ ?>
+			<div class=<?= $classWell ?>>
+				<?php include "Modules/sygrrif/View/authorizations_navbar.php"?>
+			</div>
+		<?php } ?>
+		
 	</div>
 </div>
 

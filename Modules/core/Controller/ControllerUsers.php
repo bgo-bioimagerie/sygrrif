@@ -25,22 +25,22 @@ class ControllerUsers extends ControllerSecureNav {
 	// Affiche la liste de tous les billets du blog
 	public function index() {
 		
+		// get sort action
+		$sortentry = "id";
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$sortentry = $this->request->getParameter("actionid");
+		}
+		
 		$searchColumn = "0";
 		$searchTxt = "";
 		if ( isset($_SESSION["user_searchColumn"])){
-			$this->searchquery();
+			$this->searchquery($sortentry);
 			return;
 		}
 		
 		
 		
 		$navBar = $this->navBar();
-		
-		// get sort action
-		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$sortentry = $this->request->getParameter("actionid");
-		}
 			
 		// get the user list
 		$usersArray = $this->userModel->getActiveUsersInfo($sortentry);
@@ -441,7 +441,7 @@ class ControllerUsers extends ControllerSecureNav {
 		return;
 	}
 	
-	public function searchquery(){
+	public function searchquery($sortentry = "id"){
 	
 		$lang = "En";
 		if (isset($_SESSION["user_settings"]["language"])){
@@ -461,23 +461,22 @@ class ControllerUsers extends ControllerSecureNav {
 	
 		$usersArray = array();
 		if($searchColumn == "0"){
-			$usersArray = $this->userModel->getActiveUsersInfo("id");
+			$usersArray = $this->userModel->getActiveUsersInfo($sortentry);
 		}
 		else if($searchColumn == "name"){
-			$usersArray = $this->userModel->getUsersInfoSearch("name", $searchTxt);
+			$usersArray = $this->userModel->getUsersInfoSearch("name", $searchTxt, $sortentry);
 		}
 		else if($searchColumn == "firstname"){
-			$usersArray = $this->userModel->getUsersInfoSearch("firstname", $searchTxt);
+			$usersArray = $this->userModel->getUsersInfoSearch("firstname", $searchTxt, $sortentry);
 		}
 		else if($searchColumn == "unit"){
-			$usersArray = $this->userModel->getUsersUnitInfoSearch("name", $searchTxt);
+			$usersArray = $this->userModel->getUsersUnitInfoSearch("name", $searchTxt, $sortentry);
 		}
 		else if($searchColumn == "id_status"){
-			$usersArray = $this->userModel->getUsersStatusInfoSearch("name", $searchTxt);
+			$usersArray = $this->userModel->getUsersStatusInfoSearch("name", $searchTxt, $sortentry);
 		}
 		else if( $searchColumn == "responsible"){
-			$usersArray = $this->userModel->getUsersResponsibleInfoSearch("name", $searchTxt);
-			
+			$usersArray = $this->userModel->getUsersResponsibleInfoSearch("name", $searchTxt, $sortentry);
 		}
 	
 		$navBar = $this->navBar();
@@ -512,9 +511,12 @@ class ControllerUsers extends ControllerSecureNav {
 		$user = $this->userModel->delete($userId);
 		
 		// generate view
+		$this->redirect("users");
+		/*
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar
 		) );
+		*/
 	}
 }

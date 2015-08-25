@@ -34,9 +34,12 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$anticorpsModel = new Anticorps();
 		$anticorpsArray = $anticorpsModel->getAnticorpsInfo($sortentry);
 		
+		$modelstatus = new Status();
+		$status = $modelstatus->getStatus();
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
-				'navBar' => $navBar, 'anticorpsArray' => $anticorpsArray
+				'navBar' => $navBar, 'anticorpsArray' => $anticorpsArray, 'status' => $status
 		) );
 	
 	}
@@ -73,6 +76,8 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$modelPrelevement = new Prelevement();
 		$prelevements = $modelPrelevement->getPrelevements("nom"); 
 		
+		$modelstatus = new Status();
+		$status = $modelstatus->getStatus();
 			
 		// get edit id
 		$editID = "";
@@ -99,7 +104,8 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'organes' => $organes,
 				'users' => $users,
 				'protocols' => $protocols,
-				'prelevements' => $prelevements	  
+				'prelevements' => $prelevements,
+				'status' => $status	  
 		) );
 	}
 	public function editquery(){
@@ -134,6 +140,9 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$dilution = $this->request->getParameter ("dilution");
 		$temps_incubation = $this->request->getParameterNoException ("temps_incubation");
 		$ref_protocol = $this->request->getParameter ("ref_protocol");
+		$comment = $this->request->getParameter ("comment");
+		
+		print_r($comment);
 		
 		$modelAnticorps = new Anticorps();
 		$modelTissus = new Tissus();
@@ -167,9 +176,10 @@ class ControllerAnticorps extends ControllerSecureNav {
 			}
 		}
 		// add to the tissus table
-		for ($i = 0 ; $i <  count($espece) ; $i++){
+		for ($i = 0 ; $i <  count($espece) ; $i++){		
+			$temps_incubation = "";
 			$modelTissus->addTissus($id, $espece[$i], $organe[$i], $valide[$i], $ref_bloc[$i],
-					$dilution[$i], $temps_incubation[$i], $ref_protocol[$i], $prelevement[$i]);
+					$dilution[$i], $temps_incubation, $ref_protocol[$i], $prelevement[$i], $comment[$i]);
 		}
 		    
 	    // generate view
@@ -260,10 +270,15 @@ class ControllerAnticorps extends ControllerSecureNav {
 			$anticorpsArray = $anticorpsModel->getAnticorpsProprioSearch("date_recept", CoreTranslator::dateToEn($searchTxt, $lang));
 		}
 		
+		
+		$modelstatus = new Status();
+		$status = $modelstatus->getStatus();
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar, 'anticorpsArray' => $anticorpsArray,
-				'searchColumn' => $searchColumn, 'searchTxt' => $searchTxt
+				'searchColumn' => $searchColumn, 'searchTxt' => $searchTxt,
+				'status' => $status
 		), "index" );
 
 	}
@@ -303,6 +318,10 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$anticorpsArray = $anticorpsModel->searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp);
 		//$anticorpsArray = $anticorpsModel->getAnticorpsInfo("id");
 		
+		
+		$modelstatus = new Status();
+		$status = $modelstatus->getStatus();
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar, 'anticorpsArray' => $anticorpsArray,
@@ -311,7 +330,8 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'searchSource' => $searchSource, 
 				'searchCible' => $searchCible, 
 				'searchValide' => $searchValide, 
-				'searchResp' => $searchResp
+				'searchResp' => $searchResp,
+				'status' => $status
 		), "index" );
 	}
 	

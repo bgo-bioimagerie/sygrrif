@@ -14,7 +14,17 @@
 </head>
 
 
-<?php include "Modules/sygrrif/View/navbar.php"; ?>
+<?php
+$modelCoreConfig = new CoreConfig();
+$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
+
+if ($authorisations_location == 2){
+	include "Modules/core/View/Users/usersnavbar.php";
+}
+else{
+	include "Modules/sygrrif/View/navbar.php"; 
+}
+?>
 
 <br>
 <div class="container">

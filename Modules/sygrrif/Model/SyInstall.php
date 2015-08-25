@@ -16,6 +16,7 @@ require_once 'Modules/sygrrif/Model/SyColorCode.php';
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 require_once 'Modules/sygrrif/Model/SyCalendarSeries.php';
 require_once 'Modules/sygrrif/Model/SyBill.php';
+require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 
 /**
  * Class defining methods to install and initialize the sygrrif database
@@ -68,6 +69,9 @@ class SyInstall extends Model {
 		
 		$syCalendarSeries = new SyCalendarSeries();
 		$syCalendarSeries->createTable();
+		
+		$model = new SyCalSupplementary();
+		$model->createTable();
 		
 		$syColorCode = new SyColorCode();
 		$syColorCode->createTable();

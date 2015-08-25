@@ -208,6 +208,7 @@
 						<td style="min-width:10em;">Dilution</td>
 						<!-- <td>Temps d'incubation</td>  -->
 						<td style="min-width:10em;">Référence protoole</td>
+						<td style="min-width:10em;">Commentaire</td>
 					</tr>
 				</thead>
 					<tbody>
@@ -255,9 +256,18 @@
 									</select>
 								</td>
 								<td><select class="form-control" name="status[]" >
+								<?php 
+								foreach ($status as $statu){
+								?>
+									<option value="<?= $statu["id"] ?>" <?php if ($tissus["status"] == $statu["id"]){echo "selected=\"selected\"";}?>><?=$statu["nom"]?></option>
+								<?php	
+								}
+								?>
+								<!--
 								<option value="1" <?php if ($tissus["status"] == "1"){echo "selected=\"selected\"";}?>>Validé</option>
 								<option value="2" <?php if ($tissus["status"] == "2"){echo "selected=\"selected\"";}?>>Non validé</option>
 								<option value="3" <?php if ($tissus["status"] == "3"){echo "selected=\"selected\"";}?>>Non testé</option>
+								 -->
 								</select></td>
 								<td><input class="form-control" type="text" name="ref_bloc[]" value="<?= $tissus["ref_bloc"] ?>"/></td>
 								<td>
@@ -302,6 +312,9 @@
 									?>
 									</select>
 								</td>
+								<td>
+									<textarea name="comment[]"><?= $this->clean($tissus["comment"])  ?></textarea>
+								</td>
 							</tr>
 							<?php
 						}
@@ -338,9 +351,18 @@
 									</select>
 							</td>
 							<td><select class="form-control" name="status">
+								<?php 
+								foreach ($status as $statu){
+								?>
+									<option value="<?= $statu["id"] ?>"><?=$statu["nom"]?></option>
+								<?php	
+								}
+								?>
+							<!-- 
 							<option value="1" >Validé</option>
 							<option value="2" >Non validé</option>
 							<option value="3" selected="selected">Non testé</option>
+							-->
 							
 							</select></td>
 							<td><input class="form-control" type="text" name="ref_bloc[]" /></td>
@@ -374,6 +396,13 @@
 									?>
 								</select>
 							</td>
+							
+							<td>
+							<textarea name="comment[]">
+								
+							</textarea>
+							</td>
+							
 						</tr>
 						<?php 
 						}

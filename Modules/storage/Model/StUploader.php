@@ -118,12 +118,18 @@ public function createTable(){
 	 */
 	public function getFiles($dir){
 		
+		//echo "host = " . $this->getHost() . "<br/>";
+		//echo "port = " . $this->getPort() . "<br/>";
+		//echo "login = " . $this->getFtpLogin() . "<br/>";
+		//echo "pwd = " . $this->getFtpPwd() . "<br/>";
 		$ftp = ftp_connect($this->getHost(), $this->getPort());
 		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
 		
 		//echo "connected <br/>";
 		
 		$filesdir = ftp_nlist($ftp, "./".$dir);
+		
+		//print_r($filesdir);
 		
 		$files = array();
 		$i = 0;
@@ -135,6 +141,7 @@ public function createTable(){
 			}
 		}
 		
+		ftp_close($ftp);
 		return $files;
 		
 		foreach($liste_fichiers as $fichier)
@@ -142,7 +149,7 @@ public function createTable(){
 			echo '<a href="?filename=' .$fichier. '">' .$fichier. '</a><br/>';
 		}
 		
-		ftp_close($ftp);
+		
 	}
 	
 	public function getUsage($userlogin){
@@ -166,7 +173,6 @@ public function createTable(){
 	public function downloadFile($localURL, $file){
 		
 		
-		//echo "download file = " . $file . "<br/>";
 		$ftp = ftp_connect($this->getHost(), $this->getPort());
 		ftp_login($ftp, $this->getFtpLogin(), $this->getFtpPwd());
 		//ob_start();
@@ -174,7 +180,6 @@ public function createTable(){
 		//$data = ob_get_contents();
 		//ob_end_clean();
 		ftp_close($ftp);
-		//echo "download file = " . $file . " done <br/>";
 	}
 	
 	public function uploadFile($file, $adressServer){

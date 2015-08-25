@@ -189,7 +189,12 @@
 				</select>
 			</div>
 		</div>
-		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Display_order($lang) ?></label>
+			<div class="col-xs-8">
+			<input class="form-control" id="id" type="text"  name="display_order" value="<?=$this->clean($display_order) ?>"/>
+			</div>
+		</div>
 
 		<div class="page-header">
 			<h3>

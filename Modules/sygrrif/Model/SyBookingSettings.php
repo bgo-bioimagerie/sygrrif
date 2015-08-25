@@ -120,7 +120,7 @@ class SyBookingSettings extends Model {
 		// user
 		for ($i = 0; $i < count($entryList) ; $i++){
 			$last = false;
-			if ($i == 3){$last = true;}
+			if ($i == count($entryList)-1){$last = true;}
 			if ($entryList[$i]['tag_name'] == "User"){
 				$summary = $this->summaryEntry($i, $summary, $entryList, $user, $displayHorizontal, SyTranslator::User($lang), $last);
 			}
@@ -134,6 +134,7 @@ class SyBookingSettings extends Model {
 				$summary = $this->summaryEntry($i, $summary, $entryList, $desc, $displayHorizontal, SyTranslator::Desc($lang), $last);
 			}
 		}
+		
 		return $summary;
 	}
 	

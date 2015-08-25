@@ -27,6 +27,7 @@ class Tissus extends Model {
 				`temps_incubation` varchar(30) NOT NULL,
   				`ref_protocol` varchar(11) NOT NULL,
 				`prelevement` int(1) NOT NULL,
+				`comment` text NOT NULL,
   				PRIMARY KEY (`id`)
 				);";
 		
@@ -34,20 +35,23 @@ class Tissus extends Model {
 		return $pdo;
 	}
 	
-	public function addTissus($id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement){
+	public function addTissus($id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement, $comment=""){
 		$sql = "insert into ac_j_tissu_anticorps(id_anticorps, espece, 
 				                                    organe, status, ref_bloc,
-													dilution, temps_incubation, ref_protocol, prelevement)"
-				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		$this->runRequest($sql, array($id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement));
+													dilution, temps_incubation, 
+													ref_protocol, prelevement,
+													comment)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement, $comment));
 	}
 	
-	public function importTissus($id, $id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement){
+	public function importTissus($id, $id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement, $comment=""){
 		$sql = "insert into ac_j_tissu_anticorps(id, id_anticorps, espece,
 				                                    organe, status, ref_bloc,
-													dilution, temps_incubation, ref_protocol, prelevement)"
-				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-		$this->runRequest($sql, array($id, $id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement));
+													dilution, temps_incubation, 
+				                                    ref_protocol, prelevement, comment)"
+				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($id, $id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement, $comment));
 	}
 	
 	public function getTissus($id_anticorps){
@@ -58,7 +62,8 @@ class Tissus extends Model {
 				       ac_j_tissu_anticorps.ref_bloc AS ref_bloc,
 				       ac_j_tissu_anticorps.dilution AS dilution,
 				       ac_j_tissu_anticorps.temps_incubation AS temps_incubation,
-					   ac_j_tissu_anticorps.ref_protocol AS ref_protocol,		
+					   ac_j_tissu_anticorps.ref_protocol AS ref_protocol,
+					   ac_j_tissu_anticorps.comment AS comment,		
 					   ac_especes.nom AS espece, ac_especes.id AS espece_id,
 					   ac_organes.nom AS organe, ac_organes.id AS organe_id,
 					   ac_prelevements.nom AS prelevement, ac_prelevements.id AS prelevement_id 			

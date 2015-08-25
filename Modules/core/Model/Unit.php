@@ -18,7 +18,7 @@ class Unit extends Model {
 			
 		$sql = "CREATE TABLE IF NOT EXISTS `core_units` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(30) NOT NULL DEFAULT '',
+		`name` varchar(150) NOT NULL DEFAULT '',
 		`address` varchar(150) NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
@@ -170,8 +170,13 @@ class Unit extends Model {
 			return $tmp[0];  // get the first line of the result
 		}
 		else{
-			throw new Exception("Cannot find the unit using the given name");
+			throw new Exception("Cannot find the unit using the given name:" . $name );
 		}
+	}
+	
+	public function delete($id){
+		$sql="DELETE FROM core_units WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
 	}
 
 }

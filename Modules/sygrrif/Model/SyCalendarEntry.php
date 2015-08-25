@@ -30,7 +30,8 @@ class SyCalendarEntry extends Model {
 		`short_description` varchar(100) NOT NULL,	
 		`full_description` text NOT NULL,
 		`quantity` varchar(30) NOT NULL,
-		`repeat_id` int(11) NOT NULL DEFAULT 0,									
+		`repeat_id` int(11) NOT NULL DEFAULT 0,	
+		`supplementary` text NOT NULL,								
 		PRIMARY KEY (`id`)
 		);";
 

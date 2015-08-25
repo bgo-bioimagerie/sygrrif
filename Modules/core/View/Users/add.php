@@ -126,6 +126,9 @@
 			</div>
 		</div>
 		<br/>
+		
+		<input type="hidden" name="convention" value="-1">
+		<!-- 
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang) ?></label>
 			<div class="col-xs-10">
@@ -139,6 +142,7 @@
 				</select>
 			</div>
 		</div>
+		 -->
 		<br/>
 		<div class="form-group ">
 		

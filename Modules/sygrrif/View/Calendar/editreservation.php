@@ -40,7 +40,6 @@ if (!$canEditReservation){
 				<input class="form-control" id="id" type="text"  name="reservation_id" value="<?=$this->clean($reservationInfo['id']) ?>" readonly/>
 				</div>
 			</div>
-
 			<?php 		
 		}
 		?>
@@ -175,6 +174,36 @@ if (!$canEditReservation){
 			</div>
 		</div>
 		<?php }?>
+		
+		
+		
+		
+		<!-- Supplementary cal info -->
+		<?php 
+		foreach ($calSups as $calSup){
+			$star = "";
+			$required = "";
+			if ($calSup["mandatory"] == 1){
+				$star = "*";
+				$required = "required"; 
+			}
+		?>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?=$calSup["name"] .$star ?></label>
+			<div class="col-xs-8">
+			        <input type='hidden' name="calsupName[]" value="<?= $calSup["name"] ?>"/>
+					<input type='text' class="form-control" name="calsupValue[]"
+					       value="<?php if (isset($calSupsData[$calSup["name"]])){echo $calSupsData[$calSup["name"]];} ?>" <?=$readOnlyGlobal?> <?=$required?>/>
+		    </div>	
+		</div>
+		<?php	
+		}
+		?>
+		
+		
+		
+		
+		<!-- RESERVATION TIME -->
 		<div class="form-group">
 				<?php 
 				if (isset($reservationInfo)){

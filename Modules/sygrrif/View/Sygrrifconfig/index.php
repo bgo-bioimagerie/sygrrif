@@ -1,6 +1,86 @@
 <?php $this->title = "SyGRRiF Database" ?>
 
 <?php echo $navBar ?>
+<?php
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
+$lang = "En";
+if (isset($_SESSION["user_settings"]["language"])){
+	$lang = $_SESSION["user_settings"]["language"];
+}
+?>
+
+<head>
+
+<script>
+        function addRow(tableID) {
+
+        	var idx = 1;
+        	if(tableID == "dataTable"){
+        		idx = 1;
+            } 
+            var table = document.getElementById(tableID);
+ 
+            var rowCount = table.rows.length;
+            //document.write(rowCount);
+            var row = table.insertRow(rowCount);
+            //document.write(row);
+            var colCount = table.rows[idx].cells.length;
+            //document.write(colCount);
+ 
+            for(var i=0; i<colCount; i++) {
+ 
+                var newcell = row.insertCell(i);
+ 
+                newcell.innerHTML = table.rows[idx].cells[i].innerHTML;
+                //alert(newcell.childNodes);
+                switch(newcell.childNodes[0].type) {
+                    case "text":
+                            newcell.childNodes[0].value = "";
+                            break;
+                    case "checkbox":
+                            newcell.childNodes[0].checked = false;
+                            break;
+                    case "select-one":
+                            newcell.childNodes[0].selectedIndex = 0;
+                            break;
+                }
+            }
+        }
+ 
+        function deleteRow(tableID) {
+            try {
+
+            var idx = 2;
+            if(tableID == "dataTable"){
+            	idx = 2;
+            }     
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
+ 
+            for(var i=0; i<rowCount; i++) {
+                var row = table.rows[i];
+                var chkbox = row.cells[0].childNodes[0];
+                if(null != chkbox && true == chkbox.checked) {
+                    if(rowCount <= idx) {
+                        alert("Cannot delete all the rows.");
+                        break;
+                    }
+                    table.deleteRow(i);
+                    rowCount--;
+                    i--;
+                }
+ 
+ 
+            }
+            }catch(e) {
+                alert(e);
+            }
+        }
+ 
+    </script>
+
+</head>
+
 
 <div class="container">
     	<div class="col-md-10 col-md-offset-1">
@@ -68,24 +148,36 @@
 		    </div>
 		  
 		    <div class="col-xs-12">
-		    	<?php
-		    	$sygrrifchecked = "";  
-		    	if ($isSygrrifMenu){
-		    		$sygrrifchecked = "checked=\"checked\"";
-		    	}
-		    	?>
-        	  <label><input type="checkbox" name="sygrrifdatamenu" value="sygrrif" <?= $sygrrifchecked ?>> sygrrif menu </label>
-    	    </div>
-    	    <div class="col-xs-12">
-		    	<?php
-		    	$bookingchecked = "";  
-		    	if ($isBookingMenu){
-		    		$bookingchecked = "checked=\"checked\"";
-		    	}
-		    	?>
-        	  <label><input type="checkbox" name="bookingmenu" value="booking" <?= $bookingchecked ?>> booking menu </label>
-    	    </div>
-		  
+		    
+		    <?php foreach ($menus as $menu){
+		    	$menuName = $menu["name"];
+		    	$menuStatus = $menu["status"];
+		    ?>
+		    <div class="form-group col-xs-12">
+				<label for="inputEmail" class="control-label col-xs-4"><?=$menuName?></label>
+				<div class="col-xs-6">
+					<select class="form-control" name="menus[]">
+						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::disable($lang) ?> </OPTION>
+						<OPTION value="1" <?php if($menuStatus==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
+						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+					</select>
+				</div>
+			</div>
+			<?php }?>
+			
+			<div class="form-group col-xs-12">
+				<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Authorisations_menu_location($lang)?></label>
+				<div class="col-xs-6">
+					<select class="form-control" name="authorisations_location">
+						<OPTION value="1" <?php if($authorisations_location==1){echo "selected=\"selected\"";} ?> > SyGRRif </OPTION>
+						<OPTION value="2" <?php if($authorisations_location==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::Users_Institutions($lang) ?> </OPTION>
+					</select>
+				</div>
+			</div>
+					
+			
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
 			  <input type="submit" class="btn btn-primary" value="save" />
 		    </div>
@@ -347,12 +439,101 @@
 			 	/>
 		</div>
 		
+		
+		<!-- Calendar suplementary info -->
+      <div>
+		  <div class="page-header">
+			<h2>
+				Supplementary informations <br> <small></small>
+			</h2>
+		  </div>
+		
+		  <form role="form" class="form-horizontal" action="sygrrifconfig"
+		  method="post">
+		  <div class="col-xs-12">
+		    <div class="col-xs-10">
+			  <input class="form-control" type="hidden" name="setcalsupsquery" value="yes"
+			 	/>
+		    </div>
+		  
+		    <div class="col-xs-10">
+		      <table id="dataTable" class="table table-striped">
+				<thead>
+					<tr>
+						<td></td>
+						<td>Name</td>
+						<td>Mandatory</td>
+					</tr>
+				</thead>
+					<tbody>
+						<?php 
+						foreach ($calSups as $calsup){
+							?>
+							<tr>
+								<td><input type="checkbox" name="chk" /></td>
+								<td>
+									<input class="form-control" type="text" name="name[]" value="<?=$calsup["name"]?>" />
+								</td>
+								<td>
+									<select class="form-control" name="ismandatory[]">
+									    <?php 
+									        $calsup_mandatory = $this->clean($calsup["mandatory"]);
+									    ?>
+									    <OPTION value="1" <?php if ($calsup_mandatory == 1){echo "selected=\"selected\"";}?> > yes </OPTION>
+									    <OPTION value="0" <?php if ($calsup_mandatory == 0){echo "selected=\"selected\"";}?> > no </OPTION>
+									</select>
+								</td>
+							</tr>
+							<?php
+						}
+						?>
+						<?php 
+						if (count($calSups) < 1){
+						?>
+						<tr>
+						<td><input type="checkbox" name="chk" /></td>
+							<td>
+								<input class="form-control" type="text" name="name[]" />
+							</td>
+							<td>
+								<select class="form-control" name="ismandatory[]">
+								    <OPTION value="1"> yes </OPTION>
+								    <OPTION value="0"> no </OPTION>
+								</select>
+							</td>
+						</tr>
+						<?php 
+						}
+						?>
+					</tbody>
+				</table>		
+				
+				<div class="col-md-6">
+					<input type="button" class="btn btn-default" value="Add"
+						onclick="addRow('dataTable')" /> 
+					<input type="button" class="btn btn-default" value="Delete"
+						onclick="deleteRow('dataTable')" /> <br>
+				</div>
+			</div>
+			</div>
+		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="save" />
+		    </div>
+		  </form>
+      </div>
+      
+		 <form role="form" class="form-horizontal" action="sygrrifconfig" method="post">
         <div>
 		  <div class="page-header">
 			<h2>
 				Edit Booking options <br> <small></small>
 			</h2>
 		  </div>
+		  
+		  <div class="col-xs-10">
+			  <input class="form-control" type="hidden" name="editbookingdescriptionquery" value="yes"
+			 	/>
+		    </div>
 		  
 		  <?php 
 		  	$tag_desc = $this->clean($editBookingDescriptionSettings);

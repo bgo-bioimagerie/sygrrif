@@ -24,7 +24,8 @@ class SyResource extends Model {
 		`accessibility_id` int(11) NOT NULL, 
 		`type_id` int(11) NOT NULL,
 		`category_id` int(11) NOT NULL,		
-		`area_id` int(11) NOT NULL,				
+		`area_id` int(11) NOT NULL,	
+		`display_order` int(11) NOT NULL,					
 		PRIMARY KEY (`id`)
 		);";
 
@@ -32,20 +33,20 @@ class SyResource extends Model {
 		return $pdo;
 	}
 	
-	public function addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0){
-		$sql = "INSERT INTO sy_resources (name, description, accessibility_id, type_id, area_id, category_id) VALUES(?, ?, ?, ?, ?,?)";
-		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id));
+	public function addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0, $display_order = 0){
+		$sql = "INSERT INTO sy_resources (name, description, accessibility_id, type_id, area_id, category_id, display_order) VALUES(?, ?, ?, ?, ?,?,?)";
+		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
-	public function importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0){
+	public function importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0, $display_order = 0){
 		
 		if( $this->isResource($id)){
-			$this->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+			$this->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order);
 		}
 		else{
-			$sql = "INSERT INTO sy_resources (id, name, description, accessibility_id, type_id, area_id, category_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
-			$this->runRequest($sql, array($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id));
+			$sql = "INSERT INTO sy_resources (id, name, description, accessibility_id, type_id, area_id, category_id, display_order) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			$this->runRequest($sql, array($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order));
 			return $this->getDatabase()->lastInsertId();
 		}
 	}
@@ -71,10 +72,10 @@ class SyResource extends Model {
 		}
 	}
 
-	public function editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id){
+	public function editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order){
 		$sql = "update sy_resources set name=?, description=?, accessibility_id=?, type_id=?, area_id=?,
-				category_id=?  where id=?";
-		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $id));
+				category_id=?, display_order=?  where id=?";
+		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order, $id));
 	}
 	
 	/**
@@ -108,8 +109,12 @@ class SyResource extends Model {
 		else if ($sortentry == "area_name"){
 			$sqlSort = "sy_areas.name";
 		}
+		else if ($sortentry == "display_order"){
+			$sqlSort = "sy_resources.display_order";
+		}
 		
 		$sql = "SELECT sy_resources.id AS id, sy_resources.name AS name, sy_resources.description AS description, 
+				       sy_resources.display_order AS display_order,
 				       sy_resource_type.name AS type_name, sy_resourcescategory.name AS category_name, sy_areas.name AS area_name, 
 				       sy_resource_type.controller AS controller, sy_resource_type.edit_action AS edit_action	
 					from sy_resources
@@ -131,13 +136,13 @@ class SyResource extends Model {
 	}
 	
 	public function resourceIDNameForArea($areaId){
-		$sql = "select id, name from sy_resources where area_id=?";
+		$sql = "select id, name from sy_resources where area_id=? ORDER BY display_order";
 		$data = $this->runRequest($sql, array($areaId));
 		return $data->fetchAll();
 	}
 	
 	public function resourcesForArea($areaId){
-		$sql = "select * from sy_resources where area_id=?";
+		$sql = "select * from sy_resources where area_id=? ORDER BY display_order";
 		$data = $this->runRequest($sql, array($areaId));
 		return $data->fetchAll();
 	}

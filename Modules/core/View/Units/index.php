@@ -40,7 +40,7 @@
 				    <td><?= $this->clean ( $unit ['name'] ); ?></td>
 				    <td><?= $this->clean ( $unit ['address'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='units/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='units/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php }endforeach; ?>

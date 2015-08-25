@@ -9,6 +9,7 @@ require_once 'Modules/anticorps/Model/Tissus.php';
 require_once 'Modules/anticorps/Model/AcProtocol.php';
 require_once 'Modules/anticorps/Model/Organe.php';
 require_once 'Modules/anticorps/Model/Prelevement.php';
+require_once 'Modules/anticorps/Model/Status.php';
 
 require_once 'Modules/anticorps/Model/Dem.php';
 require_once 'Modules/anticorps/Model/Aciinc.php';
@@ -58,6 +59,9 @@ class AcInstall extends Model {
 		
 		$organePrelevement = new Prelevement();
 		$organePrelevement->createTable();
+		
+		$modelStatus = new Status();
+		$modelStatus->createTable();
 		
 		$modelacii = new Acii();
 		$modelacii->createTable();

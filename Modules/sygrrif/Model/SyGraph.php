@@ -136,7 +136,9 @@ class SyGraph extends Model {
 		$test .= '<title>Réservations</title>';
 		$test .= '<desc>287</desc>';
 		$test .= '<rect x="0" y="0" width="1000" height="600" fill="white" stroke="black" stroke-width="0"/>';
-		$couleur = array("#FC441D","#FE8D11","#FCC212","#FFFD32","#D0E92B","#53D745","#6AC720","#156947","#291D81","#804DA4","#E4AADF","#A7194B","#FE0000");
+		$couleur = array("#FC441D","#FE8D11","#FCC212","#FFFD32","#D0E92B","#53D745","#6AC720","#156947","#291D81","#804DA4","#E4AADF","#A7194B","#FE0000",
+				         "#FC441D","#FE8D11","#FCC212","#FFFD32","#D0E92B","#53D745","#6AC720","#156947","#291D81","#804DA4","#E4AADF","#A7194B","#FE0000"
+		);
 	
 		foreach($machinesFormesListe as $mFL) {
 			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
@@ -209,8 +211,9 @@ class SyGraph extends Model {
 		$test .= '<title>Réservations</title>';
 		$test .= '<desc>287</desc>';
 		$test .= '<rect x="0" y="0" width="1000" height="600" fill="white" stroke="black" stroke-width="0"/>';
-		$couleur = array("#FC441D","#FE8D11","#FCC212","#FFFD32","#D0E92B","#53D745","#6AC720","#156947","#291D81","#804DA4","#E4AADF","#A7194B","#FE0000");
-	
+		$couleur = array("#FC441D","#FE8D11","#FCC212","#FFFD32","#D0E92B","#53D745","#6AC720","#156947","#291D81","#804DA4","#E4AADF","#A7194B","#FE0000",
+				         "#FC441D","#FE8D11","#FCC212","#FFFD32","#D0E92B","#53D745","#6AC720","#156947","#291D81","#804DA4","#E4AADF","#A7194B","#FE0000"
+		);
 		foreach($machinesFormesListe as $mFL) {
 			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);

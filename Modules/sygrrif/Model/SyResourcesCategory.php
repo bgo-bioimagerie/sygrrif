@@ -79,6 +79,13 @@ class SyResourcesCategory extends Model {
 		return $this->getDatabase()->lastInsertId();	
 	}
 	
+	public function importResourcesCategory($id, $name){
+		$sql = "insert into sy_resourcescategory(id, name)"
+				. " values(?,?)";
+		$user = $this->runRequest($sql, array($id, $name));	
+		return $this->getDatabase()->lastInsertId();
+	}
+	
 	public function isResourcesCategory($name){
 		$sql = "select * from sy_resourcescategory where name=?";
 		$unit = $this->runRequest($sql, array($name));

@@ -29,6 +29,25 @@ class ControllerStorage extends ControllerSecureNav {
 		return $menu;
 	}
 	
+	public function toto(){
+		
+		
+		$directory = "C:/Users/Public/Pictures/Sample Pictures/";
+		//$directory = "Z:/";
+		
+		$uploader = new StUploader;
+		$uploader->setFtpSettings("localhost", "21", "mric", "*mric*");
+		$files = $uploader->getFiles("admin");
+		
+		
+		print_r($files);
+		return;
+		
+		$navBar = $this->navBar();
+		
+		$this->generateView ( array ('navBar' => $navBar, "files" => $files));
+	}
+	
 	/**
 	 * (non-PHPdoc)
 	 * Show the config index page
@@ -73,27 +92,6 @@ class ControllerStorage extends ControllerSecureNav {
 		), "index" );
 	}
 	
-	public function deletefile(){
-		
-		$fileName = "";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$fileName = $this->request->getParameter("actionid");
-		}
-		
-		$fileName = str_replace("__--__", ".", $fileName);
-		$fileName = str_replace("__---__", " ", $fileName);
-		$fileName = str_replace("__----__", "/", $fileName);
-		
-		$idUser = $_SESSION["id_user"];
-		$modelUser = new User();
-		$userlogin = $modelUser->userLogin($idUser);
-		
-		$modelFiles = new StUploader();
-		$modelFiles->deleteFile($fileName);
-		
-		$this->redirect("storage/index");
-	}
-	
 	public function download(){
 		
 		// get the user language
@@ -102,43 +100,29 @@ class ControllerStorage extends ControllerSecureNav {
 			$lang = $_SESSION ["user_settings"] ["language"];
 		}
 		
+		$modelFiles = new StUploader();
 		// get form posts
 		$localurl = $this->request->getParameter("localurl");
-		$filename = $this->request->getParameter("filename");
-		
-		// get the user login
-		$idUser = $_SESSION["id_user"];
-		$modelUser = new User();
-		$userlogin = $modelUser->userLogin($idUser);
-		
-		// parse the files names
-		$filename = str_replace("__--__", ".", $filename);
-		$filename = str_replace("__---__", " ", $filename);
-		$filename = str_replace("__----__", "/", $filename);
-		$localurl = str_replace("\\", "/" , $localurl) . "/" . basename($filename);
-		$fileName = "./" . $userlogin ."/".basename($filename);
-		
-		// refuse to download if the quotas is over
-		$modelQuotas = new StUserQuota();
-		$userQuotas = $modelQuotas->getQuota($idUser); // in GB
-		$modelUploader = new StUploader();
-		$usage = $modelUploader->getUsage($userlogin);
-		$usage = $usage/1000000000;  
-		
-		if ($usage >= $userQuotas){
-			$this->index( StTranslator::QuotasHoverMessage($lang) . $localurl);
-			return;
-		}
-		
-		// download
-		$modelFiles = new StUploader();
-		$modelFiles->downloadFile($localurl, $fileName);
-		
+		$numFiles = $this->request->getParameter("numFiles");
+		for ($i = 1 ; $i <= $numFiles ; $i++){
+			//echo "i = " . $i . "<br/>";
+			$checked = $this->request->getParameterNoException("data_" . $i);
+			//echo "checked = " . $checked . "<br/>";
+			if ($checked != ""){
+				$filename = $this->request->getParameter("filename_" . $i);
+				$fname = explode("/", $filename);
+				$localfname = $localurl . $fname[count($fname)-1];
+				echo "download : " . $filename . " to : " . $localfname . "<br/>";
+				
+				$modelFiles->downloadFile($localfname, $filename);
+			}
+		}		
 		
 		// view
 		$this->index( StTranslator::DownloadMessage($lang) . $localurl);
 		return;
 	}
+	
 	
 	public function upload(){
 		

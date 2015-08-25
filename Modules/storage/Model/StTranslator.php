@@ -41,7 +41,7 @@ class StTranslator {
 		if ($lang == "Fr"){
 			return "Télécharger";
 		}
-		return "Upload";
+		return "Download";
 	}
 	
 	public static function Delete($lang){
@@ -74,9 +74,9 @@ class StTranslator {
 	
 	public static function LocalDirDownload($lang){
 		if ($lang == "Fr"){
-			return "Destination téléchargements: ";
+			return "Destination téléchargements (ex: C:\login\Desktop\) : ";
 		}
-		return "Local directory for download: ";
+		return "Local directory for download (ex: C:\login\Desktop\): ";
 	}
 	
 	public static function DownloadMessage($lang){

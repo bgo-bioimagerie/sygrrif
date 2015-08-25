@@ -24,6 +24,7 @@
 					<th><a href="sygrrif/resources/area_name"><?= SyTranslator::Area($lang)?></a></th>
 					<th><a href="sygrrif/resources/type_name"><?= SyTranslator::Type($lang)?></a></th>
 					<th><a href="sygrrif/resources/category_name"><?= SyTranslator::Category($lang)?></a></th>
+					<th><a href="sygrrif/resources/display_order"><?= SyTranslator::Display_order($lang)?></a></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -37,6 +38,7 @@
 				    <td><?= $this->clean ( $resource ['area_name'] ); ?></td>
 				    <td><?= $this->clean ( $resource ['type_name'] ); ?></td>
 				    <td><?= $this->clean ( $resource ['category_name'] ); ?></td>
+				    <td><?= $this->clean ( $resource ['display_order'] ); ?></td>
 				    <td>	
 				      <button type='button' onclick="location.href='<?= $resource ["controller"]."/".$resource ["edit_action"]."/".$resourceId ?>'" class="btn btn-xs btn-primary"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  

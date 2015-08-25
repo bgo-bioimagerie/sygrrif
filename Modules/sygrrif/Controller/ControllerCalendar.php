@@ -18,6 +18,7 @@ require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyCalendarSeries.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
+require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 require_once 'Modules/mailer/Model/MailerSend.php';
 
 class ControllerCalendar extends ControllerBooking {
@@ -47,6 +48,7 @@ class ControllerCalendar extends ControllerBooking {
 		$size_bloc_resa = 1800;
 		$resa_time_setting = 0;
 		$default_color_id = 0;
+		$display_order = 0;
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -63,6 +65,7 @@ class ControllerCalendar extends ControllerBooking {
 			$type_id = $resourceInfo["type_id"]; 
 			$category_id = $resourceInfo["category_id"]; 
 			$area_id = $resourceInfo["area_id"]; 
+			$display_order = $resourceInfo["display_order"];
 			
 			$modelCResource = new SyResourceCalendar();
 			$resourceCInfo = $modelCResource->resource($id);
@@ -126,7 +129,8 @@ class ControllerCalendar extends ControllerBooking {
 				'areasList' => $areasList,
 				'area_id' => $area_id,
 				'colors' => $colors,
-				'default_color_id' => $default_color_id
+				'default_color_id' => $default_color_id,
+				'display_order' => $display_order
 		) );
 		
 	}
@@ -140,6 +144,7 @@ class ControllerCalendar extends ControllerBooking {
 		$accessibility_id = $this->request->getParameter("accessibility_id");
 		$category_id = $this->request->getParameter("category_id");
 		$area_id = $this->request->getParameter("area_id");
+		$display_order = $this->request->getParameter("display_order");
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -148,10 +153,10 @@ class ControllerCalendar extends ControllerBooking {
 		$modelResource = new SyResource();
 		$id_resource = $id;
 		if ($id == ""){
-			$id_resource = $modelResource->addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+			$id_resource = $modelResource->addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order);
 		}
 		else{
-			$modelResource->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+			$modelResource->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order);
 		}
 		
 		// specific to calendar query
@@ -251,6 +256,7 @@ class ControllerCalendar extends ControllerBooking {
 		$day_end = 19;
 		$size_bloc_resa = 1800;
 		$resa_time_setting = 0;
+		$display_order = 0;
 	
 		// type id
 		$mrs = new SyResourceType();
@@ -267,6 +273,7 @@ class ControllerCalendar extends ControllerBooking {
 			$type_id = $resourceInfo["type_id"];
 			$category_id = $resourceInfo["category_id"];
 			$area_id = $resourceInfo["area_id"];
+			$display_order = $resourceInfo["display_order"];
 				
 			$modelCResource = new SyResourceCalendar();
 			$resourceCInfo = $modelCResource->resource($id);
@@ -278,6 +285,10 @@ class ControllerCalendar extends ControllerBooking {
 			$resa_time_setting = $resourceCInfo["resa_time_setting"];
 		}
 	
+		// colors
+		$colorModel = new SyColorCode();
+		$colors = $colorModel->getColorCodes("display_order");
+		
 		// parse de days
 		$days_array = explode(",", $available_days);
 	
@@ -323,7 +334,9 @@ class ControllerCalendar extends ControllerBooking {
 				'pricingTable'=> $pricingTable,
 				'cateoriesList' => $cateoriesList,
 				'areasList' => $areasList,
-				'area_id' => $area_id
+				'area_id' => $area_id,
+				'display_order' => $display_order,
+				'colors' => $colors
 		) );
 	
 	}
@@ -337,6 +350,7 @@ class ControllerCalendar extends ControllerBooking {
 		$accessibility_id = $this->request->getParameter("accessibility_id");
 		$category_id = $this->request->getParameter("category_id");
 		$area_id = $this->request->getParameter("area_id");
+		$display_order = $this->request->getParameter("display_order");
 	
 		// type id
 		$mrs = new SyResourceType();
@@ -345,10 +359,10 @@ class ControllerCalendar extends ControllerBooking {
 		$modelResource = new SyResource();
 		$id_resource = $id;
 		if ($id == ""){
-			$id_resource = $modelResource->addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+			$id_resource = $modelResource->addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order);
 		}
 		else{
-			$modelResource->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id);
+			$modelResource->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order);
 		}
 	
 		// specific to calendar query
@@ -421,6 +435,7 @@ class ControllerCalendar extends ControllerBooking {
 		$resa_time_setting = 0;
 		$supplies = array();
 		$default_color_id = 1;
+		$display_order = 0;
 		
 		if ($id != ""){
 			// get common info
@@ -432,6 +447,7 @@ class ControllerCalendar extends ControllerBooking {
 			$type_id = $resourceInfo["type_id"];
 			$category_id = $resourceInfo["category_id"];
 			$area_id = $resourceInfo["area_id"];
+			$display_order = $resourceInfo["display_order"];
 			
 			
 			$modelCResource = new SyResourceCalendar();
@@ -487,7 +503,8 @@ class ControllerCalendar extends ControllerBooking {
 				'area_id' => $area_id,
 				'supplies' => $supplies,
 				'colors' => $colors,
-				'default_color_id' => $default_color_id
+				'default_color_id' => $default_color_id,
+				'display_order' => $display_order
 		) );
 	}
 	
@@ -500,6 +517,7 @@ class ControllerCalendar extends ControllerBooking {
 		$accessibility_id = $this->request->getParameter("accessibility_id");
 		$category_id = $this->request->getParameter("category_id");
 		$area_id = $this->request->getParameter("area_id");
+		$display_order = $this->request->getParameter("display_order");
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -507,7 +525,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		$resource_base = array( "id" => $id, "name" => $name, "description" => $description,
 				"accessibility_id" => $accessibility_id, "category_id" => $category_id,
-				"area_id" => $area_id);
+				"area_id" => $area_id, "display_order" => $display_order);
 		return $resource_base;
 	}
 	
@@ -599,12 +617,12 @@ class ControllerCalendar extends ControllerBooking {
 		$modelResource = new SyResource();
 		if ($id == ""){
 			$id_resource = $modelResource->addResource($resource_base["name"], $resource_base["description"], $resource_base["accessibility_id"], 
-					                                   3, $resource_base["area_id"], $resource_base["category_id"]);
+					                                   3, $resource_base["area_id"], $resource_base["category_id"], $resource_base["display_order"]);
 		}
 		else{
 			$modelResource->editResource($resource_base["id"], $resource_base["name"], $resource_base["description"], 
 					                     $resource_base["accessibility_id"], 3, $resource_base["area_id"], 
-					                     $resource_base["category_id"]);
+					                     $resource_base["category_id"], $resource_base["display_order"]);
 		}
 	
 		// specific info
@@ -1148,6 +1166,14 @@ class ControllerCalendar extends ControllerBooking {
 			$_SESSION["id_resource"] = $contentAction[3];
 		}
 		
+		// get the cal sups
+		$modelCalSup = new SyCalSupplementary();
+		$calSups = $modelCalSup->calSups("name"); 
+		$calSupsData = array();
+		foreach ($calSups as $calSup){
+			$calSupsData[$calSup["name"]] = "";
+		}
+		
 		// get the menu info
 		$id_resource = $this->request->getSession()->getAttribut('id_resource');
 		$id_area = $this->request->getSession()->getAttribut('id_area');
@@ -1259,7 +1285,9 @@ class ControllerCalendar extends ControllerBooking {
 					'canEditReservation' => $canEditReservation,
 					'colorCodes' => $colorCodes,
 					'projectsList' => $projectsList,
-					'showSeries' => $showSeries
+					'showSeries' => $showSeries,
+					'calSups' => $calSups,
+					'calSupsData' => $calSupsData
 			) );
 		}
 		else{ // edit resa
@@ -1292,6 +1320,9 @@ class ControllerCalendar extends ControllerBooking {
 				$canEditReservation = false;
 			}
 			
+			// get sup data 
+			$calSupsData = $modelCalSup->getSupData($reservation_id);
+			
 			$this->generateView ( array (
 					'navBar' => $navBar,
 					'menuData' => $menuData,
@@ -1305,7 +1336,9 @@ class ControllerCalendar extends ControllerBooking {
 					'canEditReservation' => $canEditReservation,
 					'colorCodes' => $colorCodes,
 					'projectsList' => $projectsList,
-					'showSeries' => $showSeries
+					'showSeries' => $showSeries,
+					'calSups' => $calSups,
+					'calSupsData' => $calSupsData
 			));
 		}
 	}
@@ -1447,14 +1480,11 @@ class ControllerCalendar extends ControllerBooking {
 			}
 			
 			if ($reservation_id == ""){
-				$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+				$reservation_id = $modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 										 $last_update, $color_type_id, $short_description, $full_description, $quantity);
 				
-				if ($booked_by_id != $recipient_id){
 					$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 					                       $short_description, $full_description, $quantity, "add");
-					
-				}
 			}
 			else{
 				$modelCalEntry->updateEntry($reservation_id, $start_time, $end_time, $resource_id, $booked_by_id, 
@@ -1524,6 +1554,12 @@ class ControllerCalendar extends ControllerBooking {
 			}
 		}
 		
+		// add the suplementary info
+		if ($this->request->isParameter("calsupName")){
+			$this->addSuplementaryInfo($this->request->getParameter("calsupName"), $this->request->getParameter("calsupValue"), $reservation_id);
+		}
+		
+		
 		$_SESSION['id_resource'] = $resource_id;
 		$modelResource = new SyResource();
 		$areaID = $modelResource->getAreaID($resource_id);
@@ -1539,6 +1575,12 @@ class ControllerCalendar extends ControllerBooking {
 		$message = "Success: Your reservation has been saved";
 		$this->book($message);
 		//$this->redirect("calendar", "book");
+	}
+	
+	private function addSuplementaryInfo($calsupNames, $calsupValues, $reservation_id){
+		
+		$modelCalSup = new SyCalSupplementary();
+		$modelCalSup->setEntrySupData($calsupNames, $calsupValues, $reservation_id);
 	}
 	
 	private function sendEditReservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,

@@ -126,7 +126,12 @@
 				</select>
 			</div>
 		</div>
-		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Display_order($lang) ?></label>
+			<div class="col-xs-8">
+			<input class="form-control" id="id" type="text"  name="display_order" value="<?=$this->clean($display_order) ?>"/>
+			</div>
+		</div>
 
 		<div class="page-header">
 			<h3>
@@ -245,6 +250,25 @@
 				</select>
 			</div>
 		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Default_color($lang)?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="default_color_id">
+					<?php foreach( $colors as $color ){
+						$idColor = $this->clean($color["id"]);
+						$nameColor = $this->clean($color["name"]);
+						$selected = "";
+						if ($this->clean($default_color_id) == $idColor){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?= $idColor ?>" <?= $selected ?> > <?= $nameColor ?> </OPTION>
+					<?php 
+					}
+					?>
+				</select>
+			</div>
+		</div>	
 		
 		<div class="page-header">
 			<h3>

@@ -704,6 +704,13 @@ class CoreTranslator {
 		return "Delete user";
 	}
 	
+	public static function Delete_Unit($lang){
+		if ($lang == "Fr"){
+			return "Suprimer unité";
+		}
+		return "Delete unit";
+	}
+	
 	public static function Delete($lang){
 		if ($lang == "Fr"){
 			return "Suprimer";
@@ -719,6 +726,16 @@ class CoreTranslator {
 		}
 		return "Delete user: " . $userName . " ?" .
 		       "<br> Warning: This will remove the user of the database. Any reference to this user in another module will be corrupted";
+	}
+	
+	public static function Delete_Unit_Warning($lang, $unitName){
+		if ($lang == "Fr"){
+			return "Êtes-vous sûr de vouloir supprimer définitivement l'unité: " . $unitName . " ?" .
+					"<br> Attention: Cela supprimera uniquement l'unité de la base de données. Toute référence faite
+				    à cet unité dans un autre module sera corrompu.";
+		}
+		return "Delete unit: " . $unitName . " ?" .
+				"<br> Warning: This will remove the unit of the database. Any reference to this unit in another module will be corrupted";
 	}
 	
 	public static function The_user_has_been_deleted($lang){
