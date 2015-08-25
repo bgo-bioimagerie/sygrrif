@@ -39,7 +39,7 @@ class StTranslator {
 	
 	public static function Download($lang){
 		if ($lang == "Fr"){
-			return "Télécharger";
+			return "T�l�charger";
 		}
 		return "Download";
 	}
@@ -53,7 +53,7 @@ class StTranslator {
 	
 	public static function Repository($lang){
 		if ($lang == "Fr"){
-			return "Répertoire";
+			return "R�pertoire";
 		}
 		return "Repository";
 	}
@@ -67,16 +67,16 @@ class StTranslator {
 	
 	public static function ManageFiles($lang){
 		if ($lang == "Fr"){
-			return "Gestion des fichiers ";
+			return "Stockage ";
 		}
-		return "Manage files ";
+		return "Storage ";
 	}
 	
 	public static function LocalDirDownload($lang){
 		if ($lang == "Fr"){
-			return "Destination téléchargements (ex: C:\login\Desktop\) : ";
+			return "Destination téléchargements: ";
 		}
-		return "Local directory for download (ex: C:\login\Desktop\): ";
+		return "Local directory for download: ";
 	}
 	
 	public static function DownloadMessage($lang){
@@ -135,6 +135,13 @@ class StTranslator {
 			return "Paramètres FTP";
 		}
 		return "FTP settings";
+	}
+	
+	public static function noUserDirMessage($lang, $login){
+		if ($lang == "Fr"){
+			return "Il n'y a pas de r�pertoire " . $login . " sur le serveur de stocakage";
+		}
+		return "Cannot find any " . $login . " directory on the storage server";
 	}
 	
 }

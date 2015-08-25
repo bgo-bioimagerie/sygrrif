@@ -4,7 +4,6 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/storage/Model/StTranslator.php';
-require_once 'Modules/storage/Model/StUserQuota.php';
 require_once 'Modules/storage/Model/StUploader.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/CoreConfig.php';
@@ -15,7 +14,6 @@ class ControllerStorage extends ControllerSecureNav {
 
 	}
 
-	
 	protected function viewMenu(){
 		
 		// get the user status
@@ -27,25 +25,6 @@ class ControllerStorage extends ControllerSecureNav {
 			$menu = true;
 		}
 		return $menu;
-	}
-	
-	public function toto(){
-		
-		
-		$directory = "C:/Users/Public/Pictures/Sample Pictures/";
-		//$directory = "Z:/";
-		
-		$uploader = new StUploader;
-		$uploader->setFtpSettings("localhost", "21", "mric", "*mric*");
-		$files = $uploader->getFiles("admin");
-		
-		
-		print_r($files);
-		return;
-		
-		$navBar = $this->navBar();
-		
-		$this->generateView ( array ('navBar' => $navBar, "files" => $files));
 	}
 	
 	/**
@@ -64,34 +43,31 @@ class ControllerStorage extends ControllerSecureNav {
 		$modelUser = new User();
 		$userlogin = $modelUser->userLogin($idUser);
 		
-		
-		$modelQuotas = new StUserQuota();
 		$modelFiles = new StUploader();
 		
-		if (!$modelQuotas->isQuota($idUser)){
-			
-			$moduleCoreConfig = new CoreConfig();
-			$defaultQuota = $moduleCoreConfig->getParam("storage_quota");
-			
-			$modelQuotas->setQuota($idUser, $defaultQuota);
-			$modelFiles->initializeDirectory($userlogin);
-			
-		}
-		
 		// get user files 
-		$files = $modelFiles->getFiles($userlogin);
+		$storageDir = Configuration::get("storageDir");
+		$files = $modelFiles->getFiles($storageDir . $userlogin);
 		
-		// get quotas informations
-		$userQuotas = $modelQuotas->getQuota($idUser);
-		$userUsage = $modelFiles->getUsage($userlogin);
-		$userUsage = $modelFiles->formatFileSize($userUsage);
-		
+		$userUsage = 0;
+		if (count($files) == 0){
+			$lang = "En";
+			if (isset ( $_SESSION ["user_settings"] ["language"] )) {
+				$lang = $_SESSION ["user_settings"] ["language"];
+			}
+			$message = StTranslator::noUserDirMessage($lang, $userlogin);
+		}
+		else{
+			// get quotas informations
+			$userUsage = $modelFiles->getUsage($storageDir . $userlogin);
+			$userUsage = $modelFiles->formatFileSize($userUsage);
+		}
 		// default
 		$this->generateView ( array ('navBar' => $navBar, "files" => $files, "userlogin" => $userlogin, "message" => $message,
-				"userQuotas" => $userQuotas["quota"], "userUsage" => $userUsage, "menu" => $menu
+				"userUsage" => $userUsage, "menu" => $menu
 		), "index" );
 	}
-	
+		
 	public function download(){
 		
 		// get the user language
@@ -100,102 +76,20 @@ class ControllerStorage extends ControllerSecureNav {
 			$lang = $_SESSION ["user_settings"] ["language"];
 		}
 		
-		$modelFiles = new StUploader();
 		// get form posts
-		$localurl = $this->request->getParameter("localurl");
-		$numFiles = $this->request->getParameter("numFiles");
-		for ($i = 1 ; $i <= $numFiles ; $i++){
-			//echo "i = " . $i . "<br/>";
-			$checked = $this->request->getParameterNoException("data_" . $i);
-			//echo "checked = " . $checked . "<br/>";
-			if ($checked != ""){
-				$filename = $this->request->getParameter("filename_" . $i);
-				$fname = explode("/", $filename);
-				$localfname = $localurl . $fname[count($fname)-1];
-				echo "download : " . $filename . " to : " . $localfname . "<br/>";
-				
-				$modelFiles->downloadFile($localfname, $filename);
-			}
-		}		
-		
-		// view
-		$this->index( StTranslator::DownloadMessage($lang) . $localurl);
-		return;
-	}
-	
-	
-	public function upload(){
-		
-		// nav bar
-		$navBar = $this->navBar();
-		$this->generateView ( array ('navBar' => $navBar) );
-	}
-	
-	public function uploadfile(){
-		
 		$filename = $this->request->getParameter("filename");
-		
-		//echo "filename = " . $filename . "<br/>";
-		
-		$filename = str_replace("\\", "/", $filename);
-		//echo "filename = " . $filename . "<br/>";
 		
 		// get the user login
 		$idUser = $_SESSION["id_user"];
 		$modelUser = new User();
 		$userlogin = $modelUser->userLogin($idUser);
 		
-		// upload the file
+		$storageDir = Configuration::get("storageDir");
+		$fileUrl = $storageDir . $userlogin . "/" . basename($filename);
+		
+		// download
 		$modelFiles = new StUploader();
-		$addressServer = "./" . $userlogin ."/".basename($filename);
-		$modelFiles->uploadFile($filename, $addressServer);	
-
-		$this->redirect("storage/index");
-	}
-	
-	public function usersquotas(){
-		
-		if ($_SESSION["user_status"] <= 2){
-			return "permission denied";
-		}
-		
-		// get the user quotas
-		$modelquotas = new StUserQuota();
-		$usersquotas = $modelquotas->getUsersQuotas();
-		
-		// nav bar
-		$navBar = $this->navBar();
-		$this->generateView ( array ('navBar' => $navBar, "usersquotas" => $usersquotas) );
-	}
-	
-	public function editquota(){
-		
-		$id = "";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$id = $this->request->getParameter("actionid");
-		}
-		
-		// get the user quotas
-		$modelquotas = new StUserQuota();
-		$userquota = $modelquotas->getUserQuota($id);
-		
-		print_r($userquota);
-		
-		// nav bar
-		$navBar = $this->navBar();
-		$this->generateView ( array ('navBar' => $navBar, "userquota" => $userquota[0]) );
-	}
-	
-	public function editquotaquery(){
-		
-		$id = $this->request->getParameter("id");
-		$quota = $this->request->getParameter("quota");
-		
-		// get the user quotas
-		$modelquotas = new StUserQuota();
-		$modelquotas->setQuota($id, $quota);
-		
-		$this->redirect("storage/usersquotas");
+		$modelFiles->outputFile($fileUrl, $filename);
 		
 	}
 }
