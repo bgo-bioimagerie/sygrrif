@@ -17,12 +17,13 @@ abstract class ControllerSecure extends Controller
         if ($this->request->getSession()->isAttribut("id_user")) {
         	
         	$login = $this->request->getSession()->getAttribut("login");
-        	$pwd = $this->request->getSession()->getAttribut("pwd");
+        	$company = $this->request->getSession()->getAttribut("company");
         	 
         	$modelUser = new User();
-        	$connect = $modelUser->connect2($login, $pwd);
+        	
+        	//$connect = $modelUser->connect2($login, $pwd);
         	//echo "connect = " . $connect . "</br>";
-        	if ($connect == "allowed"){
+        	if ($modelUser->isUser($login) && Configuration::get("name") == $company){
             	parent::runAction($action);
         	}
         	else{

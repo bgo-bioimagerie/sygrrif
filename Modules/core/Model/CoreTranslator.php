@@ -763,4 +763,100 @@ class CoreTranslator {
 		}
 		return $status;
 	}
+	
+	public static function LdapConfig($lang){
+		if ($lang == "Fr"){
+			return "Configuration de LDAP";
+		}
+		return "LDAP confguration";
+	}
+	
+	public static function UseLdap($lang){
+		if ($lang == "Fr"){
+			return "Utiliser LDAP";
+		}
+		return "Use LDAP";
+	}
+	
+	
+	public static function userDefaultStatus($lang){
+		if ($lang == "Fr"){
+			return "Statut par défaut d'un nouvel utilisateur";
+		}
+		return "user default status";
+	}
+	
+
+	public static function ldapName($lang){
+		if ($lang == "Fr"){
+			return "Attribut LDAP nom";
+		}
+		return "LDAP attribut name";
+	}
+	
+	public static function ldapFirstname($lang){
+		if ($lang == "Fr"){
+			return "Attribut LDAP prénom";
+		}
+		return "LDAP attribut firstname";
+	}
+	
+	public static function ldapMail($lang){
+		if ($lang == "Fr"){
+			return "Attribut LDAP email";
+		}
+		return "LDAP attribut email";
+	}
+	
+	public static function ldapSearch($lang){
+		if ($lang == "Fr"){
+			return "Attribut LDAP attribut de recherche";
+		}
+		return "LDAP attribut for user search";
+	}
+	
+	
+	public static function LdapAccess($lang){
+		if ($lang == "Fr"){
+			return "Accès au LDAP";
+		}
+		return "LDAP access";
+	}
+	
+	public static function ldapAdress($lang){
+		if ($lang == "Fr"){
+			return "Adresse du LDAP";
+		}
+		return "LDAP adress";
+	}
+	
+	
+	public static function ldapPort($lang){
+		if ($lang == "Fr"){
+			return "Numéro de port";
+		}
+		return "Port number";
+	}
+	
+	public static function ldapId($lang){
+		if ($lang == "Fr"){
+			return "identifiant connexion (si anonyme pas autorisé)";
+		}
+		return "Connection ID (if anonymous impossible)";
+	}
+
+	public static function ldapPwd($lang){
+		if ($lang == "Fr"){
+			return "Mot de passe connexion (si anonyme pas autorisé)";
+		}
+		return "Connection password (if anonymous impossible)";
+	}
+	
+	public static function ldapBaseDN($lang){
+		if ($lang == "Fr"){
+			return "Base DN";
+		}
+		return "Base DN";
+	}
+	
 }

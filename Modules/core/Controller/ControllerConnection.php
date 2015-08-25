@@ -4,6 +4,7 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/UserSettings.php';
 require_once 'Modules/core/Model/ModulesManager.php';
+require_once 'Modules/core/Model/Ldap.php';
 
 /**
  * Controler managing the user connection 
@@ -42,14 +43,14 @@ class ControllerConnection extends Controller
             	return;
             }
          
-            $connect = $this->user->connect($login, $pwd);
+            $connect = $this->connect($login, $pwd);
             if ($connect == "allowed") {
             	
             	// open the session
-                $user = $this->user->getUser($login, $pwd);
+                $user = $this->user->getUserByLogin($login);
                 $this->request->getSession()->setAttribut("id_user", $user['idUser']);
                 $this->request->getSession()->setAttribut("login", $user['login']);
-                $this->request->getSession()->setAttribut("pwd", $user['pwd']);
+                $this->request->getSession()->setAttribut("company", Configuration::get("name"));
                 $this->request->getSession()->setAttribut("user_status", $user['id_status']);
                 
                 // add the user settings to the session
@@ -77,9 +78,13 @@ class ControllerConnection extends Controller
                 
                 $this->redirect($redirectController);
             }
-            else
+            else{
+            	echo "error = " . $connect . "<br/>"; 
+            	/*
                 $this->generateView(array('msgError' => $connect, "admin_email" => $admin_email),
                         "index");
+                        */
+            }
         }
         else
             throw new Exception("Action not allowed : login or passeword undefined");
@@ -90,5 +95,33 @@ class ControllerConnection extends Controller
         $this->request->getSession()->destroy();
         $this->redirect("home");
     }
-
+    
+    private function connect($login, $pwd){
+    	
+    	// test if local account
+    	if ($this->user->isLocalUser($login)){
+    		return $this->user->connect($login, $pwd);
+    	}
+    	
+    	// search for LDAP account
+    	else{
+	    	$modelCoreConfig = new CoreConfig();
+	    	if ($modelCoreConfig->getParam("useLdap") == true){
+	    		
+	    		$modelLdap = new Ldap();
+	    		$ldapResult = $modelLdap->getUser($login, $pwd);
+	    		if ($modelLdap == "Error"){
+	    			return "Cannot connect to ldap using the given login and password";
+	    		}
+	    		else{
+	    			// update the user infos
+	    			$status = $modelCoreConfig->getParam("ldapDefaultStatus");
+	    			$this->user->setExtBasicInfo($login, $ldapResult["name"], $ldapResult["firstname"], $ldapResult["mail"], $status);
+	    			return $this->user->isActive($login);
+	    		}
+	    	}
+    	}
+    	
+    	return "Login or password not correct";
+    }
 }

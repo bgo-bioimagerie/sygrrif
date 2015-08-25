@@ -94,6 +94,20 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
+      
+      <!-- LDAP -->
+      <div>
+		  <div class="page-header">
+			<h2>
+				<?= CoreTranslator::LdapConfig($lang) ?> <br> <small></small>
+			</h2>
+		  </div>
+		  
+		  <div class="col-xs-2 col-xs-offset-10">
+		  <button type="button" onclick="location.href='ldapconfig'" class="btn btn-primary"><?= CoreTranslator::Config($lang) ?></button>
+		  </div>
+	   </div>
+      
       <!-- desable user-->
       <div>
 		  <div class="page-header">

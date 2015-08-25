@@ -31,7 +31,8 @@ class User extends Model {
 	    `date_created` DATE NOT NULL,
 		`date_last_login` DATE NOT NULL,
 		`date_end_contract` DATE NOT NULL,	
-		`is_active` int(1) NOT NULL DEFAULT 1,				
+		`is_active` int(1) NOT NULL DEFAULT 1,
+		`source` varchar(30) NOT NULL DEFAULT 'local',								
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -88,6 +89,23 @@ class User extends Model {
 		// INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", md5("dupont"), "pierre@dupont.fr");
 	}
 	
+	
+	public function isActive($login){
+		$sql = "select id, is_active from core_users where login=?";
+		$user = $this->runRequest ( $sql, array (
+				$login
+		) );
+		if ($user->rowCount () == 1) {
+			$req = $user->fetch ();
+			if ($req ["is_active"] == 1) {
+				return "allowed";
+			} else {
+				return "Your account is not active";
+			}
+		} else {
+			return "Login or password not correct";
+		}
+	}
 	/**
 	 * Verify that a user is in the database
 	 *
@@ -162,6 +180,18 @@ class User extends Model {
 		$user = $this->runRequest ( $sql, array (
 				$login,
 				md5 ( $pwd ) 
+		) );
+		if ($user->rowCount () == 1)
+			return $user->fetch (); // get the first line of the result
+		else
+			throw new Exception ( "Cannot find the user using the given parameters" );
+	}
+	
+	public function getUserByLogin($login) {
+		$sql = "select id as idUser, login as login, pwd as pwd, id_status, is_active
+            from core_users where login=?";
+		$user = $this->runRequest ( $sql, array (
+				$login
 		) );
 		if ($user->rowCount () == 1)
 			return $user->fetch (); // get the first line of the result
@@ -593,9 +623,10 @@ class User extends Model {
 	 * @param int $convention        	
 	 * @param date $date_convention        	
 	 */
-	public function addUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+	public function addUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, 
+			                $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
 		$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
-    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active, source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 		$this->runRequest ( $sql, array (
 				$login,
 				$firstname,
@@ -615,16 +646,16 @@ class User extends Model {
 		
 		return $this->getDatabase ()->lastInsertId ();
 	}
-	public function setUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+	public function setUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
 		if (! $this->isUser ( $login )) {
-			$this->addUser ( $name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract, $is_active );
+			$this->addUser ( $name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract, $is_active, $source);
 		}
 	}
-	public function setUserMd5($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+	public function setUserMd5($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
 		if (! $this->isUser ( $login )) {
 			
 			$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
-    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active,source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 			$this->runRequest ( $sql, array (
 					$login,
 					$firstname,
@@ -659,9 +690,10 @@ class User extends Model {
 	 * @param int $convention        	
 	 * @param date $date_convention        	
 	 */
-	public function updateUser($id, $firstname, $name, $login, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+	public function updateUser($id, $firstname, $name, $login, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, 
+							   $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
 		$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?, id_status=?,
-    			                      convention=?, date_convention=?, date_end_contract=?, is_active=? 
+    			                      convention=?, date_convention=?, date_end_contract=?, is_active=?, source=? 
     			                  where id=?";
 		$this->runRequest ( $sql, array (
 				$login,
@@ -676,8 +708,40 @@ class User extends Model {
 				$date_convention,
 				$date_end_contract,
 				$is_active,
+				$source,
 				$id 
 		) );
+	}
+	
+	public function setExtBasicInfo($login, $name, $firstname, $email, $id_status){
+		
+		// insert
+		if (! $this->isUser ( $login )){
+			$sql = "insert into core_users(login, firstname, name, email, id_status, source, date_created, id_unit, id_responsible)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$this->runRequest ( $sql, array (
+					$login,
+					$firstname,
+					$name,
+					$email,
+					$id_status,
+					"ext",
+					"" . date ( "Y-m-d" ) . "",
+					1,
+					1
+			) );
+		}
+		// update
+		else{
+			$sql = "update core_users set firstname=?, name=?, email=?
+    			                  where login=?";
+			$this->runRequest ( $sql, array (
+					$firstname,
+					$name,
+					$email,
+					$login
+			) );
+		}
+		
 	}
 	
 	/**
@@ -753,6 +817,18 @@ class User extends Model {
 		else
 			return false;
 	}
+	
+	public function isLocalUser($login) {
+		$sql = "select id from core_users where login=? AND source=?";
+		$user = $this->runRequest ( $sql, array (
+				$login, "local"
+		) );
+		if ($user->rowCount () == 1)
+			return true; // get the first line of the result
+		else
+			return false;
+	}
+	
 	public function userIdFromLogin($login) {
 		$sql = "select id from core_users where login=?";
 		$user = $this->runRequest ( $sql, array (
