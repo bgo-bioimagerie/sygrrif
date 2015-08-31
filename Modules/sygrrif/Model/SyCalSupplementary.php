@@ -3,7 +3,7 @@
 require_once 'Framework/Model.php';
 
 /**
- * Class defining the GRR area model
+ * Model for calendar suplementary informations
  *
  * @author Sylvain Prigent
  */
@@ -11,7 +11,7 @@ class SyCalSupplementary extends Model {
 
 	
 	/**
-	 * Create the unit table
+	 * Create the calsupplementaries table
 	 *
 	 * @return PDOStatement
 	 */
@@ -28,13 +28,22 @@ class SyCalSupplementary extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * get the supplementaries infos
+	 * @param unknown $sortEntry
+	 * @return multitype:
+	 */
 	public function calSups($sortEntry){
 		$sql = "select * from sy_calsupplementaries order by " . $sortEntry . " ASC;";
 		$data = $this->runRequest($sql);
 		return $data->fetchAll();
 	}
 	
-	
+	/**
+	 * get a supplementary info from it ID
+	 * @param unknown $id
+	 * @return mixed|string
+	 */
 	public function getcalSups($id){
 	
 		$sql = "select * from sy_calsupplementaries where id=?;";
@@ -45,6 +54,11 @@ class SyCalSupplementary extends Model {
 			return "not found";
 	}
 	
+	/**
+	 * get a supplementary name from it ID
+	 * @param unknown $id
+	 * @return string
+	 */
 	public function getcalSupName($id){
 
 		$sql = "select name from sy_calsupplementaries where id=?;";
@@ -59,9 +73,9 @@ class SyCalSupplementary extends Model {
 	}
 	
 	/**
-	 * add a Area to the table
-	 *
-	 * @param string $name name of the Area
+	 * Add a supplementary
+	 * @param unknown $name
+	 * @param unknown $mandatory
 	 */
 	public function addCalSup($name, $mandatory){
 		
@@ -70,6 +84,12 @@ class SyCalSupplementary extends Model {
 		$user = $this->runRequest($sql, array($name, $mandatory));		
 	}
 	
+	/**
+	 * Set a supplementaty (add if not exists update otherwise)
+	 * @param unknown $id
+	 * @param unknown $name
+	 * @param unknown $mandatory
+	 */
 	public function setCalSup($id, $name, $mandatory){
 	
 		if ($this->isCalSupId($id)){
@@ -82,6 +102,11 @@ class SyCalSupplementary extends Model {
 		}
 	}
 	
+	/**
+	 * Check if a suplementary exists from name
+	 * @param unknown $name
+	 * @return boolean
+	 */
 	public function isCalSup($name){
 		$sql = "select * from sy_calsupplementaries where name=?";
 		$unit = $this->runRequest($sql, array($name));
@@ -91,6 +116,11 @@ class SyCalSupplementary extends Model {
 			return false;
 	}
 	
+	/**
+	 * Check if a suplementary exists from ID
+	 * @param unknown $id
+	 * @return boolean
+	 */
 	public function isCalSupId($id){
 		$sql = "select * from sy_calsupplementaries where id=?";
 		$unit = $this->runRequest($sql, array($id));
@@ -100,12 +130,23 @@ class SyCalSupplementary extends Model {
 			return false;
 	}
 	
+	/**
+	 * Update a supplementary
+	 * @param unknown $id
+	 * @param unknown $name
+	 * @param unknown $mandatory
+	 */
 	public function updateCalSup($id, $name, $mandatory){
 		$sql = "update sy_calsupplementaries set name= ?, mandatory=?
 									  where id=?";
 		$this->runRequest($sql, array($name, $mandatory, $id));
 	}
 	
+	/**
+	 * Get a supplementary ID from name
+	 * @param unknown $name
+	 * @return mixed|number
+	 */
 	public function getCalSupFromName($name){
 		$sql = "select id from sy_calsupplementaries where name=?";
 		$req = $this->runRequest($sql, array($name));
@@ -117,11 +158,20 @@ class SyCalSupplementary extends Model {
 			return 0;
 	}
 
+	/**
+	 * REmove a supplemenary from it ID
+	 * @param unknown $id
+	 */
 	public function delete($id){
 		$sql="DELETE FROM sy_calsupplementaries WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
 	
+	/**
+	 * Get the sypplementary data of a given calendar entry
+	 * @param number $id
+	 * @return array supplementary
+	 */
 	public function getSupData($id){
 		$sql = "select supplementary from sy_calendar_entry where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -137,6 +187,12 @@ class SyCalSupplementary extends Model {
 		return $supData;
 	}
 	
+	/**
+	 * Set the supplementary of a calendar entry
+	 * @param unknown $calsupNames
+	 * @param unknown $calsupValues
+	 * @param unknown $reservation_id
+	 */
 	public function setEntrySupData($calsupNames, $calsupValues, $reservation_id){
 		
 		$supData = "";
@@ -150,6 +206,11 @@ class SyCalSupplementary extends Model {
 		
 	}
 	
+	/**
+	 * Get the supplementary summary of calendar entry 
+	 * @param unknown $entryID
+	 * @return string
+	 */
 	public function getSummary($entryID){
 		
 		$text = "";

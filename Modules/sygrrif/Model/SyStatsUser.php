@@ -10,6 +10,10 @@ require_once 'Modules/core/Model/CoreTranslator.php';
  */
 class SyStatsUser extends Model {
 	
+	/**
+	 * Statistics of the users allowed to book a resource
+	 * @param number $resource_id
+	 */
 	public function authorizedUsers($resource_id){
 		
 		include_once ("externals/PHPExcel/Classes/PHPExcel.php");

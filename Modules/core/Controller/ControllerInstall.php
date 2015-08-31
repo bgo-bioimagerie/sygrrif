@@ -4,14 +4,23 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/Install.php';
 require_once 'Modules/core/Model/InitDatabase.php';
 
+/**
+ * 
+ * @author sprigent
+ *	Install the Core database
+ */
 class ControllerInstall extends Controller {
 	
-	//private $billet;
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		//$this->billet = new Billet ();
+
 	}
 	
-	
+	/**
+	 * Check if a database is already installed
+	 */
 	protected function isInstalled(){
 		$dsn = Configuration::get('dsn', '');
 		//echo "dsn = " . $dsn . "--";
@@ -24,7 +33,10 @@ class ControllerInstall extends Controller {
 		return $alreadyInstalled;
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 		$alreadyInstalled  = $this->isInstalled();
@@ -34,7 +46,9 @@ class ControllerInstall extends Controller {
 		) );
 	}
 	
-	
+	/**
+	 * Start the database install wizard
+	 */
 	public function configdatabase(){
 		$alreadyInstalled  = $this->isInstalled();
 		
@@ -78,6 +92,9 @@ class ControllerInstall extends Controller {
 		
 	}
 	
+	/**
+	 * Creéate the database (create and fill tables)
+	 */
 	public function createdatabase(){
 		
 		//echo '--' . 'function createdatabase()' . '--';

@@ -10,7 +10,7 @@ require_once 'Framework/Model.php';
 class CoreConfig extends Model {
 
 	/**
-	 * Create the unit table
+	 * Create the table
 	 * 
 	 * @return PDOStatement
 	 */
@@ -27,7 +27,7 @@ class CoreConfig extends Model {
 	}
 	
 	/**
-	 * Create the default empty Unit
+	 * Create the application contact
 	 * 
 	 * @return PDOStatement
 	 */
@@ -38,6 +38,9 @@ class CoreConfig extends Model {
 
 	}
 	
+	/**
+	 * Check if a config key exists
+	 */
 	public function isKey($key){
 		$sql = "select id from core_config where id='".$key."'";
 		$unit = $this->runRequest($sql);
@@ -47,16 +50,31 @@ class CoreConfig extends Model {
 			return false;
 	}
 	
+	/**
+	 * Add a config parameter
+	 * @param string $key
+	 * @param string $value
+	 */
 	public function addParam($key, $value){
 		$sql = "INSERT INTO core_config (id, value) VALUES(?,?)";
 		$this->runRequest($sql, array($key, $value));
 	}
 	
+	/**
+	 * Update a parameter
+	 * @param string $key
+	 * @param string $value
+	 */
 	public function updateParam($key, $value){
 		$sql = "update core_config set value=? where id=?";
 		$this->runRequest($sql, array($value, $key));
 	}
 	
+	/**
+	 * Get a parameter
+	 * @param string $key
+	 * @return string: value
+	 */
 	public function getParam($key){
 		$sql = "SELECT value FROM core_config WHERE id='".$key."'";
 		$req = $this->runRequest($sql);
@@ -69,6 +87,11 @@ class CoreConfig extends Model {
 		}
 	}
 	
+	/**
+	 * Set a parameter (add if not exists, otherwise update)
+	 * @param string $key
+	 * @param string $value
+	 */
 	public function setParam($key, $value){
 		if ($this->isKey($key)){
 			$this->updateParam($key, $value);

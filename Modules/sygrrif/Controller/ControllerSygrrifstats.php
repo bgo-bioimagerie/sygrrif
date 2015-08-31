@@ -9,16 +9,31 @@ require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyReport.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
 
+/**
+ * Controller to export the SyGRRif stats
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerSygrrifstats extends ControllerBooking {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index(){
 		
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * Generate a bill when the proect mode is activated
+	 */
 	public function billproject() {
 
 		$lang = "En";
@@ -99,6 +114,9 @@ class ControllerSygrrifstats extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Form to generate statistics in the GRR style
+	 */
 	public function report(){
 		
 		$navBar = $this->navBar();
@@ -230,6 +248,11 @@ class ControllerSygrrifstats extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Internal method for GRR stats
+	 * @param array $table
+	 * @param string $lang
+	 */
 	private function exportDetailsCSV($table, $lang){
 		
 		header("Content-Type: application/csv-tab-delimited-table");
@@ -262,6 +285,11 @@ class ControllerSygrrifstats extends ControllerBooking {
 	   echo $content;
 	}
 	
+	/**
+	 * Internal method for GRR stats
+	 * @param array $table
+	 * @param string $lang
+	 */
 	private function exportSummaryCSV($summaryTable, $lang){
 		header("Content-Type: application/csv-tab-delimited-table");
 		header("Content-disposition: filename=rapport.csv");

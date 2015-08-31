@@ -55,6 +55,11 @@ class SyColorCode extends Model {
 		return $user->fetchAll();
 	}
 	
+	/**
+	 * Get color code info from ID
+	 * @param unknown $id
+	 * @return mixed
+	 */
 	public function getColorCode($id){
 			
 		$sql = "SELECT * FROM sy_color_codes WHERE id=?";
@@ -99,6 +104,13 @@ class SyColorCode extends Model {
 		$this->runRequest($sql, array($name, $color, $display_order));		
 	}
 	
+	/**
+	 * import a color code (used to import GRR database)
+	 * @param unknown $id
+	 * @param unknown $name
+	 * @param unknown $color
+	 * @param number $display_order
+	 */
 	public function importColorCode($id, $name, $color, $display_order=0){
 		
 		if ($this->isColorCodeId($id)){
@@ -124,7 +136,11 @@ class SyColorCode extends Model {
 		$SyColorCode = $this->runRequest($sql, array("".$name."", "".$color."", $display_order , $id));
 	}
 	
-	
+	/**
+	 * CHeck if a color code exists from name
+	 * @param unknown $name
+	 * @return boolean
+	 */
 	public function isColorCode($name){
 		$sql = "select * from sy_color_codes where name=?";
 		$SyColorCode = $this->runRequest($sql, array($name));
@@ -134,6 +150,11 @@ class SyColorCode extends Model {
 			return false;
 	}
 	
+	/**
+	 * Check if a color code exists from id
+	 * @param unknown $id
+	 * @return boolean
+	 */
 	public function isColorCodeId($id){
 		$sql = "select * from sy_color_codes where id=?";
 		$SyColorCode = $this->runRequest($sql, array($id));
@@ -143,6 +164,12 @@ class SyColorCode extends Model {
 			return false;
 	}
 	
+	/**
+	 * Add a color code if not exists
+	 * @param unknown $name
+	 * @param unknown $color
+	 * @param unknown $display_order
+	 */
 	public function setColorCode($name, $color, $display_order){
 		if (!$this->isColorCode($name)){
 			$this->addSyColorCode($name, $color, $display_order);
@@ -150,7 +177,7 @@ class SyColorCode extends Model {
 	}
 	
 	/**
-	 * get the informations of a SyColorCode
+	 * get the color of a SyColorCode from ID
 	 *
 	 * @param int $id Id of the SyColorCode to query
 	 * @throws Exception id the SyColorCode is not found
@@ -206,6 +233,10 @@ class SyColorCode extends Model {
 		}
 	}
 
+	/**
+	 * Remove a color code
+	 * @param unknown $id
+	 */
 	public function delete($id){
 		$sql="DELETE FROM sy_color_codes WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));

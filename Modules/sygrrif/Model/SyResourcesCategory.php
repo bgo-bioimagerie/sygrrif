@@ -15,20 +15,7 @@ class SyResourcesCategory extends Model {
 	 * @return PDOStatement
 	 */
 	public function createTable(){
-			/*
-		$sql = "
-		CREATE TABLE IF NOT EXISTS `sy_resourcescategory` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(30) NOT NULL DEFAULT '',
-		PRIMARY KEY (`id`)
-		);
-				
-		CREATE TABLE IF NOT EXISTS `sy_j_resource_category` (
-		`id_resource` int(11) NOT NULL,
-		`id_category` int(11) NOT NULL
-		);
-		";
-		*/
+
 		$sql = "
 		CREATE TABLE IF NOT EXISTS `sy_resourcescategory` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -42,10 +29,9 @@ class SyResourcesCategory extends Model {
 	}
 	
 	/**
-	 * get visas informations
-	 * 
-	 * @param string $sortentry Entry that is used to sort the sy_resourcescategory
-	 * @return multitype: array
+	 * Get the categories informations
+	 * @param string $sortentry
+	 * @return multitype:
 	 */
 	public function getResourcesCategories($sortentry = 'id'){
 		 
@@ -79,6 +65,12 @@ class SyResourcesCategory extends Model {
 		return $this->getDatabase()->lastInsertId();	
 	}
 	
+	/**
+	 * import resources categories (used to import a GRR database)
+	 * @param unknown $id
+	 * @param unknown $name
+	 * @return string
+	 */
 	public function importResourcesCategory($id, $name){
 		$sql = "insert into sy_resourcescategory(id, name)"
 				. " values(?,?)";
@@ -86,6 +78,11 @@ class SyResourcesCategory extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	/**
+	 * CHeck if a resource exists
+	 * @param unknown $name
+	 * @return boolean
+	 */
 	public function isResourcesCategory($name){
 		$sql = "select * from sy_resourcescategory where name=?";
 		$unit = $this->runRequest($sql, array($name));
@@ -95,6 +92,10 @@ class SyResourcesCategory extends Model {
 			return false;
 	}
 	
+	/**
+	 * Add a resource if not exists
+	 * @param unknown $name
+	 */
 	public function setResourcesCategory($name){
 		if (!$this->isResourcesCategory($name)){
 			$this->addResourcesCategory($name);
@@ -162,6 +163,11 @@ class SyResourcesCategory extends Model {
 	}
 	
 	// joint ressource category
+	/**
+	 * get catefory info for a given resource
+	 * @param unknown $id_resource
+	 * @return mixed|multitype:number
+	 */
 	public function getCategory($id_resource){
 		$sql = "select sy_j_resource_category.id_category AS id_category, sy_resourcescategory.name AS name_category
 				 from sy_j_resource_category 
@@ -176,6 +182,11 @@ class SyResourcesCategory extends Model {
 		}
 	}
 	
+	/**
+	 * Get the category ID for a given resource
+	 * @param unknown $id_resource
+	 * @return mixed|number
+	 */
 	public function getCategoryID($id_resource){
 		$sql = "select id_category from sy_j_resource_category
 				where id_resource=?";
@@ -189,6 +200,11 @@ class SyResourcesCategory extends Model {
 		}
 	}
 	
+	/**
+	 * Set the category of a resource
+	 * @param unknown $id_resource
+	 * @param unknown $id_category
+	 */
 	public function setCategory($id_resource, $id_category){
 		if ($this->isJResourceCategory($id_resource)){
 			$this->updateJResourceCategory($id_resource, $id_category);
@@ -198,6 +214,11 @@ class SyResourcesCategory extends Model {
 		}
 	}
 	
+	/**
+	 * Check if the resource is linked to a category
+	 * @param unknown $id_resource
+	 * @return boolean
+	 */
 	public function isJResourceCategory($id_resource){
 		$sql = "select id_category from sy_j_resource_category
 				where id_resource=?";
@@ -210,17 +231,31 @@ class SyResourcesCategory extends Model {
 		}
 	}
 	
+	/**
+	 * Joint a resource to a category
+	 * @param unknown $id_resource
+	 * @param unknown $id_category
+	 */
 	public function addJResourceCategory($id_resource, $id_category){
 		$sql = "insert into sy_j_resource_category(id_resource, id_category)"
 				. " values(?, ?)";
 		$this->runRequest($sql, array($id_resource, $id_category));
 	}
 	
+	/**
+	 * Update the link between a resource and a category
+	 * @param unknown $id_resource
+	 * @param unknown $id_category
+	 */
 	public function updateJResourceCategory($id_resource, $id_category){
 		$sql = "update sy_j_resource_category set id_category=? where id_resource=?";
 		$unit = $this->runRequest($sql, array($id_category, $id_resource));
 	}
 	
+	/**
+	 * Remove a catrgory
+	 * @param unknown $id
+	 */
 	public function delete($id){
 		$sql="DELETE FROM sy_resourcescategory WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));

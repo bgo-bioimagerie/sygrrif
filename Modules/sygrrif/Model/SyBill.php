@@ -12,6 +12,10 @@ require_once 'Modules/core/Model/User.php';
  */
 class SyBill extends Model {
 
+	/**
+	 * Create the table
+	 * @return PDOStatement
+	 */
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_bills` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -33,7 +37,7 @@ class SyBill extends Model {
 	}
 	
 	/**
-	 * add an item to the table
+	 * add an bill to the table
 	 *
 	 * @param string $name name of the unit
 	 */
@@ -45,7 +49,19 @@ class SyBill extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
-	
+	/**
+	 * Add bill associated to a unit
+	 * @param number $number
+	 * @param date $period_begin
+	 * @param date $period_end
+	 * @param date $date_generated
+	 * @param number $id_unit
+	 * @param number $id_responsible
+	 * @param number $totalHT
+	 * @param string $date_paid
+	 * @param number $is_paid
+	 * @return number Last inserted ID
+	 */
 	public function addBillUnit($number, $period_begin, $period_end, $date_generated, $id_unit, $id_responsible, $totalHT, $date_paid="", $is_paid=0){
 		$sql = "insert into sy_bills(number, period_begin, period_end, date_generated, id_unit, id_responsible, total_ht, date_paid, is_paid)"
 				. " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -53,6 +69,19 @@ class SyBill extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	/**
+	 * Add bill associated to a project
+	 * @param number $number
+	 * @param date $period_begin
+	 * @param date $period_end
+	 * @param date $date_generated
+	 * @param number $id_unit
+	 * @param number $id_responsible
+	 * @param number $totalHT
+	 * @param string $date_paid
+	 * @param number $is_paid
+	 * @return number Last inserted ID
+	 */
 	public function addBillProject($number, $period_begin, $period_end, $date_generated, $id_project, $date_paid="", $is_paid=0){
 		$sql = "insert into sy_bills(number, period_begin, period_end, date_generated, id_project, date_paid, is_paid)"
 				. " values(?, ?, ?, ?, ?, ?, ?)";
@@ -60,6 +89,11 @@ class SyBill extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	/**
+	 * Set the status of a bill 
+	 * @param number $id ID of the bill
+	 * @param number $is_paid Paid status
+	 */
 	public function setPaid($id, $is_paid){
 		$sql = "update sy_bills set is_paid=? where id=?";
 		$unit = $this->runRequest($sql, array($is_paid, $id));
@@ -78,6 +112,11 @@ class SyBill extends Model {
 		return $user->fetchAll();
 	}
 	
+	/**
+	 * get bills informations when bill is for a unit
+	 * @param string $sortentry
+	 * @return multitype:
+	 */
 	public function getBillsUnit($sortentry = 'id'){
 		$sqlSort = "sy_bills.id";
 		if ($sortentry == "number"){
@@ -161,23 +200,52 @@ class SyBill extends Model {
 		$unit = $this->runRequest($sql, array($number, $date_generated, $total_ht, $date_paid, $is_paid, $id));
 	}
 
+	/**
+	 * Edit the informations of a bill associated to a unit
+	 * @param number $id Bill ID
+	 * @param number $number
+	 * @param date $date_generated 
+	 * @param number $id_unit
+	 * @param number $id_responsible
+	 * @param date $date_paid
+	 * @param number $is_paid
+	 */
 	public function editBillUnit($id, $number, $date_generated, $id_unit, $id_responsible, $date_paid, $is_paid){
 	
 		$sql = "update sy_bills set number=?, date_generated=?, id_unit=?, id_responsible=?, date_paid=?, is_paid=?  where id=?";
 		$unit = $this->runRequest($sql, array($number, $date_generated, $id_unit, $id_responsible, $date_paid, $is_paid, $id));
 	}
 	
+	/**
+	 * Edit the informations of a bill associated to a project
+	 * @param number $id
+	 * @param number $number
+	 * @param date $date_generated
+	 * @param number $id_project
+	 * @param date $date_paid
+	 * @param number $is_paid
+	 */
 	public function editBillProject($id, $number, $date_generated, $id_project, $date_paid, $is_paid){
 	
 		$sql = "update sy_bills set number=?, date_generated=?, id_project=?, date_paid=?, is_paid=?  where id=?";
 		$unit = $this->runRequest($sql, array($number, $date_generated, $id_project, $date_paid, $is_paid, $id));
 	}
 	
+	/**
+	 * Remove a bill from the table
+	 * @param number $id ID of the bill
+	 */
 	public function removeEntry($id){
 		$sql="DELETE FROM sy_bills WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
 	
+	/**
+	 * Export the bill list to a file.
+	 * Only the bill generated between $searchDate_start and $searchDate_end are exported
+	 * @param date $searchDate_start
+	 * @param date $searchDate_end
+	 */
 	public function export($searchDate_start, $searchDate_end){
 		// select 
 		

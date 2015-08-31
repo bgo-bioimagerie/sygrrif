@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class that manage the any configuration parameters
+ * Class that manage the LDAP configuration file
  * 
  * @author Sylvain Prigent
  */

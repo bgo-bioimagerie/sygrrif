@@ -104,7 +104,11 @@ class Unit extends Model {
 		$unit = $this->runRequest($sql, array("".$name."", "".$address."", $id));
 	}
 	
-	
+	/**
+	 * Check if a unit exists
+	 * @param string $name Unit name
+	 * @return boolean
+	 */
 	public function isUnit($name){
 		$sql = "select * from core_units where name=?";
 		$unit = $this->runRequest($sql, array($name));
@@ -114,6 +118,11 @@ class Unit extends Model {
 			return false;
 	}
 	
+	/**
+	 * Set a unit (add if not exists)
+	 * @param string $name Unit name
+	 * @param string $address Unit adress
+	 */
 	public function setUnit($name, $address){
 		if (!$this->isUnit($name)){
 			$this->addUnit($name, $address);
@@ -174,6 +183,10 @@ class Unit extends Model {
 		}
 	}
 	
+	/**
+	 * Delete a unit
+	 * @param number $id Unit ID
+	 */
 	public function delete($id){
 		$sql="DELETE FROM core_units WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));

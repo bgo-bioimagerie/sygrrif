@@ -1,8 +1,14 @@
 <?php
 
+/**
+ * Export a .sql file to have a backup of the database
+ * 
+ */
 class BackupDatabase{
 	
-	
+	/**
+	 * Start the backup
+	 */
 	public function run(){
 		
 		// save directory
@@ -38,24 +44,24 @@ ini_set('display_errors', false);
 
 
 /**
- * Sauvegarde MySQL
+ * Backup MySQL
  */
 class BackupMySQL extends mysqli {
 	
 	/**
-	 * Dossier des fichiers de sauvegardes
+	 * Folder containing the backup files
 	 * @var string
 	 */
 	protected $dossier;
 	
 	/**
-	 * Nom du fichier
+	 * File name
 	 * @var string
 	 */
 	protected $nom_fichier;
 	
 	/**
-	 * Ressource du fichier GZip
+	 * Ressource of the GZip files
 	 * @var ressource
 	 */
 	protected $gz_fichier;
@@ -66,7 +72,7 @@ class BackupMySQL extends mysqli {
 	}	
 	
 	/**
-	 * Constructeur
+	 * Constructor
 	 * @param array $options
 	 */
 	public function __construct($options = array()) {
@@ -114,7 +120,7 @@ class BackupMySQL extends mysqli {
 	}
 	
 	/**
-	 * Message d'information ( commenter le "echo" pour rendre le script invisible )
+	 * Information message 
 	 * @param string $message HTML
 	 */
 	protected function message($message = '&nbsp;') {
@@ -122,7 +128,7 @@ class BackupMySQL extends mysqli {
 	}
 	
 	/**
-	 * Protection des quot SQL
+	 * Protect the quot SQL
 	 * @param string $string
 	 * @return string
 	 */
@@ -134,7 +140,7 @@ class BackupMySQL extends mysqli {
 	}
 	
 	/**
-	 * Sauvegarder les tables
+	 * Save tables
 	 */
 	protected function sauvegarder() {
 		$this->message('Sauvegarde...');
@@ -196,8 +202,8 @@ class BackupMySQL extends mysqli {
 	}
 	
 	/**
-	 * Purger les anciens fichiers
-	 * @param int $nbr_fichiers_max Nombre maximum de sauvegardes
+	 * Remove older files
+	 * @param int $nbr_fichiers_max Maximum number of backup
 	 */
 	protected function purger_fichiers($nbr_fichiers_max) {
 		$this->message();

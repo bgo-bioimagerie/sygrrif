@@ -15,11 +15,19 @@ class ControllerConnection extends Controller
 {
     private $user;
 
+    /**
+     * Connstructor
+     */
     public function __construct()
     {
         $this->user = new User();
     }
 
+    /**
+     * (non-PHPdoc)
+     * @see Controller::index()
+     * 
+     */
     public function index()
     {
     	
@@ -29,6 +37,10 @@ class ControllerConnection extends Controller
         $this->generateView( array("admin_email" => $admin_email));
     }
 
+    /**
+     * Shows the login page
+     * @throws Exception
+     */
     public function login()
     {
     	$modelConfig = new CoreConfig();
@@ -90,12 +102,21 @@ class ControllerConnection extends Controller
             throw new Exception("Action not allowed : login or passeword undefined");
     }
 
+    /**
+     * Logout (delete the session)
+     */
     public function logout()
     {
         $this->request->getSession()->destroy();
         $this->redirect("home");
     }
     
+    /**
+     * Connect a user to the application
+     * @param string $login User login
+     * @param string $pwd User pssword 
+     * @return string Error message
+     */
     private function connect($login, $pwd){
     	
     	// test if local account

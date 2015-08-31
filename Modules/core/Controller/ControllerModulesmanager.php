@@ -3,13 +3,24 @@ require_once 'Framework/Controller.php';
 require_once 'Framework/Configuration.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 
+/**
+ * 
+ * @author sprigent
+ * Manage the modules: starting page to install and config each module	
+ */
 class ControllerModulesmanager extends ControllerSecureNav {
 		
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 		// get the modules list

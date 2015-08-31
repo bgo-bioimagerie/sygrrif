@@ -3,7 +3,7 @@ require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/Responsible.php';
 
 /**
- * Class defining the Visa model
+ * Class defining the Authorization model
  *
  * @author Sylvain Prigent
  */
@@ -29,6 +29,15 @@ class SyAuthorization extends Model {
 		$pdo = $this->runRequest ( $sql );
 		return $pdo;
 	}
+	/**
+	 * Add an authorization
+	 * @param date $date
+	 * @param number $user_id
+	 * @param number $lab_id
+	 * @param number $visa_id
+	 * @param number $resource_id
+	 * @param number $is_active
+	 */
 	public function addAuthorization($date, $user_id, $lab_id, $visa_id, $resource_id, $is_active=1) {
 		$sql = "insert into sy_authorization(date, user_id, lab_id, visa_id, resource_id, is_active)" .
 		 " values(?,?,?,?,?,?)";
@@ -42,6 +51,15 @@ class SyAuthorization extends Model {
 		) );
 	}
 	
+	/**
+	 * Add an authorization if not exists
+	 * @param date $date
+	 * @param number $user_id
+	 * @param number $lab_id
+	 * @param number $visa_id
+	 * @param number $resource_id
+	 * @param number $is_active
+	 */
 	public function setAuthorization($id, $date, $user_id, $lab_id, $visa_id, $resource_id, $is_active=1) {
 		
 		if (!$this->isAuthorisation($id)){	
@@ -59,6 +77,11 @@ class SyAuthorization extends Model {
 		}
 	}
 	
+	/**
+	 * Check if an authorization exists
+	 * @param numer $id AUthorization ID
+	 * @return boolean
+	 */
 	public function isAuthorisation($id){
 		$sql = "select * from sy_authorization where id=?;";
 		$data = $this->runRequest($sql, array($id));
@@ -68,7 +91,11 @@ class SyAuthorization extends Model {
 			return false;
 	}
 	
-	
+	/**
+	 * Set an authorization status
+	 * @param number $id ID of the authorization
+	 * @param number $active Active status
+	 */
 	public function setActive($id, $active){
 		$sql = "update sy_authorization set is_active=? where id=?";
 		$this->runRequest ( $sql, array (
@@ -77,6 +104,10 @@ class SyAuthorization extends Model {
 		) );
 	}  
 	
+	/**
+	 * Set an authorization unactive
+	 * @param number $id ID of the authorization
+	 */
 	public function unactivate($id){
 		$sql = "update sy_authorization set is_active=0 where id=?";
 		$this->runRequest ( $sql, array (
@@ -84,13 +115,20 @@ class SyAuthorization extends Model {
 		) );
 	}
 	
+	/**
+	 * Set an authorization active
+	 * @param number $id ID of the authorization
+	 */
 	public function activate($id){
 		$sql = "update sy_authorization set is_active=1 where id=?";
 		$this->runRequest ( $sql, array (
 				$id
 		) );
 	}
-	
+	/**
+	 * Set unactive all the authorizations of a given user
+	 * @param number $userId ID of the user
+	 */
 	public function desactivateAthorizationsForUser($userId){
 		$sql="select id from sy_authorization where user_id=?";
 		$req = $this->runRequest($sql, array($userId));
@@ -101,12 +139,26 @@ class SyAuthorization extends Model {
 		}
 	} 
 	
+	/**
+	 * Set unactive all the authorizations for multiple users
+	 * @param array $ids
+	 */
 	public function desactivateAthorizationsForUsers($ids){
 		foreach ($ids as $id){
 			$this->desactivateAthorizationsForUser($id);
 		}
 	}
 	
+	/**
+	 * Update the informations of an authorization
+	 * @param number $id Authorization ID
+	 * @param date $date New date
+	 * @param number $user_id New user ID
+	 * @param number $lab_id New lab ID
+	 * @param number $visa_id New lab ID 
+	 * @param number $resource_id New resource ID
+	 * @param number $is_active new Active status
+	 */
 	public function editAuthorization($id, $date, $user_id, $lab_id, $visa_id, $resource_id,$is_active=1) {
 		$sql = "update sy_authorization set date=?, user_id=?, lab_id=?, visa_id=?, resource_id=?,
 					   is_active=?	where id=?";
@@ -121,12 +173,21 @@ class SyAuthorization extends Model {
 		) );
 	}
 	
+	/**
+	 * Get the list of all the authorizations
+	 * @return multitype: array of all authorizations informations
+	 */
 	public function getAuths(){
 		$sql="select * from sy_authorization";
 		$req = $this->runRequest($sql);
 		return $req->fetchAll();
 	}
 	
+	/**
+	 * Get the list of all the authorizations converting the IDs to names
+	 * @param string $sortentry
+	 * @return multitype: array of all authorizations informations
+	 */
 	public function getAuthorizations($sortentry = 'id') {
 		
 		$sqlSort = "sy_authorization.id";
@@ -160,6 +221,12 @@ class SyAuthorization extends Model {
 		return $auth->fetchAll ();
 	}
 	
+	/**
+	 * Get the list of all the active authorizations
+	 * @param string $sortentry
+	 * @param number $is_active
+	 * @return multitype:
+	 */
 	public function getActiveAuthorizations($sortentry = 'id', $is_active=1) {
 	
 		$sqlSort = "sy_authorization.id";
@@ -194,12 +261,23 @@ class SyAuthorization extends Model {
 		return $auth->fetchAll ();
 	}
 	
+	/**
+	 * Get an authorization info given it ID
+	 * @param number $id Authorization ID
+	 * @return array: Authorization informations 
+	 */
 	public function getAuthorization($id){
 		$sql = "SELECT * from sy_authorization where id=?";
 		$auth = $this->runRequest ( $sql, array($id) );
 		return $auth->fetch();
 	}
 	
+	/**
+	 * Check if a user have an authorization for a given resource
+	 * @param number $id_resource ID of the resource
+	 * @param unknown $id_user ID of the user
+	 * @return boolean
+	 */
 	public function hasAuthorization($id_resource, $id_user){
 		$sql = "SELECT id from sy_authorization where user_id=? AND resource_id=? AND is_active=1";
 		$data = $this->runRequest ( $sql, array($id_user, $id_resource) );
@@ -209,6 +287,17 @@ class SyAuthorization extends Model {
 			return false;
 	}
 	
+	/**
+	 * Export authorization minimal sttistics
+	 * @param date $searchDate_start
+	 * @param date $searchDate_end
+	 * @param number $user_id
+	 * @param number $unit_id
+	 * @param number $oldunit_id
+	 * @param number $visa_id
+	 * @param number $resource_id
+	 * @return array Statistics
+	 */
 	public function minimalStatistics($searchDate_start, $searchDate_end, $user_id, $unit_id, 
 			                          $oldunit_id, $visa_id, $resource_id){
 		
@@ -392,6 +481,17 @@ class SyAuthorization extends Model {
 		return $t;
 	}
 	
+	/**
+	 * Calculate detailled statistics
+	 * @param date $searchDate_start
+	 * @param date $searchDate_end
+	 * @param number $user_id
+	 * @param number $unit_id
+	 * @param number $oldunit_id
+	 * @param number $visa_id
+	 * @param number $resource_id
+	 * @return array Statistics
+	 */
 	public function statsDetails($searchDate_start, $searchDate_end, $user_id, $unit_id, 
 			                     $oldunit_id, $visa_id, $resource_id){
 		
@@ -503,6 +603,12 @@ class SyAuthorization extends Model {
 		return $t;
 	}
 	
+	/**
+	 * Calculate authorizations statistics for all the resources and plot it into a graph
+	 * @param date $searchDate_start
+	 * @param date $searchDate_end
+	 * @return string: XML graph
+	 */
 	public function statsResources($searchDate_start, $searchDate_end){
 		
 		$q = array( "start" => $searchDate_start, "end" => $searchDate_end);
@@ -570,6 +676,11 @@ class SyAuthorization extends Model {
 		return $camembert;
 	}
 	
+	/**
+	 * Get all the active authorizations for a given resource
+	 * @param number $resource_id
+	 * @return multitype: Authorizations informations
+	 */
 	public function getActiveAuthorizationForResourceCategory($resource_id){
 		$sql = "SELECT sy_authorization.id, sy_authorization.date, core_users.name AS userName, core_users.firstname AS userFirstname, core_units.name AS unitName, sy_visas.name AS visa, sy_resourcescategory.name AS resource 		
 					from sy_authorization

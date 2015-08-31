@@ -6,9 +6,17 @@ require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/sygrrif/Model/SyInstall.php';
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 
-
+/**
+ * Configuration of the SyGRRif Module
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerSygrrifconfig extends ControllerSecureNav {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 
 	}
@@ -305,6 +313,11 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Upload the sygrrif bill template
+	 * 
+	 * @return string
+	 */
 	public function uploadTemplate(){
 		$target_dir = "data/";
 		$target_file = $target_dir . "template.xls";

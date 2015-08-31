@@ -3,12 +3,22 @@
 require_once 'Framework/Model.php';
 
 /**
- * Class defining the GRR area model
+ * Model to calculate GRR statistics
  *
  * @author Sylvain Prigent
  */
 class SyReport extends Model {
 
+	/**
+	 * Calculate statistics
+	 * @param unknown $datebegin
+	 * @param unknown $dateend
+	 * @param unknown $champ
+	 * @param unknown $type_recherche
+	 * @param unknown $text
+	 * @param unknown $contition_et_ou
+	 * @return multitype:
+	 */
 	public function reportstats($datebegin, $dateend, $champ, $type_recherche, $text, $contition_et_ou){
 		
 		
@@ -46,6 +56,13 @@ class SyReport extends Model {
 		return $data->fetchAll();
 	}
 	
+	/**
+	 * Internal method used by reportstats
+	 * @param unknown $champ
+	 * @param unknown $text
+	 * @param unknown $type_recherche
+	 * @return string
+	 */
 	private function extractQueryFrom($champ, $text, $type_recherche){
 		
 		$like = " LIKE ";
@@ -73,6 +90,12 @@ class SyReport extends Model {
 		}
 	}
 	
+	/**
+	 * summaryse report stat into a table 
+	 * @param unknown $table
+	 * @param unknown $entrySummary
+	 * @return multitype:Ambigous <multitype:, number> multitype:unknown
+	 */
 	public function summaryseReportStats($table, $entrySummary){
 		
 		if ($entrySummary == "recipient"){

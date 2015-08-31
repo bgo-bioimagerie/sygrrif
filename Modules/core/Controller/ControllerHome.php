@@ -2,14 +2,23 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 
+/**
+ * 
+ * @author sprigent
+ * Controller for the home page
+ */
 class ControllerHome extends ControllerSecureNav {
-	
-	//private $billet;
+
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		//$this->billet = new Billet ();
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 		$navBar = $this->navBar();

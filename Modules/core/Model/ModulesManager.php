@@ -3,14 +3,14 @@
 require_once 'Framework/Model.php';
 
 /**
- * Class defining the Unit model
+ * Model to store the module menu configuration
  *
  * @author Sylvain Prigent
  */
 class ModulesManager extends Model {
 
 	/**
-	 * Create the unit table
+	 * Create the menus tables
 	 * 
 	 * @return PDOStatement
 	 */
@@ -38,6 +38,9 @@ class ModulesManager extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Add the default menus
+	 */
 	public function addCoreDefaultMenus(){
 		if (!$this->isAdminMenu("Modules")){
 			$sql = "INSERT INTO core_adminmenu (name, link, icon) VALUES(?,?,?)";
@@ -51,12 +54,24 @@ class ModulesManager extends Model {
 	}
 	
 	// Admin menu methods
+	/**
+	 * Add an admin menu
+	 * @param string $name Menu name
+	 * @param string $link Url link
+	 * @param string $icon Menu bootstrap icon (for home page)
+	 * @return PDOStatement
+	 */
 	public function addAdminMenu($name, $link, $icon){
 		$sql = "INSERT INTO core_adminmenu (name, link, icon) VALUES(?,?,?)";
 		$pdo = $this->runRequest($sql, array($name, $link, $icon));
 		return $pdo;
 	}
 	
+	/**
+	 * Remove an admin menu
+	 * @param unknown $name Menu name
+	 * @return PDOStatement
+	 */
 	public function removeAdminMenu($name){
 		$sql = "DELETE FROM core_adminmenu
 				WHERE name='".$name."';";
@@ -64,6 +79,11 @@ class ModulesManager extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Check if an admin menu exists
+	 * @param string $name Menu name
+	 * @return boolean
+	 */
 	public function isAdminMenu($name){
 		$sql = "select id from core_adminmenu where name=?";
 		$unit = $this->runRequest($sql, array($name));
@@ -73,6 +93,10 @@ class ModulesManager extends Model {
 			return false;
 	}
 	
+	/**
+	 * Get all admin menus query
+	 * @return multitype
+	 */
 	public function getAdminMenus(){
 		$sql = "select name, link, icon from core_adminmenu";
 		$data = $this->runRequest($sql);
@@ -80,12 +104,24 @@ class ModulesManager extends Model {
 	}
 	
 	// data menu methods
+	/**
+	 * Add a data (tool) menu
+	 * @param string $name Menu Name
+	 * @param string $link Url link
+	 * @param string $usertype Index of user who can see this menu
+	 * @param string $icon Menu icon (bootstrap icon)
+	 * @return PDOStatement
+	 */
 	public function addDataMenu($name, $link, $usertype, $icon){
 		$sql = "INSERT INTO core_datamenu (name, link, usertype, icon) VALUES(?,?,?,?)";
 		$pdo = $this->runRequest($sql, array($name, $link, $usertype, $icon));
 		return $pdo;
 	}
-	
+	/**
+	 * Remove a data (tool) menu
+	 * @param string $name Menu name
+	 * @return PDOStatement
+	 */
 	public function removeDataMenu($name){
 		$sql = "DELETE FROM core_datamenu
 				WHERE name='".$name."';";
@@ -93,6 +129,11 @@ class ModulesManager extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Check if a data (tool) menu exists
+	 * @param unknown $name
+	 * @return boolean
+	 */
 	public function isDataMenu($name){
 		$sql = "select id from core_datamenu where name=?";
 		$unit = $this->runRequest($sql, array($name));
@@ -102,6 +143,13 @@ class ModulesManager extends Model {
 			return false;
 	}
 	
+	/**
+	 * Set (add if not exists therwise update) a data (tool) menu
+	 * @param string $name Menu Name
+	 * @param string $link Url link
+	 * @param string $usertype Index of user who can see this menu
+	 * @param string $icon Menu icon (bootstrap icon)
+	 */
 	public function setDataMenu($name, $link, $usertype, $icon){
 		
 		//echo "user type = ". $usertype . "</br>";
@@ -127,6 +175,13 @@ class ModulesManager extends Model {
 		}
 	}
 	
+	/**
+	 * Update a data (tool) menu
+	 * @param string $name Menu Name
+	 * @param string $link Url link
+	 * @param string $usertype Index of user who can see this menu
+	 * @param string $icon Menu icon (bootstrap icon)
+	 */
 	public function updateDataMenu($name, $link, $usertype, $icon){
 		$sql = "select id from core_datamenu where name=?";
 		$req = $this->runRequest($sql, array($name));
@@ -138,6 +193,11 @@ class ModulesManager extends Model {
 				                              "".$usertype."", "".$icon."", $id));
 	}
 	
+	/**
+	 * Get the user type allowed to see a menu
+	 * @param string $name Menu name
+	 * @return number Allowed user type
+	 */
 	public function getDataMenusUserType($name){
 		if ($this->isDataMenu($name)){
 			$sql = "select usertype from core_datamenu where name=?";
@@ -149,6 +209,11 @@ class ModulesManager extends Model {
 
 	}
 	
+	/**
+	 * Get all the data (tool) menus for a given user type
+	 * @param number $user_status User type
+	 * @return multitype: Menus informations
+	 */
 	public function getDataMenus($user_status=1){
 		$sql = "select name, link, icon from core_datamenu where usertype<=?";
 		$data = $this->runRequest($sql, array($user_status));

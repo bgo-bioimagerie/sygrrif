@@ -12,11 +12,19 @@ require_once 'Modules/core/Model/ModulesManager.php';
 abstract class ControllerSecureNav extends ControllerSecure
 {
     
+	/**
+	 * Get the navbar content
+	 * @return string
+	 */
     public function navBar(){
     	$menu = $this->buildNavBar($this->request->getSession()->getAttribut("login"));
     	return $menu;
     }
     
+    /**
+     * Get the tool menu
+     * @return multitype: tool menu content
+     */
     public function getToolsMenu(){
     	$user_status_id = $_SESSION["user_status"];
     	 
@@ -24,7 +32,10 @@ abstract class ControllerSecureNav extends ControllerSecure
     	$toolMenu = $modulesModel->getDataMenus($user_status_id);
     	return $toolMenu;
     }
-    
+    /**
+     * Get the admin menu
+     * @return multitype: Amdin menu
+     */
     public function getAdminMenu(){
     	$user_status_id = $_SESSION["user_status"];
     	
@@ -36,6 +47,11 @@ abstract class ControllerSecureNav extends ControllerSecure
     	return $toolAdmin;
     }
     
+    /**
+     * Get the navbar view
+     * @param string $login User login
+     * @return string: Menu view (html) 
+     */
     public function buildNavBar($login){
     	$logoFile = Configuration::get("logoFile");
     	$userName = $login;
@@ -53,7 +69,12 @@ abstract class ControllerSecureNav extends ControllerSecure
     
     }
     
-    
+    /**
+     * Internal method to build the navbar into HTML
+     * @param  $data navbar content
+     * @throws Exception
+     * @return string Menu view (html) 
+     */
     private function generateNavfile($data)
     {
     	$file = 'Modules/core/View/navbar.php';

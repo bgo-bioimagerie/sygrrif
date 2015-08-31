@@ -4,15 +4,24 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyBill.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 
+/**
+ * Manage the bills: history of generated bills with status (generated, payed)
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerSygrrifbillmanager extends ControllerSecureNav {
 	
 	/**
-	 * User model object
+	 * Constructor
 	 */
 	public function __construct() {
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 		// get the sort entry
@@ -42,6 +51,9 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Form to edit a bill history
+	 */
 	public function edit(){
 		$id = "";
 		if ($this->request->isParameterNotEmpty("actionid")) {
@@ -60,6 +72,9 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Query to edit a bill history
+	 */
 	public function editquery(){
 		
 		$lang = "En";
@@ -89,6 +104,9 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		
 	}
 	
+	/**
+	 * Query to remove a bill from history
+	 */
 	public function removeentry(){
 		$id = "";
 		if ($this->request->isParameterNotEmpty("actionid")) {
@@ -102,6 +120,9 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		$this->redirect("sygrrifbillmanager");
 	}
 	
+	/**
+	 * Export the bill list to file
+	 */
 	public function export(){
 		
 		$lang = "En";

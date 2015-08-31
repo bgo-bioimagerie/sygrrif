@@ -39,6 +39,20 @@ class SyCalendarEntry extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Add a calendar entry
+	 * @param unknown $start_time
+	 * @param unknown $end_time
+	 * @param unknown $resource_id
+	 * @param unknown $booked_by_id
+	 * @param unknown $recipient_id
+	 * @param unknown $last_update
+	 * @param unknown $color_type_id
+	 * @param unknown $short_description
+	 * @param unknown $full_description
+	 * @param number $quantity
+	 * @return string
+	 */
 	public function addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
 		
@@ -50,7 +64,20 @@ class SyCalendarEntry extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
-	
+	/**
+	 * Add a calendar entry if not exists  
+	 * @param unknown $id
+	 * @param unknown $start_time
+	 * @param unknown $end_time
+	 * @param unknown $resource_id
+	 * @param unknown $booked_by_id
+	 * @param unknown $recipient_id
+	 * @param unknown $last_update
+	 * @param unknown $color_type_id
+	 * @param unknown $short_description
+	 * @param unknown $full_description
+	 * @param number $quantity
+	 */
 	public function setEntry($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
 		
@@ -60,6 +87,11 @@ class SyCalendarEntry extends Model {
 		}
 	}
 	
+	/**
+	 * Check if an entry exists
+	 * @param unknown $id
+	 * @return boolean
+	 */
 	public function isEntry($id){
 		$sql = "select * from sy_calendar_entry where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -69,13 +101,22 @@ class SyCalendarEntry extends Model {
 			return false;
 	}
 	
-	
+	/**
+	 * Set the repeat ID for a series booking
+	 * @param unknown $id
+	 * @param unknown $repeat_id
+	 */
 	public function setRepeatID($id, $repeat_id){
 		$sql = "update sy_calendar_entry set repeat_id=?
 									  where id=?";
 		$this->runRequest($sql, array($repeat_id, $id));
 	}
 	
+	/**
+	 * Get the informations of an entry
+	 * @param unknown $id
+	 * @return mixed
+	 */
 	public function getEntry($id){
 		$sql = "select * from sy_calendar_entry where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -91,6 +132,11 @@ class SyCalendarEntry extends Model {
 							$last_update, $color_type_id, $short_description, $full_description, $quantity, $id));
 	}
 	
+	/**
+	 * Get all the entries for a given day
+	 * @param unknown $curentDate
+	 * @return multitype:
+	 */
 	public function getEntriesForDay($curentDate){
 		$dateArray = explode("-", $curentDate);
 		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
@@ -105,7 +151,7 @@ class SyCalendarEntry extends Model {
 	}
 	
 	/**
-	 * 
+	 * Get all the entries for a given period and a given resource
 	 * @param $dateBegin Beginning of the periode in linux time
 	 * @param $dateEnd End of the periode in linux time
 	 * 
@@ -151,6 +197,13 @@ class SyCalendarEntry extends Model {
 		return $data;
 	}
 	
+	/**
+	 * Get entries for a given period and a given area
+	 * @param unknown $dateBegin
+	 * @param unknown $dateEnd
+	 * @param unknown $areaId
+	 * @return multitype:
+	 */
 	public function getEntriesForPeriodeAndArea($dateBegin, $dateEnd, $areaId){
 		
 		$modelResource = new SyResource();
@@ -166,6 +219,14 @@ class SyCalendarEntry extends Model {
 		return $data;
 	}
 	
+	/**
+	 * Check if a new entry is in conflic with an existing entries
+	 * @param unknown $start_time
+	 * @param unknown $end_time
+	 * @param unknown $resource_id
+	 * @param string $reservation_id
+	 * @return boolean
+	 */
 	public function isConflict($start_time, $end_time, $resource_id, $reservation_id = ""){
 		$sql="SELECT id FROM sy_calendar_entry WHERE
 			  ((start_time >=:start AND start_time < :end) OR	
@@ -190,22 +251,42 @@ class SyCalendarEntry extends Model {
 			return false;
 	}
 	
+	/**
+	 * Remove an entry from it ID
+	 * @param unknown $id
+	 */
 	public function removeEntry($id){
 		$sql="DELETE FROM sy_calendar_entry WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
 	
+	/**
+	 * Removes all the entries of a series
+	 * @param unknown $series_id
+	 */
 	public function removeEntriesFromSeriesID($series_id){
 		$sql="DELETE FROM sy_calendar_entry WHERE repeat_id = ?";
 		$req = $this->runRequest($sql, array($series_id));
 	}
 	
+	/**
+	 * Delect entries having a given description
+	 * @param unknown $desciption
+	 * @return multitype:
+	 */
 	public function selectEntriesByDescription($desciption){
 		$sql = "SELECT * FROM sy_calendar_entry WHERE short_description=? ORDER BY end_time";
 		$req = $this->runRequest($sql, array($desciption));
 		return $req->fetchAll();
 	}
 	
+	/**
+	 * Check if a responsible has entries in a given period
+	 * @param unknown $resp_id
+	 * @param unknown $startdate
+	 * @param unknown $enddate
+	 * @return boolean
+	 */
 	public function hasResponsibleEntry($resp_id, $startdate, $enddate){
 		
 		//echo "startdate = " . $startdate . "<br />";
@@ -236,6 +317,13 @@ class SyCalendarEntry extends Model {
 		return false;
 	}
 	
+	/**
+	 * Check if there are some entries for a unit in a given period
+	 * @param unknown $unit_id
+	 * @param unknown $startdate
+	 * @param unknown $enddate
+	 * @return boolean
+	 */
 	public function hasUnitEntry($unit_id, $startdate, $enddate){
 		$q = array('start'=>$startdate, 'end'=>$enddate);
 		$sql = 'SELECT DISTINCT recipient_id, id FROM sy_calendar_entry WHERE
@@ -256,18 +344,34 @@ class SyCalendarEntry extends Model {
 		return false;
 	}
 	
+	/**
+	 * Get all the entries of a given user
+	 * @param unknown $user_id
+	 * @return multitype:
+	 */
 	public function getUserBooking($user_id){
 		$sql = "select * from sy_calendar_entry where recipient_id=? order by end_time DESC;";
 		$req = $this->runRequest($sql, array($user_id));
 		return $req->fetchAll();
 	}
 	
+	/**
+	 * Get all the entries for a given user and a given resource
+	 * @param unknown $user_id
+	 * @param unknown $resource_id
+	 * @return multitype:
+	 */
 	public function getUserBookingResource($user_id, $resource_id){
 		$sql = "select * from sy_calendar_entry where recipient_id=? and resource_id=? order by end_time DESC;";
 		$req = $this->runRequest($sql, array($user_id, $resource_id));
 		return $req->fetchAll();
 	}
 	
+	/**
+	 * Get the emails address of the users who booked a resource
+	 * @param unknown $resource_id
+	 * @return multitype:
+	 */
 	public function getEmailsBookerResource($resource_id){
 				
 		$sql = "SELECT DISTINCT user.email AS email 
@@ -279,6 +383,11 @@ class SyCalendarEntry extends Model {
 		return $req->fetchAll();
 	}
 	
+	/**
+	 * Get the emails address of the users who booked resorces of a given area
+	 * @param unknown $area_id
+	 * @return multitype:
+	 */
 	public function getEmailsBookerArea($area_id){
 
 		$sql = "SELECT DISTINCT user.email AS email

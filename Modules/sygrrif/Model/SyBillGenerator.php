@@ -7,7 +7,7 @@ require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
 /**
- * Class defining the Sygrrif pricing model
+ * Class containing method that calculate and generate bill files
  *
  * @author Sylvain Prigent
  */
@@ -16,11 +16,11 @@ class SyBillGenerator extends Model {
 	/**
 	 * Generate a bill for a project from calendar entries
 	 * 
-	 * @param unknown $searchDate_start Starting date of the bill
-	 * @param unknown $searchDate_end   End date of the bill
-	 * @param unknown $projectID		Id of the project to bill	
-	 * @param unknown $pricingID		Id of the pricing to use
-	 * @param unknown $billPerReservation	1 if pricing on the number of reservation, 0 on the reservation time
+	 * @param date $searchDate_start Starting date of the bill
+	 * @param date $searchDate_end   End date of the bill
+	 * @param number $projectID		Id of the project to bill	
+	 * @param number $pricingID		Id of the pricing to use
+	 * @param number $billPerReservation	1 if pricing on the number of reservation, 0 on the reservation time
 	 */
 	public function generateProjectBill($searchDate_start, $searchDate_end, $projectID, $pricingID, $billPerReservation){
 		
@@ -332,6 +332,14 @@ class SyBillGenerator extends Model {
 		$objWriter->save('php://output');
 	}
 	
+	/**
+	 *  Generate a bill for a unit from calendar entries
+	 *  
+	 * @param unknown $searchDate_start Starting date of the bill
+	 * @param unknown $searchDate_end   End date of the bill
+	 * @param number $unit_id ID of the unit to bill
+	 * @param number $responsible_id ID of the responsible to bill
+	 */
 	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
 		
@@ -1380,6 +1388,13 @@ class SyBillGenerator extends Model {
 			
 	}
 
+	/**
+	 * Generate a counting of the reserrvations for a given unit
+	 * @param date $searchDate_start Starting date of the counting
+	 * @param date $searchDate_end   End date of the counting
+	 * @param number $unit_id ID of the unit to count
+	 * @param number $responsible_id ID of the responsible to count
+	 */
 	public function generateCounting($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
 		require_once ("externals/PHPExcel/Classes/PHPExcel.php");
@@ -1809,6 +1824,13 @@ class SyBillGenerator extends Model {
 		
 	}
 	
+	/**
+	 * Generate a file containing the de details of all the reservation of a unit in a given period
+	 * @param unknown $searchDate_start Starting date of the bill
+	 * @param unknown $searchDate_end   End date of the bill
+	 * @param number $unit_id ID of the unit to bill
+	 * @param number $responsible_id ID of the responsible to bill
+	 */
 	public function generateDetail($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
 		include_once ("externals/PHPExcel/Classes/PHPExcel.php");
@@ -2171,6 +2193,11 @@ class SyBillGenerator extends Model {
 		$writer->save('php://output');
 	}
 	
+	/**
+	 * Internal method to set the bill number in the template file
+	 * @param unknown $objPHPExcel Template file
+	 * @return unknown Template file
+	 */
 	protected function replaceBillNumber($objPHPExcel){
 		// replace the bill number
 		// calculate the number
@@ -2228,6 +2255,11 @@ class SyBillGenerator extends Model {
 		return $output;
 	}
 	
+	/**
+	 * Internal method to set the bill date in the template file
+	 * @param unknown $objPHPExcel Template file
+	 * @return unknown Template filewn
+	 */
 	protected function replaceDate($objPHPExcel){
 		// replace the date
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -2252,6 +2284,11 @@ class SyBillGenerator extends Model {
 		return $objPHPExcel;
 	}
 	
+	/**
+	 * Internal method get the line index where the bill table starts
+	 * @param unknown $objPHPExcel Template file
+	 * @return number Line index
+	 */
 	protected function getTableLine($objPHPExcel){
 		$insertLine = 0;
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -2267,6 +2304,12 @@ class SyBillGenerator extends Model {
 		return $insertLine;
 	}
 	
+	/**
+	 * Internal method to set the bill roject name in the template file
+	 * @param unknown $objPHPExcel Template file
+	 * @param string $projectName Project name
+	 * @return unknown Template file
+	 */
 	public function replaceProject($objPHPExcel, $projectName){
 		// replace the date
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();

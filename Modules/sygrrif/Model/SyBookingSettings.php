@@ -3,7 +3,8 @@
 require_once 'Framework/Model.php';
 
 /**
- * Class defining the booking settings model
+ * Class defining the booking settings model.
+ * It is used to print a booking summary in the calendar table
  *
  * @author Sylvain Prigent
  */
@@ -31,6 +32,9 @@ class SyBookingSettings extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Set the default entries
+	 */
 	public function defaultEntries(){
 		$this->setEntry("User", 1, 1, 1, "normal");
 		$this->setEntry("Phone", 1, 1, 2, "normal");
@@ -38,6 +42,11 @@ class SyBookingSettings extends Model {
 		$this->setEntry("Desc", 0, 0, 4, "normal");
 	}
 	
+	/**
+	 * Get the list of all entries
+	 * @param string $sortEntry
+	 * @return array List of the entries
+	 */
 	public function entries($sortEntry = "id"){
 		
 		try{
@@ -55,6 +64,15 @@ class SyBookingSettings extends Model {
 		}
 	}
 	
+	/**
+	 * Add en entry
+	 * @param string $tag_name
+	 * @param Number $is_visible
+	 * @param Number $is_tag_visible
+	 * @param Number $display_order
+	 * @param string $font
+	 * @return string
+	 */
 	public function addEntry($tag_name, $is_visible, $is_tag_visible, 
 			                 $display_order, $font){
 		$sql = "insert into sy_booking_settings(tag_name, is_visible, is_tag_visible, 
@@ -65,6 +83,11 @@ class SyBookingSettings extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	/**
+	 * Check if an entry exists
+	 * @param string $tag_name
+	 * @return boolean
+	 */
 	public function isEntry($tag_name){
 		$sql = "select id from sy_booking_settings where tag_name=?";
 		$data = $this->runRequest ( $sql, array (
@@ -76,6 +99,14 @@ class SyBookingSettings extends Model {
 			return false;
 	}
 	
+	/**
+	 * Set en entry (add if not axists, otherwise update)
+	 * @param string $tag_name
+	 * @param number $is_visible
+	 * @param number $is_tag_visible
+	 * @param number $display_order
+	 * @param string $font
+	 */
 	public function setEntry($tag_name, $is_visible, $is_tag_visible, 
 			                 $display_order, $font){
 		if (!$this->isEntry($tag_name)){
@@ -87,6 +118,11 @@ class SyBookingSettings extends Model {
 		}
 	}
 	
+	/**
+	 * Get the ID of an entry from it name
+	 * @param string $tag_name
+	 * @return number
+	 */
 	public function getEntryID($tag_name){
 		$sql = "select id from sy_booking_settings where tag_name=?";
 		$req = $this->runRequest($sql, array($tag_name));
@@ -94,12 +130,26 @@ class SyBookingSettings extends Model {
 		return $tmp[0];
 	}
 	
+	/**
+	 * Get entry from ID
+	 * @param number $id
+	 * @return array entry info
+	 */
 	public function getEntry($id){
 		$sql = "select * from sy_booking_settings where id=?";
 		$req = $this->runRequest($sql, array($id));
 		return $req->fetch();
 	}
 	
+	/**
+	 * Update the informations of an entry
+	 * @param number $id
+	 * @param string $tag_name
+	 * @param number $is_visible
+	 * @param number $is_tag_visible
+	 * @param number $display_order
+	 * @param string $font
+	 */
 	public function updateEntry($id, $tag_name, $is_visible, $is_tag_visible, 
 			                 $display_order, $font){
 		$sql = "update sy_booking_settings set tag_name=?, is_visible=?, is_tag_visible=?, 
@@ -109,6 +159,15 @@ class SyBookingSettings extends Model {
 			                 $display_order, $font, $id));
 	}
 	
+	/**
+	 * Get the summary of a reservation 
+	 * @param string $user User name
+	 * @param string $phone User phone
+	 * @param string $short_desc Reservation short description
+	 * @param string $desc Reservation log description
+	 * @param boolean $displayHorizontal
+	 * @return string Summmary in HTML
+	 */
 	public function getSummary($user, $phone, $short_desc, $desc, $displayHorizontal = true){
 		
 		$lang = "En";
@@ -138,6 +197,17 @@ class SyBookingSettings extends Model {
 		return $summary;
 	}
 	
+	/**
+	 * Generate an HTML display of a reservation summary
+	 * @param unknown $i
+	 * @param unknown $summary
+	 * @param unknown $entryList
+	 * @param unknown $content
+	 * @param unknown $displayHorizontal
+	 * @param unknown $tagNameTr
+	 * @param unknown $last
+	 * @return Ambigous <string, unknown>
+	 */
 	protected function summaryEntry($i, $summary, $entryList, $content, $displayHorizontal, $tagNameTr, $last){
 		
 		if ($entryList[$i]['is_visible'] == 1){

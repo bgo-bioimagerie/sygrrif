@@ -18,9 +18,17 @@ require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResourceType.php';
 
+/**
+ * SyGRRif management pages
+ * @author sprigent
+ *
+ */
 class ControllerSygrrif extends ControllerBooking {
 
-	
+	/**
+	 * Check if the user have the right to view SyGRRif pages
+	 * @return boolean
+	 */
 	private function secureCheck(){
 		if ( $_SESSION["user_status"] < 3){
 			echo "Permission denied "; 
@@ -29,10 +37,17 @@ class ControllerSygrrif extends ControllerBooking {
 		return false;
 	}
 	
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 	}
 
-	// Affiche la liste de tous les billets du blog
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 		if($this->secureCheck()){
@@ -47,6 +62,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * List of the areas
+	 */
 	public function areas(){
 		
 		if($this->secureCheck()){
@@ -68,6 +86,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Delete an area
+	 */
 	public function deletearea(){
 		
 		if($this->secureCheck()){
@@ -85,6 +106,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect("sygrrif", "areas");
 	}
 	
+	/**
+	 * Form to edit an area
+	 */
 	public function editarea(){
 		
 		if($this->secureCheck()){
@@ -106,6 +130,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/*
+	 * query to edit the area in the database
+	 */
 	public function editareaquery(){
 		
 		if($this->secureCheck()){
@@ -123,6 +150,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect("sygrrif", "areas");
 	}
 	
+	/**
+	 * Form to add an area
+	 */
 	public function addarea(){
 		
 		if($this->secureCheck()){
@@ -135,6 +165,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to add an area in the database
+	 */
 	public function addareaquery(){
 		
 		if($this->secureCheck()){
@@ -152,7 +185,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect("sygrrif", "areas");
 	}
 	
-	
+	/**
+	 * Statistics form pages
+	 */
 	public function statistics(){
 		
 		if($this->secureCheck()){
@@ -165,6 +200,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	} 
 	
+	/**
+	 * Calculate an view the statistics
+	 */
 	public function statisticsquery(){
 		
 		$lang = "En";
@@ -245,6 +283,9 @@ class ControllerSygrrif extends ControllerBooking {
 	}
 	
 	// pricing
+	/**
+	 * List of pricings
+	 */
 	public function pricing(){	
 		
 		if($this->secureCheck()){
@@ -266,7 +307,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
-	
+	/**
+	 * Form to add a pricing
+	 */
 	public function addpricing(){
 		
 		if($this->secureCheck()){
@@ -279,6 +322,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to add a pricing
+	 */
 	public function addpricingquery(){
 		
 		if($this->secureCheck()){
@@ -329,6 +375,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Form to edit a pricing
+	 */
 	public function editpricing(){
 		
 		if($this->secureCheck()){
@@ -351,6 +400,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to edit a pricing
+	 */
 	public function editpricingquery(){
 		
 		if($this->secureCheck()){
@@ -398,6 +450,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * List of pricing per unit
+	 */
 	public function unitpricing(){
 		
 		if($this->secureCheck()){
@@ -413,6 +468,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Form to add a pricing for a unit
+	 */
 	public function addunitpricing(){
 		
 		if($this->secureCheck()){
@@ -432,6 +490,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to add a pricing for a unit
+	 */
 	public function addunitpricingquery(){
 		
 		if($this->secureCheck()){
@@ -451,6 +512,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Form to edit a pricing to a unit
+	 */
 	public function editunitpricing(){
 		
 		if($this->secureCheck()){
@@ -488,6 +552,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to edit a pricing for a unit
+	 */
 	public function editunitpricingquery(){
 		
 		if($this->secureCheck()){
@@ -507,6 +574,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * List of all the resources
+	 */
 	public function resources(){
 		
 		if($this->secureCheck()){
@@ -528,6 +598,9 @@ class ControllerSygrrif extends ControllerBooking {
 		
 	}
 	
+	/**
+	 * Form to add a resource
+	 */
 	public function addresource(){
 		
 		if($this->secureCheck()){
@@ -556,6 +629,9 @@ class ControllerSygrrif extends ControllerBooking {
 		}
 	}
 	
+	/**
+	 * List of the resources categories
+	 */
 	public function resourcescategory(){
 		
 		if($this->secureCheck()){
@@ -579,6 +655,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Form to add a resource category
+	 */
 	public function addresourcescategory(){
 		
 		if($this->secureCheck()){
@@ -591,6 +670,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to add a resource category
+	 */
 	public function addresourcescategoryquery(){
 	
 		if($this->secureCheck()){
@@ -607,6 +689,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "resourcescategory" );
 	}
 	
+	/**
+	 * Form to edit a resource category
+	 */
 	public function editresourcescategory(){
 	
 		if($this->secureCheck()){
@@ -630,6 +715,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to edit a resources category
+	 */
 	public function editresourcescategoryquery(){
 	
 		if($this->secureCheck()){
@@ -647,6 +735,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "resourcescategory" );
 	}
 	
+	/**
+	 * delete a resource category
+	 */
 	public function deleteresourcecategory(){
 		
 		if($this->secureCheck()){
@@ -664,6 +755,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect("sygrrif", "resourcescategory");
 	}
 	
+	/**
+	 * List of Visa
+	 */
 	public function visa(){
 		
 		if($this->secureCheck()){
@@ -687,6 +781,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Form to add a visa
+	 */
 	public function addvisa(){
 	
 		if($this->secureCheck()){
@@ -699,6 +796,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * query to add a visa
+	 */
 	public function addvisaquery(){
 		
 		if($this->secureCheck()){
@@ -715,6 +815,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "visa" );
 	}
 	
+	/**
+	 * Form to edit a visa
+	 */
 	public function editvisa(){
 		
 		if($this->secureCheck()){
@@ -738,6 +841,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to edit a visa
+	 */
 	public function editvisaquery(){
 		
 		if($this->secureCheck()){
@@ -755,6 +861,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "visa" );
 	} 
 	
+	/**
+	 * Delete  visa
+	 */
 	public function deletevisa(){
 		
 		if($this->secureCheck()){
@@ -773,6 +882,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "visa" );
 	}
 	
+	/**
+	 * List of all authorizations
+	 */
 	public function authorizations(){
 		
 		if($this->secureCheck()){
@@ -797,6 +909,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * List of unactive authorizations
+	 */
 	public function uauthorizations(){
 		
 		if($this->secureCheck()){
@@ -822,6 +937,9 @@ class ControllerSygrrif extends ControllerBooking {
 		),"authorizations" );
 	}
 	
+	/**
+	 * Form to add an authorization
+	 */
 	public function addauthorization(){
 		
 		if($this->secureCheck()){
@@ -856,6 +974,9 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	}
 	
+	/**
+	 * Form to edit an authorization
+	 */
 	public function editauthorization(){
 		
 		// get sort action
@@ -898,6 +1019,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to edit an authorization
+	 */
 	public function editauthorizationsquery(){
 		
 		$lang = "En";
@@ -931,6 +1055,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "authorizations" );
 	}
 	
+	/**
+	 * Query to add an authorization
+	 */
 	public function addauthorizationsquery(){
 		
 		$lang = "En";
@@ -954,6 +1081,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "authorizations" );
 	}
 	
+	/**
+	 * Form to generate a bill for a unit
+	 */
 	public function statpriceunits(){
 		
 		$lang = "En";
@@ -1066,6 +1196,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 *  Generate bill query
+	 */
 	public function output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id){
 		
 		if ($export_type == 1){
@@ -1088,6 +1221,9 @@ class ControllerSygrrif extends ControllerBooking {
 		}
 	}
 	
+	/**
+	 * Form to generate statistics for authorizations
+	 */
 	public function statauthorizations(){
 		
 		$lang = "En";
@@ -1232,6 +1368,9 @@ class ControllerSygrrif extends ControllerBooking {
 	
 	}
 	
+	/**
+	 * Query that generates the authorizations detailled statistics file
+	 */
 	public function statauthorizationsdetailcsv(){
 		
 		$lang = "En";
@@ -1270,6 +1409,9 @@ class ControllerSygrrif extends ControllerBooking {
 
 	}
 	
+	/**
+	 * Query that generates the authorizations counting statistics file
+	 */
 	public function statauthorizationscountingcsv(){
 		$searchDate_start = $this->request->getSession()->getAttribut('searchDate_start');
 		$searchDate_end = $this->request->getSession()->getAttribut('searchDate_end');
@@ -1297,6 +1439,11 @@ class ControllerSygrrif extends ControllerBooking {
 		
 	}
 	
+	/**
+	 * View the booking calendar
+	 * 
+	 * @throws Exception
+	 */
 	public function booking(){
 
 		$id_resource = $this->request->getParameterNoException('id_resource');
@@ -1382,6 +1529,9 @@ class ControllerSygrrif extends ControllerBooking {
 		
 	}
 	
+	/**
+	 * Shows the color codes table
+	 */
 	public function colorcodes(){
 		// get sort action
 		$sortentry = "id";
@@ -1400,6 +1550,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Form to add a color code
+	 */
 	public function addcolorcode(){
 	
 		$navBar = $this->navBar();
@@ -1408,6 +1561,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Quey to add a color code
+	 */
 	public function addcolorcodequery(){
 	
 		// get form variables
@@ -1423,6 +1579,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}
 	
+	/**
+	 * Form to edit a color code
+	 */
 	public function editcolorcode(){
 	
 		// get user id
@@ -1442,6 +1601,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to edit a color code
+	 */
 	public function editcolorcodequery(){
 		$navBar = $this->navBar ();
 	
@@ -1458,6 +1620,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}
 	
+	/**
+	 * Query to delete a color code
+	 */
 	public function deletecolorcode(){
 		// get user id
 		$ccId = 0;
@@ -1472,6 +1637,10 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}
 	
+	/**
+	 * Form to make several resources unavailable
+	 * @param string $errormessage
+	 */
 	public function blockresources($errormessage = ""){
 		
 		$modelResources = new SyResource();
@@ -1489,6 +1658,9 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
+	/**
+	 * Query to make several resources unavailable
+	 */
 	public function blockresourcesquery(){
 		$lang = "En";
 		if (isset($_SESSION["user_settings"]["language"])){

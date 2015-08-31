@@ -21,12 +21,25 @@ require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 require_once 'Modules/mailer/Model/MailerSend.php';
 
+/**
+ * Controller for the calendar booking pages
+ *  
+ * @author sprigent
+ *
+ */
 class ControllerCalendar extends ControllerBooking {
 
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 	}
 	
+	/**
+	 * Edit form for a resource of type "calendar"
+	 */
 	public function editcalendarresource(){
 		
 		$id = "";
@@ -135,6 +148,9 @@ class ControllerCalendar extends ControllerBooking {
 		
 	}
 	
+	/**
+	 * Edit query for a resource of type "calendar"
+	 */
 	public function editcalendarresourcequery(){
 		
 		// general data
@@ -218,6 +234,9 @@ class ControllerCalendar extends ControllerBooking {
 		$this->redirect("sygrrif", "resources");
 	}
 	
+	/**
+	 * Remove a resource of type "calendar"
+	 */
 	public function deletecalendarresource(){
 		
 		$id_resource = "";
@@ -236,6 +255,9 @@ class ControllerCalendar extends ControllerBooking {
 		$this->redirect("sygrrif", "resources");
 	}
 	
+	/**
+	 * Edit form for a resource of type "unitary"
+	 */
 	public function editunitaryresource(){
 	
 		$id = "";
@@ -341,6 +363,9 @@ class ControllerCalendar extends ControllerBooking {
 	
 	}
 	
+	/**
+	 * Edit qurey for a resource of type "unitary"
+	 */
 	public function editunitaryresourcequery(){
 	
 		// general data
@@ -413,6 +438,9 @@ class ControllerCalendar extends ControllerBooking {
 		$this->redirect("sygrrif", "resources");
 	}
 	
+	/**
+	 * Edit form for a resource of type "time unitary"
+	 */
 	public function edittimeunitaryresource(){
 		
 		$id = "";
@@ -508,7 +536,11 @@ class ControllerCalendar extends ControllerBooking {
 		) );
 	}
 	
-	
+	/**
+	 * Get the base information of a resource
+	 * 
+	 * @return array resource base informations
+	 */
 	private function getResourceBase(){
 		// general data
 		$id = $this->request->getParameterNoException('id');
@@ -529,6 +561,10 @@ class ControllerCalendar extends ControllerBooking {
 		return $resource_base;
 	}
 	
+	/**
+	 * Get specific informations of a resource of type "calendar"
+	 * @return multitype:string unknown
+	 */
 	private function getResourceInfo(){
 		// specific to calendar query
 		$supplynames = $this->request->getParameter("supplynames");
@@ -563,6 +599,9 @@ class ControllerCalendar extends ControllerBooking {
 		return $resource_info;
 	}
 	
+	/**
+	 * form to edit the prices for a resource of type "unitary"
+	 */
 	public function edittimeunitaryresourceprices(){
 		
 		// general data
@@ -608,6 +647,9 @@ class ControllerCalendar extends ControllerBooking {
 		) ); 
 	}
 	
+	/**
+	 * query to edit the prices for a resource of type "unitary"
+	 */
 	public function edittimeunitaryresourcequery(){
 	
 		// general data
@@ -673,6 +715,10 @@ class ControllerCalendar extends ControllerBooking {
 		$this->redirect("sygrrif", "resources");
 	}
 	
+	/**
+	 * Entry function to view a calendar/booking page
+	 * @param string $message
+	 */
 	public function book($message = ""){
 		
 		$lastView = "";
@@ -697,6 +743,10 @@ class ControllerCalendar extends ControllerBooking {
 		$this->bookday($message);
 	}
 	
+	/**
+	 * View a calendar booking page in day mode
+	 * @param string $message
+	 */
 	public function bookday($message = ""){
 		
 		$_SESSION['lastbookview'] = "bookday";
@@ -797,6 +847,10 @@ class ControllerCalendar extends ControllerBooking {
 		),"bookday" );
 	}
 	
+	/**
+	 * View a calendar booking page in week mode
+	 * @param string $message
+	 */
 	public function bookweek($message = ""){
 	
 		$_SESSION['lastbookview'] = "bookweek";
@@ -912,6 +966,10 @@ class ControllerCalendar extends ControllerBooking {
 		
 	}
 	
+	/**
+	 * View a calendar booking page in month mode
+	 * @param string $message
+	 */
 	public function bookmonth($message = ""){
 	
 		$_SESSION['lastbookview'] = "bookmonth";
@@ -1030,6 +1088,10 @@ class ControllerCalendar extends ControllerBooking {
 		), "bookmonth");
 	}
 	
+	/**
+	 * View a calendar booking page in multiple ressource per week mode 
+	 * @param string $message
+	 */
 	public function bookweekarea($message = ""){
 	
 		$_SESSION['lastbookview'] = "bookweekarea";
@@ -1153,6 +1215,9 @@ class ControllerCalendar extends ControllerBooking {
 		), "bookweekarea");
 	}
 	
+	/**
+	 * Form to edit a reservation
+	 */
 	public function editreservation(){
 		
 		// get the action
@@ -1343,7 +1408,11 @@ class ControllerCalendar extends ControllerBooking {
 		}
 	}
 	
-	
+	/**
+	 * Internal method
+	 * @param number $val
+	 * @return boolean
+	 */
 	private function isMinutes($val){
 		if (intval($val) < 0 || intval($val) > 60){
 			//echo "minut not in [0, 60] <br/>";
@@ -1353,6 +1422,11 @@ class ControllerCalendar extends ControllerBooking {
 		
 	}
 	
+	/**
+	 * Internal method
+	 * @param number $val
+	 * @return boolean
+	 */
 	private function isHour($val){
 		
 		if (intval($val) < 0 || intval($val) > 23){
@@ -1361,7 +1435,10 @@ class ControllerCalendar extends ControllerBooking {
 		return true;
 		
 	}
-		
+
+	/**
+	 * Query to edit the reservation
+	 */
 	public function editreservationquery(){
 		
 		$lang = "En";
@@ -1577,12 +1654,30 @@ class ControllerCalendar extends ControllerBooking {
 		//$this->redirect("calendar", "book");
 	}
 	
+	/**
+	 * Add suplementary informations to a reservation
+	 * @param array $calsupNames Keys of the suplementary informations 
+	 * @param array $calsupValues Values of the suplementary informations   
+	 * @param number $reservation_id ID of the information to edit
+	 */
 	private function addSuplementaryInfo($calsupNames, $calsupValues, $reservation_id){
 		
 		$modelCalSup = new SyCalSupplementary();
 		$modelCalSup->setEntrySupData($calsupNames, $calsupValues, $reservation_id);
 	}
 	
+	/**
+	 * Send email to advice user that a manager udpate his reservation
+	 * @param date $start_time
+	 * @param date $end_time
+	 * @param number $resource_id
+	 * @param number $booked_by_id
+	 * @param number $recipient_id
+	 * @param string $short_description
+	 * @param string $full_description
+	 * @param number $quantity
+	 * @param number $editstatus
+	 */
 	private function sendEditReservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 						$short_description, $full_description, $quantity, $editstatus){
 		
@@ -1649,6 +1744,9 @@ class ControllerCalendar extends ControllerBooking {
 		
 	}
 	
+	/**
+	 * Remove a reservation query
+	 */
 	public function removeentry(){
 		// get the action
 		$id = '';
@@ -1666,6 +1764,9 @@ class ControllerCalendar extends ControllerBooking {
 		$this->book($message);
 	}
 	
+	/**
+	 * Remove a series of reservation
+	 */
 	public function removeseries(){
 		// get the action
 		$id = '';
@@ -1682,6 +1783,9 @@ class ControllerCalendar extends ControllerBooking {
 		$this->book($message);
 	}
 	
+	/**
+	 * Main booking page
+	 */
 	public function booking(){
 		// get the menu info
 		$id_resource = $this->request->getSession()->getAttribut('id_resource');

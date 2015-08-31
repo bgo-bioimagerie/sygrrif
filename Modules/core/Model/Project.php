@@ -3,7 +3,8 @@
 require_once 'Framework/Model.php';
 
 /**
- * Class defining the Unit model
+ * Class defining the Project model.
+ * This is a minimal project. Extend it to create your own project manager module.
  *
  * @author Sylvain Prigent
  */
@@ -79,6 +80,10 @@ class Project extends Model {
 		return $projects->fetchAll();
 	}
 	
+	/**
+	 * Return all the project that have the status "open"
+	 * @return multitype:
+	 */
 	public function openedProjectsIDName(){
 		$sql = "select id, name from core_projects where status=1 ORDER BY name";
 		$projects = $this->runRequest($sql);
@@ -111,7 +116,11 @@ class Project extends Model {
 		$project = $this->runRequest($sql, array("".$name."", "".$description."", $id));
 	}
 	
-	
+	/**
+	 * Check if a project exists
+	 * @param string $name project name
+	 * @return boolean
+	 */
 	public function isProject($name){
 		$sql = "select * from core_projects where name=?";
 		$project = $this->runRequest($sql, array($name));
@@ -121,6 +130,11 @@ class Project extends Model {
 			return false;
 	}
 	
+	/**
+	 * set a project (add if not exists)
+	 * @param string $name Project name
+	 * @param string $description Project description
+	 */
 	public function setProject($name, $description){
 		if (!$this->isProject($name)){
 			$this->addProject($name, $description);

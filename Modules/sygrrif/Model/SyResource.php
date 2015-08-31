@@ -11,7 +11,7 @@ require_once 'Framework/Model.php';
 class SyResource extends Model {
 
 	/**
-	 * Create the unit table
+	 * Create the resource table
 	 *
 	 * @return PDOStatement
 	 */
@@ -33,12 +33,35 @@ class SyResource extends Model {
 		return $pdo;
 	}
 	
+	/**
+	 * Add a ne resource
+	 * @param unknown $name
+	 * @param unknown $description
+	 * @param unknown $accessibility_id
+	 * @param unknown $type_id
+	 * @param unknown $area_id
+	 * @param number $category_id
+	 * @param number $display_order
+	 * @return string
+	 */
 	public function addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0, $display_order = 0){
 		$sql = "INSERT INTO sy_resources (name, description, accessibility_id, type_id, area_id, category_id, display_order) VALUES(?, ?, ?, ?, ?,?,?)";
 		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	/**
+	 * import resource (used for grr database import)
+	 * @param unknown $id
+	 * @param unknown $name
+	 * @param unknown $description
+	 * @param unknown $accessibility_id
+	 * @param unknown $type_id
+	 * @param unknown $area_id
+	 * @param number $category_id
+	 * @param number $display_order
+	 * @return string
+	 */
 	public function importResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0, $display_order = 0){
 		
 		if( $this->isResource($id)){
@@ -51,6 +74,11 @@ class SyResource extends Model {
 		}
 	}
 	
+	/**
+	 * Check if a resource exists
+	 * @param number $id
+	 * @return boolean
+	 */
 	public function isResource($id){
 		$sql = "select * from sy_resources where id=?";
 		$unit = $this->runRequest($sql, array($id));
@@ -60,6 +88,11 @@ class SyResource extends Model {
 			return false;
 	}
 	
+	/**
+	 * Get an area ID for a given resource
+	 * @param name $id resource ID
+	 * @return mixed|boolean
+	 */
 	public function getAreaID($id){
 		$sql = "select area_id from sy_resources where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -72,6 +105,17 @@ class SyResource extends Model {
 		}
 	}
 
+	/**
+	 * Update a resource info
+	 * @param unknown $id
+	 * @param unknown $name
+	 * @param unknown $description
+	 * @param unknown $accessibility_id
+	 * @param unknown $type_id
+	 * @param unknown $area_id
+	 * @param unknown $category_id
+	 * @param unknown $display_order
+	 */
 	public function editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order){
 		$sql = "update sy_resources set name=?, description=?, accessibility_id=?, type_id=?, area_id=?,
 				category_id=?, display_order=?  where id=?";
@@ -79,9 +123,9 @@ class SyResource extends Model {
 	}
 	
 	/**
-	 * Get the resources grr_ids and names
-	 *
-	 * @return array
+	 * Get the resources table infos
+	 * @param unknown $sortEntry
+	 * @return multitype:
 	 */
 	public function resources($sortEntry){
 			
@@ -91,6 +135,11 @@ class SyResource extends Model {
 		
 	}
 	
+	/**
+	 * Get the resources info with join on IDs
+	 * @param string $sortentry
+	 * @return multitype:
+	 */
 	public function resourcesInfo($sortentry = "id"){
 		
 		$sqlSort = "sy_resources.id";
@@ -126,6 +175,11 @@ class SyResource extends Model {
 		return $req->fetchAll ();
 	}
 	
+	/**
+	 * Get a resource info from ID
+	 * @param unknown $id
+	 * @return mixed|number
+	 */
 	public function resource($id){
 		$sql = "select * from sy_resources where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -135,18 +189,33 @@ class SyResource extends Model {
 			return 0;
 	}
 	
+	/**
+	 * Get the resources IDs and names for a given Area
+	 * @param unknown $areaId
+	 * @return multitype:
+	 */
 	public function resourceIDNameForArea($areaId){
 		$sql = "select id, name from sy_resources where area_id=? ORDER BY display_order";
 		$data = $this->runRequest($sql, array($areaId));
 		return $data->fetchAll();
 	}
 	
+	/**
+	 * Get the resources info for a given area
+	 * @param unknown $areaId
+	 * @return multitype:
+	 */
 	public function resourcesForArea($areaId){
 		$sql = "select * from sy_resources where area_id=? ORDER BY display_order";
 		$data = $this->runRequest($sql, array($areaId));
 		return $data->fetchAll();
 	}
 	
+	/**
+	 * Get the first resource ID for a given area
+	 * @param unknown $areaId
+	 * @return mixed
+	 */
 	public function firstResourceIDForArea($areaId){
 		$sql = "select id from sy_resources where area_id=?";
 		$req = $this->runRequest($sql, array($areaId));
@@ -154,6 +223,11 @@ class SyResource extends Model {
 		return $tmp[0];
 	}
 	
+	/**
+	 * get the type of a given resource
+	 * @param number $id
+	 * @return number
+	 */
 	public function getResourceType($id){
 		$sql = "select type_id from sy_resources where id=?";
 		$req = $this->runRequest($sql, array($id));
@@ -166,22 +240,41 @@ class SyResource extends Model {
 		}
 	}
 	
+	/**
+	 * Update the category of a resource
+	 * @param number $id_resource
+	 * @param number $id_category
+	 */
 	public function setResourceCategory($id_resource, $id_category){
 		$sql = "update sy_resources set category_id=? where id=?";
 		$this->runRequest($sql, array($id_category, $id_resource));
 	}
 	
+	/**
+	 * Remove a resource
+	 * @param number $id_resource
+	 */
 	public function delete($id_resource){
 		$sql="DELETE FROM sy_resources WHERE id = ?";
 		$req = $this->runRequest($sql, array($id_resource));
 	}
 	
+	/**
+	 * get resource info from it name
+	 * @param unknown $name
+	 * @return mixed
+	 */
 	public function getResourceFromName($name){
 		$sql = "select * from sy_resources where name=?";
 		$data = $this->runRequest($sql, array($name));
 		return $data->fetch();
 	}
 	
+	/**
+	 * get the resources IDs for a given category
+	 * @param number $category
+	 * @return multitype:
+	 */
 	public function resourcesFromCategory($category){
 		$sql = "select id from sy_resources where category_id=?";
 		$data = $this->runRequest($sql, array($category));

@@ -3,13 +3,20 @@
 require_once 'Framework/Model.php';
 
 /**
- * Class defining the config model
- *
+ * User connection using LDAP
+ * Adapted from GRR
  * @author Sylvain Prigent
  */
 class CoreLdap extends Model {
 	
-
+	/**
+	 * Try to log a user
+	 * @param string $_login
+	 * @param string $_password
+	 * @param string $_user_ext_authentifie
+	 * @param array $tab_login
+	 * @param array $tab_groups
+	 */
 	function ldap_query($_login, $_password, $_user_ext_authentifie = '', $tab_login = array(), $tab_groups = array()){
 	
 		// On initialise au cas où on ne réussisse pas à récupérer les infos dans l'annuaire.

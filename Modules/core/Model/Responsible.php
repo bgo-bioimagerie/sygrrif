@@ -61,14 +61,17 @@ class Responsible extends Model {
 		}
 	}
 	
+	/**
+	 * Remove a responsible from his ID
+	 * @param number $id_user User ID
+	 */
 	public function removeResponsible($id_user){
 		// test if the user is already responsible
 		$sql = "SELECT EXISTS(SELECT 1 FROM core_responsibles WHERE id_users = ?)";
 		
 		$exists = $this->runRequest($sql, array($id_user));
 		$out = $exists->fetch();
-		
-		//echo "exists = " . $out[0] . "<br/>";
+	
 		
 		if ($out[0] != 0){
 			$sql="DELETE FROM core_responsibles WHERE id_users = ?";
@@ -94,6 +97,10 @@ class Responsible extends Model {
 		return true;
 	}
 	
+	/**
+	 * Set a user responsible
+	 * @param unknown $id_user
+	 */
 	public function setResponsible($id_user){
 		if (!$this->isResponsible($id_user)){
 			$this->addResponsible($id_user);
@@ -153,6 +160,11 @@ class Responsible extends Model {
 		return $resps;
 	}
 	
+	/**
+	 * Get the responsible of a given user
+	 * @param number $user_id ID of the user to get the responsible
+	 * @return number ID of the responsible
+	 */
 	public function getUserResponsible($user_id){
 		 $sql = "SELECT id_responsible FROM core_users WHERE id=?";
 		 $respPDO = $this->runRequest($sql, array($user_id));

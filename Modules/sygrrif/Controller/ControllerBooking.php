@@ -4,8 +4,21 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 
+/**
+ * Controller containing the common methods for the calendar booking pages
+ * 
+ * @author sprigent
+ *
+ */
 abstract class ControllerBooking extends ControllerSecureNav {
 
+	/**
+	 * Get the content of of the booking menu for the calendar pages
+	 * @param number $curentAreaId ID of the curent area
+	 * @param number $curentResourceId ID of the current resource
+	 * @param date $curentDate Curent date
+	 * @return array: booking menu content
+	 */
 	public function calendarMenuData($curentAreaId, $curentResourceId, $curentDate){
 	
 		$modelArea = new SyArea();
@@ -20,13 +33,6 @@ abstract class ControllerBooking extends ControllerSecureNav {
 		$modelResource = new SyResource();
 		$resources = $modelResource->resourceIDNameForArea($curentAreaId);
 		
-		/*
-		echo "curentAreaId id = " . $curentAreaId . "</br>"; 
-		print_r($resources);
-		echo "areas </br>";
-		print_r($areas);
-		*/
-		
 		return array('areas' => $areas, 
 				'resources' => $resources,
 				'curentAreaId' => $curentAreaId, 
@@ -35,13 +41,17 @@ abstract class ControllerBooking extends ControllerSecureNav {
 		);
 	}
 	
+	/**
+	 * Check if a given user is allowed to book a ressource
+	 * @param number $id_resourcecategory ID of the resource category
+	 * @param number $resourceAccess Type of users who can access the resource
+	 * @param number $id_user User ID
+	 * @param number $userStatus User status
+	 * @param number $curentDateUnix Curent date in unix format 
+	 * @return boolean
+	 */
 	protected function hasAuthorization($id_resourcecategory, $resourceAccess, $id_user, $userStatus, $curentDateUnix){
 
-		//echo "curentDateUnix = " .$curentDateUnix . "</br>";
-		//echo "time = " .time() . "</br>";
-		
-		//echo "resource access = " . $resourceAccess . "</br>"; 
-		//echo "userStatus = " . $userStatus . "</br>";
 		// user cannot book in the past
 		if ($curentDateUnix < mktime(0, 0, 0, date("m", time()), date("d", time()), date("Y", time()) ) && $userStatus < 3){
 			return false;

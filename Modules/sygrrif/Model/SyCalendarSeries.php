@@ -4,7 +4,7 @@ require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
 
 /**
- * Class defining the GRR area model
+ * Model that manage the series calendar entries
  *
  * @author Sylvain Prigent
  */
@@ -12,7 +12,7 @@ class SyCalendarSeries extends Model {
 
 	
 	/**
-	 * Create the calendar entry table
+	 * Create the series calendar entry table
 	 *
 	 * @return PDOStatement
 	 */
@@ -41,7 +41,23 @@ class SyCalendarSeries extends Model {
 	}
 	
 	
-	
+	/**
+	 * Add a series entry
+	 * @param unknown $start_time
+	 * @param unknown $end_time
+	 * @param unknown $series_type_id
+	 * @param unknown $end_date
+	 * @param unknown $days_option
+	 * @param unknown $resource_id
+	 * @param unknown $booked_by_id
+	 * @param unknown $recipient_id
+	 * @param unknown $last_update
+	 * @param unknown $color_type_id
+	 * @param unknown $short_description
+	 * @param unknown $full_description
+	 * @param number $quantity
+	 * @return string
+	 */
 	public function addEntry($start_time, $end_time, $series_type_id, $end_date, $days_option,
 							 $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id,
 							 $short_description, $full_description, $quantity = 0){
@@ -58,12 +74,34 @@ class SyCalendarSeries extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	/**
+	 * Get the informations of an entry from it ID
+	 * @param unknown $id
+	 * @return mixed
+	 */
 	public function getEntry($id){
 		$sql = "select * from sy_calendar_series where id=?";
 		$req = $this->runRequest($sql, array($id));
 		return $req->fetch();
 	}
 	
+	/**
+	 * Update an entry info from it ID
+	 * @param unknown $id
+	 * @param unknown $start_time
+	 * @param unknown $end_time
+	 * @param unknown $series_type_id
+	 * @param unknown $end_date
+	 * @param unknown $days_option
+	 * @param unknown $resource_id
+	 * @param unknown $booked_by_id
+	 * @param unknown $recipient_id
+	 * @param unknown $last_update
+	 * @param unknown $color_type_id
+	 * @param unknown $short_description
+	 * @param unknown $full_description
+	 * @param number $quantity
+	 */
 	public function updateEntry($id, $start_time, $end_time, $series_type_id, $end_date, $days_option,
 							 $resource_id, $booked_by_id, $recipient_id, $last_update, $color_type_id,
 							 $short_description, $full_description, $quantity=0){
@@ -77,6 +115,16 @@ class SyCalendarSeries extends Model {
 							 $short_description, $full_description, $quantity, $id));
 	}
 
+	/**
+	 * Calculate the entries times
+	 * @param unknown $start_time
+	 * @param unknown $end_time
+	 * @param unknown $series_type_id
+	 * @param unknown $days_option
+	 * @param unknown $seriesEndDate
+	 * @throws Exception
+	 * @return multitype:multitype:unknown
+	 */
 	public function entriesDates($start_time, $end_time, $series_type_id, $days_option, $seriesEndDate){
 		
 		$seriesEndDate = explode("-", $seriesEndDate);
@@ -119,6 +167,10 @@ class SyCalendarSeries extends Model {
 		return $entriesTimes;
 	}
 	
+	/**
+	 * Remove an entry series
+	 * @param number $id
+	 */
 	public function removeSeries($id){
 		$sql="DELETE FROM sy_calendar_series WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));

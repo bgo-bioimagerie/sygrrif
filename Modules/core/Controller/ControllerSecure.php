@@ -4,13 +4,16 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
 
 /**
- * Mather class for controller using secure connection
+ * Mother class for controller using secure connection
  * 
  * @author Sylvain Prigent
  */
 abstract class ControllerSecure extends Controller
 {
-
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::runAction()
+	 */
     public function runAction($action)
     {
 

@@ -10,7 +10,7 @@ require_once 'Framework/Model.php';
 class SyVisa extends Model {
 
 	/**
-	 * Create the unit table
+	 * Create the table
 	 * 
 	 * @return PDOStatement
 	 */
@@ -84,6 +84,11 @@ class SyVisa extends Model {
 		$user = $this->runRequest($sql, array($name));		
 	}
 	
+	/**
+	 * Check if a visa exists
+	 * @param unknown $name
+	 * @return boolean
+	 */
 	public function isVisa($name){
 		$sql = "select * from sy_visas where name=?";
 		$unit = $this->runRequest($sql, array($name));
@@ -93,6 +98,10 @@ class SyVisa extends Model {
 			return false;
 	}
 	
+	/**
+	 * Add a visa if not exists
+	 * @param unknown $name
+	 */
 	public function setVisa($name){
 		if (!$this->isVisa($name)){
 			$this->addVisa($name);
@@ -144,7 +153,7 @@ class SyVisa extends Model {
 	}
 	
 	/**
-	 * get the id of a isa from it's name
+	 * get the id of a visa from it's name
 	 * 
 	 * @param string $name Name of the unit
 	 * @throws Exception if the unit connot be found
@@ -159,6 +168,10 @@ class SyVisa extends Model {
 			throw new Exception("Cannot find the visa using the given name");
 	}
 	
+	/**
+	 * Remove a visa
+	 * @param number $id
+	 */
 	public function delete($id){
 		$sql="DELETE FROM sy_visas WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));

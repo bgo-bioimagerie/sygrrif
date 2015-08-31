@@ -89,7 +89,11 @@ class User extends Model {
 		// INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", md5("dupont"), "pierre@dupont.fr");
 	}
 	
-	
+	/**
+	 * Check if a user is active
+	 * @param string $login User login
+	 * @return string Error or success message
+ 	 */
 	public function isActive($login){
 		$sql = "select id, is_active from core_users where login=?";
 		$user = $this->runRequest ( $sql, array (
@@ -132,6 +136,15 @@ class User extends Model {
 			return "Login or password not correct";
 		}
 	}
+	/**
+	 * Verify that a user is in the database 
+	 *
+	 * @param string $login
+	 *        	the login
+	 * @param string $pwd
+	 *        	the password encoded in MD5
+	 * @return boolean True if the user is in the database
+	 */
 	public function connect2($login, $pwd) {
 		$sql = "select id, is_active from core_users where login=? and pwd=?";
 		$user = $this->runRequest ( $sql, array (
@@ -187,6 +200,12 @@ class User extends Model {
 			throw new Exception ( "Cannot find the user using the given parameters" );
 	}
 	
+	/**
+	 * Get the user informations from login
+	 * @param string $login User login
+	 * @throws Exception
+	 * @return array User info (id, login, pwd, id_status, is_active)
+	 */
 	public function getUserByLogin($login) {
 		$sql = "select id as idUser, login as login, pwd as pwd, id_status, is_active
             from core_users where login=?";
@@ -199,6 +218,12 @@ class User extends Model {
 			throw new Exception ( "Cannot find the user using the given parameters" );
 	}
 	
+	/**
+	 * Get the user login from id
+	 * @param number $id User ID
+	 * @throws Exception
+	 * @return mixed
+	 */
 	public function userLogin($id){
 		$sql = "select login from core_users where id=?";
 		$user = $this->runRequest ( $sql, array (
@@ -226,6 +251,10 @@ class User extends Model {
 		return $user->fetchAll ();
 	}
 	
+	/**
+	 * Get the emails of all active users
+	 * @return multitype:
+	 */
 	public function getAllActifEmails(){
 		$sql = "select email from core_users where is_active=1 order by name ASC;";
 		$user = $this->runRequest ( $sql );
@@ -279,6 +308,11 @@ class User extends Model {
 			return "";
 	}
 	
+	/**
+	 * GEt the responsible of a given user
+	 * @param number $id User id
+	 * @return number Responsible ID
+	 */
 	public function getUserResponsible($id){
 		$sql = "select id_responsible from core_users where id=?";
 		$user = $this->runRequest ( $sql, array ($id) );
@@ -286,6 +320,11 @@ class User extends Model {
 		return $userf [0];
 	}
 	
+	/**
+	 * Get the user email
+	 * @param number $id User ID
+	 * @return string User email
+	 */
 	public function getUserEmail($id){
 		$sql = "select email from core_users where id=?";
 		$user = $this->runRequest ( $sql, array ($id) );
@@ -389,6 +428,13 @@ class User extends Model {
 		return $users;
 	}
 	
+	/**
+	 * Get the user info using a search on user entry
+	 * @param string $selectEntry Entry on wich the search has to be done
+	 * @param string $searchTxt Search text
+	 * @param string $sortentry Sort entry
+	 * @return array Users informations
+	 */
 	public function getUsersInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
 		
 		if ($sortentry == "responsible"){
@@ -439,6 +485,13 @@ class User extends Model {
 		return $users;
 	}
 	
+	/**
+	 * Get the user info using a search on unit entry
+	 * @param string $selectEntry Entry on wich the search has to be done
+	 * @param string $searchTxt Search text
+	 * @param string $sortentry Sort entry
+	 * @return array Users informations
+	 */
 	public function getUsersUnitInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
 		
 		if ($sortentry == "responsible"){
@@ -490,6 +543,13 @@ class User extends Model {
 		return $users;
 	}
 	
+	/**
+	 * Get the user info using a search on status entry
+	 * @param string $selectEntry Entry on wich the search has to be done
+	 * @param string $searchTxt Search text
+	 * @param string $sortentry Sort entry
+	 * @return array Users informations
+	 */
 	public function getUsersStatusInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
 		
 		if ($sortentry == "responsible"){
@@ -540,6 +600,13 @@ class User extends Model {
 		return $users;
 	}
 	
+	/**
+	 * Get the user info using a search on responsible entry
+	 * @param string $selectEntry Entry on wich the search has to be done
+	 * @param string $searchTxt Search text
+	 * @param string $sortentry Sort entry
+	 * @return array Users informations
+	 */
 	public function getUsersResponsibleInfoSearch($selectEntry, $searchTxt, $sortentry = ""){
 		
 		if ($sortentry == "responsible"){
@@ -646,11 +713,45 @@ class User extends Model {
 		
 		return $this->getDatabase ()->lastInsertId ();
 	}
+	/**
+	 * Set user (add if not exists)
+	 * @param string $name
+	 * @param string $firstname
+	 * @param string $login
+	 * @param string $pwd
+	 * @param string $email
+	 * @param string $phone
+	 * @param number $id_unit
+	 * @param number $id_responsible
+	 * @param number $id_status
+	 * @param number $convention
+	 * @param date $date_convention
+	 * @param string $date_end_contract
+	 * @param number $is_active
+	 * @param string $source
+	 */
 	public function setUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
 		if (! $this->isUser ( $login )) {
 			$this->addUser ( $name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract, $is_active, $source);
 		}
 	}
+	/**
+	 * Set user (add if not exists) using MD5
+	 * @param unknown $name
+	 * @param unknown $firstname
+	 * @param unknown $login
+	 * @param unknown $pwd
+	 * @param unknown $email
+	 * @param unknown $phone
+	 * @param unknown $id_unit
+	 * @param unknown $id_responsible
+	 * @param unknown $id_status
+	 * @param unknown $convention
+	 * @param unknown $date_convention
+	 * @param string $date_end_contract
+	 * @param number $is_active
+	 * @param string $source
+	 */
 	public function setUserMd5($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
 		if (! $this->isUser ( $login )) {
 			
@@ -712,7 +813,14 @@ class User extends Model {
 				$id 
 		) );
 	}
-	
+	/**
+	 * Set (add if not exists, update otherwise) external (i.e. LDAP) user info
+	 * @param unknown $login
+	 * @param unknown $name
+	 * @param unknown $firstname
+	 * @param unknown $email
+	 * @param unknown $id_status
+	 */
 	public function setExtBasicInfo($login, $name, $firstname, $email, $id_status){
 		
 		// insert
@@ -818,6 +926,11 @@ class User extends Model {
 			return false;
 	}
 	
+	/**
+	 * Check if a local user with a given login exists
+	 * @param string $login Local login
+	 * @return boolean
+	 */
 	public function isLocalUser($login) {
 		$sql = "select id from core_users where login=? AND source=?";
 		$user = $this->runRequest ( $sql, array (
@@ -829,6 +942,11 @@ class User extends Model {
 			return false;
 	}
 	
+	/**
+	 * Get the user ID fro mit login
+	 * @param string $login User login
+	 * @return number User ID
+	 */
 	public function userIdFromLogin($login) {
 		$sql = "select id from core_users where login=?";
 		$user = $this->runRequest ( $sql, array (
@@ -841,11 +959,25 @@ class User extends Model {
 			return - 1;
 		}
 	}
+	/**
+	 * Add User if not exists
+	 * @param string $login
+	 * @param string $name
+	 * @param string $firstname
+	 * @param string $pwd
+	 * @param string $email
+	 * @param number $id_status
+	 */
 	public function addIfLoginNotExists($login, $name, $firstname, $pwd, $email, $id_status) {
 		if (! $this->isUser ( $login )) {
 			$this->addUser ( $name, $firstname, $login, $pwd, $email, "", 1, 1, 1, $id_status, "", '' );
 		}
 	}
+	/**
+	 * Set user unit
+	 * @param string $login User login
+	 * @param number $unitId Unit ID
+	 */
 	public function setUnitId($login, $unitId) {
 		$sql = "update core_users set id_unit=? where login=?";
 		$this->runRequest ( $sql, array (
@@ -853,6 +985,11 @@ class User extends Model {
 				$login 
 		) );
 	}
+	/**
+	 * Get user ID from fullname
+	 * @param string $fullname User fullname
+	 * @return number User ID
+	 */
 	public function getUserIdFromFullName($fullname) {
 		$sql = "select firstname, name, id from core_users";
 		$user = $this->runRequest ( $sql );
@@ -866,6 +1003,11 @@ class User extends Model {
 		}
 		return - 1;
 	}
+	/**
+	 * Set a responsible to a user
+	 * @param number $idUser User ID
+	 * @param number $idResp Responsible ID
+	 */
 	public function setResponsible($idUser, $idResp) {
 		$sql = "update core_users set id_responsible=? where id=?";
 		$this->runRequest ( $sql, array (
@@ -873,12 +1015,24 @@ class User extends Model {
 				$idUser 
 		) );
 	}
+	/**
+	 * Get all the responsibles assocaited to a given unit
+	 * @param number $unitId UNit ID
+	 * @return PDOStatement
+	 */
 	public function getResponsibleOfUnit($unitId) {
 		$sql = "select id, name, firstname from core_users where id in (select id_users from core_responsibles) and id_unit=? ORDER BY name";
 		return $this->runRequest ( $sql, array (
 				$unitId 
 		) );
 	}
+	/**
+	 * Get a user informations from ID, unit and responsible
+	 * @param number $id User ID
+	 * @param number $unit_id Unit ID 
+	 * @param number $responsible_id Responsible ID
+	 * @return array User info
+	 */
 	public function getUserFromlup($id, $unit_id, $responsible_id) {
 		$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE id=? AND id_unit=? AND id_responsible=?';
 		$req = $this->runRequest ( $sql, array (
@@ -888,6 +1042,12 @@ class User extends Model {
 		) );
 		return $req->fetchAll ();
 	}
+	/**
+	 * Get user from unit
+	 * @param number $id User ID
+	 * @param number $unit_id Unit ID 
+	 * @return array User info
+	 */
 	public function getUserFromIdUnit($id, $unit_id) {
 		$sql = "SELECT name, firstname, id_responsible, id_unit FROM core_users WHERE id=?";
 		if ($unit_id > 0) {
@@ -899,6 +1059,11 @@ class User extends Model {
 		) );
 		return $req->fetchAll ();
 	}
+	/**
+	 * Get the date of a user last connection
+	 * @param number $id User ID
+	 * @return string Last connection date
+	 */
 	public function getLastConnection($id) {
 		$sql = "select date_last_login from core_users where id=?";
 		$user = $this->runRequest ( $sql, array (
@@ -911,6 +1076,11 @@ class User extends Model {
 			return "0000-00-00";
 		}
 	}
+	/**
+	 * Set a user last connection date
+	 * @param number $id User ID
+	 * @param date $time Date
+	 */
 	public function setLastConnection($id, $time) {
 		$sql = "update core_users set date_last_login=? where id=?";
 		$this->runRequest ( $sql, array (
@@ -918,6 +1088,9 @@ class User extends Model {
 				$id 
 		) );
 	}
+	/**
+	 * Update user to active or unactive depending on the settings criteria
+	 */
 	public function updateUsersActive() {
 		$modelConfig = new CoreConfig ();
 		$desactivateType = $modelConfig->getParam ( "user_desactivate" );
@@ -934,6 +1107,11 @@ class User extends Model {
 			}
 		}
 	}
+	/**
+	 * Set a user active
+	 * @param number $id User ID
+	 * @param number $active Active status
+	 */
 	public function setactive($id, $active) {
 		$sql = "update core_users set is_active=? where id=?";
 		$this->runRequest ( $sql, array (
@@ -941,6 +1119,9 @@ class User extends Model {
 				$id 
 		) );
 	}
+	/**
+	 * Set unactive user who contract ended
+	 */
 	private function updateUserActiveContract() {
 		$sql = "select id, date_end_contract from core_users where is_active=1";
 		$req = $this->runRequest ( $sql );
@@ -957,6 +1138,10 @@ class User extends Model {
 			}
 		}
 	}
+	/**
+	 * Unactivate users who did not login for a number of year given in $numberYear
+	 * @param number $numberYear Number of years
+	 */
 	private function updateUserActiveLastLogin($numberYear) {
 		$sql = "select id, date_last_login from core_users where is_active=1";
 		$req = $this->runRequest ( $sql );
@@ -986,6 +1171,10 @@ class User extends Model {
 			$authModel->desactivateAthorizationsForUsers ( $changedUsers );
 		}
 	}
+	/**
+	 * Make a user active
+	 * @param number $userId User ID
+	 */
 	public function activate($userId) {
 		$today = date ( "Y-m-d", time () );
 		
@@ -996,6 +1185,12 @@ class User extends Model {
 				$userId 
 		) );
 	}
+	/**
+	 * Get a user from his name and firstname
+	 * @param string $name User name
+	 * @param string $firstname User firstname
+	 * @return number User ID
+	 */
 	public function getUserFromNameFirstname($name, $firstname) {
 		$sql = "select id from core_users where name=? and firstname=?";
 		$user = $this->runRequest ( $sql, array (
@@ -1010,11 +1205,20 @@ class User extends Model {
 			return - 1;
 		}
 	}
+	/**
+	 * Get all the conventions
+	 * @return Array convention list
+	 */
 	public function getConventionList() {
 		$sql = "select distinct convention from core_users order by convention";
 		$req = $this->runRequest ( $sql );
 		return $req->fetchAll ();
 	}
+	/**
+	 * Get the convention of a user
+	 * @param number $id User ID
+	 * @return number COnvention Number
+	 */
 	public function getUserConvention($id) {
 		$sql = "select convention from core_users where id=?";
 		$req = $this->runRequest ( $sql, array (
@@ -1023,6 +1227,10 @@ class User extends Model {
 		$tmp = $req->fetch ();
 		return $tmp [0];
 	}
+	/**
+	 * Export Responsible lists to file
+	 * @param number $idType Active/Unative/all
+	 */
 	public function exportResponsible($idType) {
 		
 		// get the responsibles
@@ -1412,6 +1620,11 @@ class User extends Model {
 		$writer->save ( 'php://output' );
 	}
 	
+	/**
+	 * SGet user ID by parsinf a fullname (used to import user from XLS files)
+	 * @param string $resp User name
+	 * @return number User ID
+	 */
 	public function findFromAC($resp){
 		
 		// extract Name
@@ -1434,6 +1647,10 @@ class User extends Model {
 		return -1;
 	}
 	
+	/**
+	 * Remove a user from the database
+	 * @param number $id User ID
+	 */
 	public function delete($id){
 		$sql="DELETE FROM core_users WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));

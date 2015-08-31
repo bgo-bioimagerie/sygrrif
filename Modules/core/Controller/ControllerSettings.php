@@ -4,12 +4,24 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/UserSettings.php';
 
+/**
+ * Edit the application settings
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerSettings extends ControllerSecureNav {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 	}
 
-	// View the user settings form -> language selection
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 
 		

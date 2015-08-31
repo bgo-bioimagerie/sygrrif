@@ -5,9 +5,17 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/core/Model/LdapConfiguration.php';
 
-
+/**
+ * 
+ * @author sprigent
+ * 
+ * Config the LDAP access
+ */
 class ControllerLdapconfig extends ControllerSecureNav {
 
+	/**
+	 * 
+	 */
 	public function __construct() {
 
 	}
@@ -47,6 +55,9 @@ class ControllerLdapconfig extends ControllerSecureNav {
 		) );
 	}
 
+	/**
+	 * Edit the LDAP access informations
+	 */
 	public function editquery(){
 		
 		// get the post parameters

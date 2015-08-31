@@ -7,6 +7,12 @@ require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 
+/**
+ * Manage the users
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerUsers extends ControllerSecureNav {
 	
 	/**
@@ -14,15 +20,17 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	private $userModel;
 	
-	//private $billet;
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		//$this->billet = new Billet ();
 		$this->userModel = new User();
 	}
 	
-	
-	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 		// get sort action
@@ -52,7 +60,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * Shows the list of active users
+	 */
 	public function unactiveusers() {
 	
 		$navBar = $this->navBar();
@@ -72,7 +82,9 @@ class ControllerUsers extends ControllerSecureNav {
 		), "index" );
 	}
 	
-	
+	/**
+	 * Add a new user form
+	 */
 	public function add(){
 		$navBar = $this->navBar();
 		
@@ -103,6 +115,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Add a new user query to database
+	 */
 	public function addquery(){
 		$name = $this->request->getParameter ( "name");
 		$firstname = $this->request->getParameter ( "firstname");
@@ -166,7 +181,9 @@ class ControllerUsers extends ControllerSecureNav {
 		
 	}
 	
-	
+	/**
+	 * Edit a user form
+	 */
 	public function edit(){
 		
 		$navBar = $this->navBar();
@@ -205,6 +222,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Edit a user query to database
+	 */
 	public function editquery(){
 		
 		// get form variables
@@ -263,6 +283,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Change password form
+	 */
 	public function changepwd(){
 		$userId = 0;
 		if ($this->request->isParameterNotEmpty('actionid')){
@@ -278,6 +301,10 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Change password query
+	 * @throws Exception
+	 */
 	public function changepwdquery(){
 		
 		$id = $this->request->getParameter ( "id");
@@ -306,6 +333,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * User form to edit his own informations
+	 */
 	public function manageaccount(){
 		$navBar = $this->navBar();
 		
@@ -341,6 +371,9 @@ class ControllerUsers extends ControllerSecureNav {
 		
 	}
 	
+	/**
+	 * User edit his own info query
+	 */
 	public function manageaccountquery(){
 
 		// get form variables
@@ -368,6 +401,10 @@ class ControllerUsers extends ControllerSecureNav {
 		
 	}
 	
+	/**
+	 * Modify password
+	 * @throws Exception
+	 */
 	public function accountchangepwdquery(){
 		
 		$id = $this->request->getParameter ( "id");
@@ -409,6 +446,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Activate a user
+	 */
 	public function activate(){
 		$userId = 0;
 		if ($this->request->isParameterNotEmpty('actionid')){
@@ -422,6 +462,9 @@ class ControllerUsers extends ControllerSecureNav {
 		$this->redirect("users", "index");
 	}
 	
+	/**
+	 * Form to export the responsibles to a file
+	 */
 	public function exportresponsable(){
 		
 		// generate view
@@ -431,6 +474,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Query to export the responsibles to a file
+	 */
 	public function exportresponsablequery(){
 	
 		$idType = $this->request->getParameterNoException("id_type");
@@ -441,6 +487,10 @@ class ControllerUsers extends ControllerSecureNav {
 		return;
 	}
 	
+	/**
+	 * Search in the user database
+	 * @param string $sortentry
+	 */
 	public function searchquery($sortentry = "id"){
 	
 		$lang = "En";
@@ -486,6 +536,9 @@ class ControllerUsers extends ControllerSecureNav {
 		), "index" );
 	}
 	
+	/**
+	 * Confirm form to delete a user
+	 */
 	public function delete(){
 		
 		$userId = 0;
@@ -504,6 +557,9 @@ class ControllerUsers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Query to delete a user
+	 */
 	public function deletequery(){
 		
 		$userId = $this->request->getParameter("id");
@@ -512,11 +568,5 @@ class ControllerUsers extends ControllerSecureNav {
 		
 		// generate view
 		$this->redirect("users");
-		/*
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar
-		) );
-		*/
 	}
 }

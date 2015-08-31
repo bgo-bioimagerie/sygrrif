@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 require_once 'Framework/Model.php';
 
@@ -9,6 +9,11 @@ require_once 'Framework/Model.php';
  */
 class SyGraph extends Model {
 
+	/**
+	 * Generate a graph containing the number of reservation per month
+	 * @param unknown $year
+	 * @return multitype:multitype:unknown  number
+	 */
 	public function getYearNumResGraph($year){
 		
 		$num = 0;
@@ -31,6 +36,11 @@ class SyGraph extends Model {
 		return $graphData;
 	}
 	
+	/**
+	 * Generate a graph containing the number of hours of reservation per year
+	 * @param unknown $year
+	 * @return multitype:number multitype:number
+	 */
 	public function getYearNumHoursResGraph($year){
 	
 		$timeResa = 0.0;
@@ -58,6 +68,11 @@ class SyGraph extends Model {
 		return $graphData;
 	}
 	
+	/**
+	 * Generate a pie chart number of reservation per resource
+	 * @param number $year
+	 * @return unknown
+	 */
 	public function getCamembertArray($year){
 		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
@@ -87,6 +102,11 @@ class SyGraph extends Model {
 		return $numMachinesFormes;
 	}
 	
+	/**
+	 * Generate a pie chart number of hours of reservation per resource
+	 * @param unknown $year
+	 * @return unknown
+	 */
 	public function getCamembertTimeArray($year){
 		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
@@ -120,6 +140,12 @@ class SyGraph extends Model {
 		return $numMachinesFormes;
 	}
 	
+	/**
+	 * Generate a pie chart number of reservation per resource
+	 * @param unknown $year
+	 * @param unknown $numTotal
+	 * @return string
+	 */
 	public function getCamembertContent($year, $numTotal){
 		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
@@ -195,6 +221,12 @@ class SyGraph extends Model {
 		
 	}
 	
+	/**
+	 * Generate a pie chart time of reservation per resource
+	 * @param unknown $year
+	 * @param unknown $numTotal
+	 * @return string
+	 */
 	public function getCamembertTimeContent($year, $numTotal){
 		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
 		$req = $this->runRequest($sql);

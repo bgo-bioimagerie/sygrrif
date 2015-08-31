@@ -10,6 +10,9 @@ require_once 'Modules/core/Model/BackupDatabase.php';
 
 class ControllerCoreconfig extends ControllerSecureNav {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 
 	}
@@ -134,6 +137,10 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Upload the sygrrif export template file
+	 * @return string
+	 */
 	public function uploadTemplate(){
 		$target_dir = "data/";
 		$target_file = $target_dir . "template.xls";

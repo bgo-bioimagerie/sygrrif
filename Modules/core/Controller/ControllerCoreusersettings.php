@@ -4,12 +4,24 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/UserSettings.php';
 
+/**
+ * 
+ * @author sprigent
+ * Edit the application settings	
+ */
 class ControllerCoreusersettings extends ControllerSecureNav {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 	}
 
-	// View the user settings form -> language selection
+
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		
 		$user_id = $this->request->getSession()->getAttribut("id_user");
@@ -29,6 +41,9 @@ class ControllerCoreusersettings extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Edit the application settings
+	 */
 	public function editsettings(){
 		$language = $this->request->getParameter("language");
 	
@@ -42,6 +57,9 @@ class ControllerCoreusersettings extends ControllerSecureNav {
 		$this->redirect("coreusersettings");
 	}
 	
+	/**
+	 * Edit the home page URL
+	 */
 	public function edithomepage(){
 		$homePage = $this->request->getParameter("homepage");
 		

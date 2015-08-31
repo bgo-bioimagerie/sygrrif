@@ -2,6 +2,12 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/Project.php';
+
+/**
+ * 
+ * @author sprigent
+ * Project database (extend this class if you need a project module)
+ */
 class ControllerProjects extends ControllerSecureNav {
 	
 	/**
@@ -9,13 +15,17 @@ class ControllerProjects extends ControllerSecureNav {
 	 */
 	private $projectModel;
 	
-	// private $billet;
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		// $this->billet = new Billet ();
 		$this->projectModel = new Project ();
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		$navBar = $this->navBar ();
 		
@@ -33,6 +43,9 @@ class ControllerProjects extends ControllerSecureNav {
 				'projectsArray' => $projectsArray 
 		) );
 	}
+	/**
+	 * Edit a project form
+	 */
 	public function edit() {
 		$navBar = $this->navBar ();
 		
@@ -50,6 +63,9 @@ class ControllerProjects extends ControllerSecureNav {
 				'project' => $project 
 		) );
 	}
+	/**
+	 * Add a project form
+	 */
 	public function add() {
 		$navBar = $this->navBar ();
 		
@@ -57,6 +73,9 @@ class ControllerProjects extends ControllerSecureNav {
 				'navBar' => $navBar 
 		) );
 	}
+	/**
+	 * add project query to database
+	 */
 	public function addquery() {
 		
 		// get form variables
@@ -68,6 +87,9 @@ class ControllerProjects extends ControllerSecureNav {
 		
 		$this->redirect ( "projects" );
 	}
+	/**
+	 * edit project query to database
+	 */
 	public function editquery() {
 		$navBar = $this->navBar ();
 		

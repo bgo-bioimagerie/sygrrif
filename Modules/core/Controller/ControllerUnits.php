@@ -2,6 +2,13 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/Unit.php';
+
+/**
+ * Manage the units (each user belongs to an unit)
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerUnits extends ControllerSecureNav {
 	
 	/**
@@ -9,13 +16,17 @@ class ControllerUnits extends ControllerSecureNav {
 	 */
 	private $unitModel;
 	
-	// private $billet;
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
-		// $this->billet = new Billet ();
 		$this->unitModel = new Unit ();
 	}
 	
-	// Affiche la liste de tous les billets du blog
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index() {
 		$navBar = $this->navBar ();
 		
@@ -33,6 +44,9 @@ class ControllerUnits extends ControllerSecureNav {
 				'unitsArray' => $unitsArray 
 		) );
 	}
+	/**
+	 * Edit an unit form
+	 */
 	public function edit() {
 		$navBar = $this->navBar ();
 		
@@ -52,6 +66,9 @@ class ControllerUnits extends ControllerSecureNav {
 				'unit' => $unit 
 		) );
 	}
+	/**
+	 * Add a unit form
+	 */
 	public function add() {
 		$navBar = $this->navBar ();
 		
@@ -59,6 +76,9 @@ class ControllerUnits extends ControllerSecureNav {
 				'navBar' => $navBar 
 		) );
 	}
+	/**
+	 * Add a unit query to datbase
+	 */
 	public function addquery() {
 		
 		// get form variables
@@ -70,6 +90,9 @@ class ControllerUnits extends ControllerSecureNav {
 		
 		$this->redirect ( "units" );
 	}
+	/**
+	 * Edit an unit to database
+	 */
 	public function editquery() {
 		$navBar = $this->navBar ();
 		
@@ -84,6 +107,9 @@ class ControllerUnits extends ControllerSecureNav {
 		$this->redirect ( "units" );
 	}
 		
+	/**
+	 * Remove an unit form confirm
+	 */
 	public function delete(){
 	
 		$unitId = 0;
@@ -102,6 +128,9 @@ class ControllerUnits extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Remove an unit query to database
+	 */
 	public function deletequery(){
 	
 		$unitId = $this->request->getParameter("id");

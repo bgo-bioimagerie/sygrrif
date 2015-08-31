@@ -3,22 +3,36 @@
 require_once 'Modules/core/Model/LdapConfiguration.php';
 
 /**
- * Class defining the Install model
- * to edit the config file and initialize de databaseusing the GRR functions to connect 
+ * Class defining the  LDAP model to connect 
  * user from LDAP
  * 
  * @author Sylvain Prigent from GRR
  */
 class Ldap {
 	
+	/**
+	 * Get the user information using LDAP
+	 * @param string $_login User login
+	 * @param string $_password User password 
+	 * @return multitype: User informatins (name, firstname, login, email)
+	 */
 	public function getUser($_login, $_password){
 		
 		$user_dn = $this->grr_opensession($_login, $_password);
-		echo "grr_opensession user dn = " . $user_dn . "<br/>";
+		//echo "grr_opensession user dn = " . $user_dn . "<br/>";
 		$user_info = $this->grr_getinfo_ldap($user_dn,$_login,$_password);
 		return $user_info;
 	}
 	
+	/**
+	 * Open LDAP session (adapted from GRR)
+	 * @param string $_login User login
+	 * @param string $_password User password
+	 * @param string $_user_ext_authentifie
+	 * @param array $tab_login
+	 * @param array $tab_groups
+	 * @return multitype: User informatins (name, firstname, login, email)
+	 */
 	private function grr_opensession($_login, $_password, $_user_ext_authentifie = '', $tab_login = array(), $tab_groups = array()) {
 		// Initialisation de $auth_ldap
 		$auth_ldap = 'no';
@@ -52,6 +66,13 @@ class Ldap {
 				return "4";
 		}
 	}
+	
+	/**
+	 * Check if a user can connect with LDAP
+	 * @param string $_login User login
+	 * @param string $_password User password
+	 * @return boolean 
+	 */
 	private function grr_verif_ldap($_login, $_password) {
 		global $ldap_filter;
 		if ($_password == '')
@@ -108,6 +129,17 @@ class Ldap {
 		} else
 			return false;
 	}
+	
+	/**
+	 * LDAP bind
+	 * @param string $l_adresse LDAP adress
+	 * @param string $l_port Connection port
+	 * @param string $l_login User login
+	 * @param string $l_pwd User password
+	 * @param boolean $use_tls
+	 * @param string $msg_error
+	 * @return string|boolean error message or true/false if $msg_error=="no"
+	 */
 	private function grr_connect_ldap($l_adresse, $l_port, $l_login, $l_pwd, $use_tls, $msg_error = "no") {
 		
 		// echo "use tls = " . $use_tls . "<br/>";
@@ -150,6 +182,16 @@ class Ldap {
 			return false;
 		}
 	}
+	/**
+	 * Search if a user exists in LDAP (adapted from GRR)
+	 * @param string $ds
+	 * @param string $basedn
+	 * @param string $login_attr
+	 * @param string $login
+	 * @param string $filtre_sup
+	 * @param string $diagnostic
+	 * @return string|boolean
+	 */
 	private function grr_ldap_search_user($ds, $basedn, $login_attr, $login, $filtre_sup = "", $diagnostic = "no") {
 		/*
 		 * if (Settings::get("ActiveModeDiagnostic") == "y")
@@ -194,6 +236,13 @@ class Ldap {
 				return false;
 		}
 	}
+	/**
+	 * Get the user informations from the LDAP
+	 * @param string $_dn
+	 * @param string $_login
+	 * @param string $_password
+	 * @return string|multitype: User informations or error message
+	 */
 	private function grr_getinfo_ldap($_dn, $_login, $_password) {
 		
 		$modelCoreConfig = new CoreConfig();
@@ -242,7 +291,7 @@ class Ldap {
 			}
 		}
 		
-		echo "user informations = " . $l_nom . ", " . $l_prenom . ", " . $l_email . "</br>";
+		//echo "user informations = " . $l_nom . ", " . $l_prenom . ", " . $l_email . "</br>";
 		// Return infos
 		return array (
 				"name" => $l_nom,

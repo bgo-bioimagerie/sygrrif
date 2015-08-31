@@ -5,15 +5,31 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyStatsUser.php';
 
+/**
+ * Controller to generate statistics on the users
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerSygrrifstatsusers extends ControllerSecureNav {
 
+	/**
+	 * Constructor
+	 */
 	public function __construct() {
 	}
 
+	/**
+	 * (non-PHPdoc)
+	 * @see Controller::index()
+	 */
 	public function index(){
 		
 	}
 	
+	/**
+	 * Form to export the list of authorized user per resource category
+	 */
 	public function statusers() {
 		
 		// get the resource list
@@ -27,6 +43,9 @@ class ControllerSygrrifstatsusers extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Query to export the list of authorized user per resource category
+	 */
 	public function authorizeduserquery(){
 		
 		// get the selected resource id
@@ -39,6 +58,9 @@ class ControllerSygrrifstatsusers extends ControllerSecureNav {
 		return;
 	}
 	
+	/**
+	 * Not implemented method
+	 */
 	public function userquery(){
 		// get the user type id
 		$user_type = $this->request->getParameter("user_type");
