@@ -9,6 +9,13 @@
  */
 class StTranslator {
 
+	public static function Install_Repair_database($lang = ""){
+		if ($lang == "Fr"){
+			return "Installer/RÃ©parer la base de donnÃ©es";
+		}
+		return "Install/Repair database";
+	}
+	
 	public static function Storage($lang = ""){
 		if ($lang == "Fr"){
 			return "Stockage";
@@ -39,7 +46,7 @@ class StTranslator {
 	
 	public static function Download($lang){
 		if ($lang == "Fr"){
-			return "Télécharger";
+			return "TÃ©lÃ©charger";
 		}
 		return "Download";
 	}
@@ -53,7 +60,7 @@ class StTranslator {
 	
 	public static function Repository($lang){
 		if ($lang == "Fr"){
-			return "Répertoire";
+			return "RÃ©pertoire";
 		}
 		return "Repository";
 	}
@@ -100,7 +107,6 @@ class StTranslator {
 		return "My account";
 	}
 	
-	
 	public static function Users_quotas($lang){
 		if ($lang == "Fr"){
 			return "Quotas utilisateurs";
@@ -139,9 +145,16 @@ class StTranslator {
 	
 	public static function noUserDirMessage($lang, $login){
 		if ($lang == "Fr"){
-			return "Il n'y a pas de répertoire " . $login . " sur le serveur de stocakage";
+			return "Il n'y a pas de rï¿½pertoire " . $login . " sur le serveur de stocakage";
 		}
 		return "Cannot find any " . $login . " directory on the storage server";
+	}
+	
+	public static function Directories_names($lang = ""){
+		if ($lang == "Fr"){
+			return "RÃ©pertoires de stockage";
+		}
+		return "Storage directories";
 	}
 	
 }

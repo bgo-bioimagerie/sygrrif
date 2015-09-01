@@ -9,6 +9,77 @@ if (isset($_SESSION["user_settings"]["language"])){
 }
 ?>
 
+<head>
+<script>
+        function addRow(tableID) {
+
+        	var idx = 1;
+        	if(tableID == "dataTable"){
+        		idx = 1;
+            } 
+            var table = document.getElementById(tableID);
+ 
+            var rowCount = table.rows.length;
+            //document.write(rowCount);
+            var row = table.insertRow(rowCount);
+            //document.write(row);
+            var colCount = table.rows[idx].cells.length;
+            //document.write(colCount);
+ 
+            for(var i=0; i<colCount; i++) {
+ 
+                var newcell = row.insertCell(i);
+ 
+                newcell.innerHTML = table.rows[idx].cells[i].innerHTML;
+                //alert(newcell.childNodes);
+                switch(newcell.childNodes[0].type) {
+                    case "text":
+                            newcell.childNodes[0].value = "";
+                            break;
+                    case "checkbox":
+                            newcell.childNodes[0].checked = false;
+                            break;
+                    case "select-one":
+                            newcell.childNodes[0].selectedIndex = 0;
+                            break;
+                }
+            }
+        }
+ 
+        function deleteRow(tableID) {
+            try {
+
+            var idx = 2;
+            if(tableID == "dataTable"){
+            	idx = 2;
+            }     
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
+ 
+            for(var i=0; i<rowCount; i++) {
+                var row = table.rows[i];
+                var chkbox = row.cells[0].childNodes[0];
+                if(null != chkbox && true == chkbox.checked) {
+                    if(rowCount <= idx) {
+                        alert("Cannot delete all the rows.");
+                        break;
+                    }
+                    table.deleteRow(i);
+                    rowCount--;
+                    i--;
+                }
+ 
+ 
+            }
+            }catch(e) {
+                alert(e);
+            }
+        }
+ 
+    </script>
+
+</head>
+
 <div class="container">
     	<div class="col-md-8 col-md-offset-2">
     	
@@ -21,7 +92,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
-				<?= CoreTranslator::Install_Repair_database($lang) ?> <br> <small></small>
+				<?= StTranslator::Install_Repair_database($lang) ?> <br> <small></small>
 			</h2>
 		</div>
 		
@@ -89,34 +160,68 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
-      <!-- Default storage quota -->
+ 
+      <!-- Storage directories -->
       <div>
 		  <div class="page-header">
 			<h2>
-				<?= StTranslator::Default_quota($lang) ?> <br> <small></small>
+				<?= StTranslator::Directories_names($lang) ?> <br> <small></small>
 			</h2>
 		  </div>
 		
 		  <form role="form" class="form-horizontal" action="storageconfig" method="post">
 		  
 		    <div class="col-xs-12">
-			  <input class="form-control" type="hidden" name="setquotaquery" value="yes"
+			  <input class="form-control" type="hidden" name="setdirectoriesquery" value="yes"
 			 	/>
 		    </div>
 		    
-		    <div class="col-xs-12">
-		      <div class="col-xs-2 col-xs-offset-2">
-			    <label class="control-label"><?= StTranslator::Quota($lang) . " (Go)" ?></label>
-			  </div>
-			  <div class="col-xs-6">
-			    <?php 
-			    if (!isset($quota)){
-			    	$quota = 12;
-			    }
-			    ?>
-			    <input class="form-control" type="text" name="quota" value="<?= $quota ?>" />
-		      </div>	
-		    </div>
+		    <!--  DIRECTORIES  -->
+		  <div class="form-group">
+
+			<div class="col-xs-11">
+			<div>
+				<table id="dataTable" class="table table-striped">
+				<thead>
+					<tr>
+						<td></td>
+						<td>ID</td>
+						<td>Name</td>
+					</tr>
+				</thead>
+					<tbody>
+						<?php 
+						foreach ($directories as $dir){					
+							?>
+							<tr>
+								<td><input type="checkbox" name="chk" /></td>
+								<td><input class="form-control" type="hidden" name="storagedirectoriesids[]" value="<?= $dir["id"] ?>"/></td>
+								<td><input class="form-control" type="text" name="storagedirectoriesnames[]" value="<?= $dir["name"] ?>" /></td>
+							</tr>
+							<?php
+						}
+						?>
+						<?php 
+						if (count($directories) < 1){
+						?>
+						<tr>
+							<td><input type="checkbox" name="chk" /></td>
+							<td><input class="form-control" type="hidden" name="storagedirectoriesids[]" value="0"/></td>
+							<td><input class="form-control" type="text" name="storagedirectoriesnames[]"/></td>
+						</tr>
+						<?php 
+						}
+						?>
+					</tbody>
+				</table>
+				
+				<div class="col-md-6">
+					<input type="button" class="btn btn-default" value="Add"
+						onclick="addRow('dataTable')" /> 
+					<input type="button" class="btn btn-default" value="Remove"
+						onclick="deleteRow('dataTable')" /> <br> 
+				</div>
+			</div>	
 		  
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
 			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />

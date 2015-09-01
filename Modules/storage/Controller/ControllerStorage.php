@@ -5,6 +5,7 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/storage/Model/StTranslator.php';
 require_once 'Modules/storage/Model/StUploader.php';
+require_once 'Modules/storage/Model/StDirectories.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/CoreConfig.php';
 
@@ -47,8 +48,21 @@ class ControllerStorage extends ControllerSecureNav {
 		
 		// get user files 
 		$storageDir = Configuration::get("storageDir");
-		$files = $modelFiles->getFiles($storageDir . $userlogin);
 		
+		$modelDir = new StDirectories();
+		$platformDirs = $modelDir->getDirectories();
+		
+		$files = array();
+		$count = 0;
+		foreach ($platformDirs as $pDir){
+			$filesDir = $modelFiles->getFiles($storageDir . $pDir["name"] . "/" . $userlogin);
+			$files[$count]["name"] =  $pDir["name"];
+			$files[$count]["files"] =  $filesDir;
+			
+			$count++;
+		}
+		
+		/*
 		$userUsage = 0;
 		if (count($files) == 0){
 			$lang = "En";
@@ -62,9 +76,10 @@ class ControllerStorage extends ControllerSecureNav {
 			$userUsage = $modelFiles->getUsage($storageDir . $userlogin);
 			$userUsage = $modelFiles->formatFileSize($userUsage);
 		}
+		*/
 		// default
 		$this->generateView ( array ('navBar' => $navBar, "files" => $files, "userlogin" => $userlogin, "message" => $message,
-				"userUsage" => $userUsage, "menu" => $menu
+				"menu" => $menu
 		), "index" );
 	}
 		
@@ -78,6 +93,16 @@ class ControllerStorage extends ControllerSecureNav {
 		
 		// get form posts
 		$filename = $this->request->getParameter("filename");
+		$dirname = $this->request->getParameter("dir");
+		
+		// remove some caracters for security
+		$filename = str_replace ( "./" , "" , $filename );
+		$filename = str_replace ( "../" , "" , $filename );
+		$filename = str_replace ( "/" , "" , $filename );
+		
+		$dirname = str_replace ( "./" , "" , $dirname );
+		$dirname = str_replace ( "../" , "" , $dirname );
+		$dirname = str_replace ( "/" , "" , $dirname );
 		
 		// get the user login
 		$idUser = $_SESSION["id_user"];
@@ -85,7 +110,7 @@ class ControllerStorage extends ControllerSecureNav {
 		$userlogin = $modelUser->userLogin($idUser);
 		
 		$storageDir = Configuration::get("storageDir");
-		$fileUrl = $storageDir . $userlogin . "/" . basename($filename);
+		$fileUrl = $storageDir . $dirname . "/" . $userlogin . "/" . basename($filename);
 		
 		// download
 		$modelFiles = new StUploader();

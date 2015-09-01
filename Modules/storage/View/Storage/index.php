@@ -47,6 +47,16 @@ if($menu){
 	
 	<div class="col-lg-12"><br/></div>
 	
+	<?php 
+	foreach ($files as $filesDir){
+		?>
+		
+		<div class="page-header">
+			<h3>
+			<?= $filesDir["name"] ?> <br> <small></small>
+			</h3>
+		</div>
+			
 	<table class="table table-striped table-bordered">
 		<thead>
 			<tr>
@@ -58,7 +68,7 @@ if($menu){
 		</thead>
 		<tbody>
 		
-		<?php foreach($files as $file){?>
+		<?php foreach($filesDir["files"] as $file){?>
 			<tr>
 				<td><?= $file["name"] ?></td>
 				<td><?= $file["size"] ?></td>
@@ -82,6 +92,7 @@ if($menu){
 				<td>
 				<form name="downloadform" id="downloadform" role="form" class="form-horizontal" action="storage/download" method="post">
 				<input type="text" name="filename" value="<?=$fileURL?>" hidden/>
+				<input type="text" name="dir" value="<?=$filesDir["name"]?>" hidden/>
 				<input  class="btn btn-primary" type="submit" value="<?= StTranslator::Download($lang)?>" />
 				</form>
 				</td>		
@@ -90,10 +101,16 @@ if($menu){
 		</tbody>
 	</table>
 
+	<?php 
+	}
+	?>
+	
+	<!--
 	<div class="col-lg-12">
 		<label>Disk Usage:</label>
 		<?= $userUsage ?> 
 	</div>
+	-->
 	
 	</div>
 	</div>
