@@ -86,7 +86,7 @@ function drawAgenda($mois, $annee, $entries){
 					$shortDescription = $moduleProject->getProjectName($entry['short_description']);
 				}
 				?>
-				<a href="agenda/events/<?=$entry["id"] ?>">
+				<a href="calendar/editreservation/r_<?=$entry["id"] ?>">
 				
 				<div style="background-color: #<?=$entry["color"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
 				<p style="border-bottom: thin solid #818181; font-size:10px; color:#313131;" >
