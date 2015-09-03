@@ -21,13 +21,19 @@ if ($language == "fr"){
 <div class="container">
     <div class="row">
         <div class="col-sm-6 col-md-4 col-md-offset-4">
-            <h1 class="text-center login-title"><?= CoreTranslator::Database($language) ?></h1>
+            <h1 class="text-center login-title"><?= $home_title ?></h1>
             <div class="account-wall">
-                <img class="img-responsive center-block" alt="logo" src="Themes/logo.jpg" >
+                <img class="img-responsive center-block" alt="logo" src="<?= $logo ?>" >
+                
+                <br></br>
+               
+                <div class="form">
+				<h3 style="text-align:center;"><?= $home_message ?></h3>
+				</div>
                 
                 <br></br>
                 
-                <?php if (isset($msgError)): ?>
+                <?php if (isset($msgError) && $msgError!=""): ?>
                 <div class="alert alert-danger">
     			<p><?= $msgError ?></p>
     			</div>

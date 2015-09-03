@@ -18,7 +18,7 @@ class CoreConfig extends Model {
 			
 		$sql = "CREATE TABLE IF NOT EXISTS `core_config` (
 		`id` varchar(30) NOT NULL DEFAULT '',
-		`value` varchar(150) NOT NULL DEFAULT '',
+		`value` text NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -35,7 +35,9 @@ class CoreConfig extends Model {
 	
 		$this->setParam("admin_email", "firstname.name@adress.com");
 		$this->setParam("user_desactivate", "0");
-
+		$this->setParam("logo", "data/logo.jpg");
+		$this->setParam("home_title", "Database");
+		$this->setParam("home_message", "");
 	}
 	
 	/**
@@ -76,8 +78,9 @@ class CoreConfig extends Model {
 	 * @return string: value
 	 */
 	public function getParam($key){
-		$sql = "SELECT value FROM core_config WHERE id='".$key."'";
-		$req = $this->runRequest($sql);
+		$sql = "SELECT value FROM core_config WHERE id=?";
+		$req = $this->runRequest($sql, array($key));
+		
 		if ($req->rowCount() == 1){
 			$tmp = $req->fetch();
 			return $tmp[0];

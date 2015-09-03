@@ -859,4 +859,25 @@ class CoreTranslator {
 		return "Base DN";
 	}
 	
+	public static function HomeConfig($lang){
+		if ($lang == "Fr"){
+			return "Informations page de connection";
+		}
+		return "Connection page informations";
+	}
+	
+	public static function title($lang){
+		if ($lang == "Fr"){
+			return "Titre";
+		}
+		return "Title";
+	}
+	
+	public static function logo($lang){
+		if ($lang == "Fr"){
+			return "Logo";
+		}
+		return "Logo";
+	}
+
 }

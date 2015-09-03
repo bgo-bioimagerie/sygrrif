@@ -28,13 +28,17 @@ class ControllerConnection extends Controller
      * @see Controller::index()
      * 
      */
-    public function index()
+    public function index($message = "")
     {
     	
     	$modelConfig = new CoreConfig();
     	$admin_email = $modelConfig->getParam("admin_email");
+    	$logo = $modelConfig->getParam("logo");
+    	$home_title = $modelConfig->getParam("home_title");
+    	$home_message = $modelConfig->getParam("home_message");
     	
-        $this->generateView( array("admin_email" => $admin_email));
+    	
+        $this->generateView( array("msgError"=>$message, "admin_email" => $admin_email, "logo" => $logo,  "home_title" => $home_title, "home_message" => $home_message), "index");
     }
 
     /**
@@ -91,7 +95,8 @@ class ControllerConnection extends Controller
                 $this->redirect($redirectController);
             }
             else{
-            	echo "error = " . $connect . "<br/>"; 
+            	//echo "error = " . $connect . "<br/>"; 
+            	$this->index($connect);
             	/*
                 $this->generateView(array('msgError' => $connect, "admin_email" => $admin_email),
                         "index");
@@ -131,7 +136,7 @@ class ControllerConnection extends Controller
 	    		
 	    		$modelLdap = new Ldap();
 	    		$ldapResult = $modelLdap->getUser($login, $pwd);
-	    		if ($modelLdap == "Error"){
+	    		if ($ldapResult == "error"){
 	    			return "Cannot connect to ldap using the given login and password";
 	    		}
 	    		else{

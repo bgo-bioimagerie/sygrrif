@@ -54,7 +54,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       </form>
       
       
-      <!-- Sygrrif Menu -->
+      <!-- Menu -->
       <div>
 		  <div class="page-header">
 			<h2>
@@ -94,6 +94,18 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
+      <!-- LDAP -->
+      <div>
+		  <div class="page-header">
+			<h2>
+				<?= CoreTranslator::HomeConfig($lang) ?> <br> <small></small>
+			</h2>
+		  </div>
+		  
+		  <div class="col-xs-2 col-xs-offset-10">
+		  <button type="button" onclick="location.href='homeconfig'" class="btn btn-primary"><?= CoreTranslator::Config($lang) ?></button>
+		  </div>
+	   </div>
       
       <!-- LDAP -->
       <div>
