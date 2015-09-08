@@ -25,7 +25,7 @@
 
 		<div class="page-header">
 			<h1>
-				SQL configuration <br> <small>This will create the configuration file</small>
+				SQL configuration <br> <small>This will edit the configuration file</small>
 			</h1>
 		</div>
 
