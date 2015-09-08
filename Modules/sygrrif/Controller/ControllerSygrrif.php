@@ -1066,7 +1066,7 @@ class ControllerSygrrif extends ControllerBooking {
 		}
 		
 		$user_id = $this->request->getParameter('user_id');
-		$unit_id = $this->request->getParameter('unit_id');
+		//$unit_id = $this->request->getParameter('unit_id');
 		$date = $this->request->getParameter('date');
 		$visa_id = $this->request->getParameter('visa_id');
 		$resource_id = $this->request->getParameter('resource_id');
@@ -1074,6 +1074,9 @@ class ControllerSygrrif extends ControllerBooking {
 		if ($date != ""){
 			$date = CoreTranslator::dateToEn($date, $lang);
 		}
+		
+		$modelUser = new User();
+		$unit_id = $modelUser->getUserUnit($user_id);
 		
 		$model = new SyAuthorization();
 		$model->addAuthorization($date, $user_id, $unit_id, $visa_id, $resource_id);

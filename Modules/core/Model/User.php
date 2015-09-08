@@ -321,6 +321,18 @@ class User extends Model {
 	}
 	
 	/**
+	 * Get the unit ID for a given user
+	 * @param number $id
+	 * @return Number: Unit ID
+	 */
+	public function getUserUnit($id){
+		$sql = "select id_unit from core_users where id=?";
+		$user = $this->runRequest ( $sql, array ($id) );
+		$userf = $user->fetch ();
+		return $userf [0];
+	}
+	
+	/**
 	 * Get the user email
 	 * @param number $id User ID
 	 * @return string User email
@@ -708,7 +720,8 @@ class User extends Model {
 				$convention,
 				$date_convention,
 				$date_end_contract,
-				$is_active 
+				$is_active,
+				$source				
 		) );
 		
 		return $this->getDatabase ()->lastInsertId ();
@@ -771,7 +784,8 @@ class User extends Model {
 					$convention,
 					$date_convention,
 					$date_end_contract,
-					$is_active 
+					$is_active,
+					$source 		
 			) );
 		}
 	}
@@ -1657,4 +1671,3 @@ class User extends Model {
 	}
 	
 }
-

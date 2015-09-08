@@ -200,15 +200,14 @@
 				<thead>
 					<tr>
 						<td></td>
+						<td style="min-width:10em;">Référence protocole</td>
+						<td style="min-width:10em;">Dilution</td>
+						<td style="min-width:10em;">Commentaire</td>
 						<td style="min-width:10em;">Espece</td>
 						<td style="min-width:10em;">Organe</td>
 						<td style="min-width:10em;">Validé</td>
 						<td style="min-width:10em;">Référence bloc</td>
 						<td style="min-width:10em;">Prélèvement</td>
-						<td style="min-width:10em;">Dilution</td>
-						<!-- <td>Temps d'incubation</td>  -->
-						<td style="min-width:10em;">Référence protoole</td>
-						<td style="min-width:10em;">Commentaire</td>
 					</tr>
 				</thead>
 					<tbody>
@@ -218,6 +217,29 @@
 							?>
 							<tr>
 								<td><input type="checkbox" name="chk" /></td>
+								
+								<td>
+									<select class="form-control" name="ref_protocol[]">
+									<?php 
+									$ref_proto = $this->clean($tissus["ref_protocol"]);
+									foreach ($protocols as $protocol){
+										$id_proto = $this->clean($protocol["id"]);
+										$no_proto = $this->clean($protocol["no_proto"]);
+										$selected = "";
+										if ($ref_proto == $no_proto){
+											$selected = "selected=\"selected\"";
+										}
+										?>
+										<OPTION value="<?=$no_proto?>" <?=$selected?>> <?= $no_proto ?> </OPTION>
+										<?php 
+									}	
+									?>
+									</select>
+								</td>
+								<td><input class="form-control" type="text" name="dilution[]" value="<?= $tissus["dilution"] ?>"/></td>
+								<td>
+									<textarea name="comment[]"><?= $this->clean($tissus["comment"])  ?></textarea>
+								</td>
 								<td>
 									<select class="form-control" name="espece[]">
 									<?php 
@@ -288,33 +310,13 @@
 									?>
 									</select>
 								</td>
-								<td><input class="form-control" type="text" name="dilution[]" value="<?= $tissus["dilution"] ?>"/></td>
 								
 								<!-- 
 								<td><input class="form-control" type="text" name="temps_incubation[]" value="<?= $tissus["temps_incubation"] ?>"/></td>
 								 -->
 								
-								<td>
-									<select class="form-control" name="ref_protocol[]">
-									<?php 
-									$ref_proto = $this->clean($tissus["ref_protocol"]);
-									foreach ($protocols as $protocol){
-										$id_proto = $this->clean($protocol["id"]);
-										$no_proto = $this->clean($protocol["no_proto"]);
-										$selected = "";
-										if ($ref_proto == $no_proto){
-											$selected = "selected=\"selected\"";
-										}
-										?>
-										<OPTION value="<?=$no_proto?>" <?=$selected?>> <?= $no_proto ?> </OPTION>
-										<?php 
-									}	
-									?>
-									</select>
-								</td>
-								<td>
-									<textarea name="comment[]"><?= $this->clean($tissus["comment"])  ?></textarea>
-								</td>
+								
+								
 							</tr>
 							<?php
 						}
@@ -324,6 +326,25 @@
 						?>
 						<tr>
 							<td><input type="checkbox" name="chk" /></td>
+							<td>
+								<select class="form-control" name="ref_protocol[]">
+									<?php 
+									foreach ($protocols as $protocol){
+										$no_proto = $this->clean($protocol["no_proto"]);
+										$idproto = $this->clean($protocol["id"]);
+										?>
+										<OPTION value="<?=$no_proto?>"> <?= $no_proto ?> </OPTION>
+										<?php 
+									}	
+									?>
+								</select>
+							</td>
+							<td><input class="form-control" type="text" name="dilution[]" /></td>
+							<td>
+							<textarea name="comment[]">
+								
+							</textarea>
+							</td>
 							<td>
 								<select class="form-control" name="espece[]">
 									<?php
@@ -379,30 +400,11 @@
 								?>
 								</select>
 							</td>
-							<td><input class="form-control" type="text" name="dilution[]" /></td>
+							
 							<!-- 
 							<td><input class="form-control" type="text" name="temps_incubation[]" /></td>
 							 -->
-							<td>
-								<select class="form-control" name="ref_protocol[]">
-									<?php 
-									foreach ($protocols as $protocol){
-										$no_proto = $this->clean($protocol["no_proto"]);
-										$idproto = $this->clean($protocol["id"]);
-										?>
-										<OPTION value="<?=$no_proto?>"> <?= $no_proto ?> </OPTION>
-										<?php 
-									}	
-									?>
-								</select>
-							</td>
-							
-							<td>
-							<textarea name="comment[]">
-								
-							</textarea>
-							</td>
-							
+
 						</tr>
 						<?php 
 						}

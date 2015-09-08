@@ -192,8 +192,17 @@ if (!$canEditReservation){
 			<label for="inputEmail" class="control-label col-xs-4"><?=$calSup["name"] .$star ?></label>
 			<div class="col-xs-8">
 			        <input type='hidden' name="calsupName[]" value="<?= $calSup["name"] ?>"/>
+			        <?php 
+			        $calSupDataHere = "";
+				    if (isset($calSupsData[$calSup["name"]])){
+				    	$calSupDataHere = $this->clean($calSupsData[$calSup["name"]]);
+				    }
+					if ($calSupDataHere == "" && $calSup["name"] == "tel"){
+						$calSupDataHere = $curentuser["tel"];
+					}
+			        ?>
 					<input type='text' class="form-control" name="calsupValue[]"
-					       value="<?php if (isset($calSupsData[$calSup["name"]])){echo $calSupsData[$calSup["name"]];} ?>" <?=$readOnlyGlobal?> <?=$required?>/>
+					       value="<?php  ?>" <?=$readOnlyGlobal?> <?=$required?>/>
 		    </div>	
 		</div>
 		<?php	

@@ -298,12 +298,12 @@ $(document).ready(function() {
 					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">ref. protocol</th>
 					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">AcI dilution</th>
 					
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">commentaire</th>
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">espèce</th>
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">organe</th>
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">statut</th>
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">ref. bloc</th>
-					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">prélèvement</th>
-					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">commentaire</th>	
+					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">prélèvement</th>	
 					
 					<th class="text-center" style="width:5em; background-color: #eeeeff; color:#337AB7;">Nom</th>
 					<th class="text-center" style="width:5%; background-color: #eeeeff; color:#337AB7;">disponibilité</th>
@@ -380,6 +380,17 @@ $(document).ready(function() {
 				    	$tissus = $anticorps ['tissus'];
 				    	$val = "";
 				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
+				    		$val = $val . "<p>" 
+										. $tissus[$i]['comment']
+										. "</p>";  
+				    	}			    	
+					    echo $val;
+				    ?></td>
+				    
+				    <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
+				    	$tissus = $anticorps ['tissus'];
+				    	$val = "";
+				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
 				    		$val = $val . "<p>"  . $tissus[$i]['espece'] 
 										. "</p>";  
 				    	}			    	
@@ -449,17 +460,7 @@ $(document).ready(function() {
 				    	}			    	
 					    echo $val;
 				    ?></td>
-				    
-				    <td width="5%" class="text-left" style="background-color: #eeffee;"><?php 
-				    	$tissus = $anticorps ['tissus'];
-				    	$val = "";
-				    	for( $i = 0 ; $i < count($tissus) ; ++$i){
-				    		$val = $val . "<p>" 
-										. $tissus[$i]['comment']
-										. "</p>";  
-				    	}			    	
-					    echo $val;
-				    ?></td>
+			
 				    
 				   
 

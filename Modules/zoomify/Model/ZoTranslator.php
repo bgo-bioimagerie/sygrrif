@@ -7,7 +7,7 @@
  * @author sprigent
  *
  */
-class StTranslator {
+class ZoTranslator {
 
 	public static function Install_Repair_database($lang = ""){
 		if ($lang == "Fr"){
@@ -18,23 +18,23 @@ class StTranslator {
 	
 	public static function Storage($lang = ""){
 		if ($lang == "Fr"){
-			return "Stockage";
+			return "Zoomify";
 		}
-		return "Stockage";
+		return "Zoomify";
 	}
 
 	public static function ConfigAbstract($lang = ""){
 		if ($lang == "Fr"){
-			return "Ce module permet de récupérer des données auvegardées sur serveur";
+			return "Ce module permet de visualiser des images sur serveur avec zoomify";
 		}
-		return "This module allows to access data stored on a server";
+		return "This module allows visualize data that are stored on the server";
 	}
-	
+	 
 	public static function Storage_configuration($lang){
 		if ($lang == "Fr"){
-			return "Configuration du stockage";
+			return "Configuration de zoomify";
 		}
-		return "Storage configuration";
+		return "Zoomify configuration";
 	}
 	
 	public static function Upload($lang){
@@ -74,9 +74,9 @@ class StTranslator {
 	
 	public static function ManageFiles($lang){
 		if ($lang == "Fr"){
-			return "Stockage ";
+			return "Zoomify ";
 		}
-		return "Storage ";
+		return "Zoomify ";
 	}
 	
 	public static function LocalDirDownload($lang){
@@ -152,9 +152,9 @@ class StTranslator {
 	
 	public static function Directories_names($lang = ""){
 		if ($lang == "Fr"){
-			return "Répertoires de stockage";
+			return "Répertoires des données";
 		}
-		return "Storage directories";
+		return "Data directories";
 	}
 	
 }

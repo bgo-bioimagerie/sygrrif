@@ -10,18 +10,12 @@
 
 
 
-<?php include "Modules/database/View/navbar.php"; ?>
+<?php include "Modules/sheet/View/navbar.php"; ?>
 
 
-<br></br>
-<div class="container">
-	<!-- Main component for a primary marketing message or call to action -->
-	<div class="jumbotron">
-        <p> This tool allows you to create tables in the database and generate automatic tools to interact 
-		with these tables</p>
-	</div>
+<div class="col-xs-10">
 
-</div> <!-- /container -->
+</div> 
 
     
 

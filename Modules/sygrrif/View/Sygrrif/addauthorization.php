@@ -52,6 +52,7 @@ else{
 				</select>
 			</div>
 		</div>
+		<!-- 
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unit_at_the_authorization_date_time($lang) ?></label>
 			<div class="col-xs-10">
@@ -65,6 +66,7 @@ else{
 				</select>
 			</div>
 		</div>
+		-->
 		<div class="form-group ">
 				<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Training_date($lang) ?></label>
 				<div class="col-xs-10">
