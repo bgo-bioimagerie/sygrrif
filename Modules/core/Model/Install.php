@@ -107,7 +107,7 @@ class Install extends Model {
 				if ($pos === false) {
 				}
 				else if ($pos == 0) {
-					$outContent = $outContent . 'pwd = ' . $password . PHP_EOL;
+					$outContent = $outContent . 'pwd = "' . $password . '"' . PHP_EOL;
 					continue;
 				}
 				$outContent = $outContent . $buffer;

@@ -24,13 +24,32 @@ class SuBillGenerator extends Model {
 		$unitPricingModel = new SuUnitPricing();
 		$LABpricingid = $unitPricingModel->getPricing($unit_id);
 		
-		// responsible fullname
-		$modelUser = new SuUser();
-		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
 		
-		// unit name
-		$modelUnit = new SuUnit();
-		$unitName = $modelUnit->getUnitName($unit_id);
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		
+		$responsibleFullName = "";
+		$unitName = "";
+		$modelUnit = "";
+		$modelUser = "";
+		if ($supliesusersdatabase == "local"){
+			// responsible fullname
+			$modelUser = new SuUser();
+			$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
+			
+			// unit name
+			$modelUnit = new SuUnit();
+			$unitName = $modelUnit->getUnitName($unit_id);
+		}
+		else{
+			// responsible fullname
+			$modelUser = new User();
+			$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
+				
+			// unit name
+			$modelUnit = new Unit();
+			$unitName = $modelUnit->getUnitName($unit_id);
+		}
 		
 		$unitInfo = $modelUnit->getUnit($unit_id);
 		$unitAddress = $unitInfo[2];
@@ -145,6 +164,23 @@ class SuBillGenerator extends Model {
 			}
 		}
 		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("d/m/Y", time()));
+		
+		// replace the year
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{annee}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					break;
+				}
+			}
+		}
+		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("Y", time()));
 		
 		// replace the responsible
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -307,7 +343,7 @@ class SuBillGenerator extends Model {
 		$people = array();
 		foreach($beneficiaire as $b){
 			// user info
-			$modelUser = new SuUser();
+			
 			$nomPrenom = $modelUser->getUserFromlup(($b[0]), $unit_id, $responsible_id);
 			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){

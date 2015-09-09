@@ -5,6 +5,7 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/supplies/Model/SuPricing.php';
 require_once 'Modules/supplies/Model/SuUnitPricing.php';
 require_once 'Modules/supplies/Model/SuUnit.php';
+require_once 'Modules/core/Model/Unit.php';
 
 
 class ControllerSuppliespricing extends ControllerSecureNav {
@@ -90,9 +91,19 @@ class ControllerSuppliespricing extends ControllerSecureNav {
 	}
 
 	public function addunitpricing(){
-	
-		$modelUnit = new SuUnit();
-		$unitsList = $modelUnit->unitsIDName();
+			
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		
+		$unitsList = array();
+		if ($supliesusersdatabase == "local"){
+			$modelUnit = new SuUnit();
+			$unitsList = $modelUnit->unitsIDName();
+		}
+		else{
+			$modelUnit = new Unit();
+			$unitsList = $modelUnit->unitsIDName();
+		}
 	
 		$modelPricing = new SuPricing();
 		$pricingList = $modelPricing->pricingsIDName();
@@ -122,8 +133,17 @@ class ControllerSuppliespricing extends ControllerSecureNav {
 			$unit_id = $this->request->getParameter ( "actionid" );
 		}
 	
-		$modelUnit = new SuUnit();
-		$unitName = $modelUnit->getUnitName($unit_id);
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		$unitName = "";
+		if ($supliesusersdatabase == "local"){
+			$modelUnit = new SuUnit();
+			$unitName = $modelUnit->getUnitName($unit_id);
+		}
+		else{
+			$modelUnit = new CoreUnit();
+			$unitName = $modelUnit->getUnitName($unit_id);
+		}
 	
 		$modelPricing = new SuPricing();
 		$pricingList = $modelPricing->pricingsIDName();

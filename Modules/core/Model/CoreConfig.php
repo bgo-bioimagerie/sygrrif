@@ -35,7 +35,7 @@ class CoreConfig extends Model {
 	
 		$this->setParam("admin_email", "firstname.name@adress.com");
 		$this->setParam("user_desactivate", "0");
-		$this->setParam("logo", "data/logo.jpg");
+		$this->setParam("logo", "Themes/logo.jpg");
 		$this->setParam("home_title", "Database");
 		$this->setParam("home_message", "");
 	}

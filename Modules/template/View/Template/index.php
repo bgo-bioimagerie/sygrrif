@@ -4,7 +4,7 @@
 
 <div class="col-xs-12">
 
-	Add here the content of your tool
+	Hello Word
 
 </div>
 

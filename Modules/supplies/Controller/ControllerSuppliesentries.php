@@ -125,9 +125,17 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$itemsOrder = array_merge($itemsOrderA, $itemsOrderC);
 		
 		//print_r($itemsOrder);
-		
-		$modelUser = new SuUser();
-		$users = $modelUser->getUsersSummary();
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		$users = array();
+		if ($supliesusersdatabase == "local"){
+			$modelUser = new SuUser();
+			$users = $modelUser->getUsersSummary();
+		}
+		else{
+			$modelUser = new User();
+			$users = $modelUser->getUsersSummary();
+		}
 		
 		// view
 		$navBar = $this->navBar();

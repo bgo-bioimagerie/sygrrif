@@ -543,7 +543,7 @@ class CoreTranslator {
 	
 	public static function Activate_desactivate_menus($lang = ""){
 		if ($lang == "Fr"){
-			return "Activer/désactivre les menus";
+			return "Activer/désactiver les menus";
 		}
 		return "Activate/desactivate menus";
 	}
@@ -581,7 +581,7 @@ class CoreTranslator {
 	
 	public static function non_active_users($lang = ""){
 		if ($lang == "Fr"){
-			return "désactivation des utilisateurs";
+			return "Désactivation des utilisateurs";
 		}
 		return "non-active users";
 	}
@@ -861,7 +861,7 @@ class CoreTranslator {
 	
 	public static function HomeConfig($lang){
 		if ($lang == "Fr"){
-			return "Informations page de connection";
+			return "Informations page de connexion";
 		}
 		return "Connection page informations";
 	}

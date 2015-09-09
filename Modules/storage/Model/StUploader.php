@@ -169,7 +169,7 @@ class StUploader extends Model {
 					}
 				}
 			} elseif (0 === fseek ( $fp, 0, SEEK_END )) {
-				echo "php 64bits";
+				//echo "php 64bits";
 				// 64bit
 				$return = ftell ( $fp );
 			}

@@ -4,6 +4,8 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/supplies/Model/SuUnit.php';
 require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/supplies/Model/SuBillGenerator.php';
+require_once 'Modules/Core/Model/Unit.php';
+require_once 'Modules/Core/Model/User.php';
 
 class ControllerSuppliesbill extends ControllerSecureNav {
 	
@@ -25,11 +27,22 @@ class ControllerSuppliesbill extends ControllerSecureNav {
 			$selectedUnitId = $unit_id; 
 		}
 		
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		
 		// get the responsibles for this unit
 		$responsiblesList = array();
 		if ($selectedUnitId > 0){
-			$modeluser = new SuUser();
-			$responsiblesList = $modeluser->getResponsibleOfUnit($selectedUnitId);
+			
+			$responsiblesList = array();
+			if ($supliesusersdatabase == "local"){
+				$modeluser = new SuUser();
+				$responsiblesList = $modeluser->getResponsibleOfUnit($selectedUnitId);
+			}
+			else{
+				$modeluser = new User();
+				$responsiblesList = $modeluser->getResponsibleOfUnit($selectedUnitId);
+			}
 		}
 		
 		if ($selectedUnitId != 0 && $responsible_id > 1){
@@ -40,8 +53,15 @@ class ControllerSuppliesbill extends ControllerSecureNav {
 		}
 		
 		// get units list
-		$modelUnit = new SuUnit();
-		$unitsList = $modelUnit->unitsIDName();
+		$unitsList = array();
+		if($supliesusersdatabase == "local"){
+			$modelUnit = new SuUnit();
+			$unitsList = $modelUnit->unitsIDName();
+		}
+		else{
+			$modelUnit = new Unit();
+			$unitsList = $modelUnit->unitsIDName();
+		}
 		
 		$errorMessage = "";
 		

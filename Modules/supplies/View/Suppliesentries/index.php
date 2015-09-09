@@ -51,7 +51,7 @@
 				    <td><?= CoreTranslator::dateFromEn($this->clean ( $item ['date_close'] ), $lang); ?></td>
 				    <td><?= CoreTranslator::dateFromEn($this->clean ( $item ['date_last_modified'] ), $lang); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliesentries/editentries/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?> </button>
+				      <button type='button' onclick="location.href='suppliesentries/editentries/<?= $itemId ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?> </button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

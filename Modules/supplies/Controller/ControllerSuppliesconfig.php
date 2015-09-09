@@ -3,6 +3,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
+require_once 'Modules/core/Model/CoreConfig.php';
 require_once 'Modules/supplies/Model/SuInitDatabase.php';
 
 
@@ -27,6 +28,13 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 		$ModulesManagerModel = new ModulesManager();
 		$status = $ModulesManagerModel->getDataMenusUserType("supplies");
 		$menus[0] = array("name" => "supplies", "status" => $status);
+		
+		// user database
+		$modelConfig = new CoreConfig();
+		if (!$modelConfig->isKey("supliesusersdatabase")){
+			$modelConfig->setParam("supliesusersdatabase", "core");
+		}
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
 
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
@@ -40,14 +48,16 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
     			$installSuccess = "<b>Success:</b> the database have been successfully installed";
     			$this->generateView ( array ('navBar' => $navBar, 
     					                     'installError' => $installError,
-    					                     'menus' => $menus	
+    					                     'menus' => $menus,
+    										 'supliesusersdatabase' => $supliesusersdatabase
     			) );
     			return;
 			}
 			$installSuccess = "<b>Success:</b> the database have been successfully installed";
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
-					                     'menus' => $menus
+					                     'menus' => $menus,
+										 'supliesusersdatabase' => $supliesusersdatabase
 			) );
 			return;
 		}
@@ -65,7 +75,8 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 			
 			
 			$this->generateView ( array ('navBar' => $navBar,
-				                     'menus' => $menus
+				                     'menus' => $menus,
+									 'supliesusersdatabase' => $supliesusersdatabase
 									 	
 			) );
 			return;
@@ -78,15 +89,31 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 			$templateMessage = $this->uploadTemplate();
 			$this->generateView ( array ('navBar' => $navBar,
 					'menus' => $menus,
-					'templateMessage' => $templateMessage
+					'templateMessage' => $templateMessage,
+					'supliesusersdatabase' => $supliesusersdatabase
 			) );
 			return;
 		}
 		
+		// set user database choice
+		$usersquery = $this->request->getParameterNoException ( "usersquery");
+		$usersquery = "";
+		if ($usersquery == "yes"){
+			
+			$supliesusersdatabase = $this->request->getParameter("supliesusersdatabase");
+			$modelConfig->setParam("supliesusersdatabase", $supliesusersdatabase);
+			
+			$this->generateView ( array ('navBar' => $navBar,
+					'menus' => $menus,
+					'supliesusersdatabase' => $supliesusersdatabase
+			) );
+			return;
+		}
 				
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				'menus' => $menus
+				'menus' => $menus,
+				'supliesusersdatabase' => $supliesusersdatabase
 		) );
 	}
 	

@@ -2,6 +2,8 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/supplies/Model/SuUser.php';
+require_once 'Modules/core/Model/User.php';
+
 
 /**
  * Class defining the Consomable items model
@@ -45,7 +47,16 @@ class SuEntry extends Model {
 		$sql = "select * from su_entries order by " . $sortentry . " ASC;";
 		$req = $this->runRequest($sql);
 		$entries = $req->fetchAll();
-		$modelUser = new SuUser();
+		
+		$modelUser = "";
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		if ($supliesusersdatabase == "local"){
+			$modelUser = new SuUser();
+		}
+		else{
+			$modelUser = new User();
+		}
 		for ($i = 0 ; $i < count($entries) ; $i++){
 			$entries[$i]["user_name"] =  $modelUser->getUserFUllName($entries[$i]['id_user']);
 		}

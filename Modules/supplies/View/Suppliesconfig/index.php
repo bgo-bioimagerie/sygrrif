@@ -129,11 +129,13 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		?>
 			
       <form action="suppliesconfig" method="post" enctype="multipart/form-data">
-      <div class="col-xs-10">
+      <div class="col-xs-12">
 			<input class="form-control" type="hidden" name="templatequery" value="yes"
 				/>
 	  </div>
       
+      
+      <div class="col-md-12">
       <div class="form-group">
           <div class="col-md-10">
           <p>
@@ -146,7 +148,36 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
       <div class="col-xs-2 col-xs-offset-10" id="button-div">
     	<input class="btn btn-primary" type="submit" value="<?= SuTranslator::Upload($lang) ?>" name="submit">
       </div>
+      </div>
 	  </form>   
+	  
+	  
+	  
+	  <form role="form" class="form-horizontal" action="suppliesconfig" method="post">
+      <div class="col-xs-12">
+			<input class="form-control" type="hidden" name="usersquery" value="yes" />
+	  </div>
+      
+    
+      <div class="page-header">
+		  <h2>
+		  <?= SuTranslator::Users_database($lang); ?>
+			<br> <small></small>
+		  </h2>
+		</div>
+      <div class="form-group col-xs-12">
+	  	<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Users_database($lang) ?></label>
+			<div class="col-xs-6">
+				<select class="form-control" name="menus[]">
+					<OPTION value="0" <?php if($supliesusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
+					<OPTION value="1" <?php if($supliesusersdatabase=="core"){echo "selected=\"selected\"";} ?> > core </OPTION>
+				</select>
+			</div>
+		</div>
+		<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="save" />
+		</div>
+	  </form> 
        
   </div>
 </div>    

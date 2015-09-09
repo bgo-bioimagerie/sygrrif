@@ -11,14 +11,14 @@ class SuTranslator {
 	
 	public static function Supplies($lang){
 		if ($lang == "Fr"){
-			return "consommables";
+			return "Consommables";
 		}
 		return "Supplies";
 	}
 	
 	public static function Supplies_Pricing($lang){
 		if ($lang == "Fr"){
-			return "consommables/Tarifs";
+			return "Consommables/Tarifs";
 		}
 		return "Supplies/Pricing";
 	}
@@ -310,4 +310,10 @@ class SuTranslator {
 		return "Edit pricing";
 	}
 
+	public static function Users_database($lang){
+		if ($lang == "Fr"){
+			return "Base de données utilisateurs";
+		}
+		return "Users database";
+	}
 }

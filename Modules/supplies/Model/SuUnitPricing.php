@@ -33,9 +33,19 @@ class SuUnitPricing extends Model {
 			$pricingId = $pricingsIds[$i];
 			
 			// get unit info
-			$sql = "select id, name from su_units where id=?";
-			$dataunit = $this->runRequest($sql, array($pricingId['id_unit']))->fetch(); /// @todo make it more robust (catch errors)
+			$modelConfig = new CoreConfig();
+			$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
 			
+			$dataunit = array();
+			if ($supliesusersdatabase == "local"){
+				$sql = "select id, name from su_units where id=?";
+				$dataunit = $this->runRequest($sql, array($pricingId['id_unit']))->fetch(); /// @todo make it more robust (catch errors)
+			}
+			else{
+				$sql = "select id, name from core_units where id=?";
+				$dataunit = $this->runRequest($sql, array($pricingId['id_unit']))->fetch(); /// @todo make it more robust (catch errors)
+				
+			}
 			// get pricing info
 			$sql = "select id, tarif_name from su_pricing where id=?";
 			$datapricing = $this->runRequest($sql, array($pricingId['id_pricing']))->fetch(); /// @todo make it more robust (catch errors)

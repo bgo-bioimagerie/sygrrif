@@ -48,6 +48,12 @@ if (isset($_SESSION["user_settings"]["language"])){
 	<div class="container">
 		<h1> <?= SuTranslator::Supplies($lang) ?> </h1>
 
+		<?php 
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		if ($supliesusersdatabase == "local"){
+		?>
+		
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?= CoreTranslator::Users_Institutions($lang) ?> </legend>
@@ -63,6 +69,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 			</fieldset>
 		</div>
+		<?php 
+		}
+		?>
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?= SuTranslator::Supplies_Pricing($lang)?></legend>	

@@ -287,13 +287,14 @@ $(document).ready(function() {
 					
 					<th class="text-center" style="width:1em; color:#337AB7;">No<br/>H2P2</th> 
 					<th class="text-center" style="width:5%; color:#337AB7;">Nom</th>
+					<th class="text-center" style="width:2%; color:#337AB7;">St</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Fournisseur</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Source</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Référence</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Clone</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">lot</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Isotype</th>
-					<th class="text-center" style="width:5%; color:#337AB7;">Stockage</th>
+					
 					
 					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">ref. protocol</th>
 					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">AcI dilution</th>
@@ -336,13 +337,14 @@ $(document).ready(function() {
 					
 					<td style="width:1em;" class="text-left"><a href="anticorps/edit/<?= $anticorpsId ?>"><?= $this->clean ( $anticorps ['no_h2p2'] ); ?></a></td>
 					<td width="5%" class="text-left"><a href="anticorps/edit/<?= $anticorpsId ?>"><?= $this->clean ( $anticorps ['nom'] ); ?></a></td>
+					<td width="5%" class="text-left"><?= $this->clean ( $anticorps ['stockage'] ); ?></td>
 				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['fournisseur'] ); ?></td>
 				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['source'] ); ?></td>
 				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['reference'] ); ?></td>
 				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['clone'] ); ?></td>
 				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['lot'] ); ?></td>
 				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['isotype'] ); ?></td>
-				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['stockage'] ); ?></td>
+				    
 				    
 				    
 				    <!--  PROTOCOLE -->
