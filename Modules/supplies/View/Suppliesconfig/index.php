@@ -168,9 +168,9 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
       <div class="form-group col-xs-12">
 	  	<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Users_database($lang) ?></label>
 			<div class="col-xs-6">
-				<select class="form-control" name="menus[]">
-					<OPTION value="0" <?php if($supliesusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
-					<OPTION value="1" <?php if($supliesusersdatabase=="core"){echo "selected=\"selected\"";} ?> > core </OPTION>
+				<select class="form-control" name="supliesusersdatabase">
+					<OPTION value="local" <?php if($supliesusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
+					<OPTION value="core" <?php if($supliesusersdatabase=="core"){echo "selected=\"selected\"";} ?> > core </OPTION>
 				</select>
 			</div>
 		</div>

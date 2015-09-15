@@ -60,7 +60,6 @@ class Ldap {
 				return "9";
 			else if ($user_dn) {
 				$auth_ldap = 'yes';
-				echo "<br/> auth_ldap = 'yes' <br/>";
 				return $user_dn;
 			} else
 				return "4";

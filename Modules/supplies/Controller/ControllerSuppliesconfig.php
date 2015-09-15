@@ -97,7 +97,6 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 		
 		// set user database choice
 		$usersquery = $this->request->getParameterNoException ( "usersquery");
-		$usersquery = "";
 		if ($usersquery == "yes"){
 			
 			$supliesusersdatabase = $this->request->getParameter("supliesusersdatabase");

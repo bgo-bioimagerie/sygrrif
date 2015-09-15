@@ -198,7 +198,17 @@
   				</select>
 		    </div>
 		</div>
-		
+		<div class="form-group">
+                        <label for="inputEmail" class="control-label col-xs-2">isLdap</label>
+                        <div class="col-xs-10">
+                                <input class="form-control" id="name" type="text" name="isLdap" value="<?= $user['source'] ?>" readonly
+                                />
+                        </div>
+                </div>
+
+
+
+
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)?>" />

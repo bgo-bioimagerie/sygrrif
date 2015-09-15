@@ -241,7 +241,7 @@ class ControllerUsers extends ControllerSecureNav {
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
-		
+		$isLdap = $this->request->getParameterNoException ("isLdap");
 		$lang = 'En';
 		if (isset($_SESSION["user_settings"]["language"])){
 			$lang = $_SESSION["user_settings"]["language"];
@@ -258,7 +258,7 @@ class ControllerUsers extends ControllerSecureNav {
 		// update user
 		$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
     		                         $id_unit, $id_responsible, $id_status,
-				                     $convention, $date_convention, $date_end_contract);
+				                     $convention, $date_convention, $date_end_contract, 1, $isLdap);
 
 		// update responsible
 		
