@@ -25,7 +25,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</h2>
 		</div>
 		
-		<form role="form" class="form-horizontal" action="coreconfig"
+		<form role="form" class="form-horizontal" action="Coreconfig"
 		method="post">
 		
 		<?php if (isset($installError)): ?>
@@ -62,8 +62,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</h2>
 		  </div>
 		
-		  <form role="form" class="form-horizontal" action="coreconfig"
-		  method="post">
+		  <form role="form" class="form-horizontal" action="Coreconfig" method="post">
 		  
 		    <div class="col-xs-12">
 			  <input class="form-control" type="hidden" name="setmenusquery" value="yes"
@@ -102,7 +101,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</h2>
 		  </div>
 		
-		  <form role="form" class="form-horizontal" action="coreconfig"
+		  <form role="form" class="form-horizontal" action="Coreconfig"
 		  method="post">
 		  
 		    <div class="col-xs-12">
@@ -140,7 +139,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</h2>
 		  </div>
 		
-		  <form role="form" class="form-horizontal" action="coreconfig"
+		  <form role="form" class="form-horizontal" action="Coreconfig"
 		  method="post">
 		  
 		    <div class="col-xs-12">
@@ -170,7 +169,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</h2>
 		  </div>
 		
-		  <form role="form" class="form-horizontal" action="coreconfig"
+		  <form role="form" class="form-horizontal" action="Coreconfig"
 		  method="post">
 		  
 		    <div class="col-xs-12">

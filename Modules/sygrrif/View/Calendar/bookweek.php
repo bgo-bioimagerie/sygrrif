@@ -48,11 +48,12 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 #resa_link{
 	font-family: Arial;
 	font-size: 10px;
-	line-height: 6px;
+	line-height: 9px;
 	letter-spacing: 1px;
 	font-weight: normal;
 	color: #002070;
 	font-weight : bold;
+
 }
 
 @media (min-width: 1200px) {
@@ -133,7 +134,7 @@ $sufixStream = date("S", $time);
 <button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
 <button type="button" class="btn btn-default active"><?= SyTranslator::Week($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
 </div>
 </div>
 
@@ -161,10 +162,10 @@ $available_days = explode(",", $available_days);
 			$heightCol = "140px";
 		}
 		else if($size_bloc_resa == 1800){
-			$heightCol = "50px";
+			$heightCol = "140px";
 		}
 		else if($size_bloc_resa == 3600){
-			$heightCol = "50px";
+			$heightCol = "140px";
 		}
 		?>
 	

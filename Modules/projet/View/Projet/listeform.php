@@ -1,4 +1,4 @@
-<?php $this->title = "SyGrrif"?>
+<?php $this->title = "Fiche-Projet"?>
 
 <?php
 $lang = "En";
@@ -13,6 +13,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 require_once 'Modules/projet/Model/ProjetTranslator.php';
 
 ?>
+
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html" charset=UTF-8" />
@@ -46,7 +47,7 @@ require_once 'Modules/projet/Model/ProjetTranslator.php';
 						<td><?= $idform?></td>
 						<!--  titre -->
 					<?php $titre = $this->clean ( $projet ['titre'] ); ?>
-						<td><?= $titre?></td>
+						<td><?= $titre?> </td>
 						<!-- numero fiche projet -->
 					<?php $numerofiche = $this->clean ( $projet ['numerofiche'] );?>
 						<td><?= $numerofiche?></td>

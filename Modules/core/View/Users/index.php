@@ -110,11 +110,13 @@ include "Modules/projet/View/projetnavbar.php";
 					<th class="text-center" style="width:7.12%"><?= CoreTranslator::Convention($lang)?></th>
 					<th class="text-center" style="width:7.12%"><?= CoreTranslator::User_from($lang) ?> </th>
 					<th class="text-center" style="width:7.12%"><?= CoreTranslator::Last_connection($lang) ?></th>
+					<th class="text-center" style="width:7.12%"><?=CoreTranslator::typeorganne($lang)?></th>
 					<th> Modifier</th>
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ( $usersArray as $user ) : ?> 
+				<?php 
+				foreach ( $usersArray as $user ) : ?> 
 				<?php if ($user ['id'] > 1){ ?>
 				<tr>
 					<?php $userId = $this->clean ( $user ['id'] ); ?>
@@ -127,21 +129,22 @@ include "Modules/projet/View/projetnavbar.php";
 				    
 				    <td style="width:7.12%"><?= $this->clean ( $user ['status'] ); ?></td>
 				    <td style="width:7.12%"> 
-				    	<?php 
+				    <?php 
 				    	$convno = $this->clean ( $user ['convention'] );
-				    	if ($convno == 0 || $user ['date_convention']=="0000-00-00"){
-				    		$convTxt = CoreTranslator::Not_signed($lang);	
+				    	if ($convno == 0 || $convno == "non"){
+				    		$convTxt = "Non";	
 				    	}
 				    	else{
-				    		$convTxt = "<p>" . CoreTranslator::Signed_the($lang) . "</p>"
-				    				   ."<p>" . CoreTranslator::dateFromEn($this->clean ( $user ['date_convention']), $lang) . "</p>";
+				    		$convTxt = "Oui";
 				    	}
 				    	?>
 				    
 				      <?= $convTxt ?>
+				    
 				    </td>
 				    <td style="width:7.12%"><?= CoreTranslator::dateFromEn( $this->clean ( $user ['date_created']) , $lang) ?></td>
 				    <td style="width:7.12%"><?= CoreTranslator::dateFromEn( $this->clean ( $user ['date_last_login'] ), $lang) ?></td>
+				    <td style="width:7.12%"><?= $this->clean ( $user ['typeorgane'] );?></td>
 				    <td style="width:2.12%"><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button></td>  
 	    		</tr>
 	    		<?php }endforeach; ?>

@@ -106,18 +106,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 					</select>
 				</div>
 			</div>
-			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4">Utilisateurs Neurinfo</label>
-				<div class="col-lg-6">
-					<select class="form-control" name="UtilisateurNeurinfo">
-						<OPTION value="0" <?php if($menuCalendar["statuscalendar"]==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::disable($lang) ?> </OPTION>
-						<OPTION value="1" <?php if($menuCalendar["statuscalendar"]==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-						<OPTION value="2" <?php if($menuCalendar["statuscalendar"]==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-						<OPTION value="3" <?php if($menuCalendar["statuscalendar"]==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-						<OPTION value="4" <?php if($menuCalendar["statuscalendar"]==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
-					</select>
-				</div>
-			</div>
+		
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
 			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
 		    </div>

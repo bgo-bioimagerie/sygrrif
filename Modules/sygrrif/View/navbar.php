@@ -67,6 +67,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 						class="btn btn-link" id="navlink"><?= SyTranslator::block_resources($lang) ?></button>		
 			</fieldset>
 		</div>
+		<!--  
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?= SyTranslator::Users_Authorizations($lang) ?></legend>
@@ -82,7 +83,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 					<button onclick="location.href='sygrrif/addauthorization'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Add_Authorizations($lang) ?></button>
 			</fieldset>
-		</div>
+		</div> 
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?= SyTranslator::Pricing($lang) ?> </legend>
@@ -95,6 +96,14 @@ if (isset($_SESSION["user_settings"]["language"])){
 						class="btn btn-link" id="navlink"><?= SyTranslator::Pricing_Unit($lang) ?></button>
 					<button onclick="location.href='sygrrif/addunitpricing'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Add($lang) ?></button>
+			</fieldset> 
+		</div>-->
+		<div class='col-md-3 well'>
+			<fieldset>
+				<legend><?= SyTranslator::Pricing($lang) ?> </legend>
+					<button onclick="location.href='Tarifs/ListTarif'"
+						class="btn btn-link" id="navlink"><?= SyTranslator::Pricings($lang) ?></button>
+					<button onclick="location.href='Tarifs/index'" class="btn btn-link" id="navlink"><?= SyTranslator::Add($lang) ?></button>
 			</fieldset> 
 		</div>
 
@@ -124,10 +133,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 					?>
 					<button onclick="location.href='sygrrifbillmanager'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Bills_manager($lang) ?></button>	
+							<!-- 
 					<button onclick="location.href='sygrrifstatsusers/statusers'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::Authorized_users($lang) ?></button>	
 					<button onclick="location.href='sygrrif/statauthorizations'"
-						class="btn btn-link" id="navlink"><?= SyTranslator::Statistics_authorizations($lang) ?></button>
+						class="btn btn-link" id="navlink"><?= SyTranslator::Statistics_authorizations($lang) ?></button> -->
 					<button onclick="location.href='sygrrifstats/report'"
 						class="btn btn-link" id="navlink"><?= SyTranslator::grr_report($lang) ?></button>
 							

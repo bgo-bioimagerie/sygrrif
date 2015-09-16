@@ -27,5 +27,17 @@ class ResTranslator {
 		}
 		return "Visit number";
 	}
-
+	public static function entrervaleur($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Entrez votre valeur");
+		}
+		return "enter your value";
+	}
+		public static function comentaire($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Commentaire");
+		}
+		return "Comment";
+	}
+	
 }

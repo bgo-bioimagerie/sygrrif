@@ -2,7 +2,11 @@
 
 <?php echo $navBar?>
 
-<?php include "Modules/core/View/Users/usersnavbar.php"; ?>
+<?php if($isneurinfo){
+include "Modules/projet/View/projetnavbar.php";
+}else{
+	include "Modules/core/View/Users/usersnavbar.php";
+} ?>
 
 <head>
     <!-- Bootstrap core CSS -->

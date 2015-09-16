@@ -69,9 +69,14 @@
 					$checkedInvP="";
 					$checkedProm = "";
 					$checkedOpg="";
+					$checkedproinjc="";
 					$checkedCstn = "";
 					$checkedGamds="";
+					$checkedsoins="";
 					$checkedcout = "";
+					$checkedint = "";
+					$checkedirm = "";
+					$checkedlirm = "";
 					if($champ[$i] == "numerofiche"){
 						$checkedNumFiche = "selected=\"selected\"";
 					}
@@ -96,14 +101,29 @@
 					else if ($champ[$i] == "opglibelle"){
 						$checkedOpg = "selected=\"selected\"";
 					}
+					else if ($champ[$i] == "protocoleinjecte"){
+						$checkedproinjc = "selected=\"selected\"";
+					}
 					else if ($champ[$i] == "cstnt"){
 						$checkedCstn = "selected=\"selected\"";
 					}
 					else if ($champ[$i] == "gamds"){
 						$checkedGamds = "selected=\"selected\"";
 					}
-					else if ($champ[$i] == "coutestime"){
+					else if ($champ[$i] == "soinscourant"){
+						$checkedsoins = "selected=\"selected\"";
+					}
+					else if ($champ[$i] == "tarif"){
 						$checkedcout = "selected=\"selected\"";
+					}
+					else if ($champ[$i] == "intitule"){
+						$checkedint = "selected=\"selected\"";
+					}
+					else if ($champ[$i] == "irm"){
+						$checkedirm = "selected=\"selected\"";
+					}
+					else if ($champ[$i] == "lastirm"){
+						$checkedlirm = "selected=\"selected\"";
 					}
 					?>
 					<OPTION value="numerofiche" <?= $checkedNumFiche ?>> <?=ProjetTranslator::numerofiche($lang) ?> </OPTION>
@@ -114,9 +134,14 @@
 					<OPTION value="ipprenom" <?= $checkedInvP ?>> Prenom investigateur principal </OPTION>
 					<OPTION value="promoteur" <?= $checkedProm ?>> <?= ProjetTranslator::prom($lang) ?> </OPTION>
 					<OPTION value="opglibelle" <?= $checkedOpg ?>> Organisme Partenaire Gestionnaire </OPTION>
+					<OPTION value="protocoleinjecte" <?= $checkedproinjc ?>> <?=ProjetTranslator::protocoleinjecte($lang)?> </OPTION>
 					<OPTION value="cstnt" <?= $checkedCstn ?>>  Correspondant technique Neunrinfo  </OPTION>
 					<OPTION value="gamds" <?= $checkedGamds ?>>Shanoir </OPTION>
-					<OPTION value="coutestime" <?= $checkedcout ?>> Prix </OPTION>
+					<OPTION value="soinscourant" <?= $checkedsoins ?>> <?=ProjetTranslator::soins($lang)?> </OPTION>
+					<OPTION value="tarif" <?= $checkedcout ?>> <?=ProjetTranslator::prix($lang)?> </OPTION>
+					<OPTION value="intitule" <?= $checkedint ?>> <?=ProjetTranslator::cotation($lang)?> </OPTION>
+					<OPTION value="irm" <?= $checkedirm ?>> <?=ProjetTranslator::irm($lang)?> </OPTION>
+					<OPTION value="lastirm" <?= $checkedlirm ?>> <?=ProjetTranslator::derirm($lang)?> </OPTION>
 				</select>
 				
 				</div>
@@ -213,9 +238,15 @@ if(isset($table)){
            <th>  Prenom investigateur principal </th>
            <th> <?= ProjetTranslator::prom($lang) ?> </th>
            <th> Organisme Partenaire Gestionnaire </th>
+            <th> <?=ProjetTranslator::protocoleinjecte($lang)?> </th>
            <th>  Correspondant technique Neunrinfo </th>
            <th>Shanoir </th>
-           <th>  Prix</th>
+           <th><?=ProjetTranslator::soins($lang)?> </th>
+           <th><?=ProjetTranslator::prix($lang)?></th>
+            <th><?=ProjetTranslator::cotation($lang)?></th>
+           <th><?=ProjetTranslator::irm($lang)?></th>
+           <th><?=ProjetTranslator::derirm($lang)?></th>
+          
        </tr>
    </thead>
 
@@ -232,9 +263,14 @@ if(isset($table)){
             <td><?= $t["ipprenom"] ?></td>
            <td><?= $t["promoteur"] ?></td>
            <td><?= $t["opglibelle"] ?></td>
+           <td><?= $t["protocoleinjecte"] ?></td>
             <td><?= $t["cstnt"] ?></td>
            <td><?= $t["gamds"] ?></td>
-            <td><?= $t["coutestime"] ?></td>
+           <td><?= $t["soinscoutant"] ?></td>
+            <td><?= $t["tarif"] ?></td>
+             <td><?= $t["intitule"] ?></td>
+              <td><?= $t["irm"] ?></td>
+               <td><?= $t["lastirm"] ?></td>
            
        </tr>
        
@@ -390,7 +426,7 @@ if(isset($summaryTable)){
       <td><?php echo $value['numerovisite']?></td>
       <td><?php echo $value['nbrexam']?></td>
       <td><?php echo $value['dureetotale']?></td>
-      <td><?php echo $value['coutestime']?></td>
+      <td><?php echo $value['tarif']?></td>
       
       <td></td>
       
@@ -428,7 +464,7 @@ if(isset($summaryTable)){
       <td><?php echo $value['numerovisite']?></td>
       <td><?php echo $value['nbrexam']?></td>
       <td><?php echo $value['dureetotale']?></td>
-      <td><?php echo $value['coutestime']?></td>
+      <td><?php echo $value['tarif']?></td>
       
       <td></td>
       

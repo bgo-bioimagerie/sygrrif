@@ -20,7 +20,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
-				Installer/Reparer la base de donnée <br> <small></small>
+				<?= SyTranslator::inst($lang)?> <br> <small></small>
 			</h2>
 		</div>
 		</div>
@@ -38,10 +38,8 @@ if (isset($_SESSION["user_settings"]["language"])){
     	</div>
 		<?php endif; ?>
 		
-		<p>
-		To install the SyGRRif mudule, click "Install". This will create the 
-		SyGRRif tables in the database if they don't exists or repair them
-		if they exists
+		<p> 
+		<?=SyTranslator::paragraphe($lang)?>
 		</p>
 		
 		<div class="col-xs-10">
@@ -59,7 +57,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div>
 		  <div class="page-header">
 			<h2>
-				Activate/desactivate menus <br> <small></small>
+				<?=SyTranslator::activedesa($lang)?> <br> <small></small>
 			</h2>
 		  </div>
 		
@@ -100,7 +98,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div>
 		<div class="page-header">
 		  <h2>
-			Bill template <br> <small></small>
+			<?=SyTranslator::model($lang)?> <br> <small></small>
 		  </h2>
 		</div>
 		
@@ -134,8 +132,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div class="form-group">
           <div class="col-md-10">
           <p>
-          Select a xls file that will be used as template 
-          to generate the SyGRRif bill</p>
+          <?=SyTranslator::para2($lang)?></p>
     	
     	  <input type="file" name="fileToUpload" id="fileToUpload">
         </div>
@@ -151,7 +148,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div>
 		  <div class="page-header">
 			<h2>
-				Booking summary options <br> <small></small>
+				<?=SyTranslator::bookingsum($lang)?><br> <small></small>
 			</h2>
 		  </div>
 		
@@ -195,11 +192,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label"><?= SyTranslator::Recipient($lang)?></label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rname">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::hiden($lang)?></OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_rname">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::taghiden($lang)?></OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_rname">
 				<?php 
@@ -234,11 +231,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label">Acronyme:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_acronyme">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>><?=SyTranslator::hiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_acronyme">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::taghiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_acronyme">
 				<?php 
@@ -272,11 +269,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label">Numero de visite:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_numvisite">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::hiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_numvisite">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>><?=SyTranslator::taghiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_numvisite">
 				<?php 
@@ -310,11 +307,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label">Code d'annonymisation:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_codeanonyma">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::hiden($lang)?></OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_codeanonyma">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::taghiden($lang)?></OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_codeanonyma">
 				<?php 
@@ -348,11 +345,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		   <div class="col-xs-3"><label class="control-label">Commentaire:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_commentaire">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::hiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_commentaire">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::taghiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_commentaire">
 				<?php 
@@ -395,11 +392,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label">Recipient name:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rname">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::hiden($lang)?></OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_rname">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::taghiden($lang)?></OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_rname">
 				<?php 
@@ -426,11 +423,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label">Recipient phone:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_rphone">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>>  <?=SyTranslator::hiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_rphone">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>>  <?=SyTranslator::taghiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_rphone">
 				<?php 
@@ -458,11 +455,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label">Short description:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_sdesc">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::hiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_sdesc">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::taghiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_sdesc">
 				<?php 
@@ -490,11 +487,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-3"><label class="control-label">Description:</label></div>
 		    <div class="col-xs-2"><select class="form-control" name="tag_visible_desc">
 				<OPTION value="1" <?php if ($tag_visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::hiden($lang)?></OPTION>
 			</select></div>
 			<div class="col-xs-3"><select class="form-control" name="tag_title_visible_desc">
 				<OPTION value="1" <?php if ($tag_title_visible == 1){echo "selected=\"selected\"";}?>> Tag Visible </OPTION>
-				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> Tag Hiden </OPTION>
+				<OPTION value="0" <?php if ($tag_title_visible == 0){echo "selected=\"selected\"";}?>> <?=SyTranslator::taghiden($lang)?> </OPTION>
 			</select></div>
 			<div class="col-xs-2"><select class="form-control" name="tag_position_desc">
 				<?php 
@@ -528,7 +525,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class="col-xs-12">
 			<div class="page-header">
 				<h2>
-					Series booking <br> <small></small>
+					<?=SyTranslator::series($lang)?> <br> <small></small>
 				</h2>
 			</div>
 		</div>
@@ -542,13 +539,13 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		
 		<div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4">Series Booking</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::series($lang)?></label>
 				<div class="col-xs-6">
 					<select class="form-control" name="seriesBooking">
-					<OPTION value="0" <?php if($seriesBooking==0){echo "selected=\"selected\"";} ?> > nobody </OPTION>
-					<OPTION value="2" <?php if($seriesBooking==2){echo "selected=\"selected\"";} ?> > users </OPTION>
-					<OPTION value="3" <?php if($seriesBooking==3){echo "selected=\"selected\"";} ?> > manager </OPTION>
-					<OPTION value="4" <?php if($seriesBooking==4){echo "selected=\"selected\"";} ?> > admin </OPTION>
+					<OPTION value="0" <?php if($seriesBooking==0){echo "selected=\"selected\"";} ?> > <?=SyTranslator::nobody($lang)?> </OPTION>
+					<OPTION value="2" <?php if($seriesBooking==2){echo "selected=\"selected\"";} ?> > <?=SyTranslator::utilisateur($lang)?> </OPTION>
+					<OPTION value="3" <?php if($seriesBooking==3){echo "selected=\"selected\"";} ?> > <?=SyTranslator::manager($lang)?> </OPTION>
+					<OPTION value="4" <?php if($seriesBooking==4){echo "selected=\"selected\"";} ?> > <?=SyTranslator::admin($lang)?> </OPTION>
 				</select>
 			</div>
 		</div>

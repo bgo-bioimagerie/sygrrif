@@ -1,6 +1,6 @@
 <?php
 
-function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
+function drawAgenda($mois, $year, $calEntries, $calRes, $isneurinfo){
 	
 	$lang = "En";
 	if (isset($_SESSION["user_settings"]["language"])){
@@ -14,9 +14,9 @@ function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
 	$mois_fr = Array("", "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août","Septembre", "Octobre", "Novembre", "Décembre");
 	
 	
-	$l_day=date("t",mktime(0,0,0,$mois,1,$annee));
-	$x=date("N", mktime(0, 0, 0, $mois,1 , $annee));
-	$y=date("N", mktime(0, 0, 0, $mois,$l_day , $annee));
+	$l_day=date("t",mktime(0,0,0,$mois,1,$year));
+	$x=date("N", mktime(0, 0, 0, $mois,1 , $year));
+	$y=date("N", mktime(0, 0, 0, $mois,$l_day , $year));
 	?>
 	
 	
@@ -26,7 +26,7 @@ function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
 
 
 	<!-- 
-	<caption><?= $mois_fr[$mois] . " " . $annee ?></caption>
+	<caption> <?= $mois_fr[$mois] . " " . $year ?></caption>
 	 -->
 	 <?php if ($isneurinfo){?>
 	 <table class="tableau">
@@ -35,16 +35,16 @@ function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
 	<div class="col-md-3" style="text-align: left;">
 		<button type="button" onclick="location.href='calendar/bookmonth/daymonthbefore'" class="btn btn-default"> &lt; </button>
 		<button type="button" onclick="location.href='calendar/bookmonth/daymonthafter'" class="btn btn-default"> > </button>
-		<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"> Ce mois</button>
+		<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"> <?= SyTranslator::cemois($lang) ?></button>
 	</div>
 	<div class="col-md-4">
-		<p ><strong> <?= $mois_fr[$mois] . " " . $annee ?></strong></p>
+		<p ><strong> <?= $mois_fr[$mois] . " " . $year ?></strong></p>
 	</div>
 	<div class="col-md-5" style="text-align: right;">	
 		<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default"><?= SyTranslator::Week($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-		<button type="button" class="btn btn-default active"><?= SyTranslator::Month($lang) ?></button>
+		<button type="button" class="btn btn-default active" onclick="location.href='calendar/bookmonth/thisMonth'"><?= SyTranslator::Month($lang) ?></button>
 	</div>
 	</div>
 	</caption>
@@ -60,8 +60,8 @@ function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
 	}
 	for($i=1;$i<($l_day+1);$i++)
 	{
-		$f=$y=date("N", mktime(0, 0, 0, $mois,$i , $annee));
-		$da=$annee."-".$mois."-".$i;
+		$f=$y=date("N", mktime(0, 0, 0, $mois,$i , $year));
+		$da=$year."-".$mois."-".$i;
 		echo "<td>";
 	
 		?>
@@ -123,16 +123,16 @@ function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
 	<div class="col-md-3" style="text-align: left;">
 		<button type="button" onclick="location.href='calendar/bookmonth/daymonthbefore'" class="btn btn-default"> &lt; </button>
 		<button type="button" onclick="location.href='calendar/bookmonth/daymonthafter'" class="btn btn-default"> > </button>
-		<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"> This month </button>
+		<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default">  <?= SyTranslator::cemois($lang) ?> </button>
 	</div>
 	<div class="col-md-4">
-		<p ><strong> <?= $mois_fr[$mois] . " " . $annee ?></strong></p>
+		<p ><strong> <?= $mois_fr[$mois] . " " . $year ?></strong></p>
 	</div>
 	<div class="col-md-5" style="text-align: right;">	
 		<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default"><?= SyTranslator::Week($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-		<button type="button" class="btn btn-default active"><?= SyTranslator::Month($lang) ?></button>
+		<button type="button" class="btn btn-default active" onclick="location.href='calendar/bookmonth/thisMonth'"><?= SyTranslator::Month($lang) ?></button>
 	</div>
 	</div>
 	</caption>
@@ -148,8 +148,8 @@ function drawAgenda($mois, $annee, $calEntries, $calRes, $isneurinfo){
 	}
 	for($i=1;$i<($l_day+1);$i++)
 	{
-		$f=$y=date("N", mktime(0, 0, 0, $mois,$i , $annee));
-		$da=$annee."-".$mois."-".$i;
+		$f=$y=date("N", mktime(0, 0, 0, $mois,$i , $year));
+		$da=$year."-".$mois."-".$i;
 		echo "<td>";
 	
 		?>

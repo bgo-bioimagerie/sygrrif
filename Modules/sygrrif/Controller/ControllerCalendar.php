@@ -1037,9 +1037,12 @@ class ControllerCalendar extends ControllerBooking {
 					'showSeries' => $showSeries,
 					'isneurinfo' => $isneurinfo,
 					'donnee'=>$donnee,
+					
 							) );
 		}
 		else{ // edit resa
+			$reservt=true;
+		
 			$reservation_id = $contentAction[1];
 			
 			$modelResa = new SyCalendarEntry();
@@ -1089,7 +1092,8 @@ class ControllerCalendar extends ControllerBooking {
 					'showSeries' => $showSeries,
 					'isneurinfo' => $isneurinfo,
 					'donnee'=> $donnee,
-					'prores'=> $prores
+					'prores'=> $prores,
+					'resrvt'=>$reservt
 			));
 		}
 		
@@ -1609,9 +1613,17 @@ class ControllerCalendar extends ControllerBooking {
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
 			$id = $this->request->getParameter ( "actionid" );
 		}
+		$ModulesManagerModel = new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
 		
 		$modelEntry = new SyCalendarEntry();
-		$message = $modelEntry->removeEntry($id);
+		if($isneurinfo){
+			$message = $modelEntry->removeReservation($id);
+		}
+		else {
+			$message = $modelEntry->removeEntry($id);
+		}
+		
 		
 		$this->book($message);
 	}

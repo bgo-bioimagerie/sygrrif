@@ -12,26 +12,36 @@ class ControllerProjet extends ControllerSecureNav {
 
 	
 //fiche projet avec modification  
+
 	public function index() 
 	{
 		$ModifierFicheProjet=false;
 			if ($_SESSION["user_status"]>=3){
 				$ModifierFicheProjet=true; //readonly
 			}
-			$numerofiche="";
+			$idform="";
 				if($this->request->isParameterNotEmpty('actionid'))
 				{
-					$numerofiche=$this->request->getParameter("actionid");
+					$idform=$this->request->getParameter("actionid");
 				}
+		$ajouteradmin=false;
+	if ($_SESSION["user_status"]==4){
+				$ajouteradmin=true; //readonly
+			}
+		
 		$modelUser = new User();
 		$users = $modelUser->getActiveUsers("Name");
 		$curentuserid = $this->request->getSession()->getAttribut("id_user");
 		$curentuser = $modelUser->userAllInfo($curentuserid);
 		
 			$modelModif = new neurinfoprojet();
-			$Mesdonnees =$modelModif->getNeurinfoModif($numerofiche);
-			$invP = $modelModif->getInvesPrinc($numerofiche);
-			$invA = $modelModif->getInvesAssoc($numerofiche); 
+			$Mesdonnees =$modelModif->getNeurinfoModif($idform);
+			$invP = $modelModif->getInvesPrinc($idform);
+			$invA = $modelModif->getInvesAssoc($idform); 
+			$arc =$modelModif->getArc($idform);
+			$prgr=$modelModif->getProg($idform);
+			$cota=$modelModif->getCot($idform);
+			$fina=$modelModif->getFin($idform);
 			$Tarif= $modelModif->gettarif();
 			$color = $modelModif->getcolor();
 			$navBar = $this->navBar();
@@ -41,12 +51,17 @@ class ControllerProjet extends ControllerSecureNav {
 					'Mesdonnees' => $Mesdonnees,
 					'invP'=> $invP,
 					'invA' => $invA,
-					'numerofiche'=>$numerofiche,
+					'arc'=>$arc,
+					'prgr'=>$prgr,
+					'cota'=>$cota,
+					'fina'=>$fina,
+					'idform'=>$idform,
 					'Tarif'=>$Tarif,
 					'color'=>$color,
 					'curentuser'=>$curentuser,
 					'curentuserid'=>$curentuserid,
-					'users'=>$users
+					'users'=>$users,
+					'ajouteradmin'=>$ajouteradmin
 					
 					
 			) );
@@ -81,6 +96,8 @@ class ControllerProjet extends ControllerSecureNav {
 		) );
 		
 	}
+	
+			
 
 //enregistrer et modifier les données de la fiche projet dans la base de données
 	public function ajoutDonneQuery(){
@@ -88,13 +105,10 @@ class ControllerProjet extends ControllerSecureNav {
 		$idform=$this->request->getParameter("idform");
 		$datedemande=$this->request->getParameter ("datedemande" );
 		$utilisateur=$this->request->getParameter("utilisateur");
-		$numerofiche =$this->request->getParameter ("numerofiche");
-		$type =$this->request->getParameter ("type" );
-		$titre = $this->request->getParameter ("titre");
 		$acronyme = $this->request->getParameter ("acronyme");
-		$typeactivite=$this->request->getParameter("typeactivite");
+		$titre = $this->request->getParameter ("titre");
+		$type =$this->request->getParameter ("type" );
 		$nac = $this->request->getParameter("nac");
-		
 		
 		//coordinateur
 		$cprenom= $this->request->getParameter ("cprenom");
@@ -105,26 +119,16 @@ class ControllerProjet extends ControllerSecureNav {
 		//promoteur
 		$promoteur=$this->request->getParameter ("promoteur" );
 		$infos =$this->request->getParameter("infos");
+		
 		//CRO
 		$crolibelle=$this->request->getParameter ("crolibelle" );
 		$cri=$this->request->getParameter ("cri" );
-		//organisme partenaire
-		$opglibelle=$this->request->getParameter ("opglibelle" );
-		$opgcoordonee=$this->request->getParameter ("opgcoordonee" );
-		//attaché recherche clinique
-		$arcprenom=$this->request->getParameter ("arcprenom" );
-		$arcnom=$this->request->getParameter ("arcnom" );
-		$arcfonction=$this->request->getParameter ("arcfonction" );
-		$arcmail=$this->request->getParameter ("arcmail" );
-		$arctel=$this->request->getParameter ("arctel" );
 		//radiologue 
 		$rsre=$this->request->getParameter ("rsre" );
-		//correspondants neurinfo
-		$cstns=$this->request->getParameter ("cstns" );
-		$cstnt=$this->request->getParameter ("cstnt" );
 		//CPP
 		$cpp=$this->request->getParameter ("cpp");
 		$cppnumero=$this->request->getParameter ("cppnumero" );
+		
 		//Description etude
 		$resume=$this->request->getParameter ("resume" );
 		$objectif=$this->request->getParameter ("objectif" );
@@ -139,27 +143,19 @@ class ControllerProjet extends ControllerSecureNav {
 		$patient=$this->request->getParameter ("patient" );
 		$fantome=$this->request->getParameter ("fantome" );
 		$responsablerecru=$this->request->getParameter ("responsablerecru" );
-		$protocoleinjecte=$this->request->getParameter ("protocoleinjecte" );
+		
 		
 		$nbrexam=$this->request->getParameter ("nbrexam" );
 		$duree=$this->request->getParameter ("duree" );
 		$dureetotale=$this->request->getParameter("dureetotale" );
 		$planification=$this->request->getParameter ("planification" );
-		$numerovisite= $this->request->getParameter("numerovisite");
 		$commentaire=$this->request->getParameter ("commentaire" );
 		$datedemarage=$this->request->getParameter ("datedemarage" );
 		$dureeetude=$this->request->getParameter ("dureeetude" );
 		$contrainte=$this->request->getParameter ("contrainte" );
-			//programmation/cotation
-		$programmation=$this->request->getParameter ("programmation" );
-		$cotation=$this->request->getParameter ("cotation" );
-		$codecouleur= $this->request->getParameter("codecouleur");
-		//Besoins spécifique
 		$rhlme=$this->request->getParameter ("rhlme" );
 		$rhlmn=$this->request->getParameter ("rhlmn" );
 		$aedsm=$this->request->getParameter ("aedsm" );
-		$gamds=$this->request->getParameter ("gamds" );
-		//plateforme neurinfo
 		$aaodn=$this->request->getParameter ("aaodn");
 		$cspn=$this->request->getParameter ("cspn" );
 		$ndlcdn=$this->request->getParameter ("ndlcdn" );
@@ -167,26 +163,36 @@ class ControllerProjet extends ControllerSecureNav {
 		//plan de dissémination
 		$mddedmedr=$this->request->getParameter ("mddedmedr");
 		$mmdde=$this->request->getParameter ("mmdde");
-		//cout
-		$tarif=$this->request->getParameter ("tarif");
-		$tarif2=$this->request->getParameter ("tarif2");
-		$coutestime="";
-		if($tarif !="Autres"){
-			$coutestime=$tarif;
-		}
-		else{
-			$coutestime= $tarif2;
-		}
-	
-		$modelProjet= new neurinfoprojet();
-		if($idform!='' && $numerofiche!=0){
-		$modelProjet->updateliste($idform, $datedemande, $numerofiche, $type, $titre, $acronyme, $typeactivite, $nac,  $cprenom, $cnom, $cfonction, $cmail, $ctel, $promoteur, $infos, $crolibelle, $cri, $opglibelle, $opgcoordonee, $arcprenom, $arcnom, $arcfonction, $arcmail, $arctel, $rsre, $cstns, $cstnt, $cpp, $cppnumero, $resume, $objectif, $experimentation, $protocolimagerie, $traitementdonnee, $resultatattendu, $publicationenvisage, $motcle, $temoins, $patient, $fantome, $responsablerecru, $protocoleinjecte, $nbrexam, $duree, $dureetotale,  $planification, $numerovisite, $commentaire, $datedemarage, $dureeetude, $contrainte, $programmation, $cotation, $codecouleur, $rhlme, $rhlmn, $aedsm, $gamds, $aaodn, $cspn, $ndlcdn, $caf, $mddedmedr, $mmdde, $coutestime);
-		}
-		else{$setDonnee =$modelProjet->setDonnee($datedemande, $utilisateur, $numerofiche, $type, $titre, $acronyme, $typeactivite, $nac,  $cprenom, $cnom, $cfonction, $cmail, $ctel, $promoteur, $infos, $crolibelle, $cri, $opglibelle, $opgcoordonee, $arcprenom, $arcnom, $arcfonction, $arcmail, $arctel, $rsre, $cstns, $cstnt, $cpp, $cppnumero, $resume, $objectif, $experimentation, $protocolimagerie, $traitementdonnee, $resultatattendu, $publicationenvisage, $motcle, $temoins, $patient, $fantome, $responsablerecru, $protocoleinjecte, $nbrexam, $duree, $dureetotale,  $planification, $numerovisite, $commentaire, $datedemarage, $dureeetude, $contrainte, $programmation, $cotation, $codecouleur, $rhlme, $rhlmn, $aedsm, $gamds, $aaodn, $cspn, $ndlcdn, $caf, $mddedmedr, $mmdde, $coutestime);
-		}
-
 		
-		//investicateur principal
+		$numerofiche =$this->request->getParameter ("numerofiche");
+		$typeactivite=$this->request->getParameter("typeactivite");
+		$protocoleinjecte=$this->request->getParameter ("protocoleinjecte" );
+		$numerovisite= $this->request->getParameter("numerovisite");
+		
+		//organisme partenaire
+		$opglibelle=$this->request->getParameter ("opglibelle" );
+		$opgcoordonee=$this->request->getParameter ("opgcoordonee" );
+		//correspondants neurinfo
+		$cstns=$this->request->getParameter ("cstns" );
+		$cstnt=$this->request->getParameter ("cstnt" );
+		
+		
+		$gamds=$this->request->getParameter ("gamds" );
+		$cdanonym=$this->request->getParameter("cdanonym");
+		$cdnomin=$this->request->getParameter("cdnomin");
+		$miseenplace=$this->request->getParameter("miseenplace");
+		$cloture=$this->request->getParameter("cloture");
+		$irm= $this->request->getParameter("irm");
+		$lastirm= $this->request->getParameter("lastirm");
+			$modelProjet= new neurinfoprojet();
+		if($idform!='' && $numerofiche!=0){
+		$modelProjet->updateliste($idform, $datedemande, $utilisateur, $acronyme, $titre, $type, $numerofiche, $nac, $cprenom, $cnom, $cfonction, $cmail, $ctel, $promoteur, $infos, $crolibelle, $cri, $rsre, $cpp, $cppnumero, $resume, $objectif, $experimentation, $protocolimagerie, $traitementdonnee, $resultatattendu, $publicationenvisage, $motcle, $temoins, $patient, $fantome, $responsablerecru, $nbrexam, $duree, $dureetotale, $planification, $commentaire, $datedemarage, $dureeetude, $contrainte, $rhlme, $rhlmn, $aedsm, $aaodn, $cspn, $ndlcdn, $caf, $mddedmedr, $mmdde, $numerofiche, $typeactivite, $protocoleinjecte, $numerovisite, $opglibelle, $opgcoordonee, $cstns, $cstnt, $gamds, $cdanonym, $cdnomin, $miseenplace, $cloture, $irm, $lastirm);
+		}
+		else{$setDonnee =$modelProjet->setDonnee($datedemande, $utilisateur, $acronyme, $titre, $type, $numerofiche, $nac, $cprenom, $cnom, $cfonction, $cmail, $ctel, $promoteur, $infos, $crolibelle, $cri, $rsre, $cpp, $cppnumero, $resume, $objectif, $experimentation, $protocolimagerie, $traitementdonnee, $resultatattendu, $publicationenvisage, $motcle, $temoins, $patient, $fantome, $responsablerecru, $nbrexam, $duree, $dureetotale, $planification, $commentaire, $datedemarage, $dureeetude, $contrainte, $rhlme, $rhlmn, $aedsm, $aaodn, $cspn, $ndlcdn, $caf, $mddedmedr, $mmdde, $numerofiche, $typeactivite, $protocoleinjecte, $numerovisite, $opglibelle, $opgcoordonee, $cstns, $cstnt, $gamds, $cdanonym, $cdnomin, $miseenplace, $cloture, $irm, $lastirm);
+		$idformnew=$modelProjet->setDonnee($datedemande, $utilisateur, $acronyme, $titre, $type, $nac, $cprenom, $cnom, $cfonction, $cmail, $ctel, $promoteur, $infos, $crolibelle, $cri, $rsre, $cpp, $cppnumero, $resume, $objectif, $experimentation, $protocolimagerie, $traitementdonnee, $resultatattendu, $publicationenvisage, $motcle, $temoins, $patient, $fantome, $responsablerecru, $nbrexam, $duree, $dureetotale, $planification, $commentaire, $datedemarage, $dureeetude, $contrainte, $rhlme, $rhlmn, $aedsm, $aaodn, $cspn, $ndlcdn, $caf, $mddedmedr, $mmdde, $numerofiche, $typeactivite, $protocoleinjecte, $numerovisite, $opglibelle, $opgcoordonee, $cstns, $cstnt, $gamds, $cdanonym, $cdnomin, $miseenplace, $cloture, $irm, $lastirm);
+		
+		}
+			//investicateur principal
 		$invesp=$this->request->getParameter("invesp");
 		$id_ip =$invesp['id_ip']; 
 		$ipprenom =$invesp['ipprenom'];
@@ -206,7 +212,7 @@ class ControllerProjet extends ControllerSecureNav {
 			$modelProjet->updateInvP($id_ip, $cpt, $ipprenom, $ipnom, $ipfonction, $ipmail, $iptel, $numerofiche);
 		}
 		else{
-		$insrtPrinc= $modelProjet->insrtPrinc($cpt, $ipprenom, $ipnom, $ipfonction, $ipmail, $iptel, $numerofiche);
+		$insrtPrinc= $modelProjet->insrtPrinc($cpt, $ipprenom, $ipnom, $ipfonction, $ipmail, $iptel, $numerofiche, $idformnew);
 		}
 		
 		//investigateur associé
@@ -231,8 +237,110 @@ class ControllerProjet extends ControllerSecureNav {
 		}
 		else{
 		
-		$insrtAssoc= $modelProjet->insrtAssoc($cpta, $iaprenom, $ianom, $iafonction, $iamail, $iatel, $numerofiche);
+		$insrtAssoc= $modelProjet->insrtAssoc($cpta, $iaprenom, $ianom, $iafonction, $iamail, $iatel, $numerofiche, $idformnew);
 		}
+	//attaché recherche clinique
+		$arc= $this->request->getParameter("arc");
+		$id_arc=$arc ['id_arc'];
+		$arcprenom=$arc ["arcprenom"];
+		$arcnom=$arc ["arcnom"];
+		$arcfonction=$arc["arcfonction"];
+		$arcmail=$arc["arcmail"];
+		$arctel=$arc["arctel"];
+		$cptarc=0;
+		for($l=0; $l<count($arcprenom); $l++)
+		{
+		  if($arcprenom[$l]!="")
+		 {
+		 	$cptarc++;
+		 }
+		}
+		if($numerofiche!=0 && $idform!=""){
+			$modelProjet->updateArc($id_arc, $cptarc, $arcprenom, $arcnom, $arcfonction, $arcmail, $arctel, $numerofiche);
+		}
+		else{
+		
+		$insrtArc= $modelProjet->insrtArc($cptarc, $arcprenom, $arcnom, $arcfonction, $arcmail, $arctel, $numerofiche, $idformnew);
+		}
+	
+		
+		//type de financement 
+		$fin = $this->request->getParameter("fin");
+		$id_fin=$fin["id"];
+		$soinscourant=$fin["soinscourant"];
+		$tarif1=$fin["tarif"];
+		$tarif2=$this->request->getParameter ("tarif2");
+		$comfin=$fin["commentaire"];
+		
+		$tarif="";
+		if($tarif1 !="Autres"){
+			$tarif=$tarif1;
+		}
+		else{
+			$tarif= $tarif2;
+		}
+		$cptfin=0;
+	for($o=0; $o<count($soinscourant); $o++)
+		{
+		  if($soinscourant[$o]!="")
+		 {
+		 	$cptfin++;
+		 }
+		}
+		if($numerofiche!=0 && $idform!=""){
+			$modelProjet->updateFin($id_fin, $cptfin, $soinscourant, $tarif, $comfin, $numerofiche);
+		}
+		else{
+		
+		$insrtFin= $modelProjet->insrtFin($cptfin, $soinscourant, $tarif, $comfin, $numerofiche, $idformnew);
+		}
+		
+		
+		
+		//programmation/
+		$prog = $this->request->getParameter("prog");
+		$id_prog = $prog["id"];
+		$dxplanning=$prog["dxplanning"];
+		$codecouleur=$prog["codecouleur"];
+		$comprog=$prog["commentaire"];
+		$cptprog=0;
+		for($m=0; $m<count($dxplanning); $m++)
+		{
+		  if($dxplanning[$m]!="")
+		 {
+		 	$cptprog++;
+		 }
+		}
+		if($numerofiche!=0 && $idform!=""){
+			$modelProjet->updateProg($id_prog, $cptprog, $dxplanning, $codecouleur, $comprog, $numerofiche);
+		}
+		else{
+		
+		$insrtProg= $modelProjet->insrtProg($cptprog, $dxplanning, $codecouleur, $comprog, $numerofiche, $idformnew);
+		}
+		//cotation
+		$cot = $this->request->getParameter("cot");
+		$id_cot = $cot["id"];
+		$intitule=$cot["intitule"];
+		$facturable=$cot["facturable"];
+		$comcot=$cot["commentaire"];
+		$cptcot=0;
+	
+		for($n=0; $n<count($intitule); $n++)
+		{
+		  if($intitule[$n]!="")
+		 {
+		 	$cptcot++;
+		 }
+		}
+		if($numerofiche!=0 && $idform!=""){
+			$modelProjet->updateCot($id_cot, $cptcot, $intitule, $facturable, $comcot, $numerofiche);
+		}
+		else{
+		
+		$insrtCot= $modelProjet->insrtCot($cptcot, $intitule, $facturable, $comcot, $numerofiche, $idformnew);
+		}
+		
 		
 		
 		

@@ -35,38 +35,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			
 			foreach ($calRes as $calEntry){
 				
-				if($h == $day_begin &&  $calEntry['start_time']<=$caseTimeBegin){
-				
-					if ($calEntry['end_time'] >= $caseTimeBegin ){
-				
-						$foundStartEntry = true;
-						$blocNumber = ($calEntry['end_time'] - $caseTimeBegin)/($caseTimeLength);
-						$blocNumber = round($blocNumber); if ($blocNumber < 1){$blocNumber=1;}
-				
-						if ($leftBlocks <= $blocNumber){
-							$blocNumber = $leftBlocks;
-						}
-						$leftBlocks -= $blocNumber;
-							
-						$pixelHeight = $blocNumber*35;
-						
-						
-						$text = "";
-						if ($blocNumber <= 10){
-							$text = $paramcalendrier->getSummary($calEntry["recipient_fullname"], $calEntry['acronyme'], $calEntry['codeanonyma'], $calEntry['commentaire'] ,$calEntry['numerovisite'], true);
-						}
-						else{
-							$text = $paramcalendrier->getSummary($calEntry["recipient_fullname"], $calEntry['acronyme'], $calEntry['codeanonyma'], $calEntry['commentaire'] ,$calEntry['numerovisite'],  false);
-						}
-						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
-						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
-						</div>
-						<?php
-						$h+= $blocNumber*0.25 - 0.25;								
-					}
-				}
+		
 								
 				if ($calEntry['start_time'] >= $caseTimeBegin && $calEntry['start_time'] < $caseTimeEnd){
 					// there is an entry in this half time
@@ -84,7 +53,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						
 					
 					$text = "";
-					if ($blocNumber <= 10){
+					if ($blocNumber <= 1){
 					
 							$text = $paramcalendrier->getSummary($calEntry["recipient_fullname"], $calEntry['acronyme'], $calEntry['codeanonyma'], $calEntry['commentaire'] ,$calEntry['numerovisite'], true);
 								}
@@ -93,8 +62,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id']; 
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+								<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*0.25 - 0.25;
@@ -103,7 +72,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					if (!$foundStartEntry){
 						$leftBlocks--;
 					?>
-						<div class="text-center" id="tcell" style="height: 25px;">
+						<div class="text-center" id="tcell" style="height: 35px;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){		
 							$h2 = str_replace(".", "-", $h);
@@ -159,10 +128,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$leftBlocks -= $blocNumber;
 							
-						$pixelHeight = $blocNumber*25;
+						$pixelHeight = $blocNumber*70;
 					
 						$text = "";
-						if ($blocNumber <= 2){
+						if ($blocNumber <= 1){
 						
 							$text = $paramcalendrier->getSummary($calEntry["recipient_fullname"], $calEntry['acronyme'], $calEntry['codeanonyma'], $calEntry['commentaire'] ,$calEntry['numerovisite'], false);
 								
@@ -175,9 +144,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+						<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
 							
-							<a class="text-center" id="resa_link" href=<?=$linkAdress?>><?=$text?></a>
+							<a class="text-left" id="resa_link" href=<?=$linkAdress?>><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.5 - 0.5;								
@@ -197,11 +166,11 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$leftBlocks -= $blocNumber;
 					
-					$pixelHeight = $blocNumber*25;
+					$pixelHeight = $blocNumber*70;
 					
 					
 					$text = "";
-					if ($blocNumber <= 2){
+					if ($blocNumber <= 1){
 					
 							$text = $paramcalendrier->getSummary($calEntry["recipient_fullname"], $calEntry['acronyme'], $calEntry['codeanonyma'], $calEntry['commentaire'] ,$calEntry['numerovisite'], false);
 								
@@ -216,8 +185,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}	
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-						<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+						<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 					<?php
 					$h+= $blocNumber*0.5 - 0.5;
@@ -227,7 +196,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			if (!$foundStartEntry){
 				$leftBlocks--;
 			?>
-				<div class="text-center" id="tcell" style="height: 25px;">
+				<div class="text-center" id="tcell" style="height: 70px;">
 				<?php if ($isDayAvailable){?>
 				<?php if ($isUserAuthorizedToBook){
 					$h2 = str_replace(".", "-", $h);
@@ -280,11 +249,11 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$leftBlocks -= $blocNumber;
 							
-						$pixelHeight = $blocNumber*50;
+						$pixelHeight = $blocNumber*140;
 						
 						
 						$text = "";
-						if ($blocNumber <= 2){
+						if ($blocNumber <= 1){
 						
 							$text = $paramcalendrier->getSummary($calEntry["recipient_fullname"], $calEntry['acronyme'], $calEntry['codeanonyma'], $calEntry['commentaire'] ,$calEntry['numerovisite'], false);
 								
@@ -296,8 +265,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+							<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*1 - 1;
@@ -316,11 +285,11 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$leftBlocks -= $blocNumber;
 					
-					$pixelHeight = $blocNumber*50;
+					$pixelHeight = $blocNumber*140;
 						
 					
 					$text = "";
-					if ($blocNumber <= 2){
+					if ($blocNumber <= 1){
 					
 							$text = $paramcalendrier->getSummary($calEntry["recipient_fullname"], $calEntry['acronyme'], $calEntry['codeanonyma'], $calEntry['commentaire'] ,$calEntry['numerovisite'], false);
 								
@@ -332,8 +301,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+								<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*1 - 1;
@@ -342,7 +311,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					if (!$foundStartEntry){
 						$leftBlocks--;
 					?>
-						<div class="text-center" id="tcell" style="height: 50px;">
+						<div class="text-center" id="tcell" style="height: 140px;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){
 						$h2 = str_replace(".", "-", $h);
@@ -419,8 +388,8 @@ else{
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+							<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.25 - 0.25;								
@@ -455,8 +424,8 @@ else{
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id']; 
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+								<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*0.25 - 0.25;
@@ -537,9 +506,9 @@ else{
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+						<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
 							
-							<a class="text-center" id="resa_link" href=<?=$linkAdress?>><?=$text?></a>
+							<a class="text-left" id="resa_link" href=<?=$linkAdress?>><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.5 - 0.5;								
@@ -573,8 +542,8 @@ else{
 					}	
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-						<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+						<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 					<?php
 					$h+= $blocNumber*0.5 - 0.5;
@@ -650,8 +619,8 @@ else{
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+							<a class="text-left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*1 - 1;
@@ -687,8 +656,8 @@ else{
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-left" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+								<a class="left" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*1 - 1;

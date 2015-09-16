@@ -26,7 +26,7 @@ if(!$ModifierTarif){
 
 <input class="form-control" id="idt" type="hidden" name="idt" <?php if(isset($Mesdonnees)){?>value="<?= $Mesdonnees['idt']?>"<?php }?> />
 
-			<legend>Ajouter un Tarif</legend>
+			<legend><?=ProjetTranslator::ajoutertarif($lang)?></legend>
 			<?php if (isset($Mesdonnees) && $Mesdonnees['idt']!=""){
 			?>
 			<div class="form-group">
@@ -42,21 +42,21 @@ if(!$ModifierTarif){
 			  	
 			
 			  	<div class="form-group">
-					<label label label for="inputEmail" class="col-lg-2 control-label"> Nom :</label><br/>
+					<label label label for="inputEmail" class="col-lg-2 control-label"> <?=ProjetTranslator::nom($lang)?>:</label><br/>
 					<div class="col-lg-10">
 						<input class="form-control" id="tnom" type="text" name="tnom" <?=$readonly?>  <?php if (isset($Mesdonnees)){?> value="<?=$Mesdonnees['tnom']?>" <?php }?>/>
 					</div>
 				</div>
 					<br/>
 				<div class="form-group">
-					<label label label for="inputEmail" class="col-lg-2 control-label">Montant:</label><br/>
+					<label label label for="inputEmail" class="col-lg-2 control-label"><?=ProjetTranslator::montant($lang)?>:</label><br/>
 					<div class="col-lg-10">
-						<input class="form-control" id="montant" type="text" name="montant" <?=$readonly?> <?php if (isset($Mesdonnees)){?> value="<?=$Mesdonnees['montant']?>" <?php }?>/>
+						<input class="form-control" id="montant" type="text" name="montant" <?=$readonly?>  value="<?php if (isset($Mesdonnees)){?><?=$Mesdonnees['montant']?> " <?php }?>/>
 					</div>
 				</div>
 					<br/>
 				<div class="form-group">
-					<label for="type" class="col-lg-2 control-label">Type:</label><br/>
+					<label for="type" class="col-lg-2 control-label"><?=ProjetTranslator::type($lang)?>:</label><br/>
 					 <div class="col-lg-10">
 					 <?php if (isset($Mesdonnees)){$d=$Mesdonnees['type']; }?>
        					<div class="radio">
@@ -66,12 +66,12 @@ if(!$ModifierTarif){
 						</div>
 						<div class="radio">
        						<label>
-								<input type="radio" id="type"  name="type" value="ORP" <?php if ($d=='Organisme Publique et ONG') echo 'checked="checked"'; ?>> Organisme Publique et ONG
+								<input type="radio" id="type"  name="type" value="Organisme Publique et ONG" <?php if ($d=='Organisme Publique et ONG') echo 'checked="checked"'; ?>> Organisme Publique et ONG
 							</label>
 						</div>
 						<div class="radio">
        						<label>
-								<input type="radio" id="type"  name="type" value="Industriel" <?php if ($d=='Industriels') echo 'checked="checked"'; ?>>Industriels
+								<input type="radio" id="type"  name="type" value="Industriels" <?php if ($d=='Industriels') echo 'checked="checked"'; ?>>Industriels
 							</label>
 						</div>
 						
@@ -80,7 +80,7 @@ if(!$ModifierTarif){
 				</div>
 					<br/>
 				<div class="form-group">
-					<label for="Titre" class="col-lg-2 control-label">Valide jusqu a:</label><br/>
+					<label for="Titre" class="col-lg-2 control-label"><?=ProjetTranslator::valide($lang)?>:</label><br/>
 					<div class="col-lg-10">
 						<input class="form-control" id="validite" type="date" name="validite" <?=$readonly?> <?php if (isset($Mesdonnees)){?> value="<?=$Mesdonnees['dureevalidite']?>" <?php }?>/>
 					</div>
@@ -90,7 +90,7 @@ if(!$ModifierTarif){
 					<br/>
 				
 				<br/>
-				<input type="submit" value="Enregistrer"  class="btn btn-primary"/>
+				<input type="submit" value="<?=ProjetTranslator::enregistrer($lang)?>"  class="btn btn-primary"/>
 				
 				<?php if (isset($Mesdonnees) && ($Mesdonnees['idt']!="")){?>
 		        <button type="button" onclick="location.href='Tarifs/DeleteTarif/<?=$this->clean($Mesdonnees['idt']) ?>'" class="btn btn-danger" id="navlink">Delete</button>

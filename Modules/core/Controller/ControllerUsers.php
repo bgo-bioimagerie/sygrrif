@@ -82,7 +82,7 @@ class ControllerUsers extends ControllerSecureNav {
 		// get status list
 		$modelStatus = new Status();
 		$status = $modelStatus->statusIDName();
-	$ModulesManagerModel=new ModulesManager();
+		$ModulesManagerModel=new ModulesManager();
 		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
 		//print_r($status);
 		
@@ -108,6 +108,30 @@ class ControllerUsers extends ControllerSecureNav {
 	}
 	
 	public function addquery(){
+		$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
+		if($isneurinfo){
+		$name = $this->request->getParameter ( "name");
+		$firstname = $this->request->getParameter ( "firstname");
+		$login = $this->request->getParameter ( "login");
+		$pwd = $this->request->getParameter ( "pwd");
+		$email = $this->request->getParameter ( "email");
+		$phone = $this->request->getParameter ( "phone");
+		$id_unit = 1;
+		$id_responsible = 1;
+		$id_status = $this->request->getParameter ( "status");
+		$typeorgane1= $this->request->getParameter("typeorgane");
+		$typeorgane="";
+		for($i=0; $i<count($typeorgane1); $i++){
+			$typeorgane.= $typeorgane1[$i].","; 
+		}
+		$is_responsible = "";
+		$convention = $this->request->getParameterNoException ( "convention");
+		$date_convention = "";
+		$date_end_contract = "";
+		}
+		else
+		{
 		$name = $this->request->getParameter ( "name");
 		$firstname = $this->request->getParameter ( "firstname");
 		$login = $this->request->getParameter ( "login");
@@ -117,10 +141,12 @@ class ControllerUsers extends ControllerSecureNav {
 		$id_unit = $this->request->getParameter ( "unit");
 		$id_responsible = $this->request->getParameter ( "responsible");
 		$id_status = $this->request->getParameter ( "status");
+		$typeorgane="";
 		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
+		}
 		
 		$lang = 'En';
 		if (isset($_SESSION["user_settings"]["language"])){
@@ -152,8 +178,9 @@ class ControllerUsers extends ControllerSecureNav {
 		// add the user to the database
 		$this->userModel->addUser($name, $firstname, $login, $pwd, 
 				                  $email, $phone, $id_unit,
-				                  $id_responsible, $id_status, $convention, 
+				                  $id_responsible, $id_status, $typeorgane, $convention, 
 				                  $date_convention, $date_end_contract );
+				                  
 		
 		// add the user to the responsible list
 		if ($is_responsible != ''){
@@ -165,7 +192,8 @@ class ControllerUsers extends ControllerSecureNav {
 		// generate view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
-				'navBar' => $navBar
+				'navBar' => $navBar,
+				'isneurinfo'=> $isneurinfo
 		) );
 		
 	}
@@ -212,9 +240,30 @@ class ControllerUsers extends ControllerSecureNav {
 	}
 	
 	public function editquery(){
-		
+			$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
+		if($isneurinfo){
 		// get form variables
 		$id = $this->request->getParameter ( "id");
+		$name = $this->request->getParameter ( "name"); 
+		$firstname = $this->request->getParameter ( "firstname");
+		$login = $this->request->getParameter ( "login");
+		$email = $this->request->getParameter ( "email");
+		$phone = $this->request->getParameter ( "phone");
+		$id_unit = "1";
+		$id_responsible = "1";
+		$is_responsible = "";
+		$id_status = $this->request->getParameter ( "id_status");
+		$typeorgane1= $this->request->getParameter("typeorgane");
+		$typeorgane="";
+		for($i=0; $i<count($typeorgane1); $i++){
+			$typeorgane.= $typeorgane1[$i].","; 
+		}
+		$convention = $this->request->getParameterNoException ( "convention");
+		$date_convention = "";
+		$date_end_contract = "";
+		} else{
+			$id = $this->request->getParameter ( "id");
 		$name = $this->request->getParameter ( "name"); 
 		$firstname = $this->request->getParameter ( "firstname");
 		$login = $this->request->getParameter ( "login");
@@ -224,9 +273,11 @@ class ControllerUsers extends ControllerSecureNav {
 		$id_responsible = $this->request->getParameter ( "id_responsible");
 		$is_responsible = $this->request->getParameterNoException ("is_responsible");
 		$id_status = $this->request->getParameter ( "id_status");
+		$typeorgane="";
 		$convention = $this->request->getParameterNoException ( "convention");
 		$date_convention = $this->request->getParameterNoException ( "date_convention");
 		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
+		}
 		
 		$lang = 'En';
 		if (isset($_SESSION["user_settings"]["language"])){
@@ -242,8 +293,8 @@ class ControllerUsers extends ControllerSecureNav {
 		//echo "id_responsible = " . $id_responsible . "--";
 		
 		// update user
-		$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
-    		                         $id_unit, $id_responsible, $id_status,
+			$this->userModel->updateUser($id, $firstname, $name, $login, $email, $phone,
+    		                         $id_unit, $id_responsible, $id_status, $typeorgane,
 				                     $convention, $date_convention, $date_end_contract);
 
 		// update responsible
@@ -313,6 +364,8 @@ class ControllerUsers extends ControllerSecureNav {
 	}
 	
 	public function manageaccount(){
+		$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
 		$navBar = $this->navBar();
 		
 		// get user id
@@ -342,20 +395,34 @@ class ControllerUsers extends ControllerSecureNav {
 		$this->generateView ( array (
 				'navBar' => $navBar, 'status' => $status['name'],
 				'unit' => $unit,
-				'resp' => $resp, 'user' => $user
+				'resp' => $resp, 'user' => $user,
+				'isneurinfo'=> $isneurinfo
 		) );
 		
 	}
 	
 	public function manageaccountquery(){
-
-		// get form variables
+		$ModulesManagerModel=new ModulesManager();
+		$isneurinfo= $ModulesManagerModel->isDataMenu("projetcalendar");
+		if($isneurinfo){
+			// get form variables
 		$id = $this->request->getParameter ( "id");
 		$login = $this->request->getParameter ( "login");
 		$name = $this->request->getParameter ( "name");
 		$firstname = $this->request->getParameter ( "firstname");
 		$email = $this->request->getParameter ( "email");
 		$phone = $this->request->getParameter ( "phone");
+		}
+		else{
+			// get form variables
+		$id = $this->request->getParameter ( "id");
+		$login = $this->request->getParameter ( "login");
+		$name = $this->request->getParameter ( "name");
+		$firstname = $this->request->getParameter ( "firstname");
+		$email = $this->request->getParameter ( "email");
+		$phone = $this->request->getParameter ( "phone");
+		}
+		
 		
 		// update user
 		$this->userModel->updateUserAccount($id, $firstname, $name, $email, $phone);

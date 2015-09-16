@@ -119,7 +119,8 @@ if(!$ModifierUser){
        						<label>
 								<input type="radio" id="charte"  name="charte" value="non"  <?php if($tc='non'){echo 'checked=checked';}?> >Non
 							</label>
-						</div>					</div>
+						</div>					
+					</div>
 				</div>
 				
 					<br/>

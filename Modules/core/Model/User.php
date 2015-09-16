@@ -26,6 +26,7 @@ class User extends Model {
 		`id_unit` int(11) NOT NULL,
 		`id_responsible` int(11) NOT NULL,
 		`id_status` int(11) NOT NULL,
+		`typeorgane` varchar(30) NOT NULL,
 		`convention` int(11) NOT NULL DEFAULT 0,		
 		`date_convention` DATE NOT NULL,
 	    `date_created` DATE NOT NULL,
@@ -49,14 +50,15 @@ class User extends Model {
 				
 		if (! $this->isUser ( "--" )) {
 			
-			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit,
+			$sql = "INSERT INTO core_users (login, firstname, name, id_status, typeorgane, pwd, id_unit,
 				                   id_responsible, date_created)
-				 VALUES(?,?,?,?,?,?,?,?)";
+				 VALUES(?,?,?,?,?,?,?,?,?)";
 			$this->runRequest ( $sql, array (
 					"--",
 					"--",
 					"--",
 					"1",
+					"--",
 					md5 ( "--" ),
 					1,
 					1,
@@ -72,14 +74,15 @@ class User extends Model {
 	 */
 	public function createDefaultAdmin() {
 		if (! $this->isUser ( "admin" )) {
-			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit, 
+			$sql = "INSERT INTO core_users (login, firstname, name, id_status, typeorgane, pwd, id_unit, 
 				                   id_responsible, date_created)
-				 VALUES(?,?,?,?,?,?,?,?)";
+				 VALUES(?,?,?,?,?,?,?,?,?)";
 			$this->runRequest ( $sql, array (
 					"admin",
 					"administrateur",
 					"admin",
 					"4",
+					"abdo cardio neuro",
 					md5 ( "admin" ),
 					1,
 					1,
@@ -287,6 +290,8 @@ class User extends Model {
 			$sqlSort = "core_status.name";
 		} else if ($sortentry == "status") {
 			$sqlSort = "core_status.name";
+		} else if($sortentry=="typeorgane"){
+			$sqlSort="typeorgane";
 		} else if ($sortentry == "convention") {
 			$sqlSort = "user.convention";
 		} else if ($sortentry == "date_convention") {
@@ -300,7 +305,7 @@ class User extends Model {
 		$sql = "SELECT user.id AS id, user.login AS login, 
     				   user.firstname AS firstname, user.name AS name, 
     				   user.email AS email, user.tel AS tel,	
-    				   user.convention AS convention, user.date_convention AS date_convention,
+    				   user.convention AS convention, user.typeorgane as typeorgane, user.date_convention AS date_convention,
     			       user.date_created AS date_created, user.date_last_login AS date_last_login,
     				   core_units.name AS unit, 
     				   resp.name AS resp_name, resp.firstname AS resp_firstname,
@@ -487,9 +492,9 @@ class User extends Model {
 	 * @param int $convention        	
 	 * @param date $date_convention        	
 	 */
-	public function addUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+	public function addUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $typeorgane, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
 		$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
-    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       id_status, date_created, typeorgane, convention, date_convention, date_end_contract,is_active)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		$this->runRequest ( $sql, array (
 				$login,
 				$firstname,
@@ -501,6 +506,7 @@ class User extends Model {
 				$id_responsible,
 				$id_status,
 				"" . date ( "Y-m-d" ) . "",
+				$typeorgane,
 				$convention,
 				$date_convention,
 				$date_end_contract,
@@ -509,16 +515,16 @@ class User extends Model {
 		
 		return $this->getDatabase ()->lastInsertId ();
 	}
-	public function setUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+	public function setUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $typeorgane, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
 		if (! $this->isUser ( $login )) {
-			$this->addUser ( $name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract, $is_active );
+			$this->addUser ( $name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $typeorgane, $convention, $date_convention, $date_end_contract, $is_active );
 		}
 	}
-	public function setUserMd5($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+	public function setUserMd5($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $typeorgane, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
 		if (! $this->isUser ( $login )) {
 			
 			$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
-    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       id_status,  date_created, typeorgane, convention, date_convention, date_end_contract,is_active)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 			$this->runRequest ( $sql, array (
 					$login,
 					$firstname,
@@ -529,7 +535,9 @@ class User extends Model {
 					$id_unit,
 					$id_responsible,
 					$id_status,
+					
 					"" . date ( "Y-m-d" ) . "",
+					$typeorgane,
 					$convention,
 					$date_convention,
 					$date_end_contract,
@@ -551,11 +559,13 @@ class User extends Model {
 	 * @param int $id_responsible        	
 	 * @param int $id_status        	
 	 * @param int $convention        	
-	 * @param date $date_convention        	
+	 * @param date $date_convention      
+	 *   	
 	 */
-	public function updateUser($id, $firstname, $name, $login, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
+
+	public function updateUser($id, $firstname, $name, $login, $email, $phone, $id_unit, $id_responsible, $id_status, $typeorgane, $convention, $date_convention, $date_end_contract = "", $is_active = 1) {
 		$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?, id_status=?,
-    			                      convention=?, date_convention=?, date_end_contract=?, is_active=? 
+    			                    typeorgane=?, convention=?, date_convention=?, date_end_contract=?, is_active=? 
     			                  where id=?";
 		$this->runRequest ( $sql, array (
 				$login,
@@ -566,6 +576,7 @@ class User extends Model {
 				$id_unit,
 				$id_responsible,
 				$id_status,
+				$typeorgane,
 				$convention,
 				$date_convention,
 				$date_end_contract,

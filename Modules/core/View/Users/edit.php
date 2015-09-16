@@ -104,29 +104,43 @@ include "Modules/projet/View/projetnavbar.php";
 				</select>
 			</div>
 		</div>
-		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::typeorganne($lang)?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="convention" type="text" name="convention" value = "<?= $user['convention'] ?>"
-				/>
+			  <div class="checkbox">
+			    <label>
+			    <input type="checkbox" name="typeorgane[]" value="abdo" >Abdo
+			    </label>
+			     <label>
+			      <input type="checkbox" name="typeorgane[]" value="cardio" >Cardio
+			    </label>
+			     <label>
+			      <input type="checkbox" name="typeorgane[]" value="neuro">Neuro
+			    </label>
+              </div>
 			</div>
 		</div>
-		<br>
-		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang)?></label>
-			<div class="col-xs-10">
-				<input class="form-control" type="text" value = "<?= CoreTranslator::dateFromEn($user['date_convention'], $lang) ?>" name="date_convention">
-		    </div>
-		</div>
-		<br>
-		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_end_contract($lang)?></label>
-			<div class="col-xs-10">
-				<input class="form-control" type="text" value = "<?= CoreTranslator::dateFromEn($user['date_end_contract'], $lang) ?>" name="date_end_contract">
-		    </div>
-		</div>
 		
+		<br>
+		<div class="form-group">
+			<label for="inputEmail" class="col-lg-2 control-label"><?= CoreTranslator::Convention($lang) ?></label>
+			<div class="col-lg-10">
+					<?php $val= $user['convention']?>
+					<div class="radio">
+       						<label>
+								<input type="radio" id="convention"  name="convention" value="oui" <?php if($val='oui'){echo 'checked=checked';}?> >Oui
+							</label>
+						</div>
+						<div class="radio">
+       						<label>
+								<input type="radio" id="convention"  name="convention" value="non" <?php if($val='non'){echo 'checked=checked';}?>>Non
+							</label>
+						</div>					
+					</div>
+				
+			</div>
+		
+		<br/>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Is_user_active($lang)?></label>
 			<div class="col-xs-10">

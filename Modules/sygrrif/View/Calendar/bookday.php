@@ -34,11 +34,12 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php'
 #resa_link{
 	font-family: Arial;
 	font-size: 12px;
-	line-height: 9px;
+	line-height: 12px;
 	letter-spacing: 1px;
 	font-weight: normal;
 	color: #002070;
 	font-weight : bold;
+	
 }
 
 </style>
@@ -100,7 +101,7 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 <button type="button" class="btn btn-default active"><?= SyTranslator::Day($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
 </div>
 </div>
 
@@ -127,13 +128,13 @@ $available_days = explode(",", $available_days);
 	for ($h = $day_begin ; $h < $day_end ; $h++){
 		$heightCol = "0px";
 		if ($size_bloc_resa == 900){
-			$heightCol = "100px";
+			$heightCol = "140px";
 		}
 		else if($size_bloc_resa == 1800){
-			$heightCol = "150px";
+			$heightCol = "140px";
 		}
 		else if($size_bloc_resa == 3600){
-			$heightCol = "150px";
+			$heightCol = "140px";
 		}
 		?>
 	

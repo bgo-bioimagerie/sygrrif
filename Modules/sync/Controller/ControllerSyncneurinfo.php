@@ -34,10 +34,11 @@ class ControllerSyncneurinfo extends Controller {
 		
 		// area 
 		
-		$this->syncAreas($pdo_grr);
+	$this->syncAreas($pdo_grr);
 		echo "sync area </br>";
 		
 		// area types
+		
 		$this->syncEntryTypes($pdo_grr);
 		echo "sync entry types </br>";
 		
@@ -247,7 +248,7 @@ class ControllerSyncneurinfo extends Controller {
 			//echo "sql = " . $sql ."</br>";
 			$req = $pdo_old->query($sql);
 			$color_type_id = $req->fetch();
-				
+			$color_type_id = $color_type_id[0];
 			//echo " color_type_id = " . $color_type_id;
 				
 			// add the reservation
@@ -257,7 +258,8 @@ class ControllerSyncneurinfo extends Controller {
 			$booked_by_id = $creatorID;
 			$recipient_id = $recipientID;
 			$last_update = $entry['timestamp'];
-			$color_type_id = $color_type_id+1;
+			$color_type_id = $color_type_id + 1;
+			
 			$projectID = $modelProject->getProjectId($entry['name']);
 			$short_description = $projectID;
 			$full_description = $entry['description'];
@@ -272,7 +274,6 @@ class ControllerSyncneurinfo extends Controller {
 		$sql = "select * from grr_entry";
 		$entry_oldq = $pdo_old->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
-	
 		$modelUser = new User();
 		$modelCalEntry = new SyCalendarEntry();
 		$modelProject = new Project();
@@ -290,7 +291,7 @@ class ControllerSyncneurinfo extends Controller {
 			$req = $pdo_old->query($sql);
 			$color_type_id = $req->fetch();
 			$color_type_id = $color_type_id[0] ;
-				
+			
 			//echo " color_type_id = " . $color_type_id;
 				
 			// add the reservation
@@ -302,7 +303,7 @@ class ControllerSyncneurinfo extends Controller {
 			$last_update = $entry['timestamp'];
 			$color_type_id = ($color_type_id)+1;
 			$projectID = $modelProject->getProjectId($entry['name']);
-			$acronyme = $entry['description'];
+			$acronyme = $entry['name'];
 			
 			$commentaire = $entry['description'];
 			

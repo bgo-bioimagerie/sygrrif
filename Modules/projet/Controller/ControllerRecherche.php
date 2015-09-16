@@ -155,11 +155,16 @@ class ControllerRecherche extends ControllerBooking {
 				.	"Neuro, Abdo, Cardio"  . " ; "
 				.	ProjetTranslator::Acronyme($lang) . " ; "
 				.	ProjetTranslator::typeactivite($lang). " ; "
-				.	"Prenom investigateur principal". " ; "
+				.	ProjetTranslator::preninvp($lang). " ; "
+				.   ProjetTranslator::protocoleinjecte($lang). ";"
 				.	"Organisme Partenaire Gestionnaire "  . " ; "
-				.	" Correspondant technique Neunrinfo"  . " ; "
+				.	"Correspondant technique Neunrinfo"  . " ; "
 				.	"Shanoire"  . " ; "
-				.	"Prix"  . " \r\n";
+				.	ProjetTranslator::soins($lang) . " ; "
+				.	ProjetTranslator::prix($lang)  . " ;"
+				.	ProjetTranslator::cotation($lang)  . " ;"
+				.	ProjetTranslator::irm($lang) . " ;"
+				.	ProjetTranslator::derirm($lang)  . " \r\n";
 				
 		
 
@@ -170,10 +175,15 @@ class ControllerRecherche extends ControllerBooking {
 	   		$content.=  $t["acronyme"] . "; ";
 		    $content.=  $t["typeactivite"] . "; ";
 		    $content.=  $t["ipprenom"] . "; ";
+		    $content.=  $t["protocoleinjecte"] . ";";
 		    $content.=  $t["opglibelle"] . " ";
 		    $content.=  $t["cstnt"] . "; ";
 		    $content.=  $t["gamds"] . "; ";
-		    $content.=  $t["coutestime"] . " ";
+		    $content.=  $t["sointscourant"] . "; ";
+		    $content.=  $t["tarif"] . "; ";
+		    $content.=  $t["intitule"] . "; ";
+		    $content.=  $t["irm"] . "; ";
+		    $content.=  $t["lastirm"] . " ";
 		    $content.= "\r\n";
 	   }
 	   echo $content;

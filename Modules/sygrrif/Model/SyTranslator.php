@@ -29,9 +29,66 @@ class SyTranslator {
 		}
 		return "Areas";
 	}
+public static function inst($lang=""){
+	if($lang== "Fr"){
+		return utf8_encode("Installer/Réparer la base de donnée");
+	}
+	return "Install / Repair database";
+}
+public static function paragraphe($lang=""){
+	if($lang="Fr"){
+	 	return utf8_encode("Pour installer le mudule SyGRRif, cliquez sur Installer. Cela va créer les tables 
+SyGRRif  dans la base de données, si elles n'existent pas ou les réparer si elles existent");	
+	}
+	return "To install the SyGRRif mudule, click Install. This will create the 
+		SyGRRif tables in the database if they don't exists or repair them
+		if they exists";
+}
+public static function activedesa($lang=""){
+	if($lang=="Fr"){
+		return utf8_encode("Activer/Désactiver les menus");
+	}
+	return "Activate/Desactivate menus";
+}
+public static function model($lang=""){
+	if($lang=="Fr"){
+		return utf8_encode("Modèle");
+	}
+	return "Bill template";
+}
+public static function para2($lang=""){
+	if($lang=="Fr"){
+		return utf8_encode("Sélectionnez un fichier xls qui sera utilisé comme modèle pour générer le projet SyGRRif");
+	}
+	return "Select a xls file that will be used as template 
+          to generate the SyGRRif bill";
+}
+public static function bookingsum($lang=""){
+	if($lang=="Fr"){
+		return utf8_encode("les options du sommaires des réservations");
+	}
+	return "Booking summary options ";
+}
+public static function hiden($lang=""){
+	if($lang=="Fr"){
+		return utf8_encode("Caché");
+	}
+	return "Hidden";
+}
+public static function taghiden($lang=""){
+	if($lang=="Fr"){
+		return utf8_encode("Tag caché");
+	}
+	return "Tag hidden";
+}
 
 //report.php
-
+public static function cemois($lang=""){
+	if ($lang == "Fr"){
+			return utf8_encode("Ce mois");
+		}
+		return "This month ";
+}
 	public static function detailsreservation($lang = ""){
 		if ($lang == "Fr"){
 			return utf8_encode("Détails des réservations");
@@ -359,6 +416,30 @@ public static function validecondition($lang = ""){
 			return "Type de pÃ©riodicitÃ©";
 		}
 		return "Series type";
+	}
+public static function nobody($lang = ""){
+		if ($lang == "Fr"){
+			return "Personne";
+		}
+		return "Nobody";
+	}
+public static function utilisateur($lang = ""){
+		if ($lang == "Fr"){
+			return "Utilisateurs";
+		}
+		return "USers";
+	}
+public static function manager($lang = ""){
+		if ($lang == "Fr"){
+			return utf8_encode("Géstionnaire");
+		}
+		return "Manager";
+	}
+public static function admin($lang = ""){
+		if ($lang == "Fr"){
+			return "Administrateur";
+		}
+		return "Admin";
 	}
 	
 	public static function Days_for_week_periodicity($lang = ""){
@@ -1210,19 +1291,8 @@ public static function validecondition($lang = ""){
 		return "Who can book";
 	}
 
-	public static function Manager($lang){
-		if ($lang == "Fr"){
-			return "Gestionnaire";
-		}
-		return "Manager";
-	}
-	 
-	public static function Admin($lang){
-		if ($lang == "Fr"){
-			return "Administrateur";
-		}
-		return "Admin";
-	}
+	
+
 	
 	public static function Settings($lang){
 		if ($lang == "Fr"){
@@ -1589,6 +1659,12 @@ public static function taghidden($lang){
 		else{
 			return "Tag Hidden";
 		}
+	}
+	public static function series($lang){
+		if($lang="Fr"){
+			return utf8_encode("Séries des réservations");
+		}
+		return "Series booking";
 	}
 public static function tagvisible($lang){
 		if($lang=="Fr"){

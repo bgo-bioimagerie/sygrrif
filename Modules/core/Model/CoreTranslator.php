@@ -23,6 +23,12 @@ class CoreTranslator {
 		// En
 		return $date;
 	}
+	public static function typeorganne($lang=""){
+		if($lang=="Fr"){
+			return utf8_encode("Type d'organes");
+		}
+		 return "Body Type";
+	}
 	
 	public static function dateFromEn($date, $lang){
 		if ($lang == "Fr"){
@@ -581,7 +587,7 @@ class CoreTranslator {
 	
 	public static function non_active_users($lang = ""){
 		if ($lang == "Fr"){
-			return "désactivation des utilisateurs";
+			return "Désactivation des utilisateurs";
 		}
 		return "non-active users";
 	}

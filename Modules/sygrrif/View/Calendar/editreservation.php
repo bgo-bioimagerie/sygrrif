@@ -158,19 +158,20 @@ $(document).ready(function() {
 						$acronyme = $reservationInfo["acronyme"];
 					}
 				$reservations= $donnee;
-			if(isset($reservationInfo) && $allowedBookForOther==TRUE)
+				
+					
+			if(isset($reservationInfo) && $allowedBookForOther==TRUE )
 			{ ?>
+				
 				<select class="form-control" name="acronyme">
+				<option>---------</option>
+				<option selected value="<?=$acronyme?>"> <?=$acronyme?> </option>
 				<?php foreach($reservations as $res)
 					{
 						$protocol=$res["acronyme"];
-						if($acronyme=$protocol && $protocol !="")
-						{
-							$selected="selected=\"selected\"";
-						}
-						if($protocol != "" && $acronyme!="")
-						{?>
-						<option value="<?=$protocol?>" <?= $selected?>> <?= $protocol?></option>
+						if($protocol != ""){
+						?>
+						<option value="<?=$protocol?>"> <?= $protocol?></option>
 						<?php }
 	
 					} ?>
@@ -180,16 +181,14 @@ $(document).ready(function() {
 			 elseif(isset($reservationInfo) && $allowedBookForOther==FALSE)
 			 {?>
 				<select class="form-control" name="acronyme" disabled="disabled" >
+				<option>---------</option>
+				<option selected value="<?=$acronyme?>"> <?=$acronyme?> </option>
 					<?php foreach($reservations as $res)
 					{
 						$protocol=$res["acronyme"];
-						if($acronyme=$protocol && $protocol !="")
-						{
-							$selected="selected=\"selected\"";
-						}
-						if($protocol != "")
-						{ ?>
-							<option value="<?=$protocol?>" <?= $selected?>> <?= $protocol?></option>
+						if($protocol !=""){
+						 ?>
+							<option value="<?=$protocol?>" > <?= $protocol?></option>
 					
 						<?php }
 					}?>
@@ -197,7 +196,7 @@ $(document).ready(function() {
 				</select>	
 			<?php } else{ ?>
 				<select class="form-control" name="acronyme" >
-				<option>----</option>
+				<option>---------</option>
 					<?php foreach($reservations as $res)
 					{
 						$protocol=$res["acronyme"];
@@ -215,7 +214,7 @@ $(document).ready(function() {
 			</div>	
 		</div>
 		<div class="form-group" id="acronyme2">
-		<label for="inputEmail" class="col-lg-2 control-label">Entrez votre valeur</label>
+		<label for="inputEmail" class="col-lg-2 control-label"><?=ResTranslator::entrervaleur($lang)?></label>
 		<div class="col-lg-10">
 				<input type="text" class="form-control" id="acronym" name="acronyme2" />
 		</div>
@@ -229,12 +228,7 @@ $(document).ready(function() {
 				<input type="text" class="form-control" id="codeanonym" name="codeanonym" <?php if(isset($reservationInfo)){?> value="<?php echo $reservationInfo['codeanonyma'];?>"<?php }?>/>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="inputEmail" class="col-lg-2 control-label">Commentaire</label>
-			<div class="col-lg-10">
-				<input type="text" class="form-control" id="commentaire" name="commentaire" <?php if(isset($reservationInfo)){?> value="<?php echo $reservationInfo['commentaire'];?>"<?php }?>/>
-			</div>
-		</div>
+		
 		
 		
 		<div class="form-group">
@@ -255,16 +249,15 @@ $(document).ready(function() {
 				if(isset($reservationInfo) && $allowedBookForOther==TRUE)
 				{?>
 					<select class="form-control" id="numerovisite" name="numerovisite">
+					<option>---------</option>
+					<option selected value="<?=$numerovisite?>"> <?=$numerovisite?> </option>
 					<?php  foreach($reservations as $res)
 							{
 								$numvis=$res["numerovisite"];
-								if($numerovisite=$numvis)
-								{
-									$selected="selected=\"selected\"";
-								}
+								
 								if ($numvis!="")
 								{?>
-								<option value="<?=$numvis?>" <?= $selected?>> <?= $numvis?></option>
+								<option value="<?=$numvis?>"> <?= $numvis?></option>
 							<?php } 
 						  } 
 						?> <option value="Autres">Autres</option>
@@ -273,16 +266,15 @@ $(document).ready(function() {
 			<?php } elseif(isset($reservationInfo) && $allowedBookForOther==FALSE)
 			{?>
 				<select class="form-control" id="numerovisite" name="numerovisite" disabled="disabled" >
+				<option>---------</option>
+					<option selected value="<?=$numerovisite?>"> <?=$numerovisite?> </option>
 					<?php foreach($reservations as $res)
 					{
 						$numvis=$res["numerovisite"];
-						if($numerovisite=$numvis)
-						{
-							$selected="selected=\"selected\"";
-						}
+						
 						if ($numvis!="")
 						{?>
-							<option value="<?=$numvis?>" <?= $selected?>> <?= $numvis?></option>
+							<option value="<?=$numvis?>" > <?= $numvis?></option>
 					
 					<?php }
 					} ?><option value="Autres">Autres</option>
@@ -290,6 +282,8 @@ $(document).ready(function() {
 			<?php } else{ ?>
 				<select class="form-control" id="numerovisite" name="numerovisite">
 				<option>----</option>
+				<option>---------</option>
+					<option selected value="<?=$numerovisite?>"> <?=$numerovisite?> </option>
 					<?php foreach($reservations as $res)
 					{
 						$numvis=$res["numerovisite"];
@@ -307,10 +301,18 @@ $(document).ready(function() {
 			</div>
 		</div>
 		<div class="form-group" id="visite2">
-		<label for="inputEmail" class="col-lg-2 control-label">Entrez votre valeur</label>
+		<label for="inputEmail" class="col-lg-2 control-label"><?=ResTranslator::entrervaleur($lang)?>label>
 		<div class="col-lg-10">
 			<input type="text" class="form-control" id="numerovisite2" name="numerovisite2" />
 		</div>
+		</div>
+		
+		
+		<div class="form-group">
+			<label for="inputEmail" class="col-lg-2 control-label"><?=ResTranslator::comentaire($lang)?></label>
+			<div class="col-lg-10">
+				<input type="text" class="form-control" id="commentaire" name="commentaire" <?php if(isset($reservationInfo)){?> value="<?php echo $reservationInfo['commentaire'];?>"<?php }?>/>
+			</div>
 		</div>
 		<div class="form-group">
 				<?php 

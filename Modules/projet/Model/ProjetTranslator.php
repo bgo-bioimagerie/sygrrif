@@ -37,6 +37,67 @@ class ProjetTranslator {
 		}
 		return "Prices";
 	}
+public static function euro($lang="")
+	{
+		if ($lang == "Fr"){
+			return utf8_encode("€");
+		}
+		return "€";
+	}
+	
+	
+	public static function typeorgane($lang=""){
+		if($lang=="Fr"){
+			return utf8_encode("Type d'organes");
+		}
+		return "Organes type";
+	}
+
+	public static function contunier($lang=""){
+		if($lang=="Fr"){
+			return utf8_encode("Continuer");
+		}
+		return "Continue";
+	}
+public static function addinvp($lang=""){
+		if($lang=="Fr"){
+			return utf8_encode("Ajouter un investigateur principal");
+		}
+		return "Add a principal investigator";
+	}
+public static function preninvp($lang=""){
+		if($lang=="Fr"){
+			return utf8_encode("Prénom d'un investigateur principal");
+		}
+		return "Name of principal investigator";
+	}
+public static function addinva($lang=""){
+		if($lang=="Fr"){
+			return utf8_encode("Ajouter un investigateur associé");
+		}
+		return "Add an Associate Investigator";
+	}
+	public static function  precedent($lang="")
+	{
+		if($lang=="Fr"){
+			return utf8_encode("Précedent");
+		}
+		return "Previous";
+	}
+public static function suivant($lang="")
+	{
+		if($lang=="Fr"){
+			return utf8_encode("Suivant");
+		}
+		return "Next";
+	}
+	public static function  remplipar($lang="")
+	{
+		if($lang=="Fr"){
+			return "Rempli par";
+		}
+		return "completed by";
+	}
 	public static function ajoutertarif($lang="")
 	{
 		if ($lang == "Fr"){
@@ -101,16 +162,23 @@ class ProjetTranslator {
 	}
 	public static function statNI($lang=""){
 		if ($lang == "Fr"){
-			return "Statistiques Neurinfo";
+			return utf8_encode("Statistiques réservations Neurinfo");
 		}
-		return "Neurinfo Statistics";
+		return "Statistics Neurinfo reservations";
 	}
 	public static function Neurrappot($lang="")
 	{
 		if ($lang == "Fr"){
-			return utf8_encode("Rapport d'activité");
+			return utf8_encode("Statistiques fiche projet");
 		}
-		return "Activity Report";
+		return "Statistics project record";
+	}
+	public static function commenprog($lang="")
+	{
+		if($lang=="Fr"){
+			return utf8_encode("Commentaire");
+		}
+		return "Comment";
 	}
 //search.php
 	public static function montant($lang=""){
@@ -194,6 +262,13 @@ public static function chercher($lang){
 			}
 			return "Record number";
 		}
+public static function valide($lang){
+			if($lang=="Fr")
+			{
+				return utf8_encode("Valide jusqu'à");
+			}
+			return "Valid until";
+		}
 	public static function numerovisite($lang){
 			if($lang=="Fr")
 			{
@@ -222,7 +297,7 @@ public static function methodo($lang){
 			{
 				return utf8_encode("Méthodologique") ;
 			}
-			return "Méthodologique";
+			return "Methodologique";
 		}
 public static function rechercheclini($lang){
 			if($lang=="Fr")
@@ -343,9 +418,9 @@ public static function multicen($lang){
 		{
 			if($lang=="Fr")
 			{
-				return utf8_encode("Organisme Partenaire Gestionnaire(sera renseigné par le comité de direction)");
+				return utf8_encode("Organisme Partenaire Gestionnaire");
 			}
-			return "Partner Manager Organisation (to be complete by the executive committee)";
+			return "Partner Manager Organisation";
 			
 		}
 	public static function contactcores($lang)
@@ -387,9 +462,9 @@ public static function multicen($lang){
 		{
 			if($lang="Fr")
 			{
-				return utf8_encode(" Correspondants scientifique et technique Neunrinfo (seront désigné par le comité de direction)");
+				return utf8_encode(" Correspondant scientifique et technique Neunrinfo ");
 			}
-			return "Scientific and technical correspondents Neurinfo (Will be appointed by the Executive Committee) ";
+			return "Scientific and technical correspondent Neurinfo  ";
 		}
 	public static function nomprenoms($lang)
 		{
@@ -407,7 +482,141 @@ public static function multicen($lang){
 			}
 			return " Full name of the technical contact";
 		}
+		public static function nometpr($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Nom et Prénom");
+			}
+			return " Full name";
+		}
+			public static function attrechcli($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Ajouter un attaché de recherche clinique");
+			}
+			return "Add a clinical research associate";
+		}
+	public static function besoinspecif($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Besoins spécifique / ressources");
+			}
+			return "Specific needs / resources";
+		}
+public static function ressouHLME($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Ressources humaines logicielles et matérielles externes");
+			}
+			return "Software and external hardware Human Resources";
+		}
+public static function ressouHLMN($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Ressources humaines logicielles et matérielles Neurinfo:");
+			}
+			return "Human resources software and hardware Neurinfo :";
+		}
+
+public static function aaon($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Adéquation aux objectifs de Neurinfo:");
+			}
+			return "Fitness for purpose of Neurinfo :";
+		}
 		
+public static function cspn($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Caractère structurant pour Neurinfo:");
+			}
+			return "Structuring for Neurinfo:";
+		}
+public static function plandiss($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Plan de dissémination:");
+			}
+			return "Dissemination plan:";
+		}
+public static function veuill($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Veuillez enregistrer les données:");
+			}
+			return "Please save the data:";
+		}
+		public static function retour($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Retour");
+			}
+			return "Back";
+		}
+		public static function part($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Partie Administrateur");
+			}
+			return "Administrator's Part";
+		}
+
+		
+		
+public static function mmdde($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Mode de mise à disposition des données envisagé");
+			}
+			return "Fashion provision of planned data:";
+		}
+		
+public static function mddedmr($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Mode de diffusion envisagé des méthodes et des résultats:");
+			}
+			return "Broadcast mode contemplated methods and results :";
+		}
+public static function soins($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Soins courants");
+			}
+			return "Routine Care";
+		}
+		 
+public static function cauto($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Capacité d'autofinancement:");
+			}
+			return "Cash flow from operations:";
+		}
+public static function ncdn($lang)
+		{
+			if($lang="Fr")
+			{
+				return utf8_encode("Nature de la contribution de Neurinfo:");
+			}
+			return "Nature 's contribution Neurinfo:";
+		}
 		public static function cpp($lang)
 		{
 			if($lang="Fr")
@@ -578,7 +787,7 @@ public static function multicen($lang){
 			{
 				if($lang="Fr")
 				{
-					return utf8_encode("Durée d'examen");
+					return utf8_encode("Durée d'examen par minute (15, 30, 60)");
 				}
 				return "Time per Exam";
 			}
@@ -586,7 +795,7 @@ public static function multicen($lang){
 			{
 				if($lang="Fr")
 				{
-					return utf8_encode("Durée totale");
+					return utf8_encode("Durée totale en heure");
 				}
 				return "Total Time";
 			}
@@ -614,7 +823,37 @@ public static function multicen($lang){
 				}
 				return "No";
 			}
-			
+public static function typefin($lang)
+			{
+				if($lang="Fr")
+				{
+					return utf8_encode("Type de financement");
+				}
+				return "Type of Funding";
+			}
+public static function prix($lang)
+			{
+				if($lang="Fr")
+				{
+					return utf8_encode("Prix");
+				}
+				return "Price";
+			}
+		public static function entre($lang){
+			if($lang="Fr")
+				{
+					return utf8_encode("Entrez votre valeur");
+				}
+				return "Enter your value";
+		}
+public static function duptyfin($lang){
+			if($lang="Fr")
+				{
+					return utf8_encode("Dupliquer type de financement");
+				}
+				return "Duplicate type of funding";
+		}
+		
 		public static function planificationprevisinnelle($lang)
 			{
 				if($lang="Fr")
@@ -635,16 +874,16 @@ public static function informationcomplementaire($lang)
 			public static  function inpp($lang)
 			{
 				if($lan="Fr"){
-					return utf8_encode("Intitulé Neurinfo pour la programmation");
+					return utf8_encode("Intitulé Neurinfo pour la programmation /Dxplanning");
 				}
-				return "Entitled Neurinfo for programming";
+				return "Entitled Neurinfo for programming /Dxplanning";
 			}
 	public static  function inppc($lang)
 			{
 				if($lan="Fr"){
-					return utf8_encode("Intitulé Neurinfo pour la cotation");
+					return utf8_encode("Intitulé pour la cotation");
 				}
-				return "Neurinfo entitled for the listing";
+				return "Entitled for the listing";
 			}
 	public static  function progcota($lang)
 			{
@@ -653,7 +892,107 @@ public static function informationcomplementaire($lang)
 				}
 				return "Entitled Neurinfo for programming";
 			}
+			public static  function cotation($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Cotation");
+				}
+				return "Trading";
+			}
+			public static  function facturable($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Facturable");
+				}
+				return "Billable";
+			}
+	public static  function nnfacturable($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Non Facturable");
+				}
+				return "No Billable";
+			}
+public static  function dupcot($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Dupliquer cotation");
+				}
+				return "Duplicated listing";
+			}
+public static  function gesarchsha($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Gestion archivage mode de sauvegarde Shanoir");
+				}
+				return "Backup mode archiving management Shanoir";
+			}
+public static  function sauvdon($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Sauvegarde des données");
+				}
+				return "Saving data";
+			}
+public static  function cdany($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("CD anonymisé console");
+				}
+				return "CD anonymized console";
+			}
+public static  function calrea($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Calendrier réalisé");
+				}
+				return "Performed Calendar";
+			}
+public static  function datmise($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Date de mise en place");
+				}
+				return " Date of establishment";
+			}
+public static  function dclot($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Date de clôture:");
+				}
+				return "Closing Date";
+			}
+public static  function irm($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("1ère IRM");
+				}
+				return "First IRM";
+			}
+			
+public static  function derirm($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("dernière IRM");
+				}
+				return "Last IRM";
+			}
+public static  function cdnom($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("CD nominatif dossier patient");
+				}
+				return "Nominative patient record CD";
+			}
 
+
+public static  function dupprog($lang)
+			{
+				if($lan="Fr"){
+					return utf8_encode("Dupliquer programmation");
+				}
+				return "Duplicate programmation";
+			}
 public static  function datedemarageprevu($lang)
 			{
 				if($lan="Fr"){

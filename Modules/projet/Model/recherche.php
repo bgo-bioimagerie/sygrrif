@@ -27,11 +27,11 @@ class recherche extends Model {
 	}
 	public function reportstats( $champ, $type_recherche, $text, $contition_et_ou){
 		
-		$sql = "SELECT distinct e.idform, e.numerofiche, e.type, e.nac, e.acronyme, e.typeactivite, e.promoteur, e.opglibelle, e.cstnt,  "
-				. "e.gamds, e.coutestime, "
+		$sql = "SELECT distinct e.idform, e.numerofiche, e.type, e.nac, e.acronyme, e.typeactivite, e.promoteur, e.opglibelle, e.protocoleinjecte, e.cstnt,  "
+				. "e.gamds, e.irm, e.lastirm, f.tarif, f.soinscourant, c.intitule, "
 				. "a.ipprenom,  a.numerofiche "
-				. " FROM neurinfo e, invesprinc a "
-				. " WHERE e.numerofiche = a.numerofiche  " ;
+				. " FROM neurinfo e, invesprinc a, projet_type_financement f, cotation c"
+				. " WHERE e.numerofiche = a.numerofiche and e.numerofiche = f.numerofiche and e.numerofiche = c.numerofiche " ;
 		
 		//echo "contition_et_ou = " . $contition_et_ou . "<br/>";
 		
@@ -91,15 +91,31 @@ private function extractQueryFrom($champ, $text, $type_recherche){
 		if ($champ == "opglibelle" ){
 			return " e.opglibelle ". $like ." '%" . $text . "%'";
 		}
+		if ($champ == "protocoleinjecte" ){
+			return " e.protocoleinjecte". $like ." '%" . $text . "%'";
+		}
 		if ($champ == "cstnt" ){
 			return " e.cstnt ". $like ." '%" . $text . "%'";
 		}
 		if ($champ == "gamds" ){
 			return " e.gamds ". $like ." '%" . $text . "%'";
 		}
-		if ($champ == "coutestime" ){
-			return " e.coutestime ". $like ." '%" . $text . "%'";
+		if ($champ == "soinscourant" ){
+			return " f.soinscourant ". $like ." '%" . $text . "%'";
 		}
+		if ($champ == "tarif" ){
+			return " f.tarif ". $like ." '%" . $text . "%'";
+		}
+		if ($champ == "irm" ){
+			return " e.irm ". $like ." '%" . $text . "%'";
+		}
+		if ($champ == "lastirm" ){
+			return " e.lastirm ". $like ." '%" . $text . "%'";
+		}
+		if ($champ == "intitule" ){
+			return " c.intitule ". $like ." '%" . $text . "%'";
+		}
+	
 	}
 public function summaryseReportStats($table, $entrySummary){
 		

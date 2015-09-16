@@ -38,6 +38,16 @@ class ControllerGenerationpdf extends Controller{
 			$invA = $modelModif->getInvesAssoc($numerofiche);
 			return $invA;
 		}
+		public function arc(){
+			$numerofiche="";
+				if($this->request->isParameterNotEmpty('actionid'))
+				{
+					$numerofiche=$this->request->getParameter("actionid");
+				}
+			$modelModif = new neurinfoprojet();
+			$arc = $modelModif->getArc($numerofiche);
+			return $arc;
+		}
 		
 	
 	public function index()
@@ -58,6 +68,7 @@ class ControllerGenerationpdf extends Controller{
 		?>
 		<?php $inva=$this->inva();?>
 		<?php $invp=$this->invp();?>
+		<?php $arc=$this->arc();?>
 			<style type="text/css">
 				table{ width:100%; color:#717375; font-size:12pt; line-height:6mm; border: 2px solid #eeab69; }
 				strong{color:#000;}
@@ -181,18 +192,19 @@ class ControllerGenerationpdf extends Controller{
 			<label><?php echo utf8_encode("Coordonnées du correspondant")?>:</label>
 				<p><?php echo $var['opgcoordonee']?></p>
 		</fieldset>
+		<?php for($i=0; $i<count($arc); $i++){?>
 		<fieldset ><legend><?php echo utf8_encode("Attaché recherche clinique")?></legend>
 			<label><?php echo utf8_encode("Prénom")?></label>
-				<p><?php echo $var['arcprenom']?></p>
+				<p><?php echo $arc[$i]['arcprenom']?></p>
 			<label>Nom:</label>
-				<p><?php echo $var['arcnom']?></p>
+				<p><?php echo $arc[$i]['arcnom']?></p>
 			<label>Fonction:</label>
-				<p><?php echo $var['arcfonction']?></p>
+				<p><?php echo $arc[$i]['arcfonction']?></p>
 			<label>Email:</label>
-				<p><?php echo $var['arcmail']?></p>
+				<p><?php echo $arc[$i]['arcmail']?></p>
 			<label><?php echo utf8_encode("Téléphone")?></label>
-				<p><?php echo $var['arctel']?></p>
-		</fieldset>
+				<p><?php echo $arc[$i]['arctel']?></p>
+		</fieldset><?php }?>
 		<br/><br/>
 		<fieldset >
 			<legend><?php echo utf8_encode("Radiologue supervisant le réalisation des examens:")?></legend>

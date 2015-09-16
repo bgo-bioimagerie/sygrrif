@@ -121,7 +121,7 @@ require_once 'Modules/projet/Model/Projet_Calendar_Parametre.php'
 		<button type="button" onclick="location.href='calendar/bookweek'"
 			class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
 		<button type="button" class="btn btn-default active"><?= SyTranslator::Week_Area($lang) ?></button>
-		<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
 	</div>
 </div>
 </div>

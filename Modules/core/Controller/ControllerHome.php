@@ -13,7 +13,6 @@ class ControllerHome extends ControllerSecureNav {
 	public function index() {
 		
 		$navBar = $this->navBar();
-		
 		$toolMenu = $this->getToolsMenu();
 		$toolAdmin = $this->getAdminMenu();
 		
