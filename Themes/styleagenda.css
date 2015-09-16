@@ -12,7 +12,7 @@ border: thin solid #f1f1f1;
 border-collapse: collapse;
 margin-left:auto;
 margin-right:auto;
-width:900px;
+width:100%;
 /*height:300px;*/
 text-align:left;
 cursor:default;
@@ -46,6 +46,7 @@ font-weight:bold;
 cursor:pointer;
 width:100px;
 height:75px;
+font-size:16px;
 }
 .desactive
 {
@@ -69,7 +70,7 @@ text-decoration:blink;
 	width:250px;
 	background-color:#996633;
 	color:#FFFFFF;
-	font-size:15pt;
+	font-size:15px;
 }
 #lien {margin-top:20px;}
 #lien a,#lien a:visited{

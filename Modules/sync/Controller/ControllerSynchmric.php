@@ -15,6 +15,8 @@ require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
+require_once 'Modules/core/Model/InitDatabase.php';
+require_once 'Modules/sygrrif/Model/SyInstall.php';
 
 class ControllerSynchmric extends Controller {
 
@@ -27,11 +29,18 @@ class ControllerSynchmric extends Controller {
 		// connect to h2p2 grr 
 		$dsn_grr = 'mysql:host=localhost;dbname=sygrrif_mric;charset=utf8';
 		$login_grr = "root";
-		$pwd_grr = "root";
+		$pwd_grr = "";
 		
 		$pdo_grr = new PDO($dsn_grr, $login_grr, $pwd_grr,
 				array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 		
+		
+		// install data  base
+		$installModel = new InitDatabase();
+		$installModel->createDatabase();
+		
+		$sygrrifInstall = new SyInstall();
+		$sygrrifInstall->createDatabase();
 		
 		// Equipes
 		$this->syncUnits($pdo_grr);

@@ -15,7 +15,7 @@ require_once 'Modules/sygrrif/View/Calendar/agendafunction.php'
 	
 <div class="col-lg-12">	
 <?php 	
-drawAgenda($month, $year, $calEntries);
+drawAgenda($month, $year, $calEntries, $resourceBase);
 ?>
 <div>
 

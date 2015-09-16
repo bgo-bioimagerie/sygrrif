@@ -740,6 +740,10 @@ class ControllerCalendar extends ControllerBooking {
 			$this->bookweekarea($message);
 			return;
 		}
+		else if($lastView == "bookdayarea"){
+			$this->bookdayarea($message);
+			return;
+		}
 		$this->bookday($message);
 	}
 	
@@ -1086,6 +1090,117 @@ class ControllerCalendar extends ControllerBooking {
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
 				'message' => $message
 		), "bookmonth");
+	}
+	
+	/**
+	 * View a calendar booking page in day mode for all the resources of an area
+	 * @param string $message
+	 */
+	public function bookdayarea($message = ""){
+	
+		$_SESSION['lastbookview'] = "bookdayarea";
+	
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+	
+		// get inputs
+		$curentResource = $this->request->getParameterNoException('id_resource');
+		$curentAreaId = $this->request->getParameterNoException('id_area');
+		$curentDate = $this->request->getParameterNoException('curentDate');
+	
+		if ($curentDate != ""){
+			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
+		}
+	
+		if ($curentAreaId == ""){
+			$curentResource = $_SESSION['id_resource'];
+			$curentAreaId = $_SESSION['id_area'];
+			$curentDate = $_SESSION['curentDate'];
+		}
+	
+		// change input if action
+		$action = "";
+		if ($this->request->isParameterNotEmpty("actionid")) {
+			$action = $this->request->getParameter ( "actionid" );
+		}
+		if ($action == "daybefore" ){
+			$curentDate = explode("-", $curentDate);
+			$curentTime = mktime(0,0,0,$curentDate[1], $curentDate[2], $curentDate[0] );
+			$curentTime = $curentTime - 86400;
+			$curentDate = date("Y-m-d", $curentTime);
+		}
+		if ($action == "dayafter" ){
+			$curentDate = explode("-", $curentDate);
+			$curentTime = mktime(0,0,0,$curentDate[1], $curentDate[2], $curentDate[0] );
+			$curentTime = $curentTime + 86400;
+			$curentDate = date("Y-m-d", $curentTime);
+		}
+		if ($action == "today" ){
+			$curentDate = date("Y-m-d", time());
+		}
+	
+		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+	
+		// save the menu info in the session
+		$_SESSION['id_resource'] = $curentResource;
+		$_SESSION['id_area'] = $curentAreaId;
+		$_SESSION['curentDate'] = $curentDate;
+	
+		// get the area info
+		$modelArea = new SyArea();
+		$area = $modelArea->getArea($curentAreaId);
+		
+		// get the resource info
+		$modelRes = new SyResource();
+		$resourcesBase = $modelRes->resourcesForArea($curentAreaId);
+		
+		$modelRescal = new SyResourceCalendar();
+		for ($t = 0 ; $t < count($resourcesBase) ; $t++){
+			$resourcesInfo[$t] = $modelRescal->resource($resourcesBase[$t]["id"]);
+		}
+	
+		// get the entries for this resource
+		$modelEntries = new SyCalendarEntry();
+		$dateArray = explode("-", $curentDate);
+		$dateBegin = mktime(0,0,0,$dateArray[1],$dateArray[2],$dateArray[0]);
+		$dateEnd = mktime(23,59,59,$dateArray[1],$dateArray[2],$dateArray[0]);
+		for ($t = 0 ; $t < count($resourcesBase) ; $t++){
+			$calEntries[] = $modelEntries->getEntriesForPeriodeAndResource($dateBegin, $dateEnd, $resourcesBase[$t]["id"]);
+		}
+		
+		// curentdate unix
+		$temp = explode("-", $curentDate);
+		$curentDateUnix = mktime(0,0,0,$temp[1], $temp[2], $temp[0]);
+	
+		// color code
+		$modelColor = new SyColorCode();
+		$colorcodes = $modelColor->getColorCodes("name");
+	
+		// isUserAuthorizedToBook
+		foreach ($resourcesBase as $resourceBase){
+			$isUserAuthorizedToBook[] = $this->hasAuthorization($resourceBase["category_id"], $resourceBase["accessibility_id"],
+				$_SESSION['id_user'], $_SESSION["user_status"], $curentDateUnix);
+		}
+	
+		//print_r($calEntries);
+		//return;
+		
+		// view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'menuData' => $menuData,
+				'resourcesInfo' => $resourcesInfo,
+				'resourcesBase' => $resourcesBase,
+				'date' => $curentDate,
+				'date_unix' => $curentDateUnix,
+				'calEntries' => $calEntries,
+				'colorcodes' => $colorcodes,
+				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
+				'message' => $message
+		),"bookdayarea" );
 	}
 	
 	/**

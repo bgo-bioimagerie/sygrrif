@@ -2,8 +2,11 @@
 
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 
-function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable){
+function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable, $resourceID = -1){
 	
+	if ($resourceID < 0){
+		$resourceID = $_SESSION["id_resource"];
+	}
 	$dateString = date("Y-m-d", $date_unix);
 	$moduleProject = new Project();
 	$ModulesManagerModel = new ModulesManager();
@@ -128,7 +131,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							if ($he[0] < 10){$he[0] = "0". $he[0];}
 							$hed = $he[0] . "-" .$he[1];
 							if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
-								$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2;
+								$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2."_".$resourceID;
 								?>
 						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
 						<?php }}}?>
@@ -250,7 +253,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					if ($he[0] < 10){$he[0] = "0". $he[0];}
 					$hed = $he[0] . "-" .$he[1];
 					if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
-						$linkAdress = "calendar/editreservation/t_" . $dateString . "_" . $h2;
+						$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2."_".$resourceID;
 						?>
 						 <a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
 				<?php }}}?>
@@ -371,7 +374,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						if ($he[0] < 10){$he[0] = "0". $he[0];}
 						$hed = $he[0] . "-" .$he[1];
 						if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
-							$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2;
+							$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2."_".$resourceID;
 							?>
 						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
 						<?php }}}?>

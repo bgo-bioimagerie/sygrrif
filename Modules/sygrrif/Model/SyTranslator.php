@@ -373,6 +373,13 @@ class SyTranslator {
 		}
 		return "Week Area";
 	}
+	public static function Day_Area($lang = ""){
+		if ($lang == "Fr"){
+			return "Jour domaine";
+		}
+		return "Day Area";
+	}
+	
 	
 	public static function Authorized_users($lang = ""){
 		if ($lang == "Fr"){

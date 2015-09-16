@@ -22,13 +22,13 @@ $dayWidth = 100/$dayWidth;
 
 <style>
 #tcell{
-	border-left: 1px solid #f1f1f1;
-	border-right: 1px solid #f1f1f1;
-	border-bottom: 1px solid #f1f1f1;
+	border-left: 1px solid #d1d1d1;
+	border-right: 1px solid #d1d1d1;
+	border-bottom: 1px solid #d1d1d1;
 }
 
 #tcelltop{
-	border: 1px solid #f1f1f1;
+	border: 1px solid #d1d1d1;
 }
 
 #colDiv{
@@ -53,7 +53,7 @@ $dayWidth = 100/$dayWidth;
 #tcellResa{
 	-moz-border-radius: 9px;
 	border-radius: 9px;
-	border: 1px solid #f1f1f1;
+	border: 1px solid #d1d1d1;
 }
 
 #resa_link{
@@ -140,6 +140,7 @@ $sufixStream = date("S", $time);
 
 <div class="col-md-4 text-right">
 <button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
 <button type="button" class="btn btn-default active"><?= SyTranslator::Week($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
@@ -160,7 +161,7 @@ $available_days = explode(",", $available_days);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: 100px;"></div> <!-- For the resource title space -->
+	<div id="tcelltop" style="height: 100px; background-color:#337ab7; color: #fff;"></div> <!-- For the resource title space -->
 	
 	<?php 
 	// Hours
@@ -177,7 +178,7 @@ $available_days = explode(",", $available_days);
 		}
 		?>
 	
-		<div id="tcell" style="height: <?= $heightCol ?>;">
+		<div id="tcell" style="height: <?= $heightCol ?>; background-color:#337ab7; color: #fff;">
 		<?=$h?>:00
 		</div>
 	<?php 	
@@ -188,7 +189,7 @@ $available_days = explode(",", $available_days);
 <!-- hours reservation -->
 <div class="col-xs-11" id="colDiv">
 
-	<div id="tcelltop" style="height: 50px;">
+	<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
 	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b></br><?= $this->clean($resourceBase['description']) ?></p>
 	</div>
 
@@ -228,7 +229,7 @@ $available_days = explode(",", $available_days);
 			
 			<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
 			
-			<div id="tcelltop" style="height: 50px;">
+			<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
 			<p class="text-center"><b> <?= $dayTitle ?></b> </p>
 			</div>
 			

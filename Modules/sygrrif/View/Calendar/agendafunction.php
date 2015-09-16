@@ -1,6 +1,6 @@
 <?php
 
-function drawAgenda($mois, $annee, $entries){
+function drawAgenda($mois, $annee, $entries, $resourceBase){
 	
 	$lang = "En";
 	if (isset($_SESSION["user_settings"]["language"])){
@@ -21,9 +21,7 @@ function drawAgenda($mois, $annee, $entries){
 	
 	
 	<!-- <div style="min-width:900px;">  -->
-	<div class="col-lg-10 col-lg-offset-1">
-
-
+	<div class="col-lg-12">
 
 	<!-- 
 	<caption><?= $mois_fr[$mois] . " " . $annee ?></caption>
@@ -39,9 +37,12 @@ function drawAgenda($mois, $annee, $entries){
 	</div>
 	<div class="col-md-4">
 		<p ><strong> <?= $mois_fr[$mois] . " " . $annee ?></strong></p>
+		
+		<p ><strong> <?= $resourceBase["name"] ?></strong></p>
 	</div>
 	<div class="col-md-5" style="text-align: right;">	
 		<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default"><?= SyTranslator::Week($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
 		<button type="button" class="btn btn-default active"><?= SyTranslator::Month($lang) ?></button>
@@ -89,10 +90,10 @@ function drawAgenda($mois, $annee, $entries){
 				<a href="calendar/editreservation/r_<?=$entry["id"] ?>">
 				
 				<div style="background-color: #<?=$entry["color"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
-				<p style="border-bottom: thin solid #818181; font-size:10px; color:#313131;" >
+				<p style="border-bottom: thin solid #818181; font-size:12px; color:#313131;" >
 				 <?= date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) ?></p>
 				 <?php $text = $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'], $shortDescription, $entry['full_description'], true); ?>
-				<p style="font-size:10px; color:#313131;"><?= $text ?></p>
+				<p style="font-size:12px; color:#313131;"><?= $text ?></p>
 				</div>
 				</a>
 				<?php

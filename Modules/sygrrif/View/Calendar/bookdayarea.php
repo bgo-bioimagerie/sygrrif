@@ -6,14 +6,14 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 require_once 'Modules/sygrrif/View/Calendar/bookfunction.php';
 ?>
 
+
+<?php 
+$dayWidth = 100/count($resourcesBase);
+?>
+
 <head>
  
 <style>
-
-a{
-	width: 100%;
-}
-
 #tcell{
 	border-left: 1px solid #d1d1d1;
 	border-right: 1px solid #d1d1d1;
@@ -22,19 +22,53 @@ a{
 
 #tcelltop{
 	border: 1px solid #d1d1d1;
-	position: relative;
 }
 
 #colDiv{
 	padding:0px;
     margin:0px;
-    position: relative;
+    position:relative;
 }
+
+#colDivleft{
+	padding-right:0px;
+	margin-right:0px;
+	position:relative;
+}
+
+#colDivright{
+	padding-left:0px;
+	margin-left:0px;
+	position:relative;
+}
+
 
 #tcellResa{
 	-moz-border-radius: 9px;
 	border-radius: 9px;
-	border: 1px solid #d1d1d1;
+	border: 1px solid #f1f1f1;
+}
+
+#resa_link{
+	font-family: Arial;
+	font-size: 12px;
+	line-height: 12px;
+	letter-spacing: 1px;
+	font-weight: normal;
+}
+
+@media (min-width: 1200px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1 {
+    width: <?=$dayWidth?>%;
+    *width: <?=$dayWidth?>%;
+  }
+}
+/* 14% = 100% (full-width row) divided by 7 */
+
+img{
+  max-width: 100%;
 }
 
 </style>
@@ -93,8 +127,8 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 
 
 <div class="col-md-4 text-right">
-<button type="button" class="btn btn-default active"><?= SyTranslator::Day($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
+<button type="button" class="btn btn-default active"><?= SyTranslator::Day_Area($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
@@ -104,11 +138,10 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 <br></br>
 
 <?php 
-$day_begin = $this->clean($resourceInfo['day_begin']);
-$day_end = $this->clean($resourceInfo['day_end']);
-$size_bloc_resa = $this->clean($resourceInfo['size_bloc_resa']);
-$available_days = $this->clean($resourceInfo['available_days']);
-$available_days = explode(",", $available_days);
+$day_begin = $this->clean($resourcesInfo[0]['day_begin']);
+$day_end = $this->clean($resourcesInfo[0]['day_end']);
+$size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
+
 
 ?>
 
@@ -116,7 +149,7 @@ $available_days = explode(",", $available_days);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
+	<div id="tcelltop" style="height: 70px; background-color:#337ab7; color: #fff;">
 
 	</div>
 	<?php 
@@ -144,20 +177,40 @@ $available_days = explode(",", $available_days);
 	
 <!-- hours reservation -->	
 <div class="col-xs-11" id="colDiv">
+	
+	<div class="row seven-cols" id="colDiv">
+	<?php 
+	for($r = 0 ; $r < count($resourcesBase) ; $r++){
+	?>
+	
+	<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="colDiv">
 
-	<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
-	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b><br/><?= $this->clean($resourceBase['description']) ?></p>
+	<div id="tcelltop" style="height: 70px; background-color:#337ab7; color: #fff;">
+	<p class="text-center"><b><?= $this->clean($resourcesBase[$r]['name']) ?></b><br/><?= $this->clean($resourcesBase[$r]['description']) ?></p>
 	</div>
 
 	<?php 
+	
+	$available_days = $this->clean($resourcesInfo[$r]['available_days']);
+	$available_days = explode(",", $available_days);
+	
+	$curentDay = date("w", $date_unix) +1;
+	if ($curentDay == 8){
+		$curentDay = 0;
+	}
+	
 	$isAvailableDay = false;
-	if ($available_days[$day_position-1] == 1){
+	if ($available_days[$curentDay-1] == 1){
 		$isAvailableDay = true;
 	}
 	
-	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isAvailableDay);
+	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries[$r], $isUserAuthorizedToBook[$r], $isAvailableDay, $resourcesBase[$r]["id"]);
 	?>
 	
+	</div>
+	<?php 
+	}
+	?>
 </div>
 </div>
 

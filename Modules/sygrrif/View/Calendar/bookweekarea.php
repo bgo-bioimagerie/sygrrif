@@ -4,6 +4,8 @@
 <?php
 
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
+
+$dayWidth = 100/8;
 ?>
 
 <head>
@@ -37,12 +39,19 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 
 #resa_link {
 	font-family: Arial;
-	font-size: 9px;
-	line-height: 9px;
+	font-size: 12px;
+	line-height: 12px;
 	letter-spacing: 1px;
 	font-weight: normal;
 }
 
+@media (min-width: 1200px) {
+  .seven-cols .col-md-1,
+  .seven-cols .col-sm-1,
+  .seven-cols .col-lg-1 {
+    width: <?=$dayWidth?>%;
+    *width: <?=$dayWidth?>%;
+  }
 </style>
 </head>
 
@@ -76,8 +85,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 	</div>
 </div>
 
-<div class="container">
-<div class="col-lg-11 col-lg-offset-1">
+<div class="col-lg-12">
 
 	<div class="col-md-8 text-left">
 		<button type="submit" class="btn btn-default"
@@ -114,18 +122,18 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 	<div class="col-md-4 text-right">
 		<button type="button" onclick="location.href='calendar/bookday'"
 			class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
+			<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweek'"
 			class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
 		<button type="button" class="btn btn-default active"><?= SyTranslator::Week_Area($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
 	</div>
 </div>
-</div>
 <br></br>
 
 <!-- hours reservation -->
 
-<div class="container">
+
 <div class="col-lg-12" id="colDiv0">
 
 	<!--  Area title -->
@@ -140,10 +148,10 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 		</div>
 	</div>
 </div>	
-</div>
 
-<div class="">
-<div class=row-same-height">
+
+<div class="row seven-cols">
+<div class="row-same-height">
 	<?php
 	$resourceCount = - 1;
 	$modelBookingSetting = new SyBookingSettings ();
@@ -164,15 +172,16 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 		
 		<?php 
 			$styleLine = "";
+			$styleLineHeader = "style=\" text-align: center; background-color:#337ab7; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1; color: #fff;\"";
 			if (!($i%2)){
-				$styleLine = "style=\"background-color:#f1f1f1; border-right: 1px solid #a1a1a1;\"";
+				$styleLine = "style=\"background-color:#f1f1f1; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1;\"";
 			}
 			else{
-				$styleLine = "style=\"background-color:#ffffff; border-right: 1px solid #a1a1a1;\"";
+				$styleLine = "style=\"background-color:#ffffff; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1;\"";
 			}
 			?>
 			
-			<div class="row" > <!-- id="colDivglobal" -->
+			<div class="row"  > <!-- id="colDivglobal" -->
 			
 			<div class="col-lg-12" id="colDiv">
 				<!-- Content of each day -->
@@ -182,7 +191,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 					<?php 
 					if ( $i > -1){
 					?>
-					<div class="col-lg-1 col-lg-offset-2 row-cell" <?= $styleLine ?> >
+					<div class="col-lg-1 row-cell" <?= $styleLineHeader ?> >
 					<p>
 					<b><?= $this->clean($resourcesBase[$i]['name']) ?></b>
 					</p>
@@ -191,7 +200,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 					}
 					else{
 						?>
-						<div class="col-lg-1 col-lg-offset-2 row-cell" <?= $styleLine ?>>
+						<div class="col-lg-1 row-cell" <?= $styleLineHeader ?>>
 						<p> </p>
 						</div>
 						<?php	
@@ -216,7 +225,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 							
 							
 						?>
-							<div class="col-lg-1 row-cell" <?= $styleLine ?>>
+							<div class="col-lg-1 row-cell" <?= $styleLineHeader ?>>
 
 								<div id="tcelltop" style="height: 60px;" class="text-center">
 									<p class="text-center">
