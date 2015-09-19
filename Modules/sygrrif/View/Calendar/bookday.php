@@ -5,13 +5,15 @@
 require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 require_once 'Modules/sygrrif/View/Calendar/bookfunction.php';
 ?>
-
+	
+	
 <head>
  
 <style>
 
 a{
 	width: 100%;
+	color: <?= "#".$agendaStyle["header_background"] ?>;
 }
 
 #tcell{
@@ -32,9 +34,13 @@ a{
 }
 
 #tcellResa{
-	-moz-border-radius: 9px;
-	border-radius: 9px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
 	border: 1px solid #d1d1d1;
+}
+#resa_link{
+	color: <?= "#" . $agendaStyle["resa_color"] ?>;
+	font-size: <?= $agendaStyle["resa_font_size"] ?>;
 }
 
 </style>
@@ -116,7 +122,7 @@ $available_days = explode(",", $available_days);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
+	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>;">
 
 	</div>
 	<?php 
@@ -124,17 +130,19 @@ $available_days = explode(",", $available_days);
 	for ($h = $day_begin ; $h < $day_end ; $h++){
 		$heightCol = "0px";
 		if ($size_bloc_resa == 900){
-			$heightCol = "100px";
+			$heightCol = 4*$agendaStyle["line_height"] . "px";
 		}
 		else if($size_bloc_resa == 1800){
-			$heightCol = "50px";
+			$heightCol = 2*$agendaStyle["line_height"] . "px";;
 		}
 		else if($size_bloc_resa == 3600){
-			$heightCol = "50px";
+			$heightCol = $agendaStyle["line_height"] . "px";;
 		}
 		?>
 	
-		<div id="tcell" style="height: <?= $heightCol ?>; background-color:#337ab7; color: #fff;">
+	
+	
+		<div id="tcell" style="height: <?=$heightCol?>; background-color: <?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
 		<?=$h?>:00
 		</div>
 	<?php 	
@@ -145,7 +153,7 @@ $available_days = explode(",", $available_days);
 <!-- hours reservation -->	
 <div class="col-xs-11" id="colDiv">
 
-	<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
+	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color: <?= "#".$agendaStyle["header_background"]?>; color: <?= "#".$agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
 	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b><br/><?= $this->clean($resourceBase['description']) ?></p>
 	</div>
 
@@ -155,7 +163,7 @@ $available_days = explode(",", $available_days);
 		$isAvailableDay = true;
 	}
 	
-	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isAvailableDay);
+	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isAvailableDay, $agendaStyle);
 	?>
 	
 </div>

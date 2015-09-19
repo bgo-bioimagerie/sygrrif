@@ -17,6 +17,7 @@ require_once 'Modules/sygrrif/Model/SyBookingSettings.php';
 require_once 'Modules/sygrrif/Model/SyCalendarSeries.php';
 require_once 'Modules/sygrrif/Model/SyBill.php';
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
+require_once 'Modules/sygrrif/Model/SyBookingTableCSS.php';
 
 /**
  * Class defining methods to install and initialize the sygrrif database
@@ -31,6 +32,7 @@ class SyInstall extends Model {
 	 * @return boolean True if the base is created successfully
 	 */
 	public function createDatabase(){
+		
 		
 		$pricingModel = new SyPricing();
 		$pricingModel->createTable();
@@ -73,8 +75,10 @@ class SyInstall extends Model {
 		$model = new SyCalSupplementary();
 		$model->createTable();
 		
+		
 		$syColorCode = new SyColorCode();
 		$syColorCode->createTable();
+		
 		$syColorCode->createDefaultColorCode();
 		
 		$modelConfig = new CoreConfig();
@@ -86,6 +90,9 @@ class SyInstall extends Model {
 		
 		$modelBill = new SyBill();
 		$modelBill->createTable();
+		
+		$modelAreaCss = new SyBookingTableCSS();
+		$modelAreaCss->createTable();
 		
 	}
 }

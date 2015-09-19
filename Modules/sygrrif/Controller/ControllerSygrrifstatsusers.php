@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
@@ -50,10 +50,16 @@ class ControllerSygrrifstatsusers extends ControllerSecureNav {
 		
 		// get the selected resource id
 		$resource_id = $this->request->getParameter("resource_id");
+		$email = $this->request->getParameterNoException("email");
 		
 		// query
 		$statUserModel = new SyStatsUser();
-		$statUserModel->authorizedUsers($resource_id);
+		if($email != ""){
+			$statUserModel->authorizedUsersMail($resource_id);
+		}
+		else{
+			$statUserModel->authorizedUsers($resource_id);
+		}	
 		
 		return;
 	}

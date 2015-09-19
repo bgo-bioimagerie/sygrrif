@@ -58,10 +58,65 @@
 			</div>
 		</div>
 		<br></br>
+		
+		<div class="page-header">
+		<h1>
+			<?= SyTranslator::Booking_style($lang) ?> <br> <small></small>
+		</h1>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header background: #</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_background"
+				       value="<?= $css['header_background'] ?>"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header color: #</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_color"
+				       value="<?= $css['header_color'] ?>"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header font size (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_font_size"
+				       value="<?= $css['header_font_size'] ?>"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Resa font size (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="resa_font_size"
+				       value="<?= $css['resa_font_size'] ?>"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header height (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_height"
+				       value="<?= $css['header_height'] ?>"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Line height (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="line_height"
+				       value="<?= $css['line_height'] ?>"  
+				/>
+			</div>
+		</div>
+		
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
-		        <button type="button" onclick="location.href='<?="sygrrif/deletearea/".$this->clean($area['id']) ?>'" class="btn btn-danger" id="navlink"><?= SyTranslator::Delete($lang) ?></button>
-				<button type="button" onclick="location.href='sygrrif/areas'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <button type="button" onclick="location.href='<?="sygrrif/deletearea/".$this->clean($area['id']) ?>'" class="btn btn-danger"><?= SyTranslator::Delete($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrif/areas'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

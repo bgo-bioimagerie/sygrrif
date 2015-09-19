@@ -185,12 +185,14 @@ class SyCalendarEntry extends Model {
 				$userInfo = $modelUser->userAllInfo($rid);
 				$data[$i]["recipient_fullname"] = $userInfo["name"] . " " . $userInfo["firstname"];
 				$data[$i]["phone"] = $userInfo["tel"];
-				$data[$i]["color"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+				$data[$i]["color_bg"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+				$data[$i]["color_text"] = $modelColor->getColorCodeText($data[$i]["color_type_id"]);
 			}
 			else{
 				$data[$i]["recipient_fullname"] = "";
 				$data[$i]["phone"] = "";
-				$data[$i]["color"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+				$data[$i]["color_bg"] = $modelColor->getColorCodeValue($data[$i]["color_type_id"]);
+				$data[$i]["color_text"] = $modelColor->getColorCodeText($data[$i]["color_type_id"]);
 				
 			} 
 		}

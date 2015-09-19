@@ -20,12 +20,23 @@ class SyColorCode extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(30) NOT NULL DEFAULT '',
 		`color` varchar(6) NOT NULL DEFAULT '',
+		`text` varchar(6) NOT NULL DEFAULT '',		
 		`display_order` int(11) NOT NULL DEFAULT 0,
 		PRIMARY KEY (`id`)
 		);";
 		
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		//return $pdo;
+		
+		// add columns if no exists
+		$sql = "SHOW COLUMNS FROM `sy_color_codes` LIKE 'text'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sy_color_codes` ADD `text` varchar(6) NOT NULL DEFAULT '000000'";
+			$pdo = $this->runRequest($sql);
+		}
+		
 	}
 	
 	/**
@@ -35,11 +46,10 @@ class SyColorCode extends Model {
 	 */
 	public function createDefaultColorCode(){
 	
-		if(!$this->isColorCode("default", "dddddd")){
-			$sql = "INSERT INTO sy_color_codes (name, color) VALUES(?,?)";
-			$this->runRequest($sql, array("default", "dddddd"));
+		if(!$this->isColorCode("default", "b2dfee")){
+			$sql = "INSERT INTO sy_color_codes (name, color, text) VALUES(?,?,?)";
+			$this->runRequest($sql, array("default", "b2dfee", "000000"));
 		}
-		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
 	}
 	
 	/**
@@ -97,11 +107,11 @@ class SyColorCode extends Model {
 	 * @param string $name name of the SyColorCode
 	 * @param string $address address of the SyColorCode
 	 */
-	public function addColorCode($name, $color, $display_order=0){
+	public function addColorCode($name, $color, $text_color, $display_order=0){
 		
-		$sql = "insert into sy_color_codes(name, color, display_order)"
-				. " values(?, ?, ?)";
-		$this->runRequest($sql, array($name, $color, $display_order));		
+		$sql = "insert into sy_color_codes(name, color, text, display_order)"
+				. " values(?, ?, ?, ?)";
+		$this->runRequest($sql, array($name, $color, $text_color, $display_order));		
 	}
 	
 	/**
@@ -114,12 +124,12 @@ class SyColorCode extends Model {
 	public function importColorCode($id, $name, $color, $display_order=0){
 		
 		if ($this->isColorCodeId($id)){
-			$this->editColorCode($id, $name, $color, $display_order);
+			$this->editColorCode($id, $name, $color, "000000", $display_order);
 		}
 		else{	
-			$sql = "insert into sy_color_codes(id, name, color,display_order)"
-					. " values(?, ?, ?, ?)";
-			$this->runRequest($sql, array($id, $name, $color, $display_order));		
+			$sql = "insert into sy_color_codes(id, name, color, text, display_order)"
+					. " values(?, ?, ?, ?, ?)";
+			$this->runRequest($sql, array($id, $name, $color, "000000", $display_order));		
 		}
 	}
 	
@@ -130,10 +140,10 @@ class SyColorCode extends Model {
 	 * @param string $name New name of the SyColorCode
 	 * @param string $color New Address of the SyColorCode
 	 */
-	public function editColorCode($id, $name, $color, $display_order){
+	public function editColorCode($id, $name, $color, $text_color, $display_order){
 		
-		$sql = "update sy_color_codes set name=?, color=?, display_order=? where id=?";
-		$SyColorCode = $this->runRequest($sql, array("".$name."", "".$color."", $display_order , $id));
+		$sql = "update sy_color_codes set name=?, color=?, text=?, display_order=? where id=?";
+		$SyColorCode = $this->runRequest($sql, array("".$name."", "".$color."", $text_color, $display_order , $id));
 	}
 	
 	/**
@@ -170,9 +180,9 @@ class SyColorCode extends Model {
 	 * @param unknown $color
 	 * @param unknown $display_order
 	 */
-	public function setColorCode($name, $color, $display_order){
+	public function setColorCode($name, $color, $text_color, $display_order){
 		if (!$this->isColorCode($name)){
-			$this->addSyColorCode($name, $color, $display_order);
+			$this->addSyColorCode($name, $color, $text_color, $display_order);
 		}
 	}
 	
@@ -192,9 +202,27 @@ class SyColorCode extends Model {
 		}
     	else{
 			return "aaaaaa";
-			}
 		}
+	}
 	
+	/**
+	 * get the text color of a SyColorCode from ID
+	 *
+	 * @param int $id Id of the SyColorCode to query
+	 * @throws Exception id the SyColorCode is not found
+	 * @return mixed array
+	 */
+	public function getColorCodeText($id){
+		$sql = "select text from sy_color_codes where id=?";
+		$SyColorCode = $this->runRequest($sql, array($id));
+		if ($SyColorCode->rowCount() == 1){
+			$tmp = $SyColorCode->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
+			return "000000";
+		}
+	}
 	/**
 	 * get the name of a SyColorCode
 	 *

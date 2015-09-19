@@ -14,6 +14,12 @@ $dayWidth = 100/count($resourcesBase);
 <head>
  
 <style>
+
+a{
+	width: 100%;
+	color: <?= "#".$agendaStyle["header_background"] ?>;
+}
+
 #tcell{
 	border-left: 1px solid #d1d1d1;
 	border-right: 1px solid #d1d1d1;
@@ -44,8 +50,8 @@ $dayWidth = 100/count($resourcesBase);
 
 
 #tcellResa{
-	-moz-border-radius: 9px;
-	border-radius: 9px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
 	border: 1px solid #f1f1f1;
 }
 
@@ -55,6 +61,7 @@ $dayWidth = 100/count($resourcesBase);
 	line-height: 12px;
 	letter-spacing: 1px;
 	font-weight: normal;
+	color: #000;
 }
 
 @media (min-width: 1200px) {
@@ -104,9 +111,9 @@ img{
 <div class="col-lg-12">
 
 <div class="col-md-8 text-left">
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/daybefore'"> &lt; </button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/dayafter'"> > </button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/today'"><?= SyTranslator::Today($lang) ?></button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookdayarea/daybefore'"> &lt; </button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookdayarea/dayafter'"> > </button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookdayarea/today'"><?= SyTranslator::Today($lang) ?></button>
 <?php 
 $d = explode("-", $date);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -149,7 +156,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: 70px; background-color:#337ab7; color: #fff;">
+	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>;">
 
 	</div>
 	<?php 
@@ -157,17 +164,17 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	for ($h = $day_begin ; $h < $day_end ; $h++){
 		$heightCol = "0px";
 		if ($size_bloc_resa == 900){
-			$heightCol = "100px";
+			$heightCol = 4*$agendaStyle["line_height"] . "px";
 		}
 		else if($size_bloc_resa == 1800){
-			$heightCol = "50px";
+			$heightCol = 2*$agendaStyle["line_height"] . "px";;
 		}
 		else if($size_bloc_resa == 3600){
-			$heightCol = "50px";
+			$heightCol = $agendaStyle["line_height"] . "px";;
 		}
 		?>
 	
-		<div id="tcell" style="height: <?= $heightCol ?>; background-color:#337ab7; color: #fff;">
+		<div id="tcell" style="height: <?= $heightCol ?>; background-color: <?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
 		<?=$h?>:00
 		</div>
 	<?php 	
@@ -185,7 +192,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	
 	<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="colDiv">
 
-	<div id="tcelltop" style="height: 70px; background-color:#337ab7; color: #fff;">
+	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color: <?= "#".$agendaStyle["header_background"]?>; color: <?= "#".$agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
 	<p class="text-center"><b><?= $this->clean($resourcesBase[$r]['name']) ?></b><br/><?= $this->clean($resourcesBase[$r]['description']) ?></p>
 	</div>
 
@@ -194,17 +201,19 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	$available_days = $this->clean($resourcesInfo[$r]['available_days']);
 	$available_days = explode(",", $available_days);
 	
-	$curentDay = date("w", $date_unix) +1;
+	$curentDay = date("w", $date_unix);
+	/*
 	if ($curentDay == 8){
 		$curentDay = 0;
 	}
+	*/
 	
 	$isAvailableDay = false;
 	if ($available_days[$curentDay-1] == 1){
 		$isAvailableDay = true;
 	}
 	
-	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries[$r], $isUserAuthorizedToBook[$r], $isAvailableDay, $resourcesBase[$r]["id"]);
+	bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries[$r], $isUserAuthorizedToBook[$r], $isAvailableDay, $agendaStyle, $resourcesBase[$r]["id"]);
 	?>
 	
 	</div>

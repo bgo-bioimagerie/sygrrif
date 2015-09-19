@@ -17,13 +17,12 @@ require_once 'Modules/sygrrif/View/Calendar/agendafunction.php'
 <?php 	
 drawAgenda($month, $year, $calEntries, $resourceBase);
 ?>
-<div>
+</div>
 
 <div class="col-xs-12">
 <?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
 </div>
 
-</div>
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>
 <?php endif; ?>

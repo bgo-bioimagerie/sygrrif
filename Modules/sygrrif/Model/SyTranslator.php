@@ -642,6 +642,13 @@ class SyTranslator {
 		return "Color: #";
 	}
 	
+	public static function Text_color_diese($lang = ""){
+		if ($lang == "Fr"){
+			return "Couleur text: #";
+		}
+		return "Text color: #";
+	}
+	
 	public static function Add_pricing($lang = ""){
 		if ($lang == "Fr"){
 			return "Ajouter un tarif";
@@ -1605,5 +1612,13 @@ class SyTranslator {
 		}
 		return "Authorisations menu location";
 	}
+	
+	static public function Booking_style($lang){
+		if ($lang == "Fr"){
+			return "Style agenda";
+		}
+		return "Booking stylesheet";
+	}
+	
 	
 }

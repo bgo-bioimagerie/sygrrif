@@ -21,6 +21,12 @@ $dayWidth = 100/$dayWidth;
 <head>
 
 <style>
+
+a{
+	width: 100%;
+	color: <?= "#".$agendaStyle["header_background"] ?>;
+}
+
 #tcell{
 	border-left: 1px solid #d1d1d1;
 	border-right: 1px solid #d1d1d1;
@@ -51,17 +57,16 @@ $dayWidth = 100/$dayWidth;
 
 
 #tcellResa{
-	-moz-border-radius: 9px;
-	border-radius: 9px;
 	border: 1px solid #d1d1d1;
 }
 
 #resa_link{
 	font-family: Arial;
-	font-size: 9px;
-	line-height: 9px;
+	font-size: 12px;
+	line-height: 12px;
 	letter-spacing: 1px;
 	font-weight: normal;
+	color: #000;
 }
 
 @media (min-width: 1200px) {
@@ -161,24 +166,27 @@ $available_days = explode(",", $available_days);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: 100px; background-color:#337ab7; color: #fff;"></div> <!-- For the resource title space -->
+<?php 
+$heightCol = "0px";
+if ($size_bloc_resa == 900){
+	$heightCol = 4*$agendaStyle["line_height"] . "px";
+}
+else if($size_bloc_resa == 1800){
+	$heightCol = 2*$agendaStyle["line_height"] . "px";;
+}
+else if($size_bloc_resa == 3600){
+	$heightCol = $agendaStyle["line_height"] . "px";;
+}
+?>
+	<div id="tcelltop" style="height: <?= $agendaStyle["line_height"]+50 ?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>"></div> <!-- For the resource title space -->
 	
 	<?php 
 	// Hours
 	for ($h = $day_begin ; $h < $day_end ; $h++){
-		$heightCol = "0px";
-		if ($size_bloc_resa == 900){
-			$heightCol = "100px";
-		}
-		else if($size_bloc_resa == 1800){
-			$heightCol = "50px";
-		}
-		else if($size_bloc_resa == 3600){
-			$heightCol = "50px";
-		}
+
 		?>
 	
-		<div id="tcell" style="height: <?= $heightCol ?>; background-color:#337ab7; color: #fff;">
+		<div id="tcell" style="height: <?= $heightCol ?>; background-color: <?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
 		<?=$h?>:00
 		</div>
 	<?php 	
@@ -189,7 +197,7 @@ $available_days = explode(",", $available_days);
 <!-- hours reservation -->
 <div class="col-xs-11" id="colDiv">
 
-	<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
+	<div id="tcelltop" style="height: <?= $agendaStyle["line_height"] ?>; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>">
 	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b></br><?= $this->clean($resourceBase['description']) ?></p>
 	</div>
 
@@ -229,12 +237,12 @@ $available_days = explode(",", $available_days);
 			
 			<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
 			
-			<div id="tcelltop" style="height: 50px; background-color:#337ab7; color: #fff;">
+			<div id="tcelltop" style="height: 50px; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>">
 			<p class="text-center"><b> <?= $dayTitle ?></b> </p>
 			</div>
 			
 			<?php 
-			bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable);
+			bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable, $agendaStyle);
 			?>
 			
 			</div>

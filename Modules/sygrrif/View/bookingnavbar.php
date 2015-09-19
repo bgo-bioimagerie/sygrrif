@@ -33,6 +33,11 @@
 legend {
 	color: #ffffff;
 }
+
+#content{
+	margin-top: -15px;
+}
+
 </style>
 
 </head>

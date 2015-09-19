@@ -43,6 +43,7 @@ $dayWidth = 100/8;
 	line-height: 12px;
 	letter-spacing: 1px;
 	font-weight: normal;
+	color: #000;
 }
 
 @media (min-width: 1200px) {
@@ -52,6 +53,11 @@ $dayWidth = 100/8;
     width: <?=$dayWidth?>%;
     *width: <?=$dayWidth?>%;
   }
+  
+  a{
+	width: 100%;
+	color: <?= "#".$agendaStyle["header_background"] ?>;
+}
 </style>
 </head>
 
@@ -172,9 +178,9 @@ $dayWidth = 100/8;
 		
 		<?php 
 			$styleLine = "";
-			$styleLineHeader = "style=\" text-align: center; background-color:#337ab7; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1; color: #fff;\"";
+			$styleLineHeader = "style=\" text-align: center; background-color:#". $agendaStyle["header_background"]."; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1; color: #".$agendaStyle["header_color"].";\"";
 			if (!($i%2)){
-				$styleLine = "style=\"background-color:#f1f1f1; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1;\"";
+				$styleLine = "style=\"background-color:#e1e1e1; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1;\"";
 			}
 			else{
 				$styleLine = "style=\"background-color:#ffffff; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1;\"";
@@ -275,8 +281,8 @@ $dayWidth = 100/8;
 										$text = "00:00". " - " . $txtEndTime . "<br />";
 										$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'], false );
 										?>
-										<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color']?>;"> 
-											<a class="text-center" id="resa_link"href="calendar/editreservation/r_<?= $entry['id'] ?>">
+										<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color_bg']?>;"> 
+											<a class="text-center" style="color:#<?=$entry['color_text']?>; font-size:<?=$agendaStyle["resa_font_size"]?>" href="calendar/editreservation/r_<?= $entry['id'] ?>">
 												<?=$text?>
 											</a>
 										</div>
@@ -299,8 +305,8 @@ $dayWidth = 100/8;
 									$text = date ( "H:i", $entry ["start_time"] ) . " - " . $txtEndTime . "<br />";
 									$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'], false );
 									?>
-									<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color']?>;"> 
-											<a class="text-center" id="resa_link"href="calendar/editreservation/r_<?= $entry['id'] ?>">
+									<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color_bg']?>;"> 
+											<a class="text-center" style="color:#<?=$entry['color_text']?>; font-size:<?=$agendaStyle["resa_font_size"]?>" href="calendar/editreservation/r_<?= $entry['id'] ?>">
 											<?=$text?>
 											</a>
 									</div>

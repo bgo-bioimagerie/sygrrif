@@ -45,6 +45,13 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Text_color_diese($lang) ?></label>
+			<div class="col-xs-8">
+				<input class="form-control" id="name" type="text" name="text_color" value="000000"
+				/>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Display_order($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="number" name="display_order"

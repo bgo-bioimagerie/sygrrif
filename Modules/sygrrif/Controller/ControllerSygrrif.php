@@ -1,5 +1,4 @@
-<?php
-
+﻿<?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
@@ -41,6 +40,7 @@ class ControllerSygrrif extends ControllerBooking {
 	 * Constructor
 	 */
 	public function __construct() {
+		ob_end_clean();
 	}
 
 	
@@ -123,10 +123,14 @@ class ControllerSygrrif extends ControllerBooking {
 		$model = new SyArea();
 		$area = $model->getArea($id);
 		
+		$modelCss = new SyBookingTableCSS();
+		$css = $modelCss->getAreaCss($id);
+		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'area' => $area
+				'area' => $area,
+				'css' => $css
 		) );
 	}
 	
@@ -146,6 +150,18 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		$model = new SyArea();
 		$model->updateArea($id, $name, $display_order, $restricted);
+		
+		
+		// set the css
+		$header_background = $this->request->getParameter ( "header_background" );
+		$header_color = $this->request->getParameter ( "header_color" );
+		$header_font_size = $this->request->getParameter ( "header_font_size" );
+		$resa_font_size = $this->request->getParameter ( "resa_font_size" );
+		$header_height = $this->request->getParameter ( "header_height" );
+		$line_height = $this->request->getParameter ( "line_height" );
+		$modelCss = new SyBookingTableCSS();
+		$modelCss->setAreaCss($id, $header_background, $header_color, $header_font_size,
+				$resa_font_size, $header_height, $line_height);
 		
 		$this->redirect("sygrrif", "areas");
 	}
@@ -174,13 +190,27 @@ class ControllerSygrrif extends ControllerBooking {
 			return;
 		}
 		
-		$id = $this->request->getParameter ( "id" );
+		
+		//$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
 		$display_order = $this->request->getParameter ( "display_order" );
 		$restricted = $this->request->getParameter ( "restricted" );
 		
 		$model = new SyArea();
-		$model->setArea($name, $display_order, $restricted);
+		$id = $model->addArea($name, $display_order, $restricted);
+		
+		// set the css
+		$header_background = $this->request->getParameter ( "header_background" );
+		$header_color = $this->request->getParameter ( "header_color" );
+		$header_font_size = $this->request->getParameter ( "header_font_size" );
+		$resa_font_size = $this->request->getParameter ( "resa_font_size" );
+		$header_height = $this->request->getParameter ( "header_height" );
+		$line_height = $this->request->getParameter ( "line_height" );
+		$modelCss = new SyBookingTableCSS();
+		$modelCss->setAreaCss($id, $header_background, $header_color, $header_font_size,
+				$resa_font_size, $header_height, $line_height);
+		
+
 		
 		$this->redirect("sygrrif", "areas");
 	}
@@ -1160,6 +1190,7 @@ class ControllerSygrrif extends ControllerBooking {
 			
 			// if the form is correct, calculate the output
 			if ($testPass){
+				//return;
 				if ($export_type > 0 && $export_type < 4 ){
 					$this->output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
 					return;
@@ -1204,6 +1235,7 @@ class ControllerSygrrif extends ControllerBooking {
 	 */
 	public function output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id){
 		
+		ob_end_clean();
 		if ($export_type == 1){
 			// generate decompte
 			$billgenaratorModel = new SyBillGenerator();
@@ -1220,7 +1252,6 @@ class ControllerSygrrif extends ControllerBooking {
 			// generate bill
 			$billgenaratorModel = new SyBillGenerator();
 			$billgenaratorModel->generateBill($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
-			//$errorMessage = "bill not yet implemented";
 		}
 	}
 	
@@ -1572,12 +1603,13 @@ class ControllerSygrrif extends ControllerBooking {
 		// get form variables
 		$name = $this->request->getParameter ( "name" );
 		$color = $this->request->getParameter ( "color" );
+		$text_color = $this->request->getParameter ( "text_color" );
 		$display_order = $this->request->getParameter ( "display_order" );
 		
 		
 		// get the user list
 		$ccModel = new SyColorCode();
-		$ccModel->addColorCode($name, $color, $display_order);
+		$ccModel->addColorCode($name, $color, $text_color, $display_order);
 	
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}
@@ -1614,11 +1646,12 @@ class ControllerSygrrif extends ControllerBooking {
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
 		$color = $this->request->getParameter ( "color" );
+		$text_color = $this->request->getParameter ( "text_color" );
 		$display_order = $this->request->getParameter ( "display_order" );
 		
 		// get the user list
 		$ccModel = new SyColorCode();
-		$ccModel->editColorCode($id, $name, $color, $display_order);
+		$ccModel->editColorCode($id, $name, $color, $text_color, $display_order);
 	
 		$this->redirect ( "sygrrif", "colorcodes" );
 	}

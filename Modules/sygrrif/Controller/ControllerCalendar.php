@@ -1,5 +1,4 @@
-<?php
-
+﻿<?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Project.php';
@@ -20,6 +19,7 @@ require_once 'Modules/sygrrif/Model/SyCalendarSeries.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 require_once 'Modules/mailer/Model/MailerSend.php';
+require_once 'Modules/sygrrif/Model/SyBookingTableCSS.php';
 
 /**
  * Controller for the calendar booking pages
@@ -29,6 +29,9 @@ require_once 'Modules/mailer/Model/MailerSend.php';
  */
 class ControllerCalendar extends ControllerBooking {
 
+	public function __construct() {
+	}
+	
 	/**
 	 * (non-PHPdoc)
 	 * @see Controller::index()
@@ -79,6 +82,11 @@ class ControllerCalendar extends ControllerBooking {
 			$category_id = $resourceInfo["category_id"]; 
 			$area_id = $resourceInfo["area_id"]; 
 			$display_order = $resourceInfo["display_order"];
+			
+			if ($accessibility_id > $_SESSION["user_status"]){
+				echo "Permission denied: you're not allowed to edit this resource";
+				return;
+			}
 			
 			$modelCResource = new SyResourceCalendar();
 			$resourceCInfo = $modelCResource->resource($id);
@@ -161,6 +169,11 @@ class ControllerCalendar extends ControllerBooking {
 		$category_id = $this->request->getParameter("category_id");
 		$area_id = $this->request->getParameter("area_id");
 		$display_order = $this->request->getParameter("display_order");
+		
+		if ($this->secureEditCheck($id)){
+			echo "Permission denied: you're not allowed to edit this resource";
+			return;
+		}
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -297,6 +310,11 @@ class ControllerCalendar extends ControllerBooking {
 			$area_id = $resourceInfo["area_id"];
 			$display_order = $resourceInfo["display_order"];
 				
+			if ($accessibility_id > $_SESSION["user_status"]){
+				echo "Permission denied: you're not allowed to edit this resource";
+				return;
+			}
+			
 			$modelCResource = new SyResourceCalendar();
 			$resourceCInfo = $modelCResource->resource($id);
 			$quantity_name = $resourceCInfo["quantity_name"];
@@ -363,6 +381,17 @@ class ControllerCalendar extends ControllerBooking {
 	
 	}
 	
+	
+	private function secureEditCheck($id){
+		
+		$modelResource = new SyResource();
+		$ressourceInfo = $modelResource->resource($id);
+		$accessibility_id = $ressourceInfo["accessibility_id"];
+		if ($accessibility_id > $_SESSION["user_status"]){
+			return true;
+		}
+		return false;
+	}
 	/**
 	 * Edit qurey for a resource of type "unitary"
 	 */
@@ -376,6 +405,11 @@ class ControllerCalendar extends ControllerBooking {
 		$category_id = $this->request->getParameter("category_id");
 		$area_id = $this->request->getParameter("area_id");
 		$display_order = $this->request->getParameter("display_order");
+		
+		if ($this->secureEditCheck($id)){
+			echo "Permission denied: you're not allowed to edit this resource";
+			return;
+		}
 	
 		// type id
 		$mrs = new SyResourceType();
@@ -477,6 +511,10 @@ class ControllerCalendar extends ControllerBooking {
 			$area_id = $resourceInfo["area_id"];
 			$display_order = $resourceInfo["display_order"];
 			
+			if ($accessibility_id > $_SESSION["user_status"]){
+				echo "Permission denied: you're not allowed to edit this resource";
+				return;
+			}
 			
 			$modelCResource = new SyResourceCalendar();
 			$resourceCInfo = $modelCResource->resource($id);
@@ -550,6 +588,11 @@ class ControllerCalendar extends ControllerBooking {
 		$category_id = $this->request->getParameter("category_id");
 		$area_id = $this->request->getParameter("area_id");
 		$display_order = $this->request->getParameter("display_order");
+		
+		if ($this->secureEditCheck($id)){
+			echo "Permission denied: you're not allowed to edit this resource";
+			return;
+		}
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -835,6 +878,12 @@ class ControllerCalendar extends ControllerBooking {
 		$isUserAuthorizedToBook = $this->hasAuthorization($resourceBase["category_id"], $resourceBase["accessibility_id"], 
 								$_SESSION['id_user'], $_SESSION["user_status"], $curentDateUnix);
 		
+		
+		// stylesheet
+		$modelCSS = new SyBookingTableCSS();
+		$agendaStyle = $modelCSS->getAreaCss($curentAreaId);
+		//print_r($agendaStyle);
+		
 		// view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -847,7 +896,8 @@ class ControllerCalendar extends ControllerBooking {
 				'calEntries' => $calEntries,
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
-				'message' => $message
+				'message' => $message,
+				'agendaStyle' => $agendaStyle
 		),"bookday" );
 	}
 	
@@ -951,6 +1001,10 @@ class ControllerCalendar extends ControllerBooking {
 		$isUserAuthorizedToBook = $this->hasAuthorization($resourceBase["category_id"], $resourceBase["accessibility_id"],
 				$_SESSION['id_user'], $_SESSION["user_status"], $curentDateUnix);
 		
+		// stylesheet
+		$modelCSS = new SyBookingTableCSS();
+		$agendaStyle = $modelCSS->getAreaCss($curentAreaId);
+		
 		// view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -965,7 +1019,8 @@ class ControllerCalendar extends ControllerBooking {
 				'calEntries' => $calEntries,
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
-				'message' => $message
+				'message' => $message,
+				'agendaStyle' => $agendaStyle
 		), "bookweek");
 		
 	}
@@ -1187,6 +1242,11 @@ class ControllerCalendar extends ControllerBooking {
 		//print_r($calEntries);
 		//return;
 		
+		// stylesheet
+		$modelCSS = new SyBookingTableCSS();
+		$agendaStyle = $modelCSS->getAreaCss($curentAreaId);
+		
+		
 		// view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -1199,7 +1259,8 @@ class ControllerCalendar extends ControllerBooking {
 				'calEntries' => $calEntries,
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
-				'message' => $message
+				'message' => $message,
+				'agendaStyle' => $agendaStyle
 		),"bookdayarea" );
 	}
 	
@@ -1310,6 +1371,10 @@ class ControllerCalendar extends ControllerBooking {
 		//print_r($calEntries);
 		//return;
 		
+		// stylesheet
+		$modelCSS = new SyBookingTableCSS();
+		$agendaStyle = $modelCSS->getAreaCss($curentAreaId);
+		
 		// view
 		
 		$navBar = $this->navBar();
@@ -1326,7 +1391,8 @@ class ControllerCalendar extends ControllerBooking {
 				'calEntries' => $calEntries,
 				'colorcodes' => $colorcodes,
 				'isUserAuthorizedToBook' => $isUserAuthorizedToBook,
-				'message' => $message
+				'message' => $message,
+				'agendaStyle' => $agendaStyle
 		), "bookweekarea");
 	}
 	

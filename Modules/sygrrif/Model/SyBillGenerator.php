@@ -983,9 +983,7 @@ class SyBillGenerator extends Model {
 		
 		// set the row
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
-		$objPHPExcel->getActiveSheet()
-		->getRowDimension($curentLine)
-		->setRowHeight(25);
+		$objPHPExcel->getActiveSheet()->getRowDimension($curentLine)->setRowHeight(25);
 		
 		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, "Equipement");
 		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableHeader);
@@ -1289,7 +1287,6 @@ class SyBillGenerator extends Model {
 			*/
 		}
 		
-		
 		// bilan
 		// total HT
 		$curentLine++;
@@ -1398,7 +1395,6 @@ class SyBillGenerator extends Model {
 	public function generateCounting($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
 		require_once ("externals/PHPExcel/Classes/PHPExcel.php");
-		require_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
 		require_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php");
 		
 		// /////////////////////////////////////////// //
@@ -1417,6 +1413,7 @@ class SyBillGenerator extends Model {
 		// respondible fullname
 		$modelUser = new User();
 		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
+		
 		
 		// unit name
 		$unitName = "";
@@ -1465,6 +1462,8 @@ class SyBillGenerator extends Model {
 		$req = $this->runRequest($sql);
 		$equipement = $req->fetchAll();
 		
+		
+		
 		$i=0;
 		foreach($equipement as $e){
 			$numRes = 0;
@@ -1504,7 +1503,6 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getProperties()->setTitle("Liste d'utilisateurs autorises");
 		$objPHPExcel->getProperties()->setSubject("Export SyGRRiF");
 		$objPHPExcel->getProperties()->setDescription("Fichier genere avec PHPExel depuis la base de donnees SyGRRif");
-		
 		
 		$center=array('alignment'=>array('horizontal'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER,'vertical'=>PHPExcel_Style_Alignment::VERTICAL_CENTER));
 		$gras=array('font' => array('bold' => true));
@@ -1821,7 +1819,6 @@ class SyBillGenerator extends Model {
 		header('Cache-Control: max-age=0');
 		
 		$writer->save('php://output');
-		
 	}
 	
 	/**

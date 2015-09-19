@@ -57,6 +57,60 @@
 			</div>
 		</div>
 		<br></br>
+				<div class="page-header">
+		<h1>
+			<?= SyTranslator::Booking_style($lang) ?> <br> <small></small>
+		</h1>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header background: #</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_background"
+				       value="337ab7"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header color: #</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_color"
+				       value="ffffff"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header font size (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_font_size"
+				       value="12"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Resa font size (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="resa_font_size"
+				       value="12"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Header height (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="header_height"
+				       value="70"  
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-5">Line height (px)</label>
+			<div class="col-xs-7">
+				<input class="form-control" id="name" type="text" name="line_height"
+				       value="50"  
+				/>
+			</div>
+		</div>
+		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Add($lang) ?>" />
 				<button type="button" onclick="location.href='areas'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>

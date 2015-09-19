@@ -2,7 +2,7 @@
 
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 
-function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable, $resourceID = -1){
+function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries, $isUserAuthorizedToBook, $isDayAvailable, $agendaStyle, $resourceID = -1){
 	
 	if ($resourceID < 0){
 		$resourceID = $_SESSION["id_resource"];
@@ -29,6 +29,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 		$modelBookingSetting = new SyBookingSettings();
 		$leftBlocks = ($day_end*3600 - $day_begin*3600)/900;
 		//echo "leftBlocks = " . $leftBlocks . "</br>";
+		$lineColorId = 0;
 		for ($h = $day_begin ; $h < $day_end ; $h = $h+0.25){
 				
 			$caseTimeBegin = $date_unix + $h*3600;
@@ -40,7 +41,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 				
 				if($h == $day_begin &&  $calEntry['start_time']<=$caseTimeBegin){
 				
-					if ( $calEntry['end_time'] >= $caseTimeBegin ){
+					if ( $calEntry['end_time'] >= $caseTimeBegin && $calEntry['start_time'] < $caseTimeBegin){
 				
 						$foundStartEntry = true;
 						$blocNumber = ($calEntry['end_time'] - $caseTimeBegin)/($caseTimeLength);
@@ -50,8 +51,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$blocNumber = $leftBlocks;
 						}
 						$leftBlocks -= $blocNumber;
+						$lineColorId += $blocNumber;
 							
-						$pixelHeight = $blocNumber*25;
+						$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 				
 						$shortDescription = $calEntry['short_description'];
 						if ($isProjectMode){
@@ -70,8 +72,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
+							<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.25 - 0.25;								
@@ -88,9 +90,10 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$blocNumber = $leftBlocks; 
 					}
 					$leftBlocks -= $blocNumber; 
+					$lineColorId += $blocNumber;
 					//echo "leftBlocks = " . $leftBlocks . "</br>";
 					
-					$pixelHeight = $blocNumber*25;
+					$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 						
 					$shortDescription = $calEntry['short_description'];
 					if ($isProjectMode){
@@ -109,8 +112,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id']; 
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
+								<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*0.25 - 0.25;
@@ -118,8 +121,18 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					if (!$foundStartEntry){
 						$leftBlocks--;
+						$lineColorId ++;
 					?>
-						<div class="text-center" id="tcell" style="height: 25px;">
+					 <?php
+			    	while ($lineColorId > 2){
+			    		$lineColorId -= 2;
+			    	}
+			   	    $bgColor = "#fff";
+			   		if ($lineColorId > 1){
+			    		$bgColor = "#e1e1e1";
+			    	}
+			    	?>
+						<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px; background-color: <?=$bgColor?>;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){		
 							$h2 = str_replace(".", "-", $h);
@@ -152,6 +165,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 		//print_r($calEntries);
 		$leftBlocks = ($day_end*3600 - $day_begin*3600)/1800;
 		$modelBookingSetting = new SyBookingSettings();
+		$lineColorId = 0;
 		for ($h = $day_begin ; $h < $day_end ; $h = $h+0.5){
 			
 			$caseTimeBegin = $date_unix + $h*3600;
@@ -173,8 +187,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$blocNumber = $leftBlocks;
 						}
 						$leftBlocks -= $blocNumber;
+						$lineColorId += $blocNumber;
 							
-						$pixelHeight = $blocNumber*25;
+						$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 				
 						$shortDescription = $calEntry['short_description'];
 						if ($isProjectMode){
@@ -193,9 +208,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
+						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
 							
-							<a class="text-center" id="resa_link" href=<?=$linkAdress?>><?=$text?></a>
+							<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href=<?=$linkAdress?>><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.5 - 0.5;								
@@ -212,8 +227,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$blocNumber = $leftBlocks;
 					}
 					$leftBlocks -= $blocNumber;
+					$lineColorId += $blocNumber;
 					
-					$pixelHeight = $blocNumber*25;
+					$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 					
 					$shortDescription = $calEntry['short_description'];
 					if ($isProjectMode){
@@ -232,8 +248,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}	
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-						<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
+						<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 					<?php
 					$h+= $blocNumber*0.5 - 0.5;
@@ -241,9 +257,20 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			}
 			if (!$foundStartEntry){
 				$leftBlocks--;
+				$lineColorId++;
 			?>
 			   
-				<div class="text-center" id="tcell" style="height: 25px;"> 
+			    <?php 
+			    //echo "lineColorId = " . $lineColorId . "<br>";
+			    while ($lineColorId > 4){
+			    	$lineColorId -= 4;
+			    }
+			    $bgColor = "#fff";
+			    if ($lineColorId > 2){
+			    	$bgColor = "#e1e1e1";
+			    }
+			    ?>
+				<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px; background-color: <?=$bgColor?>;"> 
 				<?php if ($isDayAvailable){?>
 				<?php if ($isUserAuthorizedToBook){
 					$h2 = str_replace(".", "-", $h);
@@ -273,6 +300,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 		//print_r($calEntries);
 		$leftBlocks = ($day_end*3600 - $day_begin*3600)/3600;
 		$modelBookingSetting = new SyBookingSettings();
+		$lineColorId = 0;
 		for ($h = $day_begin ; $h < $day_end ; $h = $h+1){
 				
 			$caseTimeBegin = $date_unix + $h*3600;
@@ -293,8 +321,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$blocNumber = $leftBlocks;
 						}
 						$leftBlocks -= $blocNumber;
+						$lineColorId -= $blocNumber;
 							
-						$pixelHeight = $blocNumber*50;
+						$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 						
 						$shortDescription = $calEntry['short_description'];
 						if ($isProjectMode){
@@ -313,8 +342,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-							<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
+							<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*1 - 1;
@@ -332,8 +361,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$blocNumber = $leftBlocks;
 					}
 					$leftBlocks -= $blocNumber;
+					$lineColorId -= $blocNumber;
 					
-					$pixelHeight = $blocNumber*50;
+					$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 						
 					$shortDescription = $calEntry['short_description'];
 					if ($isProjectMode){
@@ -352,8 +382,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color"]?>;">
-								<a class="text-center" id="resa_link" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
+								<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*1 - 1;
@@ -361,8 +391,21 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					if (!$foundStartEntry){
 						$leftBlocks--;
+						$lineColorId++;
 					?>
-						<div class="text-center" id="tcell" style="height: 50px;">
+					
+					 <?php 
+			    	//echo "lineColorId = " . $lineColorId . "<br>";
+			   		 while ($lineColorId > 8){
+			    		$lineColorId -= 8;
+			    	}
+			    	$bgColor = "#fff";
+			    	if ($lineColorId > 4){
+			    		$bgColor = "#e1e1e1";
+			    	}
+			    	?>
+					
+						<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){
 						$h2 = str_replace(".", "-", $h);

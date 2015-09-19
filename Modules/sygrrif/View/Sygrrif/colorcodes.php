@@ -32,7 +32,7 @@
 				    <td><?= $this->clean ( $color ['name'] ); ?></td>
 				    <td><?= $this->clean ( $color ['color'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editcolorcode/<?= $colorId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='sygrrif/editcolorcode/<?= $colorId ?>'" class="btn btn-xs btn-primary"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

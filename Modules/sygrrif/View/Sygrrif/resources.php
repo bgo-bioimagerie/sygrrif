@@ -40,7 +40,13 @@
 				    <td><?= $this->clean ( $resource ['category_name'] ); ?></td>
 				    <td><?= $this->clean ( $resource ['display_order'] ); ?></td>
 				    <td>	
+				    	<?php 
+				    	if ($resource["accessibility_id"] <= $_SESSION["user_status"]){
+				    	?>
 				      <button type='button' onclick="location.href='<?= $resource ["controller"]."/".$resource ["edit_action"]."/".$resourceId ?>'" class="btn btn-xs btn-primary"><?= SyTranslator::Edit($lang) ?></button>
+				    	<?php 
+				    	}
+				    	?>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

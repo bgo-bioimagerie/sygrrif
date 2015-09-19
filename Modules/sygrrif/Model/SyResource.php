@@ -163,7 +163,7 @@ class SyResource extends Model {
 		}
 		
 		$sql = "SELECT sy_resources.id AS id, sy_resources.name AS name, sy_resources.description AS description, 
-				       sy_resources.display_order AS display_order,
+				       sy_resources.display_order AS display_order, sy_resources.accessibility_id AS accessibility_id,
 				       sy_resource_type.name AS type_name, sy_resourcescategory.name AS category_name, sy_areas.name AS area_name, 
 				       sy_resource_type.controller AS controller, sy_resource_type.edit_action AS edit_action	
 					from sy_resources

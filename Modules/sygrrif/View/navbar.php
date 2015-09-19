@@ -23,6 +23,7 @@
 legend {
 	color: #ffffff;
 }
+
 </style>
 
 </head>

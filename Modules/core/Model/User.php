@@ -1669,5 +1669,12 @@ class User extends Model {
 		$sql="DELETE FROM core_users WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
+	public function setEndContract($login, $date_fin_contrat){
+		$sql = "update core_users set date_end_contract=? where login=?";
+		$this->runRequest ( $sql, array (
+				$date_fin_contrat,
+				$login
+		) );
+	}
 	
 }

@@ -43,7 +43,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
-				<div class="col-xs-10">
+				<div class="col-xs-9">
 				<div class='input-group date form_date_<?= $lang ?>'>
 					<input type='text' class="form-control" name="searchDate_start" id="searchDate_start"
 					       value="<?= CoreTranslator::dateFromEn($searchDate_start, $lang) ?>" />
@@ -55,7 +55,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		</div>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
-				<div class="col-xs-10">
+				<div class="col-xs-9">
 				<div class='input-group date form_date_<?= $lang ?>'>
 					<input id="test32" type='text' class="form-control" name="searchDate_end"
 					       value="<?= CoreTranslator::dateFromEn($searchDate_end, $lang) ?>" />
@@ -64,6 +64,9 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 					</span>
 				</div>
 		    </div>
+		    				<div class="col-xs-1">
+				<input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
+				</div>
 		</div>
 		
 		<div class="form-group">

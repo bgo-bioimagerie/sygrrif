@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
@@ -12,6 +12,9 @@ require_once 'Modules/sygrrif/Model/SyAuthorization.php';
  */
 abstract class ControllerBooking extends ControllerSecureNav {
 
+	public function __construct() {
+	}
+	
 	/**
 	 * Get the content of of the booking menu for the calendar pages
 	 * @param number $curentAreaId ID of the curent area

@@ -682,7 +682,7 @@ class SyAuthorization extends Model {
 	 * @return multitype: Authorizations informations
 	 */
 	public function getActiveAuthorizationForResourceCategory($resource_id){
-		$sql = "SELECT sy_authorization.id, sy_authorization.date, core_users.name AS userName, core_users.firstname AS userFirstname, core_units.name AS unitName, sy_visas.name AS visa, sy_resourcescategory.name AS resource 		
+		$sql = "SELECT sy_authorization.id, sy_authorization.date, core_users.name AS userName, core_users.firstname AS userFirstname, core_users.email AS userEmail, core_units.name AS unitName, sy_visas.name AS visa, sy_resourcescategory.name AS resource 		
 					from sy_authorization
 					     INNER JOIN core_users on sy_authorization.user_id = core_users.id
 					     INNER JOIN core_units on sy_authorization.lab_id = core_units.id

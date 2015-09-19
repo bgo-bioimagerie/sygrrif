@@ -89,11 +89,11 @@ function drawAgenda($mois, $annee, $entries, $resourceBase){
 				?>
 				<a href="calendar/editreservation/r_<?=$entry["id"] ?>">
 				
-				<div style="background-color: #<?=$entry["color"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
-				<p style="border-bottom: thin solid #818181; font-size:12px; color:#313131;" >
+				<div style="background-color: #<?=$entry["color_bg"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
+				<p style="border-bottom: thin solid #e1e1e1; font-size:12px; color:#<?=$entry["color_text"]?>;" >
 				 <?= date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) ?></p>
 				 <?php $text = $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'], $shortDescription, $entry['full_description'], true); ?>
-				<p style="font-size:12px; color:#313131;"><?= $text ?></p>
+				<p style="font-size:12px; color:#<?=$entry["color_text"]?>;"><?= $text ?></p>
 				</div>
 				</a>
 				<?php

@@ -99,11 +99,12 @@ class SyArea extends Model {
 	 *
 	 * @param string $name name of the Area
 	 */
-	private function addArea($name, $display_order, $restricted){
+	public function addArea($name, $display_order, $restricted){
 		
 		$sql = "insert into sy_areas(name, display_order, restricted)"
 				. " values(?,?,?)";
-		$user = $this->runRequest($sql, array($name, $display_order, $restricted));		
+		$user = $this->runRequest($sql, array($name, $display_order, $restricted));	
+		return $this->getDatabase()->lastInsertId();	
 	}
 	
 	/**

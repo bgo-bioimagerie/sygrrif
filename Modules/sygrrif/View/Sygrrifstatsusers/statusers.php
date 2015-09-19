@@ -36,6 +36,12 @@
 					?>
 				</select>
 			</div>
+			<div class="checkbox col-xs-8 col-xs-offset-4">
+    		<label>
+      		<input type="checkbox" name="email"> Email
+    		</label>
+  </div>
+			
 		</div>	
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
