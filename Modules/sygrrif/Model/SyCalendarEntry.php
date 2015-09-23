@@ -31,12 +31,22 @@ class SyCalendarEntry extends Model {
 		`full_description` text NOT NULL,
 		`quantity` varchar(30) NOT NULL,
 		`repeat_id` int(11) NOT NULL DEFAULT 0,	
-		`supplementary` text NOT NULL,								
+		`supplementary` text NOT NULL,	
+		`package_id` int(11) NOT NULL DEFAULT 0,									
 		PRIMARY KEY (`id`)
 		);";
 
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		
+		// add columns if no exists
+		$sql = "SHOW COLUMNS FROM `sy_calendar_entry` LIKE 'package_id'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sy_calendar_entry` ADD `package_id` int(11) NOT NULL DEFAULT 0";
+			$pdo = $this->runRequest($sql);
+		}
+		
 	}
 	
 	/**
@@ -54,13 +64,13 @@ class SyCalendarEntry extends Model {
 	 * @return string
 	 */
 	public function addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
+							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0, $package = 0){
 		
 		$sql = "insert into sy_calendar_entry(start_time, end_time, resource_id, booked_by_id, recipient_id, 
-							last_update, color_type_id, short_description, full_description, quantity)"
-				. " values(?,?,?,?,?,?,?,?,?,?)";
+							last_update, color_type_id, short_description, full_description, quantity, package_id)"
+				. " values(?,?,?,?,?,?,?,?,?,?,?)";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity));
+							$last_update, $color_type_id, $short_description, $full_description, $quantity, $package));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -79,11 +89,11 @@ class SyCalendarEntry extends Model {
 	 * @param number $quantity
 	 */
 	public function setEntry($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0){
+							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0, $package = 0){
 		
 		if(!$this->isEntry($id)){
 			$this->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
-							$last_update, $color_type_id, $short_description, $full_description, $quantity);
+							$last_update, $color_type_id, $short_description, $full_description, $quantity, $package);
 		}
 	}
 	
@@ -124,12 +134,12 @@ class SyCalendarEntry extends Model {
 	}
 	
 	public function updateEntry($id, $start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity=0){
+							$last_update, $color_type_id, $short_description, $full_description, $quantity=0, $package=0){
 		$sql = "update sy_calendar_entry set start_time=?, end_time=?, resource_id=?, booked_by_id=?, recipient_id=?, 
-							last_update=?, color_type_id=?, short_description=?, full_description=?, quantity=?
+							last_update=?, color_type_id=?, short_description=?, full_description=?, quantity=?, package_id=?
 									  where id=?";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
-							$last_update, $color_type_id, $short_description, $full_description, $quantity, $id));
+							$last_update, $color_type_id, $short_description, $full_description, $quantity, $package, $id));
 	}
 	
 	/**

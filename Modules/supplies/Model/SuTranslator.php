@@ -316,4 +316,18 @@ class SuTranslator {
 		}
 		return "Users database";
 	}
+	
+	public static function Delete_entry_Warning($lang){
+		if ($lang == "Fr"){
+			return "Êtes-vous sûr de vouloir supprimer définitivement cette commande ?";
+		}
+		return "Delete this entry";
+	}
+	
+	public static function Delete_entry($lang){
+				if ($lang == "Fr"){
+			return "Supprimer commande ?";
+		}
+		return "Delete entry";
+	} 
 }

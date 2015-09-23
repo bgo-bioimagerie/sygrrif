@@ -1235,7 +1235,7 @@ class ControllerSygrrif extends ControllerBooking {
 	 */
 	public function output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id){
 		
-		ob_end_clean();
+		header_remove();
 		if ($export_type == 1){
 			// generate decompte
 			$billgenaratorModel = new SyBillGenerator();

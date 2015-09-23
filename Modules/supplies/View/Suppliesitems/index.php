@@ -47,7 +47,7 @@
 				    ?>
 				    <td><?= $is_active; ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliesitems/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='suppliesitems/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

@@ -31,7 +31,17 @@ class SyResourceCalendar extends Model {
 		);";
 
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		
+		
+		// add columns if no exists
+		$sql = "SHOW COLUMNS FROM `sy_resources_calendar` LIKE 'default_color_id'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sy_resources_calendar` ADD `default_color_id` int(11) NOT NULL";
+			$pdo = $this->runRequest($sql);
+		}
+		
 	}
 
 	/**

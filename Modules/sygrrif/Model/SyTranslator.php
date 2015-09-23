@@ -1620,5 +1620,25 @@ class SyTranslator {
 		return "Booking stylesheet";
 	}
 	
+	static public function Packages($lang){
+		if ($lang == "Fr"){
+			return "Forfaits";
+		}
+		return "Packages";
+	}
+	
+	static public function Select_Package($lang){
+		if ($lang == "Fr"){
+			return "Choix forfait";
+		}
+		return "Select package";
+	}
+	
+	static public function Use_Package($lang){
+		if ($lang == "Fr"){
+			return "Utiliser forfait";
+		}
+		return "Use package";
+	}
 	
 }

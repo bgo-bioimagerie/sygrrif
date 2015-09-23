@@ -24,6 +24,7 @@ class ControllerUsers extends ControllerSecureNav {
 	 * Constructor
 	 */
 	public function __construct() {
+		header_remove();
 		$this->userModel = new User();
 	}
 	

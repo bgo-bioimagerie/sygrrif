@@ -18,6 +18,7 @@ require_once 'Modules/sygrrif/Model/SyCalendarSeries.php';
 require_once 'Modules/sygrrif/Model/SyBill.php';
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 require_once 'Modules/sygrrif/Model/SyBookingTableCSS.php';
+require_once 'Modules/sygrrif/Model/SyPackage.php';
 
 /**
  * Class defining methods to install and initialize the sygrrif database
@@ -93,6 +94,9 @@ class SyInstall extends Model {
 		
 		$modelAreaCss = new SyBookingTableCSS();
 		$modelAreaCss->createTable();
+		
+		$model = new SyPackage();
+		$model->createTable();
 		
 	}
 }

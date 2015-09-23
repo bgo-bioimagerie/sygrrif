@@ -12,6 +12,9 @@ require_once 'Modules/core/Model/ModulesManager.php';
 abstract class ControllerSecureNav extends ControllerSecure
 {
     
+	public function __construct(){
+		header_remove();
+	}
 	/**
 	 * Get the navbar content
 	 * @return string

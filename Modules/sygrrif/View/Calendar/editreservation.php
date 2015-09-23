@@ -10,6 +10,38 @@ if (!$canEditReservation){
 }
 ?>
 
+<header>
+<style>
+
+<?php 
+if (!isset($reservationInfo) ){
+?>
+	#package_div {
+	    display: none;
+	} 
+<?php 
+}
+else{
+	if ( $reservationInfo["package_id"] == 0){
+	?>
+	#package_div {
+	    display: none;
+	} 
+<?php 
+}
+else{
+?>
+	#resa_time_div {
+	    display: none;
+	}
+<?php
+}
+}
+?>
+	
+</style>
+</header>
+
 <br>
 <div class="container">
 	<div class="col-md-8 col-md-offset-2">
@@ -175,9 +207,6 @@ if (!$canEditReservation){
 		</div>
 		<?php }?>
 		
-		
-		
-		
 		<!-- Supplementary cal info -->
 		<?php 
 		foreach ($calSups as $calSup){
@@ -260,7 +289,54 @@ if (!$canEditReservation){
 			</div>
 		</div>
 		
+		
 		<?php 
+		if (count($packages) > 0){
+		?>	
+		<div class="checkbox col-xs-8 col-xs-offset-4">
+    		<label>
+    		<?php 
+    		$checked = "";
+    		if (isset($reservationInfo)){
+	    		if ($reservationInfo["package_id"] > 0){
+	    			$checked = "checked";	
+	    		}
+    		}
+    		?>
+			<input id="use_package" type="checkbox" name="use_package" value="yes"/ <?=$checked?>> <?= SyTranslator::Use_Package($lang) ?>
+			</label>
+  		</div>
+  		
+  		<div id="package_div">
+  			<div class="form-group">
+				<label class="control-label col-xs-4"><?=SyTranslator::Select_Package($lang)?></label>
+				<div class="col-xs-8">
+					<select class="form-control" name="package_choice">
+						<?php 
+						foreach($packages as $package){
+							$selected = "";
+							if (isset($reservationInfo)){
+								if($reservationInfo["package_id"]==$package["id"]){
+									$selected = "selected=\"selected\"";
+								}
+							}
+							?>
+							<OPTION value="<?=$package["id"]?>" <?= $selected ?> > <?= $package["name"] ?> </OPTION>
+							<?php
+						}
+						?>
+					</select>
+				</div>
+			</div>
+  		
+  		</div>
+		<?php
+		}
+		?>
+		
+		<div id="resa_time_div">
+		<?php 
+		
 		if( $this->clean($resourceInfo["resa_time_setting"]) == 1){
 			?>
 			<div class="form-group">
@@ -345,7 +421,7 @@ if (!$canEditReservation){
 		<?php
 		}
 		?>
-		
+		</div>
 		<?php  
 		if ($this->clean($resourceBase["type_id"])==2){ // is unitary
 		?>
@@ -591,6 +667,14 @@ if (!$canEditReservation){
 </div>
 
 <?php include "Modules/core/View/timepicker_script.php"?>
+
+<script>
+document.getElementById('use_package').onchange = function() {
+document.getElementById('package_div').style.display = this.checked ? 'block' : 'none';
+document.getElementById('resa_time_div').style.display = ! this.checked ? 'block' : 'none';
+
+};
+</script>
 
 <?php if (isset($msgError)): ?>
 <p><?= $msgError ?></p>

@@ -197,4 +197,35 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$this->redirect("suppliesentries");
 	}
 	
+	/**
+	 * Remove an unit form confirm
+	 */
+	public function delete(){
+	
+		$unitId = 0;
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$unitId = $this->request->getParameter("actionid");
+		};
+	
+		// generate view
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar,
+				'entryID' => $unitId
+		) );
+	}
+	
+	/**
+	 * Remove an unit query to database
+	 */
+	public function deletequery(){
+	
+		$unitId = $this->request->getParameter("id");
+		
+		$modelEntry = new SuEntry();
+		$modelEntry->delete($unitId);
+	
+		// generate view
+		$this->redirect("suppliesentries");
+	}
 }

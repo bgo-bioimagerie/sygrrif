@@ -396,16 +396,16 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					
 					 <?php 
 			    	//echo "lineColorId = " . $lineColorId . "<br>";
-			   		 while ($lineColorId > 8){
-			    		$lineColorId -= 8;
+			   		 while ($lineColorId > 2){
+			    		$lineColorId -= 2;
 			    	}
 			    	$bgColor = "#fff";
-			    	if ($lineColorId > 4){
+			    	if ($lineColorId > 1){
 			    		$bgColor = "#e1e1e1";
 			    	}
 			    	?>
 					
-						<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px;">
+						<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px; background-color: <?=$bgColor?>;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){
 						$h2 = str_replace(".", "-", $h);

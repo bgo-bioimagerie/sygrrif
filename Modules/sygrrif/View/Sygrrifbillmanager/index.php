@@ -21,7 +21,7 @@
 		
 		<div style="height:25px"></div>
 		<button type='button' onclick="location.href='sygrrifbillmanager/export'"
-						class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Export($lang) ?></button>
+						class="btn btn-xs btn-primary"><?= SyTranslator::Export($lang) ?></button>
 		<div style="height:25px"></div>
 		
 		<table id="dataTable" class="table table-striped">
@@ -80,7 +80,7 @@
 				    ?>
 				    <td><?= $is_active; ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrifbillmanager/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='sygrrifbillmanager/edit/<?= $itemId ?>'" class="btn btn-xs btn-primary"><?= SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

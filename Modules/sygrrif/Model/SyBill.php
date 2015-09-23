@@ -27,13 +27,20 @@ class SyBill extends Model {
 		`is_paid` int(1) NOT NULL,
 		`id_unit` int(11) NOT NULL,
 		`id_responsible` int(11) NOT NULL,
-		`total_ht` int(11) NOT NULL,		
+		`total_ht` float(11) NOT NULL,		
 		`id_project` int(11) NOT NULL,						
 		PRIMARY KEY (`id`)
 		);";
 
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		
+		$sql = "SHOW COLUMNS FROM `sy_bills` LIKE 'total_ht'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sy_bills` ADD `total_ht` float(11) NOT NULL";
+			$pdo = $this->runRequest($sql);
+		}
 	}
 	
 	/**
@@ -249,6 +256,7 @@ class SyBill extends Model {
 	public function export($searchDate_start, $searchDate_end){
 		// select 
 		
+		header_remove();
 		$lang = "En";
 		if (isset( $_SESSION["user_settings"]["language"])){
 			$lang = $_SESSION["user_settings"]["language"];

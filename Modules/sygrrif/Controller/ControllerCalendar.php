@@ -20,6 +20,7 @@ require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 require_once 'Modules/mailer/Model/MailerSend.php';
 require_once 'Modules/sygrrif/Model/SyBookingTableCSS.php';
+require_once 'Modules/sygrrif/Model/SyPackage.php';
 
 /**
  * Controller for the calendar booking pages
@@ -128,6 +129,11 @@ class ControllerCalendar extends ControllerBooking {
 		$modelArea = new SyArea();
 		$areasList = $modelArea->getAreasIDName();
 		
+		// get packages
+		$modelPackage = new SyPackage();
+		$pakages = $modelPackage->getPrices($id);
+		//print_r($pakages);
+		
 		// view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -151,7 +157,8 @@ class ControllerCalendar extends ControllerBooking {
 				'area_id' => $area_id,
 				'colors' => $colors,
 				'default_color_id' => $default_color_id,
-				'display_order' => $display_order
+				'display_order' => $display_order,
+				'pakages' => $pakages
 		) );
 		
 	}
@@ -243,6 +250,26 @@ class ControllerCalendar extends ControllerBooking {
 		
 			$modelResourcePricing->setPricing($id_resource, $pid, $priceDay, $price_night, $price_we);
 		}
+		
+		// package
+		$packageID = $this->request->getParameterNoException("pid");
+		$packageName = $this->request->getParameterNoException("pname");
+		$packageDuration = $this->request->getParameterNoException("pduration");
+		
+		$modelPackage = new SyPackage();
+		$count = 0;
+		for( $p = 0 ; $p < count($packageID) ; $p++){
+			$package_id = $modelPackage->setPackage($packageID[$p], $id_resource, $packageName[$p], $packageDuration[$p]);
+			
+			//echo "package id = " . $package_id . "<br/>";
+			
+			foreach ($pricingTable as $pricing){
+				$price = $this->request->getParameterNoException("p_" . $pricing['id']); 
+				$modelPackage->setPrice($package_id, $pricing['id'], $price[$count]);
+			} 
+			$count++;
+		}
+		
 		
 		$this->redirect("sygrrif", "resources");
 	}
@@ -1478,6 +1505,10 @@ class ControllerCalendar extends ControllerBooking {
 			$showSeries = true;
 		}
 		
+		// packages
+		$packagesModel = new SyPackage();
+		$packages = $packagesModel->getPrices($id_resource);
+		
 		// set the view given the action		
 		if ($contentAction[0] == "t"){ // add resa 
 			
@@ -1517,6 +1548,8 @@ class ControllerCalendar extends ControllerBooking {
 			// navigation
 			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
 			
+
+			
 			// view
 			$this->generateView ( array (
 					'navBar' => $navBar,
@@ -1533,7 +1566,8 @@ class ControllerCalendar extends ControllerBooking {
 					'projectsList' => $projectsList,
 					'showSeries' => $showSeries,
 					'calSups' => $calSups,
-					'calSupsData' => $calSupsData
+					'calSupsData' => $calSupsData,
+					'packages' => $packages
 			) );
 		}
 		else{ // edit resa
@@ -1584,7 +1618,8 @@ class ControllerCalendar extends ControllerBooking {
 					'projectsList' => $projectsList,
 					'showSeries' => $showSeries,
 					'calSups' => $calSups,
-					'calSupsData' => $calSupsData
+					'calSupsData' => $calSupsData,
+					'packages' => $packages
 			));
 		}
 	}
@@ -1716,6 +1751,16 @@ class ControllerCalendar extends ControllerBooking {
 			}
 			$end_time = $start_time + $duration*$coef;
 		}
+
+		$use_package = $this->request->getParameterNoException("use_package");
+		$package = 0;
+		if ($use_package == "yes"){
+			$packageID = $this->request->getParameterNoException("package_choice");
+			$package = $packageID;
+			$modelPackage = new SyPackage();
+			$duration = $modelPackage->getPackageDuration($packageID);
+			$end_time = $start_time + $duration*3600;
+		}
 		
 		if ($start_time >= $end_time ){
 			$this->book("Error: The start time you gave is after the end time");
@@ -1739,7 +1784,7 @@ class ControllerCalendar extends ControllerBooking {
 			
 			if ($reservation_id == ""){
 				$reservation_id = $modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
-										 $last_update, $color_type_id, $short_description, $full_description, $quantity);
+										 $last_update, $color_type_id, $short_description, $full_description, $quantity, $package);
 				
 					$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 					                       $short_description, $full_description, $quantity, "add");
@@ -1747,7 +1792,7 @@ class ControllerCalendar extends ControllerBooking {
 			else{
 				$modelCalEntry->updateEntry($reservation_id, $start_time, $end_time, $resource_id, $booked_by_id, 
 						                   $recipient_id, $last_update, $color_type_id, $short_description, 
-						                   $full_description, $quantity);
+						                   $full_description, $quantity, $package);
 				
 				$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 					$short_description, $full_description, $quantity, "edit");
@@ -1864,7 +1909,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		
 		$modelConfig = new CoreConfig();
-		if ( $modelConfig->getParam("SyEditBookingMailing") >= 2){
+		if ( $modelConfig->getParam("SyEditBookingMailing") >= 2 && $booked_by_id != $recipient_id){
 		
 			$modelUser = new User();
 			$fromEmail = $modelUser->getUserEmail($booked_by_id);

@@ -137,7 +137,8 @@
 		
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
-				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default"><?= CoreTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='suppliesentries/delete/<?=$entry["id"]?>'" class="btn btn-danger"><?= CoreTranslator::Delete($lang) ?></button>
 		</div>
       </form>
 	</div>

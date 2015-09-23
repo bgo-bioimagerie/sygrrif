@@ -113,4 +113,14 @@ class SuEntry extends Model {
 		        where id=?";
 		$this->runRequest($sql, array(date("Y-m-d", time()), $id));
 	}
+	
+	/**
+	 * Delete a unit
+	 * @param number $id Unit ID
+	 */
+	public function delete($id){
+		
+		$sql="DELETE FROM su_entries WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }

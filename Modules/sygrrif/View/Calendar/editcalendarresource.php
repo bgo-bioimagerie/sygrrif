@@ -10,6 +10,73 @@
 
 </style>
 
+<script>
+        function addRow(tableID) {
+
+        	var idx = 1;
+        	if(tableID == "dataTable"){
+        		idx = 1;
+            } 
+            var table = document.getElementById(tableID);
+ 
+            var rowCount = table.rows.length;
+            //document.write(rowCount);
+            var row = table.insertRow(rowCount);
+            //document.write(row);
+            var colCount = table.rows[idx].cells.length;
+            //document.write(colCount);
+ 
+            for(var i=0; i<colCount; i++) {
+ 
+                var newcell = row.insertCell(i);
+ 
+                newcell.innerHTML = table.rows[idx].cells[i].innerHTML;
+                //alert(newcell.childNodes);
+                switch(newcell.childNodes[0].type) {
+                    case "text":
+                            newcell.childNodes[0].value = "";
+                            break;
+                    case "checkbox":
+                            newcell.childNodes[0].checked = false;
+                            break;
+                    case "select-one":
+                            newcell.childNodes[0].selectedIndex = 0;
+                            break;
+                }
+            }
+        }
+ 
+        function deleteRow(tableID) {
+            try {
+
+            var idx = 2;
+            if(tableID == "dataTable"){
+            	idx = 2;
+            }     
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
+ 
+            for(var i=0; i<rowCount; i++) {
+                var row = table.rows[i];
+                var chkbox = row.cells[0].childNodes[0];
+                if(null != chkbox && true == chkbox.checked) {
+                    if(rowCount <= idx) {
+                        alert("Cannot delete all the rows.");
+                        break;
+                    }
+                    table.deleteRow(i);
+                    rowCount--;
+                    i--;
+                }
+ 
+ 
+            }
+            }catch(e) {
+                alert(e);
+            }
+        }
+ 
+    </script>
 
 </head>
 
@@ -98,7 +165,7 @@
 				<select class="form-control" name="area_id">
 					<OPTION value="0"> ... </OPTION>
 				    <?php $aid = $this->clean($area_id); 
-				    echo "aid = " . $aid;
+				    //echo "aid = " . $aid;
 				    foreach ($areasList as $area){
 				    	$selected = "";
 				    	if ($aid==$area["id"]){
@@ -325,7 +392,7 @@
 
 				if (($pnight == "1") AND ($pwe== "0")){
 					?>
-					<td><? SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?= $pid . "_night" ?>" value="<?= $val_night ?>"/> € (H.T.)</td>
+					<td><?= SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?= $pid . "_night" ?>" value="<?= $val_night ?>"/> € (H.T.)</td>
 					<td></td>
 					<?php
 				}
@@ -337,8 +404,8 @@
 				}
 				else if (($pnight == "1") AND ($pwe == "1")){
 					?>
-					<td><? SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?= $pid . "_night" ?>" value="<?= $val_night ?>"/> € (H.T.)</td>
-					<td><? SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?= $pid . "_we" ?>" value="<?= $val_we ?>"/> € (H.T.)</td>
+					<td><?= SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?= $pid . "_night" ?>" value="<?= $val_night ?>"/> € (H.T.)</td>
+					<td><?= SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?= $pid . "_we" ?>" value="<?= $val_we ?>"/> € (H.T.)</td>
 				    <?php
 				}
 				?>
@@ -351,6 +418,87 @@
 		</table>
 		</div>
 
+		<div class="page-header">
+			<h3>
+			<?= SyTranslator::Packages($lang)?>
+				<br> <small></small>
+			</h3>
+		</div>
+		
+		<!--   TISSUS    -->
+		<div class="form-group">
+			<div class="col-xs-12">
+				<table id="dataTable" class="table table-striped">
+				<thead>
+					<tr>
+						<td></td>
+						<!-- <td style="min-width:10em;">ID</td>  -->
+						<td style="min-width:10em;">Forfait</td>
+						<td style="min-width:10em;">Duration</td>
+						
+						<?php foreach ($pricingTable as $pricing){ 
+							?>
+							<td style="min-width:10em;">tarif <br/><?= $pricing["tarif_name"] ?></td>
+							<?php 
+						}
+						?>
+						
+					</tr>
+				</thead>
+					<tbody>
+						<?php 
+						foreach ($pakages as $pakage){
+													
+							?>
+							<tr>
+								<td><input type="checkbox" name="chk" />
+								
+								<input class="form-control" type="hidden" name="pid[]" value="<?= $pakage["id"] ?>"/>
+								</td>
+								<td><input class="form-control" type="text" name="pname[]" value="<?= $pakage["name"] ?>"/></td>
+								<td><input class="form-control" type="text" name="pduration[]" value="<?= $pakage["duration"] ?>"/></td>
+								<?php foreach ($pricingTable as $pricing){ 
+									?>
+									<td><input class="form-control" type="text" name="p_<?=$pricing["id"]?>[]" value="<?= $pakage["price_" .$pricing["id"]]?>"/></td>
+								<?php
+								}
+								?>
+									
+							</tr>
+							<?php
+						}
+						?>
+						<?php 
+						if (count($pakages) < 1){
+						?>
+						<tr>
+							<td><input type="checkbox" name="chk" />
+							<input class="form-control" type="hidden" name="pid[]" value=""/></td>
+								<td><input class="form-control" type="text" name="pname[]" value=""/></td>
+								<td><input class="form-control" type="text" name="pduration[]" value=""/></td>
+	
+								<?php foreach ($pricingTable as $pricing){ 
+									?>
+									<td><input class="form-control" type="text" name="p_<?=$pricing["id"]?>[]" value=""/></td>
+								<?php
+								}
+								?>
+						</tr>
+						<?php 
+						}
+						?>
+					</tbody>
+				</table>
+				
+				<div class="col-md-6">
+					<input type="button" class="btn btn-default" value="<?=SyTranslator::Add($lang)?>"
+						onclick="addRow('dataTable')" /> 
+					<input type="button" class="btn btn-default" value="<?=SyTranslator::Remove($lang)?>"
+						onclick="deleteRow('dataTable')" /> <br>
+				</div>
+			</div>
+		</div>
+		
 		<div class="row">
 		<div class="col-xs-5 col-xs-offset-7" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />

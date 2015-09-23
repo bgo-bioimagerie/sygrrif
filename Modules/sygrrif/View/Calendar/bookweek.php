@@ -197,8 +197,8 @@ else if($size_bloc_resa == 3600){
 <!-- hours reservation -->
 <div class="col-xs-11" id="colDiv">
 
-	<div id="tcelltop" style="height: <?= $agendaStyle["line_height"] ?>; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>">
-	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b></br><?= $this->clean($resourceBase['description']) ?></p>
+	<div id="tcelltop" style="height: <?= $agendaStyle["line_height"] ?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>">
+	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b><br/><?= $this->clean($resourceBase['description']) ?></p>
 	</div>
 
 	

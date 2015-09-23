@@ -57,7 +57,13 @@ class SyGraph extends Model {
 			
 			$timeResa = 0;
 			foreach ($datas as $data){
-				$timeResa += (float)($data["end_time"] - $data["start_time"]) / (float)3600; 
+				if ($data["end_time"] - $data["start_time"] >= 0){
+					$timeResa += (float)($data["end_time"] - $data["start_time"]) / (float)3600; 
+				}
+				else{
+					echo "WARNING: error in reservation : <br/>";
+					print_r($data);
+				}
 			}
 			
 			$timeTotal += $timeResa;
