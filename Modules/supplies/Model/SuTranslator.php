@@ -81,7 +81,7 @@ class SuTranslator {
 	
 	public static function Billing($lang){
 		if ($lang == "Fr"){
-			return "Factuation";
+			return "Facturation";
 		}
 		return "Billing";
 	}
@@ -283,7 +283,7 @@ class SuTranslator {
 	
 	public static function Supplies_Items($lang){
 		if ($lang == "Fr"){
-			return "consommables";
+			return "Consommables";
 		}
 		return "Supplies Items";
 	}

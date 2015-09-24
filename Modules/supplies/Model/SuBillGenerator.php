@@ -180,7 +180,9 @@ class SuBillGenerator extends Model {
 				}
 			}
 		}
-		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("Y", time()));
+		if($insertCol != ""){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("Y", time()));
+		}
 		
 		// replace the responsible
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();

@@ -1423,10 +1423,44 @@ class ControllerCalendar extends ControllerBooking {
 		), "bookweekarea");
 	}
 	
+	public function editreservation(){
+		
+		$modelSettings = new CoreConfig();
+		$editResaFunction = $modelSettings->getParam("sygrrifEditReservation");
+		
+		if($editResaFunction == "" || $editResaFunction == "calendar/editreservationdefault"){
+			$this->editreservationdefault();
+		}
+		else{
+			$modulesNames = Configuration::get("modules");
+			$count = count($modulesNames);
+			$controllerFound = false;
+			
+			$url = explode("/", $editResaFunction );
+			$classController = "Controller".$url[0];
+			$action = $url[1];
+			for($i = 0; $i < $count; $i++) {
+				$fileController = 'Modules/' . $modulesNames[$i] . "/Controller/" . $classController . ".php";
+				if (file_exists($fileController)){
+					// Instantiate controler
+					$controllerFound = true;
+					require ($fileController);
+					$controller = new $classController ();
+					$controller->setRequest ( $request );
+					$controller->runAction($action);
+				}
+			}
+			if ($controllerFound == false){
+				throw new Exception("SyGRRif plugin " . $editResaFunction . " not found");
+			}
+		}
+	}
+	
+	
 	/**
 	 * Form to edit a reservation
 	 */
-	public function editreservation(){
+	public function editreservationdefault(){
 		
 		// get the action
 		$action = '';
@@ -1568,7 +1602,7 @@ class ControllerCalendar extends ControllerBooking {
 					'calSups' => $calSups,
 					'calSupsData' => $calSupsData,
 					'packages' => $packages
-			) );
+			), "editreservation" );
 		}
 		else{ // edit resa
 			$reservation_id = $contentAction[1];
@@ -1620,7 +1654,7 @@ class ControllerCalendar extends ControllerBooking {
 					'calSups' => $calSups,
 					'calSupsData' => $calSupsData,
 					'packages' => $packages
-			));
+			), "editreservation");
 		}
 	}
 	

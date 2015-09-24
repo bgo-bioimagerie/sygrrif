@@ -246,6 +246,19 @@ $(document).ready(function() {
 							<input class="form-control" id="searchResp" type="text" name="searchResp" value="<?= $searchResp ?>"
 							/>
 						</div>
+						<label class="control-label col-md-2"></label>
+					</div>
+				</div>
+				<div class="col-md-12">
+				<label class="control-label col-md-1"></label>
+					<div class="col-md-9">
+						<div class="col-md-11">	
+							<label class="control-label col-md-1">Commentaire:</label>
+								<div class="col-md-4">
+								<input class="form-control" id="searchCom" type="text" name="searchCom" value="<?= $searchCom ?>"
+								/>
+							</div>
+						</div>	
 					</div>
 			
 					<div class="col-md-2" id="button-div">
@@ -285,7 +298,7 @@ $(document).ready(function() {
 					<th class="text-center" style="width:5%;"><a href="anticorps/index/stockage">Stockage</a></th>
 					 -->
 					
-					<th class="text-center" style="width:1em; color:#337AB7;">No<br/>H2P2</th> 
+					<th class="text-center" style="width:1em; color:#337AB7;">No</th> 
 					<th class="text-center" style="width:5%; color:#337AB7;">Nom</th>
 					<th class="text-center" style="width:2%; color:#337AB7;">St</th>
 					<th class="text-center" style="width:5%; color:#337AB7;">Fournisseur</th>
@@ -296,8 +309,8 @@ $(document).ready(function() {
 					<th class="text-center" style="width:5%; color:#337AB7;">Isotype</th>
 					
 					
-					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">ref. protocol</th>
-					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">AcI dilution</th>
+					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">proto</th>
+					<th class="text-center" style="width:5%; background-color: #ffeeee; color:#337AB7;">AcI dil</th>
 					
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">commentaire</th>
 					<th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;">espèce</th>

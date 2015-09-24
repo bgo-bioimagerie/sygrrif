@@ -47,6 +47,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		$modelCoreConfig = new CoreConfig();
 		$seriesBooking = $modelCoreConfig->getParam("SySeriesBooking");
 		$editBookingMailing = $modelCoreConfig->getParam("SySeriesBooking");
+		$sygrrifEditReservation = $modelCoreConfig->getParam("sygrrifEditReservation");
 		
 		$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
 		
@@ -77,7 +78,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     										 'editBookingMailing' => $editBookingMailing,
     										 'authorisations_location' => $authorisations_location,
     					                     'calSups' => $calSups,
-    										 'installError' => $installError
+    										 'installError' => $installError,
+    										 'sygrrifEditReservation' => $sygrrifEditReservation
     			) );
     			return;
 			}
@@ -90,7 +92,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     								     'editBookingMailing' => $editBookingMailing,
 										 'authorisations_location' => $authorisations_location,
 									     'calSups' => $calSups,
-										 'installSuccess' => $installSuccess
+										 'installSuccess' => $installSuccess,
+										 'sygrrifEditReservation' => $sygrrifEditReservation
 			) );
 			return;
 		}
@@ -122,7 +125,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
     								 'editBookingMailing' => $editBookingMailing,
 									 'authorisations_location' => $authorisations_location,
-									 'calSups' => $calSups
+									 'calSups' => $calSups,
+								     'sygrrifEditReservation' => $sygrrifEditReservation
 			) );
 			return;
 			
@@ -141,7 +145,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
 					'editBookingMailing' => $editBookingMailing,
 					'authorisations_location' => $authorisations_location,
-					'calSups' => $calSups
+					'calSups' => $calSups,
+					'sygrrifEditReservation' => $sygrrifEditReservation
 					
 			) );
 			return;
@@ -162,7 +167,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
 					'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
-					'calSups' => $calSups
+					'calSups' => $calSups,
+					'sygrrifEditReservation' => $sygrrifEditReservation
 			) );
 			return;
 		}
@@ -204,7 +210,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
 					'editBookingMailing' => $editBookingMailing,
 					'authorisations_location' => $authorisations_location,
-					'calSups' => $calSups
+					'calSups' => $calSups,
+					'sygrrifEditReservation' => $sygrrifEditReservation
 			) );
 			return;
 		}
@@ -224,7 +231,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
     				'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
-					'calSups' => $calSups
+					'calSups' => $calSups,
+					'sygrrifEditReservation' => $sygrrifEditReservation
 			) );
 			return;
 		}
@@ -244,7 +252,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
 					'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
-					'calSups' => $calSups
+					'calSups' => $calSups,
+					'sygrrifEditReservation' => $sygrrifEditReservation
 			) );
 			return;
 		}
@@ -296,10 +305,22 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
     				'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
-					'calSups' => $calSups
+					'calSups' => $calSups,
+					'sygrrifEditReservation' => $sygrrifEditReservation
 			) );
 			return;
 		}
+		
+		// set editresapluginquery
+		$editresapluginquery = $this->request->getParameterNoException ( "editresapluginquery");
+		$bookingOptionMessage = "";
+		if ($editresapluginquery == "yes"){
+			
+			$value = $this->request->getParameter("resalink");
+			$modelCoreConfig->setParam("sygrrifEditReservation", $value);
+			$sygrrifEditReservation = $modelCoreConfig->getParam("sygrrifEditReservation");
+		}
+		
 		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
@@ -309,7 +330,8 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
     								 'editBookingMailing' => $editBookingMailing, 
 									 'authorisations_location' => $authorisations_location, 
-									 'calSups' => $calSups
+									 'calSups' => $calSups,
+									 'sygrrifEditReservation' => $sygrrifEditReservation
 		) );
 	}
 	

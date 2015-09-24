@@ -55,9 +55,13 @@ class ControllerSygrrifstatsusers extends ControllerSecureNav {
 		// query
 		$statUserModel = new SyStatsUser();
 		if($email != ""){
+			header_remove();
+			ob_clean();
 			$statUserModel->authorizedUsersMail($resource_id);
 		}
 		else{
+			header_remove();
+			ob_clean();
 			$statUserModel->authorizedUsers($resource_id);
 		}	
 		

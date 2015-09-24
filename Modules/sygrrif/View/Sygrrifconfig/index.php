@@ -625,6 +625,33 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
       </form>
       
+      
+      
+      <!-- Series booking -->
+	  <div class="col-xs-12">
+			<div class="page-header">
+				<h2>
+					Edit reservation plugin <br> <small></small>
+				</h2>
+			</div>
+		</div>
+      <form role="form" class="form-horizontal" action="sygrrifconfig" method="post">
+      <div class="col-xs-10">
+			<input class="form-control" type="hidden" name="editresapluginquery" value="yes"
+				/>
+	  </div>
+      
+      <div class="form-group col-xs-12">
+			<label for="inputEmail" class="control-label col-xs-4">edit reservation link</label>
+			<div class="col-xs-6">
+    	  	<input class="form-control" type="text" name="resalink" id="resalink" value="<?=$sygrrifEditReservation?>">
+        </div>
+      </div>
+      <div class="col-xs-2 col-xs-offset-10" id="button-div">
+    	<input class="btn btn-primary" type="submit" value="Save" name="submit">
+      </div>
+	  </form>
+      
   </div>
 </div>    
 
