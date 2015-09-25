@@ -68,7 +68,7 @@
 			<label for="inputEmail" class="control-label col-xs-5">Header background: #</label>
 			<div class="col-xs-7">
 				<input class="form-control" id="name" type="text" name="header_background"
-				       value="<?= $css['header_background'] ?>"  
+				       value="<?=$css['header_background']?>"  
 				/>
 			</div>
 		</div>
@@ -76,7 +76,7 @@
 			<label for="inputEmail" class="control-label col-xs-5">Header color: #</label>
 			<div class="col-xs-7">
 				<input class="form-control" id="name" type="text" name="header_color"
-				       value="<?= $css['header_color'] ?>"  
+				       value="<?=$css['header_color']?>"  
 				/>
 			</div>
 		</div>

@@ -1,3 +1,15 @@
+<?php 
+require_once 'Modules/core/Model/CoreConfig.php';
+$modelCoreConfig = new CoreConfig();
+$sygrrifmenucolor = $modelCoreConfig->getParam("sygrrifmenucolor");
+$sygrrifmenucolortxt = $modelCoreConfig->getParam("sygrrifmenucolortxt");
+if ($sygrrifmenucolor == ""){
+	$sygrrifmenucolor = "337ab7";
+}
+if($sygrrifmenucolortxt == ""){
+	$sygrrifmenucolortxt = "ffffff";
+}
+?>
 
 <head>
     <link href="externals/datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
@@ -10,28 +22,28 @@
 <style>
 .bs-docs-header {
 	position: relative;
-	color: #cdbfe3;
+	color: #<?=$sygrrifmenucolortxt?>;
 	text-shadow: 0 0px 0 rgba(0, 0, 0, .1);
-	background-color: #337ab7;
-	border:0px solid #337ab7;
+	background-color: #<?=$sygrrifmenucolor?>;
+	border:0px solid #<?=$sygrrifmenucolor?>;
 }
 
 #navlink {
-	color: #cdbfe3;
+	color: #<?=$sygrrifmenucolortxt?>;
 	text-shadow: 0 0px 0 rgba(0, 0, 0, .1);
-	border:0px solid #337ab7;
+	border:0px solid #<?=$sygrrifmenucolor?>;
 }
 
 #well {
 	margin-top:10px;
 	margin-bottom:25px;
-	color: #cdbfe3;
-	background-color: #337ab7;
-	border:0px solid #337ab7;
+	color: #<?=$sygrrifmenucolortxt?>;
+	background-color: #<?=$sygrrifmenucolor?>;
+	border:0px solid #<?=$sygrrifmenucolor?>;
 }
 
 legend {
-	color: #ffffff;
+	color: #<?=$sygrrifmenucolortxt?>;
 }
 
 #content{
@@ -130,7 +142,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		 
 		 <div class='col-md-1' id="well">
 			<fieldset>
-			<legend style="color:#337ab7; border:0px solid #337ab7;">.</legend>
+			<legend style="color:#<?=$sygrrifmenucolor?>; border:0px solid #<?=$sygrrifmenucolor?>;">.</legend>
 				<div >
 				<input type="submit" class="btn btn-primary" value="ok" />
 				</div>

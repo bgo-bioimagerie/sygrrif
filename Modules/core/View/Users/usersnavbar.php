@@ -1,40 +1,53 @@
 
+<?php 
+require_once 'Modules/core/Model/CoreConfig.php';
+$modelCoreConfig = new CoreConfig();
+$coremenucolor = $modelCoreConfig->getParam("coremenucolor");
+$coremenucolortxt = $modelCoreConfig->getParam("coremenucolortxt");
+if ($coremenucolor == ""){
+	$coremenucolor = "337ab7";
+}
+if($coremenucolortxt == ""){
+	$coremenucolortxt = "ffffff";
+}
+?>
+
 <head>
 
 <style>
 .bs-docs-header {
 	position: relative;
 	padding: 30px 15px;
-	color: #cdbfe3;
+	color: #<?= $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #337ab7;
+	background-color: #<?= $coremenucolor ?>;
 }
 
 #navlink {
-	color: #cdbfe3;
+	color: #<?= $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
 .bs-docs-header {
 	position: relative;
-	color: #cdbfe3;
+	color: #<?= $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #337ab7;
+	background-color: #<?= $coremenucolor ?>;
 }
 
 #navlink {
-	color: #cdbfe3;
+	color: #<?= $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
 .well {
-	color: #cdbfe3;
-	background-color: #337ab7;
+	color: #<?= $coremenucolortxt ?>;
+	background-color: #<?= $coremenucolor ?>;
 	border: none;
 }
 
 legend {
-	color: #ffffff;
+	color: #<?= $coremenucolortxt ?>;
 }
 </style>
 

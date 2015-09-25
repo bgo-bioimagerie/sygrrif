@@ -879,5 +879,27 @@ class CoreTranslator {
 		}
 		return "Logo";
 	}
+	
+	public static function menu_color($lang){
+		if ($lang == "Fr"){
+			return "Couleur du menu";
+		}
+		return "Menu color";
+	}
+	
+	public static function color($lang){
+		if ($lang == "Fr"){
+			return "Couleur";
+		}
+		return "Color";
+	}
+	
+	public static function text_color($lang){
+		if ($lang == "Fr"){
+			return "Couleur du text";
+		}
+		return "Text color";
+	}
+	
 
 }

@@ -1,3 +1,15 @@
+<?php 
+require_once 'Modules/core/Model/CoreConfig.php';
+$modelCoreConfig = new CoreConfig();
+$suppliesmenucolor = $modelCoreConfig->getParam("suppliesmenucolor");
+$suppliesmenucolortxt = $modelCoreConfig->getParam("suppliesmenucolortxt");
+if ($suppliesmenucolor == ""){
+	$suppliesmenucolor = "337ab7";
+}
+if($suppliesmenucolortxt == ""){
+	$suppliesmenucolortxt = "ffffff";
+}
+?>
 
 <head>
 <link href="bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -12,24 +24,24 @@
 <style>
 .bs-docs-header {
 	position: relative;
-	color: #cdbfe3;
+	color: #<?=$suppliesmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #337ab7;
+	background-color: #<?=$suppliesmenucolor?>;
 }
 
 #navlink {
-	color: #cdbfe3;
+	color: #<?=$suppliesmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
 .well {
-	color: #cdbfe3;
-	background-color: #337ab7;
+	color: #<?=$suppliesmenucolortxt?>;
+	background-color: #<?=$suppliesmenucolor?>;
 	border: none;
 }
 
 legend {
-	color: #ffffff;
+	color: #<?=$suppliesmenucolortxt?>;
 }
 </style>
 

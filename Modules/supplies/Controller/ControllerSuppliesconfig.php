@@ -35,6 +35,9 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 			$modelConfig->setParam("supliesusersdatabase", "core");
 		}
 		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		
+		$suppliesmenucolor = $modelConfig->getParam("suppliesmenucolor");
+		$suppliesmenucolortxt = $modelConfig->getParam("suppliesmenucolortxt");
 
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
@@ -49,7 +52,9 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
     			$this->generateView ( array ('navBar' => $navBar, 
     					                     'installError' => $installError,
     					                     'menus' => $menus,
-    										 'supliesusersdatabase' => $supliesusersdatabase
+    										 'supliesusersdatabase' => $supliesusersdatabase,
+									 'suppliesmenucolor' => $suppliesmenucolor,
+							         'suppliesmenucolortxt' => $suppliesmenucolortxt
     			) );
     			return;
 			}
@@ -57,7 +62,9 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
 					                     'menus' => $menus,
-										 'supliesusersdatabase' => $supliesusersdatabase
+										 'supliesusersdatabase' => $supliesusersdatabase,
+									 'suppliesmenucolor' => $suppliesmenucolor,
+							         'suppliesmenucolortxt' => $suppliesmenucolortxt
 			) );
 			return;
 		}
@@ -76,7 +83,9 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 			
 			$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus,
-									 'supliesusersdatabase' => $supliesusersdatabase
+									 'supliesusersdatabase' => $supliesusersdatabase,
+									 'suppliesmenucolor' => $suppliesmenucolor,
+							         'suppliesmenucolortxt' => $suppliesmenucolortxt
 									 	
 			) );
 			return;
@@ -90,7 +99,9 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar,
 					'menus' => $menus,
 					'templateMessage' => $templateMessage,
-					'supliesusersdatabase' => $supliesusersdatabase
+					'supliesusersdatabase' => $supliesusersdatabase,
+									 'suppliesmenucolor' => $suppliesmenucolor,
+							         'suppliesmenucolortxt' => $suppliesmenucolortxt
 			) );
 			return;
 		}
@@ -104,15 +115,34 @@ class ControllerSuppliesconfig extends ControllerSecureNav {
 			
 			$this->generateView ( array ('navBar' => $navBar,
 					'menus' => $menus,
-					'supliesusersdatabase' => $supliesusersdatabase
+					'supliesusersdatabase' => $supliesusersdatabase,
+									 'suppliesmenucolor' => $suppliesmenucolor,
+							         'suppliesmenucolortxt' => $suppliesmenucolortxt
 			) );
 			return;
+		}
+		
+		// menu color:
+		$menucolorquery = $this->request->getParameterNoException("menucolorquery");
+		if($menucolorquery == "yes"){
+				
+			$suppliesmenucolor = $this->request->getParameterNoException("suppliesmenucolor");
+			$suppliesmenucolortxt = $this->request->getParameterNoException("suppliesmenucolortxt");
+				
+			$modelConfig->setParam("suppliesmenucolor", $suppliesmenucolor);
+			$modelConfig->setParam("suppliesmenucolortxt", $suppliesmenucolortxt);
+			$suppliesmenucolor = $modelConfig->getParam("suppliesmenucolor");
+			$suppliesmenucolortxt = $modelConfig->getParam("suppliesmenucolortxt");
+				
+				
 		}
 				
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
 				'menus' => $menus,
-				'supliesusersdatabase' => $supliesusersdatabase
+				'supliesusersdatabase' => $supliesusersdatabase,
+									 'suppliesmenucolor' => $suppliesmenucolor,
+							         'suppliesmenucolortxt' => $suppliesmenucolortxt
 		) );
 	}
 	

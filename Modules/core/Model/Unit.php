@@ -19,7 +19,7 @@ class Unit extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `core_units` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(150) NOT NULL DEFAULT '',
-		`address` varchar(150) NOT NULL DEFAULT '',
+		`address` varchar(350) NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
 		

@@ -54,6 +54,10 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		// edit reservatin fields
 		$editBookingDescriptionSettings = $modelCoreConfig->getParam("SyDescriptionFields");
 		
+		// core config
+		$sygrrifmenucolor = $modelCoreConfig->getParam("sygrrifmenucolor");
+		$sygrrifmenucolortxt = $modelCoreConfig->getParam("sygrrifmenucolortxt");
+		
 		// cal sups
 		$calSups = Array();
 		if ( $ModulesManagerModel->isDataMenu("sygrrif")){
@@ -79,7 +83,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     										 'authorisations_location' => $authorisations_location,
     					                     'calSups' => $calSups,
     										 'installError' => $installError,
-    										 'sygrrifEditReservation' => $sygrrifEditReservation
+    										 'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
     			) );
     			return;
 			}
@@ -93,7 +99,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 										 'authorisations_location' => $authorisations_location,
 									     'calSups' => $calSups,
 										 'installSuccess' => $installSuccess,
-										 'sygrrifEditReservation' => $sygrrifEditReservation
+										 'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -126,7 +134,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     								 'editBookingMailing' => $editBookingMailing,
 									 'authorisations_location' => $authorisations_location,
 									 'calSups' => $calSups,
-								     'sygrrifEditReservation' => $sygrrifEditReservation
+								     'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 			
@@ -146,7 +156,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingMailing' => $editBookingMailing,
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
-					'sygrrifEditReservation' => $sygrrifEditReservation
+					'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 					
 			) );
 			return;
@@ -168,7 +180,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
-					'sygrrifEditReservation' => $sygrrifEditReservation
+					'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -211,7 +225,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingMailing' => $editBookingMailing,
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
-					'sygrrifEditReservation' => $sygrrifEditReservation
+					'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -232,7 +248,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     				'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
-					'sygrrifEditReservation' => $sygrrifEditReservation
+					'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -253,7 +271,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
-					'sygrrifEditReservation' => $sygrrifEditReservation
+					'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -306,7 +326,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     				'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
-					'sygrrifEditReservation' => $sygrrifEditReservation
+					'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -321,6 +343,19 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$sygrrifEditReservation = $modelCoreConfig->getParam("sygrrifEditReservation");
 		}
 		
+		// menu color:
+		$menucolorquery = $this->request->getParameterNoException("menucolorquery");
+		if($menucolorquery == "yes"){
+				
+			$sygrrifmenucolor = $this->request->getParameterNoException("sygrrifmenucolor");
+			$sygrrifmenucolortxt = $this->request->getParameterNoException("sygrrifmenucolortxt");
+				
+			$modelCoreConfig->setParam("sygrrifmenucolor", $sygrrifmenucolor);
+			$modelCoreConfig->setParam("sygrrifmenucolortxt", $sygrrifmenucolortxt);
+			$sygrrifmenucolor = $modelCoreConfig->getParam("sygrrifmenucolor");
+			$sygrrifmenucolortxt = $modelCoreConfig->getParam("sygrrifmenucolortxt");
+		}
+		
 		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
@@ -331,7 +366,9 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     								 'editBookingMailing' => $editBookingMailing, 
 									 'authorisations_location' => $authorisations_location, 
 									 'calSups' => $calSups,
-									 'sygrrifEditReservation' => $sygrrifEditReservation
+									 'sygrrifEditReservation' => $sygrrifEditReservation,
+									 'sygrrifmenucolor' => $sygrrifmenucolor,
+							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 		) );
 	}
 	

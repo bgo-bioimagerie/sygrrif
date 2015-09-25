@@ -38,6 +38,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		// user setting
 		$modelCoreConfig = new CoreConfig();
 		$activeUserSetting = $modelCoreConfig->getParam('user_desactivate');
+		$coremenucolor = $modelCoreConfig->getParam("coremenucolor");
+		$coremenucolortxt = $modelCoreConfig->getParam("coremenucolortxt");
 		
 		// admin email
 		$modelCoreConfig = new CoreConfig();
@@ -57,7 +59,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
     					                     'installError' => $installError,
     					                     'menus' => $menus,
     										 'activeUserSetting' => $activeUserSetting,
-    										 'admin_email' => $admin_email 	
+    										 'admin_email' => $admin_email,
+									 'coremenucolor' => $coremenucolor,
+							         'coremenucolortxt' => $coremenucolortxt
     			) );
     			return;
 			}
@@ -66,7 +70,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
 					                     'installSuccess' => $installSuccess,
 					                     'menus' => $menus,
 										 'activeUserSetting' => $activeUserSetting,
-										 'admin_email' => $admin_email
+										 'admin_email' => $admin_email,
+									 'coremenucolor' => $coremenucolor,
+							         'coremenucolortxt' => $coremenucolortxt	
 			) );
 			return;
 		}
@@ -89,8 +95,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus,
 									 'activeUserSetting' => $activeUserSetting,
-									 'admin_email' => $admin_email
-									 	
+									 'admin_email' => $admin_email,
+									 'coremenucolor' => $coremenucolor,
+							         'coremenucolortxt' => $coremenucolortxt
 			) );
 			return;
 			
@@ -107,7 +114,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar,
 					'menus' => $menus,
 					'activeUserSetting' => $activeUserSetting,
-					'admin_email' => $admin_email
+					'admin_email' => $admin_email,
+									 'coremenucolor' => $coremenucolor,
+							         'coremenucolortxt' => $coremenucolortxt
 			) );
 			return;
 		}
@@ -129,11 +138,28 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			return;
 		}
 		
+		// menu color:
+		$menucolorquery = $this->request->getParameterNoException("menucolorquery");
+		if($menucolorquery == "yes"){
+			
+			$coremenucolor = $this->request->getParameterNoException("coremenucolor");
+			$coremenucolortxt = $this->request->getParameterNoException("coremenucolortxt");
+			
+			$modelCoreConfig->setParam("coremenucolor", $coremenucolor);
+			$modelCoreConfig->setParam("coremenucolortxt", $coremenucolortxt);
+			$coremenucolor = $modelCoreConfig->getParam("coremenucolor");
+			$coremenucolortxt = $modelCoreConfig->getParam("coremenucolortxt");
+			
+			
+		}
+		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus, 
 									 'activeUserSetting' => $activeUserSetting,
-									 'admin_email' => $admin_email
+									 'admin_email' => $admin_email,
+									 'coremenucolor' => $coremenucolor,
+							         'coremenucolortxt' => $coremenucolortxt
 		) );
 	}
 	

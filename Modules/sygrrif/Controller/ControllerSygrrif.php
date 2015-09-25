@@ -16,6 +16,7 @@ require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResourceType.php';
+require_once 'Modules/core/Model/UserSettings.php';
 
 /**
  * SyGRRif management pages
@@ -1487,22 +1488,29 @@ class ControllerSygrrif extends ControllerBooking {
 		//echo "id_resource a= " . $id_resource . "</br>";
 		//echo "id_resource begin = " . $id_resource . "</br>";
 		
+		$modelResource = new SyResource();
 		if ($id_resource == "" || $id_resource == 0){ // booking home page
 			
-			
-			if ($id_area == "" || $id_area ==0){
-				$modelArea = new SyArea();
-				if ($_SESSION["user_status"] < 3){
-					$id_area=$modelArea->getSmallestUnrestrictedID();
-				}
-				else{
-					$id_area=$modelArea->getSmallestID();
-				}
+			$userSettingsModel = new UserSettings();
+			$calendarDefaultResource = $userSettingsModel->getUserSetting($_SESSION["id_user"], "calendarDefaultResource");
+			if ($calendarDefaultResource != ""){
+				$id_resource = $calendarDefaultResource;
+				$id_area = $modelResource->getAreaID($id_resource);
 			}
-			// get the resource with the smallest id
-			$modelResource = new SyResource();
-			$id_resource = $modelResource->firstResourceIDForArea($id_area);
-			
+			else{
+				if ($id_area == "" || $id_area ==0){
+					$modelArea = new SyArea();
+					if ($_SESSION["user_status"] < 3){
+						$id_area=$modelArea->getSmallestUnrestrictedID();
+					}
+					else{
+						$id_area=$modelArea->getSmallestID();
+					}
+				}
+				// get the resource with the smallest id
+				
+				$id_resource = $modelResource->firstResourceIDForArea($id_area);
+			}
 			//echo "id_area = " . $id_area . "</br>";
 			//echo "id_resource = " . $id_resource . "</br>";
 				
@@ -1512,9 +1520,7 @@ class ControllerSygrrif extends ControllerBooking {
 			$_SESSION['id_area'] = $id_area;
 			$_SESSION['curentDate'] = date("Y-m-d", time());
 			
-			
-			
-			
+
 			if ($id_resource == 0){
 				$menuData = $this->calendarMenuData($id_area, $id_resource, date("Y-m-d", time()));
 				$navBar = $this->navBar();

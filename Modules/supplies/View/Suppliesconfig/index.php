@@ -179,6 +179,42 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		</div>
 	  </form> 
        
+        <!-- menu color -->
+      <div class="col-xs-12">
+		  <div class="page-header">
+			<h2>
+				<?= CoreTranslator::menu_color($lang) ?> <br> <small></small>
+			</h2>
+		  </div>
+		
+		  <form role="form" class="form-horizontal" action="suppliesconfig"
+		  method="post">
+		  
+		    <div class="col-xs-12">
+			  <input class="form-control" type="hidden" name="menucolorquery" value="yes"
+			 	/>
+		    </div>
+		    
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::color($lang) ?> #</label>
+			<div class="col-xs-6">
+				<input class="form-control" id="suppliesmenucolor" type="text" name="suppliesmenucolor" value="<?= $this->clean($suppliesmenucolor) ?>"
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::text_color($lang) ?> #</label>
+			<div class="col-xs-6">
+				<input class="form-control" id="suppliesmenucolortxt" type="text" name="suppliesmenucolortxt" value="<?= $this->clean($suppliesmenucolortxt) ?>"
+				/>
+			</div>
+		</div>
+		  
+		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+		    </div>
+		  </form>
+      </div>
   </div>
 </div>    
 

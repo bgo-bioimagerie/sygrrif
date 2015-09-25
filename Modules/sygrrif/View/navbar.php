@@ -1,27 +1,39 @@
+<?php 
+require_once 'Modules/core/Model/CoreConfig.php';
+$modelCoreConfig = new CoreConfig();
+$sygrrifmenucolor = $modelCoreConfig->getParam("sygrrifmenucolor");
+$sygrrifmenucolortxt = $modelCoreConfig->getParam("sygrrifmenucolortxt");
+if ($sygrrifmenucolor == ""){
+	$sygrrifmenucolor = "337ab7";
+}
+if($sygrrifmenucolortxt == ""){
+	$sygrrifmenucolortxt = "ffffff";
+}
+?>
 
 <head>
 
 <style>
 .bs-docs-header {
 	position: relative;
-	color: #cdbfe3;
+	color: #<?=$sygrrifmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #337ab7;
+	background-color: #<?=$sygrrifmenucolor?>;
 }
 
 #navlink {
-	color: #cdbfe3;
+	color: #<?=$sygrrifmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
 .well {
-	color: #cdbfe3;
-	background-color: #337ab7;
+	color: #<?=$sygrrifmenucolortxt?>;
+	background-color: #<?=$sygrrifmenucolor?>;
 	border: none;
 }
 
 legend {
-	color: #ffffff;
+	color: #<?=$sygrrifmenucolortxt?>;
 }
 
 </style>

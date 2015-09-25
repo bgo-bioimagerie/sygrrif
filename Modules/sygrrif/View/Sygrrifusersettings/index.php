@@ -29,6 +29,25 @@ $lang = $lang["language"];
 			</div>
 		</div>
 		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2">Default resource</label>
+			<div class="col-xs-10">
+				<select class="form-control" name="calendarDefaultResource">
+				<?php foreach($resources as $resourceArea){
+					foreach ($resourceArea as $res){
+						$selected = "";
+						if ($calendarDefaultResource == $res["id"]){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?=$res["id"]?>" <?=$selected?>> <?= $res["name"] ?> </OPTION>
+					<?php 	
+					}
+				}?>
+				</select>
+			</div>
+		</div>
+		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
