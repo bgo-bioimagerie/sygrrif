@@ -17,7 +17,7 @@ $dayWidth = 100/count($resourcesBase);
 
 a{
 	width: 100%;
-	color: <?= "#".$agendaStyle["header_background"] ?>;
+	color: <?php echo  "#".$agendaStyle["header_background"] ?>;
 }
 
 #tcell{
@@ -68,8 +68,8 @@ a{
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
   .seven-cols .col-lg-1 {
-    width: <?=$dayWidth?>%;
-    *width: <?=$dayWidth?>%;
+    width: <?php echo $dayWidth?>%;
+    *width: <?php echo $dayWidth?>%;
   }
 }
 /* 14% = 100% (full-width row) divided by 7 */
@@ -101,7 +101,7 @@ img{
 		<?php 
 		}
 	?>
-    	<p><?= $message ?></p>
+    	<p><?php echo  $message ?></p>
     	</div>
 	<?php endif; ?>
 
@@ -113,7 +113,7 @@ img{
 <div class="col-md-8 text-left">
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookdayarea/daybefore'"> &lt; </button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookdayarea/dayafter'"> > </button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookdayarea/today'"><?= SyTranslator::Today($lang) ?></button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookdayarea/today'"><?php echo  SyTranslator::Today($lang) ?></button>
 <?php 
 $d = explode("-", $date);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -129,16 +129,16 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 	}
 }
 ?>
-<b><?= SyTranslator::DateFromTime($time, $lang) ?></b>
+<b><?php echo  SyTranslator::DateFromTime($time, $lang) ?></b>
 </div>
 
 
 <div class="col-md-4 text-right">
-<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
-<button type="button" class="btn btn-default active"><?= SyTranslator::Day_Area($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?php echo  SyTranslator::Day($lang) ?></button>
+<button type="button" class="btn btn-default active"><?php echo  SyTranslator::Day_Area($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?php echo  SyTranslator::Week($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?php echo  SyTranslator::Week_Area($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?php echo  SyTranslator::Month($lang) ?></button>
 </div>
 </div>
 
@@ -156,7 +156,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>;">
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo  "#" . $agendaStyle["header_background"]?>;">
 
 	</div>
 	<?php 
@@ -174,8 +174,8 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 		}
 		?>
 	
-		<div id="tcell" style="height: <?= $heightCol ?>; background-color: <?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
-		<?=$h?>:00
+		<div id="tcell" style="height: <?php echo  $heightCol ?>; background-color: <?php echo  "#" . $agendaStyle["header_background"]?>; color: <?php echo  "#" . $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+		<?php echo $h?>:00
 		</div>
 	<?php 	
 	}
@@ -192,8 +192,8 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	
 	<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="colDiv">
 
-	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color: <?= "#".$agendaStyle["header_background"]?>; color: <?= "#".$agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
-	<p class="text-center"><b><?= $this->clean($resourcesBase[$r]['name']) ?></b><br/><?= $this->clean($resourcesBase[$r]['description']) ?></p>
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color: <?php echo  "#".$agendaStyle["header_background"]?>; color: <?php echo  "#".$agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+	<p class="text-center"><b><?php echo  $this->clean($resourcesBase[$r]['name']) ?></b><br/><?php echo  $this->clean($resourcesBase[$r]['description']) ?></p>
 	</div>
 
 	<?php 
@@ -230,5 +230,5 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

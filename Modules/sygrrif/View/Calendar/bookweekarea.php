@@ -50,13 +50,13 @@ $dayWidth = 100/8;
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
   .seven-cols .col-lg-1 {
-    width: <?=$dayWidth?>%;
-    *width: <?=$dayWidth?>%;
+    width: <?php echo $dayWidth?>%;
+    *width: <?php echo $dayWidth?>%;
   }
   
   a{
 	width: 100%;
-	color: <?= "#".$agendaStyle["header_background"] ?>;
+	color: <?php echo  "#".$agendaStyle["header_background"] ?>;
 }
 </style>
 </head>
@@ -83,7 +83,7 @@ $dayWidth = 100/8;
 				<?php
 			}
 			?>
-	    	<p><?= $message ?></p>
+	    	<p><?php echo  $message ?></p>
 			</div>
 		<?php 
 		} 
@@ -99,7 +99,7 @@ $dayWidth = 100/8;
 		<button type="submit" class="btn btn-default"
 			onclick="location.href='calendar/bookweekarea/dayweekafter'">></button>
 		<button type="submit" class="btn btn-default"
-			onclick="location.href='calendar/bookweekarea/thisWeek'"><?= SyTranslator::This_week($lang) ?></button>
+			onclick="location.href='calendar/bookweekarea/thisWeek'"><?php echo  SyTranslator::This_week($lang) ?></button>
 		<?php
 		$d = explode ( "-", $mondayDate );
 		$time = mktime ( 0, 0, 0, $d [1], $d [2], $d [0] );
@@ -110,7 +110,7 @@ $dayWidth = 100/8;
 		$sufixStream = date ( "S", $time );
 		
 		?>
-		<b><?= SyTranslator::DateFromTime($time, $lang) ?>  -  </b>
+		<b><?php echo  SyTranslator::DateFromTime($time, $lang) ?>  -  </b>
 		<?php
 		$d = explode ( "-", $sundayDate );
 		$time = mktime ( 0, 0, 0, $d [1], $d [2], $d [0] );
@@ -121,18 +121,18 @@ $dayWidth = 100/8;
 		$sufixStream = date ( "S", $time );
 		
 		?>
-		<b><?= SyTranslator::DateFromTime($time, $lang) ?> </b>
+		<b><?php echo  SyTranslator::DateFromTime($time, $lang) ?> </b>
 
 	</div>
 
 	<div class="col-md-4 text-right">
 		<button type="button" onclick="location.href='calendar/bookday'"
-			class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
-			<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
+			class="btn btn-default"><?php echo  SyTranslator::Day($lang) ?></button>
+			<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?php echo  SyTranslator::Day_Area($lang) ?></button>
 		<button type="button" onclick="location.href='calendar/bookweek'"
-			class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
-		<button type="button" class="btn btn-default active"><?= SyTranslator::Week_Area($lang) ?></button>
-		<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
+			class="btn btn-default "><?php echo  SyTranslator::Week($lang) ?></button>
+		<button type="button" class="btn btn-default active"><?php echo  SyTranslator::Week_Area($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?php echo  SyTranslator::Month($lang) ?></button>
 	</div>
 </div>
 <br></br>
@@ -149,7 +149,7 @@ $dayWidth = 100/8;
 	<div class="col-lg-8" id="colDiv0">
 		<div style="height: 50px;">
 			<p class="text-center">
-				<b><?= $this->clean($areaname) ?></b>
+				<b><?php echo  $this->clean($areaname) ?></b>
 			</p>
 		</div>
 	</div>
@@ -197,16 +197,16 @@ $dayWidth = 100/8;
 					<?php 
 					if ( $i > -1){
 					?>
-					<div class="col-lg-1 row-cell" <?= $styleLineHeader ?> >
+					<div class="col-lg-1 row-cell" <?php echo  $styleLineHeader ?> >
 					<p>
-					<b><?= $this->clean($resourcesBase[$i]['name']) ?></b>
+					<b><?php echo  $this->clean($resourcesBase[$i]['name']) ?></b>
 					</p>
 					</div>
 					<?php	
 					}
 					else{
 						?>
-						<div class="col-lg-1 row-cell" <?= $styleLineHeader ?>>
+						<div class="col-lg-1 row-cell" <?php echo  $styleLineHeader ?>>
 						<p> </p>
 						</div>
 						<?php	
@@ -231,11 +231,11 @@ $dayWidth = 100/8;
 							
 							
 						?>
-							<div class="col-lg-1 row-cell" <?= $styleLineHeader ?>>
+							<div class="col-lg-1 row-cell" <?php echo  $styleLineHeader ?>>
 
 								<div id="tcelltop" style="height: 60px;" class="text-center">
 									<p class="text-center">
-									<b> <?= $dayTitle ?> </b>
+									<b> <?php echo  $dayTitle ?> </b>
 									</p>
 								</div>
 							</div>
@@ -243,7 +243,7 @@ $dayWidth = 100/8;
 						}
 						else{
 						?>
-							<div class="col-lg-1 row-cell" <?= $styleLine ?>>
+							<div class="col-lg-1 row-cell" <?php echo  $styleLine ?>>
 								<!-- Print the reservations for the given day -->
 							<?php
 							$resourceCount = $i;
@@ -281,9 +281,9 @@ $dayWidth = 100/8;
 										$text = "00:00". " - " . $txtEndTime . "<br />";
 										$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'], false );
 										?>
-										<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color_bg']?>;"> 
-											<a class="text-center" style="color:#<?=$entry['color_text']?>; font-size:<?=$agendaStyle["resa_font_size"]?>" href="calendar/editreservation/r_<?= $entry['id'] ?>">
-												<?=$text?>
+										<div class="text-center" id="tcellResa" style="background-color:#<?php echo $entry['color_bg']?>;"> 
+											<a class="text-center" style="color:#<?php echo $entry['color_text']?>; font-size:<?php echo $agendaStyle["resa_font_size"]?>" href="calendar/editreservation/r_<?php echo  $entry['id'] ?>">
+												<?php echo $text?>
 											</a>
 										</div>
 										<?php
@@ -305,9 +305,9 @@ $dayWidth = 100/8;
 									$text = date ( "H:i", $entry ["start_time"] ) . " - " . $txtEndTime . "<br />";
 									$text .= $modelBookingSetting->getSummary ( $entry ["recipient_fullname"], $entry ['phone'], $shortDescription, $entry ['full_description'], false );
 									?>
-									<div class="text-center" id="tcellResa" style="background-color:#<?=$entry['color_bg']?>;"> 
-											<a class="text-center" style="color:#<?=$entry['color_text']?>; font-size:<?=$agendaStyle["resa_font_size"]?>" href="calendar/editreservation/r_<?= $entry['id'] ?>">
-											<?=$text?>
+									<div class="text-center" id="tcellResa" style="background-color:#<?php echo $entry['color_bg']?>;"> 
+											<a class="text-center" style="color:#<?php echo $entry['color_text']?>; font-size:<?php echo $agendaStyle["resa_font_size"]?>" href="calendar/editreservation/r_<?php echo  $entry['id'] ?>">
+											<?php echo $text?>
 											</a>
 									</div>
 									<?php
@@ -325,7 +325,7 @@ $dayWidth = 100/8;
 									?>
 									<div class="text-center">
 										<a class="glyphicon glyphicon-plus"
-											href="calendar/editreservation/t_<?= $dateString."_"."8"."_".$resourceID ?>">
+											href="calendar/editreservation/t_<?php echo  $dateString."_"."8"."_".$resourceID ?>">
 										</a>
 									</div>
 									<?php
@@ -361,5 +361,5 @@ $dayWidth = 100/8;
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

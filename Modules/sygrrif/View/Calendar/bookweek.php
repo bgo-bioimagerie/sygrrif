@@ -24,7 +24,7 @@ $dayWidth = 100/$dayWidth;
 
 a{
 	width: 100%;
-	color: <?= "#".$agendaStyle["header_background"] ?>;
+	color: <?php echo  "#".$agendaStyle["header_background"] ?>;
 }
 
 #tcell{
@@ -73,8 +73,8 @@ a{
   .seven-cols .col-md-1,
   .seven-cols .col-sm-1,
   .seven-cols .col-lg-1 {
-    width: <?=$dayWidth?>%;
-    *width: <?=$dayWidth?>%;
+    width: <?php echo $dayWidth?>%;
+    *width: <?php echo $dayWidth?>%;
   }
 }
 /* 14% = 100% (full-width row) divided by 7 */
@@ -104,7 +104,7 @@ img{
 		<?php 
 		}
 	?>
-    	<p><?= $message ?></p>
+    	<p><?php echo  $message ?></p>
     	</div>
 	<?php } ?>
 
@@ -116,7 +116,7 @@ img{
 <div class="col-md-8 text-left">
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/dayweekbefore'">&lt;</button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/dayweekafter'">></button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/thisWeek'"><?= SyTranslator::This_week($lang) ?></button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookweek/thisWeek'"><?php echo  SyTranslator::This_week($lang) ?></button>
 <?php 
 $d = explode("-", $mondayDate);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -127,7 +127,7 @@ $yearStream = date("Y", $time);
 $sufixStream = date("S", $time);
 
 ?>
-<b> <?= SyTranslator::DateFromTime($time, $lang) ?> -  </b>
+<b> <?php echo  SyTranslator::DateFromTime($time, $lang) ?> -  </b>
 <?php 
 $d = explode("-", $sundayDate);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -138,17 +138,17 @@ $yearStream = date("Y", $time);
 $sufixStream = date("S", $time);
 
 ?>
-<b><?= SyTranslator::DateFromTime($time, $lang) ?> </b>
+<b><?php echo  SyTranslator::DateFromTime($time, $lang) ?> </b>
 
 </div>
 
 
 <div class="col-md-4 text-right">
-<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
-<button type="button" class="btn btn-default active"><?= SyTranslator::Week($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?php echo  SyTranslator::Day($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?php echo  SyTranslator::Day_Area($lang) ?></button>
+<button type="button" class="btn btn-default active"><?php echo  SyTranslator::Week($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?php echo  SyTranslator::Week_Area($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?php echo  SyTranslator::Month($lang) ?></button>
 </div>
 </div>
 
@@ -178,7 +178,7 @@ else if($size_bloc_resa == 3600){
 	$heightCol = $agendaStyle["line_height"] . "px";;
 }
 ?>
-	<div id="tcelltop" style="height: <?= $agendaStyle["line_height"]+50 ?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>"></div> <!-- For the resource title space -->
+	<div id="tcelltop" style="height: <?php echo  $agendaStyle["line_height"]+50 ?>px; background-color:<?php echo  "#" . $agendaStyle["header_background"]?>; color: <?php echo  "#" . $agendaStyle["header_color"]?>"></div> <!-- For the resource title space -->
 	
 	<?php 
 	// Hours
@@ -186,8 +186,8 @@ else if($size_bloc_resa == 3600){
 
 		?>
 	
-		<div id="tcell" style="height: <?= $heightCol ?>; background-color: <?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
-		<?=$h?>:00
+		<div id="tcell" style="height: <?php echo  $heightCol ?>; background-color: <?php echo  "#" . $agendaStyle["header_background"]?>; color: <?php echo  "#" . $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+		<?php echo $h?>:00
 		</div>
 	<?php 	
 	}
@@ -197,8 +197,8 @@ else if($size_bloc_resa == 3600){
 <!-- hours reservation -->
 <div class="col-xs-11" id="colDiv">
 
-	<div id="tcelltop" style="height: <?= $agendaStyle["line_height"] ?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>">
-	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b><br/><?= $this->clean($resourceBase['description']) ?></p>
+	<div id="tcelltop" style="height: <?php echo  $agendaStyle["line_height"] ?>px; background-color:<?php echo  "#" . $agendaStyle["header_background"]?>; color: <?php echo  "#" . $agendaStyle["header_color"]?>">
+	<p class="text-center"><b><?php echo  $this->clean($resourceBase['name']) ?></b><br/><?php echo  $this->clean($resourceBase['description']) ?></p>
 	</div>
 
 	
@@ -235,10 +235,10 @@ else if($size_bloc_resa == 3600){
 			?>
 			
 			
-			<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?= $idcss ?>">
+			<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="<?php echo  $idcss ?>">
 			
-			<div id="tcelltop" style="height: 50px; background-color:<?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>">
-			<p class="text-center"><b> <?= $dayTitle ?></b> </p>
+			<div id="tcelltop" style="height: 50px; background-color:<?php echo  "#" . $agendaStyle["header_background"]?>; color: <?php echo  "#" . $agendaStyle["header_color"]?>">
+			<p class="text-center"><b> <?php echo  $dayTitle ?></b> </p>
 			</div>
 			
 			<?php 
@@ -261,5 +261,5 @@ else if($size_bloc_resa == 3600){
 
 </div>
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

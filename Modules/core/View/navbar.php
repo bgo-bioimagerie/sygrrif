@@ -37,9 +37,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 				}	
 				?>
 			
-				<li><a href="<?= $refHome ?>"><?= CoreTranslator::Home($lang) ?></a></li>
+				<li><a href="<?php echo  $refHome ?>"><?php echo  CoreTranslator::Home($lang) ?></a></li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?= CoreTranslator::Tools($lang) ?> <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo  CoreTranslator::Tools($lang) ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 					<?php 
 					
@@ -47,7 +47,7 @@ if (isset($_SESSION["user_settings"]["language"])){
         					$key = $tool['link'];
         					$value = $tool['name'];
         					?>
-        					<li><a href="<?=$key?>" > <?= CoreTranslator::MenuItem($value, $lang) ?> </a></li>
+        					<li><a href="<?php echo $key?>" > <?php echo  CoreTranslator::MenuItem($value, $lang) ?> </a></li>
         					<?php
         				}
         			?>
@@ -58,7 +58,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				if ($toolAdmin){
 				?>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?= CoreTranslator::Admin($lang) ?> <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><?php echo  CoreTranslator::Admin($lang) ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
 				      <?php 
         				foreach ($toolAdmin as $tool) {
@@ -74,12 +74,12 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?= $userName ?> <span class="caret"></span></a>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo  $userName ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-        				<li><a href=users/manageaccount > <?= CoreTranslator::My_Account($lang) ?> </a></li>
-        				<li><a href=settings > <?= CoreTranslator::Settings($lang) ?> </a></li>
+        				<li><a href=users/manageaccount > <?php echo  CoreTranslator::My_Account($lang) ?> </a></li>
+        				<li><a href=settings > <?php echo  CoreTranslator::Settings($lang) ?> </a></li>
         				<li class="divider"></li>
-        				<li><a href=connection/logout > <?= CoreTranslator::logout($lang) ?> </a></li>
+        				<li><a href=connection/logout > <?php echo  CoreTranslator::logout($lang) ?> </a></li>
 					</ul>
 				</li>
 			</ul>

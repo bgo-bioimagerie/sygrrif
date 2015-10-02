@@ -20,69 +20,69 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">ID</label>
 			<div class="col-xs-10">
-			    <input class="form-control" id="id" type="text" name="id" value=<?= $user['id'] ?> readonly
+			    <input class="form-control" id="id" type="text" name="id" value=<?php echo  $user['id'] ?> readonly
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name" value=<?= $user['name'] ?>
+				<input class="form-control" id="name" type="text" name="name" value=<?php echo  $user['name'] ?>
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Firstname($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Firstname($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
-				       value = <?= $user['firstname'] ?>
+				       value = <?php echo  $user['firstname'] ?>
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="login" class="control-label col-xs-2"><?= CoreTranslator::Login($lang)?></label>
+			<label for="login" class="control-label col-xs-2"><?php echo  CoreTranslator::Login($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="login" type="text" name="login"
-					   value = "<?= $user['login'] ?>" readonly
+					   value = "<?php echo  $user['login'] ?>" readonly
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Email($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Email($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
-				       value = "<?= $user['email'] ?>"
+				       value = "<?php echo  $user['email'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Phone($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Phone($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
-				       value = "<?= $user['tel'] ?>"
+				       value = "<?php echo  $user['tel'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
-				       value = "<?= $unit ?>" readonly
+				       value = "<?php echo  $unit ?>" readonly
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Responsible($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
-				       value = "<?= $resp ?>" readonly
+				       value = "<?php echo  $resp ?>" readonly
 				/>
 			</div>
 		</div>
@@ -103,7 +103,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 						} 
 				  ?>
 			      
-			      <input type="checkbox" name="is_responsible" <?= $checked ?> disabled="disabled"><?= CoreTranslator::is_responsible($lang)?>
+			      <input type="checkbox" name="is_responsible" <?php echo  $checked ?> disabled="disabled"><?php echo  CoreTranslator::is_responsible($lang)?>
 			      
 			    </label>
               </div>
@@ -111,32 +111,32 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Status($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
-				       value = "<?= $status ?>" readonly
+				       value = "<?php echo  $status ?>" readonly
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="convention" type="text" name="convention" value = "<?= $user['convention'] ?>"
+				<input class="form-control" id="convention" type="text" name="convention" value = "<?php echo  $user['convention'] ?>"
 				disabled="disabled" />
 			</div>
 		</div>
 		<br>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_convention($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" type="text" value = "<?= $user['date_convention'] ?>" name="date_convention" disabled="disabled">
+				<input class="form-control" type="text" value = "<?php echo  $user['date_convention'] ?>" name="date_convention" disabled="disabled">
 		    </div>
 		</div>
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)  ?>" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang)?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang)  ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang)?></button>
 		</div>
 	
 		
@@ -149,29 +149,29 @@ if (isset($_SESSION["user_settings"]["language"])){
 	  <form role="form" class="form-horizontal" action="users/accountchangepwdquery" method="post">
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Change_password($lang) ?>
+			<?php echo  CoreTranslator::Change_password($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 		 
-		<input class="form-control" id="id" type="hidden" name="id" value=<?= $user['id'] ?> >
-		<input class="form-control" id="login" type="hidden" name="login" value=<?= $user['login'] ?> >
+		<input class="form-control" id="id" type="hidden" name="id" value=<?php echo  $user['id'] ?> >
+		<input class="form-control" id="login" type="hidden" name="login" value=<?php echo  $user['login'] ?> >
 				
 		<div class="form-group">
-			<label for="pwd" class="control-label col-xs-2"><?= CoreTranslator::Curent_password($lang)  ?> </label>
+			<label for="pwd" class="control-label col-xs-2"><?php echo  CoreTranslator::Curent_password($lang)  ?> </label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="previouspwd" name="previouspwd" placeholder="Password">
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="pwd" class="control-label col-xs-2"><?= CoreTranslator::New_password($lang)?></label>
+			<label for="pwd" class="control-label col-xs-2"><?php echo  CoreTranslator::New_password($lang)?></label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
 			</div>
 		<div class="form-group">
 		</div>
-			<label for="pwdc" class="control-label col-xs-2"><?= CoreTranslator::Confirm($lang) ?></label>
+			<label for="pwdc" class="control-label col-xs-2"><?php echo  CoreTranslator::Confirm($lang) ?></label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="pwdc" name="pwdc" placeholder="Password">
 			</div>
@@ -179,13 +179,13 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<br>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
 	  </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

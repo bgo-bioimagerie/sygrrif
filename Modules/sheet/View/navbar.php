@@ -26,13 +26,13 @@ legend{
 </head>
 
 <div class="col-xs-2" style="background-color: #fff; height:5000px; border-right: 2px solid #e1e1e1; ">
-		<h2><?= ShTranslator::Sheets($lang) ?></h2>
+		<h2><?php echo  ShTranslator::Sheets($lang) ?></h2>
 		
 		<div class="col-xs-12" >
 			<fieldset>
-				<legend><?= ShTranslator::Templates($lang) ?></legend>
-					<button onclick="location.href='shtemplates/'" class="btn btn-link" id="navlink"><?= ShTranslator::Templates($lang) ?></button>
-					<button onclick="location.href='shtemplates/edit'" class="btn btn-link" id="navlink"><?= ShTranslator::Add($lang) ?></button>
+				<legend><?php echo  ShTranslator::Templates($lang) ?></legend>
+					<button onclick="location.href='shtemplates/'" class="btn btn-link" id="navlink"><?php echo  ShTranslator::Templates($lang) ?></button>
+					<button onclick="location.href='shtemplates/edit'" class="btn btn-link" id="navlink"><?php echo  ShTranslator::Add($lang) ?></button>
 			</fieldset>
 		</div>
 		
@@ -46,12 +46,12 @@ legend{
 			$sheetsTemplates = $ShTemplate->getTemplates("name");
 			?>
 			<fieldset>
-				<legend><?= ShTranslator::Sheets($lang) ?></legend>
+				<legend><?php echo  ShTranslator::Sheets($lang) ?></legend>
 					<?php 
 					foreach($sheetsTemplates as $template){
 						?>
-						<button onclick="location.href='sheet/listsheet/<?= $template["id"] ?>'" class="btn btn-link" id="navlink"><?= $template["name"] ?></button>
-						<button onclick="location.href='sheet/add/<?= $template["id"] ?>'" class="btn btn-link" id="navlink">+</button>
+						<button onclick="location.href='sheet/listsheet/<?php echo  $template["id"] ?>'" class="btn btn-link" id="navlink"><?php echo  $template["name"] ?></button>
+						<button onclick="location.href='sheet/add/<?php echo  $template["id"] ?>'" class="btn btn-link" id="navlink">+</button>
 						<br/>
 						<?php 
 					}

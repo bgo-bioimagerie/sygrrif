@@ -52,7 +52,7 @@
 
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Users($lang) ?>
+			<?php echo  CoreTranslator::Users($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -69,21 +69,21 @@
 				$searchTxt = "";
 			}
 			?>
-			<label for="inputEmail" class="control-label col-md-2"><?= CoreTranslator::Search($lang)?></label>
+			<label for="inputEmail" class="control-label col-md-2"><?php echo  CoreTranslator::Search($lang)?></label>
 			<div class="col-md-3">
 				<select class="form-control" name="searchColumn">
 					<?php $selected = "selected=\"selected\""; ?>
 					<OPTION value="0" <?php if($searchColumn=="0"){echo $selected;} ?> > Select </OPTION>
-					<OPTION value="name" <?php if($searchColumn=="name"){echo $selected;} ?> > <?= CoreTranslator::Name($lang) ?> </OPTION>
-					<OPTION value="firstname" <?php if($searchColumn=="firstname"){echo $selected;} ?> > <?= CoreTranslator::Firstname($lang) ?> </OPTION>
-					<OPTION value="unit" <?php if($searchColumn=="unit"){echo $selected;} ?> > <?= CoreTranslator::Unit($lang) ?></OPTION>
-					<OPTION value="responsible" <?php if($searchColumn=="responsible"){echo $selected;} ?> > <?= CoreTranslator::Responsible($lang) ?></OPTION>
-					<OPTION value="id_status" <?php if($searchColumn=="id_status"){echo $selected;} ?> > <?= CoreTranslator::Status($lang) ?></OPTION>
+					<OPTION value="name" <?php if($searchColumn=="name"){echo $selected;} ?> > <?php echo  CoreTranslator::Name($lang) ?> </OPTION>
+					<OPTION value="firstname" <?php if($searchColumn=="firstname"){echo $selected;} ?> > <?php echo  CoreTranslator::Firstname($lang) ?> </OPTION>
+					<OPTION value="unit" <?php if($searchColumn=="unit"){echo $selected;} ?> > <?php echo  CoreTranslator::Unit($lang) ?></OPTION>
+					<OPTION value="responsible" <?php if($searchColumn=="responsible"){echo $selected;} ?> > <?php echo  CoreTranslator::Responsible($lang) ?></OPTION>
+					<OPTION value="id_status" <?php if($searchColumn=="id_status"){echo $selected;} ?> > <?php echo  CoreTranslator::Status($lang) ?></OPTION>
 		
 	  			</select>
 			</div>
 			<div class="col-md-3">
-				<input class="form-control" id="searchTxt" type="text" name="searchTxt" value="<?= $searchTxt ?>"
+				<input class="form-control" id="searchTxt" type="text" name="searchTxt" value="<?php echo  $searchTxt ?>"
 				/>
 			</div>
 			<div class="col-md-2" id="button-div">
@@ -100,18 +100,18 @@
 			<thead>
 				<tr>
 					<th class="text-center" style="width:2%"><a href="users/index/id">ID</a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/name"><?= CoreTranslator::Name($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/firstname"><?= CoreTranslator::Firstname($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/login"><?= CoreTranslator::Login($lang) ?></a></tH>
-					<th class="text-center" style="width:12.12%"><a href="users/index/email"><?= CoreTranslator::Email($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/tel"><?= CoreTranslator::Phone($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/unit"><?= CoreTranslator::Unit($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/responsible"><?= CoreTranslator::Responsible($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/id_status"><?= CoreTranslator::Status($lang) ?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/is_responsible"><?= CoreTranslator::is_responsible($lang)?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/convention"><?= CoreTranslator::Convention($lang)?></a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/date_created"><?= CoreTranslator::User_from($lang) ?> </a></th>
-					<th class="text-center" style="width:7.12%"><a href="users/index/date_last_login"><?= CoreTranslator::Last_connection($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/name"><?php echo  CoreTranslator::Name($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/firstname"><?php echo  CoreTranslator::Firstname($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/login"><?php echo  CoreTranslator::Login($lang) ?></a></tH>
+					<th class="text-center" style="width:12.12%"><a href="users/index/email"><?php echo  CoreTranslator::Email($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/tel"><?php echo  CoreTranslator::Phone($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/unit"><?php echo  CoreTranslator::Unit($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/responsible"><?php echo  CoreTranslator::Responsible($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/id_status"><?php echo  CoreTranslator::Status($lang) ?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/is_responsible"><?php echo  CoreTranslator::is_responsible($lang)?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/convention"><?php echo  CoreTranslator::Convention($lang)?></a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/date_created"><?php echo  CoreTranslator::User_from($lang) ?> </a></th>
+					<th class="text-center" style="width:7.12%"><a href="users/index/date_last_login"><?php echo  CoreTranslator::Last_connection($lang) ?></a></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -120,15 +120,15 @@
 				<?php if ($user ['id'] > 1){ ?>
 				<tr>
 					<?php $userId = $this->clean ( $user ['id'] ); ?>
-					<td style="width:2%"><?= $userId ?></td>
-				    <td style="width:7.12%"><a href="users/edit/<?= $userId ?>" > <?= $this->clean ( $user ['name'] ); ?></a></td>
-				    <td style="width:7.12%"><?= $this->clean ( $user ['firstname'] ); ?></td>
-				    <td style="width:7.12%"><?= $this->clean ( $user ['login'] ); ?></td>
-				    <td style="width:13.12%"><?= $this->clean ( $user ['email'] ); ?></td>
-				    <td style="width:7.12%"><?= $this->clean ( $user ['tel'] ); ?></td>
-				    <td style="width:7.12%"><?= $this->clean ( $user ['unit'] ); ?></td>
-				    <td style="width:7.12%"><?= $this->clean ( $user ['resp_name'] . " " . $user ['resp_firstname'] ); ?></td>
-				    <td style="width:7.12%"><?= $this->clean ( $user ['status'] ); ?></td>
+					<td style="width:2%"><?php echo  $userId ?></td>
+				    <td style="width:7.12%"><a href="users/edit/<?php echo  $userId ?>" > <?php echo  $this->clean ( $user ['name'] ); ?></a></td>
+				    <td style="width:7.12%"><?php echo  $this->clean ( $user ['firstname'] ); ?></td>
+				    <td style="width:7.12%"><?php echo  $this->clean ( $user ['login'] ); ?></td>
+				    <td style="width:13.12%"><?php echo  $this->clean ( $user ['email'] ); ?></td>
+				    <td style="width:7.12%"><?php echo  $this->clean ( $user ['tel'] ); ?></td>
+				    <td style="width:7.12%"><?php echo  $this->clean ( $user ['unit'] ); ?></td>
+				    <td style="width:7.12%"><?php echo  $this->clean ( $user ['resp_name'] . " " . $user ['resp_firstname'] ); ?></td>
+				    <td style="width:7.12%"><?php echo  $this->clean ( $user ['status'] ); ?></td>
 				    <td style="width:7.12%"><?php if($this->clean ( $user ['is_responsible'] )){echo "true";}else{echo "false";} ?></td>
 				    <td style="width:7.12%"> 
 				    	<?php 
@@ -142,11 +142,11 @@
 				    	}
 				    	?>
 				    
-				      <?= $convTxt ?>
+				      <?php echo  $convTxt ?>
 				    </td>
-				    <td style="width:7.12%"><?= CoreTranslator::dateFromEn( $this->clean ( $user ['date_created']) , $lang) ?></td>
-				    <td style="width:7.12%"><?= CoreTranslator::dateFromEn( $this->clean ( $user ['date_last_login'] ), $lang) ?></td>
-				    <td style="width:2.12%"><button onclick="location.href='users/edit/<?= $userId ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?></button></td>  
+				    <td style="width:7.12%"><?php echo  CoreTranslator::dateFromEn( $this->clean ( $user ['date_created']) , $lang) ?></td>
+				    <td style="width:7.12%"><?php echo  CoreTranslator::dateFromEn( $this->clean ( $user ['date_last_login'] ), $lang) ?></td>
+				    <td style="width:2.12%"><button onclick="location.href='users/edit/<?php echo  $userId ?>'" class="btn btn-xs btn-primary"><?php echo  CoreTranslator::Edit($lang) ?></button></td>  
 	    		</tr>
 	    		<?php }endforeach; ?>
 				
@@ -157,5 +157,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

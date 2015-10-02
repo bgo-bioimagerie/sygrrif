@@ -23,7 +23,7 @@
 		<?php 
 		}
 	?>
-    	<p><?= $message ?></p>
+    	<p><?php echo  $message ?></p>
     	</div>
 	<?php endif; ?>
     
@@ -31,5 +31,5 @@
        
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -15,13 +15,13 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::Authorized_users($lang) ?>
+			<?php echo  SyTranslator::Authorized_users($lang) ?>
 				 <br> <small></small>
 			</h1>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Resource_categories($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Resource_categories($lang) ?></label>
 			<div class="col-xs-8">
 					<select class="form-control" name="resource_id" id="resource_id"
 						>
@@ -30,7 +30,7 @@
 						$rId = $this->clean( $r['id'] );	
 						$rName = $this->clean( $r['name'] );
 					?>
-					<OPTION value="<?= $rId ?>"> <?=$rName?> </OPTION>
+					<OPTION value="<?php echo  $rId ?>"> <?php echo $rName?> </OPTION>
 					<?php
 					}
 					?>
@@ -44,8 +44,8 @@
 			
 		</div>	
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -59,7 +59,7 @@
 	
 		<div class="page-header">
 			<h1>
-				<?= SyTranslator::Active_users($lang) ?> <br> <small></small>
+				<?php echo  SyTranslator::Active_users($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 		
@@ -68,20 +68,20 @@
 			<div class="col-xs-8">
 					<select class="form-control" name="user_type" id="user_type"
 						>
-					<OPTION value="1"> <?= SyTranslator::User($lang) ?> </OPTION>
-					<OPTION value="2"> <?= SyTranslator::Responsible($lang) ?> </OPTION>
-					<OPTION value="3"> <?= SyTranslator::User_and_Responsible($lang) ?> </OPTION>
+					<OPTION value="1"> <?php echo  SyTranslator::User($lang) ?> </OPTION>
+					<OPTION value="2"> <?php echo  SyTranslator::Responsible($lang) ?> </OPTION>
+					<OPTION value="3"> <?php echo  SyTranslator::User_and_Responsible($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>	
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang)?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?= SyTranslator::Cancel($lang)?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Ok($lang)?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>
 </div>
  -->
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

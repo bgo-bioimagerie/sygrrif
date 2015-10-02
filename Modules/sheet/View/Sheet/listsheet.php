@@ -15,7 +15,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= $templateName ?>
+			<?php echo  $templateName ?>
 			  <br> <small></small>
 			</h1>
 		</div>
@@ -45,12 +45,12 @@
 						if (!is_int($key) && $key != "id_template"){
 					?> 
 					
-						<td><?= $this->clean ($val) ?></td>
+						<td><?php echo  $this->clean ($val) ?></td>
 					<?php 	
 					}}	
 					?>
 					<td>
-						<button type='button' onclick="location.href='sheet/edit/<?= $this->clean ( $arr ['id'] ) ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?></button>
+						<button type='button' onclick="location.href='sheet/edit/<?php echo  $this->clean ( $arr ['id'] ) ?>'" class="btn btn-xs btn-primary"><?php echo  CoreTranslator::Edit($lang) ?></button>
 					</td>  
 		    		</tr>
 		    	<?php } ?>
@@ -61,5 +61,5 @@
 	</div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

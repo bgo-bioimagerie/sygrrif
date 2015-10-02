@@ -28,7 +28,7 @@
 	
 		<div class="page-header">
 			<h1>
-				<?= SyTranslator::grr_report($lang) ?> <br> <small></small>
+				<?php echo  SyTranslator::grr_report($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 		
@@ -36,18 +36,18 @@
 		if (isset($errorMessage) && $errorMessage != ''){
 			?>
 			<div class="alert alert-danger">
-				<p><?= $errorMessage ?></p>
+				<p><?php echo  $errorMessage ?></p>
 			</div>
 		<?php } ?>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Date_Start($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date form_date_<?= $lang ?>'>
+				<div class='input-group date form_date_<?php echo  $lang ?>'>
 				
 				    <?php $date = ""; if(isset($searchDate_start)){$date=CoreTranslator::dateFromEn($searchDate_start, $lang);}?> 
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_start" id="searchDate_start"
-					       value="<?=$date?>" />
+					       value="<?php echo $date?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -55,12 +55,12 @@
 		    </div>
 		</div>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Date_End($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date form_date_<?= $lang ?>'>
+				<div class='input-group date form_date_<?php echo  $lang ?>'>
 				<?php $date = ""; if(isset($searchDate_end)){$date=CoreTranslator::dateFromEn($searchDate_end, $lang);}?> 
 					<input id="test32" type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_end" 
-					       value="<?= $date ?>" />
+					       value="<?php echo  $date ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -80,7 +80,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::query($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::query($lang) ?></label>
 			<div class="col-xs-10">
 			<?php for($i = 0 ; $i < 5 ; $i++){
 			?>
@@ -112,19 +112,19 @@
 						$checkedRec = "selected=\"selected\"";
 					}
 					?>
-					<OPTION value="area" <?= $checkedArea ?>> <?= SyTranslator::Area($lang) ?> </OPTION>
-					<OPTION value="resource" <?= $checkedRes ?>> <?= SyTranslator::Resource($lang) ?> </OPTION>
-					<OPTION value="color_code" <?= $checkedC ?>> <?= SyTranslator::Color_code($lang) ?> </OPTION>
-					<OPTION value="short_description" <?= $checkedS ?>> <?= SyTranslator::Short_description($lang) ?> </OPTION>
-					<OPTION value="full_description" <?= $checkedF ?>> <?= SyTranslator::Full_description($lang) ?> </OPTION>
-					<OPTION value="recipient" <?= $checkedRec ?>> <?= SyTranslator::recipient($lang) ?> </OPTION>
+					<OPTION value="area" <?php echo  $checkedArea ?>> <?php echo  SyTranslator::Area($lang) ?> </OPTION>
+					<OPTION value="resource" <?php echo  $checkedRes ?>> <?php echo  SyTranslator::Resource($lang) ?> </OPTION>
+					<OPTION value="color_code" <?php echo  $checkedC ?>> <?php echo  SyTranslator::Color_code($lang) ?> </OPTION>
+					<OPTION value="short_description" <?php echo  $checkedS ?>> <?php echo  SyTranslator::Short_description($lang) ?> </OPTION>
+					<OPTION value="full_description" <?php echo  $checkedF ?>> <?php echo  SyTranslator::Full_description($lang) ?> </OPTION>
+					<OPTION value="recipient" <?php echo  $checkedRec ?>> <?php echo  SyTranslator::recipient($lang) ?> </OPTION>
 				</select>
 				
 				</div>
 				<div class="col-xs-4">
 				<select class="form-control" name="type_recherche[]" >
-					<OPTION value="1" <?php if(isset($type_recherche[$i]) && $type_recherche[$i] == 1){echo "selected=\"selected\"";}?>> <?= SyTranslator::Contains($lang) ?> </OPTION>
-					<OPTION value="0" <?php if(isset($type_recherche[$i]) && $type_recherche[$i] == 0){echo "selected=\"selected\"";}?>> <?= SyTranslator::Does_not_contain($lang) ?> </OPTION>
+					<OPTION value="1" <?php if(isset($type_recherche[$i]) && $type_recherche[$i] == 1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Contains($lang) ?> </OPTION>
+					<OPTION value="0" <?php if(isset($type_recherche[$i]) && $type_recherche[$i] == 0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Does_not_contain($lang) ?> </OPTION>
 				</select>
 				</div>
 				<div class="col-xs-4">
@@ -134,7 +134,7 @@
 					$value = $text[$i];
 				}
 				?>
-				<input type="text" class="form-control" name="text[]" value="<?=$value?>" />
+				<input type="text" class="form-control" name="text[]" value="<?php echo $value?>" />
 		</div>
 		<?php 	
 		}?>
@@ -142,7 +142,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Output($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Output($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="output">
 					<?php 
@@ -180,17 +180,17 @@
 						}
 					}
 					?>
-					<OPTION value="recipient" <?= $checkedRec ?>> <?= SyTranslator::recipient($lang) ?> </OPTION>
-					<OPTION value="short_description" <?= $checkedS ?>> <?= SyTranslator::Short_description($lang) ?> </OPTION>
-					<OPTION value="color_code" <?= $checkedC ?>> <?= SyTranslator::Color_code($lang) ?> </OPTION>
+					<OPTION value="recipient" <?php echo  $checkedRec ?>> <?php echo  SyTranslator::recipient($lang) ?> </OPTION>
+					<OPTION value="short_description" <?php echo  $checkedS ?>> <?php echo  SyTranslator::Short_description($lang) ?> </OPTION>
+					<OPTION value="color_code" <?php echo  $checkedC ?>> <?php echo  SyTranslator::Color_code($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input class="form-control" id="name" type="hidden" name="is_request" value="y"/>
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -202,17 +202,17 @@
 if(isset($table)){
 	?>
 <table class="table table-striped text-center table-bordered">
-   <caption><?= count($table) ?> réservations trouvées </caption>
+   <caption><?php echo  count($table) ?> réservations trouvées </caption>
 
    <thead> <!-- En-tête du tableau -->
        <tr>				
-           <th><?= SyTranslator::Area($lang) ?></th>
-           <th><?= SyTranslator::Resource($lang) ?></th>
-           <th><?= SyTranslator::Short_description($lang) ?></th>
-           <th><?= SyTranslator::Date($lang) ?></th> 
-           <th> <?= SyTranslator::Full_description($lang) ?> </th>
-           <th> <?= SyTranslator::Color_code($lang) ?> </th>
-           <th> <?= SyTranslator::recipient($lang) ?> </th>
+           <th><?php echo  SyTranslator::Area($lang) ?></th>
+           <th><?php echo  SyTranslator::Resource($lang) ?></th>
+           <th><?php echo  SyTranslator::Short_description($lang) ?></th>
+           <th><?php echo  SyTranslator::Date($lang) ?></th> 
+           <th> <?php echo  SyTranslator::Full_description($lang) ?> </th>
+           <th> <?php echo  SyTranslator::Color_code($lang) ?> </th>
+           <th> <?php echo  SyTranslator::recipient($lang) ?> </th>
        </tr>
    </thead>
 
@@ -221,9 +221,9 @@ if(isset($table)){
 	   foreach ($table as $t){
    	   ?>
        <tr>
-           <td> <?= $t["area_name"] ?> </td>
-           <td><?= $t["resource"] ?></td>
-           <td><?= $t["short_description"] ?></td>
+           <td> <?php echo  $t["area_name"] ?> </td>
+           <td><?php echo  $t["resource"] ?></td>
+           <td><?php echo  $t["short_description"] ?></td>
            
            <?php 
            $date = "debut : " . date( "d/m/Y à H:i", $t["start_time"]) . "<br/>";
@@ -231,10 +231,10 @@ if(isset($table)){
            $date .= "durée : " . ($t["end_time"] - $t["start_time"])/60 . " minutes";
            ?>
            
-           <td><?= $date ?></td>
-           <td><?= $t["full_description"] ?></td>
-           <td><?= $t["color"] ?></td>
-           <td><?= $t["login"] ?></td>
+           <td><?php echo  $date ?></td>
+           <td><?php echo  $t["full_description"] ?></td>
+           <td><?php echo  $t["color"] ?></td>
+           <td><?php echo  $t["login"] ?></td>
        </tr>
        
        
@@ -274,7 +274,7 @@ if(isset($summaryTable)){
    <?php 
    foreach ($resourcesNames as $name){
    ?>
-   <th><?= $name ?></th>
+   <th><?php echo  $name ?></th>
    <?php 
    }	 
    ?>
@@ -291,7 +291,7 @@ if(isset($summaryTable)){
    	$i++;
    	?>
    	<tr>
-   	<th><?= $entrySummary[$i] ?></th>
+   	<th><?php echo  $entrySummary[$i] ?></th>
    	<?php 
    		$j = -1;
    		$totalC = 0;
@@ -300,13 +300,13 @@ if(isset($summaryTable)){
    			$j++;
 	   	?>
 		   	
-   			<th> (<?= $col ?>) <?= $timeTable[$entrySummary[$i]][$resourcesNames[$j]]/3600 ?> </th>
+   			<th> (<?php echo  $col ?>) <?php echo  $timeTable[$entrySummary[$i]][$resourcesNames[$j]]/3600 ?> </th>
    		<?php
    			$totalC += $col;
    			$totalH += $timeTable[$entrySummary[$i]][$resourcesNames[$j]];
    		}
    	?>
-   		<th>(<?= $totalC ?>) <?= $totalH/3600 ?> </th>
+   		<th>(<?php echo  $totalC ?>) <?php echo  $totalH/3600 ?> </th>
    	</tr>
    	<?php
    	$totalCG += $totalC;
@@ -326,11 +326,11 @@ if(isset($summaryTable)){
    				$sumH += $timeTable[$entrySummary[$x]][$resourcesNames[$i]];
    			}
    			?>
-   			<th> (<?= $sumC ?>) <?= $sumH/3600 ?> </th>
+   			<th> (<?php echo  $sumC ?>) <?php echo  $sumH/3600 ?> </th>
    			<?php 
    		}
    		?>
-   		<th> (<?= $totalCG ?>) <?= $totalHG/3600 ?> </th>
+   		<th> (<?php echo  $totalCG ?>) <?php echo  $totalHG/3600 ?> </th>
    </tr>
    
    </tbody>
@@ -345,5 +345,5 @@ if(isset($summaryTable)){
 <?php include "Modules/core/View/timepicker_script.php" ?>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

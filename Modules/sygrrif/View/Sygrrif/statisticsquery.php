@@ -110,7 +110,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 	</div>
 	<?php if (Configuration::get("saveImages") == "enable"){ ?>
 	<div class='col-md-2 col-md-offset-1'>
-	<button type="button" onclick="location.href='data/temp/bilan_resaJPG.jpg'" download="bilan_reservations<?=$annee?>" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
+	<button type="button" onclick="location.href='data/temp/bilan_resaJPG.jpg'" download="bilan_reservations<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 	</div>
 	<?php } ?>
 	
@@ -206,7 +206,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 	</div>
 	<?php if (Configuration::get("saveImages") == "enable"){ ?>
 	<div class='col-md-2 col-md-offset-1'>
-	<button type="button" onclick="location.href='data/temp/bilan_resaJPG.jpg'" download="bilan_reservations<?=$annee?>" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
+	<button type="button" onclick="location.href='data/temp/bilan_resaJPG.jpg'" download="bilan_reservations<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 	</div>
 	<?php } ?>	
 	
@@ -215,7 +215,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 <!-- -------------------------------------------- -->	
 
 		<div class='col-md-9 col-md-offset-1 text-center' id="camembert-area">
-		<h3> <?= SyTranslator::Booking_number_year($lang) ?>  </h3>
+		<h3> <?php echo  SyTranslator::Booking_number_year($lang) ?>  </h3>
 		<?php
 			$camembert = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="300" font-family="Verdana">';
 			$camembert .= '<title> </title>';
@@ -237,7 +237,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		</div>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<div class='col-md-2 col-md-offset-1'>
-		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?=$annee?>" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
+		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 		</div>
 		<?php }?>
 		
@@ -248,7 +248,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 <!-- -------------------------------------------- -->	
 
 		<div class='col-md-9 col-md-offset-1 text-center' id="camembert-area">
-		<h3> <?= SyTranslator::Booking_time_year($lang) ?> </h3>
+		<h3> <?php echo  SyTranslator::Booking_time_year($lang) ?> </h3>
 		<?php
 			$camembert2 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="300" font-family="Verdana">';
 			$camembert2 .= '<title> </title>';
@@ -270,7 +270,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		</div>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<div class='col-md-2 col-md-offset-1'>
-		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?=$annee?>" class="btn btn-primary" id="navlink"><?= SyTranslator::Export_as_jpeg($lang) ?></button>
+		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 		</div>
 		<?php }?>
 		

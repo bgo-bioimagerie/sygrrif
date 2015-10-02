@@ -38,13 +38,13 @@ else{
 		<table id="dataTable" class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th><a href="sygrrif/<?= $linkcontroller ?>/id">ID</a></th>
-					<th><a href="sygrrif/<?= $linkcontroller ?>/date"><?= SyTranslator::Date($lang) ?></a></th>
-					<th><a href="sygrrif/<?= $linkcontroller ?>/userName"><?= SyTranslator::Name($lang) ?></a></th>
-					<th><a href="sygrrif/<?= $linkcontroller ?>/userFirstname"><?= SyTranslator::Firstname($lang) ?></a></th>
-					<th><a href="sygrrif/<?= $linkcontroller ?>/unit"><?= SyTranslator::Unit($lang) ?></a></th>
-					<th><a href="sygrrif/<?= $linkcontroller ?>/visa"><?= SyTranslator::Visa($lang) ?></a></th>
-					<th><a href="sygrrif/<?= $linkcontroller ?>/ressource"><?= SyTranslator::Resource($lang) ?></a></th>
+					<th><a href="sygrrif/<?php echo  $linkcontroller ?>/id">ID</a></th>
+					<th><a href="sygrrif/<?php echo  $linkcontroller ?>/date"><?php echo  SyTranslator::Date($lang) ?></a></th>
+					<th><a href="sygrrif/<?php echo  $linkcontroller ?>/userName"><?php echo  SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/<?php echo  $linkcontroller ?>/userFirstname"><?php echo  SyTranslator::Firstname($lang) ?></a></th>
+					<th><a href="sygrrif/<?php echo  $linkcontroller ?>/unit"><?php echo  SyTranslator::Unit($lang) ?></a></th>
+					<th><a href="sygrrif/<?php echo  $linkcontroller ?>/visa"><?php echo  SyTranslator::Visa($lang) ?></a></th>
+					<th><a href="sygrrif/<?php echo  $linkcontroller ?>/ressource"><?php echo  SyTranslator::Resource($lang) ?></a></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -52,15 +52,15 @@ else{
 				<?php foreach ( $authorizationTable as $auth ) : ?>
 				<?php $authId = $this->clean ( $auth ['id'] ); ?> 
 				<tr>
-					<td><?= $authId ?></td>
-				    <td><?= CoreTranslator::dateFromEn($this->clean ( $auth ['date'] ), $lang) ?></td>
-				    <td><?= $this->clean ( $auth ['userName'] ); ?></td>
-				    <td><?= $this->clean ( $auth ['userFirstname'] ); ?></td>
-				    <td><?= $this->clean ( $auth ['unitName'] ); ?></td>
-				    <td><?= $this->clean ( $auth ['visa'] ); ?></td>
-				    <td><?= $this->clean ( $auth ['resource'] ); ?></td>
+					<td><?php echo  $authId ?></td>
+				    <td><?php echo  CoreTranslator::dateFromEn($this->clean ( $auth ['date'] ), $lang) ?></td>
+				    <td><?php echo  $this->clean ( $auth ['userName'] ); ?></td>
+				    <td><?php echo  $this->clean ( $auth ['userFirstname'] ); ?></td>
+				    <td><?php echo  $this->clean ( $auth ['unitName'] ); ?></td>
+				    <td><?php echo  $this->clean ( $auth ['visa'] ); ?></td>
+				    <td><?php echo  $this->clean ( $auth ['resource'] ); ?></td>
 				    <td class="text-center">
-				      <button type='button' onclick="location.href='sygrrif/editauthorization/<?= $authId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='sygrrif/editauthorization/<?php echo  $authId ?>'" class="btn btn-xs btn-primary" id="navlink"><?php echo  SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -72,5 +72,5 @@ else{
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

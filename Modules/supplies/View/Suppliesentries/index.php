@@ -16,7 +16,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SuTranslator::Supplies_Orders($lang) ?>
+			<?php echo  SuTranslator::Supplies_Orders($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -25,11 +25,11 @@
 			<thead>
 				<tr>
 					<td><a href="suppliesentries/index/id">ID</a></td>
-					<td><a href="suppliesentries/index/id"><?= CoreTranslator::User($lang) ?> </a></td>
-					<td><a href="suppliesentries/index/id_status"><?= CoreTranslator::Status($lang)?></a></td>
-					<td><a href="suppliesentries/index/date_open"><?= SuTranslator::Opened_date($lang)?></a></td>
-					<td><a href="suppliesentries/index/date_close"><?= SuTranslator::Closed_date($lang)?></a></td>
-					<td><a href="suppliesentries/index/date_last_modified"><?= SuTranslator::Last_modified_date($lang)?></a></td>
+					<td><a href="suppliesentries/index/id"><?php echo  CoreTranslator::User($lang) ?> </a></td>
+					<td><a href="suppliesentries/index/id_status"><?php echo  CoreTranslator::Status($lang)?></a></td>
+					<td><a href="suppliesentries/index/date_open"><?php echo  SuTranslator::Opened_date($lang)?></a></td>
+					<td><a href="suppliesentries/index/date_close"><?php echo  SuTranslator::Closed_date($lang)?></a></td>
+					<td><a href="suppliesentries/index/date_last_modified"><?php echo  SuTranslator::Last_modified_date($lang)?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -39,19 +39,19 @@
 				?> 
 				<tr>
 					<?php $itemId = $this->clean ( $item ['id'] ); ?>
-					<td><?= $itemId ?></td>
-				    <td><?= $this->clean ( $item ['user_name'] ); ?></td>
+					<td><?php echo  $itemId ?></td>
+				    <td><?php echo  $this->clean ( $item ['user_name'] ); ?></td>
 				    <?php 
 				    $is_active = $this->clean ( $item ['id_status'] );
 				    if ($is_active){$is_active = "Open";}
 				    else{$is_active = "Close";}
 				    ?>
-				    <td><?= $is_active; ?></td>
-				    <td><?= CoreTranslator::dateFromEn($this->clean ( $item ['date_open'] ), $lang) ?></td>
-				    <td><?= CoreTranslator::dateFromEn($this->clean ( $item ['date_close'] ), $lang); ?></td>
-				    <td><?= CoreTranslator::dateFromEn($this->clean ( $item ['date_last_modified'] ), $lang); ?></td>
+				    <td><?php echo  $is_active; ?></td>
+				    <td><?php echo  CoreTranslator::dateFromEn($this->clean ( $item ['date_open'] ), $lang) ?></td>
+				    <td><?php echo  CoreTranslator::dateFromEn($this->clean ( $item ['date_close'] ), $lang); ?></td>
+				    <td><?php echo  CoreTranslator::dateFromEn($this->clean ( $item ['date_last_modified'] ), $lang); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliesentries/editentries/<?= $itemId ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?> </button>
+				      <button type='button' onclick="location.href='suppliesentries/editentries/<?php echo  $itemId ?>'" class="btn btn-xs btn-primary"><?php echo  CoreTranslator::Edit($lang) ?> </button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -63,5 +63,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

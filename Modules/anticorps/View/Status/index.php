@@ -33,11 +33,11 @@
 				<?php foreach ( $status as $statu ) : ?> 
 				<tr>
 					<?php $statuId = $this->clean ( $statu ['id'] ); ?>
-					<td><?= $statuId ?></td>
-				    <td><?= $this->clean ( $statu ['nom'] ); ?></td>
-				    <td>#<?= $this->clean ( $statu ['color'] ); ?></td>
+					<td><?php echo  $statuId ?></td>
+				    <td><?php echo  $this->clean ( $statu ['nom'] ); ?></td>
+				    <td>#<?php echo  $this->clean ( $statu ['color'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='status/edit/<?= $statuId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='status/edit/<?php echo  $statuId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -49,5 +49,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

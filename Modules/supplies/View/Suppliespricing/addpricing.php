@@ -25,13 +25,13 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SuTranslator::Add_pricing($lang) ?>
+			<?php echo  SuTranslator::Add_pricing($lang) ?>
 			 <br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name"
 				/>
@@ -39,13 +39,13 @@
 		</div>
 			
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='suppliespricing'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='suppliespricing'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

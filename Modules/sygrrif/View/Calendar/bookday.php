@@ -13,7 +13,7 @@ require_once 'Modules/sygrrif/View/Calendar/bookfunction.php';
 
 a{
 	width: 100%;
-	color: <?= "#".$agendaStyle["header_background"] ?>;
+	color: <?php echo  "#".$agendaStyle["header_background"] ?>;
 }
 
 #tcell{
@@ -39,8 +39,8 @@ a{
 	border: 1px solid #d1d1d1;
 }
 #resa_link{
-	color: <?= "#" . $agendaStyle["resa_color"] ?>;
-	font-size: <?= $agendaStyle["resa_font_size"] ?>;
+	color: <?php echo  "#" . $agendaStyle["resa_color"] ?>;
+	font-size: <?php echo  $agendaStyle["resa_font_size"] ?>;
 }
 
 </style>
@@ -66,7 +66,7 @@ a{
 		<?php 
 		}
 	?>
-    	<p><?= $message ?></p>
+    	<p><?php echo  $message ?></p>
     	</div>
 	<?php endif; ?>
 
@@ -78,7 +78,7 @@ a{
 <div class="col-md-8 text-left">
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/daybefore'"> &lt; </button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/dayafter'"> > </button>
-<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/today'"><?= SyTranslator::Today($lang) ?></button>
+<button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/today'"><?php echo  SyTranslator::Today($lang) ?></button>
 <?php 
 $d = explode("-", $date);
 $time = mktime(0,0,0,$d[1],$d[2],$d[0]);
@@ -94,16 +94,16 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 	}
 }
 ?>
-<b><?= SyTranslator::DateFromTime($time, $lang) ?></b>
+<b><?php echo  SyTranslator::DateFromTime($time, $lang) ?></b>
 </div>
 
 
 <div class="col-md-4 text-right">
-<button type="button" class="btn btn-default active"><?= SyTranslator::Day($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?= SyTranslator::Week($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?= SyTranslator::Month($lang) ?></button>
+<button type="button" class="btn btn-default active"><?php echo  SyTranslator::Day($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?php echo  SyTranslator::Day_Area($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?php echo  SyTranslator::Week($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?php echo  SyTranslator::Week_Area($lang) ?></button>
+<button type="button" onclick="location.href='calendar/bookmonth'" class="btn btn-default"><?php echo  SyTranslator::Month($lang) ?></button>
 </div>
 </div>
 
@@ -122,7 +122,7 @@ $available_days = explode(",", $available_days);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>;">
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo  "#" . $agendaStyle["header_background"]?>;">
 
 	</div>
 	<?php 
@@ -142,8 +142,8 @@ $available_days = explode(",", $available_days);
 	
 	
 	
-		<div id="tcell" style="height: <?=$heightCol?>; background-color: <?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
-		<?=$h?>:00
+		<div id="tcell" style="height: <?php echo $heightCol?>; background-color: <?php echo  "#" . $agendaStyle["header_background"]?>; color: <?php echo  "#" . $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+		<?php echo $h?>:00
 		</div>
 	<?php 	
 	}
@@ -153,8 +153,8 @@ $available_days = explode(",", $available_days);
 <!-- hours reservation -->	
 <div class="col-xs-11" id="colDiv">
 
-	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color: <?= "#".$agendaStyle["header_background"]?>; color: <?= "#".$agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
-	<p class="text-center"><b><?= $this->clean($resourceBase['name']) ?></b><br/><?= $this->clean($resourceBase['description']) ?></p>
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color: <?php echo  "#".$agendaStyle["header_background"]?>; color: <?php echo  "#".$agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+	<p class="text-center"><b><?php echo  $this->clean($resourceBase['name']) ?></b><br/><?php echo  $this->clean($resourceBase['description']) ?></p>
 	</div>
 
 	<?php 
@@ -176,5 +176,5 @@ $available_days = explode(",", $available_days);
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

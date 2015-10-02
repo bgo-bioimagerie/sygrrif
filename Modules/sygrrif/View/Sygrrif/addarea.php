@@ -25,7 +25,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::Add_area($lang) ?>
+			<?php echo  SyTranslator::Add_area($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -33,24 +33,24 @@
 		<input class="form-control" id="id" type="hidden"  name="id" />
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-3"><?php echo  SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-9">
 				<input class="form-control" id="name" type="text" name="name"  
 				/>
 			</div>
 		</div>
 	    <div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Is_resticted($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-3"><?php echo  SyTranslator::Is_resticted($lang) ?></label>
 			<div class="col-xs-9">
 					<select class="form-control" name="restricted">
 						<?php $restricted = $this->clean($area['restricted']) ?>
-						<OPTION value="1" > <?= SyTranslator::Yes($lang) ?> </OPTION>
-						<OPTION value="0" selected="selected"> <?= SyTranslator::No($lang) ?> </OPTION>
+						<OPTION value="1" > <?php echo  SyTranslator::Yes($lang) ?> </OPTION>
+						<OPTION value="0" selected="selected"> <?php echo  SyTranslator::No($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3"><?= SyTranslator::Display_order($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-3"><?php echo  SyTranslator::Display_order($lang) ?></label>
 			<div class="col-xs-9">
 				<input class="form-control" id="name" type="number" name="display_order"  
 				/>
@@ -59,7 +59,7 @@
 		<br></br>
 				<div class="page-header">
 		<h1>
-			<?= SyTranslator::Booking_style($lang) ?> <br> <small></small>
+			<?php echo  SyTranslator::Booking_style($lang) ?> <br> <small></small>
 		</h1>
 		</div>
 		<div class="form-group">
@@ -112,13 +112,13 @@
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='areas'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='areas'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

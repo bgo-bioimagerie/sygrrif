@@ -89,7 +89,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">Id</label>
 			<div class="col-xs-11">
-			    <input class="form-control" id="id" type="text" name="id" value="<?= $anticorps['id'] ?>" readonly
+			    <input class="form-control" id="id" type="text" name="id" value="<?php echo  $anticorps['id'] ?>" readonly
 				/>
 			</div>
 		</div>
@@ -98,7 +98,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">Nom</label>
 			<div class="col-xs-11">
-				<input class="form-control" id="nom" type="text" name="nom" value="<?= $anticorps['nom'] ?>"
+				<input class="form-control" id="nom" type="text" name="nom" value="<?php echo  $anticorps['nom'] ?>"
 				/>
 			</div>
 		</div>
@@ -106,7 +106,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">No H2P2</label>
 			<div class="col-xs-11">
-				<input class="form-control" id="no_h2p2" type="text" name="no_h2p2" value="<?= $anticorps['no_h2p2'] ?>"
+				<input class="form-control" id="no_h2p2" type="text" name="no_h2p2" value="<?php echo  $anticorps['no_h2p2'] ?>"
 				/>
 			</div>
 		</div>
@@ -114,7 +114,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">Fournisseur</label>
 			<div class="col-xs-11">
-				<input class="form-control" id="fournisseur" type="text" name="fournisseur" value="<?= $anticorps['fournisseur'] ?>"
+				<input class="form-control" id="fournisseur" type="text" name="fournisseur" value="<?php echo  $anticorps['fournisseur'] ?>"
 				/>
 			</div>
 		</div>
@@ -133,7 +133,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $sourceID ?>" <?= $selected ?>> <?= $sourceName ?> </OPTION>
+						<OPTION value="<?php echo  $sourceID ?>" <?php echo  $selected ?>> <?php echo  $sourceName ?> </OPTION>
 						<?php 
 					}?>
   				</select>
@@ -142,7 +142,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">Référence</label>
 			<div class="col-xs-11">
-				<input class="form-control" id="reference" type="text" name="reference" value="<?= $anticorps['reference'] ?>"
+				<input class="form-control" id="reference" type="text" name="reference" value="<?php echo  $anticorps['reference'] ?>"
 				/>
 			</div>
 		</div>
@@ -150,7 +150,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">Clone</label>
 			<div class="col-xs-11">
-				<input class="form-control" id="clone" type="text" name="clone" value="<?= $anticorps['clone'] ?>"
+				<input class="form-control" id="clone" type="text" name="clone" value="<?php echo  $anticorps['clone'] ?>"
 				/>
 			</div>
 		</div>
@@ -158,7 +158,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">Lot</label>
 			<div class="col-xs-11">
-				<input class="form-control" id="lot" type="text" name="lot" value="<?= $anticorps['lot'] ?>"
+				<input class="form-control" id="lot" type="text" name="lot" value="<?php echo  $anticorps['lot'] ?>"
 				/>
 			</div>
 		</div>
@@ -176,7 +176,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $isotypeID ?>" <?= $selected ?>> <?= $isotypeName ?> </OPTION>
+						<OPTION value="<?php echo  $isotypeID ?>" <?php echo  $selected ?>> <?php echo  $isotypeName ?> </OPTION>
 						<?php 
 					}?>
   				</select>
@@ -187,7 +187,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-1">Stockage</label>
 			<div class="col-xs-11">
-				<input class="form-control" id="stockage" type="text" name="stockage" value="<?= $anticorps['stockage'] ?>"
+				<input class="form-control" id="stockage" type="text" name="stockage" value="<?php echo  $anticorps['stockage'] ?>"
 				/>
 			</div>
 		</div>
@@ -230,15 +230,15 @@
 											$selected = "selected=\"selected\"";
 										}
 										?>
-										<OPTION value="<?=$no_proto?>" <?=$selected?>> <?= $no_proto ?> </OPTION>
+										<OPTION value="<?php echo $no_proto?>" <?php echo $selected?>> <?php echo  $no_proto ?> </OPTION>
 										<?php 
 									}	
 									?>
 									</select>
 								</td>
-								<td><input class="form-control" type="text" name="dilution[]" value="<?= $tissus["dilution"] ?>"/></td>
+								<td><input class="form-control" type="text" name="dilution[]" value="<?php echo  $tissus["dilution"] ?>"/></td>
 								<td>
-									<textarea name="comment[]"><?= $this->clean($tissus["comment"])  ?></textarea>
+									<textarea name="comment[]"><?php echo  $this->clean($tissus["comment"])  ?></textarea>
 								</td>
 								<td>
 									<select class="form-control" name="espece[]">
@@ -252,7 +252,7 @@
 											$selected = "selected=\"selected\"";
 										}
 										?>
-										<OPTION value="<?=$ide?>" <?=$selected?>> <?= $namee ?> </OPTION>
+										<OPTION value="<?php echo $ide?>" <?php echo $selected?>> <?php echo  $namee ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -271,7 +271,7 @@
 											$selected = "selected=\"selected\"";
 										}
 										?>
-										<OPTION value="<?=$ide?>" <?=$selected?>> <?= $namee ?> </OPTION>
+										<OPTION value="<?php echo $ide?>" <?php echo $selected?>> <?php echo  $namee ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -281,7 +281,7 @@
 								<?php 
 								foreach ($status as $statu){
 								?>
-									<option value="<?= $statu["id"] ?>" <?php if ($tissus["status"] == $statu["id"]){echo "selected=\"selected\"";}?>><?=$statu["nom"]?></option>
+									<option value="<?php echo  $statu["id"] ?>" <?php if ($tissus["status"] == $statu["id"]){echo "selected=\"selected\"";}?>><?php echo $statu["nom"]?></option>
 								<?php	
 								}
 								?>
@@ -291,7 +291,7 @@
 								<option value="3" <?php if ($tissus["status"] == "3"){echo "selected=\"selected\"";}?>>Non testé</option>
 								 -->
 								</select></td>
-								<td><input class="form-control" type="text" name="ref_bloc[]" value="<?= $tissus["ref_bloc"] ?>"/></td>
+								<td><input class="form-control" type="text" name="ref_bloc[]" value="<?php echo  $tissus["ref_bloc"] ?>"/></td>
 								<td>
 									<select class="form-control" name="prelevement[]">
 									<?php 
@@ -304,7 +304,7 @@
 											$selected = "selected=\"selected\"";
 										}
 										?>
-										<OPTION value="<?=$id_prelevement?>" <?=$selected?>> <?= $nom_prelevement ?> </OPTION>
+										<OPTION value="<?php echo $id_prelevement?>" <?php echo $selected?>> <?php echo  $nom_prelevement ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -312,7 +312,7 @@
 								</td>
 								
 								<!-- 
-								<td><input class="form-control" type="text" name="temps_incubation[]" value="<?= $tissus["temps_incubation"] ?>"/></td>
+								<td><input class="form-control" type="text" name="temps_incubation[]" value="<?php echo  $tissus["temps_incubation"] ?>"/></td>
 								 -->
 								
 								
@@ -333,7 +333,7 @@
 										$no_proto = $this->clean($protocol["no_proto"]);
 										$idproto = $this->clean($protocol["id"]);
 										?>
-										<OPTION value="<?=$no_proto?>"> <?= $no_proto ?> </OPTION>
+										<OPTION value="<?php echo $no_proto?>"> <?php echo  $no_proto ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -352,7 +352,7 @@
 										$ide = $this->clean($espece["id"]);
 										$namee = $this->clean($espece["nom"]);
 										?>
-										<OPTION value="<?=$ide?>"> <?= $namee ?> </OPTION>
+										<OPTION value="<?php echo $ide?>"> <?php echo  $namee ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -365,7 +365,7 @@
 										$ide = $this->clean($organe["id"]);
 										$namee = $this->clean($organe["nom"]);
 										?>
-										<OPTION value="<?=$ide?>" > <?= $namee ?> </OPTION>
+										<OPTION value="<?php echo $ide?>" > <?php echo  $namee ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -375,7 +375,7 @@
 								<?php 
 								foreach ($status as $statu){
 								?>
-									<option value="<?= $statu["id"] ?>"><?=$statu["nom"]?></option>
+									<option value="<?php echo  $statu["id"] ?>"><?php echo $statu["nom"]?></option>
 								<?php	
 								}
 								?>
@@ -394,7 +394,7 @@
 									$id_prelevement = $this->clean($prelevement["id"]);
 									$nom_prelevement = $this->clean($prelevement["nom"]);
 									?>
-									<OPTION value="<?=$id_prelevement?>"> <?= $nom_prelevement ?> </OPTION>
+									<OPTION value="<?php echo $id_prelevement?>"> <?php echo  $nom_prelevement ?> </OPTION>
 									<?php 
 								}	
 								?>
@@ -457,7 +457,7 @@
 											$selected = "selected=\"selected\"";
 										}
 										?>
-										<OPTION value="<?=$uid?>" <?=$selected?>> <?= $uname ?> </OPTION>
+										<OPTION value="<?php echo $uid?>" <?php echo $selected?>> <?php echo  $uname ?> </OPTION>
 										<?php 
 									}	
 									?>
@@ -471,10 +471,10 @@
 									</select>	
 								</td>
 								<td>
-									<input class="form-control" type="text" name="date_recept[]" value="<?= CoreTranslator::dateFromEn($proprio["date_recept"], $lang) ?>"/>	
+									<input class="form-control" type="text" name="date_recept[]" value="<?php echo  CoreTranslator::dateFromEn($proprio["date_recept"], $lang) ?>"/>	
 								</td>
 								<td>
-									<input class="form-control" type="text" name="no_dossier[]" value="<?= CoreTranslator::dateFromEn($proprio["no_dossier"], $lang) ?>"/>	
+									<input class="form-control" type="text" name="no_dossier[]" value="<?php echo  CoreTranslator::dateFromEn($proprio["no_dossier"], $lang) ?>"/>	
 								</td>
 								<tr />
 							<?php
@@ -492,7 +492,7 @@
 										$uid = $this->clean($user["id"]);
 										$uname = $this->clean($user["name"]) . " " . $this->clean($user["firstname"]) ;
 										?>
-										<OPTION value="<?=$uid?>"> <?= $uname ?> </OPTION>
+										<OPTION value="<?php echo $uid?>"> <?php echo  $uname ?> </OPTION>
 									<?php 
 									}	
 									?>
@@ -535,7 +535,7 @@
 			<label for="inputEmail" class="control-label col-xs-2">Date Reception</label>
 			<div class="col-xs-10">
 				<div class='input-group date' id='datetimepicker5'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_recept" value="<?= CoreTranslator::dateFromEn($anticorps['date_recept'], $lang) ?>"/>
+					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_recept" value="<?php echo  CoreTranslator::dateFromEn($anticorps['date_recept'], $lang) ?>"/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -562,12 +562,12 @@
 		</div>
 		<div class="col-xs-11 col-xs-offset-1" id="button-div">
 		        <?php if($anticorps['id'] != ""){ ?>
-		        	<button type="button" onclick="location.href='<?="anticorps/delete/".$anticorps['id'] ?>'" class="btn btn-danger">Supprimer</button>
+		        	<button type="button" onclick="location.href='<?php echo "anticorps/delete/".$anticorps['id'] ?>'" class="btn btn-danger">Supprimer</button>
 				<?php }?>
 		</div>
       </form>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

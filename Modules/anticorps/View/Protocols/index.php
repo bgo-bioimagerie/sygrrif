@@ -47,8 +47,8 @@
 					<?php $protocolId = $this->clean ( $protocol ['id'] ); ?>
 					<?php if(  $protocol ['associe'] == 1){
 						?>
-							<td><?= $protocol ['anticorps'] ?></td>
-							<td><?= $protocol ['no_h2p2'] ?></td>
+							<td><?php echo  $protocol ['anticorps'] ?></td>
+							<td><?php echo  $protocol ['no_h2p2'] ?></td>
 						<?php
 					}
 					else{
@@ -58,21 +58,21 @@
 					}
 					?>
 					
-				    <td><?= $this->clean ( $protocol ['kit'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['no_proto'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['proto'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['fixative'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['option_'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['enzyme'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['dem'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['acl_inc'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['linker'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['inc'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['acll'] ); ?></td>
-				    <td><?= $this->clean ( $protocol ['inc2'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['kit'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['no_proto'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['proto'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['fixative'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['option_'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['enzyme'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['dem'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['acl_inc'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['linker'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['inc'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['acll'] ); ?></td>
+				    <td><?php echo  $this->clean ( $protocol ['inc2'] ); ?></td>
 				    
 				    <td>
-				      <button type='button' onclick="location.href='protocols/edit/<?= $protocolId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='protocols/edit/<?php echo  $protocolId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -84,5 +84,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

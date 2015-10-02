@@ -22,39 +22,39 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Edit_Unit($lang) ?>
+			<?php echo  CoreTranslator::Edit_Unit($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 	
-		<input class="form-control" id="id" type="hidden"  name="id" value="<?= $unit['id']?>" />
+		<input class="form-control" id="id" type="hidden"  name="id" value="<?php echo  $unit['id']?>" />
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name"
-				       value="<?= $unit['name'] ?>"  
+				       value="<?php echo  $unit['name'] ?>"  
 				/>
 			</div>
 		</div>
 		<br></br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Address($lang)?> </label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Address($lang)?> </label>
 			<div class="col-xs-10">
 				<textarea class="form-control" id="address" name="address"
-				><?= $unit['address'] ?></textarea>
+				><?php echo  $unit['address'] ?></textarea>
 			</div>
 		</div>
 		
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='units'" class="btn btn-default"><?= CoreTranslator::Cancel($lang) ?></button>
-				<button type="button" onclick="location.href='<?="units/delete/".$this->clean($unit['id']) ?>'" class="btn btn-danger"><?= CoreTranslator::Delete($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='units'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='<?php echo "units/delete/".$this->clean($unit['id']) ?>'" class="btn btn-danger"><?php echo  CoreTranslator::Delete($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

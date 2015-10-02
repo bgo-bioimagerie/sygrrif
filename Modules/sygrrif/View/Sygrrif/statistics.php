@@ -24,13 +24,13 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::Statistics($lang) ?>
+			<?php echo  SyTranslator::Statistics($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Year($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Year($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="year">
 					<?php 
@@ -40,7 +40,7 @@
 							$checked = ' selected="selected"';
 						}
 					?>
-					<OPTION value="<?= $i?>" <?= $checked?>> <?=$i?> </OPTION>
+					<OPTION value="<?php echo  $i?>" <?php echo  $checked?>> <?php echo $i?> </OPTION>
 					<?php
 					}
 					?>
@@ -48,7 +48,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Export($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Export($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="export_type"> 
 					<OPTION value="1" > Graph </OPTION>
@@ -57,13 +57,13 @@
 			</div>
 		</div>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang)?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

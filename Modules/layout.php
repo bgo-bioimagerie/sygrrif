@@ -2,9 +2,9 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8" />
-        <base href="<?= $rootWeb ?>" >
+        <base href="<?php echo  $rootWeb ?>" >
         <!-- <link rel="stylesheet" href="Themes/style.css" />  -->
-        <title><?= $title ?></title>
+        <title><?php echo  $title ?></title>
     </head>
 
     <body>
@@ -17,7 +17,7 @@
             </header>
         -->
             <div id="contenu">
-                <?= $content ?>
+                <?php echo  $content ?>
             </div> <!-- #contenu -->
          <!-- 
             <footer id="piedBlog">

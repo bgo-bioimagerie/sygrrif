@@ -72,8 +72,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
-							<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
+							<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.25 - 0.25;								
@@ -112,8 +112,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id']; 
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
-								<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
+								<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*0.25 - 0.25;
@@ -132,7 +132,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			    		$bgColor = "#e1e1e1";
 			    	}
 			    	?>
-						<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px; background-color: <?=$bgColor?>;">
+						<div class="text-center" id="tcell" style="height: <?php echo $agendaStyle["line_height"]?>px; background-color: <?php echo $bgColor?>;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){		
 							$h2 = str_replace(".", "-", $h);
@@ -146,7 +146,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
 								$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2."_".$resourceID;
 								?>
-						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
+						<a class="glyphicon glyphicon-plus" href="<?php echo $linkAdress?>"></a>
 						<?php }}}?>
 						</div>
 					<?php 
@@ -208,9 +208,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
+						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
 							
-							<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href=<?=$linkAdress?>><?=$text?></a>
+							<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href=<?php echo $linkAdress?>><?php echo $text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.5 - 0.5;								
@@ -248,8 +248,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}	
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
-						<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
+						<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 						</div>
 					<?php
 					$h+= $blocNumber*0.5 - 0.5;
@@ -270,7 +270,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			    	$bgColor = "#e1e1e1";
 			    }
 			    ?>
-				<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px; background-color: <?=$bgColor?>;"> 
+				<div class="text-center" id="tcell" style="height: <?php echo $agendaStyle["line_height"]?>px; background-color: <?php echo $bgColor?>;"> 
 				<?php if ($isDayAvailable){?>
 				<?php if ($isUserAuthorizedToBook){
 					$h2 = str_replace(".", "-", $h);
@@ -282,7 +282,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
 						$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2."_".$resourceID;
 						?>
-						 <a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
+						 <a class="glyphicon glyphicon-plus" href="<?php echo $linkAdress?>"></a>
 				<?php }}}?>
 				  </div>
 				
@@ -342,8 +342,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
-							<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
+							<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*1 - 1;
@@ -382,8 +382,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?=$pixelHeight?>px; background-color:#<?=$calEntry["color_bg"]?>;">
-								<a class="text-center" style="color:<?="#".$calEntry["color_text"]?>;" href="<?=$linkAdress?>"><?=$text?></a>
+								<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
+								<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*1 - 1;
@@ -405,7 +405,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			    	}
 			    	?>
 					
-						<div class="text-center" id="tcell" style="height: <?=$agendaStyle["line_height"]?>px; background-color: <?=$bgColor?>;">
+						<div class="text-center" id="tcell" style="height: <?php echo $agendaStyle["line_height"]?>px; background-color: <?php echo $bgColor?>;">
 						<?php if ($isDayAvailable){?>
 						<?php if ($isUserAuthorizedToBook){
 						$h2 = str_replace(".", "-", $h);
@@ -419,7 +419,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						if( $_SESSION["user_status"] >=3  || $date_unix > time() || ( date("Y-m-d", $date_unix) == date("Y-m-d", time()) &&  $hed > date("H-m", time()) )){
 							$linkAdress = "calendar/editreservation/t_" . $dateString."_".$h2."_".$resourceID;
 							?>
-						<a class="glyphicon glyphicon-plus" href="<?=$linkAdress?>"></a>
+						<a class="glyphicon glyphicon-plus" href="<?php echo $linkAdress?>"></a>
 						<?php }}}?>
 						</div>
 					<?php 

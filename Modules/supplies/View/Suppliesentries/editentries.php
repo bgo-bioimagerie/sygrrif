@@ -40,7 +40,7 @@
 	
 		<div class="page-header">
 			<h3>
-			<?= SuTranslator::Description($lang) ?>
+			<?php echo  SuTranslator::Description($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
@@ -50,7 +50,7 @@
 			<div class="form-group">
 				<label for="inputEmail" class="control-label col-xs-4">ID</label>
 				<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="id" value="<?=$this->clean($entry["id"]) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="id" value="<?php echo $this->clean($entry["id"]) ?>" readonly/>
 				</div>
 			</div>
 
@@ -58,7 +58,7 @@
 		}
 		?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::User($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::User($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="id_user">
 				<?php foreach($users as $user){ 
@@ -69,48 +69,48 @@
 						$selected = "selected=\"selected\"";
 					}
 					?>
-					<option value="<?= $userid ?>" <?= $selected ?>> <?= $userName ?> </option>
+					<option value="<?php echo  $userid ?>" <?php echo  $selected ?>> <?php echo  $userName ?> </option>
 				<?php } ?>
 				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::Status($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="id_status">
 				<?php
 					$selected = "selected=\"selected\"";
 					$status = $this->clean($entry["id_status"]);
 					?>
-					<option value="1" <?php if ($status==1){echo $selected;}?>> <?= CoreTranslator::Open($lang) ?>  </option>
-					<option value="0" <?php if ($status==0){echo $selected;}?>> <?= CoreTranslator::Close($lang) ?> </option>
+					<option value="1" <?php if ($status==1){echo $selected;}?>> <?php echo  CoreTranslator::Open($lang) ?>  </option>
+					<option value="0" <?php if ($status==0){echo $selected;}?>> <?php echo  CoreTranslator::Close($lang) ?> </option>
 				</select>
 			</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Opened_date($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Opened_date($lang) ?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_open" value="<?= CoreTranslator::dateFromEn($this->clean($entry["date_open"]), $lang) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_open" value="<?php echo  CoreTranslator::dateFromEn($this->clean($entry["date_open"]), $lang) ?>" readonly/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Closed_date($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Closed_date($lang)?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_close" value="<?= CoreTranslator::dateFromEn($this->clean($entry["date_close"]), $lang) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_close" value="<?php echo  CoreTranslator::dateFromEn($this->clean($entry["date_close"]), $lang) ?>" readonly/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Last_modified_date($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Last_modified_date($lang)?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_last_modified" value="<?= CoreTranslator::dateFromEn($this->clean($entry["date_last_modified"]), $lang) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_last_modified" value="<?php echo  CoreTranslator::dateFromEn($this->clean($entry["date_last_modified"]), $lang) ?>" readonly/>
 			</div>
 		</div>
 		
 		<div class="page-header">
 			<h3>
-			<?= SuTranslator::Order($lang) ?>
+			<?php echo  SuTranslator::Order($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
@@ -125,9 +125,9 @@
 		?>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= $name_item ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  $name_item ?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="item_<?= $id_item ?>" value="<?=$quantity ?>" />
+				<input class="form-control" id="id" type="text"  name="item_<?php echo  $id_item ?>" value="<?php echo $quantity ?>" />
 			</div>
 		</div>
 		
@@ -136,14 +136,14 @@
 		?>
 		
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
-				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default"><?= CoreTranslator::Cancel($lang) ?></button>
-				<button type="button" onclick="location.href='suppliesentries/delete/<?=$entry["id"]?>'" class="btn btn-danger"><?= CoreTranslator::Delete($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  $buttonName ?>" />
+				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='suppliesentries/delete/<?php echo $entry["id"]?>'" class="btn btn-danger"><?php echo  CoreTranslator::Delete($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

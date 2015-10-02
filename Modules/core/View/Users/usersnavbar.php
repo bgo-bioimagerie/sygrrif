@@ -18,36 +18,36 @@ if($coremenucolortxt == ""){
 .bs-docs-header {
 	position: relative;
 	padding: 30px 15px;
-	color: #<?= $coremenucolortxt ?>;
+	color: #<?php echo  $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #<?= $coremenucolor ?>;
+	background-color: #<?php echo  $coremenucolor ?>;
 }
 
 #navlink {
-	color: #<?= $coremenucolortxt ?>;
+	color: #<?php echo  $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
 .bs-docs-header {
 	position: relative;
-	color: #<?= $coremenucolortxt ?>;
+	color: #<?php echo  $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #<?= $coremenucolor ?>;
+	background-color: #<?php echo  $coremenucolor ?>;
 }
 
 #navlink {
-	color: #<?= $coremenucolortxt ?>;
+	color: #<?php echo  $coremenucolortxt ?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 }
 
 .well {
-	color: #<?= $coremenucolortxt ?>;
-	background-color: #<?= $coremenucolor ?>;
+	color: #<?php echo  $coremenucolortxt ?>;
+	background-color: #<?php echo  $coremenucolor ?>;
 	border: none;
 }
 
 legend {
-	color: #<?= $coremenucolortxt ?>;
+	color: #<?php echo  $coremenucolortxt ?>;
 }
 </style>
 
@@ -71,37 +71,37 @@ if ($authorisations_location == 2){
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h2><?= CoreTranslator::Users_Institutions($lang) ?></h2>
+		<h2><?php echo  CoreTranslator::Users_Institutions($lang) ?></h2>
 		
-		<div class=<?= $classWell ?> >
+		<div class=<?php echo  $classWell ?> >
 			<fieldset>
-				<legend><?= CoreTranslator::Units($lang) ?></legend>
-					<button onclick="location.href='units/'" class="btn btn-link" id="navlink"><?= CoreTranslator::Units($lang) ?></button>
+				<legend><?php echo  CoreTranslator::Units($lang) ?></legend>
+					<button onclick="location.href='units/'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Units($lang) ?></button>
 				<br />
-					<button onclick="location.href='units/add'" class="btn btn-link" id="navlink"><?= CoreTranslator::Add_unit($lang) ?></button>
+					<button onclick="location.href='units/add'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add_unit($lang) ?></button>
 			</fieldset>
 		</div>
 		
-		<div class=<?= $classWell ?>>
+		<div class=<?php echo  $classWell ?>>
 			<fieldset>
-				<legend><?= CoreTranslator::Users($lang) ?></legend>
-					<button onclick="location.href='users'" class="btn btn-link" id="navlink"><?= CoreTranslator::Active_Users($lang) ?> </button>
+				<legend><?php echo  CoreTranslator::Users($lang) ?></legend>
+					<button onclick="location.href='users'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Active_Users($lang) ?> </button>
 				<br/>
-					<button onclick="location.href='users/unactiveusers'" class="btn btn-link" id="navlink"><?= CoreTranslator::Unactive_Users($lang) ?></button>
+					<button onclick="location.href='users/unactiveusers'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Unactive_Users($lang) ?></button>
 				<br/>
-					<button onclick="location.href='users/add'" class="btn btn-link" id="navlink"><?= CoreTranslator::Add_User($lang) ?></button>
+					<button onclick="location.href='users/add'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add_User($lang) ?></button>
 			</fieldset>
 		</div>
 		
-		<div class=<?= $classWell ?>>
+		<div class=<?php echo  $classWell ?>>
 			<fieldset>
-				<legend><?= CoreTranslator::Export($lang) ?></legend>
-					<button onclick="location.href='users/exportresponsable'" class="btn btn-link" id="navlink"><?= CoreTranslator::Responsible($lang) ?> </button>
+				<legend><?php echo  CoreTranslator::Export($lang) ?></legend>
+					<button onclick="location.href='users/exportresponsable'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Responsible($lang) ?> </button>
 			</fieldset>
 		</div>
 		
 		<?php if ($authorisations_location == 2){ ?>
-			<div class=<?= $classWell ?>>
+			<div class=<?php echo  $classWell ?>>
 				<?php include "Modules/sygrrif/View/authorizations_navbar.php"?>
 			</div>
 		<?php } ?>

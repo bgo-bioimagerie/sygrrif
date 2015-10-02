@@ -33,10 +33,10 @@
 				<?php foreach ( $organes as $organe ) : ?> 
 				<tr>
 					<?php $organeId = $this->clean ( $organe ['id'] ); ?>
-					<td><?= $organeId ?></td>
-				    <td><?= $this->clean ( $organe ['nom'] ); ?></td>
+					<td><?php echo  $organeId ?></td>
+				    <td><?php echo  $this->clean ( $organe ['nom'] ); ?></td>
 				    <td class="text-center">
-				      <button type='button' onclick="location.href='organes/edit/<?= $organeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='organes/edit/<?php echo  $organeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -48,5 +48,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

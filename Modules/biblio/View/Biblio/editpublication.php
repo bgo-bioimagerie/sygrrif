@@ -65,7 +65,7 @@
 	  <form role="form" class="form-horizontal" action="biblio/editpublicationquery" method="post"
 	        enctype="multipart/form-data">
 		
-		<input class="form-control" id="nom" type="hidden" name="type_name" value="<?=$this->clean($pubicationInfos["type_name"])?>"
+		<input class="form-control" id="nom" type="hidden" name="type_name" value="<?php echo $this->clean($pubicationInfos["type_name"])?>"
 				 />
 				
 		<div class="page-header">
@@ -85,7 +85,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">ID</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="id" value="<?=$entry_id?>"
+				<input class="form-control" id="nom" type="text" name="id" value="<?php echo $entry_id?>"
 				 readonly/>
 			</div>
 		</div>
@@ -98,7 +98,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Title</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="title" value="<?=$title?>"
+				<input class="form-control" id="nom" type="text" name="title" value="<?php echo $title?>"
 				 />
 			</div>
 		</div>
@@ -112,7 +112,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Chapter</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="chapter" value="<?=$chapter?>"
+				<input class="form-control" id="nom" type="text" name="chapter" value="<?php echo $chapter?>"
 				 />
 			</div>
 		</div>
@@ -156,7 +156,7 @@
 											$selected = "selected=\"selected\"";
 										}
 										?>
-										<OPTION value="<?=$Aid?>" <?=$selected?> > <?=$Aname?> </OPTION>
+										<OPTION value="<?php echo $Aid?>" <?php echo $selected?> > <?php echo $Aname?> </OPTION>
 									<?php 	
 							    	}?>
 								</select>
@@ -180,7 +180,7 @@
 									$Aid = $this->clean($author['id']);
 									$Aname = $this->clean($author['name']) . " " . $this->clean($author['firstname']);
 									?>
-									<OPTION value="<?=$Aid?>"> <?=$Aname?> </OPTION>
+									<OPTION value="<?php echo $Aid?>"> <?php echo $Aname?> </OPTION>
 									<?php 
 							    }?>
 							</select>
@@ -223,7 +223,7 @@
  							$selected = "selected=\"selected\"";	
  						}
  						?>
- 						<OPTION value="<?=$Jid?>" <?=$selected?>> <?=$Jname?> </OPTION>	
+ 						<OPTION value="<?php echo $Jid?>" <?php echo $selected?>> <?php echo $Jname?> </OPTION>	
  						<?php 	
 					}
 					?>			
@@ -259,7 +259,7 @@
  							$selected = "selected=\"selected\"";
  						}
  						?>
- 						<OPTION value="<?=$Cid?>" <?=$selected?>> <?=$Cname?> </OPTION>	
+ 						<OPTION value="<?php echo $Cid?>" <?php echo $selected?>> <?php echo $Cname?> </OPTION>	
  						<?php 	
 					}
 					?>			
@@ -304,7 +304,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Year</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="number" name="year" value="<?=$year?>"
+				<input class="form-control" id="nom" type="number" name="year" value="<?php echo $year?>"
 				 />
 			</div>
 		</div>
@@ -319,7 +319,7 @@
 	  	<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Publisher</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="publisher" value="<?=$publisher?>"
+				<input class="form-control" id="nom" type="text" name="publisher" value="<?php echo $publisher?>"
 				 />
 			</div>
 		</div>
@@ -333,7 +333,7 @@
 	  	<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Edition</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="edition" value="<?=$edition?>"
+				<input class="form-control" id="nom" type="text" name="edition" value="<?php echo $edition?>"
 				 />
 			</div>
 		</div>
@@ -348,7 +348,7 @@
 	  	<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Series</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="series" value="<?=$series?>"
+				<input class="form-control" id="nom" type="text" name="series" value="<?php echo $series?>"
 				 />
 			</div>
 		</div>
@@ -362,7 +362,7 @@
 	  	<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Addresss</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="address" value="<?=$address?>"
+				<input class="form-control" id="nom" type="text" name="address" value="<?php echo $address?>"
 				 />
 			</div>
 		</div>
@@ -376,7 +376,7 @@
 	  	<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Volume</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="volume" value="<?=$volume?>"
+				<input class="form-control" id="nom" type="text" name="volume" value="<?php echo $volume?>"
 				 />
 			</div>
 		</div>
@@ -390,7 +390,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Pages</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="pages" value="<?=$pages?>"
+				<input class="form-control" id="nom" type="text" name="pages" value="<?php echo $pages?>"
 				 />
 			</div>
 		</div>
@@ -406,7 +406,7 @@
 	  	<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">isbn</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="isbn" value="<?=$isbn?>"
+				<input class="form-control" id="nom" type="text" name="isbn" value="<?php echo $isbn?>"
 				 />
 			</div>
 		</div>
@@ -420,7 +420,7 @@
 	  	<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">How published</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="nom" type="text" name="howpublished" value="<?=$howpublished?>"
+				<input class="form-control" id="nom" type="text" name="howpublished" value="<?php echo $howpublished?>"
 				 />
 			</div>
 		</div>
@@ -434,7 +434,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Note</label>
 			<div class="col-xs-10">
-				<textarea class="form-control" id="nom" type="text" name="note" ><?=$note?></textarea>
+				<textarea class="form-control" id="nom" type="text" name="note" ><?php echo $note?></textarea>
 			</div>
 		</div>
 		<?php }?>
@@ -455,5 +455,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

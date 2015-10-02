@@ -14,7 +14,7 @@
 		
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Delete_User($lang) ?>
+			<?php echo  CoreTranslator::Delete_User($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -25,9 +25,9 @@
 		
 		<form role="form" class="form-horizontal" action="users/deletequery" method="post">
 			
-			<input class="form-control" id="id" type="hidden" name="id" value="<?= $userId ?>" />
+			<input class="form-control" id="id" type="hidden" name="id" value="<?php echo  $userId ?>" />
 			<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Delete($lang)?>" />
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Delete($lang)?>" />
 			</div>
        </form>
 		

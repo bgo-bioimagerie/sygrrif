@@ -20,20 +20,20 @@ if (isset($_SESSION["user_settings"]["language"])){
 		
 		<div class="page-header">
 			<h1>
-				<?= CoreTranslator::Change_password($lang); ?>  <br> <small></small>
+				<?php echo  CoreTranslator::Change_password($lang); ?>  <br> <small></small>
 			</h1>
 		</div>
 		
 		<div>
 		<?php if (isset($msgError)){ ?>
-			<p> <?= CoreTranslator::Unable_to_change_the_password($lang) ?></p>
-			<p> <?= $msgError ?></p>
+			<p> <?php echo  CoreTranslator::Unable_to_change_the_password($lang) ?></p>
+			<p> <?php echo  $msgError ?></p>
 		<?php }else{?>
-			<p> <?= CoreTranslator::The_password_has_been_successfully_updated($lang) ?></p>
+			<p> <?php echo  CoreTranslator::The_password_has_been_successfully_updated($lang) ?></p>
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='users'" class="btn btn-success" id="navlink"><?= CoreTranslator::Ok($lang) ?></button>
+			<button onclick="location.href='users'" class="btn btn-success" id="navlink"><?php echo  CoreTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

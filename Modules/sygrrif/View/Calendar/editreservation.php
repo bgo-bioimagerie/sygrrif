@@ -55,21 +55,21 @@ else{
 			</h1>
 		</div>
 
-	    <input class="form-control" id="id" type="hidden"  name="resource_id" value="<?=$this->clean($resourceBase['id']) ?>" <?=$readOnlyGlobal?>/>
+	    <input class="form-control" id="id" type="hidden"  name="resource_id" value="<?php echo $this->clean($resourceBase['id']) ?>" <?php echo $readOnlyGlobal?>/>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Resource($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Resource($lang)?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="resource_name" value="<?=$this->clean($resourceBase['name']) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="resource_name" value="<?php echo $this->clean($resourceBase['name']) ?>" readonly/>
 			</div>
 		</div>
 	
 		<?php if (isset($reservationInfo)){
 			?>
 			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Reservation_number($lang)?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Reservation_number($lang)?></label>
 				<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="reservation_id" value="<?=$this->clean($reservationInfo['id']) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="reservation_id" value="<?php echo $this->clean($reservationInfo['id']) ?>" readonly/>
 				</div>
 			</div>
 			<?php 		
@@ -77,7 +77,7 @@ else{
 		?>
 	
 	    <div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::booking_on_behalf_of($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::booking_on_behalf_of($lang)?></label>
 			<div class="col-xs-8">
 					<?php 
 					$allowedBookForOther = true;
@@ -99,7 +99,7 @@ else{
 								$selected = "";
 								if ($userId == $recipientID){
 									?>
-									<OPTION value="<?= $userId ?>"> <?= $userName?> </OPTION>
+									<OPTION value="<?php echo  $userId ?>"> <?php echo  $userName?> </OPTION>
 									<?php
 								} 
 							}
@@ -126,13 +126,13 @@ else{
 									$selected = "selected=\"selected\"";
 								}
 								?>
-								<OPTION value="<?= $userId ?>" <?= $selected ?>> <?= $userName?> </OPTION>
+								<OPTION value="<?php echo  $userId ?>" <?php echo  $selected ?>> <?php echo  $userName?> </OPTION>
 								<?php 
 							}
 						}
 						else{
 							?>
-							<OPTION value="<?= $this->clean($curentuser['id']) ?>"> <?=$this->clean($curentuser['name']) . " " . $this->clean($curentuser['firstname'])?> </OPTION>
+							<OPTION value="<?php echo  $this->clean($curentuser['id']) ?>"> <?php echo $this->clean($curentuser['name']) . " " . $this->clean($curentuser['firstname'])?> </OPTION>
 							<?php
 						}
 					}
@@ -159,11 +159,11 @@ else{
 		
 			<?php if ($editBookingDescriptionSettings == 1 || $editBookingDescriptionSettings == 2){?>
 			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4"><?= $shortDescName ?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo  $shortDescName ?></label>
 				<div class="col-xs-8">
 					<input class="form-control" id="name" type="text" name="short_description"
 					       value="<?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['short_description']);} ?>" 
-					       <?=$readOnlyGlobal?> 
+					       <?php echo $readOnlyGlobal?> 
 					/>
 				</div>
 			</div>
@@ -186,7 +186,7 @@ else{
 						$selected = "selected=\"selected\"";
 					}
 					?>
-					<OPTION value="<?= $projectID ?>" <?= $selected ?>> <?= $projectName?> </OPTION>
+					<OPTION value="<?php echo  $projectID ?>" <?php echo  $selected ?>> <?php echo  $projectName?> </OPTION>
 					<?php
 				}
 				?>
@@ -199,9 +199,9 @@ else{
 		
 		<?php if ($editBookingDescriptionSettings == 1 || $editBookingDescriptionSettings == 3){?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= $fullDescName ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  $fullDescName ?></label>
 			<div class="col-xs-8">
-				<textarea class="form-control" id="name" name="full_description" <?=$readOnlyGlobal?>
+				<textarea class="form-control" id="name" name="full_description" <?php echo $readOnlyGlobal?>
 				><?php if (isset($reservationInfo)){ echo $this->clean($reservationInfo['full_description']);} ?></textarea>
 			</div>
 		</div>
@@ -218,9 +218,9 @@ else{
 			}
 		?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=$calSup["name"] .$star ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo $calSup["name"] .$star ?></label>
 			<div class="col-xs-8">
-			        <input type='hidden' name="calsupName[]" value="<?= $calSup["name"] ?>"/>
+			        <input type='hidden' name="calsupName[]" value="<?php echo  $calSup["name"] ?>"/>
 			        <?php 
 			        $calSupDataHere = "";
 				    if (isset($calSupsData[$calSup["name"]])){
@@ -231,7 +231,7 @@ else{
 					}
 			        ?>
 					<input type='text' class="form-control" name="calsupValue[]"
-					       value="<?php  ?>" <?=$readOnlyGlobal?> <?=$required?>/>
+					       value="<?php  ?>" <?php echo $readOnlyGlobal?> <?php echo $required?>/>
 		    </div>	
 		</div>
 		<?php	
@@ -256,11 +256,11 @@ else{
 					$sm = $timeBegin['m'];
 				}
 				?>
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Beginning_of_the_reservation($lang)?>:</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Beginning_of_the_reservation($lang)?>:</label>
 			<div class="col-xs-8">
-				<div class='input-group date form_date_<?= $lang ?>'>
+				<div class='input-group date form_date_<?php echo  $lang ?>'>
 					<input type='text' class="form-control" name="begin_date"
-					       value="<?= CoreTranslator::dateFromEn($sdate, $lang) ?>" <?=$readOnlyGlobal?>/>
+					       value="<?php echo  CoreTranslator::dateFromEn($sdate, $lang) ?>" <?php echo $readOnlyGlobal?>/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -271,11 +271,11 @@ else{
 			<div class="col-xs-8 col-xs-offset-4">
 				<!-- time -->
 				
-				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::time($lang)?>:</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::time($lang)?>:</label>
 				
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="begin_hour"
-				       value="<?= $sh ?>" <?=$readOnlyGlobal?> 
+				       value="<?php echo  $sh ?>" <?php echo $readOnlyGlobal?> 
 				/>
 				</div>
 				<div class="col-xs-1">
@@ -283,7 +283,7 @@ else{
 				</div>
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="begin_min"
-				       value="<?= $sm ?>"  <?=$readOnlyGlobal?>
+				       value="<?php echo  $sm ?>"  <?php echo $readOnlyGlobal?>
 				/>
 				</div>
 			</div>
@@ -303,13 +303,13 @@ else{
 	    		}
     		}
     		?>
-			<input id="use_package" type="checkbox" name="use_package" value="yes"/ <?=$checked?>> <?= SyTranslator::Use_Package($lang) ?>
+			<input id="use_package" type="checkbox" name="use_package" value="yes"/ <?php echo $checked?>> <?php echo  SyTranslator::Use_Package($lang) ?>
 			</label>
   		</div>
   		
   		<div id="package_div">
   			<div class="form-group">
-				<label class="control-label col-xs-4"><?=SyTranslator::Select_Package($lang)?></label>
+				<label class="control-label col-xs-4"><?php echo SyTranslator::Select_Package($lang)?></label>
 				<div class="col-xs-8">
 					<select class="form-control" name="package_choice">
 						<?php 
@@ -321,7 +321,7 @@ else{
 								}
 							}
 							?>
-							<OPTION value="<?=$package["id"]?>" <?= $selected ?> > <?= $package["name"] ?> </OPTION>
+							<OPTION value="<?php echo $package["id"]?>" <?php echo  $selected ?> > <?php echo  $package["name"] ?> </OPTION>
 							<?php
 						}
 						?>
@@ -353,11 +353,11 @@ else{
 						$em = $timeEnd['m'];
 					}
 					?>
-				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::End_of_the_reservation($lang)?>:</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::End_of_the_reservation($lang)?>:</label>
 				<div class="col-xs-8">
-					<div class='input-group date form_date_<?= $lang ?>'>
+					<div class='input-group date form_date_<?php echo  $lang ?>'>
 						<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="end_date"
-						       value="<?= CoreTranslator::dateFromEn($edate, $lang) ?>" <?=$readOnlyGlobal?>/>
+						       value="<?php echo  CoreTranslator::dateFromEn($edate, $lang) ?>" <?php echo $readOnlyGlobal?>/>
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>
 						</span>
@@ -367,11 +367,11 @@ else{
 			<div class="form-group">
 				<div class="col-xs-8 col-xs-offset-4">
 					<!-- time -->
-					<label for="end_hour" class="control-label col-xs-4"><?=SyTranslator::time($lang)?>:</label>
+					<label for="end_hour" class="control-label col-xs-4"><?php echo SyTranslator::time($lang)?>:</label>
 					
 					<div class="col-xs-3">
 					<input class="form-control" id="name" type="text" name="end_hour"
-					       value="<?= $eh ?>"  <?=$readOnlyGlobal?>
+					       value="<?php echo  $eh ?>"  <?php echo $readOnlyGlobal?>
 					/>
 					</div>
 					<div class="col-xs-1">
@@ -379,7 +379,7 @@ else{
 					</div>
 					<div class="col-xs-3">
 					<input class="form-control" id="name" type="text" name="end_min"
-					       value="<?= $em ?>"  <?=$readOnlyGlobal?>
+					       value="<?php echo  $em ?>"  <?php echo $readOnlyGlobal?>
 					/>
 					</div>
 				</div>
@@ -404,17 +404,17 @@ else{
 			}
 			?>
 			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Duration($lang)?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Duration($lang)?></label>
 				<div class="col-xs-4">
 					<input class="form-control" id="name" type="text" name="duration"
-					       value="<?= $durationPrint ?>" 
+					       value="<?php echo  $durationPrint ?>" 
 					/>
 				</div>
 				<div class="col-xs-4">
 					<select class="form-control" name="duration_step">
-						<OPTION value="1" <?php if($viewDuration==1){echo "selected=\"selected\"";} ?>> <?= SyTranslator::Minutes($lang) ?> </OPTION>
-						<OPTION value="2" <?php if($viewDuration==2){echo "selected=\"selected\"";} ?>> <?= SyTranslator::Hours($lang) ?> </OPTION>
-						<OPTION value="3" <?php if($viewDuration==3){echo "selected=\"selected\"";} ?>> <?= SyTranslator::Days($lang) ?> </OPTION>
+						<OPTION value="1" <?php if($viewDuration==1){echo "selected=\"selected\"";} ?>> <?php echo  SyTranslator::Minutes($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($viewDuration==2){echo "selected=\"selected\"";} ?>> <?php echo  SyTranslator::Hours($lang) ?> </OPTION>
+						<OPTION value="3" <?php if($viewDuration==3){echo "selected=\"selected\"";} ?>> <?php echo  SyTranslator::Days($lang) ?> </OPTION>
 					</select>
 				</div>
 			</div>
@@ -428,7 +428,7 @@ else{
 		<input class="form-control" id="id" type="hidden"  name="is_unitary" value="1" />
 		<br></br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= $this->clean($resourceInfo["quantity_name"]) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  $this->clean($resourceInfo["quantity_name"]) ?></label>
 			<div class="col-xs-8">
 				<?php 
 				$quantity = 1;
@@ -436,8 +436,8 @@ else{
 					$quantity = $this->clean($reservationInfo["quantity"]);
 				}
 				?>
-				<input class="form-control" id="id" type="number"  name="quantity" value="<?=$quantity?>"
-				<?=$readOnlyGlobal?>/>
+				<input class="form-control" id="id" type="number"  name="quantity" value="<?php echo $quantity?>"
+				<?php echo $readOnlyGlobal?>/>
 			</div>
 		</div>
 		<?php 	
@@ -461,13 +461,13 @@ else{
 				if ($quantitiesNames[$i] != "" && $quantitiesNames[$i] != " "){			
 				?>
 				<div class="form-group">
-					<label for="inputEmail" class="control-label col-xs-4"><?= $this->clean($quantitiesNames[$i]) ?></label>
+					<label for="inputEmail" class="control-label col-xs-4"><?php echo  $this->clean($quantitiesNames[$i]) ?></label>
 					<div class="col-xs-8">
 						<?php 
 						$quantity = 0;
 						?>
-						<input class="form-control" id="id" type="number"  name="quantity[]" value="<?=$quantities[$i]?>"
-						<?=$readOnlyGlobal?>/>
+						<input class="form-control" id="id" type="number"  name="quantity[]" value="<?php echo $quantities[$i]?>"
+						<?php echo $readOnlyGlobal?>/>
 					</div>
 				</div>
 				<?php
@@ -483,9 +483,9 @@ else{
 		<!-- color code -->
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Color_code($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Color_code($lang)?></label>
 			<div class="col-xs-8">
-			<select class="form-control" name="color_code_id" <?=$readOnlyGlobal?>>
+			<select class="form-control" name="color_code_id" <?php echo $readOnlyGlobal?>>
 			<?php 
 			$colorID = $resourceInfo["default_color_id"];
 			
@@ -505,7 +505,7 @@ else{
 					$selected = "selected=\"selected\"";
 				}
 				?>
-				<OPTION value="<?= $codeID ?>" <?= $selected ?>> <?= $codeName?> </OPTION>
+				<OPTION value="<?php echo  $codeID ?>" <?php echo  $selected ?>> <?php echo  $codeName?> </OPTION>
 				<?php 
 			}
 			?>
@@ -522,11 +522,11 @@ else{
 		<div class="col-xs-1 col-xs-offset-11">
 		        <?php } if ($canEditReservation){
 				?>	
-				<input type="submit" class="btn btn-primary" value="<?=SyTranslator::Save($lang)?>" />
+				<input type="submit" class="btn btn-primary" value="<?php echo SyTranslator::Save($lang)?>" />
 				<?php if (isset($reservationInfo)){?>
-		        <button type="button" onclick="location.href='calendar/removeentry/<?=$this->clean($reservationInfo['id']) ?>'" class="btn btn-danger">Delete</button>
+		        <button type="button" onclick="location.href='calendar/removeentry/<?php echo $this->clean($reservationInfo['id']) ?>'" class="btn btn-danger">Delete</button>
 		        <?php }} ?>
-				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'"><?=SyTranslator::Cancel($lang)?></button>
+				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'"><?php echo SyTranslator::Cancel($lang)?></button>
 		</div>
       
       
@@ -548,7 +548,7 @@ else{
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4">Series type</label>
 			<div class="col-xs-8">
-			<select class="form-control" name="series_type_id" <?=$readOnlyGlobal?>>
+			<select class="form-control" name="series_type_id" <?php echo $readOnlyGlobal?>>
 				<?php 
 				$series_type_id = 0;
 				if (isset($seriesInfo)){
@@ -636,7 +636,7 @@ else{
 				<div class="col-xs-8">
 				<div class='input-group date' id='datetimepicker5'>
 					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="series_end_date"
-					       value="<?= $series_end_date ?>" />
+					       value="<?php echo  $series_end_date ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -655,7 +655,7 @@ else{
 				?>	
 				<input type="submit" class="btn btn-primary" value="Save" />
 				<?php if (isset($reservationInfo)){?>
-		        <button type="button" onclick="location.href='calendar/removeseries/<?=$this->clean($seriesInfo['id']) ?>'" class="btn btn-danger">Delete</button>
+		        <button type="button" onclick="location.href='calendar/removeseries/<?php echo $this->clean($seriesInfo['id']) ?>'" class="btn btn-danger">Delete</button>
 		        <?php }} ?>
 				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'">Cancel</button>
 		</div>
@@ -677,5 +677,5 @@ document.getElementById('resa_time_div').style.display = ! this.checked ? 'block
 </script>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

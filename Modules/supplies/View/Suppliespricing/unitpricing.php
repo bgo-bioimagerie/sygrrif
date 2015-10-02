@@ -9,7 +9,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SuTranslator::Pricing_per_unit($lang) ?>
+			<?php echo  SuTranslator::Pricing_per_unit($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -18,8 +18,8 @@
 			<thead>
 				<tr>
 				    <td>ID</td>
-					<td><?= CoreTranslator::Name($lang) ?></td>
-					<td><?= SuTranslator::Pricing($lang) ?></td>
+					<td><?php echo  CoreTranslator::Name($lang) ?></td>
+					<td><?php echo  SuTranslator::Pricing($lang) ?></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -28,13 +28,13 @@
 				<tr>
 					<!--  Id -->
 					<?php $unitId = $this->clean ( $price ['unit_id'] ); ?>
-					<td><?= $unitId ?></td>
+					<td><?php echo  $unitId ?></td>
 				    <!--  name -->
-				    <td><?= $this->clean ( $price ['unit_name'] ); ?></td>
+				    <td><?php echo  $this->clean ( $price ['unit_name'] ); ?></td>
 				    <!--  tarif -->
-					<td><?= $this->clean ( $price ['pricing_name'] ); ?></td>
+					<td><?php echo  $this->clean ( $price ['pricing_name'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliespricing/editunitpricing/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='suppliespricing/editunitpricing/<?php echo  $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?php echo  CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -46,5 +46,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -15,7 +15,7 @@
 		
 		<div class="page-header">
 			<h1>
-			<?= ShTranslator::Delete($lang) ?>
+			<?php echo  ShTranslator::Delete($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -26,9 +26,9 @@
 		
 		<form role="form" class="form-horizontal" action="sheet/deletequery" method="post">
 			
-			<input class="form-control" id="id" type="hidden" name="id" value="<?= $id_sheet ?>" />
+			<input class="form-control" id="id" type="hidden" name="id" value="<?php echo  $id_sheet ?>" />
 			<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Delete($lang)?>" />
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Delete($lang)?>" />
 			</div>
        </form>
 		

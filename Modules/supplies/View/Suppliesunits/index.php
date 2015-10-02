@@ -16,7 +16,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Units($lang) ?>
+			<?php echo  CoreTranslator::Units($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -25,8 +25,8 @@
 			<thead>
 				<tr>
 					<td><a href="suppliesunits/index/id">ID</a></td>
-					<td><a href="suppliesunits/index/name"><?= CoreTranslator::Name($lang) ?></a></td>
-					<td><a href="suppliesunits/index/address"><?= CoreTranslator::Address($lang) ?></a></td>
+					<td><a href="suppliesunits/index/name"><?php echo  CoreTranslator::Name($lang) ?></a></td>
+					<td><a href="suppliesunits/index/address"><?php echo  CoreTranslator::Address($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -36,11 +36,11 @@
 				?> 
 				<tr>
 					<?php $unitId = $this->clean ( $unit ['id'] ); ?>
-					<td><?= $unitId ?></td>
-				    <td><?= $this->clean ( $unit ['name'] ); ?></td>
-				    <td><?= $this->clean ( $unit ['address'] ); ?></td>
+					<td><?php echo  $unitId ?></td>
+				    <td><?php echo  $this->clean ( $unit ['name'] ); ?></td>
+				    <td><?php echo  $this->clean ( $unit ['address'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='suppliesunits/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='suppliesunits/edit/<?php echo  $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?php echo  CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php }endforeach; ?>
@@ -52,5 +52,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

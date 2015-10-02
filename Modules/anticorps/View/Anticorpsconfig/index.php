@@ -29,12 +29,12 @@
 		
 		<?php if (isset($installError)): ?>
         <div class="alert alert-danger" role="alert">
-    	<p><?= $installError ?></p>
+    	<p><?php echo  $installError ?></p>
     	</div>
 		<?php endif; ?>
 		<?php if (isset($installSuccess)): ?>
         <div class="alert alert-success" role="alert">
-    	<p><?= $installSuccess ?></p>
+    	<p><?php echo  $installSuccess ?></p>
     	</div>
 		<?php endif; ?>
 		
@@ -76,7 +76,7 @@
 		    	$menuStatus = $menu["status"];
 		    ?>
 		    <div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4"><?=$menuName?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo $menuName?></label>
 				<div class="col-xs-6">
 					<select class="form-control" name="menus[]">
 						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > disable </OPTION>
@@ -99,5 +99,5 @@
 </div>    
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

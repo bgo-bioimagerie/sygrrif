@@ -32,10 +32,10 @@
 				<?php foreach ( $prelevements as $prelevement ) : ?> 
 				<tr>
 					<?php $prelevementId = $this->clean ( $prelevement ['id'] ); ?>
-					<td><?= $prelevementId ?></td>
-				    <td><?= $this->clean ( $prelevement ['nom'] ); ?></td>
+					<td><?php echo  $prelevementId ?></td>
+				    <td><?php echo  $this->clean ( $prelevement ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='prelevements/edit/<?= $prelevementId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='prelevements/edit/<?php echo  $prelevementId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

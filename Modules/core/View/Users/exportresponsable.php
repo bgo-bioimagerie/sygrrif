@@ -21,25 +21,25 @@
 	  <form role="form" class="form-horizontal" action="users/exportresponsablequery" method="post">
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::ExportResponsibles($lang) ?>
+			<?php echo  CoreTranslator::ExportResponsibles($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 				<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::Responsible($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="id_type">
-					<OPTION value="0"  > <?= CoreTranslator::All($lang) ?> </OPTION>
-					<OPTION value="1"  > <?= CoreTranslator::Active($lang) ?> </OPTION>
-					<OPTION value="2"  > <?= CoreTranslator::Unactive($lang) ?> </OPTION>
+					<OPTION value="0"  > <?php echo  CoreTranslator::All($lang) ?> </OPTION>
+					<OPTION value="1"  > <?php echo  CoreTranslator::Active($lang) ?> </OPTION>
+					<OPTION value="2"  > <?php echo  CoreTranslator::Unactive($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>
 		<br />
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)?>" />
-				<button type="button" onclick="location.href='users'" class="btn btn-default"><?= CoreTranslator::Cancel($lang)?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang)?>" />
+				<button type="button" onclick="location.href='users'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang)?></button>
 		</div>
 		
       </form>

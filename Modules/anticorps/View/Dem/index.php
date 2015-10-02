@@ -32,10 +32,10 @@
 				<?php foreach ( $dems as $dem ) : ?> 
 				<tr>
 					<?php $demId = $this->clean ( $dem ['id'] ); ?>
-					<td><?= $demId ?></td>
-				    <td><?= $this->clean ( $dem ['nom'] ); ?></td>
+					<td><?php echo  $demId ?></td>
+				    <td><?php echo  $this->clean ( $dem ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='dem/edit/<?= $demId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='dem/edit/<?php echo  $demId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -26,7 +26,7 @@
 	
 		<div class="page-header">
 			<h1>
-				<?= SuTranslator::Supplies_bill($lang) ?> <br> <small></small>
+				<?php echo  SuTranslator::Supplies_bill($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 		
@@ -34,12 +34,12 @@
 		if ($errorMessage != ''){
 			?>
 			<div class="alert alert-danger">
-				<p><?= $errorMessage ?></p>
+				<p><?php echo  $errorMessage ?></p>
 			</div>
 		<?php } ?>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?> </label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?> </label>
 			<div class="col-xs-10">
 					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);"
 						>
@@ -52,7 +52,7 @@
 							$checked = ' selected="selected"';
 						}
 					?>
-					<OPTION value="<?= $unitId?>" <?= $checked ?>> <?=$unitName?> </OPTION>
+					<OPTION value="<?php echo  $unitId?>" <?php echo  $checked ?>> <?php echo $unitName?> </OPTION>
 					<?php
 					}
 					?>
@@ -65,7 +65,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Responsible($lang)?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="responsible">
 					<OPTION value="0" > ... </OPTION>
@@ -74,7 +74,7 @@
 						$respId = $this->clean( $resp['id'] );	
 						$respName = $this->clean( $resp['name'] . " " . $resp['firstname']);
 					?>
-					<OPTION value="<?= $respId?>"> <?=$respName?> </OPTION>
+					<OPTION value="<?php echo  $respId?>"> <?php echo $respName?> </OPTION>
 					<?php
 					}
 					?>
@@ -83,13 +83,13 @@
 		</div>	
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -28,7 +28,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 	
 		<div class="page-header">
 			<h1>
-				<?= SyTranslator::Pricing_Unit($lang) ?>
+				<?php echo  SyTranslator::Pricing_Unit($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -37,16 +37,16 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		if ($errorMessage != ''){
 			?>
 			<div class="alert alert-danger">
-				<p><?= $errorMessage ?></p>
+				<p><?php echo  $errorMessage ?></p>
 			</div>
 		<?php } ?>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_Start($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Date_Start($lang) ?></label>
 				<div class="col-xs-9">
-				<div class='input-group date form_date_<?= $lang ?>'>
+				<div class='input-group date form_date_<?php echo  $lang ?>'>
 					<input type='text' class="form-control" name="searchDate_start" id="searchDate_start"
-					       value="<?= CoreTranslator::dateFromEn($searchDate_start, $lang) ?>" />
+					       value="<?php echo  CoreTranslator::dateFromEn($searchDate_start, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -54,23 +54,23 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		    </div>
 		</div>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Date_End($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Date_End($lang) ?></label>
 				<div class="col-xs-9">
-				<div class='input-group date form_date_<?= $lang ?>'>
+				<div class='input-group date form_date_<?php echo  $lang ?>'>
 					<input id="test32" type='text' class="form-control" name="searchDate_end"
-					       value="<?= CoreTranslator::dateFromEn($searchDate_end, $lang) ?>" />
+					       value="<?php echo  CoreTranslator::dateFromEn($searchDate_end, $lang) ?>" />
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
 				</div>
 		    </div>
 		    				<div class="col-xs-1">
-				<input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
+				<input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Ok($lang) ?>" />
 				</div>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unit($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);"
 						>
@@ -84,7 +84,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 							$checked = ' selected="selected"';
 						}
 					?>
-					<OPTION value="<?= $unitId?>" <?= $checked ?>> <?=$unitName?> </OPTION>
+					<OPTION value="<?php echo  $unitId?>" <?php echo  $checked ?>> <?php echo $unitName?> </OPTION>
 					<?php
 					}
 					?>
@@ -97,7 +97,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Responsible($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="responsible">
 					<OPTION value="0" > ... </OPTION>
@@ -106,7 +106,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 						$respId = $this->clean( $resp['id'] );	
 						$respName = $this->clean( $resp['name'] . " " . $resp['firstname']);
 					?>
-					<OPTION value="<?= $respId?>"> <?=$respName?> </OPTION>
+					<OPTION value="<?php echo  $respId?>"> <?php echo $respName?> </OPTION>
 					<?php
 					}
 					?>
@@ -115,20 +115,20 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		</div>	
 		<br>
 				<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Export_type($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Export_type($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="export_type">
 					<OPTION value="0" > ... </OPTION>
-					<OPTION value="1" > <?= SyTranslator::counting($lang) ?> </OPTION>
-					<OPTION value="2" > <?= SyTranslator::detail($lang) ?> </OPTION>
-					<OPTION value="3" > <?= SyTranslator::bill($lang) ?> </OPTION>
+					<OPTION value="1" > <?php echo  SyTranslator::counting($lang) ?> </OPTION>
+					<OPTION value="2" > <?php echo  SyTranslator::detail($lang) ?> </OPTION>
+					<OPTION value="3" > <?php echo  SyTranslator::bill($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>	
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Ok($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -137,5 +137,5 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 <?php include 'Modules/core/View/timepicker_script.php'; ?>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

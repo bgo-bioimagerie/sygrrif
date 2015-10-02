@@ -85,14 +85,14 @@ if (isset($_SESSION["user_settings"]["language"])){
     	
     	<div class="page-header">
 			<h1>
-				<?= ZoTranslator::Storage_configuration($lang) ?> <br> <small></small>
+				<?php echo  ZoTranslator::Storage_configuration($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 		
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
-				<?= ZoTranslator::Install_Repair_database($lang) ?> <br> <small></small>
+				<?php echo  ZoTranslator::Install_Repair_database($lang) ?> <br> <small></small>
 			</h2>
 		</div>
 		
@@ -101,17 +101,17 @@ if (isset($_SESSION["user_settings"]["language"])){
 		
 		<?php if (isset($installError)): ?>
         <div class="alert alert-danger" role="alert">
-    	<p><?= $installError ?></p>
+    	<p><?php echo  $installError ?></p>
     	</div>
 		<?php endif; ?>
 		<?php if (isset($installSuccess)): ?>
         <div class="alert alert-success" role="alert">
-    	<p><?= $installSuccess ?></p>
+    	<p><?php echo  $installSuccess ?></p>
     	</div>
 		<?php endif; ?>
 		
 		<p>
-		<?= CoreTranslator::Install_Txt($lang) ?>
+		<?php echo  CoreTranslator::Install_Txt($lang) ?>
 		</p>
 		
 		<div class="col-xs-10">
@@ -120,7 +120,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 
 		<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			<input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Install($lang) ?>" />
+			<input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Install($lang) ?>" />
 		</div>
       </form>
   
@@ -129,7 +129,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div>
 		  <div class="page-header">
 			<h2>
-				<?= CoreTranslator::Activate_desactivate_menus($lang) ?> <br> <small></small>
+				<?php echo  CoreTranslator::Activate_desactivate_menus($lang) ?> <br> <small></small>
 			</h2>
 		  </div>
 		
@@ -145,17 +145,17 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<label for="inputEmail" class="control-label col-xs-4">Storage</label>
 				<div class="col-xs-6">
 					<select class="form-control" name="zoomifymenu">
-						<OPTION value="0" <?php if($menuStatus["status"]==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::disable($lang) ?> </OPTION>
-						<OPTION value="1" <?php if($menuStatus["status"]==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-						<OPTION value="2" <?php if($menuStatus["status"]==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-						<OPTION value="3" <?php if($menuStatus["status"]==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-						<OPTION value="4" <?php if($menuStatus["status"]==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+						<OPTION value="0" <?php if($menuStatus["status"]==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::disable($lang) ?> </OPTION>
+						<OPTION value="1" <?php if($menuStatus["status"]==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($menuStatus["status"]==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+						<OPTION value="3" <?php if($menuStatus["status"]==3){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+						<OPTION value="4" <?php if($menuStatus["status"]==4){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 					</select>
 				</div>
 			</div>
 		  
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+			  <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
 		    </div>
 		  </form>
       </div>
@@ -165,7 +165,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div>
 		  <div class="page-header">
 			<h2>
-				<?= ZoTranslator::Directories_names($lang) ?> <br> <small></small>
+				<?php echo  ZoTranslator::Directories_names($lang) ?> <br> <small></small>
 			</h2>
 		  </div>
 		
@@ -195,8 +195,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 							?>
 							<tr>
 								<td><input type="checkbox" name="chk" /></td>
-								<td><input class="form-control" type="hidden" name="storagedirectoriesids[]" value="<?= $dir["id"] ?>"/></td>
-								<td><input class="form-control" type="text" name="storagedirectoriesnames[]" value="<?= $dir["name"] ?>" /></td>
+								<td><input class="form-control" type="hidden" name="storagedirectoriesids[]" value="<?php echo  $dir["id"] ?>"/></td>
+								<td><input class="form-control" type="text" name="storagedirectoriesnames[]" value="<?php echo  $dir["name"] ?>" /></td>
 							</tr>
 							<?php
 						}
@@ -224,7 +224,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</div>	
 		  
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+			  <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
 		    </div>
 		  </form>
       </div>
@@ -233,5 +233,5 @@ if (isset($_SESSION["user_settings"]["language"])){
 </div>    
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

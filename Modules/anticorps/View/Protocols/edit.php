@@ -41,7 +41,7 @@
 			<label for="inputEmail" class="control-label col-xs-2">Id</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="id" type="text" name="id" readonly
-				       value="<?= $protocol['id'] ?>"  
+				       value="<?php echo  $protocol['id'] ?>"  
 				/>
 			</div>
 		</div>
@@ -61,7 +61,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $kitId ?>" <?= $selected ?>> <?= $kitName ?> </OPTION>
+						<OPTION value="<?php echo  $kitId ?>" <?php echo  $selected ?>> <?php echo  $kitName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -73,7 +73,7 @@
 			<label for="inputEmail" class="control-label col-xs-2">No Proto</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="no_proto" type="text" name="no_proto"
-				       value="<?= $this->clean ( $protocol ['no_proto'] ); ?>"  
+				       value="<?php echo  $this->clean ( $protocol ['no_proto'] ); ?>"  
 				/>
 			</div>
 		</div>
@@ -91,7 +91,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -112,7 +112,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -133,7 +133,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -154,7 +154,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -175,7 +175,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -196,7 +196,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -217,7 +217,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -238,7 +238,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -259,7 +259,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -281,7 +281,7 @@
 							$selected = "selected=\"selected\"";
 						}
 						?>
-						<OPTION value="<?= $varId ?>" <?= $selected ?>> <?= $varName ?> </OPTION>
+						<OPTION value="<?php echo  $varId ?>" <?php echo  $selected ?>> <?php echo  $varName ?> </OPTION>
 					<?php 
 					}	
 					?>
@@ -304,7 +304,7 @@
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
 		        <?php if($protocol['id'] != ""){ ?>
-		        	<button type="button" onclick="location.href='<?="protocols/delete/".$protocol['id'] ?>'" class="btn btn-danger"><?= SyTranslator::Delete($lang)?></button>
+		        	<button type="button" onclick="location.href='<?php echo "protocols/delete/".$protocol['id'] ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang)?></button>
 				<?php }?>
 				<button type="button" onclick="location.href='protocols'" class="btn btn-default">Cancel</button>
 		</div>
@@ -313,5 +313,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

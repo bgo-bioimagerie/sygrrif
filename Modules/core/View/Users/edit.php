@@ -21,64 +21,64 @@
 	  <form role="form" class="form-horizontal" action="users/editquery" method="post">
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Edit_User($lang) ?>
+			<?php echo  CoreTranslator::Edit_User($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">ID</label>
 			<div class="col-xs-10">
-			    <input class="form-control" id="id" type="text" name="id" value="<?= $user['id'] ?>" readonly
+			    <input class="form-control" id="id" type="text" name="id" value="<?php echo  $user['id'] ?>" readonly
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name" value="<?= $user['name'] ?>"
+				<input class="form-control" id="name" type="text" name="name" value="<?php echo  $user['name'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Firstname($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Firstname($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
-				       value = "<?= $user['firstname'] ?>"
+				       value = "<?php echo  $user['firstname'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="login" class="control-label col-xs-2"><?= CoreTranslator::Login($lang) ?></label>
+			<label for="login" class="control-label col-xs-2"><?php echo  CoreTranslator::Login($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="login" type="text" name="login"
-					   value = "<?= $user['login'] ?>"
+					   value = "<?php echo  $user['login'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Email($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Email($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
-				       value = "<?= $user['email'] ?>"
+				       value = "<?php echo  $user['email'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Phone($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Phone($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
-				       value = "<?= $user['tel'] ?>"
+				       value = "<?php echo  $user['tel'] ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="id_unit">
 					<?php foreach ($unitsList as $unit):?>
@@ -89,14 +89,14 @@
 					          	$active = "selected=\"selected\"";	
 					          }
 					    ?>
-						<OPTION value="<?= $unitId ?>" <?= $active ?> > <?= $unitname ?> </OPTION>
+						<OPTION value="<?php echo  $unitId ?>" <?php echo  $active ?> > <?php echo  $unitname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="id_responsible">   
 					<?php foreach ($respsList as $resp):?>
@@ -112,7 +112,7 @@
 					    			$active = "selected=\"selected\"";
 					    		}
 						?>
-						<OPTION value="<?= $respId ?>" <?= $active ?>> <?= $respSummary ?> </OPTION>
+						<OPTION value="<?php echo  $respId ?>" <?php echo  $active ?>> <?php echo  $respSummary ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -134,7 +134,7 @@
 						} 
 				  ?>
 			      
-			      <input type="checkbox" name="is_responsible" <?= $checked ?>> <?= CoreTranslator::is_responsible($lang)?>
+			      <input type="checkbox" name="is_responsible" <?php echo  $checked ?>> <?php echo  CoreTranslator::is_responsible($lang)?>
 			      
 			    </label>
               </div>
@@ -142,7 +142,7 @@
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Status($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Status($lang)?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="id_status">
 					<?php foreach ($statusList as $status):?>
@@ -154,7 +154,7 @@
 					          	$active = "selected=\"selected\"";
 					          }
 					    ?>
-						<OPTION value="<?= $statusid ?>" <?= $active ?>> <?= CoreTranslator::Translate_status($lang, $statusname)  ?> </OPTION>
+						<OPTION value="<?php echo  $statusid ?>" <?php echo  $active ?>> <?php echo  CoreTranslator::Translate_status($lang, $statusname)  ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -162,38 +162,38 @@
 		<br>
 		<!-- 
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Convention($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang)?></label>
 			<div class="col-xs-10">
 				
 				/>
 			</div>
 		</div>
 		-->
-		<input class="form-control" id="convention" type="hidden" name="convention" value = "<?= $user['convention'] ?>">
+		<input class="form-control" id="convention" type="hidden" name="convention" value = "<?php echo  $user['convention'] ?>">
 		<br>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_convention($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_convention($lang)?></label>
 			<div class="col-xs-10">
-				<input class="form-control" type="text" value = "<?= CoreTranslator::dateFromEn($user['date_convention'], $lang) ?>" name="date_convention">
+				<input class="form-control" type="text" value = "<?php echo  CoreTranslator::dateFromEn($user['date_convention'], $lang) ?>" name="date_convention">
 		    </div>
 		</div>
 		<br>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Date_end_contract($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_end_contract($lang)?></label>
 			<div class="col-xs-10">
-				<input class="form-control" type="text" value = "<?= CoreTranslator::dateFromEn($user['date_end_contract'], $lang) ?>" name="date_end_contract">
+				<input class="form-control" type="text" value = "<?php echo  CoreTranslator::dateFromEn($user['date_end_contract'], $lang) ?>" name="date_end_contract">
 		    </div>
 		</div>
 		
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Is_user_active($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Is_user_active($lang)?></label>
 			<div class="col-xs-10">
 			<?php $active = $this->clean($user["is_active"]); 
 				$selected = "selected=\"selected\"";
   			?>
   				<select class="form-control" name="is_active">
-  					<OPTION value="1" <?php if($active){echo $selected;} ?>> <?= CoreTranslator::yes($lang)?> </OPTION>
-  					<OPTION value="0" <?php if(!$active){echo $selected;} ?>> <?= CoreTranslator::no($lang)?> </OPTION>
+  					<OPTION value="1" <?php if($active){echo $selected;} ?>> <?php echo  CoreTranslator::yes($lang)?> </OPTION>
+  					<OPTION value="0" <?php if(!$active){echo $selected;} ?>> <?php echo  CoreTranslator::no($lang)?> </OPTION>
   					
   				</select>
 		    </div>
@@ -201,7 +201,7 @@
 		<div class="form-group">
                         <label for="inputEmail" class="control-label col-xs-2">isLdap</label>
                         <div class="col-xs-10">
-                                <input class="form-control" id="name" type="text" name="isLdap" value="<?= $user['source'] ?>" readonly
+                                <input class="form-control" id="name" type="text" name="isLdap" value="<?php echo  $user['source'] ?>" readonly
                                 />
                         </div>
                 </div>
@@ -211,9 +211,9 @@
 
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang)?>" />
-				<button type="button" onclick="location.href='users'" class="btn btn-default"><?= CoreTranslator::Cancel($lang)?></button>
-				<button type="button" onclick="location.href='<?="users/delete/".$this->clean($user['id']) ?>'" class="btn btn-danger"><?= CoreTranslator::Delete($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang)?>" />
+				<button type="button" onclick="location.href='users'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang)?></button>
+				<button type="button" onclick="location.href='<?php echo "users/delete/".$this->clean($user['id']) ?>'" class="btn btn-danger"><?php echo  CoreTranslator::Delete($lang) ?></button>
 		</div>
 		
       </form>
@@ -222,13 +222,13 @@
       <div>
       	<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Change_password($lang) ?>
+			<?php echo  CoreTranslator::Change_password($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
 		<div class="row">
 			<div class="col-xs-4" id="button-div">
-				<button type="button" onclick="location.href='users/changepwd/<?=$user['id']?>'" class="btn btn-default"><?= CoreTranslator::Change_password($lang) ?></button>
+				<button type="button" onclick="location.href='users/changepwd/<?php echo $user['id']?>'" class="btn btn-default"><?php echo  CoreTranslator::Change_password($lang) ?></button>
 			</div>
 		</div>
 	  </div>
@@ -237,5 +237,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

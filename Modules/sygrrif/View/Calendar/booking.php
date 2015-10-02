@@ -25,11 +25,11 @@
 
 <div id="desc" class="text-center">
 
-<?= SyTranslator::Select_a_resource_on_the_navigation_bar($lang) ?>
+<?php echo  SyTranslator::Select_a_resource_on_the_navigation_bar($lang) ?>
 
 </div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>
