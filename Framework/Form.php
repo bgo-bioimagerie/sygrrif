@@ -125,10 +125,10 @@ class Form
      * @param string $label Input label 
      * @param string $value Input default value
      */
-    public function addHidden($name, $label, $value = ""){
+    public function addHidden($name, $value = ""){
     	$this->types[] = "hidden";
     	$this->names[] = $name;
-    	$this->labels[] = $label;
+    	$this->labels[] = "";
 		$this->setValue($name, $value);
     	$this->isMandatory[] = false;
     	$this->choices[] = array();
@@ -263,6 +263,12 @@ class Form
     			$validated = "alert alert-danger";
     		}
     		
+    		if($this->types[$i] == "hidden"){
+    			$html .= "<input class=\"form-control\" type=\"hidden\" name=\"".$this->names[$i]."\"";
+    			$html .= "value=\"".$this->values[$i]."\"" . $required;
+    			$html .= "/>";
+
+    		}
     		if($this->types[$i] == "text"){
     			$html .= "<div class=\"form-group".$validated."\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";

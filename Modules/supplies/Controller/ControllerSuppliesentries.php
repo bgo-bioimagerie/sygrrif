@@ -130,11 +130,11 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$users = array();
 		if ($supliesusersdatabase == "local"){
 			$modelUser = new SuUser();
-			$users = $modelUser->getUsersSummary();
+			$users = $modelUser->getUsersSummary("name");
 		}
 		else{
 			$modelUser = new User();
-			$users = $modelUser->getUsersSummary();
+			$users = $modelUser->getUsersSummary("name");
 		}
 		
 		// view

@@ -2,9 +2,9 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
-require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
@@ -165,7 +165,7 @@ class ControllerSynchistop extends Controller {
 		$users_oldq = $pdo_old->query($sql);
 		$users_old = $users_oldq->fetchAll();
 		
-		$userModel = new User();
+		$userModel = new CoreUser();
 		foreach ($users_old as $uo){	
 			$name = $uo['name'];
 			$firstname = $uo['firstname']; 
@@ -199,9 +199,9 @@ class ControllerSynchistop extends Controller {
 		$users_old = $users_oldq->fetchAll();
 		
 		// get unit id
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		
-		$userModel = new User();
+		$userModel = new CoreUser();
 		foreach ($users_old as $uo){
 		
 			//print_r($uo);
@@ -216,7 +216,7 @@ class ControllerSynchistop extends Controller {
 		$labs_oldq = $pdo_old->query($sql);
 		$labs_old = $labs_oldq->fetchAll();
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$userPricing = new SyPricing();
 		$modelLink = new SyUnitPricing();
 		foreach ($labs_old as $lo){
@@ -238,8 +238,8 @@ class ControllerSynchistop extends Controller {
 		$users_oldq = $pdo_old->query($sql);
 		$users_old = $users_oldq->fetchAll();
 		
-		$userModel = new User();
-		$respModel = new Responsible();
+		$userModel = new CoreUser();
+		$respModel = new CoreResponsible();
 		foreach ($users_old as $uo){
 			
 			// find id
@@ -260,8 +260,8 @@ class ControllerSynchistop extends Controller {
 		$users_oldq = $pdo_old->query($sql);
 		$users_old = $users_oldq->fetchAll();
 		
-		$userModel = new User();
-		$respModel = new Responsible();
+		$userModel = new CoreUser();
+		$respModel = new CoreResponsible();
 		foreach ($users_old as $uo){
 			
 			$idResp = $userModel->getUserIdFromFullName($uo['responsable']);
@@ -314,11 +314,11 @@ class ControllerSynchistop extends Controller {
 			$id_visa = $mv->getVisaId($aut['visa'])[0];
 			
 			// get unit id
-			$mu = new Unit();
+			$mu = new CoreUnit();
 			$idUnit = $mu->getUnitId($aut['laboratoire']);
 			
 			// get user id
-			$muser = new User();
+			$muser = new CoreUser();
 			$idUser = $muser->getUserIdFromFullName($aut['nf']);
 
 			// convert date
@@ -346,7 +346,7 @@ class ControllerSynchistop extends Controller {
 		$entry_oldq = $pdo_old->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 		
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
@@ -499,7 +499,7 @@ class ControllerSynchistop extends Controller {
 		$entry_oldq = $pdo_grr->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 		
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
@@ -523,7 +523,7 @@ class ControllerSynchistop extends Controller {
 		$modelAuth = new SyAuthorization();
 		$auths = $modelAuth->getAuths();
 		
-		$ModelUser = new User();
+		$ModelUser = new CoreUser();
 		
 		$ayearago = time()-3600*24*365;
 		$modelCalEntry = new SyCalendarEntry();
@@ -591,7 +591,7 @@ class ControllerSynchistop extends Controller {
 	
 	public function desactivateUserDoNotBookAYear(){
 		// get all the users
-		$ModelUser = new User();
+		$ModelUser = new CoreUser();
 		$users = $ModelUser->getUsers();
 		
 		$modelCalEntry = new SyCalendarEntry();

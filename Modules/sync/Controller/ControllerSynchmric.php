@@ -2,9 +2,9 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
-require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
@@ -15,7 +15,7 @@ require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
-require_once 'Modules/core/Model/InitDatabase.php';
+require_once 'Modules/core/Model/CoreInitDatabase.php';
 require_once 'Modules/sygrrif/Model/SyInstall.php';
 
 class ControllerSynchmric extends Controller {
@@ -36,7 +36,7 @@ class ControllerSynchmric extends Controller {
 		
 		
 		// install data  base
-		$installModel = new InitDatabase();
+		$installModel = new CoreInitDatabase();
 		$installModel->createDatabase();
 		
 		$sygrrifInstall = new SyInstall();
@@ -102,7 +102,7 @@ class ControllerSynchmric extends Controller {
 		$result = $pdo_grr->query($sql);
 		$units_old = $result->fetchAll();
 		
-		$unitModel = new Unit();
+		$unitModel = new CoreUnit();
 		foreach ($units_old as $unit){
 			$unitModel->setUnit($unit['equipe_name'], $unit['equipe_address']);
 		}
@@ -114,8 +114,8 @@ class ControllerSynchmric extends Controller {
 		$users_oldq = $pdo_grr->query($sql);
 		$users_old = $users_oldq->fetchAll();
 		
-		$userModel = new User();
-		$unitModel = new Unit();
+		$userModel = new CoreUser();
+		$unitModel = new CoreUnit();
 		foreach ($users_old as $uo){	
 			$name = $uo['nom'];
 			$firstname = $uo['prenom']; 
@@ -265,7 +265,7 @@ class ControllerSynchmric extends Controller {
 		$entry_oldq = $pdo_old->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
@@ -305,7 +305,7 @@ class ControllerSynchmric extends Controller {
 		$entry_oldq = $pdo_grr->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
@@ -360,7 +360,7 @@ class ControllerSynchmric extends Controller {
 		$labs_oldq = $pdo_old->query($sql);
 		$labs_old = $labs_oldq->fetchAll();
 	
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$userPricing = new SyPricing();
 		$modelLink = new SyUnitPricing();
 		foreach ($labs_old as $lo){
@@ -398,13 +398,13 @@ class ControllerSynchmric extends Controller {
 		$autorisations_old = $autorisations_oldq->fetchAll();
 		
 		
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		foreach ($autorisations_old as $aut){
 			// get id resource category
 			$mrc = new SyResourcesCategory();
 				
 			// get user and unit id
-			$mu = new Unit();
+			$mu = new CoreUnit();
 			$idUser = $modelUser->userIdFromLogin($aut['visiteur_name']);
 			if ($idUser <= 0){
 				echo "sync authorizations cannot find the user " . $aut['visiteur_name'] . "<br/>";
@@ -430,7 +430,7 @@ class ControllerSynchmric extends Controller {
 		$labs_oldq = $pdo_grr->query($sql);
 		$labs_old = $labs_oldq->fetchAll();
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$userPricing = new SyPricing();
 		$modelLink = new SyUnitPricing();
 		foreach ($labs_old as $lo){

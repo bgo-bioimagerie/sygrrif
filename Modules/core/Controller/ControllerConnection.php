@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/UserSettings.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/core/Model/Ldap.php';
@@ -20,7 +20,7 @@ class ControllerConnection extends Controller
      */
     public function __construct()
     {
-        $this->user = new User();
+        $this->user = new CoreUser();
     }
 
     /**

@@ -901,5 +901,45 @@ class CoreTranslator {
 		return "Text color";
 	}
 	
+	public static function Belonging($lang){
+		if ($lang == "Fr"){
+			return "Appartenance";
+		}
+		return "Belonging";
+	}
+	
+	public static function Belongings($lang){
+		if ($lang == "Fr"){
+			return "Appartenances";
+		}
+		return "Belongings";
+	}
 
+	public static function add_belonging($lang){
+		if ($lang == "Fr"){
+			return "Ajouter";
+		}
+		return "Add belonging";
+	}
+	
+	public static function Edit_belonging($lang){
+		if ($lang == "Fr"){
+			return "Modifier appartenance";
+		}
+		return "Edit belonging";
+	}
+	
+	public static function Source($lang){
+		if ($lang == "Fr"){
+			return "Source";
+		}
+		return "Source";
+	}
+	
+	public static function User_list_options($lang){
+		if ($lang == "Fr"){
+			return "Champs optionnels table utilisateurs";
+		}
+		return "User list options";
+	} 
 }

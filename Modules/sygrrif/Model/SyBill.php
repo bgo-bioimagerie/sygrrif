@@ -1,8 +1,8 @@
 <?php
 
 require_once 'Framework/Model.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
 
 /**
  * Class defining the Bill model. It is used to store the history 
@@ -451,8 +451,8 @@ class SyBill extends Model {
 		$sheet->getStyle('H'.$ligne)->applyFromArray($gras);
 		
 		$ligne=3;
-		$modelUser = new User();
-		$modelUnit = new Unit();
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
 		foreach($res as $r){
 			$colonne='A';
 			$sheet->getRowDimension($ligne)->setRowHeight(13);

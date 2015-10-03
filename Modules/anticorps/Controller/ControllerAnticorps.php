@@ -6,7 +6,7 @@ require_once 'Modules/anticorps/Model/Anticorps.php';
 require_once 'Modules/anticorps/Model/Espece.php';
 require_once 'Modules/anticorps/Model/Organe.php';
 require_once 'Modules/anticorps/Model/Prelevement.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 
 class ControllerAnticorps extends ControllerSecureNav {
@@ -68,7 +68,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$protocols = $protoModel->getProtocolsNo();
 		
 		// get users List
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$users = $modelUser->getUsersSummary('name');
 		
 		
@@ -296,6 +296,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 			$searchCible = $_SESSION["ac_advSearch"]["searchCible"];
 			$searchValide = $_SESSION["ac_advSearch"]["searchValide"];
 			$searchResp = $_SESSION["ac_advSearch"]["searchResp"];
+			$searchCom = $_SESSION["ac_advSearch"]["searchCom"];
 			
 		}
 		else{
@@ -305,6 +306,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 			$searchCible = $this->request->getParameterNoException ("searchCible");
 			$searchValide = $this->request->getParameterNoException ("searchValide");
 			$searchResp = $this->request->getParameterNoException ("searchResp");
+			$searchCom = $this->request->getParameterNoException ("searchCom");
 		}
 		
 		$_SESSION["ac_advSearch"] = array(  "searchName" => $searchName,
@@ -312,10 +314,12 @@ class ControllerAnticorps extends ControllerSecureNav {
 											"searchSource" => $searchSource,
 											"searchCible" => $searchCible,
 											"searchValide" => $searchValide,
-											"searchResp" => $searchResp);
+											"searchResp" => $searchResp,
+											"searchCom" => $searchCom
+										 );
 		
 		$anticorpsModel = new Anticorps();
-		$anticorpsArray = $anticorpsModel->searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp);
+		$anticorpsArray = $anticorpsModel->searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp, $searchCom);
 		//$anticorpsArray = $anticorpsModel->getAnticorpsInfo("id");
 		
 		
@@ -331,6 +335,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'searchCible' => $searchCible, 
 				'searchValide' => $searchValide, 
 				'searchResp' => $searchResp,
+				'searchCom' => $searchCom,
 				'status' => $status
 		), "index" );
 	}

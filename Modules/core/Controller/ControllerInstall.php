@@ -1,8 +1,8 @@
 <?php
 require_once 'Framework/Controller.php';
 
-require_once 'Modules/core/Model/Install.php';
-require_once 'Modules/core/Model/InitDatabase.php';
+require_once 'Modules/core/Model/CoreInstall.php';
+require_once 'Modules/core/Model/CoreInitDatabase.php';
 
 /**
  * 
@@ -64,7 +64,7 @@ class ControllerInstall extends Controller {
 			$db_name = $this->request->getParameter("db_name");
 			
 			// test the connection
-			$installModel = new Install();
+			$installModel = new CoreInstall();
 			$testVal = $installModel->testConnection($sql_host, $login, $password, $db_name);
 			//echo 'test connection return val = ' . $testVal . '-----'; 
 			if ($testVal == 'success'){
@@ -99,7 +99,7 @@ class ControllerInstall extends Controller {
 		
 		//echo '--' . 'function createdatabase()' . '--';
 		
-		$model = new InitDatabase();
+		$model = new CoreInitDatabase();
 		$errorMessage = $model->createDatabase();
 		
 		$this->generateView ( array (

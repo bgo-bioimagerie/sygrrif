@@ -38,6 +38,10 @@ if($suppliesmenucolortxt == ""){
 	color: #<?=$suppliesmenucolortxt?>;
 	background-color: #<?=$suppliesmenucolor?>;
 	border: none;
+	-moz-box-shadow: 0px 0px px #000000;
+-webkit-box-shadow: 0px 0px px #000000;
+-o-box-shadow: 0px 0px 0px #000000;
+box-shadow: 0px 0px 0px #000000;
 }
 
 legend {

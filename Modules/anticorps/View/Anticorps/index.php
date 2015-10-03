@@ -197,6 +197,9 @@ $(document).ready(function() {
 				if(!isset($searchResp)){
 					$searchResp = "";
 				}
+				if(!isset($searchCom)){
+					$searchCom = "";
+				}
 				
 				?>
 				<div class="col-md-12">

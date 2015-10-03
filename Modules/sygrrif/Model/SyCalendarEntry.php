@@ -186,7 +186,7 @@ class SyCalendarEntry extends Model {
 		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
 		
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelColor = new SyColorCode();
 		for ($i = 0 ; $i < count($data) ; $i++){
 			//echo "color id = " . $data[$i]["color_type_id"] . "</br>";

@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/Project.php';
+require_once 'Modules/core/Model/CoreProject.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
@@ -86,7 +86,7 @@ class ControllerSygrrifstats extends ControllerBooking {
 		
 		// get the responsibles for this unit
 		//$projects = array();
-		$modelProject = new Project();
+		$modelProject = new CoreProject();
 		$projects = $modelProject->openedProjectsIDName();
 		//print_r($projects);
 		//return;

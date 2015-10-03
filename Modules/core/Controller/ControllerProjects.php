@@ -1,7 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
-require_once 'Modules/core/Model/Project.php';
+require_once 'Modules/core/Model/CoreProject.php';
 
 /**
  * 
@@ -19,7 +19,7 @@ class ControllerProjects extends ControllerSecureNav {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->projectModel = new Project ();
+		$this->projectModel = new CoreProject ();
 	}
 	
 	/**

@@ -1,4 +1,4 @@
- <?php
+<?php
 
 require_once 'Framework/Model.php';
 

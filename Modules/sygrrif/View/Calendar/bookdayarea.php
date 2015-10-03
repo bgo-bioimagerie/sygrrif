@@ -17,7 +17,7 @@ $dayWidth = 100/count($resourcesBase);
 
 a{
 	width: 100%;
-	color: <?= "#".$agendaStyle["header_background"] ?>;
+	color: <?= $agendaStyle["header_background"] ?>;
 }
 
 #tcell{
@@ -156,7 +156,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color:<?= "#" . $agendaStyle["header_background"]?>;">
+	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color:<?= $agendaStyle["header_background"]?>;">
 
 	</div>
 	<?php 
@@ -174,7 +174,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 		}
 		?>
 	
-		<div id="tcell" style="height: <?= $heightCol ?>; background-color: <?= "#" . $agendaStyle["header_background"]?>; color: <?= "#" . $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
+		<div id="tcell" style="height: <?= $heightCol ?>; background-color: <?= $agendaStyle["header_background"]?>; color: <?= $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
 		<?=$h?>:00
 		</div>
 	<?php 	
@@ -192,7 +192,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	
 	<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="colDiv">
 
-	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color: <?= "#".$agendaStyle["header_background"]?>; color: <?= "#".$agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
+	<div id="tcelltop" style="height: <?=$agendaStyle["header_height"]?>px; background-color: <?= $agendaStyle["header_background"]?>; color: <?= $agendaStyle["header_color"]?>; font-size: <?= $agendaStyle["header_font_size"]?>px">
 	<p class="text-center"><b><?= $this->clean($resourcesBase[$r]['name']) ?></b><br/><?= $this->clean($resourcesBase[$r]['description']) ?></p>
 	</div>
 
@@ -202,14 +202,16 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	$available_days = explode(",", $available_days);
 	
 	$curentDay = date("w", $date_unix);
-	/*
+	$curentDay++;
+	//echo "curent day = " . $curentDay;
+	
 	if ($curentDay == 8){
 		$curentDay = 0;
 	}
-	*/
+	
 	
 	$isAvailableDay = false;
-	if ($available_days[$curentDay-1] == 1){
+	if ($available_days[$curentDay] == 1){
 		$isAvailableDay = true;
 	}
 	

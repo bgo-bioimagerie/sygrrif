@@ -2,7 +2,7 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/supplies/Model/SuUser.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 
 
 /**
@@ -55,7 +55,7 @@ class SuEntry extends Model {
 			$modelUser = new SuUser();
 		}
 		else{
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 		}
 		for ($i = 0 ; $i < count($entries) ; $i++){
 			$entries[$i]["user_name"] =  $modelUser->getUserFUllName($entries[$i]['id_user']);

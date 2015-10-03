@@ -3,7 +3,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
-require_once 'Modules/core/Model/InitDatabase.php';
+require_once 'Modules/core/Model/CoreInitDatabase.php';
 require_once 'Modules/core/Model/CoreConfig.php';
 require_once 'Modules/core/Model/BackupDatabase.php';
 
@@ -45,11 +45,14 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		$modelCoreConfig = new CoreConfig();
 		$admin_email = $modelCoreConfig->getParam("admin_email");
 		
+		// user list setting
+		$userListSettings = $this->getUserListSettings($modelCoreConfig);
+		
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
 			try{
-				$installModel = new InitDatabase();
+				$installModel = new CoreInitDatabase();
 				$installModel->createDatabase();
 			}
 			catch (Exception $e) {
@@ -61,7 +64,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
     										 'activeUserSetting' => $activeUserSetting,
     										 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt
+							         'coremenucolortxt' => $coremenucolortxt,
+    								 'userListSettings' => $userListSettings
     			) );
     			return;
 			}
@@ -72,7 +76,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 										 'activeUserSetting' => $activeUserSetting,
 										 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt	
+							         'coremenucolortxt' => $coremenucolortxt,
+    								 'userListSettings' => $userListSettings	
 			) );
 			return;
 		}
@@ -83,7 +88,7 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$menusStatus = $this->request->getParameterNoException("menus");
 			
 			$ModulesManagerModel = new ModulesManager();
-			$ModulesManagerModel->setDataMenu("users/institutions", "users", $menusStatus[0], "glyphicon-user");
+			$ModulesManagerModel->setDataMenu("users/institutions", "coreusers", $menusStatus[0], "glyphicon-user");
 			$ModulesManagerModel->setDataMenu("projects", "projects", $menusStatus[1], "glyphicon-tasks");
 			
 			$status = $ModulesManagerModel->getDataMenusUserType("users/institutions");
@@ -97,7 +102,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 									 'activeUserSetting' => $activeUserSetting,
 									 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt
+							         'coremenucolortxt' => $coremenucolortxt,
+    								 'userListSettings' => $userListSettings
 			) );
 			return;
 			
@@ -116,7 +122,8 @@ class ControllerCoreconfig extends ControllerSecureNav {
 					'activeUserSetting' => $activeUserSetting,
 					'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt
+							         'coremenucolortxt' => $coremenucolortxt,
+    								 'userListSettings' => $userListSettings
 			) );
 			return;
 		}
@@ -128,6 +135,27 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$modelCoreConfig->setParam("admin_email", $admin_email);
 			
 		}
+		
+		// setuserlistoptionsquery
+		$setuserlistoptionsquery = $this->request->getParameterNoException("setuserlistoptionsquery");
+		if($setuserlistoptionsquery == "yes"){
+			
+			$date_convention = $this->request->getParameterNoException("visible_date_convention");
+			$date_created = $this->request->getParameterNoException("visible_date_created");
+			$date_last_login = $this->request->getParameterNoException("visible_date_last_login");
+			$date_end_contract = $this->request->getParameterNoException("visible_date_end_contract");
+			$source = $this->request->getParameterNoException("visible_source");
+			
+			$modelCoreConfig->setParam("visible_date_convention", $date_convention);
+			$modelCoreConfig->setParam("visible_date_created", $date_created);
+			$modelCoreConfig->setParam("visible_date_last_login", $date_last_login);
+			$modelCoreConfig->setParam("visible_date_end_contract", $date_end_contract);
+			$modelCoreConfig->setParam("visible_source", $source);
+			
+			// get the user settings list
+			$userListSettings = $this->getUserListSettings($modelCoreConfig);
+		}
+		
 		
 		
 		// backup
@@ -159,8 +187,20 @@ class ControllerCoreconfig extends ControllerSecureNav {
 									 'activeUserSetting' => $activeUserSetting,
 									 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt
+							         'coremenucolortxt' => $coremenucolortxt,
+    								 'userListSettings' => $userListSettings
 		) );
+	}
+	
+	
+	private function getUserListSettings($modelCoreConfig){
+		
+		$userListSettings["visible_date_convention"] = $modelCoreConfig->getParam("visible_date_convention");
+		$userListSettings["visible_date_created"] =  $modelCoreConfig->getParam("visible_date_created");
+		$userListSettings["visible_date_last_login"] = $modelCoreConfig->getParam("visible_date_last_login");
+		$userListSettings["visible_date_end_contract"] = $modelCoreConfig->getParam("visible_date_end_contract");
+		$userListSettings["visible_source"] = $modelCoreConfig->getParam("visible_source");
+		return $userListSettings;
 	}
 	
 	/**

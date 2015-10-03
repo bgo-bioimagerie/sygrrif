@@ -1,7 +1,7 @@
 ﻿<?php
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
@@ -508,7 +508,7 @@ class ControllerSygrrif extends ControllerBooking {
 			return;
 		}
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitsList = $modelUnit->unitsIDName();
 		
 		$modelPricing = new SyPricing();
@@ -560,7 +560,7 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		echo "unit_id = " . $unit_id . "<br />";
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitName = $modelUnit->getUnitName($unit_id);
 		
 		$modelPricing = new SyPricing();
@@ -978,11 +978,11 @@ class ControllerSygrrif extends ControllerBooking {
 		}
 		
 		// get users list
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$users = $modelUser->getUsersSummary('name');
 		
 		// get unit list
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$units = $modelUnit->unitsIDName();
 		
 		// get visa list
@@ -1023,11 +1023,11 @@ class ControllerSygrrif extends ControllerBooking {
 		//print_r($authorization);
 		
 		// get users list
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$users = $modelUser->getUsersSummary('name');
 		
 		// get unit list
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$units = $modelUnit->unitsIDName();
 		
 		// get visa list
@@ -1106,7 +1106,7 @@ class ControllerSygrrif extends ControllerBooking {
 			$date = CoreTranslator::dateToEn($date, $lang);
 		}
 		
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$unit_id = $modelUser->getUserUnit($user_id);
 		
 		$model = new SyAuthorization();
@@ -1152,7 +1152,7 @@ class ControllerSygrrif extends ControllerBooking {
 		$responsiblesList = array();
 		$modelCalEntry = new SyCalendarEntry();
 		if ($selectedUnitId > 0){
-			$modeluser = new User();
+			$modeluser = new CoreUser();
 			
 			$responsiblesListInter = $modeluser->getResponsibleOfUnit($selectedUnitId);
 			foreach ($responsiblesListInter as $respi){
@@ -1200,7 +1200,7 @@ class ControllerSygrrif extends ControllerBooking {
 		}
 		
 		// get units list
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitsListTmp = $modelUnit->unitsIDName();
 		$unitsList = array();
 		
@@ -1301,11 +1301,11 @@ class ControllerSygrrif extends ControllerBooking {
 		//if ($resource_id == 0){$resource_id = "0";}
 		
 		// users
-		$modeluser = new User();
+		$modeluser = new CoreUser();
 		$users = $modeluser->getUsersSummary('name');
 		
 		// units
-		$modelunits = new Unit();
+		$modelunits = new CoreUnit();
 		$units = $modelunits->unitsIDName();
 		
 		// visa

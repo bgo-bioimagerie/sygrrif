@@ -5,7 +5,7 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/supplies/Model/SuPricing.php';
 require_once 'Modules/supplies/Model/SuUnitPricing.php';
 require_once 'Modules/supplies/Model/SuUnit.php';
-require_once 'Modules/core/Model/Unit.php';
+require_once 'Modules/core/Model/CoreUnit.php';
 
 
 class ControllerSuppliespricing extends ControllerSecureNav {
@@ -101,7 +101,7 @@ class ControllerSuppliespricing extends ControllerSecureNav {
 			$unitsList = $modelUnit->unitsIDName();
 		}
 		else{
-			$modelUnit = new Unit();
+			$modelUnit = new CoreUnit();
 			$unitsList = $modelUnit->unitsIDName();
 		}
 	

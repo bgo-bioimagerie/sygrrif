@@ -1,6 +1,6 @@
 <?php
 require_once 'Framework/Model.php';
-require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 
 /**
  * Class defining the Authorization model
@@ -576,8 +576,8 @@ class SyAuthorization extends Model {
 			$data = $req->fetchAll();
 			$datas = array();
 		
-			$modelResp = new Responsible();
-			$modelUser = new User();
+			$modelResp = new CoreResponsible();
+			$modelUser = new CoreUser();
 			$modelUnit = new Unit();
 			$modelVisa = new SyVisa();
 			$modelResource = new SyResourcesCategory();

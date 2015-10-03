@@ -1,5 +1,4 @@
 ﻿<?php
-
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';

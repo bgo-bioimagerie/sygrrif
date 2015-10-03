@@ -6,7 +6,7 @@ require_once 'Modules/anticorps/Model/Isotype.php';
 require_once 'Modules/anticorps/Model/Organe.php';
 require_once 'Modules/anticorps/Model/Tissus.php';
 require_once 'Modules/anticorps/Model/Espece.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 
 require_once 'externals/PHPExcel/Classes/PHPExcel.php';
 
@@ -610,7 +610,7 @@ class ControllerSynchistopac extends Controller {
 		$modelIsotype = new Isotype();
 		$modelTissus = new Tissus();
 		$modelEspece = new Espece();
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 	
 		// add Isotype
 		$curentLine = 2;

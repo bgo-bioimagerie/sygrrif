@@ -1,7 +1,8 @@
-﻿<?php
+<?php
+ 
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/User.php';
-require_once 'Modules/core/Model/Project.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreProject.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/core/Model/UserSettings.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
@@ -1493,7 +1494,7 @@ class ControllerCalendar extends ControllerBooking {
 		$resourceBase = $modelRes->resource($id_resource);
 		
 		// get users list
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$users = $modelUser->getActiveUsers("Name");
 		
 		$curentuserid = $this->request->getSession()->getAttribut("id_user");
@@ -1527,7 +1528,7 @@ class ControllerCalendar extends ControllerBooking {
 		$status = $ModulesManagerModel->getDataMenusUserType("projects");
 		$projectsList = "";
 		if ($status > 0){
-			$modelProjects = new Project();
+			$modelProjects = new CoreProject();
 			$projectsList = $modelProjects->openedProjectsIDName(); 
 		}
 		
@@ -1945,7 +1946,7 @@ class ControllerCalendar extends ControllerBooking {
 		$modelConfig = new CoreConfig();
 		if ( $modelConfig->getParam("SyEditBookingMailing") >= 2 && $booked_by_id != $recipient_id){
 		
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$fromEmail = $modelUser->getUserEmail($booked_by_id);
 			$toEmail = $modelUser->getUserEmail($recipient_id);
 			

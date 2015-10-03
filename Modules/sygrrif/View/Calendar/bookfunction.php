@@ -8,7 +8,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 		$resourceID = $_SESSION["id_resource"];
 	}
 	$dateString = date("Y-m-d", $date_unix);
-	$moduleProject = new Project();
+	$moduleProject = new CoreProject();
 	$ModulesManagerModel = new ModulesManager();
 	$modelBookingSupplemetary = new SyCalSupplementary();
 	$isProjectMode = $ModulesManagerModel->getDataMenusUserType("projects");

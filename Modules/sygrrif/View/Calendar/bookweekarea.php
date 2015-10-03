@@ -56,7 +56,7 @@ $dayWidth = 100/8;
   
   a{
 	width: 100%;
-	color: <?= "#".$agendaStyle["header_background"] ?>;
+	color: <?= $agendaStyle["header_background"] ?>;
 }
 </style>
 </head>
@@ -178,7 +178,7 @@ $dayWidth = 100/8;
 		
 		<?php 
 			$styleLine = "";
-			$styleLineHeader = "style=\" text-align: center; background-color:#". $agendaStyle["header_background"]."; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1; color: #".$agendaStyle["header_color"].";\"";
+			$styleLineHeader = "style=\" text-align: center; background-color:". $agendaStyle["header_background"]."; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1; color:".$agendaStyle["header_color"].";\"";
 			if (!($i%2)){
 				$styleLine = "style=\"background-color:#e1e1e1; border-right: 1px solid #a1a1a1; border-top: 2px solid #a1a1a1;\"";
 			}

@@ -6,7 +6,7 @@ require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/zoomify/Model/ZoTranslator.php';
 require_once 'Modules/zoomify/Model/ZoUploader.php';
 require_once 'Modules/zoomify/Model/ZoDirectories.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreConfig.php';
 
 class ControllerZoomify extends ControllerSecureNav {
@@ -68,7 +68,7 @@ class ControllerZoomify extends ControllerSecureNav {
 		
 		// get the user login
 		$idUser = $_SESSION["id_user"];
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$userlogin = $modelUser->userLogin($idUser);
 		
 		$zoomifyDir = Configuration::get("zoomifyDir");

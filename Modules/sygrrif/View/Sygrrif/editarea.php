@@ -65,17 +65,17 @@
 		</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-5">Header background: #</label>
+			<label for="inputEmail" class="control-label col-xs-5">Header background:</label>
 			<div class="col-xs-7">
-				<input class="form-control" id="name" type="text" name="header_background"
+				<input class="form-control" id="name" type="color" name="header_background"
 				       value="<?=$css['header_background']?>"  
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-5">Header color: #</label>
+			<label for="inputEmail" class="control-label col-xs-5">Header color:</label>
 			<div class="col-xs-7">
-				<input class="form-control" id="name" type="text" name="header_color"
+				<input class="form-control" id="name" type="color" name="header_color"
 				       value="<?=$css['header_color']?>"  
 				/>
 			</div>
