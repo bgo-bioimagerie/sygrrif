@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/User.php';
 require_once 'Modules/core/Model/Project.php';
