@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
@@ -41,7 +41,6 @@ class ControllerSygrrif extends ControllerBooking {
 	 * Constructor
 	 */
 	public function __construct() {
-		ob_end_clean();
 	}
 
 	
