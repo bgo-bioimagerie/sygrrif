@@ -901,5 +901,11 @@ class CoreTranslator {
 		return "Text color";
 	}
 	
-
+	public static function Display_order($lang){
+		if ($lang == "Fr"){
+			return "Order d'afichage";
+		}
+		return "Display order";
+	}
+	
 }

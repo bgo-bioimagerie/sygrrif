@@ -17,7 +17,7 @@ $dayWidth = 100/count($resourcesBase);
 
 a{
 	width: 100%;
-	color: <?php echo  "#".$agendaStyle["header_background"] ?>;
+	color: <?php echo  "#".$agendaStyle["header_backgroundf"] ?>;
 }
 
 #tcell{
@@ -202,14 +202,14 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	$available_days = explode(",", $available_days);
 	
 	$curentDay = date("w", $date_unix);
-	/*
-	if ($curentDay == 8){
-		$curentDay = 0;
+
+	$curentDay--;
+	if ($curentDay == -1){
+		$curentDay = 6;
 	}
-	*/
-	
+
 	$isAvailableDay = false;
-	if ($available_days[$curentDay-1] == 1){
+	if ($available_days[$curentDay] == 1){
 		$isAvailableDay = true;
 	}
 	
