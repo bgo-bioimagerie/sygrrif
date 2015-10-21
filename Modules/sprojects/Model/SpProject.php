@@ -283,7 +283,7 @@ class SpProject extends Model {
 	 *        	Unit ID
 	 */
 	public function delete($id) {
-		$sql = "DELETE FROM sp_projects WHERE id=?";
+		$sql = "DELETE FROM sp_projects WHERE `id`=?";
 		$req = $this->runRequest ( $sql, array (
 				$id 
 		) );

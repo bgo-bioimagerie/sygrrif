@@ -7,8 +7,8 @@ require_once 'Modules/sprojects/Model/SpBill.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 
-require_once 'Modules/core/Model/CoreUnit.php';
-require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/Unit.php';
+require_once 'Modules/core/Model/User.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
 /**
@@ -41,8 +41,8 @@ class SpBillGenerator extends Model {
 			$modelUnit = new SpUnit();
 		}
 		else{
-			$modelUser = new CoreUser();
-			$modelUnit = new CoreUnit();
+			$modelUser = new User();
+			$modelUnit = new Unit();
 		}
 		
 		// get the user unit:
@@ -377,38 +377,42 @@ class SpBillGenerator extends Model {
 		$addedLine = 0;
 		$totalHT = 0;
 		foreach($data as $dat){
-			$addedLine++;
-			$lineIdx = $curentLine + 1;
-			$curentLine = $lineIdx;
-			$totalHT += $dat["price"];
-				
-			$objPHPExcel->getActiveSheet()->insertNewRowBefore($lineIdx, 1);
-				
-			// Consommable
-			$objPHPExcel->getActiveSheet()->SetCellValue('A'.$lineIdx, $dat["item_name"]);
-			$objPHPExcel->getActiveSheet()->getStyle('A'.$lineIdx)->applyFromArray($styleTableCell);
-				
-			// user full name
-			$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $userFullName);
-			$objPHPExcel->getActiveSheet()->getStyle('B'.$lineIdx)->applyFromArray($styleTableCell);
-				
-			// number of order
-			$objPHPExcel->getActiveSheet()->SetCellValue('C'.$lineIdx, $dat["commandNumber"]);
-			$objPHPExcel->getActiveSheet()->getStyle('C'.$lineIdx)->applyFromArray($styleTableCell);
-				
-			// order quantity
-			$objPHPExcel->getActiveSheet()->SetCellValue('D'.$lineIdx, $dat["quantity"]);
-			$objPHPExcel->getActiveSheet()->getStyle('D'.$lineIdx)->applyFromArray($styleTableCell);
-				
-			// unitary price
-			//echo "line idx = " . $lineIdx . "<br/>";
-			//echo "unit price = " . $dat["unitary_price"] . "<br/>";
-			$objPHPExcel->getActiveSheet()->SetCellValue('E'.$lineIdx, $dat["unitary_price"]);
-			$objPHPExcel->getActiveSheet()->getStyle('E'.$lineIdx)->applyFromArray($styleTableCell);
-				
-			// Total HT
-			$objPHPExcel->getActiveSheet()->SetCellValue('F'.$lineIdx, $dat["price"]);
-			$objPHPExcel->getActiveSheet()->getStyle('F'.$lineIdx)->applyFromArray($styleTableCell);
+			
+			if ($dat["quantity"] > 0){
+			
+				$addedLine++;
+				$lineIdx = $curentLine + 1;
+				$curentLine = $lineIdx;
+				$totalHT += $dat["price"];
+					
+				$objPHPExcel->getActiveSheet()->insertNewRowBefore($lineIdx, 1);
+					
+				// Consommable
+				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$lineIdx, $dat["item_name"]);
+				$objPHPExcel->getActiveSheet()->getStyle('A'.$lineIdx)->applyFromArray($styleTableCell);
+					
+				// user full name
+				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $userFullName);
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$lineIdx)->applyFromArray($styleTableCell);
+					
+				// number of order
+				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$lineIdx, $dat["commandNumber"]);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$lineIdx)->applyFromArray($styleTableCell);
+					
+				// order quantity
+				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$lineIdx, $dat["quantity"]);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$lineIdx)->applyFromArray($styleTableCell);
+					
+				// unitary price
+				//echo "line idx = " . $lineIdx . "<br/>";
+				//echo "unit price = " . $dat["unitary_price"] . "<br/>";
+				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$lineIdx, $dat["unitary_price"]);
+				$objPHPExcel->getActiveSheet()->getStyle('E'.$lineIdx)->applyFromArray($styleTableCell);
+					
+				// Total HT
+				$objPHPExcel->getActiveSheet()->SetCellValue('F'.$lineIdx, $dat["price"]);
+				$objPHPExcel->getActiveSheet()->getStyle('F'.$lineIdx)->applyFromArray($styleTableCell);
+			}
 		}
 		
 		
@@ -458,8 +462,9 @@ class SpBillGenerator extends Model {
 		
 		// Save the xls file
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+		$filename = $responsibleFullName . date("Y-m-d") ."_sprojects_invoice.xls";
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="bill.xls"');
+		header('Content-Disposition: attachment;filename="'.$filename.'"');
 		header('Cache-Control: max-age=0');
 		$objWriter->save('php://output');
 			

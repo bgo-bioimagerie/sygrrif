@@ -58,7 +58,7 @@
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Price_night($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_nuit">
-					    <?php $tnuit = $this->clean($pricing['tarif_nuit']) ?>
+					    <?php $tnuit = $this->clean($pricing['tarif_night']) ?>
 						<OPTION value="oui" <?php if ($tnuit==1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
 						<OPTION value="non" <?php if ($tnuit==0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::No($lang)?> </OPTION>
 				</select>

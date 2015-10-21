@@ -192,13 +192,13 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Opened_date($lang) ?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_open" value="<?php echo  CoreTranslator::dateFromEn($this->clean($project["date_open"]), $lang) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_open" value="<?php echo  CoreTranslator::dateFromEn($this->clean($project["date_open"]), $lang) ?>" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Closed_date($lang)?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_close" value="<?php echo  CoreTranslator::dateFromEn($this->clean($project["date_close"]), $lang) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="date_close" value="<?php echo  CoreTranslator::dateFromEn($this->clean($project["date_close"]), $lang) ?>" />
 			</div>
 		</div>
 		</div>

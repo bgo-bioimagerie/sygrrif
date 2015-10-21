@@ -15,16 +15,13 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		
 		// get sort action
 		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$sortentry = $this->request->getParameter("actionid");
-			
-		}
 		
 		// get the user list
 		$modelEntry = new SpProject();
 		$entriesArray = array();
 		if ($status == "all"){
 			$entriesArray = $modelEntry->projects($sortentry);
+			$_SESSION["sprojects_lastvisited"] = "opened";
 		}
 		else if ($status == "opened"){
 			$entriesArray = $modelEntry->openedProjects($sortentry);
@@ -215,6 +212,25 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$item_date = $this->request->getParameterNoException("item_date");
 		
 		
+		
+		
+		// remove the items that are in the database but not in the request
+		$databaseItemsIds = $modelProject->getProjectEntriesItemsIds($id_project);
+		foreach ($databaseItemsIds as $dbID){
+				
+			$found = false;
+			for( $i = 0 ; $i < count($item_id) ; $i++){
+				if ($dbID["id"] == $item_id[$i]){
+					$found = true;
+					break;
+				}
+			}
+			if (!$found){
+				$modelProject->deleteProjectItem($dbID["id"]);
+			}
+		}
+		
+		// add/update items
 		$modelItem = new SpItem();
 		$activeItems = $modelItem->getActiveItems();
 		for( $i = 0 ; $i < count($item_id) ; $i++){
@@ -230,22 +246,6 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			//echo "content = " . $content . "<br/>";
 			//echo "id = " . $item_id[$i] . "<br/>";
 			$modelProject->setProjectEntry($item_id[$i], $id_project, CoreTranslator::dateToEn($item_date[$i], $lang), $content);
-		}
-		
-		// remove the items that are in the database but not in the request
-		$databaseItemsIds = $modelProject->getProjectEntriesItemsIds($id_project);
-		foreach ($databaseItemsIds as $dbID){
-			
-			$found = false;
-			for( $i = 0 ; $i < count($item_id) ; $i++){
-				if ($dbID["id"] == $item_id[$i]){
-					$found = true;
-					break;
-				}
-			}
-			if (!$found){
-				$modelProject->deleteProjectItem($dbID["id"]);
-			}
 		}
 		
 		$this->redirect("sprojectsentries");
