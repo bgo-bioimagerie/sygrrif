@@ -44,6 +44,15 @@
 				/>
 			</div>
 		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SpTranslator::Type($lang) ?></label>
+			<div class="col-xs-10">
+				<select class="form-control" name="type">
+					<option value="1"> <?php echo SpTranslator::Academique($lang) ?> </option>
+					<option value="2"> <?php echo SpTranslator::Industry($lang) ?>  </option>
+				</select>
+			</div>
+		</div>
 			
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Add($lang) ?>" />

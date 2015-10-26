@@ -13,7 +13,8 @@ class SpPricing extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `sp_pricing` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`tarif_name` varchar(100) NOT NULL DEFAULT '',	
-		`tarif_color` varchar(7) NOT NULL DEFAULT '#ffffff',					
+		`tarif_color` varchar(7) NOT NULL DEFAULT '#ffffff',
+		`tarif_type` int(7) NOT NULL DEFAULT '1',							
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -24,6 +25,14 @@ class SpPricing extends Model {
 		$isColumn = $pdo->fetch();
 		if ( $isColumn == false){
 			$sql = "ALTER TABLE `sp_pricing` ADD `tarif_color` varchar(7) NOT NULL DEFAULT '#ffffff'";
+			$pdo = $this->runRequest($sql);
+		}
+		
+		$sql = "SHOW COLUMNS FROM `sp_pricing` LIKE 'tarif_type'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sp_pricing` ADD `tarif_type` int(7) NOT NULL DEFAULT '1'"; // 1 accademic, 2 private
 			$pdo = $this->runRequest($sql);
 		}
 		
@@ -51,7 +60,7 @@ class SpPricing extends Model {
 		if ($data->rowCount() == 1)
 			return $data->fetch(); 
 		else
-			throw new Exception("Cannot find the pricing using the given id = " . $id . "</br>");
+			throw new Exception("Cannot find the pricing using the given id = " . $id . "");
 
 	}
 	
@@ -67,16 +76,16 @@ class SpPricing extends Model {
 			}
 	}
 	
-	public function addPricing($name, $color){
-		$sql = "INSERT INTO sp_pricing (tarif_name, tarif_color) VALUES(?,?)";
-		$pdo = $this->runRequest($sql, array($name, $color));
+	public function addPricing($name, $color, $type){
+		$sql = "INSERT INTO sp_pricing (tarif_name, tarif_color, tarif_type) VALUES(?,?,?)";
+		$pdo = $this->runRequest($sql, array($name, $color, $type));
 		return $pdo;
 	}
 	
-	public function editPricing($id, $name, $color){
-		$sql = "update sp_pricing set tarif_name= ?, tarif_color=?
+	public function editPricing($id, $name, $color, $type){
+		$sql = "update sp_pricing set tarif_name= ?, tarif_color=?, tarif_type=?
 									  where id=?";
-		$this->runRequest($sql, array($name, $color, $id));
+		$this->runRequest($sql, array($name, $color, $type, $id));
 	}
 	
 	private function isPricing($name){
@@ -88,10 +97,17 @@ class SpPricing extends Model {
 			return false;
 	}
 	
-	public function setPricing($name, $color){
-		if (!$this->isPricing($name, $color)){
-			$this->addPricing($name, $color);	
+	public function setPricing($name, $color, $type){
+		if (!$this->isPricing($name, $color, $type)){
+			$this->addPricing($name, $color, $type);	
 		}
+	}
+	
+	public function delete($id){
+		$sql = "DELETE FROM sp_pricing WHERE `id`=?";
+		$req = $this->runRequest ( $sql, array (
+				$id
+		) );
 	}
 	
 }

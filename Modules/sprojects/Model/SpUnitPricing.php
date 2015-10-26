@@ -74,7 +74,7 @@ class SpUnitPricing extends Model {
 			return $tmp[0];
 		}
 		else{
-			return 0;
+			return 1;
 		}
 	}
 	
