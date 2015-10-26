@@ -19,6 +19,7 @@
 				<tr>
 				    <td><a href="sprojectspricing/index/id">ID</a></td>
 					<td><a href="sprojectspricing/index/tarif_name"><?php echo  CoreTranslator::Name($lang) ?></a></td>
+					<td><a href=""><?php echo  CoreTranslator::color($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -30,6 +31,7 @@
 					<td><?php echo  $pricingId ?></td>
 				    <!--  name -->
 				    <td><?php echo  $this->clean ( $price ['tarif_name'] ); ?></td>
+				    <td style="background-color: <?php echo $price ['tarif_color']?>;"></td>
 				    
 				    <td>
 				      <button type='button' onclick="location.href='sprojectspricing/editpricing/<?php echo  $pricingId ?>'" class="btn btn-xs btn-primary"><?php echo  CoreTranslator::Edit($lang) ?></button>

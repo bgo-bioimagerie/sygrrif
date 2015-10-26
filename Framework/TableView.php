@@ -31,6 +31,7 @@ class TableView
     	$this->deleteURL = "";
     	$this->ignoredEntryKey = "";
     	$this->ignoredEntryValue = "";
+    	$this->colorIndexes = array();
     }
     
     /**
@@ -56,6 +57,9 @@ class TableView
     	$this->ignoredEntryValue = $value;
     }
     
+    public function setColorIndexes($indexesArray){
+    	$this->colorIndexes = $indexesArray;
+    }
     public function useSearch($value){
     	$this->useSearchVal = $value;
     }
@@ -134,7 +138,17 @@ class TableView
     		if ($this->printIt($dat) ){
 	    		$html .= "<tr>";
 	    		foreach ($headers as $key => $value){
-	    			$html .= "<td> ".htmlspecialchars($dat[$key], ENT_QUOTES, 'UTF-8', false)."</td>";
+	    			
+	    			$ccolor = "#ffffff";
+	    			if (isset($this->colorIndexes[$key])){  
+	    				$ccolor = $dat[$this->colorIndexes[$key]];
+	    			}
+	    			else{
+	    				if (isset($this->colorIndexes["all"])){
+	    					$ccolor = $dat[$this->colorIndexes["all"]];
+	    				}
+	    			}
+	    			$html .= "<td style=\"background-color:" .$ccolor.";\"> ".htmlspecialchars($dat[$key], ENT_QUOTES, 'UTF-8', false)."</td>";
 	    		}
 	    		if ($this->editURL != ""  && !$this->isprint){
 	    			$html .= "<td style=\"width:12px;\">". "<button type='button' onclick=\"location.href='".$this->editURL."/".$dat[$this->editIndex]."'\" class=\"btn btn-xs btn-primary\">Edit</button>". "</td>";	    

@@ -36,6 +36,9 @@
                     case "text":
                             newcell.childNodes[0].value = "";
                             break;
+                    case "date":
+                        newcell.childNodes[0].value = "";
+                        break;
                     case "hidden":
                         	newcell.childNodes[0].value = "";
                         	break;        
@@ -190,24 +193,66 @@
 		</div>
 		
 		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::New_team($lang) ?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="new_team">
+				<?php
+					$selected = "selected=\"selected\"";
+					$newTeam = $this->clean($project["new_team"]);
+					?>
+					<option value="1" <?php if ($newTeam==1){echo $selected;}?>> <?php echo  CoreTranslator::no($lang) ?>  </option>
+					<option value="2" <?php if ($newTeam==2){echo $selected;}?>> <?php echo  SpTranslator::Academique($lang) ?> </option>
+					<option value="3" <?php if ($newTeam==3){echo $selected;}?>> <?php echo  SpTranslator::Industry($lang) ?> </option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::New_project($lang) ?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="new_project">
+				<?php
+					$selected = "selected=\"selected\"";
+					$newTeam = $this->clean($project["new_project"]);
+					?>
+					<option value="1" <?php if ($newTeam==1){echo $selected;}?>> <?php echo  CoreTranslator::no($lang) ?>  </option>
+					<option value="2" <?php if ($newTeam==2){echo $selected;}?>> <?php echo  SpTranslator::Academique($lang) ?> </option>
+					<option value="3" <?php if ($newTeam==3){echo $selected;}?>> <?php echo  SpTranslator::Industry($lang) ?> </option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Time_limite($lang) ?></label>
+			<div class="col-xs-8">
+				<input class="form-control" type="date"  name="time_limit" value="<?php echo  $this->clean($project["time_limit"]) ?>" />
+			</div>
+		</div>
+		
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Opened_date($lang) ?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_open" value="<?php echo  CoreTranslator::dateFromEn($this->clean($project["date_open"]), $lang) ?>" />
+				<input class="form-control" id="id" type="date"  name="date_open" value="<?php echo  $this->clean($project["date_open"]) ?>" />
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Closed_date($lang)?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="date_close" value="<?php echo  CoreTranslator::dateFromEn($this->clean($project["date_close"]), $lang) ?>" />
+				<input class="form-control" id="id" type="date"  name="date_close" value="<?php echo  $this->clean($project["date_close"]) ?>" />
 			</div>
 		</div>
 		</div>
 		</div>
+		
+
 		<div class="page-header">
 			<h3>
-			<?php echo  SpTranslator::Order($lang) ?>
+			<?php echo SpTranslator::Order($lang) ?>
 				<br> <small></small>
 			</h3>
+		</div>
+		<div class="col-md-2 col-md-offset-10">
+			<button type="button" onclick="location.href='sprojectsentries/expoertxls/<?php echo $projectID?>'" class="btn btn-primary"><?php echo  SpTranslator::Export_csv($lang) ?></button>
 		</div>
 		
 		<!--  add here the order list -->
@@ -232,11 +277,11 @@
  
 							?>
 							<tr>
-								<td><input type="checkbox" name="chk" /></td>
-								<td><input type="hidden" name="item_id[]" value="<?php echo $order["id"]?>"/>
+								<td style="width:7px;"><input type="checkbox" name="chk" /></td>
+								<td style="width:1px;"><input style="width:0px; margin-left:-50px;" type="hidden" name="item_id[]" value="<?php echo $order["id"]?>"/>
 								</td>
 								
-								<td><input class="form-control" type="text" name="item_date[]" value="<?php echo CoreTranslator::dateFromEn($order["date"], $lang)?>" required/></td>
+								<td><input style="max-width:150px;" class="form-control" type="date" name="item_date[]" value="<?php echo $order['date']?>" required/></td>
 								<?php 
 								foreach($items as $item){
 									
@@ -259,7 +304,7 @@
 							<tr>
 								<td><input type="checkbox" name="chk" /></td>
 								<td><input type="hidden" name="item_id[]" /></td>
-								<td><input class="form-control" type="text" name="item_date[]" required/></td>
+								<td><input style="max-width:150px;" class="form-control" type="date" name="item_date[]" required/></td>
 								<?php 
 								foreach($items as $item){
 

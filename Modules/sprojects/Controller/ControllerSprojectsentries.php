@@ -8,10 +8,19 @@ require_once 'Modules/core/Model/Responsible.php';
 require_once 'Modules/sprojects/Model/SpResponsible.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
+require_once 'Modules/sprojects/Model/SpTranslator.php';
+require_once 'Modules/sprojects/Model/SpUnitPricing.php';
+require_once 'Modules/sprojects/Model/SpPricing.php';
 
 class ControllerSprojectsentries extends ControllerSecureNav {
 
 	public function index($status = "all") {
+		
+		// Lang
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
 		
 		// get sort action
 		$sortentry = "id";
@@ -31,6 +40,8 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		}
 		
 		$modelUser = "";
+		$modelUnit = new SpUnitPricing();
+		$modelPricing = new SpPricing();
 		$modelConfig = new CoreConfig();
 		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
 		if ($sprojectsusersdatabase == "local"){
@@ -44,19 +55,50 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			$entriesArray[$i]["resp_name"] = $modelUser->getUserFUllName($entriesArray[$i]["id_resp"]);
 			$entriesArray[$i]["user_name"] = $modelUser->getUserFUllName($entriesArray[$i]["id_user"]);
 			if ($entriesArray[$i]["id_status"] == 1){
-				$entriesArray[$i]["id_status"] = "Open";
+				$entriesArray[$i]["id_status"] = SpTranslator::Open($lang);
 			}
 			else{
-				$entriesArray[$i]["id_status"] = "Closed";
+				$entriesArray[$i]["id_status"] = SpTranslator::Closed($lang);
+			}
+			
+			// get the pricing color
+			$id_unit = $modelUser->getUserUnit($entriesArray[$i]["id_resp"]);
+			$id_pricing = $modelUnit->getPricing($id_unit);
+			$pricingInfo = $modelPricing->getPricing($id_pricing);
+			$entriesArray[$i]["color"] = $pricingInfo["tarif_color"];
+			
+			$entriesArray[$i]["time_color"] = "#ffffff";
+			if ($entriesArray[$i]["time_limit"] != ""){
+				if (strval($entriesArray[$i]["time_limit"]) < strval(date("Y-m-d", time()))){ 
+					$entriesArray[$i]["time_color"] = "#FFCC00";
+				}
+			}
+			
+			$entriesArray[$i]["closed_color"] = "#ffffff";
+			if ($entriesArray[$i]["date_close"] != "0000-00-00"){
+				$entriesArray[$i]["closed_color"] = "#99CC00";
+			}
+			
+			// translate date
+			$entriesArray[$i]["date_open"] = CoreTranslator::dateFromEn($entriesArray[$i]["date_open"], $lang);
+			$entriesArray[$i]["time_limit"] = CoreTranslator::dateFromEn($entriesArray[$i]["time_limit"], $lang);
+			if ($entriesArray[$i]["date_close"] == "0000-00-00"){
+				$entriesArray[$i]["date_close"] = "";
+			}
+			else{
+				$entriesArray[$i]["date_close"] = CoreTranslator::dateFromEn($entriesArray[$i]["date_close"], $lang);
 			}
 		}
+		
+		//print_r($entriesArray);
 		
 		$table = new TableView();
 		$table->setTitle("Projects");
 		$table->addLineEditButton("sprojectsentries/editentries");
 		$table->addDeleteButton("sprojectsentries/deleteentries");
 		$table->addPrintButton("sprojectsentries/index/");
-		$tableHtml = $table->view($entriesArray, array("id" => "ID", "resp_name" => "Responsable", "name" => "No Projet", "user_name" => "Utilisateur", "id_status" => "status" , "date_open" => "Date ouverture", "date_close" => "Date cloture"));
+		$table->setColorIndexes(array("all" => "color", "time_limit" => "time_color", "date_close" => "closed_color"));
+		$tableHtml = $table->view($entriesArray, array("id" => "ID", "resp_name" => "Responsable", "name" => "No Projet", "user_name" => "Utilisateur", "id_status" => "status" , "date_open" => "Date ouverture", "time_limit" => "Délai", "date_close" => "Date cloture"));
 		
 		$print = $this->request->getParameterNoException("print");
 		
@@ -122,26 +164,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$projectEntries = $modelProject->getProjectEntries($idproject);
 		
 		// get active items
-		$modelItem = new SpItem();
-		$activeItems = $modelItem->getActiveItems("display_order");
-		
-		// add unactive items that were ordered at the order time
-		foreach ($projectEntries as $entry){
-			$items_ids = $entry["content"]["items_ids"];
-			//print_r($entry["content"]);
-			foreach($items_ids as $itemID){
-				$found = false;
-				foreach ($activeItems as $item){
-					if ($item["id"] == $itemID){
-						$found = true;
-					}
-				}
-				if ($found == false){
-					$inter = $modelItem->getItem($itemID);
-					$activeItems[] = $inter;
-				}
-			}
-		}
+		$activeItems = $this->getProjectItems($projectEntries);
 		
 		
 		//print_r($itemsOrder);
@@ -176,6 +199,77 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 				'responsibles' => $resps
 		) );
 	}
+	protected function getProjectItems($projectEntries){
+		// get active items
+		$modelItem = new SpItem();
+		$activeItems = $modelItem->getActiveItems("display_order");
+		
+		// add unactive items that were ordered at the order time
+		foreach ($projectEntries as $entry){
+			$items_ids = $entry["content"]["items_ids"];
+			//print_r($entry["content"]);
+			foreach($items_ids as $itemID){
+				$found = false;
+				foreach ($activeItems as $item){
+					if ($item["id"] == $itemID){
+						$found = true;
+					}
+				}
+				if ($found == false){
+					$inter = $modelItem->getItem($itemID);
+					$activeItems[] = $inter;
+				}
+			}
+		}
+		
+		return $activeItems;
+	}
+	
+	public function expoertxls(){
+		
+		// Lang
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
+		// action
+		$idproject = "";
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$idproject = $this->request->getParameter("actionid");
+		}
+		
+		// get project entries
+		$modelProject = new SpProject();
+		$projectEntries = $modelProject->getProjectEntries($idproject);
+		
+		// get active items
+		$activeItems = $this->getProjectItems($projectEntries);
+		
+		// write into string
+		$content = "Date;";
+		foreach($activeItems as $item){
+			$content .= $item["name"] . ";";
+		}
+		$content .= "\n";
+		foreach ($projectEntries as $order){
+			$content .= CoreTranslator::dateFromEn($order['date'], $lang) . ";";
+			foreach($activeItems as $item){
+					
+				$quantity = "";
+				if (isset($order["content"]["item_".$item["id"]])){
+					$quantity = $order["content"]["item_".$item["id"]];
+				}
+				
+				$content .= $quantity . ";";	
+			}
+			$content .= "\n";
+		}
+		
+		header("Content-Type: application/csv-tab-delimited-table");
+		header("Content-disposition: filename=projet.csv");
+		echo $content;
+	}
 	
 	public function editquery(){
 		
@@ -193,19 +287,30 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$id_status = $this->request->getParameter("id_status"); 
 		$date_open = $this->request->getParameter("date_open");
 		$date_close = $this->request->getParameter("date_close");
+		$new_team = $this->request->getParameter("new_team");
+		$new_project = $this->request->getParameter("new_project");
+		$time_limit = $this->request->getParameter("time_limit");
 		
 		//print_r($id);
 		//echo "id = " . $id . "<br/>"; 
 		
 		if ($date_open != ""){
-			$date_open = CoreTranslator::dateToEn($date_open, $lang);
+			$pos = strpos($date_open, "-");
+			if ($pos === false){
+				$date_open = CoreTranslator::dateToEn($date_open, $lang);
+			}
 		}
 		if ($date_close != ""){
-			$date_close = CoreTranslator::dateToEn($date_close, $lang);
+			$pos = strpos($date_close, "-");
+			if ($pos === false){
+				$date_close = CoreTranslator::dateToEn($date_close, $lang);
+			}
 		}
 		
 		$modelProject = new SpProject();
-		$id_project = $modelProject->setProject($id, $name, $id_resp, $id_user, $id_status, $date_open, $date_close);
+		$id_project = $modelProject->setProject($id, $name, $id_resp, $id_user, $id_status, 
+												$date_open, $date_close,
+				                                $new_team, $new_project, $time_limit);
 		//echo "id_project = " . $id_project . "<br/>";
 		// get items content
 		$item_id = $this->request->getParameterNoException("item_id");
@@ -245,7 +350,13 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			}
 			//echo "content = " . $content . "<br/>";
 			//echo "id = " . $item_id[$i] . "<br/>";
-			$modelProject->setProjectEntry($item_id[$i], $id_project, CoreTranslator::dateToEn($item_date[$i], $lang), $content);
+			$c_date = $item_date[$i];
+			$pos = strpos($c_date, "-");
+			if ($pos === false){
+				$c_date = CoreTranslator::dateToEn($c_date, $lang);
+			}
+			
+			$modelProject->setProjectEntry($item_id[$i], $id_project, $c_date, $content);
 		}
 		
 		$this->redirect("sprojectsentries");

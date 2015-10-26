@@ -11,6 +11,7 @@ require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
 require_once 'Modules/sprojects/Model/SpResponsible.php';
 require_once 'Modules/sprojects/Model/SpBill.php';
+require_once 'Modules/sprojects/Model/SpItemsTypes.php';
 
 /**
  * Class defining methods to install and initialize the Suplies database
@@ -55,6 +56,10 @@ class SpInitDatabase extends Model {
 		
 		$modulesModel = new SpBill();
 		$modulesModel->createTable();
+		
+		$modulesModel = new SpItemsTypes();
+		$modulesModel->createTable();
+		$modulesModel->createDefault();
 		
 		$message = 'success';
 		return $message;

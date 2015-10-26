@@ -33,7 +33,14 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name"
+				<input class="form-control" type="text" name="name"
+				/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::color($lang) ?></label>
+			<div class="col-xs-10">
+				<input class="form-control" type="color" name="color"
 				/>
 			</div>
 		</div>

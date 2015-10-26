@@ -41,9 +41,10 @@ class ControllerSprojectspricing extends ControllerSecureNav {
 	
 		// get form variables
 		$nom = $this->request->getParameter ( "name" );
+		$color = $this->request->getParameter ( "color" );
 	
 		$modelPricing = new SpPricing();
-		$modelPricing->addPricing($nom);
+		$modelPricing->addPricing($nom, $color);
 		
 		$this->redirect('sprojectspricing');
 	
@@ -71,9 +72,10 @@ class ControllerSprojectspricing extends ControllerSecureNav {
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$nom = $this->request->getParameter ( "name" );
+		$color = $this->request->getParameter ( "color" );
 	
 		$modelPricing = new SpPricing();
-		$modelPricing->editPricing($id, $nom);
+		$modelPricing->editPricing($id, $nom, $color);
 	
 	
 		$this->redirect('sprojectspricing');

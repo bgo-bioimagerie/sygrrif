@@ -191,6 +191,4 @@ class Unit extends Model {
 		$sql="DELETE FROM core_units WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
-
 }
-

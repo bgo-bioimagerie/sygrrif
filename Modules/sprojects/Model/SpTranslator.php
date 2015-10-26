@@ -20,7 +20,7 @@ class SpTranslator {
 		if ($lang == "Fr"){
 			return "Tarifs";
 		}
-		return "sprojects/Pricing";
+		return "projects/Pricing";
 	}
 	
 	public static function Pricing($lang){
@@ -39,7 +39,7 @@ class SpTranslator {
 	
 	public static function Items($lang){
 		if ($lang == "Fr"){
-			return "consommables";
+			return "prestations";
 		}
 		return "Items";
 	}
@@ -67,7 +67,7 @@ class SpTranslator {
 	
 	public static function Closed_orders($lang){
 		if ($lang == "Fr"){
-			return "Projets fermées";
+			return "Projets fermés";
 		}
 		return "Closed projects";
 	}
@@ -110,7 +110,7 @@ class SpTranslator {
 	
 	public static function sprojects_bill($lang){
 		if ($lang == "Fr"){
-			return "Facture consommables";
+			return "Facture prestations";
 		}
 		return "sprojects bill";
 	}
@@ -152,7 +152,7 @@ class SpTranslator {
 	
 	public static function SpConfigAbstract($lang){
 		if ($lang == "Fr"){
-			return "<p>Le module \"sprojets\" permet de gérer et des facturer des flux de consommables organisés par projets <br\>
+			return "<p>Le module \"sprojets\" permet de gérer et des facturer des flux de prestations organisés par projets <br\>
 					Le module \"sprojets\" possède sa propre base de donnée utilisateurs ou peut utiliser la base de données utilisateurs de core</p>";
 		}
 		return "<p> The sprojects module allows to manage and bill sprojects ordered by users organized as projects. <br/>
@@ -161,7 +161,7 @@ class SpTranslator {
 	
 	public static function Sprojects_configuration($lang){
 		if ($lang == "Fr"){
-			return "Configuration consommables";
+			return "Configuration projets";
 		}
 		return "sprojects configuration";
 	}
@@ -255,7 +255,7 @@ class SpTranslator {
 	
 	public static function Order($lang){
 		if ($lang == "Fr"){
-			return "Commande";
+			return "Prestation";
 		}
 		return "Order";
 	}
@@ -270,14 +270,14 @@ class SpTranslator {
 	
 	public static function Add_Item($lang){
 		if ($lang == "Fr"){
-			return "Ajouter un consommable";
+			return "Ajouter une prestation";
 		}
 		return "Add_Item";
 	}
 	
 	public static function Edit_Item($lang){
 		if ($lang == "Fr"){
-			return "Modifier un consommable";
+			return "Modifier une prestation";
 		}
 		return "Edit Item";
 	}
@@ -291,7 +291,7 @@ class SpTranslator {
 	
 	public static function sprojects_Items($lang){
 		if ($lang == "Fr"){
-			return "Consommables";
+			return "Prestations";
 		}
 		return "sprojects Items";
 	}
@@ -333,9 +333,79 @@ class SpTranslator {
 	}
 	
 	public static function Delete_entry($lang){
-				if ($lang == "Fr"){
+		if ($lang == "Fr"){
 			return "Supprimer commande ?";
 		}
 		return "Delete entry";
 	} 
+	
+	public static function Prices($lang){
+		if ($lang == "Fr"){
+			return "Prix";
+		}
+		return "Prices";
+	}
+	
+	public static function Export_csv($lang){
+		if ($lang == "Fr"){
+			return "Export csv";
+		}
+		return "Export csv";
+	}
+	
+	public static function Type($lang){
+		if ($lang == "Fr"){
+			return "Type";
+		}
+		return "Type";
+	}
+	
+	public static function Open($lang){
+		if ($lang == "Fr"){
+			return "Ouvert";
+		}
+		return "Open";
+	}
+	
+	public static function Closed($lang){
+		if ($lang == "Fr"){
+			return "Fermé";
+		}
+		return "Closed";
+	}
+	
+	public static function Time_limite($lang){
+		if ($lang == "Fr"){
+			return "Délai";
+		}
+		return "Time limit";
+	}
+	
+	public static function New_project($lang){
+		if ($lang == "Fr"){
+			return "Nouveau projet";
+		}
+		return "New project";
+	}
+	
+	public static function New_team($lang){
+		if ($lang == "Fr"){
+			return "Nouvelle equipe";
+		}
+		return "New team";
+	}
+	
+	public static function Academique($lang){
+		if ($lang == "Fr"){
+			return "Académique";
+		}
+		return "Academic";
+	}
+	
+	public static function Industry($lang){
+		if ($lang == "Fr"){
+			return "PME";
+		}
+		return "Industry";
+	}
 }

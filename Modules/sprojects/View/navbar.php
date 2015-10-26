@@ -115,17 +115,21 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?php echo  SpTranslator::Orders($lang)?></legend>
-					<button onclick="location.href='sprojectsentries'"
-						class="btn btn-link" id="navlink"><?php echo  SpTranslator::All_orders($lang)?></button>
-				</br>
+								
 					<button onclick="location.href='sprojectsentries/openedentries'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Opened_orders($lang)?></button>
-				</br>
+										</br>
+					<button onclick="location.href='sprojectsentries/editentries'"
+						class="btn btn-link" id="navlink"><?php echo  SpTranslator::New_orders($lang)?></button>
+										</br>
 					<button onclick="location.href='sprojectsentries/closedentries'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Closed_orders($lang)?></button>	
-				</br>
-					<button onclick="location.href='sprojectsentries/editentries'"
-						class="btn btn-link" id="navlink"><?php echo  SpTranslator::New_orders($lang)?></button>			
+				</br>		
+					<button onclick="location.href='sprojectsentries'"
+						class="btn btn-link" id="navlink"><?php echo  SpTranslator::All_orders($lang)?></button>
+
+
+			
 			</fieldset>
 		</div>
 		<div class='col-md-3 well'>

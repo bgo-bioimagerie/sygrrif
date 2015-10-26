@@ -44,6 +44,13 @@
 				/>
 			</div>
 		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::color($lang) ?></label>
+			<div class="col-xs-10">
+				<input class="form-control" type="color" name="color" value="<?php echo  $this->clean($pricing['tarif_color'])?>"
+				/>
+			</div>
+		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
