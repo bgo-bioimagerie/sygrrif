@@ -75,6 +75,24 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Type($lang) ?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="type_id">
+					<?php 
+					foreach($itemsTypes as $itemType){
+						$selected = "";
+						if ($type_id == $itemType["id"]){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<option value="<?php echo $this->clean($itemType["id"]) ?>"  <?php echo $selected ?>> <?php echo $this->clean($itemType["local_name"]) ?></option>
+					<?php 
+					}
+					?>
+					</select>
+			</div>
+		</div>
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Is_active($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="is_active">
@@ -93,7 +111,7 @@
 		</div>
 		<div class="page-header">
 			<h3>
-			Prices
+			<?php echo SpTranslator::Prices($lang)?>
 				<br> <small></small>
 			</h3>
 		</div>

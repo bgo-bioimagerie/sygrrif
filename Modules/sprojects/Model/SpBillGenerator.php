@@ -9,6 +9,7 @@ require_once 'Modules/sprojects/Model/SpItemPricing.php';
 
 require_once 'Modules/core/Model/Unit.php';
 require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
 /**
@@ -30,6 +31,7 @@ class SpBillGenerator extends Model {
 		// get the pricing information
 		$id_resp = $modelProject->getResponsible($id_project);
 		$id_user = $modelProject->getUser($id_project);
+		$projectInfo = $modelProject->getProject($id_project);
 		
 		// get the pricing
 		$modelUser = "";
@@ -317,9 +319,30 @@ class SpBillGenerator extends Model {
 		}
 		$objPHPExcel->getActiveSheet()->SetCellValue("A".$rowIndex, "");
 		
-		
 		$curentLine = $insertLine;
 		$curentLine++;
+		
+		
+		// add the project informations
+		$titleTab = "";
+		
+		if ($projectInfo["date_open"] == $projectInfo["date_close"]){
+			$titleTab = "Prestations du ". CoreTranslator::dateFromEn($projectInfo["date_open"], "Fr")."";
+		}
+		else{
+			$date_close = $projectInfo["date_close"];
+			if ($date_close == "0000-00-00"){
+				$date_close = date("d/m/Y", time());
+			}
+			$titleTab = "Prestations du ". CoreTranslator::dateFromEn($projectInfo["date_open"], "Fr")." au ". CoreTranslator::dateFromEn($date_close, "Fr")."";
+		}
+		$titleTab .= "   No Projet: " .  $projectInfo["name"];
+		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $titleTab);
+		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->getFont()->setBold(true);
+		
+		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
+		$curentLine++;
+
 		
 		// set the row
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
@@ -330,20 +353,23 @@ class SpBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, "Consommable");
 		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableHeader);
 		
+		/*
 		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Utilisateur");
 		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
 		
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre de \n commandes");
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
+		*
+		*/
 		
-		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Quantité");
+		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Quantité");
+		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Tarif Unitaire");
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
+		
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Montant");
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableHeader);
-		
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Tarif Unitaire");
-		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableHeader);
-		
-		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "Montant");
-		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableHeader);
 		
 		// ///////////////////////////////////////// //
 		//             Main query                    //
@@ -368,17 +394,38 @@ class SpBillGenerator extends Model {
 			//echo "get item price : item = " . $item["id"] . ", price = " . $LABpricingid . "<br/>"; 
 			$unitaryPrice = $itemPricing->getPrice($item["id"], $LABpricingid);
 			//print_r($unitaryPrice);
-			$price = (float)$quantity*(float)$unitaryPrice["price"];
+			$price = 0;
+			
+			//print_r($item);
+			//echo "<br/>";
+			
+			if ($item["type_id"] == 1 || $item["type_id"] == 3){
+				$price = (float)$quantity*(float)$unitaryPrice["price"];
+			}
+			else if($item["type_id"] == 2){
+				$q = (float)$quantity/60.0;
+				$price = (float)$q*(float)$unitaryPrice["price"];
+				$quantity = $quantity . " min";
+			}
+			else if($item["type_id"] == 4){
+				$price = $quantity;
+				$quantity = "-";
+				$unitaryPrice["price"] = $price;
+			}
 			
 			$data[] = array("item_name" => $item["name"], "quantity" => $quantity, "commandNumber" => $commandNumber, 
 							"unitary_price" => $unitaryPrice["price"], "price" => $price  );
 		}
 		
+		
+		//print_r($data);
+		//return;
+		
 		$addedLine = 0;
 		$totalHT = 0;
 		foreach($data as $dat){
 			
-			if ($dat["quantity"] > 0){
+			if ($dat["price"] > 0){
 			
 				$addedLine++;
 				$lineIdx = $curentLine + 1;
@@ -390,7 +437,8 @@ class SpBillGenerator extends Model {
 				// Consommable
 				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$lineIdx, $dat["item_name"]);
 				$objPHPExcel->getActiveSheet()->getStyle('A'.$lineIdx)->applyFromArray($styleTableCell);
-					
+
+				/*
 				// user full name
 				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $userFullName);
 				$objPHPExcel->getActiveSheet()->getStyle('B'.$lineIdx)->applyFromArray($styleTableCell);
@@ -398,20 +446,21 @@ class SpBillGenerator extends Model {
 				// number of order
 				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$lineIdx, $dat["commandNumber"]);
 				$objPHPExcel->getActiveSheet()->getStyle('C'.$lineIdx)->applyFromArray($styleTableCell);
+				*/
 					
 				// order quantity
-				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$lineIdx, $dat["quantity"]);
-				$objPHPExcel->getActiveSheet()->getStyle('D'.$lineIdx)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $dat["quantity"]);
+				$objPHPExcel->getActiveSheet()->getStyle('B'.$lineIdx)->applyFromArray($styleTableCell);
 					
 				// unitary price
 				//echo "line idx = " . $lineIdx . "<br/>";
 				//echo "unit price = " . $dat["unitary_price"] . "<br/>";
-				$objPHPExcel->getActiveSheet()->SetCellValue('E'.$lineIdx, $dat["unitary_price"]);
-				$objPHPExcel->getActiveSheet()->getStyle('E'.$lineIdx)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$lineIdx, $dat["unitary_price"]);
+				$objPHPExcel->getActiveSheet()->getStyle('C'.$lineIdx)->applyFromArray($styleTableCell);
 					
 				// Total HT
-				$objPHPExcel->getActiveSheet()->SetCellValue('F'.$lineIdx, $dat["price"]);
-				$objPHPExcel->getActiveSheet()->getStyle('F'.$lineIdx)->applyFromArray($styleTableCell);
+				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$lineIdx, $dat["price"]);
+				$objPHPExcel->getActiveSheet()->getStyle('D'.$lineIdx)->applyFromArray($styleTableCell);
 			}
 		}
 		
@@ -425,40 +474,40 @@ class SpBillGenerator extends Model {
 		// total HT
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Total H.T.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, $totalHT." €");
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Total H.T.");
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, $totalHT." €");
 		
-		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
-		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		
 		// TVA 20p
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "T.V.A.:20%");
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "T.V.A.:20%");
 		$honoraireTVA = 0.2*$totalHT;
 		$honoraireTVA = number_format(round($honoraireTVA,2), 2, '.', ' ');
-		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." €");
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." €");
 		
-		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
-		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		
 		// space
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "");
-		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "----");
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "");
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "----");
 		
 		// TTC
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Total T.T.C.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, (float)$totalHT*(float)1.2." €");		
+		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Total T.T.C.");
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, (float)$totalHT*(float)1.2." €");		
 
-		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
-		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
-		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCellTotal);
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
+		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->getFont()->setBold(true);
+		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCellTotal);
 		
 		// Save the xls file
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);

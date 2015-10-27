@@ -540,15 +540,59 @@ class SyBillGenerator extends Model {
 					}
 					else{
 						
-						$quantity =  $time["nb_hours_day"] . "hj " . $time["nb_hours_night"] . "hn " . $time["nb_hours_we"] . "hwe" ;
+						//$quantity =  $time["nb_hours_day"] . "hj " . $time["nb_hours_night"] . "hn " . $time["nb_hours_we"] . "hwe" ;
+						
+						$objRichTextQ = new PHPExcel_RichText();
+						$objRichTextP = new PHPExcel_RichText();
+						
+						if ($time["nb_hours_night"] == 0 && $time["nb_hours_we"] == 0){
+							$objRichTextQ->createTextRun($time["nb_hours_day"]);
+							$objRichTextP->createTextRun($rtimePrices["price_day"]);
+						}
+						else{
+							$objBold = $objRichTextQ->createTextRun($time["nb_hours_day"] . "hj ");
+							$phpColor = new PHPExcel_Style_Color();
+							$phpColor->setRGB('0000ff');
+							$objBold->getFont()->setColor($phpColor);
+							
+							$objBold = $objRichTextP->createTextRun($rtimePrices["price_day"] . "hj ");
+							$objBold->getFont()->setColor($phpColor);
+							
+							$objRichTextQ->createTextRun("|");
+							$objRichTextP->createTextRun("|");
+							
+							$objBold = $objRichTextQ->createTextRun($time["nb_hours_night"] . "hn ");
+							$phpColor = new PHPExcel_Style_Color();
+							$phpColor->setRGB('777777');
+							$objBold->getFont()->setColor($phpColor);
+							
+							$objBold = $objRichTextP->createTextRun($rtimePrices["price_night"] . "hn ");
+							$objBold->getFont()->setColor($phpColor);
+							
+							$objRichTextQ->createTextRun("|");
+							$objRichTextP->createTextRun("|");
+							
+							$objBold = $objRichTextQ->createTextRun($time["nb_hours_we"] . "hwe");
+							$phpColor = new PHPExcel_Style_Color();
+							$phpColor->setRGB('777777');
+							$objBold->getFont()->setColor($phpColor);
+							
+							$objBold = $objRichTextP->createTextRun($rtimePrices["price_we"] . "hwe ");
+							$objBold->getFont()->setColor($phpColor);
+						}
+						
+						
+						
 						$prices =  $rtimePrices["price_day"] . "hj " . $rtimePrices["price_night"] . "hn " . $rtimePrices["price_we"] . "hwe" ;
 						$price = $time["nb_hours_day"]*$rtimePrices["price_day"] + $time["nb_hours_night"]*$rtimePrices["price_night"] + $time["nb_hours_we"]*$rtimePrices["price_we"];
 						$total += $price;
 						$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $resource["name"]);
 						$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, $userName);
 						$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, $time["nb_seance"]);
-						$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, $quantity);
-						$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, $prices);
+						$objPHPExcel->getActiveSheet()->getCell('D'.$curentLine)->setValue($objRichTextQ);
+						$objPHPExcel->getActiveSheet()->getCell('E'.$curentLine)->setValue($objRichTextP);
+						//$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, $quantity);
+						//$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, $prices);
 						$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, $price);
 
 					}

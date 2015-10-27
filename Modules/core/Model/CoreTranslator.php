@@ -93,6 +93,9 @@ class CoreTranslator {
 			if($item == "supplies"){
 				return "consommables";
 			}
+			if($item == "sprojects"){
+				return "projet";
+			}
 		}
 		return $item;
 	}
@@ -903,7 +906,7 @@ class CoreTranslator {
 	
 	public static function Display_order($lang){
 		if ($lang == "Fr"){
-			return "Order d'afichage";
+			return "Ordre d'affichage";
 		}
 		return "Display order";
 	}

@@ -5,7 +5,10 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sprojects/Model/SpPricing.php';
 require_once 'Modules/sprojects/Model/SpUnitPricing.php';
 require_once 'Modules/sprojects/Model/SpUnit.php';
+require_once 'Modules/sprojects/Model/SpTranslator.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/core/Model/Unit.php';
+require_once 'Framework/TableView.php';
 
 
 class ControllerSprojectspricing extends ControllerSecureNav {
@@ -15,6 +18,12 @@ class ControllerSprojectspricing extends ControllerSecureNav {
 
 	public function index() {
 
+		// Lang
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
 		$sort = "id";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$sort = $this->request->getParameter("actionid");
@@ -22,11 +31,28 @@ class ControllerSprojectspricing extends ControllerSecureNav {
 	
 		$modelPricing = new SpPricing();
 		$pricingArray = $modelPricing->getPrices($sort);
+		
+		for($i = 0 ; $i < count($pricingArray) ; $i++){
+			
+			$type = SpTranslator::Academique($lang);
+			if ($pricingArray[$i]["tarif_type"] > 1){
+				$type = SpTranslator::Industry($lang);
+			}
+			$pricingArray[$i]["tarif_type"] = $type;
+		}
+		
+		$table = new TableView();
+		$table->setTitle(SpTranslator::Pricing($lang));
+		$table->addLineEditButton("sprojectspricing/editpricing");
+		$table->addDeleteButton("sprojectspricing/deletepricing", "id", "tarif_name");
+		//$table->addPrintButton("sprojectsentries/index/");
+		$table->setColorIndexes(array("tarif_color" => "tarif_color"));
+		$tableHtml = $table->view($pricingArray, array("id" => "ID", "tarif_name" => CoreTranslator::Name($lang), "tarif_color" => CoreTranslator::color($lang), "tarif_type" => SpTranslator::Type($lang)));
 	
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'pricingArray' => $pricingArray
+				'tableHtml' => $tableHtml
 		) );
 	}
 
@@ -41,9 +67,11 @@ class ControllerSprojectspricing extends ControllerSecureNav {
 	
 		// get form variables
 		$nom = $this->request->getParameter ( "name" );
+		$color = $this->request->getParameter ( "color" );
+		$type = $this->request->getParameter ( "type" );
 	
 		$modelPricing = new SpPricing();
-		$modelPricing->addPricing($nom);
+		$modelPricing->addPricing($nom, $color, $type);
 		
 		$this->redirect('sprojectspricing');
 	
@@ -71,9 +99,11 @@ class ControllerSprojectspricing extends ControllerSecureNav {
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$nom = $this->request->getParameter ( "name" );
+		$color = $this->request->getParameter ( "color" );
+		$type = $this->request->getParameter ( "type" );
 	
 		$modelPricing = new SpPricing();
-		$modelPricing->editPricing($id, $nom);
+		$modelPricing->editPricing($id, $nom, $color, $type);
 	
 	
 		$this->redirect('sprojectspricing');
@@ -168,5 +198,17 @@ class ControllerSprojectspricing extends ControllerSecureNav {
 		$modelPricing->setPricing($id_unit, $id_pricing);
 	
 		$this->redirect("sprojectspricing", "unitpricing");
+	}
+	
+	public function deletepricing(){
+		$id = "";
+		if ($this->request->isParameterNotEmpty('actionid')){
+			$id = $this->request->getParameter("actionid");
+		}
+		
+		$model = new SpPricing();
+		$model->delete($id);
+		
+		$this->redirect("sprojectspricing", "index");
 	}
 }

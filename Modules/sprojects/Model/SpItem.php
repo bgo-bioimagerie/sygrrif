@@ -14,7 +14,9 @@ class SpItem extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 	    `name` varchar(100) NOT NULL,
 		`description` varchar(250) NOT NULL,
-		`display_order` int(11) NOT NULL DEFAULT 0,			
+		`display_order` int(11) NOT NULL DEFAULT 0,		
+		`is_active` int(1) NOT NULL DEFAULT 1,	 
+		`type_id` int(11) NOT NULL DEFAULT 1,						
 		PRIMARY KEY (`id`)
 		);";
 
@@ -28,6 +30,22 @@ class SpItem extends Model {
 			$sql = "ALTER TABLE `sp_items` ADD `display_order` int(11) NOT NULL DEFAULT 0";
 			$pdo = $this->runRequest($sql);
 		}
+		
+		$sql = "SHOW COLUMNS FROM `sp_items` LIKE 'is_active'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sp_items` ADD `is_active` int(1) NOT NULL DEFAULT 1";
+			$pdo = $this->runRequest($sql);
+		}
+		
+		$sql = "SHOW COLUMNS FROM `sp_items` LIKE 'type_id'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sp_items` ADD `type_id` int(11) NOT NULL DEFAULT 1";
+			$pdo = $this->runRequest($sql);
+		}
 	}
 	
 	/**
@@ -35,11 +53,11 @@ class SpItem extends Model {
 	 *
 	 * @param string $name name of the unit
 	 */
-	public function addItem($name, $description, $display_order){
+	public function addItem($name, $description, $display_order, $type_id = 1){
 	
-		$sql = "insert into sp_items(name, description, is_active, display_order)"
+		$sql = "insert into sp_items(name, description, display_order, type_id)"
 				. " values(?, ?, ?, ?)";
-		$this->runRequest($sql, array($name, $description, 1, $display_order));
+		$this->runRequest($sql, array($name, $description, $display_order, $type_id));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -109,9 +127,9 @@ class SpItem extends Model {
 	 * @param int $id Id of the item to update
 	 * @param string $name New name of the item
 	 */
-	public function editItem($id, $name, $description, $display_order){
+	public function editItem($id, $name, $description, $display_order, $type_id){
 	
-		$sql = "update sp_items set name=?, description=?, display_order=? where id=?";
-		$unit = $this->runRequest($sql, array("".$name."", $description, $display_order, $id));
+		$sql = "update sp_items set name=?, description=?, display_order=?, type_id=? where id=?";
+		$unit = $this->runRequest($sql, array("".$name."", $description, $display_order, $type_id, $id));
 	}
 }
