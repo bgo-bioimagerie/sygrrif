@@ -706,6 +706,7 @@ class ControllerCalendar extends ControllerBooking {
 			$pricingTable[$i]['val_we'] = $inter['price_we'];
 			
 			$count = 0;
+			$suppliesPrices = array();
 			foreach($prices as $price){
 				if ($count > 0){
 					$suppliesPrices[] = $price;
