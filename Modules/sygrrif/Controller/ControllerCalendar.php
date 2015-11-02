@@ -259,7 +259,13 @@ class ControllerCalendar extends ControllerBooking {
 		$modelPackage = new SyPackage();
 		$count = 0;
 		for( $p = 0 ; $p < count($packageID) ; $p++){
-			$package_id = $modelPackage->setPackage($packageID[$p], $id_resource, $packageName[$p], $packageDuration[$p]);
+			
+			$curentID = $packageID[$p];
+			if ($p != 0 && $curentID ==1){
+				$curentID = 0;
+			}
+			echo "packageID = " . $curentID . "</br>";
+			$package_id = $modelPackage->setPackage($curentID, $id_resource, $packageName[$p], $packageDuration[$p]);
 			
 			//echo "package id = " . $package_id . "<br/>";
 			
@@ -270,7 +276,7 @@ class ControllerCalendar extends ControllerBooking {
 			$count++;
 		}
 		
-		
+		//return;
 		$this->redirect("sygrrif", "resources");
 	}
 	
