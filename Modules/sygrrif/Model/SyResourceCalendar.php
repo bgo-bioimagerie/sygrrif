@@ -26,7 +26,8 @@ class SyResourceCalendar extends Model {
 		`day_end` int(11) NOT NULL,		
 		`size_bloc_resa` int(11) NOT NULL,
 		`resa_time_setting` int(1) NOT NULL,	
-		`default_color_id` int(11) NOT NULL,			
+		`default_color_id` int(11) NOT NULL,	
+		`use_package` int(2) NOT NULL DEFAULT 1,				
 		PRIMARY KEY (`id_resource`)
 		);";
 
@@ -39,6 +40,14 @@ class SyResourceCalendar extends Model {
 		$isColumn = $pdo->fetch();
 		if ( $isColumn == false){
 			$sql = "ALTER TABLE `sy_resources_calendar` ADD `default_color_id` int(11) NOT NULL";
+			$pdo = $this->runRequest($sql);
+		}
+		
+		$sql = "SHOW COLUMNS FROM `sy_resources_calendar` LIKE 'use_package'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sy_resources_calendar` ADD `use_package` int(2) NOT NULL DEFAULT 1";
 			$pdo = $this->runRequest($sql);
 		}
 		
@@ -57,10 +66,10 @@ class SyResourceCalendar extends Model {
 	 * @param number $default_color_id
 	 * @return PDOStatement
 	 */
-	public function addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0){
-		$sql = "INSERT INTO sy_resources_calendar (id_resource, nb_people_max, available_days, day_begin, day_end, size_bloc_resa, resa_time_setting, quantity_name, default_color_id) 
-				VALUES(?,?,?,?,?,?,?,?,?)";
-		$pdo = $this->runRequest($sql, array($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id));
+	public function addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0, $use_package=1){
+		$sql = "INSERT INTO sy_resources_calendar (id_resource, nb_people_max, available_days, day_begin, day_end, size_bloc_resa, resa_time_setting, quantity_name, default_color_id,use_package) 
+				VALUES(?,?,?,?,?,?,?,?,?,?)";
+		$pdo = $this->runRequest($sql, array($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id, $use_package));
 		return $pdo;
 	}
 	
@@ -77,12 +86,12 @@ class SyResourceCalendar extends Model {
 	 * @param string $quantity_name
 	 * @param number $default_color_id
 	 */
-	public function setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0){
+	public function setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0, $use_package=1){
 		if (!$this->isResource($id_resource)){
-			$this->addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id);
+			$this->addResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id, $use_package);
 		}
 		else{
-			$this->updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id);
+			$this->updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id, $use_package);
 		}
 	}
 	
@@ -109,10 +118,10 @@ class SyResourceCalendar extends Model {
 	 * @param string $quantity_name
 	 * @param number $default_color_id
 	 */
-	public function updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0){
-		$sql = "update sy_resources_calendar set nb_people_max=?, available_days=?, day_begin=?, day_end=?, size_bloc_resa=?, resa_time_setting=?,quantity_name=?, default_color_id=? 
+	public function updateResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name = "", $default_color_id=0, $use_package = 1){
+		$sql = "update sy_resources_calendar set nb_people_max=?, available_days=?, day_begin=?, day_end=?, size_bloc_resa=?, resa_time_setting=?, quantity_name=?, default_color_id=?, use_package=? 
 		        where id_resource=?";
-		$this->runRequest($sql, array($nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id, $id_resource));
+		$this->runRequest($sql, array($nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting, $quantity_name, $default_color_id, $use_package, $id_resource));
 	}
 	
 	/**

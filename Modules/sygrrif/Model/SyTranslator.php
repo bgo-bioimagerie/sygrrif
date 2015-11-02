@@ -1641,4 +1641,24 @@ class SyTranslator {
 		return "Use package";
 	}
 	
+	static public function Pricing_Type($lang){
+		if ($lang == "Fr"){
+			return "La réservation se fait";
+		}
+		return "Use package";
+	}
+	
+	static public function Use_time_and_package($lang){
+		if ($lang == "Fr"){
+			return "En temps et en package";
+		}
+		return "Use time and package";
+	}
+	
+	static public function Use_only_package($lang){
+		if ($lang == "Fr"){
+			return "Uniquement en package";
+		}
+		return "only package";
+	}
 }

@@ -62,6 +62,20 @@ if ($authorisations_location == 2){
 
 		<div class=<?php echo $classWell?> >
 			<fieldset>
+				<legend><?php echo  SyTranslator::Pricing($lang) ?> </legend>
+					<button onclick="location.href='sygrrif/pricing'"
+						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Pricings($lang) ?></button>
+					<button onclick="location.href='sygrrif/addpricing'"
+						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Add($lang) ?></button>
+				<br/>
+					<button onclick="location.href='sygrrif/unitpricing'"
+						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Pricing_Unit($lang) ?></button>
+					<button onclick="location.href='sygrrif/addunitpricing'"
+						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Add($lang) ?></button>
+			</fieldset> 
+		</div>
+		<div class=<?php echo $classWell?> >
+			<fieldset>
 				<legend><?php echo  SyTranslator::Area_and_Resources($lang) ?></legend>
 					<button onclick="location.href='sygrrif/areas'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Areas($lang) ?></button>
@@ -107,21 +121,7 @@ if ($authorisations_location == 2){
 			</fieldset>
 		</div>
 		<?php } ?>
-		<div class=<?php echo $classWell?> >
-			<fieldset>
-				<legend><?php echo  SyTranslator::Pricing($lang) ?> </legend>
-					<button onclick="location.href='sygrrif/pricing'"
-						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Pricings($lang) ?></button>
-					<button onclick="location.href='sygrrif/addpricing'"
-						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Add($lang) ?></button>
-				<br/>
-					<button onclick="location.href='sygrrif/unitpricing'"
-						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Pricing_Unit($lang) ?></button>
-					<button onclick="location.href='sygrrif/addunitpricing'"
-						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Add($lang) ?></button>
-			</fieldset> 
-		</div>
-
+	
 		<div class=<?php echo $classWell?> >
 			<fieldset>
 				<legend><?php echo  SyTranslator::Export($lang) ?></legend>

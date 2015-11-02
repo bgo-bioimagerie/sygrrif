@@ -341,6 +341,15 @@
 				</select>
 			</div>
 		</div>	
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Pricing_Type($lang)?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="use_package">
+						<OPTION value="1" <?php if( $use_package == 1){echo "selected=\"selected\"";} ?> > <?php echo SyTranslator::Use_time_and_package($lang)  ?> </OPTION>
+						<OPTION value="2" <?php if( $use_package == 2){echo "selected=\"selected\"";} ?> > <?php echo SyTranslator::Use_only_package($lang)  ?> </OPTION>
+				</select>
+			</div>
+		</div>	
 		
 		<div class="page-header">
 			<h3>
