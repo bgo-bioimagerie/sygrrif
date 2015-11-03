@@ -207,7 +207,8 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 <div class='col-md-9 col-md-offset-1 text-center' id="camembert-area">
 		<h3> <?php echo  SyTranslator::Booking_number_year($lang) ?>  </h3>
 		<?php
-			$camembert = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="300" font-family="Verdana">';
+			$heighFig = $resourcesNumber*35;
+			$camembert = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="'.$heighFig.'" font-family="Verdana">';
 			$camembert .= '<title> </title>';
 			$camembert .= '<desc></desc>';
 			$camembert .= $camembertContent;		
@@ -240,7 +241,8 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		<div class='col-md-9 col-md-offset-1 text-center' id="camembert-area">
 		<h3> <?php echo  SyTranslator::Booking_time_year($lang) ?> </h3>
 		<?php
-			$camembert2 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="300" font-family="Verdana">';
+			$heighFig = $resourcesNumber*35;
+			$camembert2 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="'.$heighFig.'" font-family="Verdana">';
 			$camembert2 .= '<title> </title>';
 			$camembert2 .= '<desc></desc>';
 			$camembert2 .= $camembertTimeContent;		

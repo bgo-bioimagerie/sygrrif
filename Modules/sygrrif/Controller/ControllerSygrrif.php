@@ -254,6 +254,10 @@ class ControllerSygrrif extends ControllerBooking {
 		$graphArray = $modelGraph->getYearNumResGraph($month_start, $year_start, $month_end, $year_end);
 		$graphTimeArray = $modelGraph->getYearNumHoursResGraph($month_start, $year_start, $month_end, $year_end);
 		
+		$modelResource = new SyResource();
+		$resourcesNumber = $modelResource->resourcesNumber();
+		//echo "resourcesNumber = " . $resourcesNumber . "<br/>";
+		
 		if($export_type == 1){
 			
 			$camembertContent = $modelGraph->getCamembertContent($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
@@ -271,7 +275,8 @@ class ControllerSygrrif extends ControllerBooking {
 					'graph_month' => $graphArray['monthIds'],
 					'graphTimeArray' => $graphTimeArray,
 					'camembertContent' => $camembertContent,
-					'camembertTimeContent' => $camembertTimeContent
+					'camembertTimeContent' => $camembertTimeContent,
+					'resourcesNumber' => $resourcesNumber
 			) );
 		}
 		else{
