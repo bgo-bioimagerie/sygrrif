@@ -40,10 +40,10 @@ class ShTranslator {
 	public static function Install_Txt($lang = "") {
 		if ($lang == "Fr") {
 			return "Cliquer sur \"Installer\" pour installer ou réparer la base de données de Sheet. 
-					Cela crée les tables qui n'existent pas";
+					Cela créera les tables qui n'existent pas";
 		}
-		return "To repair the Sheet mudule, click \"Install\". This will create the
-				Sheet tables in the database if they don't exists ";
+		return "To repair the Sheet module, click \"Install\". This will create the
+				Sheet tables in the database if they don't exist";
 	}
 	public static function Templates($lang) {
 		if ($lang == "Fr") {
@@ -76,14 +76,14 @@ class ShTranslator {
 	
 	public static function Delete_Message($lang) {
 		if ($lang == "Fr") {
-			return "Êtes-vous sûr de voulir suprimer cette fiche ?";
+			return "Êtes-vous sûr de vouloir supprimer cette fiche ?";
 		}
 		return "Are you sure to delete this sheet ?";
 	}
 	
 	public static function Delete($lang) {
 		if ($lang == "Fr") {
-			return "Suprimer fiche";
+			return "Supprimer fiche";
 		}
 		return "Delete sheet";
 	}
