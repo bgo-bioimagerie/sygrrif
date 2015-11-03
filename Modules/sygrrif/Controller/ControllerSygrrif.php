@@ -256,13 +256,18 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		$modelResource = new SyResource();
 		$resourcesNumber = $modelResource->resourcesNumber();
+		
+		$modelResourceC = new SyResourcesCategory();
+		$resourcesCategoryNumber = $modelResourceC->categoriesNumber();
+		
 		//echo "resourcesNumber = " . $resourcesNumber . "<br/>";
 		
 		if($export_type == 1){
 			
 			$camembertContent = $modelGraph->getCamembertContent($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
 			$camembertTimeContent = $modelGraph->getCamembertTimeContent($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
-			
+			$camembertContentResourcesType = $modelGraph->getCamembertContentResourceType($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
+			$camembertTimeContentResourcesType = $modelGraph->getCamembertTimeContentResourceType($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
 			$navBar = $this->navBar();
 			$this->generateView ( array (
 					'navBar' => $navBar,
@@ -276,7 +281,10 @@ class ControllerSygrrif extends ControllerBooking {
 					'graphTimeArray' => $graphTimeArray,
 					'camembertContent' => $camembertContent,
 					'camembertTimeContent' => $camembertTimeContent,
-					'resourcesNumber' => $resourcesNumber
+					'resourcesNumber' => $resourcesNumber,
+					'camembertContentResourcesType' => $camembertContentResourcesType,
+					'camembertTimeContentResourcesType' => $camembertTimeContentResourcesType,
+					'resourcesCategoryNumber' => $resourcesCategoryNumber
 			) );
 		}
 		else{

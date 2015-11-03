@@ -1244,16 +1244,30 @@ class SyTranslator {
 	}
 	public static function Booking_time_year($lang) {
 		if ($lang == "Fr") {
-			return "Nombre d'heures de réservation par ressources dans l'année";
+			return "Nombre d'heures de réservation par ressources dans la période";
 		}
-		return "Time (in hours) of reservations for each resource in a year";
+		return "Time (in hours) of reservations for each resource during the given period";
+	}
+	public static function Booking_time_year_category($lang) {
+		if ($lang == "Fr") {
+			return "Nombre d'heures de réservation par catégories de ressources dans la période";
+		}
+		return "Time (in hours) of reservations for each resource category during the given period";
 	}
 	public static function Booking_number_year($lang) {
 		if ($lang == "Fr") {
-			return "Nombre de réservation par ressources dans l'année";
+			return "Nombre de réservations par ressources dans la période";
 		}
-		return "Number of reservations for each resource in a year";
+		return "Number of reservations for each resource during the given period";
 	}
+	
+	public static function Booking_number_year_category($lang) {
+		if ($lang == "Fr") {
+			return "Nombre de réservations par catégorie de ressources dans la période";
+		}
+		return "Number of reservations for each resource category during the given period";
+	}
+	
 	public static function email($lang) {
 		if ($lang == "Fr") {
 			return "couriel";

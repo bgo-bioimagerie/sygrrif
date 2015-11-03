@@ -265,4 +265,71 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 		</div>
 		<?php }?>
+		
+		
+<!-- -------------------------------------------- -->
+<!-- Plot the camembert -->
+<!-- -------------------------------------------- -->	
+
+		<div class='col-md-9 col-md-offset-1 text-center' id="camembert-area">
+		<h3> <?php echo  SyTranslator::Booking_number_year_category($lang) ?> </h3>
+		<?php
+			$heighFig = $resourcesCategoryNumber*35;
+			$camembert2 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="'.$heighFig.'" font-family="Verdana">';
+			$camembert2 .= '<title> </title>';
+			$camembert2 .= '<desc></desc>';
+			$camembert2 .= $camembertContentResourcesType;		
+			$camembert2 .= '</svg>';
+			echo $camembert2;
+			
+			if (Configuration::get("saveImages") == "enable"){
+				$nameFile = "data/temp/camembert_resaSVG.svg";
+				$openFile = fopen($nameFile,"w");
+				$toWrite = $camembert2;
+				fwrite($openFile, $toWrite);
+				fclose($openFile);
+		
+				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resaSVG.svg -e data/temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+			}
+		?>
+		</div>
+		<?php if (Configuration::get("saveImages") == "enable"){ ?>
+		<div class='col-md-2 col-md-offset-1'>
+		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
+		</div>
+		<?php }?>	
+		
+<!-- -------------------------------------------- -->
+<!-- Plot the camembert -->
+<!-- -------------------------------------------- -->	
+
+		<div class='col-md-9 col-md-offset-1 text-center' id="camembert-area">
+		<h3> <?php echo  SyTranslator::Booking_time_year_category($lang) ?> </h3>
+		<?php
+			$heighFig = $resourcesCategoryNumber*35;
+			$camembert2 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="'.$heighFig.'" font-family="Verdana">';
+			$camembert2 .= '<title> </title>';
+			$camembert2 .= '<desc></desc>';
+			$camembert2 .= $camembertTimeContentResourcesType;		
+			$camembert2 .= '</svg>';
+			echo $camembert2;
+			
+			if (Configuration::get("saveImages") == "enable"){
+				$nameFile = "data/temp/camembert_resaSVG.svg";
+				$openFile = fopen($nameFile,"w");
+				$toWrite = $camembert2;
+				fwrite($openFile, $toWrite);
+				fclose($openFile);
+		
+				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resaSVG.svg -e data/temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+			}
+		?>
+		</div>
+		<?php if (Configuration::get("saveImages") == "enable"){ ?>
+		<div class='col-md-2 col-md-offset-1'>
+		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
+		</div>
+		<?php }?>		
+		
+		
 </div>
