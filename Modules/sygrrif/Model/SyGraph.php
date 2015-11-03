@@ -9,30 +9,47 @@ require_once 'Framework/Model.php';
  */
 class SyGraph extends Model {
 
+
 	/**
 	 * Generate a graph containing the number of reservation per month
 	 * @param unknown $year
 	 * @return multitype:multitype:unknown  number
 	 */
-	public function getYearNumResGraph($year){
+	public function getYearNumResGraph($month_start, $year_start, $month_end, $year_end){
 		
 		$num = 0;
 		$numTotal = 0;
 		$graph = array();
-		for ($i = 1; $i <= 12; $i++) {
-			$dstart= mktime(0,0,0,$i,1,$year); // Le premier jour du mois en cours
-			$dend= mktime(0,0,0,$i+1,1,$year); // Le 0eme jour du mois suivant == le dernier jour du mois en cour
-		
-			//$q = array('start'=>$dstart, 'end'=>$dend);
-			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >= '.$dstart.' AND start_time <= '.$dend.' ORDER BY id';
-			$req = $this->runRequest($sql);
-			
-			$num = $req->rowCount(); // Nombre de réservations dans la période sélectionnée
-			$numTotal += $num;
-			$graph[$i]=$num;
+		$monthIds = array();
+		$i = 0;
+		for ($y = $year_start ; $y <= $year_end ; $y++){
+			// start month
+			$start_month = 1;
+			if ($y == $year_start){
+				$start_month = $month_start;
+			}
+			// end month
+			$stop_month = 12;
+			if ($y == $year_end){
+				$stop_month = $month_end;
+			}
+			for ($m = $start_month ; $m <= $stop_month ; $m++){
+				$dstart= mktime(0,0,0,$m,1,$y); // Le premier jour du mois en cours
+				$dend= mktime(0,0,0,$m+1,1,$y); // Le 0eme jour du mois suivant == le dernier jour du mois en cour
+				
+				//$q = array('start'=>$dstart, 'end'=>$dend);
+				$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >= '.$dstart.' AND start_time <= '.$dend.' ORDER BY id';
+				$req = $this->runRequest($sql);
+					
+				$num = $req->rowCount(); // Nombre de réservations dans la période sélectionnée
+				$i++;
+				$numTotal += $num;
+				$graph[$i]=$num;
+				$monthIds[$i] = $m;
+			}
 		}
 		
-		$graphData = array('numTotal' => $numTotal, 'graph' => $graph);
+		$graphData = array('numTotal' => $numTotal, 'graph' => $graph, 'monthIds' => $monthIds);
 		return $graphData;
 	}
 	
@@ -41,36 +58,51 @@ class SyGraph extends Model {
 	 * @param unknown $year
 	 * @return multitype:number multitype:number
 	 */
-	public function getYearNumHoursResGraph($year){
+	public function getYearNumHoursResGraph($month_start, $year_start, $month_end, $year_end){
 	
 		$timeResa = 0.0;
 		$timeTotal = 0.0;
 		$graph = array();
-		for ($i = 1; $i <= 12; $i++) {
-			$dstart= mktime(0,0,0,$i,1,$year); // Le premier jour du mois en cours
-			$dend= mktime(0,0,0,$i+1,1,$year); // Le 0eme jour du mois suivant == le dernier jour du mois en cour
-	
-			//$q = array('start'=>$dstart, 'end'=>$dend);
-			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >= '.$dstart.' AND start_time <= '.$dend.' ORDER BY id';
-			$req = $this->runRequest($sql);
-			$datas = $req->fetchAll();	
-			
-			$timeResa = 0;
-			foreach ($datas as $data){
-				if ($data["end_time"] - $data["start_time"] >= 0){
-					$timeResa += (float)($data["end_time"] - $data["start_time"]) / (float)3600; 
-				}
-				else{
-					echo "WARNING: error in reservation : <br/>";
-					print_r($data);
-				}
+		$monthIds = array();
+		$i = 0;
+		for ($y = $year_start ; $y <= $year_end ; $y++){
+			// start month
+			$start_month = 1;
+			if ($y == $year_start){
+				$start_month = $month_start;
 			}
-			
-			$timeTotal += $timeResa;
-			$graph[$i]=$timeResa;
+			// end month
+			$stop_month = 12;
+			if ($y == $year_end){
+				$stop_month = $month_end;
+			}
+			for ($m = $start_month ; $m <= $stop_month ; $m++){
+				$dstart= mktime(0,0,0,$m,1,$y); // Le premier jour du mois en cours
+				$dend= mktime(0,0,0,$m+1,1,$y); // Le 0eme jour du mois suivant == le dernier jour du mois en cour
+				
+				//$q = array('start'=>$dstart, 'end'=>$dend);
+				$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >= '.$dstart.' AND start_time <= '.$dend.' ORDER BY id';
+				$req = $this->runRequest($sql);
+				$datas = $req->fetchAll();
+					
+				$timeResa = 0;
+				foreach ($datas as $data){
+					if ($data["end_time"] - $data["start_time"] >= 0){
+						$timeResa += (float)($data["end_time"] - $data["start_time"]) / (float)3600;
+					}
+					else{
+						echo "WARNING: error in reservation : <br/>";
+						print_r($data);
+					}
+				}
+				$i++;
+				$timeTotal += $timeResa;
+				$graph[$i]=$timeResa;
+				$monthIds[$i] = $m;
+			}
 		}
 	
-		$graphData = array('timeTotal' => $timeTotal, 'graph' => $graph);
+		$graphData = array('timeTotal' => $timeTotal, 'graph' => $graph, 'monthIds' => $monthIds);
 		return $graphData;
 	}
 	
@@ -79,8 +111,8 @@ class SyGraph extends Model {
 	 * @param number $year
 	 * @return unknown
 	 */
-	public function getCamembertArray($year){
-		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
+	public function getCamembertArray($month_start, $year_start, $month_end, $year_end){
+		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,0,$year_end).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
 		$numMachinesFormesTotal = $req->rowCount();
 		$machinesFormesListe = $req->fetchAll();
@@ -89,7 +121,7 @@ class SyGraph extends Model {
 		$i = -1;
 		foreach($machinesFormesListe as $mFL) {
 			$i++;
-			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
+			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,1,$year_end).' AND resource_id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);
 			$numMachinesFormes[$i][0] = $mFL[0];
 			$numMachinesFormes[$i][1] = $req->rowCount();
@@ -113,8 +145,8 @@ class SyGraph extends Model {
 	 * @param unknown $year
 	 * @return unknown
 	 */
-	public function getCamembertTimeArray($year){
-		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
+	public function getCamembertTimeArray($month_start, $year_start, $month_end, $year_end){
+		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,0,$year_end).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
 		$numMachinesFormesTotal = $req->rowCount();
 		$machinesFormesListe = $req->fetchAll();
@@ -122,7 +154,7 @@ class SyGraph extends Model {
 		$i=-1;
 		foreach($machinesFormesListe as $mFL) {
 			$i++;
-			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
+			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,1,$year_end).' AND resource_id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);
 				
 			$resas = $req->fetchAll();
@@ -152,8 +184,8 @@ class SyGraph extends Model {
 	 * @param unknown $numTotal
 	 * @return string
 	 */
-	public function getCamembertContent($year, $numTotal){
-		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
+	public function getCamembertContent($month_start, $year_start, $month_end, $year_end, $numTotal){
+		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,0,$year_end).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
 		$numMachinesFormesTotal = $req->rowCount();
 		$machinesFormesListe = $req->fetchAll();
@@ -173,7 +205,7 @@ class SyGraph extends Model {
 		);
 	
 		foreach($machinesFormesListe as $mFL) {
-			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
+			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,1,$year_end).' AND resource_id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);
 			$numMachinesFormes[$i][0] = $mFL[0];
 			$numMachinesFormes[$i][1] = $req->rowCount();
@@ -233,8 +265,8 @@ class SyGraph extends Model {
 	 * @param unknown $numTotal
 	 * @return string
 	 */
-	public function getCamembertTimeContent($year, $numTotal){
-		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,0,$year+1).' ORDER by resource_id';
+	public function getCamembertTimeContent($month_start, $year_start, $month_end, $year_end, $numTotal){
+		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,0,$year_end).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
 		$numMachinesFormesTotal = $req->rowCount();
 		$machinesFormesListe = $req->fetchAll();
@@ -253,7 +285,7 @@ class SyGraph extends Model {
 				         "#FC441D","#FE8D11","#FCC212","#FFFD32","#D0E92B","#53D745","#6AC720","#156947","#291D81","#804DA4","#E4AADF","#A7194B","#FE0000"
 		);
 		foreach($machinesFormesListe as $mFL) {
-			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,1,1,$year).' AND end_time <='.mktime(0,0,0,1,1,$year+1).' AND resource_id ="'.$mFL[0].'"';
+			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,1,$year_end).' AND resource_id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);
 			$numMachinesFormes[$i][0] = $mFL[0];
 			

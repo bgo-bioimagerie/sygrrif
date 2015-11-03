@@ -244,24 +244,31 @@ class ControllerSygrrif extends ControllerBooking {
 			return;
 		}
 		
-		$year = $this->request->getParameter ( "year" );
+		$month_start = $this->request->getParameter ( "month_start" );
+		$year_start = $this->request->getParameter ( "year_start" );
+		$month_end = $this->request->getParameter ( "month_end" );
+		$year_end = $this->request->getParameter ( "year_end" );
 		$export_type = $this->request->getParameter ( "export_type" );
 		
 		$modelGraph = new SyGraph();
-		$graphArray = $modelGraph->getYearNumResGraph($year);
-		$graphTimeArray = $modelGraph->getYearNumHoursResGraph($year);
+		$graphArray = $modelGraph->getYearNumResGraph($month_start, $year_start, $month_end, $year_end);
+		$graphTimeArray = $modelGraph->getYearNumHoursResGraph($month_start, $year_start, $month_end, $year_end);
 		
 		if($export_type == 1){
 			
-			$camembertContent = $modelGraph->getCamembertContent($year, $graphArray['numTotal']);
-			$camembertTimeContent = $modelGraph->getCamembertTimeContent($year, $graphTimeArray['timeTotal']);
+			$camembertContent = $modelGraph->getCamembertContent($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
+			$camembertTimeContent = $modelGraph->getCamembertTimeContent($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
 			
 			$navBar = $this->navBar();
 			$this->generateView ( array (
 					'navBar' => $navBar,
-					'annee' => $year,
+					'month_start' => $month_start,
+					'year_start' => $year_start,
+					'month_end' => $month_end,
+					'year_end' => $year_end,
 					'numTotal' => $graphArray['numTotal'],
 			        'graph' => $graphArray['graph'],
+					'graph_month' => $graphArray['monthIds'],
 					'graphTimeArray' => $graphTimeArray,
 					'camembertContent' => $camembertContent,
 					'camembertTimeContent' => $camembertTimeContent
@@ -269,8 +276,8 @@ class ControllerSygrrif extends ControllerBooking {
 		}
 		else{
 			
-			$camembertCount = $modelGraph->getCamembertArray($year);
-			$camembertTimeCount = $modelGraph->getCamembertTimeArray($year);
+			$camembertCount = $modelGraph->getCamembertArray($month_start, $year_start, $month_end, $year_end);
+			$camembertTimeCount = $modelGraph->getCamembertTimeArray($month_start, $year_start, $month_end, $year_end);
 			
 			header("Content-Type: application/csv-tab-delimited-table");
 			header("Content-disposition: filename=rapport.csv");
