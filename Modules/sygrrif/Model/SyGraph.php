@@ -444,7 +444,6 @@ class SyGraph extends Model {
 			$test .= '<text x="615" y="'.(90+40*$i).'" font-size="25" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$timeResa.'</text>';
 			$test .= '</g>';
 			
-			
 			$departX = $arriveeX;
 			$departY = $arriveeY;
 		}

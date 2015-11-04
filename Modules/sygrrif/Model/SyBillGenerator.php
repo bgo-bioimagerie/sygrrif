@@ -659,7 +659,7 @@ class SyBillGenerator extends Model {
 		$nom = $unitName . '_' . $responsibleFullName . "_" . date("d-m-Y", $searchDate_start) . "_" . date("d-m-Y", $searchDate_end-3600) ."_facture_sygrrif.xls";
 		
 		header_remove();
-		ob_clean();
+		//ob_clean();
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename="'.$nom.'"');
 		header('Cache-Control: max-age=0');
