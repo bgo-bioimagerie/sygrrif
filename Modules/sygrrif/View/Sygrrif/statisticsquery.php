@@ -242,7 +242,7 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		<h3> <?php echo  SyTranslator::Booking_time_year($lang) ?> </h3>
 		<?php
 			$heighFig = $resourcesNumber*35;
-			$camembert2 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 600" width="600" height="'.$heighFig.'" font-family="Verdana">';
+			$camembert2 = '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 800" width="600" height="'.$heighFig.'" font-family="Verdana">';
 			$camembert2 .= '<title> </title>';
 			$camembert2 .= '<desc></desc>';
 			$camembert2 .= $camembertTimeContent;		

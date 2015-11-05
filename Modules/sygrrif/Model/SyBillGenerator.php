@@ -664,7 +664,6 @@ class SyBillGenerator extends Model {
 		header('Content-Disposition: attachment;filename="'.$nom.'"');
 		header('Cache-Control: max-age=0');
 		$objWriter->save('php://output');
-		
 	}
 	
 	protected function calculateBillNumber($objPHPExcel){
