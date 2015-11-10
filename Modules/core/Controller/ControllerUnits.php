@@ -12,6 +12,18 @@ require_once 'Modules/core/Model/Unit.php';
 class ControllerUnits extends ControllerSecureNav {
 	
 	/**
+	 * Check if the user have the right to view SyGRRif pages
+	 * @return boolean
+	 */
+	private function secureCheck(){
+		if ( $_SESSION["user_status"] < 3){
+			echo "Permission denied ";
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * User model object
 	 */
 	private $unitModel;
@@ -28,6 +40,11 @@ class ControllerUnits extends ControllerSecureNav {
 	 * @see Controller::index()
 	 */
 	public function index() {
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar ();
 		
 		// get sort action
@@ -48,6 +65,11 @@ class ControllerUnits extends ControllerSecureNav {
 	 * Edit an unit form
 	 */
 	public function edit() {
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar ();
 		
 		// get user id
@@ -70,6 +92,11 @@ class ControllerUnits extends ControllerSecureNav {
 	 * Add a unit form
 	 */
 	public function add() {
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar ();
 		
 		$this->generateView ( array (
@@ -80,6 +107,10 @@ class ControllerUnits extends ControllerSecureNav {
 	 * Add a unit query to datbase
 	 */
 	public function addquery() {
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		// get form variables
 		$name = $this->request->getParameter ( "name" );
@@ -94,6 +125,11 @@ class ControllerUnits extends ControllerSecureNav {
 	 * Edit an unit to database
 	 */
 	public function editquery() {
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar ();
 		
 		// get form variables
@@ -112,6 +148,10 @@ class ControllerUnits extends ControllerSecureNav {
 	 */
 	public function delete(){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$unitId = 0;
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$unitId = $this->request->getParameter("actionid");
@@ -133,6 +173,10 @@ class ControllerUnits extends ControllerSecureNav {
 	 */
 	public function deletequery(){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$unitId = $this->request->getParameter("id");
 		$user = $this->unitModel->delete($unitId);
 	

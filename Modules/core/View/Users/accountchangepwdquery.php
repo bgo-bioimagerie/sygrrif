@@ -33,7 +33,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<?php } ?>
 		</div>
 		<div class="col-md-1 col-md-offset-10">
-			<button onclick="location.href='users'" class="btn btn-success" id="navlink"><?php echo  CoreTranslator::Ok($lang) ?></button>
+			<button onclick="location.href='home'" class="btn btn-success" id="navlink"><?php echo  CoreTranslator::Ok($lang) ?></button>
 		</div>
 		
      </div>

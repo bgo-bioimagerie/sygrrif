@@ -16,6 +16,18 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 class ControllerUsers extends ControllerSecureNav {
 	
 	/**
+	 * Check if the user have the right to view SyGRRif pages
+	 * @return boolean
+	 */
+	private function secureCheck(){
+		if ( $_SESSION["user_status"] < 3){
+			echo "Permission denied ";
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * User model object
 	 */
 	private $userModel;
@@ -33,6 +45,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 * @see Controller::index()
 	 */
 	public function index() {
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		// get sort action
 		$sortentry = "id";
@@ -66,6 +82,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function unactiveusers() {
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 	
 		// get sort action
@@ -87,6 +107,11 @@ class ControllerUsers extends ControllerSecureNav {
 	 * Add a new user form
 	 */
 	public function add(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		
 		// Lists for the form
@@ -120,6 +145,11 @@ class ControllerUsers extends ControllerSecureNav {
 	 * Add a new user query to database
 	 */
 	public function addquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$name = $this->request->getParameter ( "name");
 		$firstname = $this->request->getParameter ( "firstname");
 		$login = $this->request->getParameter ( "login");
@@ -187,6 +217,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function edit(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		
 		// get user id
@@ -227,6 +261,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 * Edit a user query to database
 	 */
 	public function editquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		// get form variables
 		$id = $this->request->getParameter ( "id");
@@ -288,6 +326,11 @@ class ControllerUsers extends ControllerSecureNav {
 	 * Change password form
 	 */
 	public function changepwd(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$userId = 0;
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$userId = $this->request->getParameter("actionid");
@@ -307,6 +350,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 * @throws Exception
 	 */
 	public function changepwdquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		$id = $this->request->getParameter ( "id");
 		$login = $this->request->getParameter ( "login");
@@ -338,6 +385,11 @@ class ControllerUsers extends ControllerSecureNav {
 	 * User form to edit his own informations
 	 */
 	public function manageaccount(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$navBar = $this->navBar();
 		
 		// get user id
@@ -377,6 +429,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function manageaccountquery(){
 
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// get form variables
 		$id = $this->request->getParameter ( "id");
 		$login = $this->request->getParameter ( "login");
@@ -407,6 +463,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 * @throws Exception
 	 */
 	public function accountchangepwdquery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		$id = $this->request->getParameter ( "id");
 		$login = $this->request->getParameter ( "login");
@@ -451,6 +511,11 @@ class ControllerUsers extends ControllerSecureNav {
 	 * Activate a user
 	 */
 	public function activate(){
+		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$userId = 0;
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$userId = $this->request->getParameter("actionid");
@@ -468,6 +533,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function exportresponsable(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		// generate view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -480,6 +549,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function exportresponsablequery(){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$idType = $this->request->getParameterNoException("id_type");
 		
 		//echo "idType = " . $idType . "<br/>";
@@ -494,6 +567,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function searchquery($sortentry = "id"){
 	
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$lang = "En";
 		if (isset($_SESSION["user_settings"]["language"])){
 			$lang = $_SESSION["user_settings"]["language"];
@@ -542,6 +619,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function delete(){
 		
+		if($this->secureCheck()){
+			return;
+		}
+		
 		$userId = 0;
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$userId = $this->request->getParameter("actionid");
@@ -562,6 +643,10 @@ class ControllerUsers extends ControllerSecureNav {
 	 * Query to delete a user
 	 */
 	public function deletequery(){
+		
+		if($this->secureCheck()){
+			return;
+		}
 		
 		$userId = $this->request->getParameter("id");
 		
