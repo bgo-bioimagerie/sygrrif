@@ -39,9 +39,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			
 			foreach ($calEntries as $calEntry){
 				
-				if($h == $day_begin &&  $calEntry['start_time']<=$caseTimeBegin){
+				if($h == $day_begin &&  $calEntry['start_time']<$caseTimeBegin){
 				
-					if ( $calEntry['end_time'] >= $caseTimeBegin && $calEntry['start_time'] < $caseTimeBegin){
+					if ( $calEntry['end_time'] >= $caseTimeBegin){
 				
 						$foundStartEntry = true;
 						$blocNumber = ($calEntry['end_time'] - $caseTimeBegin)/($caseTimeLength);
@@ -309,7 +309,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			$foundStartEntry = false;
 			foreach ($calEntries as $calEntry){
 				
-				if($h == $day_begin &&  $calEntry['start_time']<=$caseTimeBegin){
+				if($h == $day_begin &&  $calEntry['start_time']<$caseTimeBegin){
 					
 					if ( $calEntry['end_time'] >= $caseTimeBegin ){
 						
@@ -321,7 +321,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$blocNumber = $leftBlocks;
 						}
 						$leftBlocks -= $blocNumber;
-						$lineColorId -= $blocNumber;
+						$lineColorId += $blocNumber;
 							
 						$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 						
@@ -361,7 +361,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$blocNumber = $leftBlocks;
 					}
 					$leftBlocks -= $blocNumber;
-					$lineColorId -= $blocNumber;
+					$lineColorId += $blocNumber;
 					
 					$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 						

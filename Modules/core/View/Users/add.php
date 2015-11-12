@@ -17,7 +17,7 @@
 			</h1> 
 		</div> 
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name" 
@@ -25,7 +25,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Firstname($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
@@ -33,7 +33,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="login" class="control-label col-xs-2"><?php echo  CoreTranslator::Login($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="login" type="text" name="login"
@@ -41,7 +41,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="pwd" class="control-label col-xs-2"><?php echo  CoreTranslator::Password($lang) ?></label>
 			<div class="col-xs-4">
 				<input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password">
@@ -52,7 +52,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Email($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
@@ -60,7 +60,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Phone($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
@@ -68,7 +68,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="unit">
@@ -82,7 +82,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="responsible">   
@@ -101,7 +101,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"></label>
 			<div class="col-xs-10">
 			  <div class="checkbox">
@@ -112,7 +112,7 @@
 			</div>
 		</div>
 		<br/>
-		<div class="form-group">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="status">
@@ -144,7 +144,7 @@
 		</div>
 		 -->
 		<br/>
-		<div class="form-group ">
+		<div class="form-group col-xs-12">
 		
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_convention($lang) ?></label>
 			<div class="col-xs-10">
@@ -157,7 +157,7 @@
 		    </div>
 		</div>
 		<br/>
-		<div class="form-group ">
+		<div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_end_contract($lang) ?></label>
 				<div class="col-xs-10">
 					<div class='input-group date form_date_<?php echo  $lang ?>' id='datetimepicker6'>

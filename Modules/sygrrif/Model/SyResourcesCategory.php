@@ -40,6 +40,14 @@ class SyResourcesCategory extends Model {
 		return $user->fetchAll();
 	}
 	
+	public function categoriesNumber($sortentry = 'id'){
+			
+		$sql = "select * from sy_resourcescategory";
+		$user = $this->runRequest($sql);
+		return $user->rowCount();
+	}
+	
+	
 	/**
 	 * get the names of all the resources categories
 	 *

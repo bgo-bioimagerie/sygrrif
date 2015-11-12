@@ -130,20 +130,20 @@
 
 				if (($pnight == "1") AND ($pwe== "0")){
 					?>
-					<td><? SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
+					<td><?php echo SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
 					<td></td>
 					<?php
 				}
 				else if (($pnight == "0") AND ($pwe == "1")){
 					?>
-					<td><? SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
+					<td><?php echo SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
 					<td></td>
 					<?php
 				}
 				else if (($pnight == "1") AND ($pwe == "1")){
 					?>
-					<td><? SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
-					<td><? SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
+					<td><?php echo SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
+					<td><?php echo SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
 				    <?php
 				}
 				?>
@@ -154,7 +154,7 @@
 			$count = 0;
 			foreach ($resource_info['supplynames'] as $supplyName){
 			?>
-				<td><input id="tarif" type="text" class="text-center" name="<?php echo  $pid. "_" . $count ?>" value="<?php echo  $suppliesPrices[$count] ?>"/> € (H.T.)</td>	
+				<td>.<input id="tarif" type="text" class="text-center" name="<?php echo  $pid. "_" . $count ?>" value="<?php if (isset( $suppliesPrices[$count])){ echo  $suppliesPrices[$count];} ?>"/> € (H.T.)</td>	
 			<?php
 			$count++;
 			}
