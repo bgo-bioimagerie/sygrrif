@@ -25,16 +25,9 @@ class SyTranslator {
 		}
 		return "Areas";
 	}
-<<<<<<< HEAD
-	
 	public static function Resource_categories($lang = ""){
 		if ($lang == "Fr"){
 			return "Catégories de ressources";
-=======
-	public static function Resource_categories($lang = "") {
-		if ($lang == "Fr") {
-			return "Catégories ressources";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Resource categories";
 	}
@@ -116,16 +109,9 @@ class SyTranslator {
 		}
 		return "Export";
 	}
-<<<<<<< HEAD
-	
 	public static function Statistics_Resources($lang = ""){
 		if ($lang == "Fr"){
 			return "Statistiques de réservation";
-=======
-	public static function Statistics_Resources($lang = "") {
-		if ($lang == "Fr") {
-			return "Statistiques réservations";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Booking statistics";
 	}
@@ -135,8 +121,6 @@ class SyTranslator {
 		}
 		return "Bill/Responsible";
 	}
-<<<<<<< HEAD
-	
 	public static function Bills_manager($lang = ""){
 		if ($lang == "Fr"){
 			return "Historique de facturation";
@@ -147,30 +131,12 @@ class SyTranslator {
 	public static function Statistics_users($lang = ""){
 		if ($lang == "Fr"){
 			return "Statistiques des utilisateurs";
-=======
-	public static function Bills_manager($lang = "") {
-		if ($lang == "Fr") {
-			return "Gestionnaire de factures";
-		}
-		return "Bills manager";
-	}
-	public static function Statistics_users($lang = "") {
-		if ($lang == "Fr") {
-			return "Statistiques utilisateurs";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Users statistics";
 	}
-<<<<<<< HEAD
-	
 	public static function Statistics_authorizations($lang = ""){
 		if ($lang == "Fr"){
 			return "Statistiques des autorisations";
-=======
-	public static function Statistics_authorizations($lang = "") {
-		if ($lang == "Fr") {
-			return "Statistiques autorisations";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Authorizations statistics";
 	}
@@ -216,16 +182,9 @@ class SyTranslator {
 		}
 		return "Reservation number";
 	}
-<<<<<<< HEAD
-	
 	public static function Reservation_time($lang){
 		if ($lang == "Fr"){
 			return "Temps de réservation";
-=======
-	public static function Reservation_time($lang) {
-		if ($lang == "Fr") {
-			return "Temps de réservations";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Reservation time";
 	}
@@ -289,16 +248,9 @@ class SyTranslator {
 		}
 		return "Edit series";
 	}
-<<<<<<< HEAD
-	
 	public static function Edit_series_subtitle($lang = ""){
 		if ($lang == "Fr"){
 			return "Cela modifie l'ensemble des réservations de la périodicité";
-=======
-	public static function Edit_series_subtitle($lang = "") {
-		if ($lang == "Fr") {
-			return "Cela modifie l'ensemble des réservations du la périodicité";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "This will affect all the reservations of the series";
 	}
@@ -326,16 +278,9 @@ class SyTranslator {
 		}
 		return "time";
 	}
-<<<<<<< HEAD
-	
 	public static function Save($lang = ""){
 		if ($lang == "Fr"){
 			return "Enregistrer";
-=======
-	public static function Save($lang = "") {
-		if ($lang == "Fr") {
-			return "Ok";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Save";
 	}
@@ -345,16 +290,9 @@ class SyTranslator {
 		}
 		return "Cancel";
 	}
-<<<<<<< HEAD
-	
 	public static function Calendar_Default_view($lang = ""){
 		if ($lang == "Fr"){
 			return "Vue par défaut dans le calendrier";
-=======
-	public static function Calendar_Default_view($lang = "") {
-		if ($lang == "Fr") {
-			return "Vue par défaut du calendrier";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Calendar default view";
 	}
@@ -382,29 +320,15 @@ class SyTranslator {
 		}
 		return "Week Area";
 	}
-<<<<<<< HEAD
 	public static function Day_Area($lang = ""){
 		if ($lang == "Fr"){
 			return "Jour Domaine";
 		}
 		return "Day Area";
 	}
-	
-	
 	public static function Authorized_users($lang = ""){
 		if ($lang == "Fr"){
 			return "Listing des autorisations";
-=======
-	public static function Day_Area($lang = "") {
-		if ($lang == "Fr") {
-			return "Jour domaine";
-		}
-		return "Day Area";
-	}
-	public static function Authorized_users($lang = "") {
-		if ($lang == "Fr") {
-			return "Listing autorisations";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Authorized users list";
 	}
@@ -432,16 +356,9 @@ class SyTranslator {
 		}
 		return "Person in charge";
 	}
-<<<<<<< HEAD
-	
 	public static function User_and_Responsible($lang = ""){
 		if ($lang == "Fr"){
 			return "Utilisateur et Responsable";
-=======
-	public static function User_and_Responsible($lang = "") {
-		if ($lang == "Fr") {
-			return "Utilisateur + Responsable";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "User and Person in charge";
 	}
@@ -481,8 +398,6 @@ class SyTranslator {
 		}
 		return "reservations number";
 	}
-<<<<<<< HEAD
-	
 	public static function SyConfigAbstract($lang = ""){
 		if ($lang == "Fr"){
 			return "Le module SyGRRif permet de gérer des ressources et de
@@ -490,15 +405,6 @@ class SyTranslator {
 		}
 		return "The SyGRRif module allows to manage GRR Ressources and to
 				generate statistics and bills"; 
-=======
-	public static function SyConfigAbstract($lang = "") {
-		if ($lang == "Fr") {
-			return "Le module SyGRRif permet de gérer des ressources et des
-					générer des statistiques et des factures";
-		}
-		return "The SyGRRif module allows to manage a GRR Ressources and to
-				generate statistics and pricing";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 	}
 	public static function Edit_Bill_Informations($lang = "") {
 		if ($lang == "Fr") {
@@ -596,16 +502,9 @@ class SyTranslator {
 		}
 		return "bill";
 	}
-<<<<<<< HEAD
-	
 	public static function Add_area($lang = ""){
 		if ($lang == "Fr"){
 			return "Ajouter un Domaine";
-=======
-	public static function Add_area($lang = "") {
-		if ($lang == "Fr") {
-			return "Ajouter un domaine";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Add Area";
 	}
@@ -669,15 +568,9 @@ class SyTranslator {
 		}
 		return "Add pricing";
 	}
-<<<<<<< HEAD
 	public static function Price_night($lang = ""){
 		if ($lang == "Fr"){
 			return "Tarif de nuit";
-=======
-	public static function Price_night($lang = "") {
-		if ($lang == "Fr") {
-			return "Tarif nuit";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Night rate";
 	}
@@ -693,27 +586,15 @@ class SyTranslator {
 		}
 		return "Night end";
 	}
-<<<<<<< HEAD
 	public static function Price_weekend($lang = ""){
 		if ($lang == "Fr"){
 			return "Tarif de week-end";
-=======
-	public static function Price_weekend($lang = "") {
-		if ($lang == "Fr") {
-			return "Tarif weekend";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Week-end rate";
 	}
-<<<<<<< HEAD
 	public static function Weekend_days($lang = ""){
 		if ($lang == "Fr"){
 			return "Jours week-end";
-=======
-	public static function Weekend_days($lang = "") {
-		if ($lang == "Fr") {
-			return "Jours weekend";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Week-end days";
 	}
@@ -837,42 +718,21 @@ class SyTranslator {
 		}
 		return "Firstname";
 	}
-<<<<<<< HEAD
-	
 	public static function Select_a_resource_on_the_navigation_bar($lang){
 		if ($lang == "Fr"){
 			return "Sélectionner une ressource dans la barre de navigation";
-=======
-	public static function Select_a_resource_on_the_navigation_bar($lang) {
-		if ($lang == "Fr") {
-			return "Séléctionner une ressource dans la barre de navigation";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Select a resource in the navigation bar";
 	}
-<<<<<<< HEAD
-	
 	public static function Edit_area($lang){
 		if ($lang == "Fr"){
 			return "Modifier Domaine";
-=======
-	public static function Edit_area($lang) {
-		if ($lang == "Fr") {
-			return "Modifier domaine";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Edit Area";
 	}
-<<<<<<< HEAD
-	
 	public static function Edit_Authorization($lang){
 		if ($lang == "Fr"){
 			return "Editer une Autorisation";
-=======
-	public static function Edit_Authorization($lang) {
-		if ($lang == "Fr") {
-			return "Editer une autorisation";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Edit Authorization";
 	}
@@ -882,29 +742,15 @@ class SyTranslator {
 		}
 		return "Is active";
 	}
-<<<<<<< HEAD
-	
 	public static function Edit_Color_Code($lang){
 		if ($lang == "Fr"){
 			return "Editer un Code couleur";
-=======
-	public static function Edit_Color_Code($lang) {
-		if ($lang == "Fr") {
-			return "Editer un code couleur";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Edit Color code";
 	}
-<<<<<<< HEAD
-	
 	public static function Edit_pricing($lang){
 		if ($lang == "Fr"){
 			return "Editer un Tarif";
-=======
-	public static function Edit_pricing($lang) {
-		if ($lang == "Fr") {
-			return "Editer un tarif";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Edit Pricing";
 	}
@@ -920,16 +766,9 @@ class SyTranslator {
 		}
 		return "The pricing has been successfully modified!";
 	}
-<<<<<<< HEAD
-	
 	public static function Edit_a_resources_category($lang = ""){
 		if ($lang == "Fr"){
 			return "Editer une Catégorie de ressource";
-=======
-	public static function Edit_a_resources_category($lang = "") {
-		if ($lang == "Fr") {
-			return "Editer une catégorie de ressource";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Edit a Resource category";
 	}
@@ -969,16 +808,9 @@ class SyTranslator {
 		}
 		return "Outputs";
 	}
-<<<<<<< HEAD
-	
 	public static function view_resources_pie_chart($lang){
 		if ($lang == "Fr"){
 			return "Diagramme circulaire des autorisations par ressource";
-=======
-	public static function view_resources_pie_chart($lang) {
-		if ($lang == "Fr") {
-			return "Camembert autorisations par resources";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "View resources pie chart";
 	}
@@ -1060,16 +892,9 @@ class SyTranslator {
 		}
 		return "Number of resources";
 	}
-<<<<<<< HEAD
-	
 	public static function Nomber_of_new_user($lang){
 		if ($lang == "Fr"){
 			return "Nombre de nouveaux utilisateurs";
-=======
-	public static function Nomber_of_new_user($lang) {
-		if ($lang == "Fr") {
-			return "Nombre de nouvel utilisateurs";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Number of new user";
 	}
@@ -1091,16 +916,9 @@ class SyTranslator {
 		}
 		return "Annual review of the number of reservations for ";
 	}
-<<<<<<< HEAD
-	
 	public static function Annual_review_of_the_time_of_reservations_of($lang){
 		if ($lang == "Fr"){
 			return "Bilan annuel du temps de réservation pour ";
-=======
-	public static function Annual_review_of_the_time_of_reservations_of($lang) {
-		if ($lang == "Fr") {
-			return "Bilan annuel temps de réservations pour ";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Annual review of the time of reservations for ";
 	}
@@ -1116,16 +934,9 @@ class SyTranslator {
 		}
 		return "Feb.";
 	}
-<<<<<<< HEAD
-	
 	public static function Mar($lang){
 		if ($lang == "Fr"){
 			return "Mars";
-=======
-	public static function Mar($lang) {
-		if ($lang == "Fr") {
-			return "Mars.";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Mar.";
 	}
@@ -1137,19 +948,13 @@ class SyTranslator {
 	}
 	public static function May($lang) {
 		if ($lang == "Fr") {
-			return "Mai.";
+			return "Mai";
 		}
-		return "May.";
+		return "May";
 	}
-<<<<<<< HEAD
 	public static function Jun($lang){
 		if ($lang == "Fr"){
 			return "Juin";
-=======
-	public static function Jun($lang) {
-		if ($lang == "Fr") {
-			return "Juin.";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Jun.";
 	}
@@ -1157,18 +962,11 @@ class SyTranslator {
 		if ($lang == "Fr") {
 			return "Juil.";
 		}
-		return "July.";
+		return "Jul.";
 	}
-<<<<<<< HEAD
-	
 	public static function Aug($lang){
 		if ($lang == "Fr"){
 			return "Août";
-=======
-	public static function Aug($lang) {
-		if ($lang == "Fr") {
-			return "Août.";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Aug.";
 	}
@@ -1208,16 +1006,9 @@ class SyTranslator {
 		}
 		return "Edit Unitary Resource";
 	}
-<<<<<<< HEAD
-	
 	public static function Who_can_book($lang){
 		if ($lang == "Fr"){
 			return "Qui peut réserver ?";
-=======
-	public static function Who_can_book($lang) {
-		if ($lang == "Fr") {
-			return "Qui peut réserver";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Who can book?";
 	}
@@ -1281,15 +1072,9 @@ class SyTranslator {
 		}
 		return "The user specifies";
 	}
-<<<<<<< HEAD
 	public static function the_booking_duration($lang){
 		if ($lang == "Fr"){
 			return "La durée de la réservation";
-=======
-	public static function the_booking_duration($lang) {
-		if ($lang == "Fr") {
-			return "La durée de la réservaion";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "the booking duration";
 	}
@@ -1428,42 +1213,21 @@ class SyTranslator {
 		}
 		return "This week";
 	}
-<<<<<<< HEAD
-	
 	public static function Phone($lang){
 		if ($lang == "Fr"){
 			return "Tél.";
 		}
 		return "Phone";
 	}
-	
 	public static function Short_desc($lang){
 		if ($lang == "Fr"){
 			return "courte desc.";
-=======
-	public static function Phone($lang) {
-		if ($lang == "Fr") {
-			return "Tel";
-		}
-		return "Phone";
-	}
-	public static function Short_desc($lang) {
-		if ($lang == "Fr") {
-			return "courte desc";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Short desc.";
 	}
-<<<<<<< HEAD
-	
 	public static function Desc($lang){
 		if ($lang == "Fr"){
 			return "Desc.";
-=======
-	public static function Desc($lang) {
-		if ($lang == "Fr") {
-			return "Desc";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Desc.";
 	}
@@ -1479,16 +1243,9 @@ class SyTranslator {
 		}
 		return "to";
 	}
-<<<<<<< HEAD
-	
 	public static function Booking_time_year($lang){
 		if ($lang == "Fr"){
 			return "Nombre d'heures de réservation par ressource dans l'année";
-=======
-	public static function Booking_time_year($lang) {
-		if ($lang == "Fr") {
-			return "Nombre d'heures de réservation par ressources dans la période";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Time (in hours) of reservations for each resource during the given period";
 	}
@@ -1498,35 +1255,21 @@ class SyTranslator {
 		}
 		return "Time (in hours) of reservations for each resource category during the given period";
 	}
-	public static function Booking_number_year($lang) {
-		if ($lang == "Fr") {
-			return "Nombre de réservations par ressources dans la période";
-		}
-		return "Number of reservations for each resource during the given period";
-	}
-	
-<<<<<<< HEAD
 	public static function Booking_number_year($lang){
 		if ($lang == "Fr"){
 			return "Nombre de réservations par ressource dans l'année";
-=======
+		}
+		return "Number of reservations during the year";
+	}
 	public static function Booking_number_year_category($lang) {
 		if ($lang == "Fr") {
 			return "Nombre de réservations par catégorie de ressources dans la période";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "Number of reservations for each resource category during the given period";
 	}
-	
-<<<<<<< HEAD
 	public static function email($lang){
 		if ($lang == "Fr"){
 			return "courriel";
-=======
-	public static function email($lang) {
-		if ($lang == "Fr") {
-			return "couriel";
->>>>>>> 489f02a024e602b822b306a931c7340b71558b46
 		}
 		return "email";
 	}
