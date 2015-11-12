@@ -956,13 +956,13 @@ class SyTranslator {
 		if ($lang == "Fr"){
 			return "Juin";
 		}
-		return "Jun.";
+		return "June";
 	}
 	public static function July($lang) {
 		if ($lang == "Fr") {
 			return "Juil.";
 		}
-		return "Jul.";
+		return "July";
 	}
 	public static function Aug($lang){
 		if ($lang == "Fr"){
