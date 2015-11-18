@@ -359,7 +359,11 @@ $dayWidth = 100/8;
 	?>
 </div>
 </div>
+<div class="col-xs-12">
 
+<?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
+
+</div>
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
 <?php endif; ?>

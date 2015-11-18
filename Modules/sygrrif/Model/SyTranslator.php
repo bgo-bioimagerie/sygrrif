@@ -219,9 +219,9 @@ class SyTranslator {
 	}
 	public static function Duration($lang = "") {
 		if ($lang == "Fr") {
-			return "Durée (en minutes)";
+			return "Durée";
 		}
-		return "Duration (in minutes)";
+		return "Duration";
 	}
 	public static function Minutes($lang = "") {
 		if ($lang == "Fr") {
