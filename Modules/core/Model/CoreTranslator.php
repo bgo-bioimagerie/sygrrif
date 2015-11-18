@@ -94,7 +94,7 @@ class CoreTranslator {
 				return "consommables";
 			}
 			if($item == "sprojects"){
-				return "projet";
+				return "projets";
 			}
 		}
 		return $item;
@@ -102,14 +102,14 @@ class CoreTranslator {
 	
 	public static function Change_password($lang = ""){
 		if ($lang == "Fr"){
-			return "Modifier mot de passe";
+			return "Modifier le mot de passe";
 		}
 		return "Change password";
 	}
 	
 	public static function Unable_to_change_the_password($lang){
 		if ($lang == "Fr"){
-			return "Impossible de modifier mot de passe";
+			return "Impossible de modifier le mot de passe";
 		}
 		return "Unable to change the password";
 	}
@@ -118,7 +118,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Le mot de passe a été mis à jour";
 		}
-		return "The password has been successfully updated !";
+		return "The password has been successfully updated!";
 	}
 	
 	public static function Ok($lang){
@@ -166,7 +166,7 @@ class CoreTranslator {
 	}
 	public static function Email($lang){
 		if ($lang == "Fr"){
-			return "Couriel";
+			return "Courriel";
 		}
 		return "Email";
 	}
@@ -180,13 +180,13 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Responsable";
 		}
-		return "Responsible";
+		return "Person in charge";
 	}
 	public static function is_responsible($lang){
 		if ($lang == "Fr"){
 			return "est responsable";
 		}
-		return "is responsible";
+		return "is in charge";
 	}
 	public static function Status($lang){
 		if ($lang == "Fr"){
@@ -236,7 +236,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "L'utilisateur a été ajouté !";
 		}
-		return "The user had been successfully added !";
+		return "The user had been successfully added!";
 	}
 	
 	public static function for_user($lang){
@@ -285,7 +285,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "L'utilisateur a été mis à jour";
 		}
-		return "The user had been successfully updated";
+		return "The user has been successfully updated";
 	}
 	
 	public static function User_from($lang){
@@ -320,7 +320,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Mot de passe actuel";
 		}
-		return "Curent password";
+		return "Current password";
 	}
 	
 	public static function New_password($lang){
@@ -334,14 +334,14 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Impossible de mettre à jour le compte !";
 		}
-		return "Unable to update the account !";
+		return "Unable to update the account!";
 	}
 	
 	public static function  The_account_has_been_successfully_updated($lang){
 		if ($lang == "Fr"){
 			return "Le compte a été mis à jour !";
 		}
-		return "The account has been successfully updated !";
+		return "The account has been successfully updated!";
 	}
 	
 	public static function Users_Institutions($lang){
@@ -376,7 +376,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Utilisateurs inactifs";
 		}
-		return "Unactive_Users";
+		return "Inactive Users";
 	}
 	
 	public static function Address($lang = ""){
@@ -514,8 +514,8 @@ class CoreTranslator {
 	
 	public static function CoreConfigAbstract($lang){
 		if ($lang == "Fr"){
-			return "Le module Core permet de gérer les parametres de 
-					l'application et la base de donnée utilisateurs";
+			return "Le module Core permet de gérer les paramètres de 
+					l'application et la base de données utilisateurs";
 		}
 		return "The Core module allows to manage the application
 				settings and a user database";
@@ -537,8 +537,8 @@ class CoreTranslator {
 	
 	public static function Install_Txt($lang = ""){
 		if ($lang == "Fr"){
-			return "Cliquer sur \"Installer\" pour installer ou réparer la base de donnée de Core. 
-					Cela crée les tables qui n'existent pas";
+			return "Cliquer sur \"Installer\" pour installer ou réparer la base de données de Core. 
+					Cela créera les tables qui n'existent pas";
 		}
 		return "To repair the Core mudule, click \"Install\". This will create the
 				Core tables in the database if they don't exists ";
@@ -548,52 +548,52 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Activer/désactiver les menus";
 		}
-		return "Activate/desactivate menus";
+		return "Activate/deactivate menus";
 	}
 	
 	public static function disable($lang = ""){
 		if ($lang == "Fr"){
 			return "désactivé";
 		}
-		return "disable";
+		return "disabled";
 	}
 	public static function enable_for_visitors($lang = ""){
 		if ($lang == "Fr"){
 			return "activé pour les visiteurs";
 		}
-		return "enable for visitors";
+		return "enabled for visitors";
 	}
 	public static function enable_for_users($lang = ""){
 		if ($lang == "Fr"){
 			return "activé pour les utlisateurs";
 		}
-		return "enable for users";
+		return "enabled for users";
 	}
 	public static function enable_for_manager($lang = ""){
 		if ($lang == "Fr"){
 			return "activé pour les gestionaires";
 		}
-		return "enable for manager";
+		return "enabled for manager";
 	}
 	public static function enable_for_admin($lang = ""){
 		if ($lang == "Fr"){
 			return "activé pour les administrateurs";
 		}
-		return "enable for admin";
+		return "enabled for admin";
 	}
 	
 	public static function non_active_users($lang = ""){
 		if ($lang == "Fr"){
 			return "Désactivation des utilisateurs";
 		}
-		return "non-active users";
+		return "Deactivate users";
 	}
 	
 	public static function Disable_user_account_when($lang = ""){
 		if ($lang == "Fr"){
 			return "désactiver un compte utilisateur lorsque";
 		}
-		return "Disable user account when";
+		return "Deactivate user account when";
 	}
 	
 	public static function never($lang = ""){
@@ -618,9 +618,9 @@ class CoreTranslator {
 			return "ne s'est pas connecté depuis ".$n." année";
 		}
 		if ($n > 1){
-			return "does not login for ".$n." years ";
+			return "did not connect since ".$n." years ";
 		}
-		return "does not login for ".$n." year ";
+		return "did not connect since ".$n." year ";
 	}
 	
 	public static function Backup($lang = ""){
@@ -669,7 +669,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Exporter Responsables";
 		}
-		return "Export Responsibles";
+		return "Export Persons in charge";
 	}
 	
 	public static function All($lang){
@@ -690,7 +690,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Inactifs";
 		}
-		return "unactive";
+		return "Inactive";
 	}
 	
 	public static function Search($lang){
@@ -702,21 +702,21 @@ class CoreTranslator {
 	
 	public static function Delete_User($lang){
 		if ($lang == "Fr"){
-			return "Suprimer utilisateur";
+			return "Supprimer utilisateur";
 		}
 		return "Delete user";
 	}
 	
 	public static function Delete_Unit($lang){
 		if ($lang == "Fr"){
-			return "Suprimer unité";
+			return "Supprimer unité";
 		}
 		return "Delete unit";
 	}
 	
 	public static function Delete($lang){
 		if ($lang == "Fr"){
-			return "Suprimer";
+			return "Supprimer";
 		}
 		return "Delete";
 	}
@@ -725,25 +725,25 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Êtes-vous sûr de vouloir supprimer définitivement l'utilisateur: " . $userName . " ?" . 
 				   "<br> Attention: Cela supprimera uniquement l'utilisateur de la base de données. Toute référence faite
-				    à cet utilisateur dans un autre module sera corrompu.";
+				    à cet utilisateur dans un autre module sera corrompue.";
 		}
 		return "Delete user: " . $userName . " ?" .
-		       "<br> Warning: This will remove the user of the database. Any reference to this user in another module will be corrupted";
+		       "<br> Warning: This will remove the user from the database. Any reference to this user in another module will be corrupted";
 	}
 	
 	public static function Delete_Unit_Warning($lang, $unitName){
 		if ($lang == "Fr"){
 			return "Êtes-vous sûr de vouloir supprimer définitivement l'unité: " . $unitName . " ?" .
 					"<br> Attention: Cela supprimera uniquement l'unité de la base de données. Toute référence faite
-				    à cet unité dans un autre module sera corrompu.";
+				    à cet unité dans un autre module sera corrompue.";
 		}
 		return "Delete unit: " . $unitName . " ?" .
-				"<br> Warning: This will remove the unit of the database. Any reference to this unit in another module will be corrupted";
+				"<br> Warning: This will remove the unit from the database. Any reference to this unit in another module will be corrupted";
 	}
 	
 	public static function The_user_has_been_deleted($lang){
 		if ($lang == "Fr"){
-			return "L'utilisateur a été suprimé";
+			return "L'utilisateur a été supprimé";
 		}
 		return "The user has been deleted";
 	}
@@ -786,7 +786,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Statut par défaut d'un nouvel utilisateur";
 		}
-		return "user default status";
+		return "User default status";
 	}
 	
 
@@ -794,28 +794,28 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Attribut LDAP nom";
 		}
-		return "LDAP attribut name";
+		return "LDAP attribute name";
 	}
 	
 	public static function ldapFirstname($lang){
 		if ($lang == "Fr"){
 			return "Attribut LDAP prénom";
 		}
-		return "LDAP attribut firstname";
+		return "LDAP attribute firstname";
 	}
 	
 	public static function ldapMail($lang){
 		if ($lang == "Fr"){
 			return "Attribut LDAP email";
 		}
-		return "LDAP attribut email";
+		return "LDAP attribute email";
 	}
 	
 	public static function ldapSearch($lang){
 		if ($lang == "Fr"){
 			return "Attribut LDAP attribut de recherche";
 		}
-		return "LDAP attribut for user search";
+		return "LDAP attribute for user search";
 	}
 	
 	
@@ -830,7 +830,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Adresse du LDAP";
 		}
-		return "LDAP adress";
+		return "LDAP address";
 	}
 	
 	
@@ -843,14 +843,14 @@ class CoreTranslator {
 	
 	public static function ldapId($lang){
 		if ($lang == "Fr"){
-			return "identifiant connexion (si anonyme pas autorisé)";
+			return "Identifiant de connexion (si anonyme non autorisé)";
 		}
 		return "Connection ID (if anonymous impossible)";
 	}
 
 	public static function ldapPwd($lang){
 		if ($lang == "Fr"){
-			return "Mot de passe connexion (si anonyme pas autorisé)";
+			return "Mot de passe connexion (si anonyme non autorisé)";
 		}
 		return "Connection password (if anonymous impossible)";
 	}
