@@ -155,7 +155,6 @@ $dayWidth = 100/8;
 	</div>
 </div>	
 
-
 <div class="row seven-cols">
 <div class="row-same-height">
 	<?php

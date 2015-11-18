@@ -37,7 +37,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				}	
 				?>
 			
-				<li><a href="<?php echo  $refHome ?>"><?php echo  CoreTranslator::Home($lang) ?></a></li>
+				<li><a href="<?php echo $refHome ?>"><?php echo  CoreTranslator::Home($lang) ?></a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo  CoreTranslator::Tools($lang) ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
