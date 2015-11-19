@@ -99,7 +99,7 @@ class SyAuthorization extends Model {
 	public function setActive($id, $active){
 		$sql = "update sy_authorization set is_active=? where id=?";
 		$this->runRequest ( $sql, array (
-				$is_active,
+				$active,
 				$id
 		) );
 	}  
@@ -273,6 +273,16 @@ class SyAuthorization extends Model {
 	}
 	
 	/**
+	 * get user authorizations
+	 * @param integer $userID User ID
+	 */
+	public function getUserAuthorizations($userID){
+		$sql = "SELECT * from sy_authorization where user_id=?";
+		$auth = $this->runRequest ( $sql, array($userID) );
+		return $auth->fetchAll();
+	}
+	
+	/**
 	 * Check if a user have an authorization for a given resource
 	 * @param number $id_resource ID of the resource
 	 * @param unknown $id_user ID of the user
@@ -285,6 +295,18 @@ class SyAuthorization extends Model {
 			return true;  // get the first line of the result
 		else
 			return false;
+	}
+	
+	public function getAuthorisationID($id_resource, $id_user){
+		$sql = "SELECT id from sy_authorization where user_id=? AND resource_id=? AND is_active=1";
+		$data = $this->runRequest ( $sql, array($id_user, $id_resource) );
+		if ($data->rowCount() >= 1){
+			$d = $data->fetch();
+			return $d[0];  // get the first line of the result
+		}
+		else{
+			return 0;
+		}
 	}
 	
 	/**

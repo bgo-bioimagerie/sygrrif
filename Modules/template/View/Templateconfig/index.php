@@ -15,7 +15,7 @@ include_once 'Modules/template/Model/TeTranslator.php';
     	
     	<div class="page-header">
 			<h1>
-			<?= TeTranslator::Template_configuration($lang) ?>
+			<?php echo  TeTranslator::Template_configuration($lang) ?>
 			 <br> <small></small>
 			</h1>
 		</div>
@@ -24,7 +24,7 @@ include_once 'Modules/template/Model/TeTranslator.php';
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
-			<?= TeTranslator::Install_Repair_database($lang) ?>
+			<?php echo  TeTranslator::Install_Repair_database($lang) ?>
 				<br> <small></small>
 			</h2>
 		</div>
@@ -34,17 +34,17 @@ include_once 'Modules/template/Model/TeTranslator.php';
 		
 		<?php if (isset($installError)): ?>
         <div class="alert alert-danger" role="alert">
-    	<p><?= $installError ?></p>
+    	<p><?php echo  $installError ?></p>
     	</div>
 		<?php endif; ?>
 		<?php if (isset($installSuccess)): ?>
         <div class="alert alert-success" role="alert">
-    	<p><?= $installSuccess ?></p>
+    	<p><?php echo  $installSuccess ?></p>
     	</div>
 		<?php endif; ?>
 		
 		<p>
-		<?= TeTranslator::Install_Txt($lang) ?>
+		<?php echo  TeTranslator::Install_Txt($lang) ?>
 		</p>
 		
 		<div class="col-xs-10">
@@ -53,7 +53,7 @@ include_once 'Modules/template/Model/TeTranslator.php';
 		</div>
 
 		<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			<input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Install($lang) ?>" />
+			<input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Install($lang) ?>" />
 		</div>
       </form>   
       
@@ -61,7 +61,7 @@ include_once 'Modules/template/Model/TeTranslator.php';
       <div>
 		  <div class="page-header">
 			<h2>
-			<?= TeTranslator::Activate_desactivate_menus($lang) ?>
+			<?php echo  TeTranslator::Activate_desactivate_menus($lang) ?>
 				<br> <small></small>
 			</h2>
 		  </div>
@@ -79,14 +79,14 @@ include_once 'Modules/template/Model/TeTranslator.php';
 		    	$menuStatus = $menu["status"];
 		    ?>
 		    <div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::MenuItem($menuName, $lang) ?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::MenuItem($menuName, $lang) ?></label>
 				<div class="col-xs-6">
 					<select class="form-control" name="menus[]">
-						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::disable($lang) ?> </OPTION>
-						<OPTION value="1" <?php if($menuStatus==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::disable($lang) ?> </OPTION>
+						<OPTION value="1" <?php if($menuStatus==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 					</select>
 				</div>
 			</div>
@@ -104,5 +104,5 @@ include_once 'Modules/template/Model/TeTranslator.php';
 </div>   
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -41,7 +41,7 @@
 	
 		<div class="page-header">
 			<h3>
-			<?= SuTranslator::Description($lang) ?>
+			<?php echo  SuTranslator::Description($lang) ?>
 				<br> <small></small>
 			</h3>
 		</div>
@@ -52,7 +52,7 @@
 			<div class="form-group">
 				<label for="inputEmail" class="control-label col-xs-4">ID</label>
 				<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="id" value="<?=$this->clean($id) ?>" readonly/>
+				<input class="form-control" id="id" type="text"  name="id" value="<?php echo $this->clean($id) ?>" readonly/>
 				</div>
 			</div>
 
@@ -60,26 +60,26 @@
 		}
 		?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::Name($lang) ?> </label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::Name($lang) ?> </label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="name"
-				       value="<?=$this->clean($name) ?>"  
+				       value="<?php echo $this->clean($name) ?>"  
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Description($lang) ?> </label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Description($lang) ?> </label>
 			<div class="col-xs-8">
 				<textarea class="form-control" id="name" name="description"
-				><?=$this->clean($description) ?></textarea>
+				><?php echo $this->clean($description) ?></textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Is_active($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Is_active($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="is_active">
-					<option value="1" <?php if ($is_active==1){echo "selected=\"selected\"";} ?>> <?= CoreTranslator::yes($lang) ?> </option>
-					<option value="0" <?php if ($is_active==0){echo "selected=\"selected\"";} ?>> <?= CoreTranslator::no($lang) ?> </option>
+					<option value="1" <?php if ($is_active==1){echo "selected=\"selected\"";} ?>> <?php echo  CoreTranslator::yes($lang) ?> </option>
+					<option value="0" <?php if ($is_active==0){echo "selected=\"selected\"";} ?>> <?php echo  CoreTranslator::no($lang) ?> </option>
 				</select>
 			</div>
 		</div>
@@ -102,10 +102,10 @@
 			}	
 			?>
 			<tr>
-				<td><b><?= $pname ?></b></td>
+				<td><b><?php echo  $pname ?></b></td>
 				<td></td>
-				<td> <input id="tarif" type="text" class="text-center"  name="<?= $pid. "_price" ?>" 
-				                         value="<?= $val_price ?>"/> € (H.T.)</td>
+				<td> <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid. "_price" ?>" 
+				                         value="<?php echo  $val_price ?>"/> € (H.T.)</td>
 				<td></td>
 			</tr>
 			<?php
@@ -115,13 +115,13 @@
 		</div>
 
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= $buttonName ?>" />
-				<button type="button" onclick="location.href='suppliesitems'" class="btn btn-default"><?= CoreTranslator::Cancel($lang) ?> </button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  $buttonName ?>" />
+				<button type="button" onclick="location.href='suppliesitems'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?> </button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

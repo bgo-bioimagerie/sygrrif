@@ -13,12 +13,15 @@ class CoreTranslator {
 		//echo "to translate = " . $date . "<br/>";
 		if ($lang == "Fr"){
 			$dateArray = explode("/", $date);
-			//print_r($dateArray);
-			$day = $dateArray[0];
-			$month = $dateArray[1];
-			$year = $dateArray[2];
-			//echo "translated = " . $year . "-" . $month . "-" . $day . "<br/>";
-			return $year . "-" . $month . "-" . $day; 
+			if (count($dateArray) == 3){
+				//print_r($dateArray);
+				$day = $dateArray[0];
+				$month = $dateArray[1];
+				$year = $dateArray[2];
+				//echo "translated = " . $year . "-" . $month . "-" . $day . "<br/>";
+				return $year . "-" . $month . "-" . $day; 
+			}
+			return "0000-00-00";
 		}
 		// En
 		return $date;
@@ -942,4 +945,18 @@ class CoreTranslator {
 		}
 		return "User list options";
 	} 
+	
+	public static function Display_order($lang){
+		if ($lang == "Fr"){
+			return "Order d'afichage";
+		}
+		return "Display order";
+	}
+	
+	public static function Authorizations($lang){
+		if ($lang == "Fr"){
+			return "Autorisations";
+		}
+		return "Authorizations";
+	}
 }

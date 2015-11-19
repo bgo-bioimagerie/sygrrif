@@ -9,7 +9,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::color_codes($lang) ?>
+			<?php echo  SyTranslator::color_codes($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -18,8 +18,8 @@
 			<thead>
 				<tr>
 					<th><a href="sygrrif/colorcode/id">ID</a></th>
-					<th><a href="sygrrif/colorcode/name"><?= SyTranslator::Name($lang) ?></a></th>
-					<th><a href="sygrrif/colorcode/color"><?= SyTranslator::Color($lang) ?></a></th>
+					<th><a href="sygrrif/colorcode/name"><?php echo  SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/colorcode/color"><?php echo  SyTranslator::Color($lang) ?></a></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -28,11 +28,11 @@
 				$colorId = $this->clean ( $color ['id'] ); 
 				?> 
 				<tr>
-					<td><?= $colorId ?></td>
-				    <td><?= $this->clean ( $color ['name'] ); ?></td>
-				    <td><?= $this->clean ( $color ['color'] ); ?></td>
+					<td><?php echo  $colorId ?></td>
+				    <td><?php echo  $this->clean ( $color ['name'] ); ?></td>
+				    <td><?php echo  $this->clean ( $color ['color'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editcolorcode/<?= $colorId ?>'" class="btn btn-xs btn-primary"><?= SyTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='sygrrif/editcolorcode/<?php echo  $colorId ?>'" class="btn btn-xs btn-primary"><?php echo  SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -44,5 +44,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

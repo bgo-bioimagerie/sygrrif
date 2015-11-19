@@ -56,5 +56,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

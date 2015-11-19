@@ -32,10 +32,10 @@
 				<?php foreach ( $aciis as $acii ) : ?> 
 				<tr>
 					<?php $aciiId = $this->clean ( $acii ['id'] ); ?>
-					<td><?= $aciiId ?></td>
-				    <td><?= $this->clean ( $acii ['nom'] ); ?></td>
+					<td><?php echo  $aciiId ?></td>
+				    <td><?php echo  $this->clean ( $acii ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='acii/edit/<?= $aciiId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='acii/edit/<?php echo  $aciiId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

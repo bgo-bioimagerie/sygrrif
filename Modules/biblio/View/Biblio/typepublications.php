@@ -30,7 +30,7 @@
 									$selected = "selected=\"selected\"";
 								}
 								?>
-	       					 <OPTION value="<?=$type?>" <?=$selected?>> <?=$type?> </OPTION>
+	       					 <OPTION value="<?php echo $type?>" <?php echo $selected?>> <?php echo $type?> </OPTION>
 							<?php
 							}
 							?>
@@ -60,7 +60,7 @@
 		<?php 
 		}
 		?>
-		<p><?= $message ?></p>
+		<p><?php echo  $message ?></p>
 		</div>
 		<?php } ?>
 
@@ -82,12 +82,12 @@
 			</div>
 			<?php if ($url != ""){?>
 			<div class="col-lg-1">
-			<button onclick="location.href='<?=$url?>'" class="btn btn-xs btn-default" id="navlink">File</button>
+			<button onclick="location.href='<?php echo $url?>'" class="btn btn-xs btn-default" id="navlink">File</button>
 			</div>
 			<?php } ?>
 			<!-- edit action -->
 			<div class="col-lg-1 <?php if ($url == ""){echo "col-lg-offset-1";}?>" >
-			<button onclick="location.href='biblio/editpublication/id_<?=$id?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+			<button onclick="location.href='biblio/editpublication/id_<?php echo $id?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 			</div>
 			</div>
 		<?php	
@@ -99,5 +99,5 @@
 		?>
 		
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

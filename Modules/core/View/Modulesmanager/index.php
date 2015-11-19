@@ -1,4 +1,4 @@
-<?php $this->title = "Modules manager"?>
+<?php $this->title = "Pltaform-Manager"?>
 
 <?php echo $navBar?>
 <?php 
@@ -14,7 +14,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 	
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Modules_configuration($lang) ?>
+			<?php echo  CoreTranslator::Modules_configuration($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -24,7 +24,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		foreach ($modules as $module){
 		?>
 		<div>
-			<h2><?= $module['name'] ?> </h2>
+			<h2><?php echo  $module['name'] ?> </h2>
 			
 			<div class="col-md-12">
 			<div class="col-md-10 col-md-offset-1">
@@ -33,8 +33,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</div>
 			
 			<div class="col-md-2 col-md-offset-10">
-			<button type='button' onclick="location.href='<?= $module['action'] ?>'" 
-			         class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Config($lang)?></button>
+			<button type='button' onclick="location.href='<?php echo  $module['action'] ?>'" 
+			         class="btn btn-xs btn-primary" id="navlink"><?php echo  CoreTranslator::Config($lang)?></button>
 			</div>
 		</div>
 		<?php			
@@ -45,5 +45,5 @@ if (isset($_SESSION["user_settings"]["language"])){
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

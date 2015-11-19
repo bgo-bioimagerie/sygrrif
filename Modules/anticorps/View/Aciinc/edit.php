@@ -35,25 +35,25 @@
 			<label for="inputEmail" class="control-label col-xs-2">Id</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="id" type="text" name="id" disabled
-				       value="<?= $aciinc['id'] ?>"  
+				       value="<?php echo  $aciinc['id'] ?>"  
 				/>
 			</div>
 		</div>
 	
-		<input class="form-control" id="id" type="hidden"  name="id" value="<?= $aciinc['id']?>" />
+		<input class="form-control" id="id" type="hidden"  name="id" value="<?php echo  $aciinc['id']?>" />
 	
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Nom</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="nom" type="text" name="nom"
-				       value="<?= $aciinc['nom'] ?>"  
+				       value="<?php echo  $aciinc['nom'] ?>"  
 				/>
 			</div>
 		</div>
 		<br></br>		
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
-		        <button type="button" onclick="location.href='<?="aciinc/delete/".$aciinc['id'] ?>'" class="btn btn-danger"><?= SyTranslator::Delete($lang)?></button>
+		        <button type="button" onclick="location.href='<?php echo "aciinc/delete/".$aciinc['id'] ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang)?></button>
 				<button type="button" onclick="location.href='aciinc'" class="btn btn-default">Cancel</button>
 		</div>
       </form>
@@ -61,5 +61,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

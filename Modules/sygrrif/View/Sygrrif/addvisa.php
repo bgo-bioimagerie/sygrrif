@@ -34,13 +34,13 @@ else{
 	
 	
 		<div class="page-header">
-			<h1> <?= SyTranslator::Add_VISA($lang) ?>
+			<h1> <?php echo  SyTranslator::Add_VISA($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name"
 				/>
@@ -48,13 +48,13 @@ else{
 		</div>
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

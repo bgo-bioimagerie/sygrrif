@@ -29,7 +29,7 @@ if($menu){
 	</div>
 	
         <div class="alert alert-success" role="alert">
-    	<p><?= $message ?></p>
+    	<p><?php echo  $message ?></p>
     	</div>
   <?php endif; ?>
   </div>
@@ -37,7 +37,7 @@ if($menu){
   <div class="col-lg-10 col-lg-offset-1">
 	<div class="page-header">
 		<h2>
-			<?= StTranslator::ManageFiles($lang) ?> <br> <small></small>
+			<?php echo  StTranslator::ManageFiles($lang) ?> <br> <small></small>
 		</h2>
 	</div>
 	
@@ -53,7 +53,7 @@ if($menu){
 		
 		<div class="page-header">
 			<h3>
-			<?= $filesDir["name"] ?> <br> <small></small>
+			<?php echo  $filesDir["name"] ?> <br> <small></small>
 			</h3>
 		</div>
 			
@@ -70,8 +70,8 @@ if($menu){
 		
 		<?php foreach($filesDir["files"] as $file){?>
 			<tr>
-				<td><?= $file["name"] ?></td>
-				<td><?= $file["size"] ?></td>
+				<td><?php echo  $file["name"] ?></td>
+				<td><?php echo  $file["size"] ?></td>
 				
 				<?php 
 				$mtime = "";
@@ -83,7 +83,7 @@ if($menu){
 				}
 				
 				?>
-				<td><?= $mtime ?></td>
+				<td><?php echo  $mtime ?></td>
 				
 				<?php 
 				$fileURL = $file["name"];
@@ -91,9 +91,9 @@ if($menu){
 				
 				<td>
 				<form name="downloadform" id="downloadform" role="form" class="form-horizontal" action="storage/download" method="post">
-				<input type="text" name="filename" value="<?=$fileURL?>" hidden/>
-				<input type="text" name="dir" value="<?=$filesDir["name"]?>" hidden/>
-				<input  class="btn btn-primary" type="submit" value="<?= StTranslator::Download($lang)?>" />
+				<input type="text" name="filename" value="<?php echo $fileURL?>" hidden/>
+				<input type="text" name="dir" value="<?php echo $filesDir["name"]?>" hidden/>
+				<input  class="btn btn-primary" type="submit" value="<?php echo  StTranslator::Download($lang)?>" />
 				</form>
 				</td>		
 			</tr>
@@ -108,7 +108,7 @@ if($menu){
 	<!--
 	<div class="col-lg-12">
 		<label>Disk Usage:</label>
-		<?= $userUsage ?> 
+		<?php echo  $userUsage ?> 
 	</div>
 	-->
 	

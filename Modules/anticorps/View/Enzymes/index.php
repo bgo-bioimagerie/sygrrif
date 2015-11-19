@@ -32,10 +32,10 @@
 				<?php foreach ( $enzymes as $enzyme ) : ?> 
 				<tr>
 					<?php $enzymeId = $this->clean ( $enzyme ['id'] ); ?>
-					<td><?= $enzymeId ?></td>
-				    <td><?= $this->clean ( $enzyme ['nom'] ); ?></td>
+					<td><?php echo  $enzymeId ?></td>
+				    <td><?php echo  $this->clean ( $enzyme ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='enzymes/edit/<?= $enzymeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='enzymes/edit/<?php echo  $enzymeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

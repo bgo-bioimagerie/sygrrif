@@ -26,7 +26,7 @@
 	  <form role="form" class="form-horizontal" action="suppliesusers/editquery" method="post">
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Edit_User($lang) ?>
+			<?php echo  CoreTranslator::Edit_User($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -34,49 +34,49 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">ID</label>
 			<div class="col-xs-10">
-			    <input class="form-control" id="id" type="text" name="id" value="<?= $this->clean($user['id']) ?>" readonly
+			    <input class="form-control" id="id" type="text" name="id" value="<?php echo  $this->clean($user['id']) ?>" readonly
 				/>
 			</div>
 		</div>
 		<?php }?>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name" value="<?= $this->clean($user['name']) ?>"
+				<input class="form-control" id="name" type="text" name="name" value="<?php echo  $this->clean($user['name']) ?>"
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Firstname($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Firstname($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="firstname" type="text" name="firstname"
-				       value = "<?= $this->clean($user['firstname']) ?>" 
+				       value = "<?php echo  $this->clean($user['firstname']) ?>" 
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Email($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Email($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
-				       value = "<?= $this->clean($user['email']) ?>" 
+				       value = "<?php echo  $this->clean($user['email']) ?>" 
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Phone($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Phone($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
-				       value = "<?= $this->clean($user['tel']) ?>" 
+				       value = "<?php echo  $this->clean($user['tel']) ?>" 
 				/>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="id_unit">
 					<?php foreach ($unitsList as $unit):?>
@@ -87,14 +87,14 @@
 					          	$active = "selected=\"selected\"";	
 					          }
 					    ?>
-						<OPTION value="<?= $unitId ?>" <?= $active ?> > <?= $unitname ?> </OPTION>
+						<OPTION value="<?php echo  $unitId ?>" <?php echo  $active ?> > <?php echo  $unitname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Responsible($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Responsible($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="id_responsible">   
 					<?php foreach ($respsList as $resp):?>
@@ -110,7 +110,7 @@
 					    			$active = "selected=\"selected\"";
 					    		}
 						?>
-						<OPTION value="<?= $respId ?>" <?= $active ?>> <?= $respSummary ?> </OPTION>
+						<OPTION value="<?php echo  $respId ?>" <?php echo  $active ?>> <?php echo  $respSummary ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -132,7 +132,7 @@
 						} 
 				  ?>
 			      
-			      <input type="checkbox" name="is_responsible" <?= $checked ?>> <?= CoreTranslator::is_responsible($lang) ?>
+			      <input type="checkbox" name="is_responsible" <?php echo  $checked ?>> <?php echo  CoreTranslator::is_responsible($lang) ?>
 			      
 			    </label>
               </div>
@@ -140,21 +140,21 @@
 		</div>
 		</br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Is_user_active($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Is_user_active($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="active">
 			<?php $active = $this->clean($user["is_active"]); 
   			?>
-  				<OPTION value="1" <?= $active ?>> <?= CoreTranslator::yes($lang); ?> </OPTION>
-  				<OPTION value="0" <?= $active ?>> <?= CoreTranslator::no($lang); ?> </OPTION>
+  				<OPTION value="1" <?php echo  $active ?>> <?php echo  CoreTranslator::yes($lang); ?> </OPTION>
+  				<OPTION value="0" <?php echo  $active ?>> <?php echo  CoreTranslator::no($lang); ?> </OPTION>
   			</select>
   			
 		    </div>
 		</div>
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='suppliesusers'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='suppliesusers'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
       
@@ -162,5 +162,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

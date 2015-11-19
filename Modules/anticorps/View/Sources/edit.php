@@ -35,25 +35,25 @@
 			<label for="inputEmail" class="control-label col-xs-2">Id</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="id" type="text" name="id" disabled
-				       value="<?= $source['id'] ?>"  
+				       value="<?php echo  $source['id'] ?>"  
 				/>
 			</div>
 		</div>
 	
-		<input class="form-control" id="id" type="hidden"  name="id" value="<?= $source['id']?>" />
+		<input class="form-control" id="id" type="hidden"  name="id" value="<?php echo  $source['id']?>" />
 	
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">Nom</label>
 			<div class="col-xs-10">
 				<input class="form-control" id="nom" type="text" name="nom"
-				       value="<?= $source['nom'] ?>"  
+				       value="<?php echo  $source['nom'] ?>"  
 				/>
 			</div>
 		</div>
 		<br></br>		
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="Save" />
-		        <button type="button" onclick="location.href='<?="sources/delete/".$source['id'] ?>'" class="btn btn-danger"><?= SyTranslator::Delete($lang)?></button>
+		        <button type="button" onclick="location.href='<?php echo "sources/delete/".$source['id'] ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang)?></button>
 				<button type="button" onclick="location.href='sources'" class="btn btn-default">Cancel</button>
 		</div>
       </form>
@@ -61,5 +61,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

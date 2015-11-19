@@ -9,7 +9,7 @@
 	
 		<div class="page-header">
 			<h1>
-			    <?= SyTranslator::Pricing($lang) ?>   
+			    <?php echo  SyTranslator::Pricing($lang) ?>   
 				<br> <small></small>
 			</h1>
 		</div>
@@ -18,10 +18,10 @@
 			<thead>
 				<tr>
 				    <th><a href="sygrrif/pricing/id">ID</a></td>
-					<th><a href="sygrrif/pricing/tarif_name"><?= SyTranslator::Name($lang) ?></a></th>
-					<th><a href="sygrrif/pricing/tarif_unique"><?= SyTranslator::Unique_price($lang) ?></a></th>
-					<th><a href="sygrrif/pricing/tarif_night"><?= SyTranslator::Price_night($lang) ?></a></th>
-					<th><a href="sygrrif/pricing/tarif_we"><?= SyTranslator::Price_weekend($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/tarif_name"><?php echo  SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/tarif_unique"><?php echo  SyTranslator::Unique_price($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/tarif_night"><?php echo  SyTranslator::Price_night($lang) ?></a></th>
+					<th><a href="sygrrif/pricing/tarif_we"><?php echo  SyTranslator::Price_weekend($lang) ?></a></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -30,9 +30,9 @@
 				<tr>
 					<!--  Id -->
 					<?php $pricingId = $this->clean ( $price ['id'] ); ?>
-					<td><?= $pricingId ?></td>
+					<td><?php echo  $pricingId ?></td>
 				    <!--  name -->
-				    <td><?= $this->clean ( $price ['tarif_name'] ); ?></td>
+				    <td><?php echo  $this->clean ( $price ['tarif_name'] ); ?></td>
 				    <!--  unique -->
 				    <td>
 				    <?php 
@@ -51,8 +51,8 @@
 				    	$night = $this->clean ( $price ['tarif_night'] );
 						if ($night == 1){
 							?>
-							<p> <?= SyTranslator::Yes($lang) ?> </p>
-							<p> <?= $this->clean ( $price ['night_start']) ?>h - <?= $this->clean ( $price ['night_end']) ?>h </p>
+							<p> <?php echo  SyTranslator::Yes($lang) ?> </p>
+							<p> <?php echo  $this->clean ( $price ['night_start']) ?>h - <?php echo  $this->clean ( $price ['night_end']) ?>h </p>
 					 <?php 	
 						}			  
 						else{
@@ -66,7 +66,7 @@
 				    	$we = $this->clean ( $price ['tarif_we'] );
 						if ($we == 1){
 						  ?>
-						  <p> <?= SyTranslator::Yes($lang) ?> </p>
+						  <p> <?php echo  SyTranslator::Yes($lang) ?> </p>
 						  <p>
 						  <?php 	
 						 	$jours = $this->clean ( $price ['choice_we'] );
@@ -89,7 +89,7 @@
 				    ?>
 				    </td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editpricing/<?= $pricingId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='sygrrif/editpricing/<?php echo  $pricingId ?>'" class="btn btn-xs btn-primary" id="navlink"><?php echo  SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -101,5 +101,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

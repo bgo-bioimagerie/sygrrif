@@ -20,7 +20,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 <br/>
 	<div class="page-header">
 		<h4>
-			<?= SyTranslator::color_code($lang) ?>
+			<?php echo  SyTranslator::color_code($lang) ?>
 			<br> <small></small>
 		</h4>
 	</div>
@@ -40,7 +40,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 	?>
 	
 	<div class="col-xs-2">
-		<p class="text-center" id="colorparagraph" style="background-color: #<?=$color?>;"><?=$name?></p>
+		<p class="text-center" id="colorparagraph" style="background-color: #<?php echo $color?>;"><?php echo $name?></p>
 	</div>
 	<?php 
 		if ($cmpt == 6 || $i == count($colorcodes)-1){

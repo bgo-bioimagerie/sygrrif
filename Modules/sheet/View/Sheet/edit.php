@@ -21,16 +21,16 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= ShTranslator::Edit_Sheet($lang) ?>
+			<?php echo  ShTranslator::Edit_Sheet($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 	
-		<input class="form-control" id="id" type="hidden"  name="id_template" value="<?= $templateID ?>" />
+		<input class="form-control" id="id" type="hidden"  name="id_template" value="<?php echo  $templateID ?>" />
 		<?php 
 		if (isset($sheet_id)){
 			?>
-			<input class="form-control" id="id" type="hidden"  name="id_sheet" value="<?= $sheet_id ?>" />
+			<input class="form-control" id="id" type="hidden"  name="id_sheet" value="<?php echo  $sheet_id ?>" />
 			<?php
 		}
 		?>
@@ -46,10 +46,10 @@
 				
 				?>
 				<div class="form-group">
-					<label for="inputEmail" class="control-label col-xs-2"><?= $element['caption'] ?></label>
+					<label for="inputEmail" class="control-label col-xs-2"><?php echo  $element['caption'] ?></label>
 					<div class="col-xs-10">
-						<input class="form-control" type="text" name="id<?=$element["id"]?>"
-												       value="<?= $value ?>"  />
+						<input class="form-control" type="text" name="id<?php echo $element["id"]?>"
+												       value="<?php echo  $value ?>"  />
 					</div>
 				</div>
 				<?php
@@ -64,10 +64,10 @@
 				
 				?>
 				<div class="form-group">
-					<label for="inputEmail" class="control-label col-xs-2"><?= $element['caption'] ?></label>
+					<label for="inputEmail" class="control-label col-xs-2"><?php echo  $element['caption'] ?></label>
 					<div class="col-xs-10">
-						<input class="form-control" type="number" name="id<?=$element["id"]?>"
-																       value="<?= $value ?>"  />
+						<input class="form-control" type="number" name="id<?php echo $element["id"]?>"
+																       value="<?php echo  $value ?>"  />
 					</div>
 				</div>
 				<?php
@@ -82,9 +82,9 @@
 				
 				?>
 				<div class="form-group">
-					<label for="inputEmail" class="control-label col-xs-2"><?= $element['caption'] ?></label>
+					<label for="inputEmail" class="control-label col-xs-2"><?php echo  $element['caption'] ?></label>
 					<div class="col-xs-10">
-						<select class="form-control" name="id<?=$element["id"]?>">
+						<select class="form-control" name="id<?php echo $element["id"]?>">
 							<?php 
 							$values = explode(";", $element["default_values"]);
 							foreach ($values as $value):
@@ -93,7 +93,7 @@
 									$selected = "selected=\"selected\"";
 								}
 								?>	
-								<OPTION value="<?= $value ?>" <?=$selected ?> > <?= $value ?> </OPTION>
+								<OPTION value="<?php echo  $value ?>" <?php echo $selected ?> > <?php echo  $value ?> </OPTION>
 							<?php endforeach; ?>
 						</select>
 					</div>
@@ -106,7 +106,7 @@
 				<div class="form-group">
 				<div class="page-header">
 				<h2>
-					<?= $element['caption'] ?>
+					<?php echo  $element['caption'] ?>
 					<br> <small></small>
 				</h2>
 				</div>
@@ -118,12 +118,12 @@
 		?>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='sheet'" class="btn btn-default"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='sheet'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 				<?php 
 				if (isset($sheet_id)){
 					?>
-					<button type="button" onclick="location.href='<?="sheet/delete/".$this->clean($sheet_id) ?>'" class="btn btn-danger"><?= CoreTranslator::Delete($lang) ?></button>
+					<button type="button" onclick="location.href='<?php echo "sheet/delete/".$this->clean($sheet_id) ?>'" class="btn btn-danger"><?php echo  CoreTranslator::Delete($lang) ?></button>
 					<?php 
 				}
 				?>
@@ -132,5 +132,5 @@
 	</div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

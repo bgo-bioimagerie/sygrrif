@@ -22,24 +22,24 @@ if($sygrrifmenucolortxt == ""){
 <style>
 .bs-docs-header {
 	position: relative;
-	color: #<?=$sygrrifmenucolortxt?>;
+	color: #<?php echo $sygrrifmenucolortxt?>;
 	text-shadow: 0 0px 0 rgba(0, 0, 0, .1);
-	background-color: #<?=$sygrrifmenucolor?>;
-	border:0px solid #<?=$sygrrifmenucolor?>;
+	background-color: #<?php echo $sygrrifmenucolor?>;
+	border:0px solid #<?php echo $sygrrifmenucolor?>;
 }
 
 #navlink {
-	color: #<?=$sygrrifmenucolortxt?>;
+	color: #<?php echo $sygrrifmenucolortxt?>;
 	text-shadow: 0 0px 0 rgba(0, 0, 0, .1);
-	border:0px solid #<?=$sygrrifmenucolor?>;
+	border:0px solid #<?php echo $sygrrifmenucolor?>;
 }
 
 #well {
 	margin-top:10px;
 	margin-bottom:25px;
-	color: #<?=$sygrrifmenucolortxt?>;
-	background-color: #<?=$sygrrifmenucolor?>;
-	border:0px solid #<?=$sygrrifmenucolor?>;
+	color: #<?php echo $sygrrifmenucolortxt?>;
+	background-color: #<?php echo $sygrrifmenucolor?>;
+	border:0px solid #<?php echo $sygrrifmenucolor?>;
 	-moz-box-shadow: 0px 0px px #000000;
 -webkit-box-shadow: 0px 0px px #000000;
 -o-box-shadow: 0px 0px 0px #000000;
@@ -47,7 +47,7 @@ box-shadow: 0px 0px 0px #000000;
 }
 
 legend {
-	color: #<?=$sygrrifmenucolortxt?>;
+	color: #<?php echo $sygrrifmenucolortxt?>;
 }
 
 #content{
@@ -70,12 +70,12 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h1><?= SyTranslator::SyGRRif_Booking($lang) ?></h1>
+		<h1><?php echo  SyTranslator::SyGRRif_Booking($lang) ?></h1>
 
 		<form role="form" class="form-horizontal" action="sygrrif/booking" method="post" id="navform">
 		<div class='col-md-4' id="well">
 			<fieldset>
-				<legend><?= SyTranslator::Area($lang) ?></legend>
+				<legend><?php echo  SyTranslator::Area($lang) ?></legend>
 				<div >
 					<select class="form-control" name="id_area" onchange="getareaval(this);">
 						<?php 
@@ -87,7 +87,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 								$selected = "selected=\"selected\"";
 							}
 						?>
-							<option value="<?= $areaID ?>" <?=$selected?>> <?= $this->clean($area['name']) ?> </option>
+							<option value="<?php echo  $areaID ?>" <?php echo $selected?>> <?php echo  $this->clean($area['name']) ?> </option>
 						<?php 
 						}
 						?>
@@ -102,7 +102,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<div class='col-md-4' id="well">
 			<fieldset>
-				<legend><?= SyTranslator::Resource($lang) ?></legend>
+				<legend><?php echo  SyTranslator::Resource($lang) ?></legend>
 				<div >
 					<select class="form-control" name="id_resource"  onchange="getresourceval(this);">
 						<option value="0" > ... </option>
@@ -115,7 +115,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 								$selected = "selected=\"selected\"";
 							}
 						?>
-							<option value="<?= $resourceID ?>" <?=$selected?>> <?= $this->clean($resource['name']) ?> </option>
+							<option value="<?php echo  $resourceID ?>" <?php echo $selected?>> <?php echo  $this->clean($resource['name']) ?> </option>
 						<?php 
 						}
 						?>
@@ -130,11 +130,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<div class='col-md-3' id="well">
 			<fieldset>
-				<legend><?= SyTranslator::Date($lang) ?></legend>
+				<legend><?php echo  SyTranslator::Date($lang) ?></legend>
 				<div >
-					<div class='input-group date form_date_<?= $lang ?>'>
+					<div class='input-group date form_date_<?php echo  $lang ?>'>
 						<input id="date-daily" type='text' class="form-control" name="curentDate"
-							value="<?= CoreTranslator::dateFromEn($menuData["curentDate"], $lang) ?>"
+							value="<?php echo  CoreTranslator::dateFromEn($menuData["curentDate"], $lang) ?>"
 						/>
 						<span class="input-group-addon">
 							<span class="glyphicon glyphicon-calendar"></span>
@@ -146,7 +146,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		 
 		 <div class='col-md-1' id="well">
 			<fieldset>
-			<legend style="color:#<?=$sygrrifmenucolor?>; border:0px solid #<?=$sygrrifmenucolor?>;">.</legend>
+			<legend style="color:#<?php echo $sygrrifmenucolor?>; border:0px solid #<?php echo $sygrrifmenucolor?>;">.</legend>
 				<div >
 				<input type="submit" class="btn btn-primary" value="ok" />
 				</div>

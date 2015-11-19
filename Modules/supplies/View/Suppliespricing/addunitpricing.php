@@ -24,18 +24,18 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SuTranslator::Associate_a_pricing_to_a_unit($lang) ?>
+			<?php echo  SuTranslator::Associate_a_pricing_to_a_unit($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Unit($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_unit">
 						<?php 
 						foreach($unitsList as $unit){
 						?>
-							<option value="<?= $this->clean($unit['id'])?>"> <?= $this->clean($unit['name']) ?> </option>
+							<option value="<?php echo  $this->clean($unit['id'])?>"> <?php echo  $this->clean($unit['name']) ?> </option>
 						<?php 
 						}
 						?>
@@ -43,13 +43,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SuTranslator::Pricing($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SuTranslator::Pricing($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="id_pricing">
 						<?php 
 						foreach($pricingList as $pricing){
 						?>
-							<option value="<?= $this->clean($pricing['id'])?>"> <?= $this->clean($pricing['tarif_name']) ?> </option>
+							<option value="<?php echo  $this->clean($pricing['id'])?>"> <?php echo  $this->clean($pricing['tarif_name']) ?> </option>
 						<?php 
 						}
 						?>
@@ -58,13 +58,13 @@
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='suppliespricing/unitpricing'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='suppliespricing/unitpricing'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

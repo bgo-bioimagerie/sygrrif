@@ -162,7 +162,7 @@ $(document).ready(function() {
 	  				</select>
 				</div>
 				<div class="col-md-3">
-					<input class="form-control" id="searchTxt" type="text" name="searchTxt" value="<?= $searchTxt ?>"
+					<input class="form-control" id="searchTxt" type="text" name="searchTxt" value="<?php echo  $searchTxt ?>"
 					/>
 				</div>
 			
@@ -208,17 +208,17 @@ $(document).ready(function() {
 					<div class="col-md-9">
 						<label class="control-label col-md-1" style="margin:0px;">Nom:</label>
 						<div class="col-md-3">
-							<input class="form-control" id="searchName" type="text" name="searchName" value="<?= $searchName ?>"
+							<input class="form-control" id="searchName" type="text" name="searchName" value="<?php echo  $searchName ?>"
 							/>
 						</div>
 						<label for="inputEmail" class="control-label col-md-1">No H2P2:</label>
 						<div class="col-md-2">
-							<input class="form-control" id="searchNoH2P2" type="text" name="searchNoH2P2" value="<?= $searchNoH2P2 ?>"
+							<input class="form-control" id="searchNoH2P2" type="text" name="searchNoH2P2" value="<?php echo  $searchNoH2P2 ?>"
 							/>
 						</div>
 						<label for="inputEmail" class="control-label col-md-2">Source:</label>
 						<div class="col-md-3">
-							<input class="form-control" id="searchSource" type="text" name="searchSource" value="<?= $searchSource ?>"
+							<input class="form-control" id="searchSource" type="text" name="searchSource" value="<?php echo  $searchSource ?>"
 							/>
 						</div>
 					</div>
@@ -230,7 +230,7 @@ $(document).ready(function() {
 					<div class="col-md-9">	
 						<label for="inputEmail" class="control-label col-md-1">Tissu cible:</label>
 						<div class="col-md-3">
-							<input class="form-control" id="searchCible" type="text" name="searchCible" value="<?= $searchCible ?>"
+							<input class="form-control" id="searchCible" type="text" name="searchCible" value="<?php echo  $searchCible ?>"
 							/>
 						</div>
 						
@@ -246,7 +246,7 @@ $(document).ready(function() {
 						
 						<label for="inputEmail" class="control-label col-md-2">Propriétaire:</label>
 						<div class="col-md-3">
-							<input class="form-control" id="searchResp" type="text" name="searchResp" value="<?= $searchResp ?>"
+							<input class="form-control" id="searchResp" type="text" name="searchResp" value="<?php echo  $searchResp ?>"
 							/>
 						</div>
 						<label class="control-label col-md-2"></label>
@@ -258,7 +258,7 @@ $(document).ready(function() {
 						<div class="col-md-11">	
 							<label class="control-label col-md-1">Commentaire:</label>
 								<div class="col-md-4">
-								<input class="form-control" id="searchCom" type="text" name="searchCom" value="<?= $searchCom ?>"
+								<input class="form-control" id="searchCom" type="text" name="searchCom" value="<?php echo  $searchCom ?>"
 								/>
 							</div>
 						</div>	
@@ -351,15 +351,15 @@ $(document).ready(function() {
 				<tr>
 					<?php $anticorpsId = $this->clean ( $anticorps['id'] ); ?>
 					
-					<td style="width:1em;" class="text-left"><a href="anticorps/edit/<?= $anticorpsId ?>"><?= $this->clean ( $anticorps ['no_h2p2'] ); ?></a></td>
-					<td width="5%" class="text-left"><a href="anticorps/edit/<?= $anticorpsId ?>"><?= $this->clean ( $anticorps ['nom'] ); ?></a></td>
-					<td width="5%" class="text-left"><?= $this->clean ( $anticorps ['stockage'] ); ?></td>
-				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['fournisseur'] ); ?></td>
-				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['source'] ); ?></td>
-				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['reference'] ); ?></td>
-				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['clone'] ); ?></td>
-				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['lot'] ); ?></td>
-				    <td width="5%" class="text-left"><?= $this->clean ( $anticorps ['isotype'] ); ?></td>
+					<td style="width:1em;" class="text-left"><a href="anticorps/edit/<?php echo  $anticorpsId ?>"><?php echo  $this->clean ( $anticorps ['no_h2p2'] ); ?></a></td>
+					<td width="5%" class="text-left"><a href="anticorps/edit/<?php echo  $anticorpsId ?>"><?php echo  $this->clean ( $anticorps ['nom'] ); ?></a></td>
+					<td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['stockage'] ); ?></td>
+				    <td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['fournisseur'] ); ?></td>
+				    <td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['source'] ); ?></td>
+				    <td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['reference'] ); ?></td>
+				    <td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['clone'] ); ?></td>
+				    <td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['lot'] ); ?></td>
+				    <td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['isotype'] ); ?></td>
 				    
 				    
 				    
@@ -575,5 +575,5 @@ $(document).ready(function() {
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

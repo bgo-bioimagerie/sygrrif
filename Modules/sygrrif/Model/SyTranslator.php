@@ -1640,5 +1640,18 @@ class SyTranslator {
 		}
 		return "Use package";
 	}
+
+	static public function Authorisations_for($lang){
+		if ($lang == "Fr"){
+			return "Autorisations pour ";
+		}
+		return "Authorisations for";
+	}
 	
+	static public function Modifications_have_been_saved($lang){
+		if ($lang == "Fr") {
+			return "Les modifications ont bien été enregistrées";
+		}
+		return "Modifications have been saved";
+	}
 }

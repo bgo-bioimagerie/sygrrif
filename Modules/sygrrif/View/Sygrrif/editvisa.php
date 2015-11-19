@@ -34,7 +34,7 @@ else{
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::Edit_Visa($lang) ?>
+			<?php echo  SyTranslator::Edit_Visa($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -42,29 +42,29 @@ else{
 		<div class="form-group">
 		<label for="inputEmail" class="control-label col-xs-2">ID</label>
 			<div class="col-xs-10">
-			<input class="form-control" id="id" type="text"  name="id" value="<?= $visa['id']?>" readonly/>
+			<input class="form-control" id="id" type="text"  name="id" value="<?php echo  $visa['id']?>" readonly/>
 		</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="name" type="text" name="name"
-				       value="<?= $visa['name'] ?>"  
+				       value="<?php echo  $visa['name'] ?>"  
 				/>
 			</div>
 		</div>
 		<br></br>
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
 		        <?php if ($this->clean($visa['id']) != ""){ ?>
-		        	<button type="button" onclick="location.href='<?="sygrrif/deletevisa/".$this->clean($visa['id']) ?>'" class="btn btn-danger" id="navlink"><?= SyTranslator::Delete($lang)?></button>
+		        	<button type="button" onclick="location.href='<?php echo "sygrrif/deletevisa/".$this->clean($visa['id']) ?>'" class="btn btn-danger" id="navlink"><?php echo  SyTranslator::Delete($lang)?></button>
 				<?php } ?>
-				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -32,10 +32,10 @@
 				<?php foreach ( $linkers as $linker ) : ?> 
 				<tr>
 					<?php $linkerId = $this->clean ( $linker ['id'] ); ?>
-					<td><?= $linkerId ?></td>
-				    <td><?= $this->clean ( $linker ['nom'] ); ?></td>
+					<td><?php echo  $linkerId ?></td>
+				    <td><?php echo  $this->clean ( $linker ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='linker/edit/<?= $linkerId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='linker/edit/<?php echo  $linkerId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -32,10 +32,10 @@
 				<?php foreach ( $incs as $inc ) : ?> 
 				<tr>
 					<?php $incId = $this->clean ( $inc ['id'] ); ?>
-					<td><?= $incId ?></td>
-				    <td><?= $this->clean ( $inc ['nom'] ); ?></td>
+					<td><?php echo  $incId ?></td>
+				    <td><?php echo  $this->clean ( $inc ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='inc/edit/<?= $incId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='inc/edit/<?php echo  $incId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

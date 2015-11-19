@@ -32,10 +32,10 @@
 				<?php foreach ( $options as $option ) : ?> 
 				<tr>
 					<?php $optionId = $this->clean ( $option ['id'] ); ?>
-					<td><?= $optionId ?></td>
-				    <td><?= $this->clean ( $option ['nom'] ); ?></td>
+					<td><?php echo  $optionId ?></td>
+				    <td><?php echo  $this->clean ( $option ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='option/edit/<?= $optionId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='option/edit/<?php echo  $optionId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

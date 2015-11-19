@@ -16,7 +16,7 @@ require_once 'Modules/supplies/Model/SuTranslator.php';
 		
 		<div class="page-header">
 			<h1>
-			<?= SuTranslator::Delete_entry($lang) ?>
+			<?php echo  SuTranslator::Delete_entry($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -27,9 +27,9 @@ require_once 'Modules/supplies/Model/SuTranslator.php';
 		
 		<form role="form" class="form-horizontal" action="suppliesentries/deletequery" method="post">
 			
-			<input class="form-control" id="id" type="hidden" name="id" value="<?= $entryID ?>" />
+			<input class="form-control" id="id" type="hidden" name="id" value="<?php echo  $entryID ?>" />
 			<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Delete($lang)?>" />
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Delete($lang)?>" />
 			</div>
        </form>
 		

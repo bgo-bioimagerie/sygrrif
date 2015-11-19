@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Database account"?>
+<?php $this->title = "Pltaform-Manager"?>
 
 <?php echo $navBar?>
 
@@ -14,13 +14,13 @@ if (isset($_SESSION["user_settings"]["language"])){
 	  <form role="form" class="form-horizontal" action="coreusersettings/editsettings" method="post">
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Language($lang) ?>
+			<?php echo  CoreTranslator::Language($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Language($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Language($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="language">
 					<OPTION value="En" <?php if($language == "En"){echo "selected=\"selected\""; }?>> English </OPTION>
@@ -31,29 +31,29 @@ if (isset($_SESSION["user_settings"]["language"])){
 		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
       
       <form role="form" class="form-horizontal" action="coreusersettings/edithomepage" method="post">
 		<div class="page-header">
 			<h1>
-				<?= CoreTranslator::Home_page($lang)?> <br> <small></small>
+				<?php echo  CoreTranslator::Home_page($lang)?> <br> <small></small>
 			</h1>
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Home_page($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Home_page($lang)?></label>
 			<div class="col-xs-10">
-				<input type="text" class="form-control" name="homepage" value="<?= $homePage ?>" />
+				<input type="text" class="form-control" name="homepage" value="<?php echo  $homePage ?>" />
 			</div>
 		</div>
 		
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='home'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
       

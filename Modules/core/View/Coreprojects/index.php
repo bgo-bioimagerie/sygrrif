@@ -8,14 +8,14 @@
 	rel="stylesheet">
 </head>
 
-<?php include "Modules/core/View/Projects/projectsnavbar.php"; ?>
+<?php include "Modules/core/View/Coreprojects/projectsnavbar.php"; ?>
 <br>
 <div class="contatiner">
 	<div class="col-md-6 col-md-offset-3">
 	
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::Projects($lang) ?>
+			<?php echo  CoreTranslator::Projects($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -24,9 +24,9 @@
 			<thead>
 				<tr>
 					<td><a href="projects/index/id">ID</a></td>
-					<td><a href="projects/index/name"><?= CoreTranslator::Name($lang) ?></a></td>
-					<td><a href="projects/index/description"><?= CoreTranslator::Description($lang) ?></a></td>
-					<td><a href="projects/index/status"><?= CoreTranslator::Status($lang) ?></a></td>
+					<td><a href="projects/index/name"><?php echo  CoreTranslator::Name($lang) ?></a></td>
+					<td><a href="projects/index/description"><?php echo  CoreTranslator::Description($lang) ?></a></td>
+					<td><a href="projects/index/status"><?php echo  CoreTranslator::Status($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -36,18 +36,18 @@
 				?> 
 				<tr>
 					<?php $projectID = $this->clean ( $project ['id'] ); ?>
-					<td><?= $projectID ?></td>
-				    <td><?= $this->clean ( $project ['name'] ); ?></td>
-				    <td><?= $this->clean ( $project ['description'] ); ?></td>
+					<td><?php echo  $projectID ?></td>
+				    <td><?php echo  $this->clean ( $project ['name'] ); ?></td>
+				    <td><?php echo  $this->clean ( $project ['description'] ); ?></td>
 				    <?php  $status = $this->clean ( $project ['status'] );
 				    	   $statusTxt = "Open";  
 				    	   if ($status == 0){
 				    	   		$statusTxt = "Close";
 				    	   }
 				    	   ?>
-				    <td><?= $statusTxt ?></td>
+				    <td><?php echo  $statusTxt ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='projects/edit/<?= $projectID ?>'" class="btn btn-xs btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='projects/edit/<?php echo  $projectID ?>'" class="btn btn-xs btn-primary" id="navlink"><?php echo  CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -59,5 +59,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

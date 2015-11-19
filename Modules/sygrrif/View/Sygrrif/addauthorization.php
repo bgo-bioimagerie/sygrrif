@@ -35,42 +35,42 @@ else{
 	
 		<div class="page-header">
 			<h1>
-				<?= SyTranslator::Add_Authorization($lang) ?> <br> <small></small>
+				<?php echo  SyTranslator::Add_Authorization($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::User($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::User($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="user_id">
 					<?php foreach ($users as $user):?>
 					    <?php $username = $this->clean( $user['name'] . " " . $user['firstname'] );
 					          $userId = $this->clean( $user['id'] );
 					    ?>
-						<OPTION value="<?= $userId ?>" > <?= $username ?> </OPTION>
+						<OPTION value="<?php echo  $userId ?>" > <?php echo  $username ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 		<!-- 
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Unit_at_the_authorization_date_time($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Unit_at_the_authorization_date_time($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="unit_id">
 					<?php foreach ($units as $unit):?>
 					    <?php $unitname = $this->clean( $unit['name']);
 					          $unitId = $this->clean( $unit['id'] );
 					    ?>
-						<OPTION value="<?= $unitId ?>" > <?= $unitname ?> </OPTION>
+						<OPTION value="<?php echo  $unitId ?>" > <?php echo  $unitname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 		-->
 		<div class="form-group ">
-				<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Training_date($lang) ?></label>
+				<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Training_date($lang) ?></label>
 				<div class="col-xs-10">
-				<div class='input-group date form_date_<?= $lang ?>' >
+				<div class='input-group date form_date_<?php echo  $lang ?>' >
 					<input type='text' class="form-control" name="date"/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
@@ -79,27 +79,27 @@ else{
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Visa($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Visa($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="visa_id">
 					<?php foreach ($visas as $visa):?>
 					    <?php $visaname = $this->clean( $visa['name']);
 					          $visaId = $this->clean( $visa['id'] );
 					    ?>
-						<OPTION value="<?= $visaId ?>" > <?= $visaname ?> </OPTION>
+						<OPTION value="<?php echo  $visaId ?>" > <?php echo  $visaname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= SyTranslator::Resource($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Resource($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="resource_id">
 					<?php foreach ($resources as $resource):?>
 					    <?php $resourcename = $this->clean( $resource['name']);
 					          $resourceId = $this->clean( $resource['id'] );
 					    ?>
-						<OPTION value="<?= $resourceId ?>" > <?= $resourcename ?> </OPTION>
+						<OPTION value="<?php echo  $resourceId ?>" > <?php echo  $resourcename ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -107,8 +107,8 @@ else{
 		
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif/authorizations'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif/authorizations'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -117,5 +117,5 @@ else{
 <?php include 'Modules/core/View/timepicker_script.php'?>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

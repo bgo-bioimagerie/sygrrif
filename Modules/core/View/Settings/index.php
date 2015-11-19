@@ -13,7 +13,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 	<div class="col-md-10 col-md-offset-1">
 		<div class="page-header">
 			<h1>
-			<?= CoreTranslator::User_Settings($lang) ?>
+			<?php echo  CoreTranslator::User_Settings($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -27,10 +27,10 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<div>
 				<h2>
 					<div class="col-md-10">
-					<?= $this->clean($controller["module"])?> 
+					<?php echo  $this->clean($controller["module"])?> 
 					</div>
 					<div class="col-md-2">
-					<button type="button" onclick="location.href='<?= $this->clean($controller["controller"]) ?>'" class="btn btn-primary" id="navlink"><?= CoreTranslator::Edit($lang) ?></button>
+					<button type="button" onclick="location.href='<?php echo  $this->clean($controller["controller"]) ?>'" class="btn btn-primary" id="navlink"><?php echo  CoreTranslator::Edit($lang) ?></button>
 					</div>
 				</h2>	
 				</div>

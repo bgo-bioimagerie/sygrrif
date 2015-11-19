@@ -9,7 +9,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::Pricing_Unit($lang) ?>
+			<?php echo  SyTranslator::Pricing_Unit($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -18,8 +18,8 @@
 			<thead>
 				<tr>
 				    <th>ID</th>
-					<th class="text-center"><?= SyTranslator::Name($lang) ?></th>
-					<th class="text-center"><?= SyTranslator::Pricing($lang) ?></th>
+					<th class="text-center"><?php echo  SyTranslator::Name($lang) ?></th>
+					<th class="text-center"><?php echo  SyTranslator::Pricing($lang) ?></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -28,13 +28,13 @@
 				<tr>
 					<!--  Id -->
 					<?php $unitId = $this->clean ( $price ['unit_id'] ); ?>
-					<td><?= $unitId ?></td>
+					<td><?php echo  $unitId ?></td>
 				    <!--  name -->
-				    <td><?= $this->clean ( $price ['unit_name'] ); ?></td>
+				    <td><?php echo  $this->clean ( $price ['unit_name'] ); ?></td>
 				    <!--  tarif -->
-					<td><?= $this->clean ( $price ['pricing_name'] ); ?></td>
+					<td><?php echo  $this->clean ( $price ['pricing_name'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='sygrrif/editunitpricing/<?= $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='sygrrif/editunitpricing/<?php echo  $unitId ?>'" class="btn btn-xs btn-primary" id="navlink"><?php echo  SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -46,5 +46,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

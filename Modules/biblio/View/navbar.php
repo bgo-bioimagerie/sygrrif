@@ -56,8 +56,8 @@ legend {
 				$entryTypes = PublicationManager::entriesTypes(); 
 				foreach ($entryTypes as $entryType){
 				?>
-					<button onclick="location.href='biblio/editpublication/type_<?=$entryType?>'"
-						class="btn btn-link" id="navlink2">Add <?=$entryType?></button>
+					<button onclick="location.href='biblio/editpublication/type_<?php echo $entryType?>'"
+						class="btn btn-link" id="navlink2">Add <?php echo $entryType?></button>
 					<br/>
 				<?php 
 				}

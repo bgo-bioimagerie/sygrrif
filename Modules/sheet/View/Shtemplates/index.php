@@ -15,7 +15,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= ShTranslator::Templates($lang) ?>
+			<?php echo  ShTranslator::Templates($lang) ?>
 			  <br> <small></small>
 			</h1>
 		</div>
@@ -24,7 +24,7 @@
 			<thead>
 				<tr>
 					<td><a href="shtemplates/index/id">ID</a></td>
-					<td><a href="shtemplates/index/name"><?= CoreTranslator::Name($lang) ?></a></td>
+					<td><a href="shtemplates/index/name"><?php echo  CoreTranslator::Name($lang) ?></a></td>
 					<td></td>
 				</tr>
 			</thead>
@@ -33,10 +33,10 @@
 				?> 
 				<tr>
 					<?php $unitId = $this->clean ( $template ['id'] ); ?>
-					<td><?= $unitId ?></td>
-				    <td><?= $this->clean ( $template ['name'] ); ?></td>
+					<td><?php echo  $unitId ?></td>
+				    <td><?php echo  $this->clean ( $template ['name'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='shtemplates/edit/<?= $unitId ?>'" class="btn btn-xs btn-primary"><?= CoreTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='shtemplates/edit/<?php echo  $unitId ?>'" class="btn btn-xs btn-primary"><?php echo  CoreTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 	</div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

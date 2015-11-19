@@ -15,7 +15,7 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
     	
     	<div class="page-header">
 			<h1>
-			<?= SuTranslator::Supplies_configuration($lang) ?>
+			<?php echo  SuTranslator::Supplies_configuration($lang) ?>
 			 <br> <small></small>
 			</h1>
 		</div>
@@ -24,7 +24,7 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
-			<?= SuTranslator::Install_Repair_database($lang) ?>
+			<?php echo  SuTranslator::Install_Repair_database($lang) ?>
 				<br> <small></small>
 			</h2>
 		</div>
@@ -34,17 +34,17 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		
 		<?php if (isset($installError)): ?>
         <div class="alert alert-danger" role="alert">
-    	<p><?= $installError ?></p>
+    	<p><?php echo  $installError ?></p>
     	</div>
 		<?php endif; ?>
 		<?php if (isset($installSuccess)): ?>
         <div class="alert alert-success" role="alert">
-    	<p><?= $installSuccess ?></p>
+    	<p><?php echo  $installSuccess ?></p>
     	</div>
 		<?php endif; ?>
 		
 		<p>
-		<?= SuTranslator::Install_Txt($lang) ?>
+		<?php echo  SuTranslator::Install_Txt($lang) ?>
 		</p>
 		
 		<div class="col-xs-10">
@@ -53,7 +53,7 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		</div>
 
 		<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			<input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Install($lang) ?>" />
+			<input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Install($lang) ?>" />
 		</div>
       </form>   
       
@@ -61,7 +61,7 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
       <div>
 		  <div class="page-header">
 			<h2>
-			<?= SuTranslator::Activate_desactivate_menus($lang) ?>
+			<?php echo  SuTranslator::Activate_desactivate_menus($lang) ?>
 				<br> <small></small>
 			</h2>
 		  </div>
@@ -79,14 +79,14 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		    	$menuStatus = $menu["status"];
 		    ?>
 		    <div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::MenuItem($menuName, $lang) ?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::MenuItem($menuName, $lang) ?></label>
 				<div class="col-xs-6">
 					<select class="form-control" name="menus[]">
-						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::disable($lang) ?> </OPTION>
-						<OPTION value="1" <?php if($menuStatus==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::disable($lang) ?> </OPTION>
+						<OPTION value="1" <?php if($menuStatus==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 					</select>
 				</div>
 			</div>
@@ -102,7 +102,7 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
       <div>
 		<div class="page-header">
 		  <h2>
-		  <?= SuTranslator::Bill_template($lang) ?>
+		  <?php echo  SuTranslator::Bill_template($lang) ?>
 			<br> <small></small>
 		  </h2>
 		</div>
@@ -121,7 +121,7 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 				<?php 
 				    
 				}?>
-					<p><?= $templateMessage ?></p>
+					<p><?php echo  $templateMessage ?></p>
 					</div>
 					<?php 
 			}
@@ -139,14 +139,14 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
       <div class="form-group">
           <div class="col-md-10">
           <p>
-          <?= SuTranslator::Bill_template_txt($lang); ?>
+          <?php echo  SuTranslator::Bill_template_txt($lang); ?>
           </p>
     	
     	  <input type="file" name="fileToUpload" id="fileToUpload">
         </div>
       </div>
       <div class="col-xs-2 col-xs-offset-10" id="button-div">
-    	<input class="btn btn-primary" type="submit" value="<?= SuTranslator::Upload($lang) ?>" name="submit">
+    	<input class="btn btn-primary" type="submit" value="<?php echo  SuTranslator::Upload($lang) ?>" name="submit">
       </div>
       </div>
 	  </form>   
@@ -161,12 +161,12 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
     
       <div class="page-header">
 		  <h2>
-		  <?= SuTranslator::Users_database($lang); ?>
+		  <?php echo  SuTranslator::Users_database($lang); ?>
 			<br> <small></small>
 		  </h2>
 		</div>
       <div class="form-group col-xs-12">
-	  	<label for="inputEmail" class="control-label col-xs-4"><?= SuTranslator::Users_database($lang) ?></label>
+	  	<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Users_database($lang) ?></label>
 			<div class="col-xs-6">
 				<select class="form-control" name="supliesusersdatabase">
 					<OPTION value="local" <?php if($supliesusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
@@ -183,7 +183,7 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
       <div class="col-xs-12">
 		  <div class="page-header">
 			<h2>
-				<?= CoreTranslator::menu_color($lang) ?> <br> <small></small>
+				<?php echo  CoreTranslator::menu_color($lang) ?> <br> <small></small>
 			</h2>
 		  </div>
 		
@@ -196,22 +196,22 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		    </div>
 		    
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::color($lang) ?> #</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::color($lang) ?> #</label>
 			<div class="col-xs-6">
-				<input class="form-control" id="suppliesmenucolor" type="text" name="suppliesmenucolor" value="<?= $this->clean($suppliesmenucolor) ?>"
+				<input class="form-control" id="suppliesmenucolor" type="text" name="suppliesmenucolor" value="<?php echo  $this->clean($suppliesmenucolor) ?>"
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::text_color($lang) ?> #</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::text_color($lang) ?> #</label>
 			<div class="col-xs-6">
-				<input class="form-control" id="suppliesmenucolortxt" type="text" name="suppliesmenucolortxt" value="<?= $this->clean($suppliesmenucolortxt) ?>"
+				<input class="form-control" id="suppliesmenucolortxt" type="text" name="suppliesmenucolortxt" value="<?php echo  $this->clean($suppliesmenucolortxt) ?>"
 				/>
 			</div>
 		</div>
 		  
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+			  <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
 		    </div>
 		  </form>
       </div>
@@ -219,5 +219,5 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 </div>    
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

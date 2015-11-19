@@ -105,12 +105,12 @@ if (isset($_SESSION["user_settings"]["language"])){
 		
 		<?php if (isset($installError)): ?>
         <div class="alert alert-danger" role="alert">
-    	<p><?= $installError ?></p>
+    	<p><?php echo  $installError ?></p>
     	</div>
 		<?php endif; ?>
 		<?php if (isset($installSuccess)): ?>
         <div class="alert alert-success" role="alert">
-    	<p><?= $installSuccess ?></p>
+    	<p><?php echo  $installSuccess ?></p>
     	</div>
 		<?php endif; ?>
 		
@@ -154,25 +154,25 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    	$menuStatus = $menu["status"];
 		    ?>
 		    <div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4"><?=$menuName?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo $menuName?></label>
 				<div class="col-xs-6">
 					<select class="form-control" name="menus[]">
-						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::disable($lang) ?> </OPTION>
-						<OPTION value="1" <?php if($menuStatus==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::disable($lang) ?> </OPTION>
+						<OPTION value="1" <?php if($menuStatus==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 					</select>
 				</div>
 			</div>
 			<?php }?>
 			
 			<div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Authorisations_menu_location($lang)?></label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Authorisations_menu_location($lang)?></label>
 				<div class="col-xs-6">
 					<select class="form-control" name="authorisations_location">
 						<OPTION value="1" <?php if($authorisations_location==1){echo "selected=\"selected\"";} ?> > SyGRRif </OPTION>
-						<OPTION value="2" <?php if($authorisations_location==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::Users_Institutions($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($authorisations_location==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::Users_Institutions($lang) ?> </OPTION>
 					</select>
 				</div>
 			</div>
@@ -206,7 +206,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<?php 
 				    
 				}?>
-					<p><?= $templateMessage ?></p>
+					<p><?php echo  $templateMessage ?></p>
 					</div>
 					<?php 
 			}
@@ -248,7 +248,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  	if ($bookingOptionMessage != ""){
 		  		?>
 		  		<div class="alert alert-info">	  
-		  		<p><?= $bookingOptionMessage ?></p>
+		  		<p><?php echo  $bookingOptionMessage ?></p>
 		  		</div>
 		  		<?php 
 		  	}
@@ -294,7 +294,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 						$selected = "selected=\"selected\"";
 					}
 					?>
-					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<OPTION value="<?php echo  $j+1 ?>" <?php echo  $selected ?>> position <?php echo  $j+1 ?> </OPTION>
 					<?php 				
 				}
 				?>
@@ -332,7 +332,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 						$selected = "selected=\"selected\"";
 					}
 					?>
-					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<OPTION value="<?php echo  $j+1 ?>" <?php echo  $selected ?>> position <?php echo  $j+1 ?> </OPTION>
 					<?php 				
 				}
 				?>
@@ -371,7 +371,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 						$selected = "selected=\"selected\"";
 					}
 					?>
-					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<OPTION value="<?php echo  $j+1 ?>" <?php echo  $selected ?>> position <?php echo  $j+1 ?> </OPTION>
 					<?php 				
 				}
 				?>
@@ -409,7 +409,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 						$selected = "selected=\"selected\"";
 					}
 					?>
-					<OPTION value="<?= $j+1 ?>" <?= $selected ?>> position <?= $j+1 ?> </OPTION>
+					<OPTION value="<?php echo  $j+1 ?>" <?php echo  $selected ?>> position <?php echo  $j+1 ?> </OPTION>
 					<?php 				
 				}
 				?>
@@ -472,7 +472,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 							<tr>
 								<td><input type="checkbox" name="chk" /></td>
 								<td>
-									<input class="form-control" type="text" name="name[]" value="<?=$calsup["name"]?>" />
+									<input class="form-control" type="text" name="name[]" value="<?php echo $calsup["name"]?>" />
 								</td>
 								<td>
 									<select class="form-control" name="ismandatory[]">
@@ -629,7 +629,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div class="col-xs-12">
 		  <div class="page-header">
 			<h2>
-				<?= CoreTranslator::menu_color($lang) ?> <br> <small></small>
+				<?php echo  CoreTranslator::menu_color($lang) ?> <br> <small></small>
 			</h2>
 		  </div>
 		
@@ -642,22 +642,22 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    </div>
 		    
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::color($lang) ?> #</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::color($lang) ?> #</label>
 			<div class="col-xs-6">
-				<input class="form-control" id="coremenucolor" type="text" name="sygrrifmenucolor" value="<?= $this->clean($sygrrifmenucolor) ?>"
+				<input class="form-control" id="coremenucolor" type="text" name="sygrrifmenucolor" value="<?php echo  $this->clean($sygrrifmenucolor) ?>"
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= CoreTranslator::text_color($lang) ?> #</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::text_color($lang) ?> #</label>
 			<div class="col-xs-6">
-				<input class="form-control" id="coremenucolor" type="text" name="sygrrifmenucolortxt" value="<?= $this->clean($sygrrifmenucolortxt) ?>"
+				<input class="form-control" id="coremenucolor" type="text" name="sygrrifmenucolortxt" value="<?php echo  $this->clean($sygrrifmenucolortxt) ?>"
 				/>
 			</div>
 		</div>
 		  
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+			  <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
 		    </div>
 		  </form>
       </div>
@@ -679,7 +679,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       <div class="form-group col-xs-12">
 			<label for="inputEmail" class="control-label col-xs-4">edit reservation link</label>
 			<div class="col-xs-6">
-    	  	<input class="form-control" type="text" name="resalink" id="resalink" value="<?=$sygrrifEditReservation?>">
+    	  	<input class="form-control" type="text" name="resalink" id="resalink" value="<?php echo $sygrrifEditReservation?>">
         </div>
       </div>
       <div class="col-xs-2 col-xs-offset-10" id="button-div">
@@ -691,5 +691,5 @@ if (isset($_SESSION["user_settings"]["language"])){
 </div>    
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

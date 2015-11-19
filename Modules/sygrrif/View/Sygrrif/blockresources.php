@@ -25,7 +25,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::block_resources($lang) ?>
+			<?php echo  SyTranslator::block_resources($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -34,13 +34,13 @@
 			<?php if ($errormessage != ""){
 				?>
 				<div class="alert alert-danger text-center">
-					<p><?= $errormessage ?></p>
+					<p><?php echo  $errormessage ?></p>
 		    	</div>
 			<?php } ?>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Short_description($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Short_description($lang)?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="short_description"
 				       value=""
@@ -48,13 +48,13 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Resources($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Resources($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="resources[]" size="10" multiple="multiple">
 					<?php 
 					foreach ($resources as $resource){
 						?>
-						<option value="<?= $resource["id"] ?>"><?= $resource["name"] ?></option>
+						<option value="<?php echo  $resource["id"] ?>"><?php echo  $resource["name"] ?></option>
 						<?php
 					}
 					?>
@@ -63,9 +63,9 @@
 		</div>
 		
 		<div class="form-group">
-		<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Beginning_of_the_reservation($lang)?>:</label>
+		<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Beginning_of_the_reservation($lang)?>:</label>
 			<div class="col-xs-8">
-				<div class='input-group date form_date_<?= $lang ?>'>
+				<div class='input-group date form_date_<?php echo  $lang ?>'>
 					<input type='text' class="form-control" name="begin_date"
 					       value=""/>
 					<span class="input-group-addon">
@@ -78,7 +78,7 @@
 			<div class="col-xs-8 col-xs-offset-4">
 				<!-- time -->
 				
-				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::time($lang)?>:</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::time($lang)?>:</label>
 				
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="begin_hour"
@@ -97,9 +97,9 @@
 		</div>
 		
 		<div class="form-group">
-		<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::End_of_the_reservation($lang)?>:</label>
+		<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::End_of_the_reservation($lang)?>:</label>
 			<div class="col-xs-8">
-				<div class='input-group date form_date_<?= $lang ?>'>
+				<div class='input-group date form_date_<?php echo  $lang ?>'>
 					<input type='text' class="form-control" name="end_date"
 					       value=""/>
 					<span class="input-group-addon">
@@ -112,7 +112,7 @@
 			<div class="col-xs-8 col-xs-offset-4">
 				<!-- time -->
 				
-				<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::time($lang)?>:</label>
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::time($lang)?>:</label>
 				
 				<div class="col-xs-3">
 				<input class="form-control" id="name" type="text" name="end_hour"
@@ -132,9 +132,9 @@
 		
 				<!-- color code -->
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?=SyTranslator::Color_code($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Color_code($lang)?></label>
 			<div class="col-xs-8">
-			<select class="form-control" name="color_code_id" <?=$readOnlyGlobal?>>
+			<select class="form-control" name="color_code_id" <?php echo $readOnlyGlobal?>>
 			<?php 
 			$colorID = 1;
 			foreach ($colorCodes as $colorCode){
@@ -145,7 +145,7 @@
 					$selected = "selected=\"selected\"";
 				}
 				?>
-				<OPTION value="<?= $codeID ?>" <?= $selected ?>> <?= $codeName?> </OPTION>
+				<OPTION value="<?php echo  $codeID ?>" <?php echo  $selected ?>> <?php echo  $codeName?> </OPTION>
 				<?php 
 			}
 			?>
@@ -155,8 +155,8 @@
 		
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -165,5 +165,5 @@
 <?php include "Modules/core/View/timepicker_script.php"?>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

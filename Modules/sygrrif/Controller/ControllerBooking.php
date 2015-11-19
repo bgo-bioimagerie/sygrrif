@@ -11,6 +11,9 @@ require_once 'Modules/sygrrif/Model/SyAuthorization.php';
  */
 abstract class ControllerBooking extends ControllerSecureNav {
 
+	/**
+	 * Construct
+	 */
 	public function __construct() {
 	}
 	

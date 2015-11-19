@@ -24,7 +24,7 @@ function drawAgenda($mois, $annee, $entries, $resourceBase){
 	<div class="col-lg-12">
 
 	<!-- 
-	<caption><?= $mois_fr[$mois] . " " . $annee ?></caption>
+	<caption><?php echo  $mois_fr[$mois] . " " . $annee ?></caption>
 	 -->
 	 
 	<table class="tableau">
@@ -36,16 +36,16 @@ function drawAgenda($mois, $annee, $entries, $resourceBase){
 		<button type="button" onclick="location.href='calendar/bookmonth/thisMonth'" class="btn btn-default"> This month </button>
 	</div>
 	<div class="col-md-4">
-		<p ><strong> <?= $mois_fr[$mois] . " " . $annee ?></strong></p>
+		<p ><strong> <?php echo  $mois_fr[$mois] . " " . $annee ?></strong></p>
 		
-		<p ><strong> <?= $resourceBase["name"] ?></strong></p>
+		<p ><strong> <?php echo  $resourceBase["name"] ?></strong></p>
 	</div>
 	<div class="col-md-5" style="text-align: right;">	
-		<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?= SyTranslator::Day($lang) ?></button>
-		<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?= SyTranslator::Day_Area($lang) ?></button>
-		<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default"><?= SyTranslator::Week($lang) ?></button>
-		<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?= SyTranslator::Week_Area($lang) ?></button>
-		<button type="button" class="btn btn-default active"><?= SyTranslator::Month($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookday'" class="btn btn-default"><?php echo  SyTranslator::Day($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?php echo  SyTranslator::Day_Area($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default"><?php echo  SyTranslator::Week($lang) ?></button>
+		<button type="button" onclick="location.href='calendar/bookweekarea'" class="btn btn-default "><?php echo  SyTranslator::Week_Area($lang) ?></button>
+		<button type="button" class="btn btn-default active"><?php echo  SyTranslator::Month($lang) ?></button>
 	</div>
 	</div>
 	</caption>
@@ -66,7 +66,7 @@ function drawAgenda($mois, $annee, $entries, $resourceBase){
 		echo "<td>";
 	
 		?>
-		<div style="text-align:right; font-size:12px; color:#999999;"> <?= $i ?> </div>
+		<div style="text-align:right; font-size:12px; color:#999999;"> <?php echo  $i ?> </div>
 		<?php 
 		$found = false;
 		$modelBookingSetting = new SyBookingSettings();
@@ -87,13 +87,13 @@ function drawAgenda($mois, $annee, $entries, $resourceBase){
 					$shortDescription = $moduleProject->getProjectName($entry['short_description']);
 				}
 				?>
-				<a href="calendar/editreservation/r_<?=$entry["id"] ?>">
+				<a href="calendar/editreservation/r_<?php echo $entry["id"] ?>">
 				
-				<div style="background-color: #<?=$entry["color_bg"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
-				<p style="border-bottom: thin solid #e1e1e1; font-size:12px; color:#<?=$entry["color_text"]?>;" >
-				 <?= date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) ?></p>
+				<div style="background-color: #<?php echo $entry["color_bg"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
+				<p style="border-bottom: thin solid #e1e1e1; font-size:12px; color:#<?php echo $entry["color_text"]?>;" >
+				 <?php echo  date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) ?></p>
 				 <?php $text = $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'], $shortDescription, $entry['full_description'], true); ?>
-				<p style="font-size:12px; color:#<?=$entry["color_text"]?>;"><?= $text ?></p>
+				<p style="font-size:12px; color:#<?php echo $entry["color_text"]?>;"><?php echo  $text ?></p>
 				</div>
 				</a>
 				<?php

@@ -27,12 +27,12 @@ $lang = $lang["language"];
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h2><?= CoreTranslator::Projects($lang) ?> </h2>
+		<h2><?php echo  CoreTranslator::Projects($lang) ?> </h2>
 		<div class="col-md-9 col-md-offset-3">
 		
 				<div class="col-md-12">
-				    <button onclick="location.href='projects/index'" class="btn btn-link" id="navlink"><?= CoreTranslator::Projects($lang) ?></button>
-					<button onclick="location.href='projects/add'" class="btn btn-link" id="navlink"><?= CoreTranslator::Add_project($lang) ?></button>
+				    <button onclick="location.href='projects/index'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Projects($lang) ?></button>
+					<button onclick="location.href='projects/add'" class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add_project($lang) ?></button>
 				</div>
 		</div>
 	</div>

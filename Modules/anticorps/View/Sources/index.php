@@ -32,10 +32,10 @@
 				<?php foreach ( $sources as $source ) : ?> 
 				<tr>
 					<?php $sourceId = $this->clean ( $source ['id'] ); ?>
-					<td><?= $sourceId ?></td>
-				    <td><?= $this->clean ( $source ['nom'] ); ?></td>
+					<td><?php echo  $sourceId ?></td>
+				    <td><?php echo  $this->clean ( $source ['nom'] ); ?></td>
 				    <td class="text-center">
-				      <button type='button' onclick="location.href='sources/edit/<?= $sourceId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='sources/edit/<?php echo  $sourceId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -47,5 +47,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

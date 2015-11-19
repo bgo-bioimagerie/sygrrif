@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Database" ?>
+<?php $this->title = "Pltaform-Manager" ?>
 
 <?php echo $navBar ?>
 
@@ -46,7 +46,7 @@ if (isset($_SESSION["user_settings"]["language"])){
       
       	<div class="page-header">
 			<h2>
-			<?= CoreTranslator::Tools($lang) ?>
+			<?php echo  CoreTranslator::Tools($lang) ?>
 				<br> <small></small>
 			</h2>
 		</div>
@@ -59,9 +59,9 @@ if (isset($_SESSION["user_settings"]["language"])){
        		$icon = $tool['icon'];
        		?>
        		<li>
-        		<a href="<?=$key?>">
-          			<span class="glyphicon <?=$icon?>" aria-hidden="true"></span>
-          			<span class="glyphicon-class"><?=CoreTranslator::MenuItem($value, $lang)?></span>
+        		<a href="<?php echo $key?>">
+          			<span class="glyphicon <?php echo $icon?>" aria-hidden="true"></span>
+          			<span class="glyphicon-class"><?php echo CoreTranslator::MenuItem($value, $lang)?></span>
         		</a>
         	</li>
         	<?php 
@@ -77,7 +77,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		?>
 		<div class="page-header">
 			<h2>
-			<?= CoreTranslator::Admin($lang) ?>
+			<?php echo  CoreTranslator::Admin($lang) ?>
 			<br>
 			</h2>
 		</div>
@@ -90,9 +90,9 @@ if (isset($_SESSION["user_settings"]["language"])){
         	$icon = $tool['icon'];
         	?>
         	<li>
-        		<a href="<?=$key?>">
-        	    	<span class="glyphicon <?=$icon?>" aria-hidden="true"></span>
-        	   		<span class="glyphicon-class"><?=$value?></span>
+        		<a href="<?php echo $key?>">
+        	    	<span class="glyphicon <?php echo $icon?>" aria-hidden="true"></span>
+        	   		<span class="glyphicon-class"><?php echo $value?></span>
         		</a>
         	</li>
         <?php 
@@ -110,5 +110,5 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -19,7 +19,7 @@ $lang = "En";
 		
 		<div class="page-header">
 			<h1>
-			<?= MailerTranslator::Send_email($lang) ?>
+			<?php echo  MailerTranslator::Send_email($lang) ?>
 			<br> <small></small>
 			</h1>
 		</div>
@@ -29,7 +29,7 @@ $lang = "En";
 		</div>
 		
 		<div class="col-lg-2 col-lg-offset-10">
-		<button type="button" onclick="location.href='mailer'" class="btn btn-default"><?= CoreTranslator::Ok($lang)?></button>
+		<button type="button" onclick="location.href='mailer'" class="btn btn-default"><?php echo  CoreTranslator::Ok($lang)?></button>
 		</div>
      </div>
 </div>

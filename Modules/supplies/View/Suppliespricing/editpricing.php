@@ -25,7 +25,7 @@
 	
 		<div class="page-header">
 			<h1>
-			<?= SuTranslator::Edit_pricing($lang) ?>
+			<?php echo  SuTranslator::Edit_pricing($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -33,26 +33,26 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2">ID</label>
 			<div class="col-xs-10">
-				<input class="form-control" id="id" type="text" name="id" value="<?= $this->clean($pricing['id'])?>" readonly
+				<input class="form-control" id="id" type="text" name="id" value="<?php echo  $this->clean($pricing['id'])?>" readonly
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?= CoreTranslator::Name($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name" value="<?= $this->clean($pricing['tarif_name'])?>"
+				<input class="form-control" id="name" type="text" name="name" value="<?php echo  $this->clean($pricing['tarif_name'])?>"
 				/>
 			</div>
 		</div>
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='suppliespricing'" class="btn btn-default" id="navlink"><?= CoreTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='suppliespricing'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

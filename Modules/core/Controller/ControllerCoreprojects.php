@@ -8,7 +8,7 @@ require_once 'Modules/core/Model/CoreProject.php';
  * @author sprigent
  * Project database (extend this class if you need a project module)
  */
-class ControllerProjects extends ControllerSecureNav {
+class ControllerCoreprojects extends ControllerSecureNav {
 	
 	/**
 	 * User model object

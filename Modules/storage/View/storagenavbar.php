@@ -49,14 +49,14 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<!-- <h2><?= CoreTranslator::Users_Institutions($lang) ?></h2>  -->
+		<!-- <h2><?php echo  CoreTranslator::Users_Institutions($lang) ?></h2>  -->
 		
 		
 		<div class='col-md-4 well'>
 			<fieldset>
-					<button onclick="location.href='storage/index'" class="btn btn-link" id="navlink"><?= StTranslator::MyAccount($lang) ?> </button>
+					<button onclick="location.href='storage/index'" class="btn btn-link" id="navlink"><?php echo  StTranslator::MyAccount($lang) ?> </button>
 				<br/>
-					<button onclick="location.href='storage/usersquotas'" class="btn btn-link" id="navlink"><?= StTranslator::Users_quotas($lang) ?></button>
+					<button onclick="location.href='storage/usersquotas'" class="btn btn-link" id="navlink"><?php echo  StTranslator::Users_quotas($lang) ?></button>
 			</fieldset>
 		</div>
 		

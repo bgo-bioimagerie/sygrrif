@@ -89,7 +89,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 <div class="col-xs-10">
     	<div class="page-header">
 			<h1>
-				<?= ShTranslator::Edit_template($lang) ?> <br> <small></small>
+				<?php echo  ShTranslator::Edit_template($lang) ?> <br> <small></small>
 			</h1>
 		</div>
  
@@ -102,13 +102,13 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    <div class="col-xs-12">
 		    
 		      <?php if(isset($id)){ ?>
-		      <input class="form-control" type="hidden" name="id" value="<?= $id ?>"
+		      <input class="form-control" type="hidden" name="id" value="<?php echo  $id ?>"
 			 	/>	
 			  <?php } ?>
 		      <div class="form-group">
 				  <label for="inputEmail" class="control-label col-xs-1">Name</label>
 				  <div class="col-xs-11">
-			  	  	<input class="form-control" type="text" name="name" value="<?= $name ?>" />
+			  	  	<input class="form-control" type="text" name="name" value="<?php echo  $name ?>" />
 			  	  </div>
 		    </div>
 		    </div>	
@@ -136,47 +136,47 @@ if (isset($_SESSION["user_settings"]["language"])){
 							?>
 							<tr>
 								<td><input type="checkbox" name="chk" /></td>
-								<td><input class="form-control" type="hidden" name="id_element[]" value="<?= $item["id"] ?>" /></td>
+								<td><input class="form-control" type="hidden" name="id_element[]" value="<?php echo  $item["id"] ?>" /></td>
 								<td>
 								<select class="form-control" name="id_element_type[]">
 								<?php 
 								for($t = 0 ; $t < count($itemstypes) ; $t++){
 									?>
-									<OPTION value="<?=$itemstypes[$t]["id"]?>" <?php if($item["id_element_type"]==$itemstypes[$t]["id"]){echo "selected=\"selected\"";} ?> > <?= $itemstypes[$t]["name"]?> </OPTION>
+									<OPTION value="<?php echo $itemstypes[$t]["id"]?>" <?php if($item["id_element_type"]==$itemstypes[$t]["id"]){echo "selected=\"selected\"";} ?> > <?php echo  $itemstypes[$t]["name"]?> </OPTION>
 									<?php							
 								}							    
 								?>
 								</select>
 								</td>
-								<td><input class="form-control" type="text" name="caption[]" value="<?= $item["caption"] ?>" /></td>
-								<td><input class="form-control" type="text" name="default_values[]" value="<?= $item["default_values"] ?>" /></td>
-								<td><input class="form-control" type="number" name="display_order[]" value="<?= $item["display_order"] ?>" /></td>
+								<td><input class="form-control" type="text" name="caption[]" value="<?php echo  $item["caption"] ?>" /></td>
+								<td><input class="form-control" type="text" name="default_values[]" value="<?php echo  $item["default_values"] ?>" /></td>
+								<td><input class="form-control" type="number" name="display_order[]" value="<?php echo  $item["display_order"] ?>" /></td>
 								<td>
 								<select class="form-control" name="mandatory[]">
-									<OPTION value="0" <?php if($item["mandatory"]==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::No($lang)?> </OPTION>
-									<OPTION value="1" <?php if($item["mandatory"]==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::yes($lang)?> </OPTION>
+									<OPTION value="0" <?php if($item["mandatory"]==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::No($lang)?> </OPTION>
+									<OPTION value="1" <?php if($item["mandatory"]==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::yes($lang)?> </OPTION>
 								</select>
 								</td>
 								<td>
 								<select class="form-control" name="who_can_modify[]">
-									<OPTION value="1" <?php if($item["who_can_modify"]==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-									<OPTION value="2" <?php if($item["who_can_modify"]==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-									<OPTION value="3" <?php if($item["who_can_modify"]==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-									<OPTION value="4" <?php if($item["who_can_modify"]==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+									<OPTION value="1" <?php if($item["who_can_modify"]==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+									<OPTION value="2" <?php if($item["who_can_modify"]==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+									<OPTION value="3" <?php if($item["who_can_modify"]==3){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+									<OPTION value="4" <?php if($item["who_can_modify"]==4){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 								</select>
 								</td>
 								<td>
 								<select class="form-control" name="who_can_see[]">
-									<OPTION value="1" <?php if($item["who_can_see"]==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-									<OPTION value="2" <?php if($item["who_can_see"]==2){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-									<OPTION value="3" <?php if($item["who_can_see"]==3){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-									<OPTION value="4" <?php if($item["who_can_see"]==4){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+									<OPTION value="1" <?php if($item["who_can_see"]==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+									<OPTION value="2" <?php if($item["who_can_see"]==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+									<OPTION value="3" <?php if($item["who_can_see"]==3){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+									<OPTION value="4" <?php if($item["who_can_see"]==4){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 								</select>
 								</td>
 								<td>
 								<select class="form-control" name="add_to_summary[]">
-									<OPTION value="0" <?php if($item["add_to_summary"]==0){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::No($lang)?> </OPTION>
-									<OPTION value="1" <?php if($item["add_to_summary"]==1){echo "selected=\"selected\"";} ?> > <?= CoreTranslator::yes($lang)?> </OPTION>
+									<OPTION value="0" <?php if($item["add_to_summary"]==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::No($lang)?> </OPTION>
+									<OPTION value="1" <?php if($item["add_to_summary"]==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::yes($lang)?> </OPTION>
 								</select>
 								</td>
 							</tr>
@@ -193,7 +193,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 								    <?php 
 								    foreach($itemstypes as $type){
 								    	?>
-								    	<OPTION value="<?=$type["id"]?>"> <?= $type["name"] ?></OPTION>
+								    	<OPTION value="<?php echo $type["id"]?>"> <?php echo  $type["name"] ?></OPTION>
 								    <?php 
 								    }								    
 								    ?>	
@@ -204,24 +204,24 @@ if (isset($_SESSION["user_settings"]["language"])){
 								<td><input class="form-control" type="number" name="display_order[]" /></td>
 								<td>
 								<select class="form-control" name="mandatory[]">
-									<OPTION value="0" > <?= CoreTranslator::No($lang)?></OPTION>
-									<OPTION value="1" > <?= CoreTranslator::yes($lang)?> </OPTION>
+									<OPTION value="0" > <?php echo  CoreTranslator::No($lang)?></OPTION>
+									<OPTION value="1" > <?php echo  CoreTranslator::yes($lang)?> </OPTION>
 								</select>
 								</td>
 								<td>
 								<select class="form-control" name="who_can_modify[]">
-									<OPTION value="1" > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-									<OPTION value="2" > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-									<OPTION value="3" > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-									<OPTION value="4" > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+									<OPTION value="1" > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+									<OPTION value="2" > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+									<OPTION value="3" > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+									<OPTION value="4" > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 								</select>
 								</td>
 								<td>
 								<select class="form-control" name="who_can_see[]">
-									<OPTION value="1" > <?= CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
-									<OPTION value="2" > <?= CoreTranslator::enable_for_users($lang) ?> </OPTION>
-									<OPTION value="3" > <?= CoreTranslator::enable_for_manager($lang) ?> </OPTION>
-									<OPTION value="4" > <?= CoreTranslator::enable_for_admin($lang) ?> </OPTION>
+									<OPTION value="1" > <?php echo  CoreTranslator::enable_for_visitors($lang) ?> </OPTION>
+									<OPTION value="2" > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
+									<OPTION value="3" > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
+									<OPTION value="4" > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
 								</select>
 								</td>
 							</tr>
@@ -240,7 +240,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</div>	
 		  
 		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="<?= CoreTranslator::Save($lang) ?>" />
+			  <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
 		    </div>
 		  </form>
       </div>
@@ -249,5 +249,5 @@ if (isset($_SESSION["user_settings"]["language"])){
 </div>    
 
 <?php if (isset($msgError)): ?>
-    <p><?= $msgError ?></p>
+    <p><?php echo  $msgError ?></p>
 <?php endif; ?>

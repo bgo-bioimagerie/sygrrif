@@ -9,7 +9,7 @@
 	
 		<div class="page-header">
 			<h1>
-				<?= SyTranslator::Resource_categories($lang)?>
+				<?php echo  SyTranslator::Resource_categories($lang)?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -18,7 +18,7 @@
 			<thead>
 				<tr>
 					<th><a href="sygrrif/resourcescategory/id">ID</a></th>
-					<th><a href="sygrrif/resourcescategory/name"><?= SyTranslator::Name($lang) ?></a></th>
+					<th><a href="sygrrif/resourcescategory/name"><?php echo  SyTranslator::Name($lang) ?></a></th>
 					<th></th>
 				</tr>
 			</thead>
@@ -27,10 +27,10 @@
 				<?php $categoryId = $this->clean ( $category ['id'] ); 
 				?> 
 				<tr>
-					<td><?= $categoryId ?></td>
-				    <td><?= $this->clean ( $category ['name'] ); ?></td>
+					<td><?php echo  $categoryId ?></td>
+				    <td><?php echo  $this->clean ( $category ['name'] ); ?></td>
 				    <td class="text-center">
-				      <button type='button' onclick="location.href='sygrrif/editresourcescategory/<?= $categoryId ?>'" class="btn btn-xs btn-primary" id="navlink"><?= SyTranslator::Edit($lang) ?></button>
+				      <button type='button' onclick="location.href='sygrrif/editresourcescategory/<?php echo  $categoryId ?>'" class="btn btn-xs btn-primary" id="navlink"><?php echo  SyTranslator::Edit($lang) ?></button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
@@ -42,5 +42,5 @@
 </div>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>

@@ -19,7 +19,7 @@ $modelCoreConfig = new CoreConfig();
 $authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
 
 if ($authorisations_location == 2){
-	include "../../../core/View/usersnavbar.php";
+	include "Modules/core/View/usersnavbar.php";
 }
 else{
 	include "Modules/sygrrif/View/navbar.php"; 
@@ -35,7 +35,7 @@ else{
 	
 		<div class="page-header">
 			<h1>
-			<?= SyTranslator::Edit_Authorization($lang) ?>
+			<?php echo  SyTranslator::Edit_Authorization($lang) ?>
 				 <br> <small></small>
 			</h1>
 		</div>
@@ -43,13 +43,13 @@ else{
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4">ID</label>
 			<div class="col-xs-8">
-				<input class="form-control" id="id" type="text" name="id" value="<?= $this->clean($authorization['id'])?>" readonly
+				<input class="form-control" id="id" type="text" name="id" value="<?php echo  $this->clean($authorization['id'])?>" readonly
 				/>
 			</div>
 		</div>
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::User($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::User($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="user_id">
 					<?php 
@@ -62,14 +62,14 @@ else{
 					          	$checked = "selected=\"selected\"";
 					          }
 					    ?>
-						<OPTION value="<?= $userId ?>" <?= $checked ?>> <?= $username ?> </OPTION>
+						<OPTION value="<?php echo  $userId ?>" <?php echo  $checked ?>> <?php echo  $username ?> </OPTION>
 					<?php } ?>
 				</select>
 			</div>
 		</div>
 
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Unit_at_the_authorization_date_time($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Unit_at_the_authorization_date_time($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="unit_id">
 					<?php 
@@ -82,18 +82,18 @@ else{
 					          	$checked = "selected=\"selected\"";
 					          }
 					    ?>
-						<OPTION value="<?= $unitId ?>" <?= $checked ?>> <?= $unitname ?> </OPTION>
+						<OPTION value="<?php echo  $unitId ?>" <?php echo  $checked ?>> <?php echo  $unitname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 
-		<div class="form-group ">
-				<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Training_date($lang)?></label>
+		<div class="form-group">
+				<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Training_date($lang)?></label>
 				<div class="col-xs-8">
-				<div class='input-group date form_date_<?= $lang ?>' >
+				<div class='input-group date form_date_<?php echo  $lang ?>' >
 					<input type='text' class="form-control" name="date"
-					       value="<?= CoreTranslator::dateFromEn($this->clean($authorization['date']), $lang)  ?>"/>
+					       value="<?php echo  CoreTranslator::dateFromEn($this->clean($authorization['date']), $lang)  ?>"/>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -101,7 +101,7 @@ else{
 		    </div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Visa($lang)?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Visa($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="visa_id">
 					<?php 
@@ -114,13 +114,13 @@ else{
 					          	$checked = "selected=\"selected\"";
 					          }
 					    ?>
-						<OPTION value="<?= $visaId ?>" <?= $checked ?> > <?= $visaname ?> </OPTION>
+						<OPTION value="<?php echo  $visaId ?>" <?php echo  $checked ?> > <?php echo  $visaname ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Resource($lang) ?></label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Resource($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="resource_id">
 					<?php 
@@ -133,7 +133,7 @@ else{
 					          	$checked = "selected=\"selected\"";
 					          }
 					    ?>
-						<OPTION value="<?= $resourceId ?>" <?= $checked ?>> <?= $resourcename ?> </OPTION>
+						<OPTION value="<?php echo  $resourceId ?>" <?php echo  $checked ?>> <?php echo  $resourcename ?> </OPTION>
 					<?php endforeach; ?>
 				</select>
 			</div>
@@ -141,22 +141,22 @@ else{
 		
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?= SyTranslator::Is_active($lang) ?> </label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Is_active($lang) ?> </label>
 			<div class="col-xs-8">
 				<select class="form-control" name="is_active">
 				<?php 
 				$is_active = $this->clean($authorization['is_active']);
 				?>
-				<OPTION value="1" <?php if ($is_active == 1){echo "selected=\"selected\"";} ?>> <?= SyTranslator::Yes($lang)?> </OPTION>
-				<OPTION value="0" <?php if ($is_active == 0){echo "selected=\"selected\"";} ?>> <?= SyTranslator::No($lang) ?> </OPTION>
+				<OPTION value="1" <?php if ($is_active == 1){echo "selected=\"selected\"";} ?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
+				<OPTION value="0" <?php if ($is_active == 0){echo "selected=\"selected\"";} ?>> <?php echo  SyTranslator::No($lang) ?> </OPTION>
 				</select>
 			</div>
 		</div>
 		
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?= SyTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif/authorizations'" class="btn btn-default" id="navlink"><?= SyTranslator::Cancel($lang) ?></button>
+		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
+				<button type="button" onclick="location.href='sygrrif/authorizations'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
@@ -165,5 +165,5 @@ else{
 <?php include 'Modules/core/View/timepicker_script.php'?>
 
 <?php if (isset($msgError)): ?>
-<p><?= $msgError ?></p>
+<p><?php echo  $msgError ?></p>
 <?php endif; ?>
