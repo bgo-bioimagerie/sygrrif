@@ -19,7 +19,7 @@
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/editresourcescategoryquery"
+	<form role="form" class="form-horizontal" action="sygrrifareasresources/editresourcescategoryquery"
 		method="post">
 	
 	
@@ -43,8 +43,7 @@
 		<br></br>
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
-		        <button type="button" onclick="location.href='<?php echo "sygrrif/deleteresourcecategory/".$this->clean($rc['id']) ?>'" class="btn btn-danger" id="navlink"><?php echo  SyTranslator::Delete($lang) ?></button>
-				<button type="button" onclick="location.href='sygrrif/resourcescategory'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources/resourcescategory'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

@@ -14,21 +14,13 @@
 </head>
 
 <?php
-$modelCoreConfig = new CoreConfig();
-$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
-
-if ($authorisations_location == 2){
-	include "../../../core/View/usersnavbar.php";
-}
-else{
-	include "Modules/sygrrif/View/navbar.php"; 
-}
+include "Modules/sygrrif/View/navbar.php"; 
 ?>
 
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/editvisaquery"
+	<form role="form" class="form-horizontal" action="sygrrifauthorisations/editvisaquery"
 		method="post">
 	
 	
@@ -56,10 +48,7 @@ else{
 		<br></br>
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
-		        <?php if ($this->clean($visa['id']) != ""){ ?>
-		        	<button type="button" onclick="location.href='<?php echo "sygrrif/deletevisa/".$this->clean($visa['id']) ?>'" class="btn btn-danger" id="navlink"><?php echo  SyTranslator::Delete($lang)?></button>
-				<?php } ?>
-				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifauthorisations/visa'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

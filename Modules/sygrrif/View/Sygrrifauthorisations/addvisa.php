@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF add a resources category"?>
+<?php $this->title = "SyGRRiF add VISA"?>
 
 <?php echo $navBar?>
 
@@ -19,13 +19,12 @@
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/addresourcescategoryquery"
+	<form role="form" class="form-horizontal" action="sygrrifauthorisations/addvisaquery"
 		method="post">
 	
 	
 		<div class="page-header">
-			<h1>
-			<?php echo  SyTranslator::Add_a_resources_category($lang) ?>
+			<h1> <?php echo  SyTranslator::Add_VISA($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -40,7 +39,7 @@
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif/resourcescategory'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifauthorisations/visa'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

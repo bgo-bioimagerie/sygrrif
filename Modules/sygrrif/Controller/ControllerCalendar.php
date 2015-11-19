@@ -257,10 +257,20 @@ class ControllerCalendar extends ControllerBooking {
 		$packageName = $this->request->getParameterNoException("pname");
 		$packageDuration = $this->request->getParameterNoException("pduration");
 		
+	// package
+		$packageID = $this->request->getParameterNoException("pid");
+		$packageName = $this->request->getParameterNoException("pname");
+		$packageDuration = $this->request->getParameterNoException("pduration");
+		
 		$modelPackage = new SyPackage();
 		$count = 0;
 		for( $p = 0 ; $p < count($packageID) ; $p++){
-			$package_id = $modelPackage->setPackage($packageID[$p], $id_resource, $packageName[$p], $packageDuration[$p]);
+			
+			$curentID = $packageID[$p];
+			if ($p != 0 && $curentID ==1){
+				$curentID = 0;
+			}
+			$package_id = $modelPackage->setPackage($curentID, $id_resource, $packageName[$p], $packageDuration[$p]);
 			
 			//echo "package id = " . $package_id . "<br/>";
 			
@@ -271,8 +281,7 @@ class ControllerCalendar extends ControllerBooking {
 			$count++;
 		}
 		
-		
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**
@@ -293,7 +302,7 @@ class ControllerCalendar extends ControllerBooking {
 		$modelResource = new SyResource();
 		$modelResource->delete($id_resource);
 		
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**
@@ -497,7 +506,7 @@ class ControllerCalendar extends ControllerBooking {
 			$modelResourcePricing->setPricing($id_resource, $pid, $priceDay, $price_night, $price_we);
 		}
 	
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**
@@ -783,7 +792,7 @@ class ControllerCalendar extends ControllerBooking {
 		}
 		
 		// view
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**

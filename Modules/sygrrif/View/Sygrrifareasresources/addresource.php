@@ -18,7 +18,7 @@
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/addresource"
+	<form role="form" class="form-horizontal" action="sygrrifareasresources/addresource"
 		method="post">
 		<div class="page-header">
 				<h1>
@@ -43,7 +43,7 @@
 		</div>
 		<br></br>
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
-		        <button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
+		        <button type="button" onclick="location.href='sygrrifareasresources/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Next($lang) ?>" />
 		</div>
 	</form>	

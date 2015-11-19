@@ -505,7 +505,7 @@
 		        <?php if ($this->clean($id) != ""){ ?>
 		        	<button type="button" onclick="location.href='<?php echo "calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
 				<?php } ?>
-				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
 		</div>
       </form>

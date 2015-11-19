@@ -4,6 +4,65 @@
 
 <?php include "Modules/sygrrif/View/navbar.php"; ?>
 
+<head>
+
+<link rel="stylesheet" href="externals/fixedHeaderTable/dataTables.bootstrap.css">
+<link rel="stylesheet" href="externals/fixedHeaderTable/dataTables.fixedHeader.css">
+    	
+<script src="externals/jquery-1.11.1.js"></script>
+<script src="externals/fixedHeaderTable/jquery.dataTables.js"></script>
+<script src="externals/fixedHeaderTable/dataTables.fixedHeader.min.js"></script>
+<script src="externals/fixedHeaderTable/dataTables.bootstrap.js"></script>
+    	
+<style>
+    div.FixedHeader_Cloned table { margin: 0 !important }
+    	
+    	table{
+    	
+    		white-space: nowrap;
+    	}
+    	
+    	thead tr{
+    		height: 100px;
+    	}
+    	
+    	thead th{
+    		vertical-align:bottom; text-align:center;
+    	}
+    	
+    	</style>
+    	
+    	<script>
+    	$(document).ready( function() {
+    	$('#dataTable').dataTable( {
+    	"aoColumns": [
+    	{ "bSearchable": true }
+    		{ "bSearchable": true }
+    			{ "bSearchable": true }
+    				{ "bSearchable": true }
+    					{ "bSearchable": true }
+    						{ "bSearchable": true }
+    							{ "bSearchable": true }
+        	
+    	],
+    	"lengthMenu": [[100, 200, 300, -1], [100, 200, 300, "All"]]
+    	}
+    	);
+    	} );
+    	</script>
+    	
+    	<script>
+    	$(document).ready(function() {
+    		var table = $('#dataTable').DataTable();
+    		new $.fn.dataTable.FixedHeader( table, {
+    			alwaysCloneTop: true
+    		});
+
+    	} );
+    	</script>
+    	
+    	</head>
+    	
 <br>
 <div class="contatiner">
 	<div class="col-md-6 col-md-offset-3">

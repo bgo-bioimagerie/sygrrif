@@ -19,7 +19,7 @@
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/addareaquery"
+	<form role="form" class="form-horizontal" action="sygrrifareasresources/addareaquery"
 		method="post">
 	
 	
@@ -63,18 +63,18 @@
 		</h1>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-5">Header background: #</label>
+			<label for="inputEmail" class="control-label col-xs-5">Header background:</label>
 			<div class="col-xs-7">
-				<input class="form-control" id="name" type="text" name="header_background"
-				       value="337ab7"  
+				<input class="form-control" id="name" type="color" name="header_background"
+				       value="#337ab7"  
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-5">Header color: #</label>
+			<label for="inputEmail" class="control-label col-xs-5">Header color: </label>
 			<div class="col-xs-7">
-				<input class="form-control" id="name" type="text" name="header_color"
-				       value="ffffff"  
+				<input class="form-control" id="name" type="color" name="header_color"
+				       value="#ffffff"  
 				/>
 			</div>
 		</div>
@@ -113,7 +113,7 @@
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='areas'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='areas'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

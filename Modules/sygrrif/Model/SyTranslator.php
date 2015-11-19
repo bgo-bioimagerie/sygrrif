@@ -130,6 +130,13 @@ class SyTranslator {
 		return "Export";
 	}
 	
+	public static function Export_stats($lang = ""){
+		if ($lang == "Fr"){
+			return "Export et statistiques";
+		}
+		return "Export and stats";
+	}
+	
 	public static function Statistics_Resources($lang = ""){
 		if ($lang == "Fr"){
 			return "Statistiques réservations";

@@ -19,7 +19,7 @@
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/blockresourcesquery"
+	<form role="form" class="form-horizontal" action="sygrrifareasresources/blockresourcesquery"
 		method="post">
 	
 	
@@ -156,7 +156,7 @@
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

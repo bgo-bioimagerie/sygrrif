@@ -19,8 +19,8 @@ class SyColorCode extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_color_codes` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(30) NOT NULL DEFAULT '',
-		`color` varchar(6) NOT NULL DEFAULT '',
-		`text` varchar(6) NOT NULL DEFAULT '',		
+		`color` varchar(7) NOT NULL DEFAULT '',
+		`text` varchar(7) NOT NULL DEFAULT '',		
 		`display_order` int(11) NOT NULL DEFAULT 0,
 		PRIMARY KEY (`id`)
 		);";
@@ -33,7 +33,7 @@ class SyColorCode extends Model {
 		$pdo = $this->runRequest($sql);
 		$isColumn = $pdo->fetch();
 		if ( $isColumn == false){
-			$sql = "ALTER TABLE `sy_color_codes` ADD `text` varchar(6) NOT NULL DEFAULT '000000'";
+			$sql = "ALTER TABLE `sy_color_codes` ADD `text` varchar(6) NOT NULL DEFAULT '#000000'";
 			$pdo = $this->runRequest($sql);
 		}
 		

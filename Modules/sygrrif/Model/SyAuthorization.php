@@ -715,4 +715,13 @@ class SyAuthorization extends Model {
 		$req = $this->runRequest($sql, array($resource_id));
 		return $req->fetchAll();
 	}
+	
+	/**
+	 * Remove a visa
+	 * @param number $id
+	 */
+	public function delete($id){
+		$sql="DELETE FROM sy_authorization WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }

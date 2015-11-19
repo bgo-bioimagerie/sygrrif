@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF add VISA"?>
+<?php $this->title = "SyGRRiF add a resources category"?>
 
 <?php echo $navBar?>
 
@@ -14,27 +14,18 @@
 </head>
 
 
-<?php
-$modelCoreConfig = new CoreConfig();
-$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
-
-if ($authorisations_location == 2){
-	include "../../../core/View/usersnavbar.php";
-}
-else{
-	include "Modules/sygrrif/View/navbar.php"; 
-}
-?>
+<?php include "Modules/sygrrif/View/navbar.php"; ?>
 
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/addvisaquery"
+	<form role="form" class="form-horizontal" action="sygrrifareasresources/addresourcescategoryquery"
 		method="post">
 	
 	
 		<div class="page-header">
-			<h1> <?php echo  SyTranslator::Add_VISA($lang) ?>
+			<h1>
+			<?php echo  SyTranslator::Add_a_resources_category($lang) ?>
 				<br> <small></small>
 			</h1>
 		</div>
@@ -49,7 +40,7 @@ else{
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif/visa'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources/resourcescategory'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

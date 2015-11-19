@@ -19,13 +19,13 @@
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/editareaquery"
+	<form role="form" class="form-horizontal" action="sygrrifareasresources/editareaquery"
 		method="post">
 	
 	
 		<div class="page-header">
 			<h1>
-				<?php echo  SyTranslator::Edit_area($lang) ?> <br> <small></small>
+				<?php echo SyTranslator::Edit_area($lang) ?> <br> <small></small>
 			</h1>
 		</div>
 	
@@ -115,8 +115,7 @@
 		
 		<div class="col-xs-6 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
-		        <button type="button" onclick="location.href='<?php echo "sygrrif/deletearea/".$this->clean($area['id']) ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
-				<button type="button" onclick="location.href='sygrrif/areas'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources/areas'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

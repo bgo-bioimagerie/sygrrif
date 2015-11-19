@@ -15,21 +15,13 @@
 
 </head>
 <?php
-$modelCoreConfig = new CoreConfig();
-$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
-
-if ($authorisations_location == 2){
-	include "../../../core/View/usersnavbar.php";
-}
-else{
 	include "Modules/sygrrif/View/navbar.php"; 
-}
 ?>
 
 <br>
 <div class="container">
 	<div class="col-md-6 col-md-offset-3">
-	<form role="form" class="form-horizontal" action="sygrrif/addauthorizationsquery"
+	<form role="form" class="form-horizontal" action="sygrrifauthorisations/addauthorizationsquery"
 		method="post">
 	
 	
@@ -108,7 +100,7 @@ else{
 		<br></br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif/authorizations'" class="btn btn-default" id="navlink"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifauthorisations/authorizations'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
