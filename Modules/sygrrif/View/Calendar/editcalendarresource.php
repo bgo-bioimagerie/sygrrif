@@ -354,7 +354,7 @@
 		foreach ($pricingTable as $pricing){
 			
 			$pid = $this->clean($pricing['id']);
-			$pname = $this->clean($pricing['tarif_name']);
+			$pname = $this->clean($pricing['name']);
 			$punique = $this->clean($pricing['tarif_unique']);
 			$val_day = 0;
 			if (isset($pricing['val_day'])){
@@ -438,7 +438,7 @@
 						
 						<?php foreach ($pricingTable as $pricing){ 
 							?>
-							<td style="min-width:10em;">tarif <br/><?php echo  $pricing["tarif_name"] ?></td>
+							<td style="min-width:10em;">tarif <br/><?php echo  $pricing["name"] ?></td>
 							<?php 
 						}
 						?>

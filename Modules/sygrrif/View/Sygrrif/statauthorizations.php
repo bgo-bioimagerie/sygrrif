@@ -232,7 +232,7 @@ if (!$resultsVisible){
 ?>
 
 <div <?php echo  $stylehidden ?>>
-  <div class="container">
+  
 	<div class="col-md-8 col-md-offset-2">
 	  <div class="page-header">
 		<h2>
@@ -380,7 +380,6 @@ if (!$resultsVisible){
 	<?php }?>
 </div>
 <button type="button" onclick="location.href='sygrrif/statauthorizationsdetailcsv'" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_xls($lang) ?></button>
-</div>
 </div>
 
 <?php include "Modules/core/View/timepicker_script.php" ?>

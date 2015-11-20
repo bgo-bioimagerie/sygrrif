@@ -8,6 +8,9 @@ require_once 'Modules/sygrrif/Model/SyPricing.php';
 require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyReport.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
+require_once 'Modules/sygrrif/Model/SyGraph.php';
+require_once 'Modules/sygrrif/Model/SyResource.php';
+require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 
 /**
  * Controller to export the SyGRRif stats
@@ -24,12 +27,142 @@ class ControllerSygrrifstats extends ControllerBooking {
 	}
 
 	/**
+	 * Check if the user have the right to view SyGRRif pages
+	 * @return boolean
+	 */
+	private function secureCheck(){
+		if ( $_SESSION["user_status"] < 3){
+			echo "Permission denied ";
+			return true;
+		}
+		return false;
+	}
+	
+	/**
 	 * (non-PHPdoc)
 	 * @see Controller::index()
 	 */
 	public function index(){
 		
 	}
+	
+	/**
+	 * Statistics form pages
+	 */
+	public function statistics(){
+	
+		if($this->secureCheck()){
+			return;
+		}
+	
+		$navBar = $this->navBar();
+		$this->generateView ( array (
+				'navBar' => $navBar
+		) );
+	}
+	
+	/**
+	 * Calculate an view the statistics
+	 */
+	public function statisticsquery(){
+	
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+	
+		if($this->secureCheck()){
+			return;
+		}
+	
+		$month_start = $this->request->getParameter ( "month_start" );
+		$year_start = $this->request->getParameter ( "year_start" );
+		$month_end = $this->request->getParameter ( "month_end" );
+		$year_end = $this->request->getParameter ( "year_end" );
+		$export_type = $this->request->getParameter ( "export_type" );
+	
+		$modelGraph = new SyGraph();
+		$graphArray = $modelGraph->getYearNumResGraph($month_start, $year_start, $month_end, $year_end);
+		$graphTimeArray = $modelGraph->getYearNumHoursResGraph($month_start, $year_start, $month_end, $year_end);
+	
+		$modelResource = new SyResource();
+		$resourcesNumber = $modelResource->resourcesNumber();
+	
+		$modelResourceC = new SyResourcesCategory();
+		$resourcesCategoryNumber = $modelResourceC->categoriesNumber();
+	
+		//echo "resourcesNumber = " . $resourcesNumber . "<br/>";
+	
+		if($export_type == 1){
+				
+			$camembertContent = $modelGraph->getCamembertContent($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
+			$camembertTimeContent = $modelGraph->getCamembertTimeContent($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
+			$camembertContentResourcesType = $modelGraph->getCamembertContentResourceType($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
+			$camembertTimeContentResourcesType = $modelGraph->getCamembertTimeContentResourceType($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
+			$navBar = $this->navBar();
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'month_start' => $month_start,
+					'year_start' => $year_start,
+					'month_end' => $month_end,
+					'year_end' => $year_end,
+					'numTotal' => $graphArray['numTotal'],
+					'graph' => $graphArray['graph'],
+					'graph_month' => $graphArray['monthIds'],
+					'graphTimeArray' => $graphTimeArray,
+					'camembertContent' => $camembertContent,
+					'camembertTimeContent' => $camembertTimeContent,
+					'resourcesNumber' => $resourcesNumber,
+					'camembertContentResourcesType' => $camembertContentResourcesType,
+					'camembertTimeContentResourcesType' => $camembertTimeContentResourcesType,
+					'resourcesCategoryNumber' => $resourcesCategoryNumber
+			) );
+		}
+		else{
+				
+			$camembertCount = $modelGraph->getCamembertArray($month_start, $year_start, $month_end, $year_end);
+			$camembertTimeCount = $modelGraph->getCamembertTimeArray($month_start, $year_start, $month_end, $year_end);
+				
+			header("Content-Type: application/csv-tab-delimited-table");
+			header("Content-disposition: filename=rapport.csv");
+				
+			$content = "";
+			// annual number
+			$content .= SyTranslator::Annual_review_of_the_number_of_reservations_of($lang) . " " . Configuration::get("name") . "\r\n";
+			$i = 0;
+			foreach ($graphArray['graph'] as $g){
+				$i++;
+				$content .= $i . " ; " . $g . "\r\n";
+			}
+				
+			// annual number
+			$content .= "\r\n";
+			$content .= SyTranslator::Annual_review_of_the_time_of_reservations_of($lang) . " " . Configuration::get("name") . "\r\n";
+			$i=0;
+			foreach ($graphTimeArray['graph'] as $g){
+				$i++;
+				$content .= $i . " ; " . $g . "\r\n";
+			}
+				
+			// annual resources
+			$content .= "\r\n";
+			$content .= SyTranslator::Booking_number_year($lang) . " " . Configuration::get("name") . "\r\n";
+			foreach ($camembertCount as $g){
+				$content .= $g[0] . " ; " . $g[1] . "\r\n";
+			}
+				
+			// annual resources
+			$content .= "\r\n";
+			$content .= SyTranslator::Booking_time_year($lang) . " " . Configuration::get("name") . "\r\n";
+			foreach ($camembertTimeCount as $g){
+				$content .= $g[0] . " ; " . $g[1] . "\r\n";
+			}
+			echo $content;
+			return;
+				
+		}
+	}
+	
 	
 	/**
 	 * Generate a bill when the proect mode is activated

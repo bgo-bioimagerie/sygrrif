@@ -1661,4 +1661,120 @@ class SyTranslator {
 		}
 		return "Modifications have been saved";
 	}
+	
+	static public function Begining_period($lang) {
+		if ($lang == "Fr") {
+			return "Début période";
+		}
+		return "Begining period";
+	}
+	static public function End_period($lang) {
+		if ($lang == "Fr") {
+			return "Fin période";
+		}
+		return "End period";
+	}
+	static public function Period($lang) {
+		if ($lang == "Fr") {
+			return "période";
+		}
+		return "period";
+	}
+	static public function to($lang) {
+		if ($lang == "Fr") {
+			return "au";
+		}
+		return "to";
+	}
+	static public function monthNameFromID($id, $lang) {
+		if ($lang == "Fr") {
+			if ($id == 1) {
+				return "Janv.";
+			}
+			if ($id == 2) {
+				return "Fév.";
+			}
+			if ($id == 3) {
+				return "Mar.";
+			}
+			if ($id == 4) {
+				return "Avr.";
+			}
+			if ($id == 5) {
+				return "Mai";
+			}
+			if ($id == 6) {
+				return "Juin";
+			}
+			if ($id == 7) {
+				return "Juil.";
+			}
+			if ($id == 8) {
+				return "Août";
+			}
+			if ($id == 9) {
+				return "Sept.";
+			}
+			if ($id == 10) {
+				return "Oct.";
+			}
+			if ($id == 11) {
+				return "Nov.";
+			}
+			if ($id == 12) {
+				return "Déc.";
+			}
+		} else {
+			if ($id == 1) {
+				return "Janv.";
+			}
+			if ($id == 2) {
+				return "Fev.";
+			}
+			if ($id == 3) {
+				return "Mar.";
+			}
+			if ($id == 4) {
+				return "Apr.";
+			}
+			if ($id == 5) {
+				return "May";
+			}
+			if ($id == 6) {
+				return "Jun";
+			}
+			if ($id == 7) {
+				return "Jul.";
+			}
+			if ($id == 8) {
+				return "Aug.";
+			}
+			if ($id == 9) {
+				return "Sep.";
+			}
+			if ($id == 10) {
+				return "Oct.";
+			}
+			if ($id == 11) {
+				return "Nov.";
+			}
+			if ($id == 12) {
+				return "Dec.";
+			}
+		}
+	}
+	
+	public static function Booking_number_year_category($lang) {
+		if ($lang == "Fr") {
+			return "Nombre de réservations par catégorie de ressources dans la période";
+		}
+		return "Number of reservations for each resource category during the given period";
+	}
+	
+	public static function Booking_time_year_category($lang) {
+		if ($lang == "Fr") {
+			return "Nombre d'heures de réservation par catégories de ressources dans la période";
+		}
+		return "Time (in hours) of reservations for each resource category during the given period";
+	}
 }

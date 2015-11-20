@@ -4,6 +4,7 @@ require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreProject.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
 require_once 'Modules/core/Model/UserSettings.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
@@ -114,12 +115,14 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// fill the pricing table with the prices for this resource
 		$modelResourcesPricing = new SyResourcePricing();
+		$modelBelonging = new CoreBelonging();
 		for ($i = 0 ; $i < count($pricingTable) ; ++$i){
 			$pid = $pricingTable[$i]['id'];
 			$inter = $modelResourcesPricing->getPrice($id, $pid);
 			$pricingTable[$i]['val_day'] = $inter['price_day'];
 			$pricingTable[$i]['val_night'] = $inter['price_night'];
 			$pricingTable[$i]['val_we'] = $inter['price_we'];
+			$pricingTable[$i]['name'] = $modelBelonging->getName($pricingTable[$i]["id"]);
 		}
 		
 		// resources categories

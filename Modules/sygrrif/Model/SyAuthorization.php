@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/CoreResponsible.php';
+require_once 'Modules/core/Model/CoreUnit.php';
 
 /**
  * Class defining the Authorization model
@@ -600,7 +601,7 @@ class SyAuthorization extends Model {
 		
 			$modelResp = new CoreResponsible();
 			$modelUser = new CoreUser();
-			$modelUnit = new Unit();
+			$modelUnit = new CoreUnit();
 			$modelVisa = new SyVisa();
 			$modelResource = new SyResourcesCategory();
 			foreach($data as $d){
@@ -656,7 +657,18 @@ class SyAuthorization extends Model {
 		$test .= '<g>';
 		$test .= '<text x="450" y="40" font-size="20" fill="black" stroke="none" text-anchor="middle">Training for each resource from '.$searchDate_start.' to '.$searchDate_end.'</text>';
 		$test .= '</g>';
-		$couleur = array("#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE");
+		$couleur = array("#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+		);
 		
 		$modelResouces = new SyResourcesCategory();
 		

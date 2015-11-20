@@ -19,7 +19,7 @@
 <br>
 <div class="container">
 	<div class="col-md-8 col-md-offset-2">
-	<form role="form" class="form-horizontal" action="sygrrif/editpricingquery"
+	<form role="form" class="form-horizontal" action="sygrrifpricing/editpricingquery"
 		method="post">
 	
 	
@@ -40,7 +40,7 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-10">
-				<input class="form-control" id="name" type="text" name="name" value="<?php echo  $this->clean($pricing['tarif_name'])?>"
+				<input class="form-control" id="name" type="text" name="name" value="<?php echo  $this->clean($pricing['name'])?>" readonly
 				/>
 			</div>
 		</div>
@@ -49,18 +49,18 @@
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_unique">
 						<?php $unique = $this->clean($pricing['tarif_unique']) ?>
-						<OPTION value="oui" <?php if ($unique==1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
-						<OPTION value="non" <?php if ($unique==0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::No($lang)?> </OPTION>
+						<OPTION value="1" <?php if ($unique==1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
+						<OPTION value="0" <?php if ($unique==0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::No($lang)?> </OPTION>
 				</select>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Price_night($lang) ?></label>
 			<div class="col-xs-10">
-					<select class="form-control" name="tarif_nuit">
-					    <?php $tnuit = $this->clean($pricing['tarif_nuit']) ?>
-						<OPTION value="oui" <?php if ($tnuit==1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
-						<OPTION value="non" <?php if ($tnuit==0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::No($lang)?> </OPTION>
+					<select class="form-control" name="tarif_night">
+					    <?php $tnuit = $this->clean($pricing['tarif_night']) ?>
+						<OPTION value="1" <?php if ($tnuit==1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
+						<OPTION value="0" <?php if ($tnuit==0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::No($lang)?> </OPTION>
 				</select>
 			</div>
 			<br></br>
@@ -93,8 +93,8 @@
 			<div class="col-xs-10">
 					<select class="form-control" name="tarif_we">
 					    <?php $tarif_we = $this->clean($pricing['tarif_we']) ?>
-						<OPTION value="oui" <?php if ($tarif_we==1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
-						<OPTION value="non" <?php if ($tarif_we==0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::No($lang)?> </OPTION>
+						<OPTION value="1" <?php if ($tarif_we==1){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::Yes($lang)?> </OPTION>
+						<OPTION value="0" <?php if ($tarif_we==0){echo "selected=\"selected\"";}?>> <?php echo  SyTranslator::No($lang)?> </OPTION>
 				</select>
 			</div>
 			
@@ -159,7 +159,7 @@
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang)?>" />
-				<button type="button" onclick="location.href='sygrrif/pricing'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
+				<button type="button" onclick="location.href='sygrrifpricing/pricing'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

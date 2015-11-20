@@ -109,10 +109,8 @@ $classWell = 'col-md-3 well';
 		<div class=<?php echo $classWell?> >
 			<fieldset>
 				<legend><?php echo  SyTranslator::Pricing($lang) ?> </legend>
-					<button onclick="location.href='sygrrif/pricing'"
+					<button onclick="location.href='sygrrifpricing/pricing'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Pricings($lang) ?></button>
-					<button onclick="location.href='sygrrif/addpricing'"
-						class="btn btn-link" id="navlink">+</button>
 				<br/>
 				<?php 
 					$ModulesManagerModel = new ModulesManager();
@@ -120,13 +118,13 @@ $classWell = 'col-md-3 well';
 					if ($use_project > 0){
 					?>	
 					<br/>
-							<button onclick="location.href='sygrrifstats/billproject'"
+							<button onclick="location.href='sygrrifpricing/billproject'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::bill_project($lang) ?></button>
 					<?php 
 					}
 					else{
 						?>
-						<button onclick="location.href='sygrrif/statpriceunits'"
+						<button onclick="location.href='sygrrifpricing/statpriceunits'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Bill_per_unit($lang) ?></button>
 					<?php	
 					}
@@ -140,7 +138,7 @@ $classWell = 'col-md-3 well';
 			<fieldset>
 				<legend><?php echo  SyTranslator::Export_stats($lang) ?></legend>
 				<p>
-					<button onclick="location.href='sygrrif/statistics'"
+					<button onclick="location.href='sygrrifstats/statistics'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Statistics_Resources($lang) ?></button>
 					<br/>
 					<button onclick="location.href='sygrrifstatsusers/statusers'"

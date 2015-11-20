@@ -1,8 +1,10 @@
 <?php
 require_once 'Framework/Controller.php';
+require_once 'Framework/TableView.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyBill.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
 
 /**
  * Manage the bills: history of generated bills with status (generated, payed)
@@ -43,11 +45,66 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 			$billsList = $modelBillManager->getBillsUnit($sortentry);
 		}
 		
+		$lang = $this->getLanguage();
+		for($i = 0 ; $i < count($billsList) ; $i++){
+			$billsList[$i]["responsible"] = $billsList[$i]['resp_name'] . " " . $billsList[$i]['resp_firstname'];
+			if ($billsList[$i]['is_paid'] == 1){
+				$billsList[$i]['is_paid'] = SyTranslator::Yes($lang);
+			}
+			else{
+				$billsList[$i]['is_paid'] = SyTranslator::No($lang);
+			}
+			$billsList[$i]['period_begin'] = CoreTranslator::dateFromEn($billsList[$i]['period_begin'], $lang);
+			$billsList[$i]['period_end'] = CoreTranslator::dateFromEn($billsList[$i]['period_end'], $lang);
+			$billsList[$i]['date_generated'] = CoreTranslator::dateFromEn($billsList[$i]['date_generated'], $lang);
+			$billsList[$i]['date_paid'] = CoreTranslator::dateFromEn($billsList[$i]['date_paid'], $lang);
+		}
+		
+		$table = new TableView ();
+		
+		$table->setTitle ( SyTranslator::Bills_manager( $lang ) );
+		$table->ignoreEntry("id", 1);
+		$table->addLineEditButton ( "sygrrifbillmanager/edit" );
+		$table->addDeleteButton ( "sygrrifbillmanager/removeentry", "id", "number" );
+		$table->addPrintButton ( "sygrrifbillmanager/index/" );
+		
+		if ($projectStatus > 0){
+			$tableContent = array (
+					"number" => SyTranslator::Number($lang),
+					"id_project" => SyTranslator::Project($lang),
+					"period_begin" => SyTranslator::Period_begin($lang),
+					"period_end" => SyTranslator::Period_end($lang),
+					"date_generated" => SyTranslator::Date_Generated($lang),
+					"total_ht" => SyTranslator::TotalHT($lang),
+					"date_paid" => SyTranslator::Date_Paid($lang),
+					"is_paid" => SyTranslator::Is_Paid($lang)
+					);
+		}
+		else{
+			$tableContent = array (
+				"number" => SyTranslator::Number($lang),
+				"responsible" => SyTranslator::Responsible($lang),
+				"unit" =>  SyTranslator::Unit($lang),
+				"period_begin" => SyTranslator::Period_begin($lang),
+				"period_end" => SyTranslator::Period_end($lang),
+				"date_generated" => SyTranslator::Date_Generated($lang),
+				"total_ht" => SyTranslator::TotalHT($lang),
+				"date_paid" => SyTranslator::Date_Paid($lang),
+				"is_paid" => SyTranslator::Is_Paid($lang)
+			);
+		}
+		$tableHtml = $table->view ( $billsList, $tableContent );
+		
+		$print = $this->request->getParameterNoException ( "print" );
+		if ($table->isPrint ()) {
+			echo $tableHtml;
+			return;
+		}
+		
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'billsList' => $billsList,
-				'projectStatus' => $projectStatus
+				'tableHtml' => $tableHtml
 		) );
 	}
 	

@@ -189,6 +189,12 @@ class SyResource extends Model {
 			return 0;
 	}
 	
+	public function resourcesNumber(){
+		$sql = "select * from sy_resources";
+		$data = $this->runRequest($sql);
+		return $data->rowCount();
+	}
+	
 	/**
 	 * Get the resources IDs and names for a given Area
 	 * @param unknown $areaId

@@ -22,7 +22,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 <br>
 <div class="container">
 	<div class="col-md-8 col-md-offset-2">
-	<form role="form" class="form-horizontal" action="sygrrif/statpriceunits"
+	<form role="form" class="form-horizontal" action="sygrrifpricing/statpriceunits"
 		method="post" id="statform">
 	
 	
@@ -128,7 +128,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifpricing'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>
