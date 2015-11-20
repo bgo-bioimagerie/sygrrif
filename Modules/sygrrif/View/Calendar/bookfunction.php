@@ -39,9 +39,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			
 			foreach ($calEntries as $calEntry){
 				
-				if($h == $day_begin &&  $calEntry['start_time']<=$caseTimeBegin){
+				if($h == $day_begin &&  $calEntry['start_time']<$caseTimeBegin){
 				
-					if ( $calEntry['end_time'] >= $caseTimeBegin && $calEntry['start_time'] < $caseTimeBegin){
+					if ( $calEntry['end_time'] >= $caseTimeBegin){
 				
 						$foundStartEntry = true;
 						$blocNumber = ($calEntry['end_time'] - $caseTimeBegin)/($caseTimeLength);
@@ -72,8 +72,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
-							<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
+						<div class="text-center" id="tcellResa" style="height:<?php echo $pixelHeight?>px; background-color:<?php echo $calEntry['color_bg']?>;">
+							<a class="text-center" style="color:<?php echo $calEntry["color_text"]?>; font-size: <?php echo $agendaStyle["resa_font_size"] ?>px;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.25 - 0.25;								
@@ -112,8 +112,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id']; 
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
-								<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
+								<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:<?php echo $calEntry['color_bg']?>;">
+								<a class="text-center" style="color:<?php echo $calEntry['color_text']?>; font-size: <?php echo $agendaStyle["resa_font_size"] ?>px;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*0.25 - 0.25;
@@ -208,9 +208,9 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
+						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:<?php echo $calEntry['color_bg']?>;">
 							
-							<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href=<?php echo $linkAdress?>><?php echo $text?></a>
+							<a class="text-center" style="color:<?php echo $calEntry["color_text"]?>; font-size: <?php echo $agendaStyle["resa_font_size"] ?>px;" href=<?php echo $linkAdress?>><?php echo $text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*0.5 - 0.5;								
@@ -248,8 +248,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}	
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
-						<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:<?php echo $calEntry['color_bg']?>;">
+						<a class="text-center" style="color:<?php echo $calEntry["color_text"]?>;  font-size: <?php echo $agendaStyle["resa_font_size"] ?>px;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 						</div>
 					<?php
 					$h+= $blocNumber*0.5 - 0.5;
@@ -309,7 +309,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 			$foundStartEntry = false;
 			foreach ($calEntries as $calEntry){
 				
-				if($h == $day_begin &&  $calEntry['start_time']<=$caseTimeBegin){
+				if($h == $day_begin &&  $calEntry['start_time']<$caseTimeBegin){
 					
 					if ( $calEntry['end_time'] >= $caseTimeBegin ){
 						
@@ -321,7 +321,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 							$blocNumber = $leftBlocks;
 						}
 						$leftBlocks -= $blocNumber;
-						$lineColorId -= $blocNumber;
+						$lineColorId += $blocNumber;
 							
 						$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 						
@@ -342,8 +342,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						}
 						$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 						?>
-						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
-							<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
+						<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:<?php echo $calEntry['color_bg']?>;">
+							<a class="text-center" style="color:<?php echo $calEntry["color_text"]?>; font-size: <?php echo $agendaStyle["resa_font_size"] ?>px;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 						</div>
 						<?php
 						$h+= $blocNumber*1 - 1;
@@ -361,7 +361,7 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 						$blocNumber = $leftBlocks;
 					}
 					$leftBlocks -= $blocNumber;
-					$lineColorId -= $blocNumber;
+					$lineColorId += $blocNumber;
 					
 					$pixelHeight = $blocNumber*$agendaStyle["line_height"];
 						
@@ -382,8 +382,8 @@ function bookday($size_bloc_resa, $date_unix, $day_begin, $day_end, $calEntries,
 					}
 					$linkAdress = "calendar/editreservation/r_" . $calEntry['id'];
 					?>
-								<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:#<?php echo $calEntry["color_bg"]?>;">
-								<a class="text-center" style="color:<?php echo "#".$calEntry["color_text"]?>;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
+								<div class="text-center" id="tcellResa" style="height: <?php echo $pixelHeight?>px; background-color:<?php echo $calEntry['color_bg']?>;">
+								<a class="text-center" style="color:<?php echo $calEntry["color_text"]?>; font-size: <?php echo $agendaStyle["resa_font_size"] ?>px;" href="<?php echo $linkAdress?>"><?php echo $text?></a>
 								</div>
 							<?php
 							$h+= $blocNumber*1 - 1;

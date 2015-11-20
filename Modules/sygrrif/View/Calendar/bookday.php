@@ -39,7 +39,7 @@ a{
 	border: 1px solid #d1d1d1;
 }
 #resa_link{
-	color: <?php echo  $agendaStyle["resa_color"] ?>;
+	color: <?php echo  "#" . $agendaStyle["resa_color"] ?>;
 	font-size: <?php echo  $agendaStyle["resa_font_size"] ?>;
 }
 
@@ -122,7 +122,7 @@ $available_days = explode(",", $available_days);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo  $agendaStyle["header_background"]?>;">
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo $agendaStyle["header_background"]?>;">
 
 	</div>
 	<?php 
@@ -142,7 +142,7 @@ $available_days = explode(",", $available_days);
 	
 	
 	
-		<div id="tcell" style="height: <?php echo $heightCol?>; background-color: <?php echo  $agendaStyle["header_background"]?>; color: <?php echo $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+		<div id="tcell" style="height: <?php echo $heightCol?>; background-color: <?php echo $agendaStyle["header_background"]?>; color: <?php echo $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
 		<?php echo $h?>:00
 		</div>
 	<?php 	
@@ -153,7 +153,7 @@ $available_days = explode(",", $available_days);
 <!-- hours reservation -->	
 <div class="col-xs-11" id="colDiv">
 
-	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color: <?php echo  $agendaStyle["header_background"]?>; color: <?php echo  $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color: <?php echo $agendaStyle["header_background"]?>; color: <?php echo $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
 	<p class="text-center"><b><?php echo  $this->clean($resourceBase['name']) ?></b><br/><?php echo  $this->clean($resourceBase['description']) ?></p>
 	</div>
 

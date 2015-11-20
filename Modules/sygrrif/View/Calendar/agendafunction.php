@@ -70,7 +70,7 @@ function drawAgenda($mois, $annee, $entries, $resourceBase){
 		<?php 
 		$found = false;
 		$modelBookingSetting = new SyBookingSettings();
-		$moduleProject = new Project();
+		$moduleProject = new CoreProject();
 		$ModulesManagerModel = new ModulesManager();
 		$isProjectMode = $ModulesManagerModel->getDataMenusUserType("projects");
 		if ($isProjectMode > 0){
@@ -89,11 +89,11 @@ function drawAgenda($mois, $annee, $entries, $resourceBase){
 				?>
 				<a href="calendar/editreservation/r_<?php echo $entry["id"] ?>">
 				
-				<div style="background-color: #<?php echo $entry["color_bg"]?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
-				<p style="border-bottom: thin solid #e1e1e1; font-size:12px; color:#<?php echo $entry["color_text"]?>;" >
+				<div style="background-color: <?php echo $entry['color_bg']?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
+				<p style="border-bottom: thin solid #e1e1e1; font-size:12px; color:<?php echo $entry['color_text']?>;" >
 				 <?php echo  date("H:i", $entry["start_time"]) . " - " . date("H:i", $entry["end_time"]) ?></p>
 				 <?php $text = $modelBookingSetting->getSummary($entry["recipient_fullname"], $entry['phone'], $shortDescription, $entry['full_description'], true); ?>
-				<p style="font-size:12px; color:#<?php echo $entry["color_text"]?>;"><?php echo  $text ?></p>
+				<p style="font-size:12px; color:<?php echo $entry['color_text']?>;"><?php echo  $text ?></p>
 				</div>
 				</a>
 				<?php

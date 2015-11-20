@@ -14,6 +14,7 @@ require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResourceType.php';
+require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/core/Model/UserSettings.php';
 
 /**

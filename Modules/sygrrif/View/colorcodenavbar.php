@@ -31,6 +31,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		$colorcode = $colorcodes[$i];
 		$name = $this->clean($colorcode["name"]);
 		$color = $this->clean($colorcode["color"]);
+		$txtcolor = $this->clean($colorcode["text"]);
 		$cmpt++;
 	if ($cmpt == 1){
 		?>
@@ -40,7 +41,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 	?>
 	
 	<div class="col-xs-2">
-		<p class="text-center" id="colorparagraph" style="background-color: #<?php echo $color?>;"><?php echo $name?></p>
+		<p class="text-center" id="colorparagraph" style="background-color: <?php echo $color?>; color: <?php echo $txtcolor?>"><?php echo $name?></p>
 	</div>
 	<?php 
 		if ($cmpt == 6 || $i == count($colorcodes)-1){
