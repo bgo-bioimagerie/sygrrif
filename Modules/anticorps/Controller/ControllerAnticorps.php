@@ -44,6 +44,174 @@ class ControllerAnticorps extends ControllerSecureNav {
 	
 	}
 	
+	public function anticorpscsv(){
+		// database query
+		$anticorpsModel = new Anticorps();
+		$anticorpsArray = $anticorpsModel->getAnticorpsInfo("no_h2p2");
+		
+		$modelstatus = new Status();
+		$status = $modelstatus->getStatus();
+		
+		$lang = "En";
+		if (isset($_SESSION["user_settings"]["language"])){
+			$lang = $_SESSION["user_settings"]["language"];
+		}
+		
+		// make csv file
+		$data = " Anticorps; ; ; ; ; ; ; ; ; Protocole; ; Tissus; ; ; ; ; ; Propriétaire; ; ;  \r\n";
+		$data .= " No; Nom; St; Fournisseur; Source; Référence; Clone; lot; Isotype; proto; Acl dil; commentaire; espèce; organe; statut; ref. bloc; prélèvement; Nom; disponibilité; Date réception;  No Dossier \r\n";
+		
+		foreach ($anticorpsArray as $anticorps){
+			
+			$data .= $anticorps ['no_h2p2'] . " ; ";
+			$data .= $anticorps ['nom'] . " ; ";
+			$data .= $anticorps ['stockage'] . " ; "; 
+			$data .= $anticorps ['fournisseur']. " ; ";
+			$data .= $anticorps ['source']. " ; ";
+			$data .= $anticorps ['reference']. " ; ";
+			$data .= $anticorps ['clone']. " ; ";
+			$data .= $anticorps ['lot']. " ; ";
+			$data .= $anticorps ['isotype']. " ; ";
+
+			// PROTOCOLE
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+				if($tissus[$i]['ref_protocol'] == "0"){
+					$val .= "Manuel, ";
+				}
+				else{
+					$val .= $tissus[$i]['ref_protocol'];
+				}
+			}
+			$data .= $val. " ; ";
+			
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+				$val = $val . " "
+						. $tissus[$i]['dilution']
+						. ", ";
+			}
+			$data .= $val. " ; ";
+			
+			// TISSUS
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+				$string = trim(preg_replace('/\s+/', ' ', $tissus[$i]['comment']));
+				$val = $val . " "
+					. $string
+					. ", ";
+			}
+			$data .= $val . " ; ";
+
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+				$val = $val . " "  . $tissus[$i]['espece']
+				. ", ";
+			}
+			$data .= $val. " ; ";
+			
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+				$val = $val . " "
+						. $tissus[$i]['organe']
+						. ", ";
+			}
+			$data .= $val. " ; ";
+			
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+			
+				$statusTxt = "";
+				foreach($status as $stat){
+					if ($tissus[$i]['status'] == $stat["id"]){
+						$statusTxt = $stat['nom'];
+					}
+				}
+				$val = $val . " " . $statusTxt . ", ";
+			}
+			$data .= $val. " ; ";
+			
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+				$val = $val . "" . $tissus[$i]['ref_bloc'] . ", ";
+			}
+			$data .= $val. " ; ";
+			
+			$tissus = $anticorps ['tissus'];
+			$val = "";
+			for( $i = 0 ; $i < count($tissus) ; ++$i){
+				$val = $val . " " . $tissus[$i]['prelevement'] . ", ";
+			}
+			$data .= $val. " ; ";
+			
+			// OWNER
+			$owner =  $anticorps ['proprietaire'];
+			foreach ($owner as $ow){
+				$name = $ow['name'] . " " . $ow['firstname'];
+				$dispo = $ow['disponible'];
+				if ($dispo == 1){$dispo = "disponible";}
+				else if ($dispo == 2){$dispo = "épuisé";}
+				else if ($dispo == 3){$dispo = "récupéré par équipe";}
+				$date_recept = CoreTranslator::dateFromEn($ow['date_recept'], $lang);
+				$txt = $name;
+				$data .= $txt. " ; ";
+			}
+			
+			$owner =  $anticorps ['proprietaire'];
+			foreach ($owner as $ow){
+				$dispo = $ow['disponible'];
+				if ($dispo == 1){$dispo = "disponible";}
+				else if ($dispo == 2){$dispo = "épuisé";}
+				else if ($dispo == 3){$dispo = "récupéré par équipe";}
+				$date_recept = CoreTranslator::dateFromEn($ow['date_recept'], $lang);
+				$txt = $dispo;
+			
+				$data .= $txt. " , ";
+			}
+			$data .= ";";
+			$owner =  $anticorps ['proprietaire'];
+			foreach ($owner as $ow){
+				$name = $ow['name'] . " " . $ow['firstname'];
+				$dispo = $ow['disponible'];
+				if ($dispo == 1){$dispo = "disponible";}
+				else if ($dispo == 2){$dispo = "épuisé";}
+				else if ($dispo == 3){$dispo = "récupéré par équipe";}
+				$date_recept = CoreTranslator::dateFromEn($ow['date_recept'], $lang);
+				$txt = $date_recept;
+			
+				$data .= $txt. " , ";
+			}
+			$data .= ";";
+			
+			$owner =  $anticorps ['proprietaire'];
+			foreach ($owner as $ow){
+				$name = $ow['name'] . " " . $ow['firstname'];
+				$dispo = $ow['disponible'];
+				if ($dispo == 1){$dispo = "disponible";}
+				else if ($dispo == 2){$dispo = "épuisé";}
+				else if ($dispo == 3){$dispo = "récupéré par équipe";}
+				$date_recept = CoreTranslator::dateFromEn($ow['date_recept'], $lang);
+				$txt = $ow['no_dossier'];
+			
+				$data .= $txt. " , ";
+			}
+			$data .= ";";
+			$data .= "\r\n";
+		}
+		
+		header("Content-Type: application/csv-tab-delimited-table");
+		header("Content-disposition: filename=anticorps.csv");
+		echo $data;
+		return;
+	}
+	
 	public function edit(){
 
 		// Lists for the form	
