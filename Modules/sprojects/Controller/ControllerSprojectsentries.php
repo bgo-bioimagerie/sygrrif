@@ -11,10 +11,11 @@ require_once 'Modules/sprojects/Model/SpProject.php';
 require_once 'Modules/sprojects/Model/SpTranslator.php';
 require_once 'Modules/sprojects/Model/SpUnitPricing.php';
 require_once 'Modules/sprojects/Model/SpPricing.php';
+require_once 'Modules/sprojects/Model/SpItemPricing.php';
 
 class ControllerSprojectsentries extends ControllerSecureNav {
 
-	public function index($status = "all") {
+	public function index($status = "") {
 		
 		// Lang
 		$lang = "En";
@@ -28,9 +29,17 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		// get the user list
 		$modelEntry = new SpProject();
 		$entriesArray = array();
+		if ($status == ""){
+			if (isset($_SESSION["sprojects_lastvisited"])){
+				$status = $_SESSION["sprojects_lastvisited"];
+			}
+			else{
+				$status = "all";
+			}
+		}
+		
 		if ($status == "all"){
 			$entriesArray = $modelEntry->projects($sortentry);
-			$_SESSION["sprojects_lastvisited"] = "opened";
 		}
 		else if ($status == "opened"){
 			$entriesArray = $modelEntry->openedProjects($sortentry);
@@ -67,12 +76,20 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			$pricingInfo = $modelPricing->getPricing($id_pricing);
 			$entriesArray[$i]["color"] = $pricingInfo["tarif_color"];
 			
+			
 			$entriesArray[$i]["time_color"] = "#ffffff";
 			if ($entriesArray[$i]["time_limit"] != ""){
+				
+				if (strval($entriesArray[$i]["time_limit"]) != "0000-00-00"){
+					$entriesArray[$i]["time_color"] = "#FFCC00";
+				}
+				/*
 				if (strval($entriesArray[$i]["time_limit"]) < strval(date("Y-m-d", time()))){ 
 					$entriesArray[$i]["time_color"] = "#FFCC00";
 				}
+				*/
 			}
+			
 			
 			$entriesArray[$i]["closed_color"] = "#ffffff";
 			if ($entriesArray[$i]["date_close"] != "0000-00-00"){
@@ -97,14 +114,21 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$table->addLineEditButton("sprojectsentries/editentries");
 		$table->addDeleteButton("sprojectsentries/deleteentries");
 		$table->addPrintButton("sprojectsentries/index/");
+		$table->addExportButton("sprojectsentries/index/");
 		$table->setColorIndexes(array("all" => "color", "time_limit" => "time_color", "date_close" => "closed_color"));
-		$tableHtml = $table->view($entriesArray, array("id" => "ID", "resp_name" => "Responsable", "name" => "No Projet", "user_name" => "Utilisateur", "id_status" => "status" , "date_open" => "Date ouverture", "time_limit" => "Délai", "date_close" => "Date cloture"));
+		
+		$headersArray = array("id" => "ID", "resp_name" => "Responsable", "name" => "No Projet", "user_name" => "Utilisateur", "id_status" => "status" , "date_open" => "Date ouverture", "time_limit" => "Délai", "date_close" => "Date cloture");
+		$tableHtml = $table->view($entriesArray, $headersArray);
 		
 		$print = $this->request->getParameterNoException("print");
 		
 		//echo "print = " . $print . "<br/>";
 		if ($table->isPrint()){
 			echo $tableHtml;
+			return;
+		}
+		if ($table->isExport()){
+			echo $table->exportCsv($entriesArray, $headersArray);
 			return;
 		}
 		
@@ -116,6 +140,10 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		), "index");
 	}
 	
+	public function allentries(){
+		$_SESSION["sprojects_lastvisited"] = "all";
+		$this->index("all");
+	}
 	public function openedentries() {
 	
 		$_SESSION["sprojects_lastvisited"] = "opened";
@@ -246,25 +274,74 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		// get active items
 		$activeItems = $this->getProjectItems($projectEntries);
 		
+		// select the items with not null data
+		for($i = 0 ; $i < count($activeItems) ; $i++){
+			$qi = 0;
+			foreach ($projectEntries as $order){
+				if (isset($order["content"]["item_".$activeItems[$i]["id"]])){
+					$qi += $order["content"]["item_".$activeItems[$i]["id"]];
+				}
+			}
+			$activeItems[$i]["pos"] = 0;
+			if ($qi > 0){
+				$activeItems[$i]["pos"] = 1;
+				$activeItems[$i]["sum"] = $qi;
+			}
+		}
+		
 		// write into string
 		$content = "Date;";
 		foreach($activeItems as $item){
-			$content .= $item["name"] . ";";
+			if ($item["pos"] > 0){
+				$content .= $item["name"] . ";";
+			}
 		}
-		$content .= "\n";
+		$content .= " total ; \n";
 		foreach ($projectEntries as $order){
 			$content .= CoreTranslator::dateFromEn($order['date'], $lang) . ";";
 			foreach($activeItems as $item){
 					
-				$quantity = "";
-				if (isset($order["content"]["item_".$item["id"]])){
-					$quantity = $order["content"]["item_".$item["id"]];
-				}
-				
-				$content .= $quantity . ";";	
+				if ($item["pos"] > 0){
+					$quantity = "";
+					if (isset($order["content"]["item_".$item["id"]])){
+						$quantity = $order["content"]["item_".$item["id"]];
+					}
+					
+					$content .= $quantity . ";";
+				}	
 			}
 			$content .= "\n";
 		}
+		
+		// calculate total sum and price HT
+		$modelUser = "";
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
+		if ($sprojectsusersdatabase == "local"){
+			$modelUser = new SpUser();
+		}
+		else{
+			$modelUser = new User();
+		}
+		$id_resp = $modelProject->getResponsible($idproject);
+		$id_unit = $modelUser->getUserUnit($id_resp);
+		$modelPricing = new SpUnitPricing();
+		$LABpricingid = $modelPricing->getPricing($id_unit);
+		$itemPricing = new SpItemPricing();
+		
+		$content .= "Total ;";
+		$totalHT = 0;
+		foreach($activeItems as $item){
+				
+			if ($item["pos"] > 0){
+				$unitaryPrice = $itemPricing->getPrice($item["id"], $LABpricingid);
+				$content .= $item["sum"] . ";";
+				$totalHT += (float)$item["sum"]*(float)$unitaryPrice["price"];
+			}
+		}
+		$content .= $totalHT . "\n";
+		
+		
 		
 		header("Content-Type: application/csv-tab-delimited-table");
 		header("Content-disposition: filename=projet.csv");

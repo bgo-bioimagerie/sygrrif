@@ -467,9 +467,10 @@ class SpBillGenerator extends Model {
 		
 		// close the orders
 		$modelProject->closeProject($id_project);
-		// add the order to thehistory
-		$modelBill->addBill($number, date("Y-m-d", time()));
 				
+		// add the order to thehistory
+		$modelBill->addBill($number, $projectInfo["name"], $id_resp, date("Y-m-d", time()), $totalHT);
+		
 		// bilan
 		// total HT
 		$curentLine++;

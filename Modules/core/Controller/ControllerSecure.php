@@ -39,5 +39,13 @@ abstract class ControllerSecure extends Controller
             $this->redirect("connection");
         }
     }
+    
+    public function getLanguage(){
+    	$lang = "En";
+    	if (isset($_SESSION["user_settings"]["language"])){
+    		$lang = $_SESSION["user_settings"]["language"];
+    	}
+    	return $lang;
+    }
 }
 

@@ -154,6 +154,17 @@ class Form
     	$this->validated[] = true;
     }
     
+    public function addDate($name, $label, $isMandatory = false, $value = ""){
+    	$this->types[] = "date";
+    	$this->names[] = $name;
+    	$this->labels[] = $label;
+    	$this->setValue($name, $value);
+    	$this->isMandatory[] = $isMandatory;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+    }
+    
     /**
      * Add email input to the form
      * @param string $name Input name
@@ -288,6 +299,16 @@ class Form
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
     			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
     			$html .=				"<input class=\"form-control\" type=\"number\" name=\"".$this->names[$i]."\"";
+    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
+    			$html .=				"/>";
+    			$html .=			"</div>";
+    			$html .= "</div>";
+    		}
+    		if($this->types[$i] == "date"){
+    			$html .= "<div class=\"form-group".$validated."\">";
+    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
+    			$html .=				"<input class=\"form-control\" type=\"date\" name=\"".$this->names[$i]."\"";
     			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
     			$html .=				"/>";
     			$html .=			"</div>";

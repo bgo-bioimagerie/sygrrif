@@ -355,15 +355,15 @@ class SpTranslator {
 	}
 	public static function Open_after_date($lang) {
 		if ($lang == "Fr") {
-			return "Ouverts après le";
+			return "Début période";
 		}
-		return "Open after date";
+		return "Begenning period";
 	}
 	public static function Open_before_date($lang) {
 		if ($lang == "Fr") {
-			return "Ouverts avant le";
+			return "Fin période";
 		}
-		return "Open before date";
+		return "end period";
 	}
 	public static function Ok($lang) {
 		if ($lang == "Fr") {
@@ -447,5 +447,82 @@ class SpTranslator {
 		return "to ";
 	}
 	
+	public static function Project_number($lang){
+		if ($lang == "Fr") {
+			return "Numéro projet";
+		}
+		return "Project number";
+	}
 	
+	public static function Total_HT($lang){
+		if ($lang == "Fr") {
+			return "Total HT";
+		}
+		return "Total HT";
+	}
+	
+	public static function Beginning_period($lang) {
+		if ($lang == "Fr") {
+			return "Début période";
+		}
+		return "Beginning period";
+	}
+	public static function End_period($lang) {
+		if ($lang == "Fr") {
+			return "Fin période";
+		}
+		return "End period";
+	}
+	
+	public static function Bills_statistics($lang) {
+		if ($lang == "Fr") {
+			return "Statistiques factures";
+		}
+		return "Bills statistics";
+	}
+	
+	public static function TotalNumberOfBills($lang) {
+		if ($lang == "Fr") {
+			return "Nombre total de factures";
+		}
+		return "Total number of bills";
+	}
+	public static function NumberOfAcademicBills($lang) {
+		if ($lang == "Fr") {
+			return "Nombre de factures académiques";
+		}
+		return "Number of academic bills";
+	}
+	public static function TotalPriceOfAcademicBills($lang) {
+		if ($lang == "Fr") {
+			return "Montant total académiques";
+		}
+		return "Total price of academic bills";
+	}
+	public static function NumberOfPrivateBills($lang) {
+		if ($lang == "Fr") {
+			return "Nombre de factures privés";
+		}
+		return "Total price of private bills";
+	}
+	public static function TotalPriceOfPrivateBills($lang) {
+		if ($lang == "Fr") {
+			return "Montant total privés";
+		}
+		return "Total price of private bills";
+	}
+	
+	public static function TotalPrice($lang) {
+		if ($lang == "Fr") {
+			return "Montant total";
+		}
+		return "Total price";
+	}
+
+	public static function Responsible_list($lang){
+		if ($lang == "Fr") {
+			return "Listing responsables";
+		}
+		return "Responsible listing";
+	}
 }

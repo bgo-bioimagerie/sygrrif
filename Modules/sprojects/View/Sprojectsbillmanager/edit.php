@@ -40,10 +40,29 @@
 			</div>
 		</div>
 		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Project_number($lang) ?></label>
+			<div class="col-xs-8">
+				<input class="form-control" id="name" type="text" name="no_project"
+				       value="<?php echo $this->clean($billInfo["no_project"]) ?>" readonly   
+				/>
+			</div>
+		</div>
+		<input type="hidden" name="id_resp"
+		       value="<?php echo $this->clean($billInfo["id_resp"]) ?>" 
+		/>
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Date_generated($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="date_generated"
-				       value="<?php echo $this->clean($billInfo["date_generated"]) ?>" readonly 
+				       value="<?php echo CoreTranslator::dateFromEn($this->clean($billInfo["date_generated"]), $lang) ?>" readonly 
+				/>
+			</div> 
+		</div>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Total_HT($lang) ?></label>
+			<div class="col-xs-8">
+				<input class="form-control" id="name" type="text" name="total_ht"
+				       value="<?php echo $this->clean($billInfo["total_ht"]) ?>" 
 				/>
 			</div>
 		</div>
@@ -51,7 +70,7 @@
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Date_paid($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="date_paid"
-				       value="<?php echo $this->clean($billInfo["date_paid"]) ?>"  
+				       value="<?php echo CoreTranslator::dateFromEn($this->clean($billInfo["date_paid"]), $lang) ?>"  
 				/>
 			</div>
 		</div>
@@ -67,11 +86,7 @@
 			</div>
 		</div>
 	
-		<div class="col-xs-2 col-xs-offset-4" id="button-div">
-		<button type="button" onclick="location.href='sprojectsbillmanager/removeentry/<?php echo $this->clean($billInfo["id"])?>'" class="btn btn-danger"><?php echo  CoreTranslator::Delete($lang) ?> </button>
-		</div>        			
-				
-		<div class="col-xs-3 col-xs-offset-3" id="button-div">
+    	<div class="col-xs-3 col-xs-offset-3" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang) ?>" />
 				<button type="button" onclick="location.href='sprojectsbillmanager'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
