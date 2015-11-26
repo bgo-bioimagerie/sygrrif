@@ -72,7 +72,7 @@
 				    <td><?php echo  $this->clean ( $protocol ['inc2'] ); ?></td>
 				    
 				    <td>
-				      <button type='button' onclick="location.href='protocols/edit/<?php echo  $protocolId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='protocols/edit/<?php echo  $protocolId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

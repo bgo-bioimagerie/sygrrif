@@ -424,7 +424,7 @@ class Anticorps extends Model {
 		}
 	}
 	
-	public function searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp, $searchCom){
+	public function searchAdv($searchName, $searchNoH2P2, $searchSource, $searchCible, $searchValide, $searchResp){
 		
 		$acs = $this->getAnticorpsInfo();
 			
@@ -484,18 +484,6 @@ class Anticorps extends Model {
 			foreach ($acs as $as){
 				foreach($as["proprietaire"] as $proprio){
 					if ($this->compare($proprio["name"], $searchResp)){
-						$anticorps[] = $as;
-						break;
-					}
-				}
-			}
-			$acs = $anticorps;
-		}
-		if ($searchCom != ""){
-			$anticorps = array();
-			foreach ($acs as $as){
-				foreach($as["tissus"] as $tissus){
-					if ($this->compare($tissus["comment"], $searchCom)){
 						$anticorps[] = $as;
 						break;
 					}

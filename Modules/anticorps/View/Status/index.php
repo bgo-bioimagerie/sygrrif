@@ -37,7 +37,7 @@
 				    <td><?php echo  $this->clean ( $statu ['nom'] ); ?></td>
 				    <td>#<?php echo  $this->clean ( $statu ['color'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='status/edit/<?php echo  $statuId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='status/edit/<?php echo  $statuId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>
