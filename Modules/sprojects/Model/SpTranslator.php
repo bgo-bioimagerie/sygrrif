@@ -343,7 +343,7 @@ class SpTranslator {
 	}
 	public static function Industry($lang) {
 		if ($lang == "Fr") {
-			return "PME";
+			return "Privé";
 		}
 		return "Industry";
 	}
@@ -373,25 +373,25 @@ class SpTranslator {
 	}
 	public static function numberNewIndustryTeam($lang) {
 		if ($lang == "Fr") {
-			return "Nb de nouvelles PME";
+			return "Nb de nouveau utilisateurs privé";
 		}
 		return "Number of new industry team";
 	}
 	public static function purcentageNewIndustryTeam($lang) {
 		if ($lang == "Fr") {
-			return "Pourcentage de nouvelles PME";
+			return "Pourcentage de nouveau utilisateurs privé";
 		}
 		return "Purcentage of new industry team";
 	}
 	public static function numberIndustryProjects($lang) {
 		if ($lang == "Fr") {
-			return "Nb de projets avec les PME";
+			return "Nb de projets avec les Privé";
 		}
 		return "Number of industry projects";
 	}
 	public static function loyaltyIndustryProjects($lang) {
 		if ($lang == "Fr") {
-			return "Fidélisation des PME";
+			return "Fidélisation des Privé";
 		}
 		return "Loyalty of industry projects";
 	}
@@ -525,4 +525,26 @@ class SpTranslator {
 		}
 		return "Responsible listing";
 	}
+	
+	public static function No_Projet($lang){
+		if ($lang == "Fr") {
+			return "No projet";
+		}
+		return "# project";
+	}
+	
+	public static function ExportType($lang){
+		if ($lang == "Fr") {
+			return "Type d'export";
+		}
+		return "Export type";
+	}
+	
+	public static function view($lang){
+		if ($lang == "Fr") {
+			return "Afficher";
+		}
+		return "View";
+	}
+	
 }

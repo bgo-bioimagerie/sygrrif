@@ -19,6 +19,7 @@ class TableView {
 	private $ignoredEntryKey;
 	private $ignoredEntryValue;
 	private $exportAction;
+	private $exportFileName;
 	private $iscsv;
 	
 	/**
@@ -64,8 +65,9 @@ class TableView {
 	public function addPrintButton($action) {
 		$this->printAction = $action;
 	}
-	public function addExportButton($action) {
+	public function addExportButton($action, $fileName) {
 		$this->exportAction = $action;
+		$this->exportFileName = $fileName;
 	}
 	public function isPrint() {
 		$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
@@ -117,7 +119,7 @@ class TableView {
 			$html = $this->addSearchHeader ( $html, $headerCount );
 		}
 		
-		if ($this->printAction != "" && $this->exportAction != ""){
+		if ($this->printAction != "" && $this->exportAction != "" && ! $this->isprint){
 			$html .= "<div class=\"col-xs-2 col-xs-offset-10\">";
 			// echo "redirect to : " . $this->printAction."?print=1" . "<br/>";
 			$html .= "<button type='button' onclick=\"location.href='" . $this->printAction . "?print=1'\" class=\"btn btn-default\">Print</button>";
@@ -294,7 +296,7 @@ class TableView {
 	 */
 	public function exportCsv($data, $headers) {
 		
-		$csv = "";
+		$csv = $this->exportFileName . "\r\n";
 		
 		// table header
 		foreach ( $headers as $key => $value ) {
@@ -312,7 +314,7 @@ class TableView {
 		}
 		
 		header("Content-Type: application/csv-tab-delimited-table");
-		header("Content-disposition: filename=projects.csv");
+		header("Content-disposition: filename=".$this->exportFileName.".csv");
 		echo $csv;
 	}
 }

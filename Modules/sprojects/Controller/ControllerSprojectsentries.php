@@ -17,11 +17,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 
 	public function index($status = "") {
 		
-		// Lang
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
+		$lang = $this->getLanguage();
 		
 		// get sort action
 		$sortentry = "id";
@@ -39,12 +35,15 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		}
 		
 		if ($status == "all"){
+			$title = SpTranslator::All_orders($lang);
 			$entriesArray = $modelEntry->projects($sortentry);
 		}
 		else if ($status == "opened"){
+			$title = SpTranslator::Opened_orders($lang);
 			$entriesArray = $modelEntry->openedProjects($sortentry);
 		}
 		else if ($status == "closed"){
+			$title = SpTranslator::Closed_orders($lang);
 			$entriesArray = $modelEntry->closedProjects($sortentry);
 		}
 		
@@ -110,14 +109,14 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		//print_r($entriesArray);
 		
 		$table = new TableView();
-		$table->setTitle("Projects");
+		$table->setTitle($title);
 		$table->addLineEditButton("sprojectsentries/editentries");
 		$table->addDeleteButton("sprojectsentries/deleteentries");
 		$table->addPrintButton("sprojectsentries/index/");
-		$table->addExportButton("sprojectsentries/index/");
+		$table->addExportButton("sprojectsentries/index/", $title);
 		$table->setColorIndexes(array("all" => "color", "time_limit" => "time_color", "date_close" => "closed_color"));
 		
-		$headersArray = array("id" => "ID", "resp_name" => "Responsable", "name" => "No Projet", "user_name" => "Utilisateur", "id_status" => "status" , "date_open" => "Date ouverture", "time_limit" => "Délai", "date_close" => "Date cloture");
+		$headersArray = array("id" => "ID", "resp_name" => CoreTranslator::Responsible($lang), "name" => SpTranslator::No_Projet($lang), "user_name" => CoreTranslator::User($lang), "id_status" => CoreTranslator::Status($lang) , "date_open" => SpTranslator::Opened_date($lang), "time_limit" => SpTranslator::Time_limite($lang), "date_close" => SpTranslator::Closed_date($lang));
 		$tableHtml = $table->view($entriesArray, $headersArray);
 		
 		//$print = $this->request->getParameterNoException("print");
@@ -296,7 +295,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 				$content .= $item["name"] . ";";
 			}
 		}
-		$content .= " total ; \n";
+		$content .= " total (€ HT) ; \n";
 		foreach ($projectEntries as $order){
 			$content .= CoreTranslator::dateFromEn($order['date'], $lang) . ";";
 			foreach($activeItems as $item){
@@ -331,15 +330,21 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		
 		$content .= "Total ;";
 		$totalHT = 0;
+		$numActivItem = 0;
 		foreach($activeItems as $item){
 				
 			if ($item["pos"] > 0){
 				$unitaryPrice = $itemPricing->getPrice($item["id"], $LABpricingid);
 				$content .= $item["sum"] . ";";
 				$totalHT += (float)$item["sum"]*(float)$unitaryPrice["price"];
+				$numActivItem++;
 			}
 		}
-		$content .= $totalHT . "\n";
+		$content .= "\r\n";
+		for($i = 0 ; $i <= $numActivItem ; $i++){
+			$content .= " ; ";
+		}
+		$content .= $totalHT . "\r\n";
 		
 		header("Content-Type: application/csv-tab-delimited-table");
 		header("Content-disposition: filename=projet.csv");

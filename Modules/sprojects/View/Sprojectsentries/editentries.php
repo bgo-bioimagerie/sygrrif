@@ -155,7 +155,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4">No Projet</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SpTranslator::No_Projet($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="id" type="text"  name="name" value="<?php echo $this->clean($project["name"]) ?>"/>
 			</div>

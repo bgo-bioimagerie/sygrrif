@@ -136,13 +136,23 @@ class ControllerSprojectsbillmanager extends ControllerSecureNav {
 		$myform->setTitle(SpTranslator::Bills_statistics($lang));
 		$myform->addDate("begining_period", SpTranslator::Beginning_period($lang), true, "0000-00-00");
 		$myform->addDate("end_period", SpTranslator::End_period($lang), true, "0000-00-00");
+		
+		$choices = array(SpTranslator::view($lang), SpTranslator::Export_csv($lang) );
+		$choicesid = array(0,1);
+		$myform->addSelect("exporttype", SpTranslator::ExportType($lang), $choices, $choicesid);
 		$myform->setValidationButton("Ok", "sprojectsbillmanager/billsstats");
 		
 		$stats = "";
 		if ($myform->check()){
+			
 			// run the database query
 			$modelStat = new SpBill();
 			$stats = $modelStat->computeStats($myform->getParameter("begining_period"), $myform->getParameter("end_period"));
+			
+			if ($myform->getParameter("exporttype") == 1){
+				$this->exportStats($stats, $myform->getParameter("begining_period"), $myform->getParameter("end_period"));
+				return;
+			}
 		}
 		
 		// set the view
@@ -154,5 +164,33 @@ class ControllerSprojectsbillmanager extends ControllerSecureNav {
 				'formHtml' => $formHtml,
 				'stats' => $stats
 		) );
+	}
+	
+	protected function exportStats($stats, $begin_period, $end_period){
+		
+		$lang = $this->getLanguage();
+		$content = SpTranslator::TotalNumberOfBills($lang) . ";";
+		$content .= $stats["totalNumberOfBills"] . "\r\n";
+		$content .= SpTranslator::TotalPrice($lang) . ";";
+		$content .= $stats["totalPrice"] . " € HT" . "\r\n";
+		$content .= "\r\n";
+		
+		$content .= SpTranslator::NumberOfAcademicBills($lang) . ";";
+		$content .= $stats["numberOfAcademicBills"] . "\r\n";
+		$content .= SpTranslator::TotalPriceOfAcademicBills($lang) . ";";
+		$content .= $stats["totalPriceOfAcademicBills"] . " € HT" . "\r\n";
+		$content .= "\r\n";
+			      		
+		$content .= SpTranslator::NumberOfPrivateBills($lang) . ";";
+		$content .= $stats["numberOfPrivateBills"] . "\r\n";
+		$content .= SpTranslator::TotalPriceOfPrivateBills($lang) . ";";
+		$content .= $stats["totalPriceOfPrivateBills"] . " € HT" . "\r\n";
+		$content .= "\r\n";
+		
+		$fileName = "statistics_invoice_" . $begin_period . "_" . $end_period;
+		header("Content-Type: application/csv-tab-delimited-table");
+		header("Content-disposition: filename=".$fileName.".csv");
+		echo $content;
+		
 	}
 }
