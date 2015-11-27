@@ -120,7 +120,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$headersArray = array("id" => "ID", "resp_name" => "Responsable", "name" => "No Projet", "user_name" => "Utilisateur", "id_status" => "status" , "date_open" => "Date ouverture", "time_limit" => "Délai", "date_close" => "Date cloture");
 		$tableHtml = $table->view($entriesArray, $headersArray);
 		
-		$print = $this->request->getParameterNoException("print");
+		//$print = $this->request->getParameterNoException("print");
 		
 		//echo "print = " . $print . "<br/>";
 		if ($table->isPrint()){
@@ -340,8 +340,6 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			}
 		}
 		$content .= $totalHT . "\n";
-		
-		
 		
 		header("Content-Type: application/csv-tab-delimited-table");
 		header("Content-disposition: filename=projet.csv");
