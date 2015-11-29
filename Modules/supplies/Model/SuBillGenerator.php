@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Framework/Model.php';
-require_once 'Modules/supplies/Model/SuUnitPricing.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
 require_once 'Modules/supplies/Model/SuItemPricing.php';
 require_once 'Modules/supplies/Model/SuBill.php';
 require_once 'Modules/supplies/Model/SuEntry.php';
@@ -20,14 +20,12 @@ class SuBillGenerator extends Model {
 		// /////////////////////////////////////////// // 
 		//        get the input informations           //
 		// /////////////////////////////////////////// //
-		// get the lab info
-		$unitPricingModel = new SuUnitPricing();
-		$LABpricingid = $unitPricingModel->getPricing($unit_id);
-		
 		
 		$modelConfig = new CoreConfig();
 		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
 		
+		
+		// get the responsibnle info
 		$responsibleFullName = "";
 		$unitName = "";
 		$modelUnit = "";
@@ -43,14 +41,15 @@ class SuBillGenerator extends Model {
 		}
 		else{
 			// responsible fullname
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
 				
 			// unit name
-			$modelUnit = new Unit();
+			$modelUnit = new CoreUnit();
 			$unitName = $modelUnit->getUnitName($unit_id);
 		}
 		
+		$LABpricingid = $modelUnit->getBelonging($unit_id);
 		$unitInfo = $modelUnit->getUnit($unit_id);
 		$unitAddress = $unitInfo[2];
 		// /////////////////////////////////////////// //
@@ -369,6 +368,7 @@ class SuBillGenerator extends Model {
 		$items = $req->fetchAll();
 		$i=0;
 		$modelItemPricing = new SuItemPricing();
+		 
 		$totalHT = 0;
 		$ordersToClose = array();
 		foreach ($items as $e){
@@ -461,7 +461,7 @@ class SuBillGenerator extends Model {
 			$modelEntry->setEntryCloded($toClose);
 		}
 		// add the order to thehistory
-		$modelBill->addBill($number, date("Y-m-d", time()));
+		$modelBill->addBill($number, $unit_id, $responsible_id, date("Y-m-d", time()), $totalHT);
 				
 		// bilan
 		// total HT

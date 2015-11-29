@@ -4,8 +4,8 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/supplies/Model/SuUnit.php';
 require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/supplies/Model/SuBillGenerator.php';
-require_once 'Modules/Core/Model/Unit.php';
-require_once 'Modules/Core/Model/User.php';
+require_once 'Modules/Core/Model/CoreUnit.php';
+require_once 'Modules/Core/Model/CoreUser.php';
 
 class ControllerSuppliesbill extends ControllerSecureNav {
 	
@@ -40,7 +40,7 @@ class ControllerSuppliesbill extends ControllerSecureNav {
 				$responsiblesList = $modeluser->getResponsibleOfUnit($selectedUnitId);
 			}
 			else{
-				$modeluser = new User();
+				$modeluser = new CoreUser();
 				$responsiblesList = $modeluser->getResponsibleOfUnit($selectedUnitId);
 			}
 		}
@@ -59,7 +59,7 @@ class ControllerSuppliesbill extends ControllerSecureNav {
 			$unitsList = $modelUnit->unitsIDName();
 		}
 		else{
-			$modelUnit = new Unit();
+			$modelUnit = new CoreUnit();
 			$unitsList = $modelUnit->unitsIDName();
 		}
 		

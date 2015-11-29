@@ -4,7 +4,6 @@ require_once 'Framework/Model.php';
 require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/core/Model/CoreUser.php';
 
-
 /**
  * Class defining the Consomable items model
  *
@@ -68,7 +67,14 @@ class SuEntry extends Model {
 		$req = $this->runRequest($sql);
 		
 		$entries = $req->fetchAll();
-		$modelUser = new SuUser();
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		if ($supliesusersdatabase == "local"){
+			$modelUser = new SuUser();
+		}
+		else{
+			$modelUser = new CoreUser();
+		}
 		for ($i = 0 ; $i < count($entries) ; $i++){
 			$entries[$i]["user_name"] =  $modelUser->getUserFUllName($entries[$i]['id_user']);
 		}
@@ -80,7 +86,14 @@ class SuEntry extends Model {
 		$req = $this->runRequest($sql);
 		
 		$entries = $req->fetchAll();
-		$modelUser = new SuUser();
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		if ($supliesusersdatabase == "local"){
+			$modelUser = new SuUser();
+		}
+		else{
+			$modelUser = new CoreUser();
+		}
 		for ($i = 0 ; $i < count($entries) ; $i++){
 			$entries[$i]["user_name"] =  $modelUser->getUserFUllName($entries[$i]['id_user']);
 		}

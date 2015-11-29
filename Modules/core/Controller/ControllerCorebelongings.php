@@ -42,6 +42,14 @@ class ControllerCorebelongings extends ControllerSecureNav {
 		
 		// get the user list
 		$belongingsArray = $this->belongingModel->getbelongings ( $sortentry );
+		for($i = 0 ; $i < count($belongingsArray) ; $i++){
+			if ($belongingsArray[$i]["type"] == 1){
+				$belongingsArray[$i]["type"] = CoreTranslator::Academic($lang);
+			}
+			else{
+				$belongingsArray[$i]["type"] = CoreTranslator::Company($lang);
+			}
+		}
 		
 		$table = new TableView();
 		$table->ignoreEntry("id", 1);
@@ -49,7 +57,10 @@ class ControllerCorebelongings extends ControllerSecureNav {
 		$table->addLineEditButton("corebelongings/edit");
 		$table->addDeleteButton("corebelongings/delete");
 		$table->addPrintButton("corebelongings/index/");
-		$tableHtml = $table->view($belongingsArray, array("id" => "ID", "name" => CoreTranslator::Name($lang)));
+		$table->setColorIndexes(array("color" => "color"));
+		$tableHtml = $table->view($belongingsArray, array("id" => "ID", "name" => CoreTranslator::Name($lang),
+				                                          "color" => CoreTranslator::color($lang), "type" => CoreTranslator::type($lang)  
+		));
 		
 		$print = $this->request->getParameterNoException("print");
 		
@@ -77,7 +88,7 @@ class ControllerCorebelongings extends ControllerSecureNav {
 		}
 		
 		// get belonging info
-		$belonging = array("id" => 0, "name" => "");
+		$belonging = array("id" => 0, "name" => "", "color" => "#ffffff", "type" => 1);
 		if ($belongingId > 0){
 			$belonging = $this->belongingModel->getInfo( $belongingId );
 		}
@@ -91,6 +102,11 @@ class ControllerCorebelongings extends ControllerSecureNav {
 		$form->setTitle(CoreTranslator::Edit_unit($lang));
 		$form->addHidden("id", $belonging["id"]);
 		$form->addText("name", CoreTranslator::Name($lang), true, $belonging["name"]);
+		$form->addColor("color", CoreTranslator::color($lang), false, $belonging["color"]);
+		
+		$choices = array( CoreTranslator::Academic($lang), CoreTranslator::Company($lang) );
+		$choicesid = array(1,2);
+		$form->addSelect("type", CoreTranslator::type($lang), $choices, $choicesid, $belonging["type"]);
 		$form->setValidationButton(CoreTranslator::Ok($lang), "Corebelongings/edit");
 		$form->setCancelButton(CoreTranslator::Cancel($lang), "Corebelongings");
 		
@@ -98,7 +114,7 @@ class ControllerCorebelongings extends ControllerSecureNav {
 		if ($form->check()){
 			// run the database query
 			$model = new CoreBelonging();
-			$model->set($form->getParameter("id"), $form->getParameter("name"));
+			$model->set($form->getParameter("id"), $form->getParameter("name"), $form->getParameter("color"), $form->getParameter("type"));
 			
 			$this->redirect("Corebelongings");
 		}

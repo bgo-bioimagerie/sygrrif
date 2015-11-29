@@ -36,12 +36,25 @@ class SyGraph extends Model {
 			for ($m = $start_month ; $m <= $stop_month ; $m++){
 				$dstart= mktime(0,0,0,$m,1,$y); // Le premier jour du mois en cours
 				$dend= mktime(0,0,0,$m+1,1,$y); // Le 0eme jour du mois suivant == le dernier jour du mois en cour
-				
-				//$q = array('start'=>$dstart, 'end'=>$dend);
-				$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >= '.$dstart.' AND start_time <= '.$dend.' ORDER BY id';
+								
+				$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.$dstart.' AND end_time <='.$dend.' ORDER by resource_id';
 				$req = $this->runRequest($sql);
-					
-				$num = $req->rowCount(); // Nombre de réservations dans la période sélectionnée
+				$numMachinesFormesTotal = $req->rowCount();
+				$machinesFormesListe = $req->fetchAll();
+				
+				$num = 0;
+				foreach ($machinesFormesListe as $machine){
+					// test if the resource still exists
+					$sql = 'SELECT name FROM sy_resources WHERE id ="'.$machine[0].'"';
+					$req = $this->runRequest($sql);
+					$res = $req->fetchAll();
+					if (count($res) > 0){
+						$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.$dstart.' AND end_time <='.$dend.' AND resource_id ="'.$machine[0].'"';
+						$req = $this->runRequest($sql);
+						$num += $req->rowCount();
+					}
+				}
+				
 				$i++;
 				$numTotal += $num;
 				$graph[$i]=$num;
@@ -80,19 +93,33 @@ class SyGraph extends Model {
 				$dstart= mktime(0,0,0,$m,1,$y); // Le premier jour du mois en cours
 				$dend= mktime(0,0,0,$m+1,1,$y); // Le 0eme jour du mois suivant == le dernier jour du mois en cour
 				
-				//$q = array('start'=>$dstart, 'end'=>$dend);
-				$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >= '.$dstart.' AND start_time <= '.$dend.' ORDER BY id';
+				$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.$dstart.' AND end_time <='.$dend.' ORDER by resource_id';
 				$req = $this->runRequest($sql);
-				$datas = $req->fetchAll();
-					
+				$numMachinesFormesTotal = $req->rowCount();
+				$machinesFormesListe = $req->fetchAll();
+				
 				$timeResa = 0;
-				foreach ($datas as $data){
-					if ($data["end_time"] - $data["start_time"] >= 0){
-						$timeResa += (float)($data["end_time"] - $data["start_time"]) / (float)3600;
-					}
-					else{
-						echo "WARNING: error in reservation : <br/>";
-						print_r($data);
+				foreach ($machinesFormesListe as $machine){
+					// test if the resource still exists
+					$sql = 'SELECT name FROM sy_resources WHERE id ="'.$machine[0].'"';
+					$req = $this->runRequest($sql);
+					$res = $req->fetchAll();
+					if (count($res) > 0){
+						$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.$dstart.' AND end_time <='.$dend.' AND resource_id ="'.$machine[0].'"';
+						$req = $this->runRequest($sql);
+						$datas = $req->fetchAll();
+						
+						
+						foreach ($datas as $data){
+							if ($data["end_time"] - $data["start_time"] >= 0){
+								$timeResa += (float)($data["end_time"] - $data["start_time"]) / (float)3600;
+							}
+							else{
+								echo "WARNING: error in reservation : <br/>";
+								print_r($data);
+							}
+						}
+						
 					}
 				}
 				$i++;
@@ -101,7 +128,7 @@ class SyGraph extends Model {
 				$monthIds[$i] = $m;
 			}
 		}
-	
+		$timeTotal = round($timeTotal);
 		$graphData = array('timeTotal' => $timeTotal, 'graph' => $graph, 'monthIds' => $monthIds);
 		return $graphData;
 	}
@@ -172,6 +199,12 @@ class SyGraph extends Model {
 		return $resaDayNightWe;
 	}
 	
+	private function getFirstPricing(){
+		$pricingModel = new SyPricing();
+		$pricingsInfo = $pricingModel->getPrices();
+		return $pricingsInfo[0];
+	}
+	
 	/**
 	 * Generate a pie chart number of hours of reservation per resource
 	 * @param unknown $year
@@ -194,8 +227,7 @@ class SyGraph extends Model {
 			$resourceType = $tmp[0];
 			
 			// get the night and we periods
-			$pricingModel = new SyPricing();
-			$pricingInfo = $pricingModel->getPricing(2); // the pricing id should be adapted if the pricings don't se the same hight and we settings
+			$pricingInfo = $this->getFirstPricing();
 			$night_start = $pricingInfo['night_start'];
 			$night_end = $pricingInfo['night_end'];
 			$we_array1 = explode(",", $pricingInfo['choice_we']);
@@ -279,31 +311,6 @@ class SyGraph extends Model {
 			
 			$curentAngle = 2*pi()*$numMachinesFormes[$i][1]/$numTotal; 
 			
-			if ($curentAngle > pi()){
-				
-				$angle += $curentAngle/2;
-				
-				$arriveeX = 300+250*cos($angle);
-				$arriveeY = 300-250*sin($angle);
-				
-				$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'" stroke="black" stroke-width="0"  />';
-				$test .= '<g>';
-				
-				$departX = $arriveeX;
-				$departY = $arriveeY;
-				$angle += $curentAngle/2;
-			}
-			else{
-				$angle += $curentAngle;
-			}
-			
-			$arriveeX = 300+250*cos($angle);
-			$arriveeY = 300-250*sin($angle);
-			
-			$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'"/>';
-			$test .= '<g>';
-			$test .= '<rect x="580" y="'.(83+40*$i).'" width="30" height="20" rx="5" ry="5" fill="'.$couleur[$i].'" stroke="'.$couleur[$i].'" stroke-width="0"/>';
-				
 			$sql = 'SELECT name FROM sy_resources WHERE id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);
 			$res = $req->fetchAll();
@@ -311,14 +318,43 @@ class SyGraph extends Model {
 			if (count($res) > 0){
 				$nomMachine = $res[0][0];
 			}
+			
+			if ($nomMachine != "-"){
+			
+				if ($curentAngle > pi()){
+					
+					$angle += $curentAngle/2;
+					
+					$arriveeX = 300+250*cos($angle);
+					$arriveeY = 300-250*sin($angle);
+					
+					$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'" stroke="black" stroke-width="0"  />';
+					$test .= '<g>';
+					
+					$departX = $arriveeX;
+					$departY = $arriveeY;
+					$angle += $curentAngle/2;
+				}
+				else{
+					$angle += $curentAngle;
+				}
 				
-			$test .= '<text x="615" y="'.(90+40*$i).'" font-size="25" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$numMachinesFormes[$i][1].'</text>';
-			$test .= '</g>';
-		
-		
-			$departX = $arriveeX;
-			$departY = $arriveeY;
-			$i++;
+				$arriveeX = 300+250*cos($angle);
+				$arriveeY = 300-250*sin($angle);
+				
+				$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'"/>';
+				$test .= '<g>';
+				$test .= '<rect x="580" y="'.(83+40*$i).'" width="30" height="20" rx="5" ry="5" fill="'.$couleur[$i].'" stroke="'.$couleur[$i].'" stroke-width="0"/>';
+					
+				$test .= '<text x="615" y="'.(90+40*$i).'" font-size="25" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$numMachinesFormes[$i][1].'</text>';
+				$test .= '</g>';
+			
+			
+				$departX = $arriveeX;
+				$departY = $arriveeY;
+				
+				$i++;
+			}
 		}
 		
 		$test .= '</g>';
@@ -431,8 +467,7 @@ class SyGraph extends Model {
 		$machinesFormesListe = $req->fetchAll();
 		
 		// get the night and we periods
-		$pricingModel = new SyPricing();
-		$pricingInfo = $pricingModel->getPricing(2); // the pricing id should be adapted if the pricings don't se the same hight and we settings
+		$pricingInfo = $this->getFirstPricing();
 		$night_start = $pricingInfo['night_start'];
 		$night_end = $pricingInfo['night_end'];
 		$we_array1 = explode(",", $pricingInfo['choice_we']);
@@ -531,7 +566,12 @@ class SyGraph extends Model {
 			$res = $req->fetchAll();
 			$nomMachine = $resourceTypeList[$i]["name"];
 			
-			$test .= '<text x="615" y="'.(90+40*$i).'" font-size="20" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$timeResa. "|" . $timeResaNight . "|" .$timeResaWe . '</text>';
+			if ($timeResaNight != 0 && $timeResaWe != 0){
+				$test .= '<text x="615" y="'.(90+40*$i).'" font-size="20" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$timeResa. "|" . $timeResaNight . "|" .$timeResaWe . '</text>';
+			}
+			else{
+				$test .= '<text x="615" y="'.(90+40*$i).'" font-size="20" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$timeResa. '</text>';
+			}
 			$test .= '</g>';
 			
 			$departX = $arriveeX;
@@ -557,8 +597,7 @@ class SyGraph extends Model {
 		$machinesFormesListe = $req->fetchAll();
 	
 		// get the night and we periods
-		$pricingModel = new SyPricing();
-		$pricingInfo = $pricingModel->getPricing(2); // the pricing id should be adapted if the pricings don't se the same hight and we settings
+		$pricingInfo = $this->getFirstPricing();
 		$night_start = $pricingInfo['night_start'];
 		$night_end = $pricingInfo['night_end'];
 		$we_array1 = explode(",", $pricingInfo['choice_we']);
@@ -585,64 +624,6 @@ class SyGraph extends Model {
 		
 		foreach($machinesFormesListe as $mFL) {
 			
-			// get the resource type
-			$sql = 'SELECT type_id FROM sy_resources WHERE id=?';
-			$req = $this->runRequest($sql, array($mFL["resource_id"]));
-			$tmp = $req->fetch();
-			$resourceType = $tmp[0];
-			
-			$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,1,$year_end).' AND resource_id ="'.$mFL[0].'"';
-			$req = $this->runRequest($sql);
-			$numMachinesFormes[$i][0] = $mFL[0];
-				
-			$resas = $req->fetchAll();
-			$timeResa = 0.0;
-			$timeResaNight = 0.0;
-			$timeResaWe = 0.0;
-			foreach($resas as $resa){
-				if ($resourceType == 1){
-					$timeResaArray = $this->calculateReservationTime($resa["start_time"], $resa["end_time"], $night_start, $night_end, $we_array);
-					$timeResa += $timeResaArray[0];
-					$timeResaNight += $timeResaArray[1];
-					$timeResaWe += $timeResaArray[2];
-				}
-				else{
-					$timeResa += (float)($resa["end_time"] - $resa["start_time"]) / (float)3600;
-				}
-			}
-			//echo "timeResa = " . $timeResa . "<br/>";
-			$numMachinesFormes[$i][1] = $timeResa;
-			$numMachinesFormes[$i][2] = $timeResaNight;
-			$numMachinesFormes[$i][3] = $timeResaWe;
-	
-			$curentAngle = 2*pi()*($numMachinesFormes[$i][1]+$numMachinesFormes[$i][2]+$numMachinesFormes[$i][3])/$numTotal;
-	
-			if ($curentAngle > pi()){
-	
-				$angle += $curentAngle/2;
-	
-				$arriveeX = 300+250*cos($angle);
-				$arriveeY = 300-250*sin($angle);
-	
-				$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'" stroke="black" stroke-width="0"  />';
-				$test .= '<g>';
-	
-				$departX = $arriveeX;
-				$departY = $arriveeY;
-				$angle += $curentAngle/2;
-			}
-			else{
-				$angle += $curentAngle;
-	
-			}
-	
-			$arriveeX = 300+250*cos($angle);
-			$arriveeY = 300-250*sin($angle);
-	
-			$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'"/>';
-			$test .= '<g>';
-			$test .= '<rect x="580" y="'.(83+40*$i).'" width="30" height="20" rx="5" ry="5" fill="'.$couleur[$i].'" stroke="'.$couleur[$i].'" stroke-width="0"/>';
-	
 			$sql = 'SELECT name FROM sy_resources WHERE id ="'.$mFL[0].'"';
 			$req = $this->runRequest($sql);
 			$res = $req->fetchAll();
@@ -650,13 +631,78 @@ class SyGraph extends Model {
 			if (count($res) > 0){
 				$nomMachine = $res[0][0];
 			}
-	
-			$test .= '<text x="615" y="'.(90+40*$i).'" font-size="20" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$numMachinesFormes[$i][1] . "|" .$numMachinesFormes[$i][2] . "|" .$numMachinesFormes[$i][3] . "" .'</text>';
-			$test .= '</g>';
-	
-			$departX = $arriveeX;
-			$departY = $arriveeY;
-			$i++;
+			
+			if ($nomMachine != "-"){
+				// get the resource type
+				$sql = 'SELECT type_id FROM sy_resources WHERE id=?';
+				$req = $this->runRequest($sql, array($mFL["resource_id"]));
+				$tmp = $req->fetch();
+				$resourceType = $tmp[0];
+				
+				$sql = 'SELECT * FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,1,$year_end).' AND resource_id ="'.$mFL[0].'"';
+				$req = $this->runRequest($sql);
+				$numMachinesFormes[$i][0] = $mFL[0];
+					
+				$resas = $req->fetchAll();
+				$timeResa = 0.0;
+				$timeResaNight = 0.0;
+				$timeResaWe = 0.0;
+				foreach($resas as $resa){
+					if ($resourceType == 1){
+						$timeResaArray = $this->calculateReservationTime($resa["start_time"], $resa["end_time"], $night_start, $night_end, $we_array);
+						$timeResa += $timeResaArray[0];
+						$timeResaNight += $timeResaArray[1];
+						$timeResaWe += $timeResaArray[2];
+					}
+					else{
+						$timeResa += (float)($resa["end_time"] - $resa["start_time"]) / (float)3600;
+					}
+				}
+				//echo "timeResa = " . $timeResa . "<br/>";
+				$numMachinesFormes[$i][1] = round($timeResa, 1);
+				$numMachinesFormes[$i][2] = round($timeResaNight, 1);
+				$numMachinesFormes[$i][3] = round($timeResaWe, 1);
+		
+				$curentAngle = 2*pi()*($numMachinesFormes[$i][1]+$numMachinesFormes[$i][2]+$numMachinesFormes[$i][3])/$numTotal;
+		
+				if ($curentAngle > pi()){
+		
+					$angle += $curentAngle/2;
+		
+					$arriveeX = 300+250*cos($angle);
+					$arriveeY = 300-250*sin($angle);
+		
+					$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'" stroke="black" stroke-width="0"  />';
+					$test .= '<g>';
+		
+					$departX = $arriveeX;
+					$departY = $arriveeY;
+					$angle += $curentAngle/2;
+				}
+				else{
+					$angle += $curentAngle;
+		
+				}
+		
+				$arriveeX = 300+250*cos($angle);
+				$arriveeY = 300-250*sin($angle);
+		
+				$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 300" fill="'.$couleur[$i].'"/>';
+				$test .= '<g>';
+				$test .= '<rect x="580" y="'.(83+40*$i).'" width="30" height="20" rx="5" ry="5" fill="'.$couleur[$i].'" stroke="'.$couleur[$i].'" stroke-width="0"/>';
+		
+				if ($numMachinesFormes[$i][2] == 0 &&  $numMachinesFormes[$i][3] == 0){
+					$test .= '<text x="615" y="'.(90+40*$i).'" font-size="20" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$numMachinesFormes[$i][1] . "" .'</text>';
+				}
+				else{
+					$test .= '<text x="615" y="'.(90+40*$i).'" font-size="20" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$numMachinesFormes[$i][1] . "|" .$numMachinesFormes[$i][2] . "|" .$numMachinesFormes[$i][3] . "" .'</text>';
+				}
+				$test .= '</g>';
+		
+				$departX = $arriveeX;
+				$departY = $arriveeY;
+				$i++;
+			}
 		}
 	
 		$test .= '</g>';
@@ -664,3 +710,4 @@ class SyGraph extends Model {
 	
 	}
 }
+

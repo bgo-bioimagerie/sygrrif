@@ -39,6 +39,8 @@ class TableView
     	$this->linesButtonActionsIndex = array();
     	$this->linesButtonName = array();
     	$this->colorIndexes = array();
+    	$this->exportAction = "";
+    	$this->iscsv = false;
     }
     
     /**
@@ -77,7 +79,9 @@ class TableView
     public function addPrintButton($action){
     	$this->printAction = $action;
     }
-    
+    public function addExportButton($action) {
+    	$this->exportAction = $action;
+    }
     public function setColorIndexes($indexesArray){
     	$this->colorIndexes = $indexesArray;
     }
@@ -87,6 +91,16 @@ class TableView
     	//echo "url = " . $actual_link . "<br/>";
     	if (strstr($actual_link, 'print=1')){
     		$this->isprint = true;
+    		return true;
+    	}
+    	return false;
+    }
+    
+    public function isExport(){
+    	$actual_link = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+    	// echo "url = " . $actual_link . "<br/>";
+    	if (strstr ( $actual_link, 'csv=1' )) {
+    		$this->iscsv = true;
     		return true;
     	}
     	return false;
@@ -117,12 +131,27 @@ class TableView
     		$html = $this->addSearchHeader($html, $headerCount);
     	}
     	
-    	if ($this->printAction != "" && !$this->isprint){
-    		$html .= "<div class=\"col-xs-2 col-xs-offset-10\">";
-    		//echo "redirect to : " . $this->printAction."?print=1" . "<br/>"; 
-    		$html .= "<button type='button' onclick=\"location.href='".$this->printAction."?print=1'\" class=\"btn btn-default\">Print</button>";
-    		$html .= "</div>";
-    	}
+    	if ($this->printAction != "" && $this->exportAction != "" && ! $this->isprint){
+			$html .= "<div class=\"col-xs-2 col-xs-offset-10\">";
+			// echo "redirect to : " . $this->printAction."?print=1" . "<br/>";
+			$html .= "<button type='button' onclick=\"location.href='" . $this->printAction . "?print=1'\" class=\"btn btn-default\">Print</button>";
+			$html .= "<button type='button' onclick=\"location.href='" . $this->exportAction . "?csv=1'\" class=\"btn btn-default\">Export</button>";
+			$html .= "</div>";
+		}
+		else{
+			if ($this->printAction != "" && ! $this->isprint) {
+				$html .= "<div class=\"col-xs-2 col-xs-offset-10\">";
+				// echo "redirect to : " . $this->printAction."?print=1" . "<br/>";
+				$html .= "<button type='button' onclick=\"location.href='" . $this->printAction . "?print=1'\" class=\"btn btn-default\">Print</button>";
+				$html .= "</div>";
+			}
+			if ($this->exportAction != "" && ! $this->isprint){
+				$html .= "<div class=\"col-xs-2 col-xs-offset-10\">";
+				// echo "redirect to : " . $this->printAction."?print=1" . "<br/>";
+				$html .= "<button type='button' onclick=\"location.href='" . $this->exportAction . "?csv=1'\" class=\"btn btn-default\">Export</button>";
+				$html .= "</div>";
+			}
+		}
     	
     	if ($this->title != ""){
     		$html .= "<div class=\"page-header\">";
@@ -287,5 +316,37 @@ class TableView
     	$html .= "	}";
     	$html .= "</script>";
     	return $html;
+    }
+    
+    /**
+     * Generate a basic table view
+     *
+     * @param array $data
+     *        	table data ( 'key' => value)
+     * @param array $headers
+     *        	table headers ( 'key' => 'headername' )
+     */
+    public function exportCsv($data, $headers) {
+    
+    	$csv = "";
+    
+    	// table header
+    	foreach ( $headers as $key => $value ) {
+    		$csv .= $value . ";";
+    	}
+    	$csv .= "\r\n";
+    	// table body
+    	foreach ( $data as $dat ) {
+    		if ($this->printIt ( $dat )) {
+    			foreach ( $headers as $key => $value ) {
+    				$csv .= htmlspecialchars ( $dat [$key], ENT_QUOTES, 'UTF-8', false ) . ";";
+    			}
+    			$csv .= "\r\n";
+    		}
+    	}
+    
+    	header("Content-Type: application/csv-tab-delimited-table");
+    	header("Content-disposition: filename=projects.csv");
+    	echo $csv;
     }
 }

@@ -85,15 +85,6 @@ class CoreInstall extends Model {
 					continue;
 				}
 				
-				// replace dbname
-				$pos = strpos($buffer, 'dbname');
-				if ($pos === false) {
-				}
-				else if ($pos == 0) {
-					$outContent = $outContent . 'dbname = ' . $db_name . PHP_EOL;
-					continue;
-				}
-				
 				// replace login
 				$pos = strpos($buffer, 'login');
 				if ($pos === false) {

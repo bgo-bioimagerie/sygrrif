@@ -1,72 +1,106 @@
 <?php
 
-
 require_once 'Framework/Controller.php';
+require_once 'Framework/TableView.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
+require_once 'Modules/supplies/Model/SuTranslator.php';
 require_once 'Modules/supplies/Model/SuEntry.php';
 require_once 'Modules/supplies/Model/SuItem.php';
 
 class ControllerSuppliesentries extends ControllerSecureNav {
 
-	public function index() {
+	public function index($status = "") {
 		
 		// get sort action
 		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$sortentry = $this->request->getParameter("actionid");
+		$lang = $this->getLanguage();
+		
+		// get the commands list
+		$modelEntry = new SuEntry();
+		$entriesArray = array();
+		if ($status == ""){
+			if (isset($_SESSION["supplies_lastvisited"])){
+				$status = $_SESSION["supplies_lastvisited"];
+			}
+			else{
+				$status = "all";
+			}
 		}
 		
-		// get the user list
-		$modelEntry = new SuEntry();
-		$entriesArray = $modelEntry->entries($sortentry);
+		if ($status == "all"){
+			$entriesArray = $modelEntry->entries($sortentry);
+		}
+		else if ($status == "opened"){
+			$entriesArray = $modelEntry->openedEntries($sortentry);
+		}
+		else if ($status == "closed"){
+			$entriesArray = $modelEntry->closedEntries($sortentry);
+		}
 		
+		$table = new TableView();
+		$table->setTitle(SuTranslator::Supplies_Orders($lang));
+		$table->addLineEditButton("suppliesentries/editentries");
+		$table->addDeleteButton("suppliesentries/delete", "id", "id");
+		$table->addPrintButton("suppliesentries/index/");
+		$table->addExportButton("suppliesentries/index/");
+		
+		$headersArray = array(
+				"id" => "ID", 
+				"user_name" => CoreTranslator::User($lang), 
+				"id_status" => CoreTranslator::Status($lang), 
+				"date_open" => SuTranslator::Opened_date($lang),
+				"date_close" => SuTranslator::Closed_date($lang),
+				"date_last_modified" => SuTranslator::Last_modified_date($lang),
+				);
+				
+				
+		for($i = 0 ; $i < count($entriesArray) ; $i++){
+			if ($entriesArray[$i]["id_status"]){
+				$entriesArray[$i]["id_status"] = SuTranslator::Open($lang);
+			}
+			else{
+				$entriesArray[$i]["id_status"] = SuTranslator::Closed($lang);
+			}
+			$entriesArray[$i]["date_open"] = CoreTranslator::dateFromEn($entriesArray[$i]["date_open"], $lang);
+			$entriesArray[$i]["date_close"] = CoreTranslator::dateFromEn($entriesArray[$i]["date_close"], $lang);
+			$entriesArray[$i]["date_last_modified"] = CoreTranslator::dateFromEn($entriesArray[$i]["date_last_modified"], $lang);
+		}
+		$tableHtml = $table->view($entriesArray, $headersArray);
+		
+		if ($table->isPrint()){
+			echo $tableHtml;
+			return;
+		}
+		if ($table->isExport()){
+			echo $table->exportCsv($entriesArray, $headersArray);
+			return;
+		}
+			
 		// view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'entriesArray' => $entriesArray
-		) );
+				'tableHtml' => $tableHtml
+		) , "index");
 	}
 	
 	public function openedentries() {
 	
-		// get sort action
-		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$sortentry = $this->request->getParameter("actionid");
-		}
-	
-		// get the user list
-		$modelEntry = new SuEntry();
-		$entriesArray = $modelEntry->openedEntries($sortentry);
-	
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'entriesArray' => $entriesArray
-		), "index" );
+		$_SESSION["supplies_lastvisited"] = "opened";
+		$this->index("opened");
 	}
 	
 	public function closedentries() {
 	
-		// get sort action
-		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$sortentry = $this->request->getParameter("actionid");
-		}
+		$_SESSION["supplies_lastvisited"] = "closed";
+		$this->index("closed");
+	}
 	
-		// get the user list
-		$modelEntry = new SuEntry();
-		$entriesArray = $modelEntry->closedEntries($sortentry, 0);
+	public function allentries() {
 	
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'entriesArray' => $entriesArray
-		), "index" );
+		$_SESSION["supplies_lastvisited"] = "all";
+		$this->index("all");
 	}
 	
 	public function editentries(){
@@ -130,11 +164,11 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$users = array();
 		if ($supliesusersdatabase == "local"){
 			$modelUser = new SuUser();
-			$users = $modelUser->getUsersSummary("name");
+			$users = $modelUser->getUsersSummary();
 		}
 		else{
-			$modelUser = new User();
-			$users = $modelUser->getUsersSummary("name");
+			$modelUser = new CoreUser();
+			$users = $modelUser->getUsersSummary();
 		}
 		
 		// view
@@ -198,32 +232,14 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 	}
 	
 	/**
-	 * Remove an unit form confirm
+	 * Remove an entry query to database
 	 */
 	public function delete(){
 	
-		$unitId = 0;
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$unitId = $this->request->getParameter("actionid");
-		};
-	
-		// generate view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'entryID' => $unitId
-		) );
-	}
-	
-	/**
-	 * Remove an unit query to database
-	 */
-	public function deletequery(){
-	
-		$unitId = $this->request->getParameter("id");
+		$id = $this->request->getParameter("actionid");
 		
 		$modelEntry = new SuEntry();
-		$modelEntry->delete($unitId);
+		$modelEntry->delete($id);
 	
 		// generate view
 		$this->redirect("suppliesentries");

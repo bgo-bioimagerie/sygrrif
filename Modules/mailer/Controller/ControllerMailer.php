@@ -1,7 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
-require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/User.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
@@ -39,7 +39,7 @@ class ControllerMailer extends ControllerSecureNav {
 			}
 		}
 		
-		$modelUser = new CoreUser();
+		$modelUser = new User();
 		$user = $modelUser->userAllInfo($_SESSION["id_user"]);
 		$from = $user["email"];
 		
@@ -60,7 +60,7 @@ class ControllerMailer extends ControllerSecureNav {
 		// get the emails
 		$toAdress = array();
 		if($to == "all"){
-			$modelUser = new CoreUser();
+			$modelUser = new User();
 			$toAdress = $modelUser->getAllActifEmails();
 		}
 		else{

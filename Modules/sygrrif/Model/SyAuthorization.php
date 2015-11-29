@@ -600,7 +600,7 @@ class SyAuthorization extends Model {
 			$datas = array();
 		
 			$modelResp = new CoreResponsible();
-			$modelUser = new CoreUser();
+			$modelUser = new SuUser();
 			$modelUnit = new CoreUnit();
 			$modelVisa = new SyVisa();
 			$modelResource = new SyResourcesCategory();

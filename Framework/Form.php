@@ -154,6 +154,35 @@ class Form
     	$this->validated[] = true;
     }
     
+    public function addDate($name, $label, $isMandatory = false, $value = ""){
+    	$this->types[] = "date";
+    	$this->names[] = $name;
+    	$this->labels[] = $label;
+    	$this->setValue($name, $value);
+    	$this->isMandatory[] = $isMandatory;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+    }
+    
+    /**
+     * Add color input to the form
+     * @param string $name Input name
+     * @param string $label Input label
+     * @param string $isMandatory True if mandatory input
+     * @param string $value Input default value
+     */
+    public function addColor($name, $label, $isMandatory = false, $value = ""){
+    	$this->types[] = "color";
+    	$this->names[] = $name;
+    	$this->labels[] = $label;
+    	$this->setValue($name, $value);
+    	$this->isMandatory[] = $isMandatory;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+    }
+    
     /**
      * Add email input to the form
      * @param string $name Input name
@@ -275,6 +304,26 @@ class Form
     			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
     			$html .=				"<input class=\"form-control\" type=\"text\" name=\"".$this->names[$i]."\"";
     			$html .=				       "value=\"".$this->values[$i]."\"" . $required;  
+    			$html .=				"/>";
+    			$html .=			"</div>";
+    			$html .= "</div>";
+    		}
+    		if($this->types[$i] == "date"){
+    			$html .= "<div class=\"form-group".$validated."\">";
+    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
+    			$html .=				"<input class=\"form-control\" type=\"date\" name=\"".$this->names[$i]."\"";
+    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
+    			$html .=				"/>";
+    			$html .=			"</div>";
+    			$html .= "</div>";
+    		}
+    		if($this->types[$i] == "color"){
+    			$html .= "<div class=\"form-group".$validated."\">";
+    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
+    			$html .=				"<input class=\"form-control\" type=\"color\" name=\"".$this->names[$i]."\"";
+    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
     			$html .=				"/>";
     			$html .=			"</div>";
     			$html .= "</div>";

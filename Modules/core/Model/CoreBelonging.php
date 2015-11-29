@@ -19,6 +19,8 @@ class CoreBelonging extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `core_belongings` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(150) NOT NULL DEFAULT '',
+		`color` varchar(7) NOT NULL DEFAULT '#ffffff',
+		`type` int(1) NOT NULL DEFAULT 1,		
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -76,7 +78,7 @@ class CoreBelonging extends Model {
 	 */
 	public function getAll(){
 			
-		$sql = "select id, name from core_belongings";
+		$sql = "select id, name, color, type from core_belongings";
 		$req = $this->runRequest($sql);
 		return $req->fetchAll();
 	}
@@ -99,10 +101,10 @@ class CoreBelonging extends Model {
 	 *
 	 * @param string $name name of the belonging
 	 */
-	public function add($name){
+	public function add($name, $color, $type){
 		
-		$sql = "insert into core_belongings(name)"
-				. " values(?)";
+		$sql = "insert into core_belongings(name, color, type)"
+				. " values(?,?,?)";
 		$user = $this->runRequest($sql, array($name));		
 	}
 	
@@ -112,10 +114,10 @@ class CoreBelonging extends Model {
 	 * @param int $id Id of the belonging to update
 	 * @param string $name New name of the belonging
 	 */
-	public function edit($id, $name){
+	public function edit($id, $name, $color, $type){
 		
-		$sql = "update core_belongings set name=? where id=?";
-		$this->runRequest($sql, array($name, $id));
+		$sql = "update core_belongings set name=?, color=?, type=? where id=?";
+		$this->runRequest($sql, array($name, $color, $type, $id));
 	}
 	
 	/**
@@ -136,12 +138,12 @@ class CoreBelonging extends Model {
 	 * Set a Belonging (add if not exists)
 	 * @param string $name Belonging name
 	 */
-	public function set($id, $name){
+	public function set($id, $name, $color, $type){
 		if (!$this->exists($id)){
-			$this->add($name);
+			$this->add($name, $color, $type);
 		}
 		else{
-			$this->edit($id, $name);
+			$this->edit($id, $name, $color, $type);
 		}
 	}
 	

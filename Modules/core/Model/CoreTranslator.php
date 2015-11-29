@@ -959,4 +959,25 @@ class CoreTranslator {
 		}
 		return "Authorizations";
 	}
+	
+	public static function type($lang){
+		if ($lang == "Fr"){
+			return "type";
+		}
+		return "type";
+	}
+	
+	public static function Academic($lang){
+		if ($lang == "Fr"){
+			return "Académique";
+		}
+		return "Academic";
+	}
+	 
+	public static function Company($lang){
+		if ($lang == "Fr"){
+			return "Privé";
+		}
+		return "Private";
+	}
 }

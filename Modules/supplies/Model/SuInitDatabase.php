@@ -4,8 +4,7 @@ require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/supplies/Model/SuUnit.php';
-require_once 'Modules/supplies/Model/SuPricing.php';
-require_once 'Modules/supplies/Model/SuUnitPricing.php';
+require_once 'Modules/supplies/Model/SuBelonging.php';
 require_once 'Modules/supplies/Model/SuItemPricing.php';
 require_once 'Modules/supplies/Model/SuItem.php';
 require_once 'Modules/supplies/Model/SuEntry.php';
@@ -34,11 +33,9 @@ class SuInitDatabase extends Model {
 		$modulesModel->createTable();
 		$modulesModel->createDefaultUnit();
 		
-		$modulesModel = new SuPricing();
-		$modulesModel->createTable();
-		
-		$modulesModel = new SuUnitPricing();
-		$modulesModel->createTable();
+		$modelBelonging = new SuBelonging();
+		$modelBelonging->createTable();
+		$modelBelonging->createDefault();
 
 		$modulesModel = new SuItemPricing();
 		$modulesModel->createTable();

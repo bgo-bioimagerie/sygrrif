@@ -106,4 +106,13 @@ class SuItem extends Model {
 		$sql = "update su_items set name=?, description=? where id=?";
 		$unit = $this->runRequest($sql, array("".$name."", $description, $id));
 	}
+	
+	/**
+	 * Remove a user from the database
+	 * @param number $id User ID
+	 */
+	public function delete($id){
+		$sql="DELETE FROM su_items WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }
