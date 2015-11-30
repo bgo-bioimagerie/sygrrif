@@ -10,7 +10,7 @@
 
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
-	  <form role="form" action="coreusers/addquery" method="post">
+	  <form role="form" action="coreusers/addquery" method="post" enctype="multipart/form-data">
 		<div class="page-header"> 
 			<h1>
 			<?php echo  CoreTranslator::Add_User($lang) ?>
@@ -129,21 +129,6 @@
 		<br/>
 		
 		<input type="hidden" name="convention" value="-1">
-		<!-- 
-		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang) ?></label>
-			<div class="col-xs-10">
-				<select class="form-control" name="convention">
-					<OPTION value="-1" > auto </OPTION>
-					<?php foreach ($conventionsList as $convention):?>
-					    <?php $convention = $this->clean( $convention[0] );
-					    ?>
-						<OPTION value="<?php echo  $convention ?>" > <?php echo  $convention ?> </OPTION>
-					<?php endforeach; ?>
-				</select>
-			</div>
-		</div>
-		 -->
 		<br/>
 		<div class="form-group ">
 		
@@ -157,6 +142,13 @@
 				</div>
 		    </div>
 		</div>
+		<br/>
+		<div class="form-group">
+         	<label class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang) ?></label>
+			<div class="col-xs-8">
+            	<input type="file" name="file_convention" id="file_convention">
+        	</div>
+      	</div>
 		<br/>
 		<div class="form-group ">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_end_contract($lang) ?></label>

@@ -18,7 +18,7 @@
 <br>
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
-	  <form role="form" class="form-horizontal" action="coreusers/editquery" method="post">
+	  <form role="form" class="form-horizontal" action="coreusers/editquery" method="post" enctype="multipart/form-data">
 		<div class="page-header">
 			<h1>
 			<?php echo  CoreTranslator::Edit_User($lang) ?>
@@ -177,15 +177,22 @@
 				<input class="form-control" type="text" value = "<?php echo  CoreTranslator::dateFromEn($user['date_convention'], $lang) ?>" name="date_convention">
 		    </div>
 		</div>
-		<br>
-		<div class="form-group ">
+		<br/>
+		<div class="form-group">
+         	<label class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang) ?></label>
+			<div class="col-xs-10">
+            	<input type="file" name="file_convention" id="file_convention">
+        	</div>
+      	</div>
+		<br/>
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_end_contract($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" type="text" value = "<?php echo  CoreTranslator::dateFromEn($user['date_end_contract'], $lang) ?>" name="date_end_contract">
 		    </div>
 		</div>
 		
-		<div class="form-group ">
+		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Is_user_active($lang)?></label>
 			<div class="col-xs-10">
 			<?php $active = $this->clean($user["is_active"]); 
@@ -206,9 +213,6 @@
                         </div>
                 </div>
 
-
-
-
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Save($lang)?>" />
@@ -217,6 +221,26 @@
 		
       </form>
       
+      
+      <?php if (file_exists ( "data/core/" . $user["login"] . ".pdf" )){?>
+      <div class="page-header">
+		 <h1>
+			<?php echo  CoreTranslator::Convention($lang) ?>
+			<br> <small></small>
+			</h1>
+	   </div>
+	   
+	  	<div class="col-xs-2">
+        	<form method="get" action="data/core/<?php echo $user["login"] ?>.pdf">
+        		<button type="submit" class="btn btn-lg btn-default" aria-label="Left Align">
+  					<span class="glyphicon glyphicon glyphicon-open-file" aria-hidden="true"></span>
+				</button>
+			</form>
+		</div>
+	   <?php }?>
+              	
+
+			
       <br>
       <div>
       	<div class="page-header">

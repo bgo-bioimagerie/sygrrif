@@ -94,14 +94,14 @@ $classWell = 'col-md-3 well';
 				<legend><?php echo  SyTranslator::Users_Authorizations($lang) ?></legend>
 					<button onclick="location.href='sygrrifauthorisations/visa'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Visa($lang) ?></button>
-					<button onclick="location.href='sygrrifauthorisations/addvisa'"
+					<button onclick="location.href='sygrrifauthorisations/editvisa'"
 						class="btn btn-link" id="navlink">+</button>
 				<br/>
 					<button onclick="location.href='sygrrifauthorisations/authorizations'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Active_Authorizations($lang) ?></button>
 					<button onclick="location.href='sygrrifauthorisations/uauthorizations'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Unactive_Authorizations($lang) ?></button>
-					<button onclick="location.href='sygrrifauthorisations/addauthorization'"
+					<button onclick="location.href='sygrrifauthorisations/editauthorization'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Add_Authorizations($lang) ?></button>
 			</fieldset>
 		</div>

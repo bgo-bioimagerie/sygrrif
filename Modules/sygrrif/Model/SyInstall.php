@@ -33,12 +33,8 @@ class SyInstall extends Model {
 	 */
 	public function createDatabase(){
 		
-		
 		$pricingModel = new SyPricing();
 		$pricingModel->createTable();
-		
-		$unitpricingModel = new SyUnitPricing();
-		$unitpricingModel->createTable();
 		
 		$SyResourceModel = new SyResource();
 		$SyResourceModel->createTable();

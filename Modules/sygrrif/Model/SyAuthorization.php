@@ -230,6 +230,8 @@ class SyAuthorization extends Model {
 	 */
 	public function getActiveAuthorizations($sortentry = 'id', $is_active=1) {
 	
+		
+		/*
 		$sqlSort = "sy_authorization.id";
 		if ($sortentry == "date"){
 			$sqlSort = "sy_authorization.date";
@@ -258,8 +260,11 @@ class SyAuthorization extends Model {
 					     INNER JOIN sy_resourcescategory on sy_authorization.resource_id = sy_resourcescategory.id
 				WHERE sy_authorization.is_active=".$is_active."
 				ORDER BY ". $sqlSort . ";";
+				*/
+		
+		$sql = "SELECT * from sy_authorization WHERE is_active=".$is_active. ";";
 		$auth = $this->runRequest ( $sql );
-		return $auth->fetchAll ();
+		return $auth->fetchAll();
 	}
 	
 	/**

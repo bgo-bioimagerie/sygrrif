@@ -100,8 +100,8 @@
 						<select class="form-control" name="visa_id[]">
 							<?php 
 							$authVisaId = $this->clean($userAuthorizations[$idx]['visa_id']);
-							foreach ($visas as $visa):?>
-							    <?php $visaname = $this->clean( $visa['name']);
+							foreach ($visas[$resource["id"]] as $visa):?>
+							    <?php $visaname = $this->clean( $visa['desc']);
 							          $visaId = $this->clean( $visa['id'] );
 							          $checked = "";
 							          if ($authVisaId == $visaId){
@@ -136,8 +136,8 @@
 				<td>
 						<select class="form-control" name="visa_id[]">
 							<?php 
-							foreach ($visas as $visa):
-									$visaname = $this->clean( $visa['name']);
+							foreach ($visas[$resource["id"]] as $visa):
+									$visaname = $this->clean( $visa['desc']);
 								    $visaId = $this->clean( $visa['id'] );
 								   ?>
 								<OPTION value="<?php echo  $visaId ?>"> <?php echo  $visaname ?> </OPTION>

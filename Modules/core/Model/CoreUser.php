@@ -32,12 +32,11 @@ class CoreUser extends Model {
 		`date_last_login` DATE NOT NULL,
 		`date_end_contract` DATE NOT NULL,	
 		`is_active` int(1) NOT NULL DEFAULT 1,
-		`source` varchar(30) NOT NULL DEFAULT 'local',								
+		`source` varchar(30) NOT NULL DEFAULT 'local',									
 		PRIMARY KEY (`id`)
 		);";
 		
 		$pdo = $this->runRequest ( $sql );
-		return $pdo;
 	}
 	
 	/**

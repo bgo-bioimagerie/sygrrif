@@ -1777,4 +1777,18 @@ class SyTranslator {
 		}
 		return "Time (in hours) of reservations for each resource category during the given period";
 	}
+	
+	public static function Instructor($lang){
+		if ($lang == "Fr") {
+			return "Formateur";
+		}
+		return "Instructor";
+	}
+	
+	public static function Instructor_status($lang){
+		if ($lang == "Fr") {
+			return "Statut du formateur";
+		}
+		return "Instructor status";
+	}
 }

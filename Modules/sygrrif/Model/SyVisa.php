@@ -2,6 +2,11 @@
 
 require_once 'Framework/Model.php';
 
+function cmpvisas($a, $b)
+{
+	return strcmp($a["desc"], $b["desc"]);
+}
+
 /**
  * Class defining the Visa model
  *
@@ -18,7 +23,9 @@ class SyVisa extends Model {
 			
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_visas` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(30) NOT NULL DEFAULT '',
+		`id_resource_category` int(11) NOT NULL,
+		`id_instructor` int(11) NOT NULL,
+		`instructor_status` int(11) NOT NULL,
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -32,7 +39,9 @@ class SyVisa extends Model {
 	 * @return PDOStatement
 	 */
 	public function createDefaultVisa(){
-		$this->setVisa("--");
+		$sql = "insert into sy_visas(id_resource_category, id_instructor, instructor_status)"
+				. " values(?,?,?)";
+		$this->runRequest($sql, array(0, 1, 1));
 	}
 	
 	/**
@@ -49,64 +58,17 @@ class SyVisa extends Model {
 	}
 	
 	/**
-	 * get the names of all the visas
-	 *
-	 * @return multitype: array
-	 */
-	public function visasName(){
-			
-		$sql = "select name from sy_visas";
-		$units = $this->runRequest($sql);
-		return $units->fetchAll();
-	}
-	
-	/**
-	 * Get the visas ids and names
-	 *
-	 * @return array
-	 */
-	public function visasIDName(){
-			
-		$sql = "select id, name from sy_visas";
-		$units = $this->runRequest($sql);
-		return $units->fetchAll();
-	}
-	
-	/**
 	 * add a visa to the table
 	 *
 	 * @param string $name name of the visa
 	 */
-	public function addVisa($name){
+	public function addVisa($id_resource_category, $id_instructor, $instructor_status){
 		
-		$sql = "insert into sy_visas(name)"
-				. " values(?)";
-		$user = $this->runRequest($sql, array($name));		
+		$sql = "insert into sy_visas(id_resource_category, id_instructor, instructor_status)"
+				. " values(?,?,?)";
+		$user = $this->runRequest($sql, array($id_resource_category, $id_instructor, $instructor_status));		
 	}
 	
-	/**
-	 * Check if a visa exists
-	 * @param unknown $name
-	 * @return boolean
-	 */
-	public function isVisa($name){
-		$sql = "select * from sy_visas where name=?";
-		$unit = $this->runRequest($sql, array($name));
-		if ($unit->rowCount() == 1)
-			return true;
-		else
-			return false;
-	}
-	
-	/**
-	 * Add a visa if not exists
-	 * @param unknown $name
-	 */
-	public function setVisa($name){
-		if (!$this->isVisa($name)){
-			$this->addVisa($name);
-		}
-	}
 	
 	/**
 	 * update the information of a visa
@@ -114,10 +76,10 @@ class SyVisa extends Model {
 	 * @param int $id Id of the unit to update
 	 * @param string $name New name of the unit
 	 */
-	public function editVisa($id, $name){
+	public function editVisa($id, $id_resource_category, $id_instructor, $instructor_status){
 		
-		$sql = "update sy_visas set name=? where id=?";
-		$unit = $this->runRequest($sql, array("".$name."", $id));
+		$sql = "update sy_visas set id_resource_category=?, id_instructor=?, instructor_status=? where id=?";
+		$unit = $this->runRequest($sql, array($id_resource_category, $id_instructor, $instructor_status, $id));
 	}
 	
 	/**
@@ -136,38 +98,51 @@ class SyVisa extends Model {
     		throw new Exception("Cannot find the visa using the given id"); 
 	}
 	
-	/**
-	 * get the name of a visa
-	 *
-	 * @param int $id Id of the visa to query
-	 * @throws Exception if the visa is not found
-	 * @return mixed array
-	 */
-	public function getVisaName($id){
-		$sql = "select name from sy_visas where id=?";
-		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
-			return $unit->fetch();  // get the first line of the result
+	
+	public function getVisaDescription($id, $lang){
+		$sql = "select * from sy_visas where id=?";
+		$req = $this->runRequest($sql, array($id));
+		if ($req->rowCount() == 1){
+			$visaInfo = $req->fetch();  // get the first line of the result
+			
+			return $this->getVisaDesc($visaInfo, $lang);
+		}
 		else
-			throw new Exception("Cannot find the visa using the given id");
+			return "";
 	}
 	
-	/**
-	 * get the id of a visa from it's name
-	 * 
-	 * @param string $name Name of the unit
-	 * @throws Exception if the unit connot be found
-	 * @return mixed array
-	 */
-	public function getVisaId($name){
-		$sql = "select id from sy_visas where name=?";
-		$unit = $this->runRequest($sql, array($name));
-		if ($unit->rowCount() == 1)
-			return $unit->fetch();  // get the first line of the result
-		else
-			throw new Exception("Cannot find the visa using the given name");
+	private function getVisaDesc($visaInfo, $lang){
+		$modelUser = new CoreUser();
+		$instructor = $modelUser->getUserFUllName($visaInfo["id_instructor"]);
+		
+		$modelResourceCat = new SyResourcesCategory();
+		$resourceName = $modelResourceCat->getResourcesCategoryName($visaInfo["id_resource_category"]);
+		
+		$instructorStatus = SyTranslator::Instructor($lang);
+		if ($visaInfo["instructor_status"] == 2){
+			$instructorStatus = SyTranslator::Responsible($lang);
+		}
+		
+		return $instructor . " - " . $instructorStatus . " - " . $resourceName;
 	}
 	
+	public function getVisasDesc($id_resource, $lang){
+		$sql = "select * from sy_visas where id_resource_category=?";
+		$req = $this->runRequest($sql, array($id_resource));
+		$visasInfo = $req->fetchAll();  // get the first line of the result
+
+		$visas = array();
+		foreach($visasInfo as $visaInfo){
+			$v["id"] = $visaInfo["id"];
+			$v["desc"] = $this->getVisaDesc($visaInfo, $lang); 
+			$visas[] = $v;
+		}
+
+		
+		usort($visas, "cmpvisas");
+
+		return $visas;
+	}
 	/**
 	 * Remove a visa
 	 * @param number $id

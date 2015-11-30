@@ -4,6 +4,7 @@ require_once 'Modules/core/Model/CoreUnit.php';
 require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Framework/TableView.php';
+require_once 'Framework/Form.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
@@ -71,12 +72,36 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		$table->setTitle ( SyTranslator::Visa( $lang ) );
 		$table->ignoreEntry("id", 1);
 		$table->addLineEditButton ( "sygrrifauthorisations/editvisa" );
-		$table->addDeleteButton ( "sygrrifauthorisations/deletevisa" );
+		$table->addDeleteButton ( "sygrrifauthorisations/deletevisa", "id", "id" );
 		$table->addPrintButton ( "sygrrifauthorisations/visa/" );
+		
+		$modelResourceCategory = new SyResourcesCategory();
+		$modelUser = new CoreUser();
+		for($i = 0 ; $i < count($visaTable) ; $i++ ){
+			
+			if ($visaTable[$i]["id"] == 1){
+				$visaTable[$i]["id_resource_category"] = "--";
+				$visaTable[$i]["id_instructor"] = "--";
+				$visaTable[$i]["instructor_status"] = "--";
+				
+			}
+			else{
+				$visaTable[$i]["id_resource_category"] = $modelResourceCategory->getResourcesCategoryName($visaTable[$i]["id_resource_category"]);
+				$visaTable[$i]["id_instructor"] = $modelUser->getUserFUllName($visaTable[$i]["id_instructor"]);
+				if ($visaTable[$i]["instructor_status"] == 1){
+					$visaTable[$i]["instructor_status"] = SyTranslator::Instructor($lang);
+				}
+				else{
+					$visaTable[$i]["instructor_status"] = CoreTranslator::Responsible($lang);
+				}
+			}
+		}
 		
 		$tableContent = array (
 				"id" => "ID",
-				"name" => CoreTranslator::Name ( $lang )
+				"id_resource_category" => SyTranslator::Resource_categories( $lang ),
+				"id_instructor" => SyTranslator::Instructor( $lang ),
+				"instructor_status" => SyTranslator::Instructor_status($lang)
 		);		
 		$tableHtml = $table->view ( $visaTable, $tableContent );
 		
@@ -96,81 +121,70 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 	/**
 	 * Form to add a visa
 	 */
-	public function addvisa(){
-	
-		if($this->secureCheck()){
-			return;
-		}
-	
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-		) );
-	}
-	
-	/**
-	 * query to add a visa
-	 */
-	public function addvisaquery(){
-	
-		if($this->secureCheck()){
-			return;
-		}
-	
-		// get form variables
-		$name = $this->request->getParameter ( "name" );
-	
-		// get the user list
-		$visaModel = new SyVisa();
-		$visaModel->addVisa ( $name );
-	
-		$this->redirect ( "sygrrifauthorisations", "visa" );
-	}
-	
-	/**
-	 * Form to edit a visa
-	 */
 	public function editvisa(){
 	
 		if($this->secureCheck()){
 			return;
 		}
-	
-		// get user id
+		
+		$lang = $this->getLanguage();
+		// get id
 		$visaId = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
 			$visaId = $this->request->getParameter ( "actionid" );
 		}
-	
-		// get unit info
-		$visaModel = new SyVisa();
-		$visa = $visaModel->getVisa ( $visaId );
-	
-		$navBar = $this->navBar ();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'visa' => $visa
-		) );
-	}
-	
-	/**
-	 * Query to edit a visa
-	 */
-	public function editvisaquery(){
-	
-		if($this->secureCheck()){
-			return;
+		
+		$visaInfo = array("id" => 0, "id_resource_category" => 0, "id_instructor" => 0, "instructor_status" => 1);
+		if ($visaId > 0){
+			$modelVisa = new SyVisa();
+			$visaInfo = $modelVisa->getVisa($visaId);
 		}
-	
-		// get form variables
-		$id = $this->request->getParameter ( "id" );
-		$name = $this->request->getParameter ( "name" );
-	
-		// get the user list
-		$visaModel = new SyVisa();
-		$visaModel->editVisa ( $id, $name );
-	
-		$this->redirect ( "sygrrifauthorisations", "visa" );
+		
+		// build the form
+		$form = new Form($this->request, "formeditVisa");
+		$form->setTitle(SyTranslator::Edit_Visa($lang));
+
+		$modelResourcesCategory = new SyResourcesCategory();
+		$resourcesCategories = $modelResourcesCategory->getResourcesCategories();
+		$rcchoices = array();
+		$rcchoicesid = array();
+		foreach($resourcesCategories as $rc){
+			$rcchoicesid[] = $rc["id"];
+			$rcchoices[] = $rc["name"];
+		}
+		$form->addSelect("id_resource_category", SyTranslator::Resource_categories($lang), $rcchoices, $rcchoicesid, $visaInfo["id_resource_category"]);
+		
+		$modelUser = new CoreUser();
+		$users = $modelUser->getUsers("name");
+		foreach($users as $us){
+			$uschoices[] = $us["name"] . " " . $us["firstname"];  
+			$uschoicesid[] = $us["id"];
+		}
+		$form->addSelect("id_instructor", SyTranslator::User($lang), $uschoices, $uschoicesid, $visaInfo["id_instructor"]);
+		
+		$ischoicesid = array(1,2);
+		$ischoices = array(SyTranslator::Instructor($lang), CoreTranslator::Responsible($lang));
+		$form->addSelect("instructor_status", SyTranslator::Instructor_status($lang), $ischoices, $ischoicesid, $visaInfo["instructor_status"]);
+		$form->setValidationButton("Ok", "sygrrifauthorisations/editvisa");
+		$form->setCancelButton(CoreTranslator::Cancel($lang), "sygrrifauthorisations/visa");
+		
+		if ($form->check()){
+			// run the database query
+			$modelVisa = new SyVisa();
+			$modelVisa->addVisa($form->getParameter("id_resource_category"), $form->getParameter("id_instructor"), $form->getParameter("instructor_status"));
+			
+			$this->redirect("sygrrifauthorisations/visa");
+		}
+		else{
+			// set the view
+			$formHtml = $form->getHtml();
+			// view
+			$navBar = $this->navBar();
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'formHtml' => $formHtml
+			) );
+		}
 	}
 	
 	/**
@@ -212,33 +226,40 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		// query
 		$authModel = new SyAuthorization();
 		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry );
-	
+		
 		$lang = $this->getLanguage();
 		$table = new TableView ();
 		
 		$table->setTitle ( SyTranslator::Authorisations( $lang ) );
-		$table->addLineEditButton ( "sygrrifauthorisations/editauthorization" );
+		$table->addLineEditButton ( "sygrrifauthorisations/editauthorization", "id", "id" );
 		$table->addDeleteButton ( "Sygrrifauthorisations/deleteauthorization", "id", "id" );
 		$table->addPrintButton ( "sygrrifauthorisations/authorizations/" );
 		
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		$modelVisa = new SyVisa();
+		$modelRes = new SyResourcesCategory();
 		for($i = 0 ; $i < count($authorizationTable) ; $i++){
 			$authorizationTable[$i]["date"] = CoreTranslator::dateFromEn($authorizationTable[$i]["date"], $lang); 
+ 			$authorizationTable[$i]["user_id"] = $modelUser->getUserFUllName($authorizationTable[$i]["user_id"]);
+			$authorizationTable[$i]["lab_id"] = $modelUnit->getUnitName($authorizationTable[$i]["lab_id"]);
+			$authorizationTable[$i]["visa_id"] = $modelVisa->getVisaDescription($authorizationTable[$i]["visa_id"], $lang);
+			$authorizationTable[$i]["resource_id"] = $modelRes->getResourcesCategoryName($authorizationTable[$i]["resource_id"], $lang);
 		}
 		
 		$tableContent = array (
 				"id" => "ID",
 				"date" => SyTranslator::Date($lang),
-				"userName" => CoreTranslator::Name( $lang ),
-				"userFirstname" => CoreTranslator::Firstname( $lang ),
-				"unitName" => SyTranslator::Unit( $lang ),
-				"visa" => SyTranslator::Visa( $lang ),
-				"resource" => SyTranslator::Resource( $lang )
+				"user_id" => CoreTranslator::Name( $lang ),
+				"lab_id" => SyTranslator::Unit( $lang ),
+				"visa_id" => SyTranslator::Visa( $lang ),
+				"resource_id" => SyTranslator::Resource( $lang )
 		);
 		
 		$tableHtml = $table->view ( $authorizationTable, $tableContent );
 		
 		$print = $this->request->getParameterNoException ( "print" );
-		if ($table->isPrint ()) {
+		if ($table->isPrint()) {
 			echo $tableHtml;
 			return;
 		}
@@ -308,153 +329,96 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		),"authorizations" );
 	}
 	
-	/**
-	 * Form to add an authorization
-	 */
-	public function addauthorization(){
-	
-		if($this->secureCheck()){
-			return;
-		}
-	
-		// get users list
-		$modelUser = new CoreUser();
-		$users = $modelUser->getUsersSummary('name');
-	
-		// get unit list
-		$modelUnit = new CoreUnit();
-		$units = $modelUnit->unitsIDName();
-	
-		// get visa list
-		$modelVisa = new SyVisa();
-		$visas = $modelVisa->visasIDName();
-	
-		// get resource list
-		$modelResource = new SyResourcesCategory();
-		$resources = $modelResource->getResourcesCategories("name");
-	
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'users' => $users,
-				'units' => $units,
-				'visas' => $visas,
-				'resources' => $resources
-		) );
-	
-	}
 	
 	/**
 	 * Form to edit an authorization
 	 */
 	public function editauthorization(){
 	
-		// get sort action
-		$id = 0;
+		if($this->secureCheck()){
+			return;
+		}
+		
+		$lang = $this->getLanguage();
+		// get id
+		$authId = 0;
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$id = $this->request->getParameter ( "actionid" );
+			$authId = $this->request->getParameter ( "actionid" );
 		}
-	
-		// get the authorization info
-		$modelAuth = new SyAuthorization();
-		$authorization = $modelAuth->getAuthorization($id);
-	
-		//print_r($authorization);
-	
-		// get users list
+		
+		$authInfo = array("id" => 0, "date" => "0000-00-00", "user_id" => 0, "lab_id" => 0,
+								   "visa_id" => 0, "resource_id" => 0, "is_active" => 0);	 
+		if ($authId > 0){
+			$modelAuth = new SyAuthorization();
+			$authInfo = $modelAuth->getAuthorization($authId);
+		}
+		// lists for the form
 		$modelUser = new CoreUser();
-		$users = $modelUser->getUsersSummary('name');
-	
-		// get unit list
+		$users = $modelUser->getUsers("name");
+		foreach($users as $us){
+			$uschoices[] = $us["name"] . " " . $us["firstname"];
+			$uschoicesid[] = $us["id"];
+		}
 		$modelUnit = new CoreUnit();
-		$units = $modelUnit->unitsIDName();
-	
-		// get visa list
+		$units = $modelUnit->getUnits("name");
+		foreach($units as $un){
+			$unchoices[] = $un["name"];
+			$unchoicesid[] = $un["id"];
+		}
 		$modelVisa = new SyVisa();
-		$visas = $modelVisa->visasIDName();
-	
-		// get resource list
-		$modelResource = new SyResourcesCategory();
-		$resources = $modelResource->getResourcesCategories("name");
-	
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'users' => $users,
-				'units' => $units,
-				'visas' => $visas,
-				'resources' => $resources,
-				'authorization' => $authorization
-		) );
-	}
-	
-	/**
-	 * Query to edit an authorization
-	 */
-	public function editauthorizationsquery(){
-	
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
+		$modelResourcesCategory = new SyResourcesCategory();
+		$visas = $modelVisa->getVisas("id");
+		foreach($visas as $vi){
+			$vichoices[] = $modelUser->getUserFUllName($vi["id_instructor"]) . " - " . $modelResourcesCategory->getResourcesCategoryName($vi["id_resource_category"]);
+			$vichoicesid[] = $vi["id"];
 		}
-	
-		$id = $this->request->getParameter('id');
-		$user_id = $this->request->getParameter('user_id');
-		$unit_id = $this->request->getParameter('unit_id');
-		$date = $this->request->getParameter('date');
-		$visa_id = $this->request->getParameter('visa_id');
-		$resource_id = $this->request->getParameter('resource_id');
-		$is_active = $this->request->getParameter('is_active');
-	
-		if ($date != ""){
-			$date = CoreTranslator::dateToEn($date, $lang);
+		$resCat = $modelResourcesCategory->getResourcesCategories("name");
+		foreach($resCat as $un){
+			$reschoices[] = $un["name"];
+			$reschoicesid[] = $un["id"];
 		}
-	
-		$model = new SyAuthorization();
-		$model->editAuthorization($id, $date, $user_id, $unit_id, $visa_id, $resource_id);
-		//echo "is active = " . (int)$is_active . "<br/>";
-		if ($is_active > 0){
-			$model->activate($id);
+		// build the form
+		$form = new Form($this->request, "formeditauth");
+		$title = SyTranslator::Add_Authorization($lang);
+		if ($authId > 0){
+			$title = SyTranslator::Edit_Authorization($lang);
+		}
+		$form->setTitle($title);
+		$form->addDate("date", SyTranslator::Date($lang), true, $authInfo["date"]);
+		$form->addSelect("user_id", SyTranslator::User($lang), $uschoices, $uschoicesid, $authInfo["user_id"]);
+		$form->addSelect("resource_id", SyTranslator::Resource_categories($lang), $reschoices, $reschoicesid, $authInfo["resource_id"]);
+		$form->addSelect("lab_id", SyTranslator::Unit($lang), $unchoices, $unchoicesid, $authInfo["lab_id"]);
+		$form->addSelect("visa_id", SyTranslator::Visa($lang), $vichoices, $vichoicesid, $authInfo["visa_id"]);
+		$form->setValidationButton(CoreTranslator::Ok($lang), "sygrrifauthorisations/editauthorization/" . $authId);
+		
+		if ($form->check()){
+			// run the database query
+			$modelAuth = new SyAuthorization();
+			$date = $form->getParameter("date");
+			$user_id = $form->getParameter("user_id");
+			$lab_id = $form->getParameter("lab_id");
+			$visa_id = $form->getParameter("visa_id");
+			$resource_id = $form->getParameter("resource_id");
+			if ($authId > 0){
+				$modelAuth->editAuthorization($authId, $date, $user_id, $lab_id, $visa_id, $resource_id);
+			}
+			else{
+				$modelAuth->addAuthorization($date, $user_id, $lab_id, $visa_id, $resource_id);
+			}
+				
+			$this->redirect("sygrrifauthorisations/authorizations");
 		}
 		else{
-			$model->unactivate($id);
+			// set the view
+			$formHtml = $form->getHtml();
+			// view
+			$navBar = $this->navBar();
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'formHtml' => $formHtml
+			) );
 		}
-		//$model->setActive($id, (int)$is_active);
-	
-		$this->redirect ( "sygrrifauthorisations", "authorizations" );
 	}
-	
-	/**
-	 * Query to add an authorization
-	 */
-	public function addauthorizationsquery(){
-	
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
-	
-		$user_id = $this->request->getParameter('user_id');
-		//$unit_id = $this->request->getParameter('unit_id');
-		$date = $this->request->getParameter('date');
-		$visa_id = $this->request->getParameter('visa_id');
-		$resource_id = $this->request->getParameter('resource_id');
-	
-		if ($date != ""){
-			$date = CoreTranslator::dateToEn($date, $lang);
-		}
-	
-		$modelUser = new CoreUser();
-		$unit_id = $modelUser->getUserUnit($user_id);
-	
-		$model = new SyAuthorization();
-		$model->addAuthorization($date, $user_id, $unit_id, $visa_id, $resource_id);
-	
-		$this->redirect ( "sygrrifauthorisations", "authorizations" );
-	}
-	
 
 	/**
 	 * 
@@ -486,7 +450,11 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		
 		// visas
 		$modelVisa = new SyVisa();
-		$visas = $modelVisa->visasIDName();
+		$resourceVisas = array();
+		$lang = $this->getLanguage();
+		foreach($resources as $res){
+			$resourceVisas[$res["id"]] = $modelVisa->getVisasDesc($res["id"], $lang);
+		}
 		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -496,7 +464,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 				'userID' => $userID,
 				'unit_id' => $unit_id,
 				'userName' => $userName,
-				'visas' => $visas,
+				'visas' => $resourceVisas,
 				'message' => $message
 		), "userauthorizations" );
 	}

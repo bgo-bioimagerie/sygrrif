@@ -74,14 +74,15 @@ class ControllerCoreusers extends ControllerSecureNav {
 				$usersArray[$i]["is_responsible"] = CoreTranslator::no($lang);
 			}
 			
+			
 			// convention
 			$convno = $usersArray[$i]['convention'];
-			if ($convno == 0 || $usersArray[$i]['date_convention']=="0000-00-00"){
+			if ($usersArray[$i]['date_convention']=="0000-00-00"){
 				$convTxt = CoreTranslator::Not_signed($lang);
 			}
 			else{
-				$convTxt = "<p>" . CoreTranslator::Signed_the($lang) . "</p>"
-						."<p>" . CoreTranslator::dateFromEn($usersArray[$i]['date_convention'], $lang) . "</p>";
+				$convTxt = "" . CoreTranslator::Signed_the($lang)
+						." " . CoreTranslator::dateFromEn($usersArray[$i]['date_convention'], $lang) . "";
 			}
 			$usersArray[$i]['convention'] = $convTxt;
 			
@@ -251,7 +252,6 @@ class ControllerCoreusers extends ControllerSecureNav {
 			}
 		}
 		
-		
 		// add the user to the database
 		$this->userModel->addUser($name, $firstname, $login, $pwd, 
 				                  $email, $phone, $id_unit,
@@ -265,12 +265,49 @@ class ControllerCoreusers extends ControllerSecureNav {
 			$respModel->addResponsible($userID['idUser']);
 		}
 		
+		// save the convention
+		$this->uploadConvention($login);
+		
 		// generate view
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar
 		) );
-		
+	}
+	
+	/**
+	 * Upload the sygrrif bill template
+	 *
+	 * @return string
+	 */
+	public function uploadConvention($user_id){
+		$target_dir = "data/core/";
+		$target_file = $target_dir . $user_id . ".pdf";
+
+		$uploadOk = 1;
+		$imageFileType = pathinfo($_FILES["file_convention"]["name"],PATHINFO_EXTENSION);
+	
+		// Check file size
+		if ($_FILES["file_convention"]["size"] > 500000000) {
+			return "Error: your file is too large.";
+			$uploadOk = 0;
+		}
+		// Allow certain file formats
+		if($imageFileType != "pdf") {
+			return "Error: only pdf files are allowed.";
+			$uploadOk = 0;
+		}
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+			return  "Error: your file was not uploaded.";
+			// if everything is ok, try to upload file
+		} else {
+			if (move_uploaded_file($_FILES["file_convention"]["tmp_name"], $target_file)) {
+				return  "The file logo file". basename( $_FILES["file_convention"]["name"]). " has been uploaded.";
+			} else {
+				return "Error, there was an error uploading your file.";
+			}
+		}
 	}
 	
 	/**
@@ -367,6 +404,9 @@ class ControllerCoreusers extends ControllerSecureNav {
 		// update the active/unactive
 		$is_active = $this->request->getParameterNoException ( "is_active");
 		$this->userModel->setactive($id, $is_active);
+		
+		// save the convention
+		$this->uploadConvention($login);
 		
 		// generate view
 		$navBar = $this->navBar();
