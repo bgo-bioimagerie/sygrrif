@@ -4,10 +4,10 @@ $modelCoreConfig = new CoreConfig();
 $sprojectsmenucolor = $modelCoreConfig->getParam("sprojectsmenucolor");
 $sprojectsmenucolortxt = $modelCoreConfig->getParam("sprojectsmenucolortxt");
 if ($sprojectsmenucolor == ""){
-	$sprojectsmenucolor = "337ab7";
+	$sprojectsmenucolor = "#337ab7";
 }
 if($sprojectsmenucolortxt == ""){
-	$sprojectsmenucolortxt = "ffffff";
+	$sprojectsmenucolortxt = "#ffffff";
 }
 ?>
 
@@ -24,22 +24,22 @@ if($sprojectsmenucolortxt == ""){
 <style>
 .bs-docs-header {
 	position: relative;
-	color: #<?php echo $sprojectsmenucolortxt?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #<?php echo $sprojectsmenucolor?>;
+	background-color: <?php echo $sprojectsmenucolor?>;
 	border: none;
 }
 
 #navlink {
-	color: #<?php echo $sprojectsmenucolortxt?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 	border: none;
 }
 
 .well {
-	color: #<?php echo $sprojectsmenucolortxt?>;
-	background-color: #<?php echo $sprojectsmenucolor?>;
-	border: 0px solid #<?php echo $sprojectsmenucolor?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
+	background-color: <?php echo $sprojectsmenucolor?>;
+	border: 0px solid <?php echo $sprojectsmenucolor?>;
 -moz-box-shadow: 0px 0px px #000000;
 -webkit-box-shadow: 0px 0px px #000000;
 -o-box-shadow: 0px 0px 0px #000000;
@@ -47,7 +47,7 @@ box-shadow: 0px 0px 0px #000000;
 }
 
 legend {
-	color: #<?php echo $sprojectsmenucolortxt?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
 	border: none;
 }
 </style>
