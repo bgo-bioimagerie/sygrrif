@@ -376,7 +376,7 @@ class CoreTranslator {
 		if ($lang == "Fr"){
 			return "Utilisateurs inactifs";
 		}
-		return "Unactive_Users";
+		return "Unactive users";
 	}
 	
 	public static function Address($lang = ""){

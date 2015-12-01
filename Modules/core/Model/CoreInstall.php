@@ -104,7 +104,7 @@ class CoreInstall extends Model {
 				$outContent = $outContent . $buffer;
 			}
 			if (!feof($handle)) {
-				echo "Erreur: fgets() a �chou�\n";
+				echo "Erreur: fgets() failed \n";
 			}
 			fclose($handle);
 		}

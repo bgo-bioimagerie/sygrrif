@@ -622,7 +622,7 @@ class SyAuthorization extends Model {
 						'Utilisateur' 	=> $modelUser->getUserFUllName($d[1]),
 						'Laboratoire' 	=> $modelUnit->getUnitName($d[2]),
 						'Visa' 			=> $visas[0],
-						'machine' 		=> $machines[0],
+						'machine' 		=> $machines,
 						'responsable'   => $responsable
 				);
 			}

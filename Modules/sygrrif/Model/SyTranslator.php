@@ -499,7 +499,7 @@ class SyTranslator {
 		if ($lang == "Fr"){
 			return "Date d'émission";
 		}
-		return "Date_generated";
+		return "Date generated";
 	}
 	
 	public static function Date_paid($lang = ""){
@@ -854,7 +854,7 @@ class SyTranslator {
 		if ($lang == "Fr"){
 			return "Editer une autorisation";
 		}
-		return "Edit_Authorization";
+		return "Edit authorization";
 	}
 	
 	public static function Is_active($lang){

@@ -53,7 +53,7 @@ class CoreStatus extends Model {
 			$pdo = $this->runRequest($sql);
 		}
 		
-		return $pdo;
+		//return $pdo;
 				
 		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
 	}
