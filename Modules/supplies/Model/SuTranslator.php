@@ -264,7 +264,7 @@ class SuTranslator {
 		if ($lang == "Fr"){
 			return "Ajouter un consommable";
 		}
-		return "Add_Item";
+		return "Add item";
 	}
 	
 	public static function Edit_Item($lang){

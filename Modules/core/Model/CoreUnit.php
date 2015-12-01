@@ -44,7 +44,7 @@ class CoreUnit extends Model {
 	 */
 	public function createDefaultUnit(){
 	
-		if(!$this->isUnit("--")){
+		if(!$this->isUnit(1)){
 			$sql = "INSERT INTO core_units (name, address) VALUES(?,?)";
 			$this->runRequest($sql, array("--", "--"));
 		}

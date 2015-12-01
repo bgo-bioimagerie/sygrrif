@@ -145,12 +145,23 @@ class ControllerSuppliesitems extends ControllerSecureNav {
 	
 		// pricing
 		$modelItemPricing = new SuItemPricing();
-		$modelPricing = new SuPricing();
-		$pricingTable = $modelPricing->getPrices();
+		$modelBelonging = "";
+		
+		$modelConfig = new CoreConfig();
+		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		
+		if($supliesusersdatabase == "local"){
+			$modelBelonging = new SuBelonging();
+		}
+		else{
+			$modelBelonging = new CoreBelonging();
+		}
+		
+		$pricingTable = $modelBelonging->getBelongings();
 		foreach ($pricingTable as $pricing){
 			$pid = $pricing['id'];
 			if ($pid > 1){
-				$pname = $pricing['tarif_name'];
+				$pname = $pricing['name'];
 				$price = $this->request->getParameterNoException($pid. "_price");
 				if ($price != ""){
 					$modelItemPricing->setPricing($id_item, $pid, $price);
