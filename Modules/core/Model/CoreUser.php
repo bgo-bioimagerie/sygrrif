@@ -307,6 +307,19 @@ class CoreUser extends Model {
 			return "";
 	}
 	
+	public function getUserInitiales($id) {
+		$sql = "select firstname, name from core_users where id=?";
+		$user = $this->runRequest ( $sql, array (
+				$id 
+		) );
+		
+		if ($user->rowCount () == 1) {
+			$userf = $user->fetch ();
+			return substr(ucfirst($userf ['name']),0,1) . " " . substr(ucfirst($userf ['firstname']),0,1);
+		} else
+			return "";
+	}
+	
 	/**
 	 * GEt the responsible of a given user
 	 * @param number $id User id

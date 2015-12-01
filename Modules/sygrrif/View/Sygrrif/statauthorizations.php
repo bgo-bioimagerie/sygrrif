@@ -142,7 +142,7 @@
 					<?php 
 					foreach ($visasList as $visa){
 						$visaId = $this->clean( $visa['id'] );	
-						$visaName = $this->clean( $visa['name'] );
+						$visaName = $this->clean( $visa['desc'] );
 						$checked = "";
 						if ($visa_id == $visaId){
 							$checked = ' selected="selected"';

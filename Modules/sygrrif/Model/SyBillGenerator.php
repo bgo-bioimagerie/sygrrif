@@ -383,6 +383,11 @@ class SyBillGenerator extends Model {
 		//             Main query                    //
 		// ///////////////////////////////////////// //
 		$bookingUsers = $this->generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id, $responsible_id);
+		if (count($bookingUsers) == 0){
+			echo "ERROR: no reservations found ! <br/>";
+			return;
+		}
+		
 		$packagesPrices = $this->getUnitPackagePricesForEachResource($resources, $LABpricingid);
 		$timePrices = $this->getUnitTimePricesForEachResource($resources, $LABpricingid);
 		
@@ -477,8 +482,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "Montant");
 		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($stylesheet["styleTableHeader"]);
 		
-		
-		
+	
 		// table content
 		$total = 0;
 		foreach($resources as $resource){
@@ -825,6 +829,7 @@ class SyBillGenerator extends Model {
 				$userCount++;
 			}
 		}
+		
 		return $reservationsSummaries;
 		
 	}
@@ -908,7 +913,7 @@ class SyBillGenerator extends Model {
 		// get the pricing informations
 		$pricingModel = new SyPricing();
 		$pricingInfo = $pricingModel->getPricing($LABpricingid);
-		$tarif_name = $pricingInfo['tarif_name'];
+		//$tarif_name = $pricingInfo['tarif_name'];
 		$tarif_unique = $pricingInfo['tarif_unique'];
 		$tarif_nuit = $pricingInfo['tarif_night'];
 		$tarif_we = $pricingInfo['tarif_we'];

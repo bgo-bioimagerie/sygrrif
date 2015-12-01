@@ -394,8 +394,9 @@ class ControllerSygrrif extends ControllerBooking {
 		$units = $modelunits->unitsIDName();
 		
 		// visa
+		$lang = $this->getLanguage();
 		$modelvisa = new SyVisa();
-		$visas = $modelvisa->visasIDName();
+		$visas = $modelvisa->getAllVisasDesc($lang);
 		
 		// resources categories
 		$modelresource = new SyResourcesCategory();
@@ -423,6 +424,7 @@ class ControllerSygrrif extends ControllerBooking {
 		$msData = "";
 		$dsData = "";
 		$camembert = "";
+		$lang = $this->getLanguage();
 		if ($testPass){
 			$modelAuth = new SyAuthorization();
 			
@@ -433,7 +435,7 @@ class ControllerSygrrif extends ControllerBooking {
 			
 			if ($view_details != ""){
 				$dsData = $modelAuth->statsDetails($searchDate_start, $searchDate_end, $user_id, $curentunit_id, 
-			                          $trainingunit_id, $visa_id, $resource_id);
+			                          $trainingunit_id, $visa_id, $resource_id, $lang);
 			}
 			
 			if ($view_pie_chart != ""){

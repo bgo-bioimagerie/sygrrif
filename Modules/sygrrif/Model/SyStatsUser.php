@@ -36,7 +36,7 @@ class SyStatsUser extends Model {
 		
 		
 		$modelAuthorisation = new SyAuthorization();
-		$res = $modelAuthorisation->getActiveAuthorizationForResourceCategory($resource_id);
+		$res = $modelAuthorisation->getActiveAuthorizationSummaryForResourceCategory($resource_id, "");
 		
 		//$q = array('equipement'=>$equipement);
 		//$sql = 'SELECT DISTINCT nf, laboratoire, date_unix, visa FROM autorisation WHERE machine=:equipement ORDER by nf';
@@ -201,7 +201,7 @@ class SyStatsUser extends Model {
 			$colonne='A';
 			$sheet->getRowDimension($ligne)->setRowHeight(13);
 		
-			$sheet->SetCellValue($colonne.$ligne,$r["userName"] . " " . $r["userFirstname"]); // user name
+			$sheet->SetCellValue($colonne.$ligne,$r["userName"]); // user name
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
@@ -331,7 +331,7 @@ class SyStatsUser extends Model {
 	 * Statistics of the users allowed to book a resource
 	 * @param number $resource_id
 	 */
-	public function authorizedUsers($resource_id){
+	public function authorizedUsers($resource_id, $lang){
 		
 		include_once ("externals/PHPExcel/Classes/PHPExcel.php");
 		include_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
@@ -357,8 +357,8 @@ class SyStatsUser extends Model {
 		
 		
 		$modelAuthorisation = new SyAuthorization();
-		$res = $modelAuthorisation->getActiveAuthorizationForResourceCategory($resource_id);
-		
+		$res = $modelAuthorisation->getActiveAuthorizationSummaryForResourceCategory($resource_id, $lang);
+
 		//$q = array('equipement'=>$equipement);
 		//$sql = 'SELECT DISTINCT nf, laboratoire, date_unix, visa FROM autorisation WHERE machine=:equipement ORDER by nf';
 		//$req = $cnx->prepare($sql);
@@ -527,7 +527,7 @@ class SyStatsUser extends Model {
 			$colonne='A';
 			$sheet->getRowDimension($ligne)->setRowHeight(13);
 		
-			$sheet->SetCellValue($colonne.$ligne,$r["userName"] . " " . $r["userFirstname"]); // user name
+			$sheet->SetCellValue($colonne.$ligne,$r["userName"]); // user name
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);

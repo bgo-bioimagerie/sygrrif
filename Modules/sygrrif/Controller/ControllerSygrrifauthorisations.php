@@ -165,14 +165,18 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		$ischoicesid = array(1,2);
 		$ischoices = array(SyTranslator::Instructor($lang), CoreTranslator::Responsible($lang));
 		$form->addSelect("instructor_status", SyTranslator::Instructor_status($lang), $ischoices, $ischoicesid, $visaInfo["instructor_status"]);
-		$form->setValidationButton("Ok", "sygrrifauthorisations/editvisa");
+		$form->setValidationButton("Ok", "sygrrifauthorisations/editvisa".$visaId);
 		$form->setCancelButton(CoreTranslator::Cancel($lang), "sygrrifauthorisations/visa");
 		
 		if ($form->check()){
 			// run the database query
 			$modelVisa = new SyVisa();
-			$modelVisa->addVisa($form->getParameter("id_resource_category"), $form->getParameter("id_instructor"), $form->getParameter("instructor_status"));
-			
+			if ($visaId > 0){
+				$modelVisa->editVisa($visaId, $form->getParameter("id_resource_category"), $form->getParameter("id_instructor"), $form->getParameter("instructor_status"));
+			}
+			else{
+				$modelVisa->addVisa($form->getParameter("id_resource_category"), $form->getParameter("id_instructor"), $form->getParameter("instructor_status"));
+			}
 			$this->redirect("sygrrifauthorisations/visa");
 		}
 		else{

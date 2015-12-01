@@ -60,6 +60,11 @@ class CoreInitDatabase extends Model {
 		$model->createTable();
 		$model->createDefault();
 		
+		
+		if (!file_exists('data/core')) {
+    		mkdir('data/core', 0777, true);
+		}
+		
 		$message = 'success';
 		return $message;
 	}

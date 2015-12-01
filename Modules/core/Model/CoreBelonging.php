@@ -105,7 +105,7 @@ class CoreBelonging extends Model {
 		
 		$sql = "insert into core_belongings(name, color, type)"
 				. " values(?,?,?)";
-		$user = $this->runRequest($sql, array($name));		
+		$user = $this->runRequest($sql, array($name, $color, $type));		
 	}
 	
 	/**

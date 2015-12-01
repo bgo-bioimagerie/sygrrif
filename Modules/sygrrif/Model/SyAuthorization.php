@@ -2,6 +2,7 @@
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/CoreResponsible.php';
 require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/sygrrif/Model/SyVisa.php';
 
 /**
  * Class defining the Authorization model
@@ -521,7 +522,7 @@ class SyAuthorization extends Model {
 	 * @return array Statistics
 	 */
 	public function statsDetails($searchDate_start, $searchDate_end, $user_id, $unit_id, 
-			                     $oldunit_id, $visa_id, $resource_id){
+			                     $oldunit_id, $visa_id, $resource_id, $lang){
 		
 		$t = array();
 		$t["erreur"] = "no";
@@ -605,7 +606,7 @@ class SyAuthorization extends Model {
 			$datas = array();
 		
 			$modelResp = new CoreResponsible();
-			$modelUser = new SuUser();
+			$modelUser = new CoreUser();
 			$modelUnit = new CoreUnit();
 			$modelVisa = new SyVisa();
 			$modelResource = new SyResourcesCategory();
@@ -614,7 +615,7 @@ class SyAuthorization extends Model {
 				$respInfo = $modelResp->getUserResponsible($d[1]);
 				$responsable = $respInfo["name"] . " " . $respInfo["firstname"];  
 					
-				$visas = $modelVisa->getVisaName($d[3]);
+				$visas = $modelVisa->getVisaDescription($d[3], $lang);
 				$machines = $modelResource->getResourcesCategoryName($d[4]);	
 				$datas[] = array(
 						'Date' 			=> $d[0],
@@ -715,6 +716,25 @@ class SyAuthorization extends Model {
 		return $camembert;
 	}
 	
+	
+	public function getActiveAuthorizationSummaryForResourceCategory($resource_id, $lang){
+		$sql = "SELECT * FROM sy_authorization WHERE sy_authorization.resource_id=? AND sy_authorization.is_active=1";
+		$req = $this->runRequest($sql, array($resource_id));
+		$auth = $req->fetchAll();
+		
+		$modelVisa = new SyVisa();
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		for($i = 0 ; $i < count($auth) ; $i++){
+			$auth[$i]["visa"] = $modelVisa->getVisaShortDescription($auth[$i]["visa_id"], $lang);
+			$auth[$i]["userName"] = $modelUser->getUserFUllName($auth[$i]["user_id"]);
+			$auth[$i]["userEmail"] = $modelUser->getUserEmail($auth[$i]["user_id"]);
+			$auth[$i]["unitName"] = $modelUnit->getUnitName($auth[$i]["lab_id"]);
+			
+			
+		}
+		return $auth;
+	}
 	/**
 	 * Get all the active authorizations for a given resource
 	 * @param number $resource_id

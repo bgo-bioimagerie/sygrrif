@@ -238,7 +238,7 @@ class ControllerCalendar extends ControllerBooking {
 		$pricingTable = $modelPricing->getPrices();
 		foreach ($pricingTable as $pricing){
 			$pid = $pricing['id'];
-			$pname = $pricing['tarif_name'];
+			//$pname = $pricing['tarif_name'];
 			$punique = $pricing['tarif_unique'];
 			$pnight = $pricing['tarif_night'];
 			$pwe = $pricing['tarif_we'];

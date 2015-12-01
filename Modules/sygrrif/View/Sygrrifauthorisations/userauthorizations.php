@@ -58,18 +58,19 @@
 			
 			// search if there is an authorization
 			$idx = 0;
+			$found = false;
 			for($i = 0 ; $i < count($userAuthorizations) ; $i++){
 				if ($userAuthorizations[$i]["resource_id"] == $resource["id"]){
 					$idx = $i;
+					$found = true;
 					break;
 				}
 			}
-			
 			?>
 			<tr>
 			<td> <input type="hidden" name="resource_id[]" value="<?php echo $resource["id"]?>"> <?php echo $resource["name"] ?> </td>
 			<?php 
-			if ($idx > 0){
+			if ($found){
 				?>
 					<td> 
 					    <?php 

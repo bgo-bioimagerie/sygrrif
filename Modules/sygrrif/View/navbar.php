@@ -117,7 +117,6 @@ $classWell = 'col-md-3 well';
 					$use_project = $ModulesManagerModel->getDataMenusUserType("projects");
 					if ($use_project > 0){
 					?>	
-					<br/>
 							<button onclick="location.href='sygrrifpricing/billproject'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::bill_project($lang) ?></button>
 					<?php 
@@ -129,6 +128,7 @@ $classWell = 'col-md-3 well';
 					<?php	
 					}
 					?>
+					<br/>
 					<button onclick="location.href='sygrrifbillmanager'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Bills_manager($lang) ?></button>
 			</fieldset> 

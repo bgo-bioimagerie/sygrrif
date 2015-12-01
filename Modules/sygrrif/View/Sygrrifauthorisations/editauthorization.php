@@ -18,7 +18,7 @@
 $modelCoreConfig = new CoreConfig();
 $authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
 
-include "Modules/core/View/usersnavbar.php";
+include "Modules/sygrrif/View/navbar.php";
 
 ?>
 

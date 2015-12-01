@@ -33,17 +33,25 @@ class CoreStatus extends Model {
 	 */
 	public function createDefaultStatus(){
 		
-		$sql = 'INSERT INTO `core_status` (`name`) VALUES("visitor")';
-		$pdo = $this->runRequest($sql);
+		if (!$this->isStatus(1)){
+			$sql = 'INSERT INTO `core_status` (`name`) VALUES("visitor")';
+			$pdo = $this->runRequest($sql);
+		}
 		
-		$sql = 'INSERT INTO `core_status` (`name`) VALUES("user")';
-		$pdo = $this->runRequest($sql);
-
-		$sql = 'INSERT INTO `core_status` (`name`) VALUES("manager")';
-		$pdo = $this->runRequest($sql);
+		if (!$this->isStatus(2)){
+			$sql = 'INSERT INTO `core_status` (`name`) VALUES("user")';
+			$pdo = $this->runRequest($sql);
+		}
 		
-		$sql = 'INSERT INTO `core_status` (`name`) VALUES("admin")';
-		$pdo = $this->runRequest($sql);
+		if (!$this->isStatus(3)){
+			$sql = 'INSERT INTO `core_status` (`name`) VALUES("manager")';
+			$pdo = $this->runRequest($sql);
+		}
+		
+		if (!$this->isStatus(4)){
+			$sql = 'INSERT INTO `core_status` (`name`) VALUES("admin")';
+			$pdo = $this->runRequest($sql);
+		}
 		
 		return $pdo;
 				
@@ -89,5 +97,15 @@ class CoreStatus extends Model {
 			throw new Exception("Cannot find the status using the given parameters");
 	}
 
+	public function isStatus($id) {
+		$sql = "select id from core_status where id=?";
+		$user = $this->runRequest ( $sql, array (
+				$id
+		) );
+		if ($user->rowCount () == 1)
+			return true; // get the first line of the result
+		else
+			return false;
+	}
 }
 

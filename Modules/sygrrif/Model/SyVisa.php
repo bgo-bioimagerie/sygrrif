@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Framework/Model.php';
+require_once 'Modules/sygrrif/Model/SyTranslator.php';
 
 function cmpvisas($a, $b)
 {
@@ -98,6 +99,20 @@ class SyVisa extends Model {
     		throw new Exception("Cannot find the visa using the given id"); 
 	}
 	
+	public function getVisaShortDescription($id, $lang){
+		$sql = "select * from sy_visas where id=?";
+		$req = $this->runRequest($sql, array($id));
+		if ($req->rowCount() == 1){
+			$visaInfo = $req->fetch();  // get the first line of the result
+			
+			$modelUser = new CoreUser();
+			$instructor = $modelUser->getUserInitiales($visaInfo["id_instructor"]);
+		
+			return $instructor;
+		}
+		else
+			return "";
+	}
 	
 	public function getVisaDescription($id, $lang){
 		$sql = "select * from sy_visas where id=?";
@@ -137,10 +152,26 @@ class SyVisa extends Model {
 			$v["desc"] = $this->getVisaDesc($visaInfo, $lang); 
 			$visas[] = $v;
 		}
-
 		
 		usort($visas, "cmpvisas");
 
+		return $visas;
+	}
+	
+	public function getAllVisasDesc($lang){
+		$sql = "select * from sy_visas";
+		$req = $this->runRequest($sql);
+		$visasInfo = $req->fetchAll();  // get the first line of the result
+		
+		$visas = array();
+		foreach($visasInfo as $visaInfo){
+			$v["id"] = $visaInfo["id"];
+			$v["desc"] = $this->getVisaDesc($visaInfo, $lang);
+			$visas[] = $v;
+		}
+		
+		usort($visas, "cmpvisas");
+		
 		return $visas;
 	}
 	/**
