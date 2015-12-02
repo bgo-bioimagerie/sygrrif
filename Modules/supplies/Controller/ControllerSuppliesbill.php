@@ -4,8 +4,8 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/supplies/Model/SuUnit.php';
 require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/supplies/Model/SuBillGenerator.php';
-require_once 'Modules/Core/Model/CoreUnit.php';
-require_once 'Modules/Core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
 
 class ControllerSuppliesbill extends ControllerSecureNav {
 	

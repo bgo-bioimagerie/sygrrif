@@ -30,7 +30,6 @@ class ControllerSynvnew extends Controller {
 	// affiche la liste des Sources
 	public function index() {
 		
-		
 		// 1- install data  base
 		echo "<p> Install core database...  </p>";
 		$installModel = new CoreInitDatabase();
@@ -49,7 +48,6 @@ class ControllerSynvnew extends Controller {
 		$ModulesManagerModel = new ModulesManager();
 		$ModulesManagerModel->setDataMenu("users/institutions", "coreusers", 3, "glyphicon-user");
 			
-		
 		// 2- Copy syprincings to coreBelongings
 		echo "<p> Copy syprincings to coreBelongings... </p>";
 		// 2.1- get all the pricings
@@ -73,6 +71,25 @@ class ControllerSynvnew extends Controller {
 		$req = $this->runRequest($sql);
 		$syUnitPricings = $req->fetchAll();
 		echo "<p> Get all the unit pricing </p>";
+		
+		// 2.3 do +1 to pricing ids
+		$sql = "SELECT * FROM sy_j_resource_pricing;";
+		$req = $this->runRequest($sql);
+		$resPricings = $req->fetchAll();
+		foreach($resPricings as $rep){
+			$sql = "update sy_j_resource_pricing set id_pricing=? 
+					where price_day=? AND price_night=? AND price_we=? AND id_resource=?";
+			$this->runRequest($sql, array($rep["id_pricing"]+1, $rep["price_day"], $rep["price_night"], $rep["price_we"], $rep["id_resource"]));
+		}
+		
+		$sql = "SELECT * FROM sy_pricing ORDER BY id DESC;";
+		$req = $this->runRequest($sql);
+		$pricings = $req->fetchAll();
+		foreach($pricings as $rep){
+			$sql = "update sy_pricing set id=?
+					where id=?";
+			$this->runRequest($sql, array($rep["id"]+1, $rep["id"]));
+		}
 		
 		// 3.2 Associate units to belonging
 		echo "<p> Associate units to belonging... </p>";
@@ -134,7 +151,6 @@ class ControllerSynvnew extends Controller {
 			$display_order = $cc["display_order"];
 			$moduleColorCode->editColorCode($id, $name, $color, $text_color, $display_order);
 		}
-		
 		
 		// 6- remove useless tables and columns
 		echo "<p> remove useless tables and columns... </p>";

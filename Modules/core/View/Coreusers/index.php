@@ -8,7 +8,7 @@
 
 </head>
 
-<?php include "Modules/Core/View/usersnavbar.php"; ?>
+<?php include "Modules/core/View/usersnavbar.php"; ?>
 
 <br>
 	<div class="col-lg-12">

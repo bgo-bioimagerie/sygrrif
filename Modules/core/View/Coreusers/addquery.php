@@ -2,7 +2,7 @@
 
 <?php echo $navBar?>
 
-<?php include "Modules/Core/View/usersnavbar.php"; ?>
+<?php include "Modules/core/View/usersnavbar.php"; ?>
 
 <head>
     <!-- Bootstrap core CSS -->

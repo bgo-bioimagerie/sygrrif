@@ -6,7 +6,7 @@
     <link href="externals/datepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
 </head>
 
-<?php include "Modules/Core/View/usersnavbar.php"; ?>
+<?php include "Modules/core/View/usersnavbar.php"; ?>
 
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
