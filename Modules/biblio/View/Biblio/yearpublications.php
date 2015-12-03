@@ -1,4 +1,4 @@
-<?php $this->title = "Anticorps: Edit Anticorp"?>
+<?php $this->title = "Biblio"?>
 
 <?php echo $navBar?>
 <?php include "Modules/biblio/View/navbar.php"; ?>
