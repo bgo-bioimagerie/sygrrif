@@ -24,7 +24,6 @@ class CoreUser extends Model {
 		`tel` varchar(30) NOT NULL DEFAULT '',
 		`pwd` varchar(50) NOT NULL DEFAULT '',
 		`id_unit` int(11) NOT NULL,
-		`id_responsible` int(11) NOT NULL,
 		`id_status` int(11) NOT NULL,
 		`convention` int(11) NOT NULL DEFAULT 0,		
 		`date_convention` DATE NOT NULL,
@@ -307,6 +306,17 @@ class CoreUser extends Model {
 			return "";
 	}
 	
+	public function getUserStatus($userId){
+		$sql = "select id_status from core_users where id=?";
+		$user = $this->runRequest ( $sql, array ($userId) );
+		
+		if ($user->rowCount () == 1) {
+			$userf = $user->fetch ();
+			return $userf[0];
+		} else
+			return 0;
+	}
+	
 	public function getUserInitiales($id) {
 		$sql = "select firstname, name from core_users where id=?";
 		$user = $this->runRequest ( $sql, array (
@@ -325,11 +335,12 @@ class CoreUser extends Model {
 	 * @param number $id User id
 	 * @return number Responsible ID
 	 */
-	public function getUserResponsible($id){
-		$sql = "select id_responsible from core_users where id=?";
-		$user = $this->runRequest ( $sql, array ($id) );
-		$userf = $user->fetch ();
-		return $userf [0];
+	public function getUserResponsibles($id){
+		
+		$sql = "SELECT id_resp FROM core_j_user_responsible WHERE id_user = ?";
+		$req = $this->runRequest ( $sql, array ($id) );
+		$userr = $req->fetchAll ();
+		return $userr;
 	}
 	
 	/**
@@ -718,7 +729,9 @@ class CoreUser extends Model {
 	 */
 	public function addUser($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, 
 			                $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
-		$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
+		
+		// add the user to the database
+		$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, 
     			                       id_status, date_created, convention, date_convention, date_end_contract,is_active, source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 		$this->runRequest ( $sql, array (
 				$login,
@@ -728,7 +741,6 @@ class CoreUser extends Model {
 				$phone,
 				md5 ( $pwd ),
 				$id_unit,
-				$id_responsible,
 				$id_status,
 				"" . date ( "Y-m-d" ) . "",
 				$convention,
@@ -738,7 +750,16 @@ class CoreUser extends Model {
 				$source				
 		) );
 		
-		return $this->getDatabase ()->lastInsertId ();
+		$userId = $this->getDatabase ()->lastInsertId ();
+		
+		// add the link between user and responsibles
+		$modelResponsible = new CoreResponsible();
+		$modelResponsible->removeAllUserRespJoin($idUser);
+		foreach ($id_responsible as $id_resp){
+			$modelResponsible->addUserRespJoin($idUser, $idResp);
+		}
+		
+		return $userId;
 	}
 	/**
 	 * Set user (add if not exists)
@@ -782,7 +803,7 @@ class CoreUser extends Model {
 	public function setUserMd5($name, $firstname, $login, $pwd, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
 		if (! $this->isUser ( $login )) {
 			
-			$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, id_responsible, 
+			$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, 
     			                       id_status, date_created, convention, date_convention, date_end_contract,is_active,source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 			$this->runRequest ( $sql, array (
 					$login,
@@ -792,7 +813,6 @@ class CoreUser extends Model {
 					$phone,
 					$pwd,
 					$id_unit,
-					$id_responsible,
 					$id_status,
 					"" . date ( "Y-m-d" ) . "",
 					$convention,
@@ -801,6 +821,13 @@ class CoreUser extends Model {
 					$is_active,
 					$source 		
 			) );
+			
+			// add the link between user and responsibles
+			$modelResponsible = new CoreResponsible();
+			$modelResponsible->removeAllUserRespJoin($idUser);
+			foreach ($id_responsible as $id_resp){
+				$modelResponsible->addUserRespJoin($idUser, $idResp);
+			}
 		}
 	}
 	
@@ -821,7 +848,7 @@ class CoreUser extends Model {
 	 */
 	public function updateUser($id, $firstname, $name, $login, $email, $phone, $id_unit, $id_responsible, $id_status, $convention, 
 							   $date_convention, $date_end_contract = "", $is_active = 1, $source = "local") {
-		$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_responsible=?, id_status=?,
+		$sql = "update core_users set login=?, firstname=?, name=?, email=?, tel=?, id_unit=?, id_status=?,
     			                      convention=?, date_convention=?, date_end_contract=?, is_active=?, source=? 
     			                  where id=?";
 		$this->runRequest ( $sql, array (
@@ -831,7 +858,6 @@ class CoreUser extends Model {
 				$email,
 				$phone,
 				$id_unit,
-				$id_responsible,
 				$id_status,
 				$convention,
 				$date_convention,
@@ -840,6 +866,13 @@ class CoreUser extends Model {
 				$source,
 				$id 
 		) );
+		
+		// add the link between user and responsibles
+		$modelResponsible = new CoreResponsible();
+		$modelResponsible->removeAllUserRespJoin($id);
+		foreach ($id_responsible as $id_resp){
+			$modelResponsible->addUserRespJoin($id, $id_resp);
+		}
 	}
 	/**
 	 * Set (add if not exists, update otherwise) external (i.e. LDAP) user info
@@ -853,7 +886,7 @@ class CoreUser extends Model {
 		
 		// insert
 		if (! $this->isUser ( $login )){
-			$sql = "insert into core_users(login, firstname, name, email, id_status, source, date_created, id_unit, id_responsible)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$sql = "insert into core_users(login, firstname, name, email, id_status, source, date_created, id_unit)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			$this->runRequest ( $sql, array (
 					$login,
 					$firstname,
@@ -862,7 +895,6 @@ class CoreUser extends Model {
 					$id_status,
 					"ext",
 					"" . date ( "Y-m-d" ) . "",
-					1,
 					1
 			) );
 		}
@@ -1036,6 +1068,7 @@ class CoreUser extends Model {
 	 * @param number $idUser User ID
 	 * @param number $idResp Responsible ID
 	 */
+	/*
 	public function setResponsible($idUser, $idResp) {
 		$sql = "update core_users set id_responsible=? where id=?";
 		$this->runRequest ( $sql, array (
@@ -1043,6 +1076,7 @@ class CoreUser extends Model {
 				$idUser 
 		) );
 	}
+	*/
 	/**
 	 * Get all the responsibles assocaited to a given unit
 	 * @param number $unitId UNit ID

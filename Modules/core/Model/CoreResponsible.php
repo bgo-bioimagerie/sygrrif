@@ -21,8 +21,15 @@ class CoreResponsible extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`id_users` int(11) NOT NULL,
 		PRIMARY KEY (`id`)
-		);";
+		);
+		";
+		$pdo = $this->runRequest($sql);
 		
+		$sql = "CREATE TABLE IF NOT EXISTS `core_j_user_responsible` (
+		`id_user` int(11) NOT NULL,
+		`id_resp` int(11) NOT NULL
+		);
+		";
 		$pdo = $this->runRequest($sql);
 		return $pdo;
 	}
@@ -171,6 +178,55 @@ class CoreResponsible extends Model {
 		 $tmp = $respPDO->fetch();
 		 $respID = $tmp[0];
 		 return $this->responsibleName($respID);
+	}
+	
+	/**
+	 * 
+	 * Test if a user is linked to a responsible
+	 * @param number $idUser User ID
+	 * @param number $idResp Responsible ID
+	 * @return boolean
+	 */
+	public function isUserRespJoin($idUser, $idResp){
+		$sql = "SELECT EXISTS(SELECT 1 FROM core_j_user_responsible WHERE id_user = ? AND id_resp = ? )";
+		
+		$exists = $this->runRequest($sql, array($idUser, $idResp));
+		$out = $exists->fetch();
+		
+		if ($out[0] == 0){
+			return false;
+		}
+		return true;
+	}
+	
+	/**
+	 * Remove a user/responsible join to the database
+	 * @param number $idUser User ID
+	 * @param number $idResp Responsible ID
+	 */
+	public function removeUserRespJoin($idUser, $idResp){
+		$sql="DELETE FROM core_j_user_responsible WHERE id_user = ? AND id_resp = ?";
+		$req = $this->runRequest($sql, array($idUser, $idResp));
+	}
+	
+	/**
+	 * Add a user/responsible join to the database
+	 * @param number $idUser User ID
+	 * @param number $idResp Responsible ID
+	 */
+	public function addUserRespJoin($idUser, $idResp){
+		$sql = "INSERT INTO core_j_user_responsible (id_user, id_resp) VALUES(?,?)";
+		$pdo = $this->runRequest($sql, array($idUser, $idResp));
+		return $pdo;
+	}
+	
+	/**
+	 * Remove all the user/responsible join af a given user
+	 * @param number $idUser
+	 */
+	public function removeAllUserRespJoin($idUser){
+		$sql="DELETE FROM core_j_user_responsible WHERE id_user = ?";
+		$req = $this->runRequest($sql, array($idUser));
 	}
 }
 

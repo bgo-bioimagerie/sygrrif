@@ -197,7 +197,11 @@ class TableView
 	    					$ccolor = $dat[$this->colorIndexes["all"]];
 	    				}
 	    			}
-	    			$html .= "<td style=\"background-color:" .$ccolor.";\"> ".htmlspecialchars($dat[$key], ENT_QUOTES, 'UTF-8', false)."</td>";
+	    			$val = $dat[$key];
+	    			if (count($dat[$key])){
+	    				$val = substr($dat[$key], 0, 100);
+	    			}
+	    			$html .= "<td style=\"background-color:" .$ccolor.";\"> ".htmlspecialchars($val, ENT_QUOTES, 'UTF-8', false)."</td>";
 	    		}
 	    		if ($this->editURL != ""  && !$this->isprint){
 	    			$html .= "<td style=\"width:12px;\">". "<button type='button' onclick=\"location.href='".$this->editURL."/".$dat[$this->editIndex]."'\" class=\"btn btn-xs btn-primary\">Edit</button>". "</td>";	    

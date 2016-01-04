@@ -89,8 +89,15 @@ class ControllerCoreusers extends ControllerSecureNav {
 			// dates
 			$usersArray[$i]['date_created'] = CoreTranslator::dateFromEn($usersArray[$i]['date_created'], $lang);
 			$usersArray[$i]['date_last_login'] = CoreTranslator::dateFromEn($usersArray[$i]['date_last_login'], $lang);
-			$usersArray[$i]['resp_name'] = $usersArray[$i]['resp_name'] . " " .  $usersArray[$i]['resp_firstname'];
 			
+			$respsIds = $this->userModel->getUserResponsibles($usersArray[$i]['id']);
+			$usersArray[$i]['resp_name'] = "";
+			for($j = 0 ; $j < count($respsIds) ; $j++){
+				$usersArray[$i]['resp_name'] .= $this->userModel->getUserFUllName($respsIds[$j][0]) ;
+				if ($j < count($respsIds)-1){
+					$usersArray[$i]['resp_name'] .= ", ";
+				}
+			}
 		}
 		
 		//print_r($usersArray);
@@ -185,8 +192,6 @@ class ControllerCoreusers extends ControllerSecureNav {
 		// get status list
 		$modelStatus = new CoreStatus();
 		$status = $modelStatus->statusIDName();
-
-		//print_r($status);
 		
 		// get units list
 		$modelUnit = new CoreUnit();
@@ -194,6 +199,8 @@ class ControllerCoreusers extends ControllerSecureNav {
 		
 		$userModel = new CoreUser();
 		$conventionsList = $userModel->getConventionList();
+
+		$userResponsibles = array();
 		
 		// responsible list
 		$respModel = new CoreResponsible();
@@ -204,7 +211,8 @@ class ControllerCoreusers extends ControllerSecureNav {
 				'statusList' => $status,
 				'unitsList' => $unitsList, 
 				'respsList' => $respsList,
-				'conventionsList' => $conventionsList
+				'conventionsList' => $conventionsList,
+				'userResponsibles' => $userResponsibles
 		) );
 	}
 	
@@ -323,8 +331,19 @@ class ControllerCoreusers extends ControllerSecureNav {
 			$userId = $this->request->getParameter("actionid");
 		}
 		
+		// test if the user is allowed to edit this user
+		$editUserStatus = $this->userModel->getUserStatus($userId);
+		if($_SESSION["user_status"] < $editUserStatus){
+			echo "Access denied: You are not allowed to edit this user.";
+			return;
+		}
+		
 		// get user info
 		$user = $this->userModel->userAllInfo($userId);	
+		
+		$userResponsibles = $this->userModel->getUserResponsibles($userId);
+		
+		//print_r($userResponsibles);
 		
 		// Lists for the form
 		// get status list
@@ -347,7 +366,8 @@ class ControllerCoreusers extends ControllerSecureNav {
 		$this->generateView ( array (
 				'navBar' => $navBar, 'statusList' => $status,
 				'unitsList' => $unitsList,
-				'respsList' => $respsList, 'user' => $user
+				'respsList' => $respsList, 'user' => $user,
+				'userResponsibles' => $userResponsibles
 		) );
 	}
 	

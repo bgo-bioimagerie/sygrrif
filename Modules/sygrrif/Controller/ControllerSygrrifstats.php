@@ -11,6 +11,8 @@ require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
+require_once 'Framework/Form.php';
+require_once 'Modules/sygrrif/Model/SyStatsUser.php';
 
 /**
  * Controller to export the SyGRRif stats
@@ -477,6 +479,57 @@ class ControllerSygrrifstats extends ControllerBooking {
 		}
 		$content .= "(" . $totalCG .")". $totalHG/3600;
 		$content .= " \r\n ";
+		echo $content;
+	}
+	
+	public function statbookingusers(){
+		
+		$lang = $this->getLanguage();
+		
+		// build the form
+		$form = new Form($this->request, "sygrrifstats/statbookingusers");
+		$form->setTitle(SyTranslator::Statistics_booking_users($lang));
+		$form->addDate('startdate', SyTranslator::Date_Start($lang), true, $this->request->getParameterNoException("startdate"));
+		$form->addDate('enddate', SyTranslator::Date_End($lang), true, $this->request->getParameterNoException("enddate"));
+		$form->setValidationButton(CoreTranslator::Ok($lang), "sygrrifstats/statbookingusers");
+		$form->setCancelButton(CoreTranslator::Cancel($lang), "sygrrif");
+		
+		if ($form->check()){
+			// run the database query
+			$model = new SyStatsUser();
+			$users = $model->bookingUsers($form->getParameter("startdate"), $form->getParameter("enddate"));
+			
+			$this->exportstatbookingusersCSV($users);
+		}
+		else{
+			// set the view
+			$formHtml = $form->getHtml();
+			// view
+			$navBar = $this->navBar();
+			$this->generateView ( array (
+					'navBar' => $navBar,
+					'formHtml' => $formHtml
+			) );
+		}
+	}
+	
+	/**
+	 * Internal method to export booking users into csv
+	 * @param array $table
+	 * @param string $lang
+	 */
+	private function exportstatbookingusersCSV($users){
+	
+		header("Content-Type: application/csv-tab-delimited-table");
+		header("Content-disposition: filename=bookingusers.csv");
+	
+		$content = "name ; email \r\n";
+	
+		foreach ($users as $user){
+			$content.=  $user["name"] . ";";
+			$content.=  $user["email"] . "\r\n";
+			
+		}
 		echo $content;
 	}
 }

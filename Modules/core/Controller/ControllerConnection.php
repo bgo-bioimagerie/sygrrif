@@ -78,13 +78,18 @@ class ControllerConnection extends Controller
                 $this->user->updateLastConnection($user['idUser']);
                 
                 // update user active base if the user is manager or admin
+                $modulesManager = new ModulesManager();
                 if ($user['id_status'] >= 3){
                 	$this->user->updateUsersActive();
+                	if($modulesManager->isDataMenu("sygrrif")){
+                		require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+                		$modelSygrrif = new SyAuthorization();
+                		$modelSygrrif->desactivateUnactiveUserAuthorizations();
+                	}
                 }
                 
                 // redirect
         		$redirectController = "Home";
-        		$modulesManager = new ModulesManager();
         		if ($modulesManager->isDataMenu("sygrrif")){
         			$redirectController = "sygrrif/booking";
         		}

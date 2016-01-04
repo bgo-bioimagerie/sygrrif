@@ -3,6 +3,73 @@
 <?php echo $navBar?>
 
 <head>
+<script>
+        function addRow(tableID) {
+
+        	var idx = 1;
+        	if(tableID == "dataTable"){
+        		idx = 1;
+            } 
+            var table = document.getElementById(tableID);
+ 
+            var rowCount = table.rows.length;
+            //document.write(rowCount);
+            var row = table.insertRow(rowCount);
+            //document.write(row);
+            var colCount = table.rows[idx].cells.length;
+            //document.write(colCount);
+ 
+            for(var i=0; i<colCount; i++) {
+ 
+                var newcell = row.insertCell(i);
+ 
+                newcell.innerHTML = table.rows[idx].cells[i].innerHTML;
+                //alert(newcell.childNodes);
+                switch(newcell.childNodes[0].type) {
+                    case "text":
+                            newcell.childNodes[0].value = "";
+                            break;
+                    case "checkbox":
+                            newcell.childNodes[0].checked = false;
+                            break;
+                    case "select-one":
+                            newcell.childNodes[0].selectedIndex = 0;
+                            break;
+                }
+            }
+        }
+ 
+        function deleteRow(tableID) {
+            try {
+
+            var idx = 2;
+            if(tableID == "dataTable"){
+            	idx = 2;
+            }     
+            var table = document.getElementById(tableID);
+            var rowCount = table.rows.length;
+ 
+            for(var i=0; i<rowCount; i++) {
+                var row = table.rows[i];
+                var chkbox = row.cells[0].childNodes[0];
+                if(null != chkbox && true == chkbox.checked) {
+                    if(rowCount <= idx) {
+                        alert("Cannot delete all the rows.");
+                        break;
+                    }
+                    table.deleteRow(i);
+                    rowCount--;
+                    i--;
+                }
+ 
+ 
+            }
+            }catch(e) {
+                alert(e);
+            }
+        }
+ 
+    </script>
 
 <style type="text/css">
     .box{
@@ -95,26 +162,81 @@
 			</div>
 		</div>
 		<br>
+		
+		<!--   TISSUS    -->
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Responsible($lang) ?></label>
-			<div class="col-xs-10">
-				<select class="form-control" name="id_responsible">   
-					<?php foreach ($respsList as $resp):?>
-					    <?php   $respId = $this->clean( $resp['id'] );
-					    		if ($resp['id'] > 1){
-							    	$respSummary = $this->clean( $resp['name'] ) . " " . $this->clean( $resp['firstname'] );
-					    		}
-					    		else{
-					    			$respSummary = "--";
-					    		}
-					    		$active = "";
-					    		if ( $user['id_responsible'] == $respId  ){
-					    			$active = "selected=\"selected\"";
-					    		}
+			<label class="control-label col-xs-1"><?php echo CoreTranslator::Responsible($lang)?></label>
+			<div class="col-xs-11">
+				<table id="dataTable" class="table table-striped">
+				<thead>
+					<tr>
+						<td></td>
+						<td style="min-width:10em;"><?php echo CoreTranslator::Name($lang)?></td>
+					</tr>
+				</thead>
+					<tbody>
+						<?php 
+						foreach ($userResponsibles as $idResp){
+													
+							?>
+							<tr>
+								<td><input type="checkbox" name="chk" /></td>
+								<td>
+								<select class="form-control" name="id_responsible[]">   
+									<?php foreach ($respsList as $resp):?>
+					    			<?php   $respId = $this->clean( $resp['id'] );
+						    		if ($resp['id'] > 1){
+								    	$respSummary = $this->clean( $resp['name'] ) . " " . $this->clean( $resp['firstname'] );
+						    		}
+						    		else{
+						    			$respSummary = "--";
+						    		}
+						    		$active = "";
+						    		if ( $idResp[0] == $respId  ){
+						    			$active = "selected=\"selected\"";
+						    		}
+								?>
+								<OPTION value="<?php echo  $respId ?>" <?php echo  $active ?>> <?php echo  $respSummary ?> </OPTION>
+								<?php endforeach; ?>
+								</select>
+								</td>
+							</tr>
+							<?php
+						}
 						?>
-						<OPTION value="<?php echo  $respId ?>" <?php echo  $active ?>> <?php echo  $respSummary ?> </OPTION>
-					<?php endforeach; ?>
-				</select>
+						<?php 
+						if (count($userResponsibles) < 1){
+						?>
+						<tr>
+							<td><input type="checkbox" name="chk" /></td>
+							<td>
+							<select class="form-control" name="id_responsible[]">   
+								<?php foreach ($respsList as $resp):?>
+					    		<?php   $respId = $this->clean( $resp['id'] );
+						    	if ($resp['id'] > 1){
+							    	$respSummary = $this->clean( $resp['name'] ) . " " . $this->clean( $resp['firstname'] );
+						    	}
+						    	else{
+						    		$respSummary = "--";
+						    	}
+							?>
+							<OPTION value="<?php echo  $respId ?>"> <?php echo $respSummary ?> </OPTION>
+							<?php endforeach; ?>
+							</select>
+							</td>
+						</tr>
+						<?php 
+						}
+						?>
+					</tbody>
+				</table>
+				
+				<div class="col-md-6">
+					<input type="button" class="btn btn-default" value="<?php echo CoreTranslator::Add($lang)?>"
+						onclick="addRow('dataTable')" /> 
+					<input type="button" class="btn btn-default" value="<?php echo CoreTranslator::Delete($lang)?>"
+						onclick="deleteRow('dataTable')" /> <br>
+				</div>
 			</div>
 		</div>
 		<br>
@@ -134,7 +256,7 @@
 						} 
 				  ?>
 			      
-			      <input type="checkbox" name="is_responsible" <?php echo  $checked ?>> <?php echo  CoreTranslator::is_responsible($lang)?>
+			      <input type="checkbox" name="is_responsible" <?php echo $checked ?>> <?php echo  CoreTranslator::is_responsible($lang)?>
 			      
 			    </label>
               </div>
@@ -160,15 +282,7 @@
 			</div>
 		</div>
 		<br>
-		<!-- 
-		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang)?></label>
-			<div class="col-xs-10">
-				
-				/>
-			</div>
-		</div>
-		-->
+
 		<input class="form-control" id="convention" type="hidden" name="convention" value = "<?php echo  $user['convention'] ?>">
 		<br>
 		<div class="form-group ">

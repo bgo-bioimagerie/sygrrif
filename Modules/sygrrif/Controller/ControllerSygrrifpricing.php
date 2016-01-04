@@ -362,4 +362,17 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
 		}
 	}
 	
+	/**
+	 * Remove an unit query to database
+	 */
+	public function deletepricing(){
+	
+		$id = $this->request->getParameter("actionid");
+		
+		$modelPricing = new SyPricing();
+		$user = $modelPricing->delete($id);
+	
+		// generate view
+		$this->redirect("sygrrifpricing/pricing");
+	}
 }

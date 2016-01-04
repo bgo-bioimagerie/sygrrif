@@ -664,4 +664,32 @@ class SyStatsUser extends Model {
 		$writer->save('php://output');
 	}
 	
+	public function bookingUsers($startdate, $enddate){
+	
+		// convert start date to unix date
+		$tabDate = explode("-",$startdate);
+		$date_debut = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
+		$searchDate_start= mktime(0,0,0,$tabDate[1],$tabDate[2],$tabDate[0]);
+		
+		// convert end date to unix date
+		$tabDate = explode("-",$enddate);
+		$date_fin = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
+		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
+		
+		//  get all the booking users
+		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
+		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
+				(start_time >=:start AND start_time <= :end)';
+		$req = $this->runRequest($sql, $q);
+		$recs = $req->fetchAll();
+		
+		// get the users informations (name, firstname, unit, email)
+		$modelUser = new CoreUser();
+		for($i = 0 ; $i < count($recs) ; $i++){
+			$recs[$i]['name'] = $modelUser->getUserFUllName($recs[$i]['recipient_id']);
+			$recs[$i]['email'] = $modelUser->getUserEmail($recs[$i]['recipient_id']);
+		}
+	
+		return $recs;
+	}
 }

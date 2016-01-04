@@ -159,4 +159,13 @@ class SyPricing extends Model {
 		}
 	}
 	
+	/**
+	 * Delete a unit
+	 * @param number $id Unit ID
+	 */
+	public function delete($id){
+		$sql="DELETE FROM sy_pricing WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
+	
 }

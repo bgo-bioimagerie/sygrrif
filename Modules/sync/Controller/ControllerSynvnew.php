@@ -30,6 +30,7 @@ class ControllerSynvnew extends Controller {
 	// affiche la liste des Sources
 	public function index() {
 		
+		/*
 		// 1- install data  base
 		echo "<p> Install core database...  </p>";
 		$installModel = new CoreInitDatabase();
@@ -134,7 +135,6 @@ class ControllerSynvnew extends Controller {
 			$modelCss->updateAreaCss($id, $id_area, $header_background, $header_color, $header_font_size, $resa_font_size, $header_height, $line_height);
 		}
 		
-		
 		// 5- update color code table
 		echo "<p> Update color code table... </p>";
 		$sql = "ALTER TABLE sy_color_codes MODIFY color VARCHAR(7);";
@@ -166,6 +166,15 @@ class ControllerSynvnew extends Controller {
 		$this->runRequest($sql);
 		$sql = "DROP TABLE su_unitpricing;";
 		$this->runRequest($sql);
+		
+		*/
+		// copy responsibles to join table
+		$modelUser = new CoreUser();
+		$modelResp = new CoreResponsible();
+		$users = $modelUser->getUsers();
+		foreach($users as $user){
+			$modelResp->addUserRespJoin($user['id'], $user['id_responsible']);
+		}
 
 		echo "<p> Done </p>";
 	}

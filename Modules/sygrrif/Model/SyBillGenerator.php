@@ -1085,14 +1085,14 @@ class SyBillGenerator extends Model {
 		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
 		
 		// respondible fullname
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
 		
 		
 		// unit name
 		$unitName = "";
 		if ($unit_id > 0){
-			$modelUnit = new Unit();
+			$modelUnit = new CoreUnit();
 			$unitName = $modelUnit->getUnitName($unit_id);
 		}
 		
@@ -1115,7 +1115,7 @@ class SyBillGenerator extends Model {
 		$people = array();
 		foreach($beneficiaire as $b){
 			// user info
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$nomPrenom = $modelUser->getUserFromIdUnit(($b[0]), $unit_id);
 			if (count($nomPrenom) != 0){
 				
@@ -1522,7 +1522,7 @@ class SyBillGenerator extends Model {
 		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
 		
 		$laboratoire = $unit_id;
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitInfo = $modelUnit->getUnit($unit_id);
 		
 		//----------------------------------------------------------------------------
@@ -1539,7 +1539,7 @@ class SyBillGenerator extends Model {
 		$i=0;
 		foreach($beneficiaire as $b){
 			// user info
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$nomPrenom = $modelUser->getUserFromIdUnit(($b[0]), $unit_id);
 			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){

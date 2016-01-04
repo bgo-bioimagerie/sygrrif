@@ -21,6 +21,11 @@ class MailerSend extends Model {
 		$mail->CharSet = "utf-8";
 		$mail->SetFrom($from, $fromName);
 		$mail->Subject = $subject;
+		
+		// parse content
+		$content = preg_replace("/\r\n|\r/", "<br />", $content);
+		$content = trim($content);
+		
 		$mail->Body = $content;
 		
 		if ($sentCopyToFrom){

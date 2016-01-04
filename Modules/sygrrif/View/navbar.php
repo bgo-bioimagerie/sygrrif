@@ -144,6 +144,9 @@ $classWell = 'col-md-3 well';
 					<button onclick="location.href='sygrrifstatsusers/statusers'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Authorized_users($lang) ?></button>	
 					<br/>
+					<button onclick="location.href='sygrrifstats/statbookingusers'"
+						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Statistics_booking_users($lang) ?></button>
+					<br/>
 					<button onclick="location.href='sygrrif/statauthorizations'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Statistics_authorizations($lang) ?></button>
 					<br/>

@@ -43,6 +43,9 @@ class Form
     private $labelWidth;
     private $inputWidth;
 
+    /** for download feild */
+    private $useDownload;
+    
     /**
      * Constructor
      * @param Request $request Request that contains the post data
@@ -63,6 +66,8 @@ class Form
     	if ($formID == $this->id){
     		$this->parseRequest = true;
     	}
+    	
+    	$this->useDownload = false;
     }
     
     /**
@@ -136,6 +141,16 @@ class Form
     	$this->validated[] = true;
     }
     
+    public function addDownload($name, $label){
+    	$this->types[] = "download";
+    	$this->names[] = $name;
+    	$this->labels[] = $label;
+    	$this->isMandatory[] = false;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+    	$this->useDownload = true;
+    }
     /**
      * Add text input to the form
      * @param string $name Input name
@@ -275,7 +290,12 @@ class Form
     	}
     	
     	// form header
-    	$html .= "<form role=\"form\" class=\"form-horizontal\" action=\"".$this->validationURL."\" method=\"post\">";
+    	if (!$this->useDownload){
+    		$html .= "<form role=\"form\" class=\"form-horizontal\" action=\"".$this->validationURL."\" method=\"post\">";
+    	}
+    	else{
+    		$html .= "<form role=\"form\" class=\"form-horizontal\" action=\"".$this->validationURL."\" method=\"post\" enctype=\"multipart/form-data\">";
+    	}
     	
     	// form id
     	$html .= "<input class=\"form-control\" type=\"hidden\" name=\"formid\" value=\"".$this->id."\" />";
@@ -351,11 +371,19 @@ class Form
     		if($this->types[$i] == "textarea"){
     			$html .= "<div class=\"form-group\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
-    			$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";
+    			$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";    			 
     			$html .= 		"<textarea class=\"form-control\" name=\"".$this->names[$i]."\">".$this->values[$i]."</textarea>";
     			$html .=	"</div>";
     			$html .= "</div>";
     		}
+    	    if($this->types[$i] == "download"){
+    	    	$html .= "<div class=\"form-group\">";
+    	    	$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    	    	$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";
+    	    	$html .= 		" <input type=\"file\" name=\"".$this->names[$i]."\" id=\"".$this->names[$i]."\"> ";
+    	    	$html .=	"</div>";
+    			$html .= "</div>";
+	  		}
     		if($this->types[$i] == "select"){
     			$html .= "<div class=\"form-group\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";

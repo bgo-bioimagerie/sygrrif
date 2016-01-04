@@ -1791,4 +1791,11 @@ class SyTranslator {
 		}
 		return "Instructor status";
 	}
+	
+	public static function Statistics_booking_users($lang){
+		if ($lang == "Fr") {
+			return "Utilisateurs ayant réservé";
+		}
+		return "Statistics booking users";
+	}
 }

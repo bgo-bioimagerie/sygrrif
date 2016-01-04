@@ -761,4 +761,13 @@ class SyAuthorization extends Model {
 		$sql="DELETE FROM sy_authorization WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
+	
+	public function desactivateUnactiveUserAuthorizations(){
+		$sql = "SELECT * FROM core_users WHERE is_active=0";
+		$req = $this->runRequest($sql);
+		$users = $req->fetchAll();
+		foreach($users as $user){
+			$this->desactivateAthorizationsForUser($user['id']);
+		}
+	}
 }

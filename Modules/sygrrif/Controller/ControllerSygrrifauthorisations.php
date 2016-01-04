@@ -215,7 +215,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 	/**
 	 * List of all authorizations
 	 */
-	public function authorizations(){
+	public function authorizations($active = 1){
 	
 		if($this->secureCheck()){
 			return;
@@ -229,8 +229,8 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 	
 		// query
 		$authModel = new SyAuthorization();
-		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry );
-		
+		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry, $active );
+			
 		$lang = $this->getLanguage();
 		$table = new TableView ();
 		
@@ -273,7 +273,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		$this->generateView ( array (
 				'navBar' => $navBar,
 				'tableHtml' => $tableHtml
-		) );
+		), 'authorizations');
 	}
 	
 	/**
@@ -281,56 +281,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 	 */
 	public function uauthorizations(){
 	
-		if($this->secureCheck()){
-			return;
-		}
-	
-		// get user id
-		$sortentry = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortentry = $this->request->getParameter ( "actionid" );
-		}
-	
-		// query
-		$authModel = new SyAuthorization();
-		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry,0 );
-	
-		$lang = $this->getLanguage();
-		$table = new TableView ();
-		
-		$table->setTitle ( SyTranslator::Authorisations( $lang ) );
-		$table->addLineEditButton ( "sygrrifauthorisations/editauthorization" );
-		$table->addDeleteButton ( "Sygrrifauthorisations/deleteauthorization", "id", "id" );
-		$table->addPrintButton ( "sygrrifauthorisations/authorizations/" );
-		
-		for($i = 0 ; $i < count($authorizationTable) ; $i++){
-			$authorizationTable[$i]["date"] = CoreTranslator::dateFromEn($authorizationTable[$i]["date"], $lang);
-		}
-		
-		$tableContent = array (
-				"id" => "ID",
-				"date" => SyTranslator::Date($lang),
-				"userName" => CoreTranslator::Name( $lang ),
-				"userFirstname" => CoreTranslator::Firstname( $lang ),
-				"unitName" => SyTranslator::Unit( $lang ),
-				"visa" => SyTranslator::Visa( $lang ),
-				"resource" => SyTranslator::Resource( $lang )
-		);
-		
-		$tableHtml = $table->view ( $authorizationTable, $tableContent );
-		
-		$print = $this->request->getParameterNoException ( "print" );
-		if ($table->isPrint ()) {
-			echo $tableHtml;
-			return;
-		}
-		
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'tableHtml' => $tableHtml
-		),"authorizations" );
+		$this->authorizations(0);
 	}
 	
 	
