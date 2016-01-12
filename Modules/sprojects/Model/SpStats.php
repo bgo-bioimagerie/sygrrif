@@ -19,18 +19,18 @@ require_once("externals/PHPExcel/Classes/PHPExcel.php");
 class SpStats extends Model {
 	
 	public function computeStats($startDate_min, $startDate_max){
-		
+			
 		// total number of projects 
 		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ?";
 		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max) );
 		$totalNumberOfProjects = $req->rowCount();
 		$projects = $req->fetchAll();
-		
+				
 		// number of accademic and industry projects
 		$numberAccademicProjects = 0;
 		$numberIndustryProjects = 0;
 		
-			$modelUser = "";
+		$modelUser = "";
 		$modelUnit = new SpUnitPricing();
 		$modelPricing = new SpPricing();
 		$modelConfig = new CoreConfig();
@@ -57,41 +57,91 @@ class SpStats extends Model {
 		}
 		
 		// number of new academic projects
-		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_project=2";
-		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max) );
+		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_project=?";
+		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max, 2) );
 		$numberNewAccademicProject = $req->rowCount();
 		
+		//echo "numberNewAccademicProject = " . $numberNewAccademicProject . "<br/>";
+		
 		// number of new academic team
-		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_team=2";
-		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max) );
+		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_team=?";
+		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max, 2) );
 		$numberNewAccademicTeam = $req->rowCount();
 		
+		//echo "numberNewAccademicTeam = " . $numberNewAccademicTeam . "<br/>";
+		
 		// number of new industry projects
-		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_project=3";
-		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max) );
+		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_project=?";
+		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max, 3) );
 		$numberNewIndustryProject = $req->rowCount();
 		
+		//echo "numberNewIndustryProject = " . $numberNewIndustryProject . "<br/>";
+		
 		// number of new industry team
-		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_team=3";
-		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max) );
+		$sql = "select * from sp_projects where date_open >= ? AND date_open <= ? AND new_team=?";
+		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max, 3) );
 		$numberNewIndustryTeam = $req->rowCount();
 		
+		//echo "numberNewIndustryTeam = " . $numberNewIndustryTeam . "<br/>";
+		
+		
+		$purcentageNewIndustryTeam  = 0;
+		$purcentageloyaltyIndustryProjects = 0;
+		if ($numberIndustryProjects > 0){
+			$purcentageNewIndustryTeam = round(100*$numberNewIndustryTeam/$numberIndustryProjects);
+			$purcentageloyaltyIndustryProjects = round(100*($numberIndustryProjects-$numberNewIndustryTeam)/$numberIndustryProjects);
+		}
+
+		$purcentageNewAccademicTeam = 0;
+		$purcentageloyaltyAccademicProjects = 0;
+		if ($numberAccademicProjects > 0){
+			$purcentageNewAccademicTeam = round(100*$numberNewAccademicTeam/$numberAccademicProjects);
+			$purcentageloyaltyAccademicProjects = round(100*($numberAccademicProjects-$numberNewAccademicTeam)/$numberAccademicProjects);
+		}
 		
 		$output = array( "numberNewIndustryTeam" => $numberNewIndustryTeam, 
-						 "purcentageNewIndustryTeam" => round(100*$numberNewIndustryTeam/$numberIndustryProjects),
+						 "purcentageNewIndustryTeam" => $purcentageNewIndustryTeam,
 				         "numberIndustryProjects" => $numberIndustryProjects,
 						 "loyaltyIndustryProjects" => $numberIndustryProjects-$numberNewIndustryTeam,
-					     "purcentageloyaltyIndustryProjects" => round(100*($numberIndustryProjects-$numberNewIndustryTeam)/$numberIndustryProjects),
+					     "purcentageloyaltyIndustryProjects" => $purcentageloyaltyIndustryProjects,
 				
 						 "numberNewAccademicTeam" => $numberNewAccademicTeam,
-						 "purcentageNewAccademicTeam" => round(100*$numberNewAccademicTeam/$numberAccademicProjects),
+						 "purcentageNewAccademicTeam" => $purcentageNewAccademicTeam,
 					 	 "numberAccademicProjects" => $numberAccademicProjects,
 					 	 "loyaltyAccademicProjects" => $numberAccademicProjects-$numberNewAccademicTeam,
-				         "purcentageloyaltyAccademicProjects" => round(100*($numberAccademicProjects-$numberNewAccademicTeam)/$numberAccademicProjects),
+				         "purcentageloyaltyAccademicProjects" => $purcentageloyaltyAccademicProjects,
 					
 						 "totalNumberOfProjects" => $totalNumberOfProjects
 				
 		);
 		return $output;
+	}
+	
+	public function getResponsiblesCsv($startDate_min, $startDate_max, $lang){
+		$sql = "select id_resp from sp_projects where date_open >= ? AND date_open <= ?";
+		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max) );
+		$totalNumberOfProjects = $req->rowCount();
+		$projects = $req->fetchAll();
+		
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
+		$modelUser = "";
+		if ($sprojectsusersdatabase == "local"){
+			$modelUser = new SpUser();
+		}
+		else{
+			$modelUser = new User();
+		}
+		
+		$content = CoreTranslator::Name($lang) . ";" . CoreTranslator::Email($lang) . "\r\n";
+		foreach($projects as $project){
+			$userName = $modelUser->getUserFUllName($project["id_resp"]);
+			$userMail = $modelUser->getUserEmail($project["id_resp"]);
+			$content .= $userName . ";" . $userMail . "\r\n";
+		}
+		
+		header("Content-Type: application/csv-tab-delimited-table");
+		header("Content-disposition: filename=listing_responsible_sproject.csv");
+		echo $content;
 	}
 }

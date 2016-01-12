@@ -13,7 +13,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
 	<form role="form" class="form-horizontal" action="homeconfig/editquery"
-		method="post">
+		method="post" enctype="multipart/form-data">
 	
 	
 		<div class="page-header">
@@ -30,12 +30,20 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</div>
 		</div>
 	
+	<!--
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::logo($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" type="text" name="logo" value="<?php echo  $this->clean($logo) ?>" />
 			</div>
 		</div>
+	-->
+		<div class="form-group">
+          <label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::logo($lang) ?></label>
+			<div class="col-xs-8">
+            <input type="file" name="logo" id="logo">
+        </div>
+      </div>
 		
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Description($lang) ?></label>

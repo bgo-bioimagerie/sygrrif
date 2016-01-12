@@ -1490,7 +1490,6 @@ class ControllerSygrrif extends ControllerBooking {
 		echo 	SyTranslator::Nomber_of_VISAs($lang) . ":" . $msData["distinct_visa"]  . "\n";
 		echo 	SyTranslator::Nomber_of_resources($lang) . ":" . $msData["distinct_machine"] . "\n";
 		echo 	SyTranslator::Nomber_of_users($lang) . ":" . $msData["new_people"] . "\n";
-		
 	}
 	
 	/**

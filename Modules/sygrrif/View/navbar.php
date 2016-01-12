@@ -161,5 +161,3 @@ if ($authorisations_location == 2){
 
 	</div>
 </div>
-
-

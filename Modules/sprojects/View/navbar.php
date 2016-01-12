@@ -118,14 +118,14 @@ if (isset($_SESSION["user_settings"]["language"])){
 								
 					<button onclick="location.href='sprojectsentries/openedentries'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Opened_orders($lang)?></button>
-				</br>
+				<br/>
 					<button onclick="location.href='sprojectsentries/editentries'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::New_orders($lang)?></button>
-				</br>
+				<br/>
 					<button onclick="location.href='sprojectsentries/closedentries'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Closed_orders($lang)?></button>	
-				</br>		
-					<button onclick="location.href='sprojectsentries'"
+				<br/>		
+					<button onclick="location.href='sprojectsentries/allentries'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::All_orders($lang)?></button>
 
 
@@ -137,10 +137,15 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<legend><?php echo  SpTranslator::Billing($lang)?></legend>	
 					<button onclick="location.href='sprojectsbillmanager'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_manager($lang)?></button>
-				</br>	
+				<br/>
+					<button onclick="location.href='sprojectsbillmanager/billsstats'"
+						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_statistics($lang)?></button>
+				<br/>		 
 					<button onclick="location.href='sprojectsstats'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Statistics($lang)?></button>
-						
+				<br/>
+					<button onclick="location.href='sprojectsstats/responsiblelist'"
+						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Responsible_list($lang)?></button>		
 			</fieldset>
 			
 			

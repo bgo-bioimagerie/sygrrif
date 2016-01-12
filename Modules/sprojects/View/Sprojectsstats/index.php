@@ -23,45 +23,7 @@
 <br>
 <div class="container">
 	<div class="col-md-10 col-md-offset-1">
-	<form role="form" class="form-horizontal" action="sprojectsstats/index"
-		method="post" id="statform">
-	
-		<div class="page-header">
-			<h1>
-				<?php echo  SpTranslator::Statistics($lang) ?> <br> <small></small>
-			</h1>
-		</div>
-		
-		
-		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Open_after_date($lang) ?></label>
-				<div class="col-xs-8">
-				<div class='input-group date form_date_<?php echo  $lang ?>'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_min"
-					       value="<?php echo  CoreTranslator::dateFromEn($searchDate_min, $lang) ?>" />
-					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-				</div>
-		    </div>
-		</div>
-		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Open_before_date($lang) ?></label>
-				<div class="col-xs-8">
-				<div class='input-group date form_date_<?php echo  $lang ?>'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="searchDate_max"
-					       value="<?php echo  CoreTranslator::dateFromEn($searchDate_max, $lang) ?>" />
-					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-				</div>
-		    </div>
-		</div>
-		
-		<div class="col-xs-1 col-xs-offset-11" id="button-div">
-		        <input type="submit" class="btn btn-primary" value="<?php echo  SpTranslator::Ok($lang) ?>" />
-		</div>
-      </form>
+	<?php echo $formHtml ?>
       
       <?php if ($stats != ""){
       ?>

@@ -322,6 +322,8 @@ class SyAuthorization extends Model {
 		$req = $this->runRequest($sql, array($searchDate_start, $searchDate_end));
 		$numOfFormations = $req->rowCount(); // Nombre de formations dans la periode sélectionnée
 
+		//echo "numOfFormations = " . $numOfFormations . "<br/>";
+		
 		$q_search['start'] = $searchDate_start;
 		$q_search['end'] = $searchDate_end;
 		$sql_search = '';
@@ -331,6 +333,8 @@ class SyAuthorization extends Model {
 		$sql_search_3 = 'SELECT DISTINCT visa_id FROM sy_authorization WHERE ';
 		$sql_search_4 = 'SELECT DISTINCT resource_id FROM sy_authorization WHERE ';
 		
+		
+		//echo "user id = " . $user_id . "<br/>";
 		$criteres = "";
 		if ($user_id != "0") {
 			$sql='SELECT login, name, firstname from core_users WHERE id = ?';
@@ -397,6 +401,7 @@ class SyAuthorization extends Model {
 		$criteres .= "Date begin : ".$ddebut."<br/> Date end : ".$dfin."<br/>";
 		
 		$sql_search_0 = $sql_search_0.$sql_search.'date >=:start AND date <= :end ORDER BY date';
+		
 		$req = $this->runRequest($sql_search_0, $q_search);
 		$resultats = $req->fetchAll();
 		$numOfRows = $req->rowCount();
@@ -634,7 +639,12 @@ class SyAuthorization extends Model {
 		$test .= '<g>';
 		$test .= '<text x="450" y="40" font-size="20" fill="black" stroke="none" text-anchor="middle">Training for each resource from '.$searchDate_start.' to '.$searchDate_end.'</text>';
 		$test .= '</g>';
-		$couleur = array("#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE");
+		$couleur = array("#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+		);
 		
 		$modelResouces = new SyResourcesCategory();
 		

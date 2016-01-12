@@ -343,7 +343,7 @@ class SpTranslator {
 	}
 	public static function Industry($lang) {
 		if ($lang == "Fr") {
-			return "PME";
+			return "Privé";
 		}
 		return "Industry";
 	}
@@ -355,15 +355,15 @@ class SpTranslator {
 	}
 	public static function Open_after_date($lang) {
 		if ($lang == "Fr") {
-			return "Ouverts après le";
+			return "Début période";
 		}
-		return "Open after date";
+		return "Begenning period";
 	}
 	public static function Open_before_date($lang) {
 		if ($lang == "Fr") {
-			return "Ouverts avant le";
+			return "Fin période";
 		}
-		return "Open before date";
+		return "end period";
 	}
 	public static function Ok($lang) {
 		if ($lang == "Fr") {
@@ -373,25 +373,25 @@ class SpTranslator {
 	}
 	public static function numberNewIndustryTeam($lang) {
 		if ($lang == "Fr") {
-			return "Nb de nouvelles PME";
+			return "Nb de nouveau utilisateurs privé";
 		}
 		return "Number of new industry team";
 	}
 	public static function purcentageNewIndustryTeam($lang) {
 		if ($lang == "Fr") {
-			return "Pourcentage de nouvelles PME";
+			return "Pourcentage de nouveau utilisateurs privé";
 		}
 		return "Purcentage of new industry team";
 	}
 	public static function numberIndustryProjects($lang) {
 		if ($lang == "Fr") {
-			return "Nb de projets avec les PME";
+			return "Nb de projets avec les Privé";
 		}
 		return "Number of industry projects";
 	}
 	public static function loyaltyIndustryProjects($lang) {
 		if ($lang == "Fr") {
-			return "Fidélisation des PME";
+			return "Fidélisation des Privé";
 		}
 		return "Loyalty of industry projects";
 	}
@@ -447,5 +447,104 @@ class SpTranslator {
 		return "to ";
 	}
 	
+	public static function Project_number($lang){
+		if ($lang == "Fr") {
+			return "Numéro projet";
+		}
+		return "Project number";
+	}
+	
+	public static function Total_HT($lang){
+		if ($lang == "Fr") {
+			return "Total HT";
+		}
+		return "Total HT";
+	}
+	
+	public static function Beginning_period($lang) {
+		if ($lang == "Fr") {
+			return "Début période";
+		}
+		return "Beginning period";
+	}
+	public static function End_period($lang) {
+		if ($lang == "Fr") {
+			return "Fin période";
+		}
+		return "End period";
+	}
+	
+	public static function Bills_statistics($lang) {
+		if ($lang == "Fr") {
+			return "Statistiques factures";
+		}
+		return "Bills statistics";
+	}
+	
+	public static function TotalNumberOfBills($lang) {
+		if ($lang == "Fr") {
+			return "Nombre total de factures";
+		}
+		return "Total number of bills";
+	}
+	public static function NumberOfAcademicBills($lang) {
+		if ($lang == "Fr") {
+			return "Nombre de factures académiques";
+		}
+		return "Number of academic bills";
+	}
+	public static function TotalPriceOfAcademicBills($lang) {
+		if ($lang == "Fr") {
+			return "Montant total académiques";
+		}
+		return "Total price of academic bills";
+	}
+	public static function NumberOfPrivateBills($lang) {
+		if ($lang == "Fr") {
+			return "Nombre de factures privés";
+		}
+		return "Total price of private bills";
+	}
+	public static function TotalPriceOfPrivateBills($lang) {
+		if ($lang == "Fr") {
+			return "Montant total privés";
+		}
+		return "Total price of private bills";
+	}
+	
+	public static function TotalPrice($lang) {
+		if ($lang == "Fr") {
+			return "Montant total";
+		}
+		return "Total price";
+	}
+
+	public static function Responsible_list($lang){
+		if ($lang == "Fr") {
+			return "Listing responsables";
+		}
+		return "Responsible listing";
+	}
+	
+	public static function No_Projet($lang){
+		if ($lang == "Fr") {
+			return "No projet";
+		}
+		return "# project";
+	}
+	
+	public static function ExportType($lang){
+		if ($lang == "Fr") {
+			return "Type d'export";
+		}
+		return "Export type";
+	}
+	
+	public static function view($lang){
+		if ($lang == "Fr") {
+			return "Afficher";
+		}
+		return "View";
+	}
 	
 }
