@@ -386,10 +386,6 @@ class ControllerUsers extends ControllerSecureNav {
 	 */
 	public function manageaccount(){
 		
-		if($this->secureCheck()){
-			return;
-		}
-		
 		$navBar = $this->navBar();
 		
 		// get user id
@@ -428,10 +424,6 @@ class ControllerUsers extends ControllerSecureNav {
 	 * User edit his own info query
 	 */
 	public function manageaccountquery(){
-
-		if($this->secureCheck()){
-			return;
-		}
 		
 		// get form variables
 		$id = $this->request->getParameter ( "id");
@@ -463,10 +455,6 @@ class ControllerUsers extends ControllerSecureNav {
 	 * @throws Exception
 	 */
 	public function accountchangepwdquery(){
-		
-		if($this->secureCheck()){
-			return;
-		}
 		
 		$id = $this->request->getParameter ( "id");
 		$login = $this->request->getParameter ( "login");
