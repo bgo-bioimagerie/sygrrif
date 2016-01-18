@@ -10,7 +10,7 @@
 
 		<div class="page-header">
 			<h1>
-				Type Pulications<br> <small></small>
+				Type Publications<br> <small></small>
 			</h1>
 		</div>
 

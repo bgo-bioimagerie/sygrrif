@@ -10,7 +10,7 @@
 
 		<div class="page-header">
 			<h1>
-				All Pulications<br> <small></small>
+				All Publications<br> <small></small>
 			</h1>
 		</div>
 		

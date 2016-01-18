@@ -10,7 +10,7 @@
 
 		<div class="page-header">
 			<h1>
-				Year Pulications<br> <small></small>
+				Year Publications<br> <small></small>
 			</h1>
 		</div>
 
