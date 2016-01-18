@@ -46,16 +46,14 @@ class CoreUser extends Model {
 	public function createDefaultUser() {
 		if (! $this->isUser ( "--" )) {
 			
-			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit,
-				                   id_responsible, date_created)
-				 VALUES(?,?,?,?,?,?,?,?)";
+			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit, date_created)
+				 VALUES(?,?,?,?,?,?,?)";
 			$this->runRequest ( $sql, array (
 					"--",
 					"--",
 					"--",
 					"1",
 					md5 ( "--" ),
-					1,
 					1,
 					"" . date ( "Y-m-d" ) . "" 
 			) );
@@ -69,16 +67,14 @@ class CoreUser extends Model {
 	 */
 	public function createDefaultAdmin() {
 		if (! $this->isUser ( "admin" )) {
-			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit, 
-				                   id_responsible, date_created)
-				 VALUES(?,?,?,?,?,?,?,?)";
+			$sql = "INSERT INTO core_users (login, firstname, name, id_status, pwd, id_unit, date_created)
+				 VALUES(?,?,?,?,?,?,?)";
 			$this->runRequest ( $sql, array (
 					"admin",
 					"administrateur",
 					"admin",
 					"4",
 					md5 ( "admin" ),
-					1,
 					1,
 					"" . date ( "Y-m-d" ) . "" 
 			) );
@@ -339,7 +335,12 @@ class CoreUser extends Model {
 		
 		$sql = "SELECT id_resp FROM core_j_user_responsible WHERE id_user = ?";
 		$req = $this->runRequest ( $sql, array ($id) );
-		$userr = $req->fetchAll ();
+		$userr = $req->fetchAll();
+		
+		for($i=0 ; $i < count($userr) ; $i++){
+			$userr[$i]["id"] = $userr[$i]["id_resp"];
+			$userr[$i]["fullname"] = $this->getUserFUllName($userr[$i]["id_resp"]);
+		}
 		return $userr;
 	}
 	
@@ -423,9 +424,7 @@ class CoreUser extends Model {
 			$sqlSort = "user.date_convention";
 		} else if ($sortentry == "date_last_login") {
 			$sqlSort = "user.date_last_login";
-		} else if ($sortentry == "responsible") {
-			$sqlSort = "resp.name";
-		}
+		} 
 		
 		$sql = "SELECT user.id AS id, user.login AS login, 
 					   user.date_end_contract AS date_end_contract,
@@ -435,10 +434,8 @@ class CoreUser extends Model {
     				   user.convention AS convention, user.date_convention AS date_convention,
     			       user.date_created AS date_created, user.date_last_login AS date_last_login,
     				   core_units.name AS unit, 
-    				   resp.name AS resp_name, resp.firstname AS resp_firstname,
     				   core_status.name AS status
     			FROM core_users AS user
-    			INNER JOIN core_users AS resp ON user.id_responsible = resp.id
     			INNER JOIN core_units ON user.id_unit = core_units.id
     			INNER JOIN core_status ON user.id_status = core_status.id
     			WHERE user.is_active=" . $is_active . "
@@ -732,7 +729,7 @@ class CoreUser extends Model {
 		
 		// add the user to the database
 		$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, 
-    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active, source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active, source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 		$this->runRequest ( $sql, array (
 				$login,
 				$firstname,
@@ -752,12 +749,21 @@ class CoreUser extends Model {
 		
 		$userId = $this->getDatabase ()->lastInsertId ();
 		
+		//echo "last inserted id = " . $userId . "<br/>";
+		
 		// add the link between user and responsibles
 		$modelResponsible = new CoreResponsible();
-		$modelResponsible->removeAllUserRespJoin($idUser);
-		foreach ($id_responsible as $id_resp){
-			$modelResponsible->addUserRespJoin($idUser, $idResp);
+		if ($id_responsible != "" && $id_responsible > 0){
+			$modelResponsible->addUserRespJoin($userId, $id_responsible);
 		}
+		
+		/*
+		$modelResponsible = new CoreResponsible();
+		$modelResponsible->removeAllUserRespJoin($userId);
+		foreach ($id_responsible as $id_resp){
+			$modelResponsible->addUserRespJoin($userId, $idResp);
+		}
+		*/
 		
 		return $userId;
 	}
@@ -1096,6 +1102,7 @@ class CoreUser extends Model {
 	 * @return array User info
 	 */
 	public function getUserFromlup($id, $unit_id, $responsible_id) {
+		
 		$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE id=? AND id_unit=? AND id_responsible=?';
 		$req = $this->runRequest ( $sql, array (
 				$id,
@@ -1104,6 +1111,7 @@ class CoreUser extends Model {
 		) );
 		return $req->fetchAll ();
 	}
+	
 	/**
 	 * Get user from unit
 	 * @param number $id User ID

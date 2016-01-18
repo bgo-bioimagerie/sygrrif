@@ -1596,6 +1596,7 @@ class ControllerCalendar extends ControllerBooking {
 			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
 			
 
+			$responsiblesList = $modelUser->getUserResponsibles($curentuser["id"]);
 			
 			// view
 			$this->generateView ( array (
@@ -1614,7 +1615,8 @@ class ControllerCalendar extends ControllerBooking {
 					'showSeries' => $showSeries,
 					'calSups' => $calSups,
 					'calSupsData' => $calSupsData,
-					'packages' => $packages
+					'packages' => $packages,
+					'responsiblesList' => $responsiblesList
 			), "editreservation" );
 		}
 		else{ // edit resa
@@ -1650,6 +1652,8 @@ class ControllerCalendar extends ControllerBooking {
 			// get sup data 
 			$calSupsData = $modelCalSup->getSupData($reservation_id);
 			
+			$responsiblesList = $modelUser->getUserResponsibles($reservationInfo["recipient_id"]);
+			
 			$this->generateView ( array (
 					'navBar' => $navBar,
 					'menuData' => $menuData,
@@ -1666,7 +1670,8 @@ class ControllerCalendar extends ControllerBooking {
 					'showSeries' => $showSeries,
 					'calSups' => $calSups,
 					'calSupsData' => $calSupsData,
-					'packages' => $packages
+					'packages' => $packages,
+					'responsiblesList' =>  $responsiblesList
 			), "editreservation");
 		}
 	}
@@ -1721,6 +1726,7 @@ class ControllerCalendar extends ControllerBooking {
 		$is_unitary = $this->request->getParameterNoException('is_unitary');
 		$is_timeandunitary = $this->request->getParameterNoException('is_timeandunitary');
 		$repeat_id = $this->request->getParameterNoException('repeat_id');
+		$responsible_id = $this->request->getParameterNoException('responsible_id');
 		
 		$quantity = 0;
 		if ($is_unitary != ""){
@@ -1817,6 +1823,12 @@ class ControllerCalendar extends ControllerBooking {
 		// get the series info
 		$series_type_id = $this->request->getParameterNoException("series_type_id");
 		
+		// get the responsible:
+		if ( $responsible_id == "" ){
+			$modelUser = new CoreUser();
+			$respList = $modelUser->getUserResponsibles($recipient_id);
+			$responsible_id = $respList[0]["id"]; 
+		}
 		
 		if ($series_type_id == 0 || $series_type_id == ""){
 			
@@ -1833,14 +1845,19 @@ class ControllerCalendar extends ControllerBooking {
 				$reservation_id = $modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 										 $last_update, $color_type_id, $short_description, $full_description, $quantity, $package);
 				
+					$modelCalEntry->setEntryResponsible($reservation_id, $responsible_id);
 					$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 					                       $short_description, $full_description, $quantity, "add");
+					
+					
+					
+					
 			}
 			else{
 				$modelCalEntry->updateEntry($reservation_id, $start_time, $end_time, $resource_id, $booked_by_id, 
 						                   $recipient_id, $last_update, $color_type_id, $short_description, 
 						                   $full_description, $quantity, $package);
-				
+				$modelCalEntry->setEntryResponsible($reservation_id, $responsible_id);
 				$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 					$short_description, $full_description, $quantity, "edit");
 				

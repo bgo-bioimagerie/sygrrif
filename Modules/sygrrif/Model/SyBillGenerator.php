@@ -288,7 +288,7 @@ class SyBillGenerator extends Model {
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Total H.T.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($totalHT,2), 2, ',', ' ')." â‚¬");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($totalHT,2), 2, ',', ' ')." euros");
 		
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
@@ -299,7 +299,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "T.V.A.:20%");
 		$honoraireTVA = 0.2*$totalHT;
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." â‚¬");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." euros");
 		
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
@@ -316,7 +316,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Total T.T.C.");
 		$honoraireTotal = 1.2*$totalHT;
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." â‚¬");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." euros");
 		
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
@@ -587,8 +587,6 @@ class SyBillGenerator extends Model {
 							$objBold->getFont()->setColor($phpColor);
 						}
 						
-						
-						
 						$prices =  $rtimePrices["price_day"] . "hj " . $rtimePrices["price_night"] . "hn " . $rtimePrices["price_we"] . "hwe" ;
 						$price = $time["nb_hours_day"]*$rtimePrices["price_day"] + $time["nb_hours_night"]*$rtimePrices["price_night"] + $time["nb_hours_we"]*$rtimePrices["price_we"];
 						$total += $price;
@@ -734,11 +732,13 @@ class SyBillGenerator extends Model {
 	
 	protected function generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id,$responsible_id){
 		// get the list of users in the selected period
-		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
+		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'resp'=>$responsible_id);
 		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
-				(start_time <:start AND end_time <= :end AND end_time>:start) OR
+				((start_time <:start AND end_time <= :end AND end_time>:start) OR
 				(start_time >=:start AND end_time <= :end) OR
-				(start_time >=:start AND start_time<:end AND end_time > :end) ORDER BY id';
+				(start_time >=:start AND start_time<:end AND end_time > :end))
+				AND responsible_id = :resp
+				ORDER BY id';
 		$req = $this->runRequest($sql, $q);
 		$beneficiaire = $req->fetchAll();	// Liste des beneficiaire dans la periode selectionee
 		
@@ -747,15 +747,15 @@ class SyBillGenerator extends Model {
 		$i = 0;
 		foreach($beneficiaire as $b){
 
-				// user info
+			// user info
 			$modelUser = new CoreUser();
-			$nomPrenom = $modelUser->getUserFromlup(($b[0]), $unit_id, $responsible_id);
+			$nomPrenom = $modelUser->userAllInfo($b[0]);
 			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){
 				$users[$i]["name"] = $nomPrenom[0]["name"]; //Nom du beneficiaire
 				$users[$i]["firstname"] = $nomPrenom[0]["firstname"]; //Prenom du beneficiaire
 				$users[$i]["id"] = $b[0]; //id du beneficiaire
-				$users[$i]["id_responsible"] = $nomPrenom[0]["id_responsible"]; //Responsable du beneficiaire
+				$users[$i]["id_responsible"] = $responsible_id; //Responsable du beneficiaire
 				$users[$i]["pricing_id"] = $LABpricingid; //Tarif applique
 				$i++;
 			}

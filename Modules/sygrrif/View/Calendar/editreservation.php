@@ -141,6 +141,22 @@ else{
 			</div>
 		</div>
 		
+		<?php if( count($responsiblesList) > 1 ){ ?>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Responsible($lang)?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="responsible_id">
+				<?php   
+				foreach($responsiblesList as $resp){
+					?>
+					<OPTION value="<?php echo $this->clean($resp['id']) ?>"> <?php echo $this->clean($resp['fullname'])?> </OPTION>
+					<?php
+				}
+				?>
+				</select>
+			</div>
+		</div>
+		<?php } ?>
 		
 		<?php 
 		$modelCoreConfig = new CoreConfig();

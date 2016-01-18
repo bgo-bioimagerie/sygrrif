@@ -19,7 +19,7 @@ class SyResourcesCategory extends Model {
 		$sql = "
 		CREATE TABLE IF NOT EXISTS `sy_resourcescategory` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(30) NOT NULL DEFAULT '',
+		`name` varchar(200) NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);
 		";

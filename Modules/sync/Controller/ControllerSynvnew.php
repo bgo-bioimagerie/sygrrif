@@ -30,7 +30,6 @@ class ControllerSynvnew extends Controller {
 	// affiche la liste des Sources
 	public function index() {
 		
-		/*
 		// 1- install data  base
 		echo "<p> Install core database...  </p>";
 		$installModel = new CoreInitDatabase();
@@ -167,13 +166,24 @@ class ControllerSynvnew extends Controller {
 		$sql = "DROP TABLE su_unitpricing;";
 		$this->runRequest($sql);
 		
-		*/
 		// copy responsibles to join table
 		$modelUser = new CoreUser();
 		$modelResp = new CoreResponsible();
 		$users = $modelUser->getUsers();
 		foreach($users as $user){
 			$modelResp->addUserRespJoin($user['id'], $user['id_responsible']);
+		}
+		
+		// set responsible id in the reservations
+		$modelCalEntries = new SyCalendarEntry();
+		$modelUser = new CoreUser();
+		$entries = $modelCalEntries->getAllEntries();
+		foreach($entries as $entry){
+			$recipientID = $entry["recipient_id"];
+			$resps = $modelUser->getUserResponsibles($recipientID);
+			if (count($resps) > 0){
+				$modelCalEntries->setEntryResponsible($entry["id"], $resps[0]["id"]);
+			}
 		}
 
 		echo "<p> Done </p>";

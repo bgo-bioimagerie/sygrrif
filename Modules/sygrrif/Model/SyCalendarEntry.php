@@ -32,7 +32,8 @@ class SyCalendarEntry extends Model {
 		`quantity` varchar(30) NOT NULL,
 		`repeat_id` int(11) NOT NULL DEFAULT 0,	
 		`supplementary` text NOT NULL,	
-		`package_id` int(11) NOT NULL DEFAULT 0,									
+		`package_id` int(11) NOT NULL DEFAULT 0,
+		`responsible_id` int(11) NOT NULL DEFAULT 0,											
 		PRIMARY KEY (`id`)
 		);";
 
@@ -44,6 +45,15 @@ class SyCalendarEntry extends Model {
 		$isColumn = $pdo->fetch();
 		if ( $isColumn == false){
 			$sql = "ALTER TABLE `sy_calendar_entry` ADD `package_id` int(11) NOT NULL DEFAULT 0";
+			$pdo = $this->runRequest($sql);
+		}
+		
+		// add columns if no exists
+		$sql = "SHOW COLUMNS FROM `sy_calendar_entry` LIKE 'responsible_id'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sy_calendar_entry` ADD `responsible_id` int(11) NOT NULL DEFAULT 0";
 			$pdo = $this->runRequest($sql);
 		}
 		
@@ -74,6 +84,12 @@ class SyCalendarEntry extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	public function getAllEntries(){
+		$sql = "select * from sy_calendar_entry";
+		$req = $this->runRequest($sql);
+		return $req->fetchAll();
+	}
+	
 	/**
 	 * Add a calendar entry if not exists  
 	 * @param unknown $id
@@ -92,7 +108,7 @@ class SyCalendarEntry extends Model {
 							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0, $package = 0){
 		
 		if(!$this->isEntry($id)){
-			$this->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+			return $this->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 							$last_update, $color_type_id, $short_description, $full_description, $quantity, $package);
 		}
 	}
@@ -140,6 +156,11 @@ class SyCalendarEntry extends Model {
 									  where id=?";
 		$this->runRequest($sql, array($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 							$last_update, $color_type_id, $short_description, $full_description, $quantity, $package, $id));
+	}
+	
+	public function setEntryResponsible($id, $responsibleId){
+		$sql = "update sy_calendar_entry set responsible_id=? where id=?";
+		$this->runRequest($sql, array($responsibleId, $id));
 	}
 	
 	/**

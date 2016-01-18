@@ -19,8 +19,8 @@ class SyResource extends Model {
 			
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_resources` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,	
-		`name` varchar(30) NOT NULL DEFAULT '',
-		`description` varchar(200) NOT NULL DEFAULT '',		
+		`name` varchar(200) NOT NULL DEFAULT '',
+		`description` varchar(300) NOT NULL DEFAULT '',		
 		`accessibility_id` int(11) NOT NULL, 
 		`type_id` int(11) NOT NULL,
 		`category_id` int(11) NOT NULL,		
