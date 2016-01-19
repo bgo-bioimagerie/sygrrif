@@ -342,6 +342,8 @@ class SyBillGenerator extends Model {
 	 */
 	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
+		$this->updateUnsetResponsibles(); // this is needed to setup responsible if a user has booked without setted responsible
+		
 		// /////////////////////////////////////////// //
 		//        get the input informations           //
 		// /////////////////////////////////////////// //
@@ -730,6 +732,19 @@ class SyBillGenerator extends Model {
 		return $objPHPExcel;
 	}
 	
+	protected function updateUnsetResponsibles(){
+		$modelCalEntries = new SyCalendarEntry();
+		$modelUser = new CoreUser();
+		$entries = $modelCalEntries->getZeroRespEntries();
+		foreach($entries as $entry){
+			$recipientID = $entry["recipient_id"];
+			$resps = $modelUser->getUserResponsibles($recipientID);
+			if (count($resps) > 0){
+				$modelCalEntries->setEntryResponsible($entry["id"], $resps[0]["id"]);
+			}
+		}
+	}
+	
 	protected function generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id,$responsible_id){
 		// get the list of users in the selected period
 		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'resp'=>$responsible_id);
@@ -737,7 +752,7 @@ class SyBillGenerator extends Model {
 				((start_time <:start AND end_time <= :end AND end_time>:start) OR
 				(start_time >=:start AND end_time <= :end) OR
 				(start_time >=:start AND start_time<:end AND end_time > :end))
-				AND responsible_id = :resp
+				AND (responsible_id = :resp)
 				ORDER BY id';
 		$req = $this->runRequest($sql, $q);
 		$beneficiaire = $req->fetchAll();	// Liste des beneficiaire dans la periode selectionee
@@ -752,8 +767,8 @@ class SyBillGenerator extends Model {
 			$nomPrenom = $modelUser->userAllInfo($b[0]);
 			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){
-				$users[$i]["name"] = $nomPrenom[0]["name"]; //Nom du beneficiaire
-				$users[$i]["firstname"] = $nomPrenom[0]["firstname"]; //Prenom du beneficiaire
+				$users[$i]["name"] = $nomPrenom["name"]; //Nom du beneficiaire
+				$users[$i]["firstname"] = $nomPrenom["firstname"]; //Prenom du beneficiaire
 				$users[$i]["id"] = $b[0]; //id du beneficiaire
 				$users[$i]["id_responsible"] = $responsible_id; //Responsable du beneficiaire
 				$users[$i]["pricing_id"] = $LABpricingid; //Tarif applique

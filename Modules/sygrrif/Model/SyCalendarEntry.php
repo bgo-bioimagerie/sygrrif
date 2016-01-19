@@ -2,6 +2,7 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 
 /**
  * Class defining the GRR area model
@@ -86,6 +87,12 @@ class SyCalendarEntry extends Model {
 	
 	public function getAllEntries(){
 		$sql = "select * from sy_calendar_entry";
+		$req = $this->runRequest($sql);
+		return $req->fetchAll();
+	}
+	
+	public function getZeroRespEntries(){
+		$sql = "select * from sy_calendar_entry WHERE responsible_id=0";
 		$req = $this->runRequest($sql);
 		return $req->fetchAll();
 	}
@@ -326,18 +333,24 @@ class SyCalendarEntry extends Model {
 		//echo "endate = " . $enddate . "<br />";
 		
 		//echo "resp_id = " . $resp_id . "<br/>";
-		$q = array('start'=>$startdate, 'end'=>$enddate);
+		$q = array('start'=>$startdate, 'end'=>$enddate, 'resp'=>$resp_id);
 		$sql = 'SELECT DISTINCT recipient_id, id FROM sy_calendar_entry WHERE
-				(start_time >=:start AND start_time <= :end)';
+				(start_time >=:start AND start_time <= :end) AND (responsible_id = :resp OR responsible_id = 0)';
 		$req = $this->runRequest($sql, $q);
 		$recs = $req->fetchAll();
 		
 		//print_r($recs);
 		
+		$modelResp = new CoreResponsible();
 		foreach ($recs as $rec){
 			//echo "reservation id = " . $rec["id"] . "<br />";
 			//echo "reservation recipient id = " . $rec["recipient_id"] . "<br />";
 			//echo "resp id = " . $resp_id . "<br />";
+			
+			if ($modelResp->isUserRespJoin($rec["recipient_id"], $resp_id) || $rec["recipient_id"] == $resp_id){
+				return true;
+			}
+			/*
 			$sql = "select id_responsible from core_users where id=".$rec["recipient_id"];
 			$req = $this->runRequest($sql);
 			$resp_id_req = $req->fetch();
@@ -346,6 +359,7 @@ class SyCalendarEntry extends Model {
 			if ($resp_id_req == $resp_id || $rec["recipient_id"]== $resp_id){
 				return true;
 			}
+			*/
 		}
 		return false;
 	}

@@ -228,5 +228,9 @@ class CoreResponsible extends Model {
 		$sql="DELETE FROM core_j_user_responsible WHERE id_user = ?";
 		$req = $this->runRequest($sql, array($idUser));
 	}
+	
+	public function hasResponsible($user_id, $resp_id){
+		
+	}
 }
 

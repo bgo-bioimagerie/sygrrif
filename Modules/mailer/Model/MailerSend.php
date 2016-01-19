@@ -42,7 +42,8 @@ class MailerSend extends Model {
 		}
 		else{
 			if ( $toAdress != "" ){
-				$mail->AddAddress($toAdress);
+				//$mail->AddAddress($toAdress);
+				$mail->addBCC($toAdress);
 			}
 		}
 		
