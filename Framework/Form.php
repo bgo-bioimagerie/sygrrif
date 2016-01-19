@@ -14,7 +14,7 @@ class Form
 	/** form info */
 	private $title;
 	private $id;
-	 
+	
 	private $parseRequest;
 	private $errorMessage;
 	
@@ -363,16 +363,6 @@ class Form
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
     			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
     			$html .=				"<input class=\"form-control\" type=\"number\" name=\"".$this->names[$i]."\"";
-    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
-    			$html .=				"/>";
-    			$html .=			"</div>";
-    			$html .= "</div>";
-    		}
-    		if($this->types[$i] == "date"){
-    			$html .= "<div class=\"form-group".$validated."\">";
-    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
-    			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
-    			$html .=				"<input class=\"form-control\" type=\"date\" name=\"".$this->names[$i]."\"";
     			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
     			$html .=				"/>";
     			$html .=			"</div>";

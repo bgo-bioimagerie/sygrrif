@@ -135,12 +135,6 @@ class SyResource extends Model {
 		
 	}
 	
-	public function resourcesNumber(){
-		$sql = "select * from sy_resources";
-		$data = $this->runRequest($sql);
-		return $data->rowCount();
-	}
-	
 	/**
 	 * Get the resources info with join on IDs
 	 * @param string $sortentry

@@ -1582,20 +1582,6 @@ class SyTranslator {
 		}
 	}
 	
-	public static function Booking_number_year_category($lang) {
-		if ($lang == "Fr") {
-			return "Nombre de réservations par catégorie de ressources dans la période";
-		}
-		return "Number of reservations for each resource category during the given period";
-	}
-	
-	public static function Booking_time_year_category($lang) {
-		if ($lang == "Fr") {
-			return "Nombre d'heures de réservation par catégories de ressources dans la période";
-		}
-		return "Time (in hours) of reservations for each resource category during the given period";
-	}
-	
 	public static function Instructor($lang){
 		if ($lang == "Fr") {
 			return "Formateur";

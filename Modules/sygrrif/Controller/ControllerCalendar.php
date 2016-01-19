@@ -1,5 +1,5 @@
 <?php
-
+ 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreProject.php';
@@ -68,7 +68,6 @@ class ControllerCalendar extends ControllerBooking {
 		$resa_time_setting = 0;
 		$default_color_id = 0;
 		$display_order = 0;
-		$use_package = 1;
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -101,7 +100,6 @@ class ControllerCalendar extends ControllerBooking {
 			$size_bloc_resa = $resourceCInfo["size_bloc_resa"];
 			$resa_time_setting = $resourceCInfo["resa_time_setting"];
 			$default_color_id = $resourceCInfo["default_color_id"];
-			$use_package = $resourceCInfo["use_package"];
 		}
 		
 		// colors
@@ -164,8 +162,7 @@ class ControllerCalendar extends ControllerBooking {
 				'colors' => $colors,
 				'default_color_id' => $default_color_id,
 				'display_order' => $display_order,
-				'pakages' => $pakages,
-				'use_package' => $use_package
+				'pakages' => $pakages
 		) );
 		
 	}
@@ -209,7 +206,6 @@ class ControllerCalendar extends ControllerBooking {
 		$size_bloc_resa = $this->request->getParameter("size_bloc_resa");
 		$resa_time_setting = $this->request->getParameter('resa_time_setting');
 		$default_color_id = $this->request->getParameter("default_color_id");
-		$use_package = $this->request->getParameter("use_package");
 
 		$lundi = $this->request->getParameterNoException ( "monday");
 		$mardi = $this->request->getParameterNoException ( "tuesday");
@@ -234,7 +230,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		
 		$modelCResource = new SyResourceCalendar();
-		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting,"", $default_color_id, $use_package);
+		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting,"", $default_color_id);
 		
 		// pricing
 		$modelResourcePricing = new SyResourcePricing();
@@ -714,7 +710,6 @@ class ControllerCalendar extends ControllerBooking {
 			$pricingTable[$i]['val_we'] = $inter['price_we'];
 			
 			$count = 0;
-			$suppliesPrices = array();
 			foreach($prices as $price){
 				if ($count > 0){
 					$suppliesPrices[] = $price;
