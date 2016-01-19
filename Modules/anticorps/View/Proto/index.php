@@ -35,7 +35,7 @@
 					<td><?php echo  $protoId ?></td>
 				    <td><?php echo  $this->clean ( $proto ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='proto/edit/<?php echo  $protoId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='proto/edit/<?php echo  $protoId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

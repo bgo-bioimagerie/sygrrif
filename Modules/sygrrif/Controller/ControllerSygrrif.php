@@ -1,14 +1,12 @@
 <?php
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/sygrrif/Model/SyTranslator.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyGraph.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
-require_once 'Modules/sygrrif/Model/SyInstall.php';
-require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
@@ -16,6 +14,7 @@ require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyBillGenerator.php';
 require_once 'Modules/sygrrif/Model/SyArea.php';
 require_once 'Modules/sygrrif/Model/SyResourceType.php';
+require_once 'Modules/sygrrif/Model/SyResource.php';
 require_once 'Modules/core/Model/UserSettings.php';
 
 /**
@@ -41,6 +40,7 @@ class ControllerSygrrif extends ControllerBooking {
 	 * Constructor
 	 */
 	public function __construct() {
+		ob_end_clean();
 	}
 
 	
@@ -54,7 +54,6 @@ class ControllerSygrrif extends ControllerBooking {
 			return;
 		}
 		
-		
 		$navBar = $this->navBar();
 
 		$this->generateView ( array (
@@ -62,275 +61,6 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
-	/**
-	 * List of the areas
-	 */
-	public function areas(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$sort = "id";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$sort = $this->request->getParameter("actionid");
-		}
-		
-		$model = new SyArea();
-		$areas = $model->areas($sort);
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'areas' => $areas
-		) );
-	}
-	
-	/**
-	 * Delete an area
-	 */
-	public function deletearea(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$id = "";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$id = $this->request->getParameter("actionid");
-		}
-		
-		$model = new SyArea();
-		$model->delete($id);
-		
-		$this->redirect("sygrrif", "areas");
-	}
-	
-	/**
-	 * Form to edit an area
-	 */
-	public function editarea(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$id = "";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$id = $this->request->getParameter("actionid");
-		}
-		
-		$model = new SyArea();
-		$area = $model->getArea($id);
-		
-		$modelCss = new SyBookingTableCSS();
-		$css = $modelCss->getAreaCss($id);
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'area' => $area,
-				'css' => $css
-		) );
-	}
-	
-	/*
-	 * query to edit the area in the database
-	 */
-	public function editareaquery(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$id = $this->request->getParameter ( "id" );
-		$name = $this->request->getParameter ( "name" );
-		$display_order = $this->request->getParameter ( "display_order" );
-		$restricted = $this->request->getParameter ( "restricted" );
-		
-		$model = new SyArea();
-		$model->updateArea($id, $name, $display_order, $restricted);
-		
-		
-		// set the css
-		$header_background = $this->request->getParameter ( "header_background" );
-		$header_color = $this->request->getParameter ( "header_color" );
-		$header_font_size = $this->request->getParameter ( "header_font_size" );
-		$resa_font_size = $this->request->getParameter ( "resa_font_size" );
-		$header_height = $this->request->getParameter ( "header_height" );
-		$line_height = $this->request->getParameter ( "line_height" );
-		$modelCss = new SyBookingTableCSS();
-		$modelCss->setAreaCss($id, $header_background, $header_color, $header_font_size,
-				$resa_font_size, $header_height, $line_height);
-		
-		$this->redirect("sygrrif", "areas");
-	}
-	
-	/**
-	 * Form to add an area
-	 */
-	public function addarea(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar
-		) );
-	}
-	
-	/**
-	 * Query to add an area in the database
-	 */
-	public function addareaquery(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		
-		//$id = $this->request->getParameter ( "id" );
-		$name = $this->request->getParameter ( "name" );
-		$display_order = $this->request->getParameter ( "display_order" );
-		$restricted = $this->request->getParameter ( "restricted" );
-		
-		$model = new SyArea();
-		$id = $model->addArea($name, $display_order, $restricted);
-		
-		// set the css
-		$header_background = $this->request->getParameter ( "header_background" );
-		$header_color = $this->request->getParameter ( "header_color" );
-		$header_font_size = $this->request->getParameter ( "header_font_size" );
-		$resa_font_size = $this->request->getParameter ( "resa_font_size" );
-		$header_height = $this->request->getParameter ( "header_height" );
-		$line_height = $this->request->getParameter ( "line_height" );
-		$modelCss = new SyBookingTableCSS();
-		$modelCss->setAreaCss($id, $header_background, $header_color, $header_font_size,
-				$resa_font_size, $header_height, $line_height);
-		
-
-		
-		$this->redirect("sygrrif", "areas");
-	}
-	
-	/**
-	 * Statistics form pages
-	 */
-	public function statistics(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar
-		) );
-	} 
-	
-	/**
-	 * Calculate an view the statistics
-	 */
-	public function statisticsquery(){
-		
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
-
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$month_start = $this->request->getParameter ( "month_start" );
-		$year_start = $this->request->getParameter ( "year_start" );
-		$month_end = $this->request->getParameter ( "month_end" );
-		$year_end = $this->request->getParameter ( "year_end" );
-		$export_type = $this->request->getParameter ( "export_type" );
-		
-		$modelGraph = new SyGraph();
-		$graphArray = $modelGraph->getYearNumResGraph($month_start, $year_start, $month_end, $year_end);
-		$graphTimeArray = $modelGraph->getYearNumHoursResGraph($month_start, $year_start, $month_end, $year_end);
-		
-		$modelResource = new SyResource();
-		$resourcesNumber = $modelResource->resourcesNumber();
-		
-		$modelResourceC = new SyResourcesCategory();
-		$resourcesCategoryNumber = $modelResourceC->categoriesNumber();
-		
-		//echo "resourcesNumber = " . $resourcesNumber . "<br/>";
-		
-		if($export_type == 1){
-			
-			$camembertContent = $modelGraph->getCamembertContent($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
-			$camembertTimeContent = $modelGraph->getCamembertTimeContent($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
-			$camembertContentResourcesType = $modelGraph->getCamembertContentResourceType($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
-			$camembertTimeContentResourcesType = $modelGraph->getCamembertTimeContentResourceType($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
-			$navBar = $this->navBar();
-			$this->generateView ( array (
-					'navBar' => $navBar,
-					'month_start' => $month_start,
-					'year_start' => $year_start,
-					'month_end' => $month_end,
-					'year_end' => $year_end,
-					'numTotal' => $graphArray['numTotal'],
-			        'graph' => $graphArray['graph'],
-					'graph_month' => $graphArray['monthIds'],
-					'graphTimeArray' => $graphTimeArray,
-					'camembertContent' => $camembertContent,
-					'camembertTimeContent' => $camembertTimeContent,
-					'resourcesNumber' => $resourcesNumber,
-					'camembertContentResourcesType' => $camembertContentResourcesType,
-					'camembertTimeContentResourcesType' => $camembertTimeContentResourcesType,
-					'resourcesCategoryNumber' => $resourcesCategoryNumber
-			) );
-		}
-		else{
-			
-			$camembertCount = $modelGraph->getCamembertArray($month_start, $year_start, $month_end, $year_end);
-			$camembertTimeCount = $modelGraph->getCamembertTimeArray($month_start, $year_start, $month_end, $year_end);
-			
-			header("Content-Type: application/csv-tab-delimited-table");
-			header("Content-disposition: filename=rapport.csv");
-			
-			$content = "";
-			// annual number
-			$content .= SyTranslator::Annual_review_of_the_number_of_reservations_of($lang) . " " . Configuration::get("name") . "\r\n";
-			$i = 0;
-			foreach ($graphArray['graph'] as $g){
-				$i++;
-				$content .= $i . " ; " . $g . "\r\n"; 
-			}
-			
-			// annual number
-			$content .= "\r\n";
-			$content .= SyTranslator::Annual_review_of_the_time_of_reservations_of($lang) . " " . Configuration::get("name") . "\r\n";
-			$i=0;
-			foreach ($graphTimeArray['graph'] as $g){
-				$i++;
-				$content .= $i . " ; " . $g . "\r\n";
-			}
-			
-			// annual resources
-			$content .= "\r\n";
-			$content .= SyTranslator::Booking_number_year($lang) . " " . Configuration::get("name") . "\r\n";
-			foreach ($camembertCount as $g){
-				$content .= $g[0] . " ; " . $g[1] . "\r\n";
-			}
-			
-			// annual resources
-			$content .= "\r\n";
-			$content .= SyTranslator::Booking_time_year($lang) . " " . Configuration::get("name") . "\r\n";
-			foreach ($camembertTimeCount as $g){
-				$content .= $g[0] . " ; " . $g[1] . "\r\n";
-			}
-			echo $content;
-			return;
-			
-		}
-	}
 	
 	// pricing
 	/**
@@ -500,23 +230,6 @@ class ControllerSygrrif extends ControllerBooking {
 		) );
 	}
 	
-	/**
-	 * List of pricing per unit
-	 */
-	public function unitpricing(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$modelUnitPricing = new SyUnitPricing();
-		$pricingArray = $modelUnitPricing->allPricingTable();
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar, 'pricingArray' => $pricingArray
-		) );
-	}
 	
 	/**
 	 * Form to add a pricing for a unit
@@ -527,7 +240,7 @@ class ControllerSygrrif extends ControllerBooking {
 			return;
 		}
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitsList = $modelUnit->unitsIDName();
 		
 		$modelPricing = new SyPricing();
@@ -539,6 +252,7 @@ class ControllerSygrrif extends ControllerBooking {
 				'pricingList' => $pricingList
 		) );
 	}
+	
 	
 	/**
 	 * Query to add a pricing for a unit
@@ -579,7 +293,7 @@ class ControllerSygrrif extends ControllerBooking {
 		
 		echo "unit_id = " . $unit_id . "<br />";
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitName = $modelUnit->getUnitName($unit_id);
 		
 		$modelPricing = new SyPricing();
@@ -622,658 +336,10 @@ class ControllerSygrrif extends ControllerBooking {
 		$this->generateView ( array (
 				'navBar' => $navBar
 		) );
-	}
-	
-	/**
-	 * List of all the resources
-	 */
-	public function resources(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$sortEntry = 'id';
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortEntry = $this->request->getParameter ( "actionid" );
-		}
-		
-		$modelResources = new SyResource();
-		$resourcesArray = $modelResources->resourcesInfo($sortEntry);
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar, 'resourcesArray' => $resourcesArray
-		) );
-		
-	}
-	
-	/**
-	 * Form to add a resource
-	 */
-	public function addresource(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$resource_type = "";
-		if ($this->request->isParameterNotEmpty ( 'resource_type' )) {
-			$resource_type = $this->request->getParameter ( "resource_type" );
-		}
+	}	
 
-		$modelResourcesTypes = new SyResourceType();
-		if ($resource_type == ""){
-			$resourcesTypes = $modelResourcesTypes->typesIDNames("name");
-			
-			$navBar = $this->navBar();
-			$this->generateView ( array (
-					'navBar' => $navBar,
-					'resourcesTypes' => $resourcesTypes
-			) );
-		}
-		else{
-			$typeInfo = $modelResourcesTypes->getType($resource_type);
-			
-			$this->redirect($typeInfo["controller"], $typeInfo["edit_action"]);
-		}
-	}
 	
-	/**
-	 * List of the resources categories
-	 */
-	public function resourcescategory(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get sort action
-		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortentry = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get the user list
-		$categoriesModel = new SyResourcesCategory();
-		$categoriesTable = $categoriesModel->getResourcesCategories ( $sortentry );
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'categoriesTable' => $categoriesTable
-		) );
-	}
 	
-	/**
-	 * Form to add a resource category
-	 */
-	public function addresourcescategory(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-		) );
-	}
-	
-	/**
-	 * Query to add a resource category
-	 */
-	public function addresourcescategoryquery(){
-	
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get form variables
-		$name = $this->request->getParameter ( "name" );
-	
-		// get the user list
-		$rcModel = new SyResourcesCategory();
-		$rcModel->addResourcesCategory ( $name );
-	
-		$this->redirect ( "sygrrif", "resourcescategory" );
-	}
-	
-	/**
-	 * Form to edit a resource category
-	 */
-	public function editresourcescategory(){
-	
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get user id
-		$rcId = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$rcId = $this->request->getParameter ( "actionid" );
-		}
-	
-		// get unit info
-		$rcModel = new SyResourcesCategory();
-		$rc = $rcModel->getResourcesCategory ( $rcId );
-	
-		$navBar = $this->navBar ();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'rc' => $rc
-		) );
-	}
-	
-	/**
-	 * Query to edit a resources category
-	 */
-	public function editresourcescategoryquery(){
-	
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get form variables
-		$id = $this->request->getParameter ( "id" );
-		$name = $this->request->getParameter ( "name" );
-	
-		// get the user list
-		$rcModel = new SyResourcesCategory();
-		$rcModel->editResourcesCategory ( $id, $name );
-	
-		$this->redirect ( "sygrrif", "resourcescategory" );
-	}
-	
-	/**
-	 * delete a resource category
-	 */
-	public function deleteresourcecategory(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$id = "";
-		if ($this->request->isParameterNotEmpty('actionid')){
-			$id = $this->request->getParameter("actionid");
-		}
-		
-		$model = new SyResourcesCategory();
-		$model->delete($id);
-		
-		$this->redirect("sygrrif", "resourcescategory");
-	}
-	
-	/**
-	 * List of Visa
-	 */
-	public function visa(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get sort action
-		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortentry = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get the user list
-		$visaModel = new SyVisa();
-		$visaTable = $visaModel->getVisas ( $sortentry );
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'visaTable' => $visaTable
-		) );
-	}
-	
-	/**
-	 * Form to add a visa
-	 */
-	public function addvisa(){
-	
-		if($this->secureCheck()){
-			return;
-		}
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-		) );
-	}
-	
-	/**
-	 * query to add a visa
-	 */
-	public function addvisaquery(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get form variables
-		$name = $this->request->getParameter ( "name" );
-		
-		// get the user list
-		$visaModel = new SyVisa();
-		$visaModel->addVisa ( $name );
-		
-		$this->redirect ( "sygrrif", "visa" );
-	}
-	
-	/**
-	 * Form to edit a visa
-	 */
-	public function editvisa(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get user id
-		$visaId = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$visaId = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get unit info
-		$visaModel = new SyVisa();
-		$visa = $visaModel->getVisa ( $visaId );
-		
-		$navBar = $this->navBar ();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'visa' => $visa
-		) );
-	}
-	
-	/**
-	 * Query to edit a visa
-	 */
-	public function editvisaquery(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get form variables
-		$id = $this->request->getParameter ( "id" );
-		$name = $this->request->getParameter ( "name" );
-		
-		// get the user list
-		$visaModel = new SyVisa();
-		$visaModel->editVisa ( $id, $name );
-		
-		$this->redirect ( "sygrrif", "visa" );
-	} 
-	
-	/**
-	 * Delete  visa
-	 */
-	public function deletevisa(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-
-		$id = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$id = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get the user list
-		$visaModel = new SyVisa();
-		$visaModel->delete( $id );
-		
-		$this->redirect ( "sygrrif", "visa" );
-	}
-	
-	/**
-	 * List of all authorizations
-	 */
-	public function authorizations(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get user id
-		$sortentry = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortentry = $this->request->getParameter ( "actionid" );
-		}
-		
-		// query
-		$authModel = new SyAuthorization();
-		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry );
-		
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'authorizationTable' => $authorizationTable
-		) );
-	}
-	
-	/**
-	 * List of unactive authorizations
-	 */
-	public function uauthorizations(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get user id
-		$sortentry = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortentry = $this->request->getParameter ( "actionid" );
-		}
-	
-		// query
-		$authModel = new SyAuthorization();
-		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry,0 );
-	
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'authorizationTable' => $authorizationTable,
-				'isInactive' => true
-		),"authorizations" );
-	}
-	
-	/**
-	 * Form to add an authorization
-	 */
-	public function addauthorization(){
-		
-		if($this->secureCheck()){
-			return;
-		}
-		
-		// get users list
-		$modelUser = new User();
-		$users = $modelUser->getUsersSummary('name');
-		
-		// get unit list
-		$modelUnit = new Unit();
-		$units = $modelUnit->unitsIDName();
-		
-		// get visa list
-		$modelVisa = new SyVisa();
-		$visas = $modelVisa->visasIDName();
-		
-		// get resource list
-		$modelResource = new SyResourcesCategory();
-		$resources = $modelResource->getResourcesCategories("name");
-		
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'users' => $users,
-				'units' => $units,
-				'visas' => $visas,
-				'resources' => $resources
-		) );
-	
-	}
-	
-	/**
-	 * Form to edit an authorization
-	 */
-	public function editauthorization(){
-		
-		// get sort action
-		$id = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$id = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get the authorization info
-		$modelAuth = new SyAuthorization();
-		$authorization = $modelAuth->getAuthorization($id);
-		
-		//print_r($authorization);
-		
-		// get users list
-		$modelUser = new User();
-		$users = $modelUser->getUsersSummary('name');
-		
-		// get unit list
-		$modelUnit = new Unit();
-		$units = $modelUnit->unitsIDName();
-		
-		// get visa list
-		$modelVisa = new SyVisa();
-		$visas = $modelVisa->visasIDName();
-		
-		// get resource list
-		$modelResource = new SyResourcesCategory();
-		$resources = $modelResource->getResourcesCategories("name");
-		
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'users' => $users,
-				'units' => $units,
-				'visas' => $visas,
-				'resources' => $resources,
-				'authorization' => $authorization
-		) );
-	}
-	
-	/**
-	 * Query to edit an authorization
-	 */
-	public function editauthorizationsquery(){
-		
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
-		
-		$id = $this->request->getParameter('id');
-		$user_id = $this->request->getParameter('user_id');
-		$unit_id = $this->request->getParameter('unit_id');
-		$date = $this->request->getParameter('date');
-		$visa_id = $this->request->getParameter('visa_id');
-		$resource_id = $this->request->getParameter('resource_id');
-		$is_active = $this->request->getParameter('is_active');
-		
-		if ($date != ""){
-			$date = CoreTranslator::dateToEn($date, $lang);
-		}
-		
-		$model = new SyAuthorization();
-		$model->editAuthorization($id, $date, $user_id, $unit_id, $visa_id, $resource_id);
-		//echo "is active = " . (int)$is_active . "<br/>";
-		if ($is_active > 0){
-			$model->activate($id);
-		}
-		else{
-			$model->unactivate($id);
-		}
-		//$model->setActive($id, (int)$is_active);
-		
-		$this->redirect ( "sygrrif", "authorizations" );
-	}
-	
-	/**
-	 * Query to add an authorization
-	 */
-	public function addauthorizationsquery(){
-		
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
-		
-		$user_id = $this->request->getParameter('user_id');
-		//$unit_id = $this->request->getParameter('unit_id');
-		$date = $this->request->getParameter('date');
-		$visa_id = $this->request->getParameter('visa_id');
-		$resource_id = $this->request->getParameter('resource_id');
-		
-		if ($date != ""){
-			$date = CoreTranslator::dateToEn($date, $lang);
-		}
-		
-		$modelUser = new User();
-		$unit_id = $modelUser->getUserUnit($user_id);
-		
-		$model = new SyAuthorization();
-		$model->addAuthorization($date, $user_id, $unit_id, $visa_id, $resource_id);
-		
-		$this->redirect ( "sygrrif", "authorizations" );
-	}
-	
-	/**
-	 * Form to generate a bill for a unit
-	 */
-	public function statpriceunits(){
-		
-		$lang = "En";
-		if ( isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
-		
-		// get the form parameters
-		$searchDate_start = $this->request->getParameterNoException('searchDate_start');
-		$searchDate_end = $this->request->getParameterNoException('searchDate_end');
-		$unit_id = $this->request->getParameterNoException('unit');
-		$responsible_id = $this->request->getParameterNoException('responsible');
-		$export_type = $this->request->getParameterNoException('export_type');
-
-		if ($searchDate_start != ""){
-			$searchDate_start = CoreTranslator::dateToEn($searchDate_start, $lang);
-		}
-		if ($searchDate_end != ""){
-			$searchDate_end = CoreTranslator::dateToEn($searchDate_end, $lang);
-		}
-		
-		//echo "date start = " . $searchDate_start . "<br/>";
-		//echo "date end = " . $searchDate_end . "<br/>";
-		
-		// get the selected unit
-		$selectedUnitId = 0;
-		if ($unit_id != ""){
-			$selectedUnitId = $unit_id; 
-		}
-		
-		// get the responsibles for this unit
-		$responsiblesList = array();
-		$modelCalEntry = new SyCalendarEntry();
-		if ($selectedUnitId > 0){
-			$modeluser = new User();
-			
-			$responsiblesListInter = $modeluser->getResponsibleOfUnit($selectedUnitId);
-			foreach ($responsiblesListInter as $respi){
-				
-				//print_r($respi);
-				$startdate = explode("-", $searchDate_start);
-				$startdate = mktime(0, 0, 0, $startdate[1], $startdate[2], $startdate[0]);
-				
-				$enddate = explode("-", $searchDate_end);
-				$enddate = mktime(23, 59, 59, $enddate[1], $enddate[2], $enddate[0]);
-				
-				if ( $modelCalEntry->hasResponsibleEntry($respi["id"], $startdate, $enddate) == true){
-					$responsiblesList[] = $respi;
-				}
-			}
-		}
-		
-		// test if it needs to calculate output
-		$errorMessage = '';
-		if ($selectedUnitId != 0 && $responsible_id != ''){
-			
-			// test the dates
-			$testPass = true;
-			if ( $searchDate_start == ''){
-				$errorMessage = "Please set a start date";
-				$testPass = false;
-			}
-			if ( $searchDate_end == ''){
-				$errorMessage = "Please set an end date";
-				$testPass = false;
-			}
-			if ( $searchDate_end < $searchDate_start){
-				$errorMessage = "The start date must be before the end date";
-				$testPass = false;
-			}
-			
-			// if the form is correct, calculate the output
-			if ($testPass){
-				//return;
-				if ($export_type > 0 && $export_type < 4 ){
-					$this->output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
-					return;
-				}
-			}
-		}
-		
-		// get units list
-		$modelUnit = new Unit();
-		$unitsListTmp = $modelUnit->unitsIDName();
-		$unitsList = array();
-		
-		if (	$searchDate_start!= "" && $searchDate_end!= "" ){
-			$startdate = explode("-", $searchDate_start);
-			$startdate = mktime(0, 0, 0, $startdate[1], $startdate[2], $startdate[0]);
-			$enddate = explode("-", $searchDate_end);
-			$enddate = mktime(0, 0, 0, $enddate[1], $enddate[2], $enddate[0]);
-			foreach ($unitsListTmp as $unit){
-				if ($modelCalEntry->hasUnitEntry($unit["id"], $startdate, $enddate) == true){
-					$unitsList[] = $unit;
-				}
-			}
-		}
-		
-		//echo "date start = " . $searchDate_start . "<br/>";
-		//echo "date end = " . $searchDate_end . "<br/>";
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'selectedUnitId' => $selectedUnitId,
-				'responsiblesList' => $responsiblesList,
-				'unitsList' => $unitsList,
-				'errorMessage' => $errorMessage,
-				'searchDate_start' => $searchDate_start,
-				'searchDate_end' => $searchDate_end
-		) );
-	}
-	
-	/**
-	 *  Generate bill query
-	 */
-	public function output($export_type, $searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id){
-		
-		header_remove();
-		if ($export_type == 1){
-			// generate decompte
-			$billgenaratorModel = new SyBillGenerator();
-			$billgenaratorModel->generateCounting($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
-			//$errorMessage = "counting functionality not yet available";
-		}
-		if ($export_type == 2){
-			// generate detail
-			$billgenaratorModel = new SyBillGenerator();
-			$billgenaratorModel->generateDetail($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
-			//$errorMessage = "detail functionality not yet available";
-		}
-		if ($export_type == 3){
-			// generate bill
-			$billgenaratorModel = new SyBillGenerator();
-			$billgenaratorModel->generateBill($searchDate_start, $searchDate_end, $selectedUnitId, $responsible_id);
-		}
-	}
 	
 	/**
 	 * Form to generate statistics for authorizations
@@ -1320,16 +386,17 @@ class ControllerSygrrif extends ControllerBooking {
 		//if ($resource_id == 0){$resource_id = "0";}
 		
 		// users
-		$modeluser = new User();
+		$modeluser = new CoreUser();
 		$users = $modeluser->getUsersSummary('name');
 		
 		// units
-		$modelunits = new Unit();
+		$modelunits = new CoreUnit();
 		$units = $modelunits->unitsIDName();
 		
 		// visa
+		$lang = $this->getLanguage();
 		$modelvisa = new SyVisa();
-		$visas = $modelvisa->visasIDName();
+		$visas = $modelvisa->getAllVisasDesc($lang);
 		
 		// resources categories
 		$modelresource = new SyResourcesCategory();
@@ -1357,6 +424,7 @@ class ControllerSygrrif extends ControllerBooking {
 		$msData = "";
 		$dsData = "";
 		$camembert = "";
+		$lang = $this->getLanguage();
 		if ($testPass){
 			$modelAuth = new SyAuthorization();
 			
@@ -1367,7 +435,7 @@ class ControllerSygrrif extends ControllerBooking {
 			
 			if ($view_details != ""){
 				$dsData = $modelAuth->statsDetails($searchDate_start, $searchDate_end, $user_id, $curentunit_id, 
-			                          $trainingunit_id, $visa_id, $resource_id);
+			                          $trainingunit_id, $visa_id, $resource_id, $lang);
 			}
 			
 			if ($view_pie_chart != ""){
@@ -1490,6 +558,7 @@ class ControllerSygrrif extends ControllerBooking {
 		echo 	SyTranslator::Nomber_of_VISAs($lang) . ":" . $msData["distinct_visa"]  . "\n";
 		echo 	SyTranslator::Nomber_of_resources($lang) . ":" . $msData["distinct_machine"] . "\n";
 		echo 	SyTranslator::Nomber_of_users($lang) . ":" . $msData["new_people"] . "\n";
+		
 	}
 	
 	/**
@@ -1587,211 +656,4 @@ class ControllerSygrrif extends ControllerBooking {
 		
 	}
 	
-	/**
-	 * Shows the color codes table
-	 */
-	public function colorcodes(){
-		// get sort action
-		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortentry = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get the user list
-		$colorModel = new SyColorCode();
-		$colorTable = $colorModel->getColorCodes( $sortentry );
-		
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'colorTable' => $colorTable
-		) );
-	}
-	
-	/**
-	 * Form to add a color code
-	 */
-	public function addcolorcode(){
-	
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-		) );
-	}
-	
-	/**
-	 * Quey to add a color code
-	 */
-	public function addcolorcodequery(){
-	
-		// get form variables
-		$name = $this->request->getParameter ( "name" );
-		$color = $this->request->getParameter ( "color" );
-		$text_color = $this->request->getParameter ( "text_color" );
-		$display_order = $this->request->getParameter ( "display_order" );
-		
-		
-		// get the user list
-		$ccModel = new SyColorCode();
-		$ccModel->addColorCode($name, $color, $text_color, $display_order);
-	
-		$this->redirect ( "sygrrif", "colorcodes" );
-	}
-	
-	/**
-	 * Form to edit a color code
-	 */
-	public function editcolorcode(){
-	
-		// get user id
-		$ccId = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$ccId = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get unit info
-		$ccModel = new SyColorCode();
-		$colorcode = $ccModel->getColorCode( $ccId );
-	
-		$navBar = $this->navBar ();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'colorcode' => $colorcode
-		) );
-	}
-	
-	/**
-	 * Query to edit a color code
-	 */
-	public function editcolorcodequery(){
-		$navBar = $this->navBar ();
-	
-		// get form variables
-		$id = $this->request->getParameter ( "id" );
-		$name = $this->request->getParameter ( "name" );
-		$color = $this->request->getParameter ( "color" );
-		$text_color = $this->request->getParameter ( "text_color" );
-		$display_order = $this->request->getParameter ( "display_order" );
-		
-		// get the user list
-		$ccModel = new SyColorCode();
-		$ccModel->editColorCode($id, $name, $color, $text_color, $display_order);
-	
-		$this->redirect ( "sygrrif", "colorcodes" );
-	}
-	
-	/**
-	 * Query to delete a color code
-	 */
-	public function deletecolorcode(){
-		// get user id
-		$ccId = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$ccId = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get the user list
-		$ccModel = new SyColorCode();
-		$ccModel->delete($ccId);
-		
-		$this->redirect ( "sygrrif", "colorcodes" );
-	}
-	
-	/**
-	 * Form to make several resources unavailable
-	 * @param string $errormessage
-	 */
-	public function blockresources($errormessage = ""){
-		
-		$modelResources = new SyResource();
-		$resources = $modelResources->resources("name");
-		
-		$modelColor = new SyColorCode();
-		$colorCodes = $modelColor->getColorCodes();
-		
-		$navBar = $this->navBar ();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'resources' => $resources,
-				'colorCodes' => $colorCodes,
-				'errormessage' => $errormessage
-		) );
-	}
-	
-	/**
-	 * Query to make several resources unavailable
-	 */
-	public function blockresourcesquery(){
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
-		$navBar = $this->navBar ();
-		
-		// get form variables
-		$short_description = $this->request->getParameter ( "short_description" );
-		$resources = $this->request->getParameter ( "resources" );
-		$begin_date = $this->request->getParameter ( "begin_date" );
-		$begin_hour = $this->request->getParameter ( "begin_hour" );
-		$begin_min = $this->request->getParameter ( "begin_min" );
-		$end_date = $this->request->getParameter ( "end_date" );
-		$end_hour = $this->request->getParameter ( "end_hour" );
-		$end_min = $this->request->getParameter ( "end_min" );
-		$color_type_id = $this->request->getParameter ( "color_code_id" );
-		
-		$beginDate = CoreTranslator::dateToEn($begin_date, $lang);
-		$beginDate = explode("-", $beginDate);
-		$start_time = mktime(intval($begin_hour), intval($begin_min), 0, $beginDate[1], $beginDate[2], $beginDate[0]);
-		
-		$endDate = CoreTranslator::dateToEn($end_date, $lang);
-		$endDate = explode("-", $endDate);
-		$end_time = mktime(intval($end_hour), intval($end_min), 0, $endDate[1], $endDate[2], $endDate[0]);
-		
-		if ($end_time <= $start_time){
-			$errormessage = "Error: The begin time must be before the end time";
-			$modelResources = new SyResource();
-			$resources = $modelResources->resources("name");
-			$modelColor = new SyColorCode();
-			$colorCodes = $modelColor->getColorCodes();
-			$this->generateView ( array (
-				'navBar' => $navBar,
-				'resources' => $resources,
-				'colorCodes' => $colorCodes,	
-				'errormessage' => $errormessage
-			),"blockresources");
-			return;
-		}
-		
-		// Add the booking
-		$modelCalEntry = new SyCalendarEntry();
-		$userID = $_SESSION["id_user"];
-		foreach ($resources as $resource_id){
-		
-			$conflict = $modelCalEntry->isConflict($start_time, $end_time, $resource_id);
-				
-			if ($conflict){
-				$errormessage = "Error: There is already a reservation for the given slot, please remove it before booking";
-				$modelResources = new SyResource();
-				$resources = $modelResources->resources("name");
-				$modelColor = new SyColorCode(); 
-				$colorCodes = $modelColor->getColorCodes();
-				$this->generateView ( array (
-					'navBar' => $navBar,
-					'resources' => $resources,
-					'colorCodes' => $colorCodes,	
-					'errormessage' => $errormessage
-				),"blockresources");
-				return;
-			}
-			$booked_by_id = $userID;
-			$recipient_id = $userID;
-			$last_update = date("Y-m-d H:i:s", time()); 
-			$full_description = "";
-			$quantity = "";
-			$modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
-						$last_update, $color_type_id, $short_description, $full_description, $quantity);
-		}
-		
-		$this->redirect ( "sygrrif" );
-	}
 }

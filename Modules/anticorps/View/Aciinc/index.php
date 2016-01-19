@@ -35,7 +35,7 @@
 					<td><?php echo  $aciincId ?></td>
 				    <td><?php echo  $this->clean ( $aciinc ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='aciinc/edit/<?php echo  $aciincId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='aciinc/edit/<?php echo  $aciincId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

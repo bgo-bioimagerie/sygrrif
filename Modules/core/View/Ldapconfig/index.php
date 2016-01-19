@@ -1,4 +1,4 @@
-<?php $this->title = "ldap configuration"?>
+<?php $this->title = "Pltaform-Manager"?>
 
 <?php echo $navBar?>
 

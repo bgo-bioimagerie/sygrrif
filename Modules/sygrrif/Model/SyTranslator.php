@@ -109,6 +109,14 @@ class SyTranslator {
 		}
 		return "Export";
 	}
+	
+	public static function Export_stats($lang = ""){
+		if ($lang == "Fr"){
+			return "Export et statistiques";
+		}
+		return "Export and stats";
+	}
+	
 	public static function Statistics_Resources($lang = ""){
 		if ($lang == "Fr"){
 			return "Statistiques de réservation";
@@ -732,9 +740,9 @@ class SyTranslator {
 	}
 	public static function Edit_Authorization($lang){
 		if ($lang == "Fr"){
-			return "Editer une Autorisation";
+			return "Editer une autorisation";
 		}
-		return "Edit Authorization";
+		return "Edit authorization";
 	}
 	public static function Is_active($lang) {
 		if ($lang == "Fr") {
@@ -1436,6 +1444,7 @@ class SyTranslator {
 		}
 		return "Use package";
 	}
+
 	static public function Pricing_Type($lang) {
 		if ($lang == "Fr") {
 			return "La réservation se fait";
@@ -1454,6 +1463,23 @@ class SyTranslator {
 		}
 		return "only package";
 	}
+
+
+	static public function Authorisations_for($lang){
+		if ($lang == "Fr"){
+			return "Autorisations pour ";
+		}
+		return "Authorisations for";
+	}
+	
+	static public function Modifications_have_been_saved($lang){
+		if ($lang == "Fr") {
+			return "Les modifications ont bien été enregistrées";
+		}
+		return "Modifications have been saved";
+	}
+	
+
 	static public function Begining_period($lang) {
 		if ($lang == "Fr") {
 			return "Début période";
@@ -1556,5 +1582,39 @@ class SyTranslator {
 		}
 	}
 	
+	public static function Booking_number_year_category($lang) {
+		if ($lang == "Fr") {
+			return "Nombre de réservations par catégorie de ressources dans la période";
+		}
+		return "Number of reservations for each resource category during the given period";
+	}
+	
+	public static function Booking_time_year_category($lang) {
+		if ($lang == "Fr") {
+			return "Nombre d'heures de réservation par catégories de ressources dans la période";
+		}
+		return "Time (in hours) of reservations for each resource category during the given period";
+	}
+	
+	public static function Instructor($lang){
+		if ($lang == "Fr") {
+			return "Formateur";
+		}
+		return "Instructor";
+	}
+	
+	public static function Instructor_status($lang){
+		if ($lang == "Fr") {
+			return "Statut du formateur";
+		}
+		return "Instructor status";
+	}
+	
+	public static function Statistics_booking_users($lang){
+		if ($lang == "Fr") {
+			return "Utilisateurs ayant réservé";
+		}
+		return "Statistics booking users";
+	}
 
 }

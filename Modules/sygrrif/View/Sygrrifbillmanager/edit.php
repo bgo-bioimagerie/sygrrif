@@ -81,11 +81,7 @@
 				</select>
 			</div>
 		</div>
-	
-		<div class="col-xs-2 col-xs-offset-4" id="button-div">
-		<button type="button" onclick="location.href='sygrrifbillmanager/removeentry/<?php echo $this->clean($billInfo["id"])?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
-		</div>        			
-				
+			
 		<div class="col-xs-3 col-xs-offset-3" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
 				<button type="button" onclick="location.href='sygrrifbillmanager'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>

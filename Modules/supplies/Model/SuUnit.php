@@ -3,7 +3,7 @@
 require_once 'Framework/Model.php';
 
 /**
- * Class defining the Unit model for consomable module
+ * Class defining the Unit model
  *
  * @author Sylvain Prigent
  */
@@ -18,13 +18,23 @@ class SuUnit extends Model {
 			
 		$sql = "CREATE TABLE IF NOT EXISTS `su_units` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(30) NOT NULL DEFAULT '',
-		`address` varchar(150) NOT NULL DEFAULT '',
+		`name` varchar(150) NOT NULL DEFAULT '',
+		`address` varchar(350) NOT NULL DEFAULT '',
+		`id_belonging` int(11) NOT NULL,		
 		PRIMARY KEY (`id`)
 		);";
 		
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		
+		
+		// add columns if no exists
+		$sql = "SHOW COLUMNS FROM `su_units` LIKE 'id_belonging'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `su_units` ADD `id_belonging` int(11) NOT NULL DEFAULT 1";
+			$pdo = $this->runRequest($sql);
+		}
 	}
 	
 	/**
@@ -38,6 +48,7 @@ class SuUnit extends Model {
 			$sql = "INSERT INTO su_units (name, address) VALUES(?,?)";
 			$this->runRequest($sql, array("--", "--"));
 		}
+		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
 	}
 	
 	/**
@@ -48,7 +59,12 @@ class SuUnit extends Model {
 	 */
 	public function getUnits($sortentry = 'id'){
 		 
-		$sql = "select * from su_units order by " . $sortentry . " ASC;";
+		$sql = "SELECT units.* ,
+    				   belongings.name AS belonging
+    			FROM su_units AS units
+    			INNER JOIN su_belongings AS belongings ON units.id_belonging = belongings.id
+    			ORDER BY " . $sortentry . " ASC;";
+		
 		$user = $this->runRequest($sql);
 		return $user->fetchAll();
 	}
@@ -83,11 +99,11 @@ class SuUnit extends Model {
 	 * @param string $name name of the unit
 	 * @param string $address address of the unit
 	 */
-	public function addUnit($name, $address){
+	public function addUnit($name, $address, $id_belonging){
 		
-		$sql = "insert into su_units(name, address)"
-				. " values(?, ?)";
-		$user = $this->runRequest($sql, array($name, $address));		
+		$sql = "insert into su_units(name, address, id_belonging)"
+				. " values(?, ?, ?)";
+		$user = $this->runRequest($sql, array($name, $address, $id_belonging));		
 	}
 	
 	/**
@@ -97,25 +113,37 @@ class SuUnit extends Model {
 	 * @param string $name New name of the unit
 	 * @param string $address New Address of the unit
 	 */
-	public function editUnit($id, $name, $address){
+	public function editUnit($id, $name, $address, $id_belonging){
 		
-		$sql = "update su_units set name=?, address=? where id=?";
-		$unit = $this->runRequest($sql, array("".$name."", "".$address."", $id));
+		$sql = "update su_units set name=?, address=?, id_belonging=? where id=?";
+		$unit = $this->runRequest($sql, array($name, $address, $id_belonging, $id));
 	}
 	
-	
-	public function isUnit($name){
-		$sql = "select * from su_units where name=?";
-		$unit = $this->runRequest($sql, array($name));
+	/**
+	 * Check if a unit exists
+	 * @param string $id Unit id
+	 * @return boolean
+	 */
+	public function isUnit($id){
+		$sql = "select * from su_units where id=?";
+		$unit = $this->runRequest($sql, array($id));
 		if ($unit->rowCount() == 1)
 			return true;
 		else
 			return false;
 	}
 	
-	public function setUnit($name, $address){
-		if (!$this->isUnit($name)){
-			$this->addUnit($name, $address);
+	/**
+	 * Set a unit (add if not exists)
+	 * @param string $name Unit name
+	 * @param string $address Unit adress
+	 */
+	public function set($id, $name, $address, $id_belonging){
+		if (!$this->isUnit($id)){
+			$this->addUnit($name, $address, $id_belonging);
+		}
+		else{
+			$this->editUnit($id, $name, $address, $id_belonging);
 		}
 	}
 	
@@ -132,8 +160,26 @@ class SuUnit extends Model {
 		if ($unit->rowCount() == 1)
     		return $unit->fetch();  // get the first line of the result
     	else
-    		throw new Exception("Cannot find the unit using the given id = " . $id . "</br>"); 
+    		throw new Exception("Cannot find the unit using the given id"); 
 	}
+	
+	/**
+	 * get the informations of a unit
+	 *
+	 * @param int $id Id of the unit to query
+	 * @throws Exception id the unit is not found
+	 * @return mixed array
+	 */
+	public function getInfo($id){
+		$sql = "select * from su_units where id=?";
+		$unit = $this->runRequest($sql, array($id));
+		if ($unit->rowCount() == 1)
+			return $unit->fetch();  // get the first line of the result
+		else
+			throw new Exception("Cannot find the unit using the given id");
+	}
+	
+	
 	
 	/**
 	 * get the name of a unit
@@ -144,6 +190,18 @@ class SuUnit extends Model {
 	 */
 	public function getUnitName($id){
 		$sql = "select name from su_units where id=?";
+		$unit = $this->runRequest($sql, array($id));
+		if ($unit->rowCount() == 1){
+			$tmp = $unit->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
+			return "";
+		}
+	}
+	
+	public function getBelonging($id){
+		$sql = "select id_belonging from su_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
 		if ($unit->rowCount() == 1){
 			$tmp = $unit->fetch();
@@ -169,8 +227,17 @@ class SuUnit extends Model {
 			return $tmp[0];  // get the first line of the result
 		}
 		else{
-			throw new Exception("Cannot find the unit using the given name");
+			throw new Exception("Cannot find the unit using the given name:" . $name );
 		}
+	}
+	
+	/**
+	 * Delete a unit
+	 * @param number $id Unit ID
+	 */
+	public function delete($id){
+		$sql="DELETE FROM su_units WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
 	}
 
 }

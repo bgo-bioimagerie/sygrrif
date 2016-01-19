@@ -1,8 +1,10 @@
 <?php
+
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/User.php';
-require_once 'Modules/core/Model/Project.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreProject.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
 require_once 'Modules/core/Model/UserSettings.php';
 require_once 'Modules/sygrrif/Controller/ControllerBooking.php';
 require_once 'Modules/sygrrif/Model/SyResourceCalendar.php';
@@ -115,12 +117,14 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// fill the pricing table with the prices for this resource
 		$modelResourcesPricing = new SyResourcePricing();
+		$modelBelonging = new CoreBelonging();
 		for ($i = 0 ; $i < count($pricingTable) ; ++$i){
 			$pid = $pricingTable[$i]['id'];
 			$inter = $modelResourcesPricing->getPrice($id, $pid);
 			$pricingTable[$i]['val_day'] = $inter['price_day'];
 			$pricingTable[$i]['val_night'] = $inter['price_night'];
 			$pricingTable[$i]['val_we'] = $inter['price_we'];
+			$pricingTable[$i]['name'] = $modelBelonging->getName($pricingTable[$i]["id"]);
 		}
 		
 		// resources categories
@@ -238,7 +242,7 @@ class ControllerCalendar extends ControllerBooking {
 		$pricingTable = $modelPricing->getPrices();
 		foreach ($pricingTable as $pricing){
 			$pid = $pricing['id'];
-			$pname = $pricing['tarif_name'];
+			//$pname = $pricing['tarif_name'];
 			$punique = $pricing['tarif_unique'];
 			$pnight = $pricing['tarif_night'];
 			$pwe = $pricing['tarif_we'];
@@ -256,6 +260,11 @@ class ControllerCalendar extends ControllerBooking {
 		}
 		
 		// package
+		$packageID = $this->request->getParameterNoException("pid");
+		$packageName = $this->request->getParameterNoException("pname");
+		$packageDuration = $this->request->getParameterNoException("pduration");
+		
+	// package
 		$packageID = $this->request->getParameterNoException("pid");
 		$packageName = $this->request->getParameterNoException("pname");
 		$packageDuration = $this->request->getParameterNoException("pduration");
@@ -279,8 +288,7 @@ class ControllerCalendar extends ControllerBooking {
 			$count++;
 		}
 		
-		//return;
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**
@@ -301,7 +309,7 @@ class ControllerCalendar extends ControllerBooking {
 		$modelResource = new SyResource();
 		$modelResource->delete($id_resource);
 		
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**
@@ -505,7 +513,7 @@ class ControllerCalendar extends ControllerBooking {
 			$modelResourcePricing->setPricing($id_resource, $pid, $priceDay, $price_night, $price_we);
 		}
 	
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**
@@ -792,7 +800,7 @@ class ControllerCalendar extends ControllerBooking {
 		}
 		
 		// view
-		$this->redirect("sygrrif", "resources");
+		$this->redirect("sygrrifareasresources", "resources");
 	}
 	
 	/**
@@ -1503,7 +1511,7 @@ class ControllerCalendar extends ControllerBooking {
 		$resourceBase = $modelRes->resource($id_resource);
 		
 		// get users list
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$users = $modelUser->getActiveUsers("Name");
 		
 		$curentuserid = $this->request->getSession()->getAttribut("id_user");
@@ -1537,7 +1545,7 @@ class ControllerCalendar extends ControllerBooking {
 		$status = $ModulesManagerModel->getDataMenusUserType("projects");
 		$projectsList = "";
 		if ($status > 0){
-			$modelProjects = new Project();
+			$modelProjects = new CoreProject();
 			$projectsList = $modelProjects->openedProjectsIDName(); 
 		}
 		
@@ -1593,6 +1601,7 @@ class ControllerCalendar extends ControllerBooking {
 			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
 			
 
+			$responsiblesList = $modelUser->getUserResponsibles($curentuser["id"]);
 			
 			// view
 			$this->generateView ( array (
@@ -1611,7 +1620,8 @@ class ControllerCalendar extends ControllerBooking {
 					'showSeries' => $showSeries,
 					'calSups' => $calSups,
 					'calSupsData' => $calSupsData,
-					'packages' => $packages
+					'packages' => $packages,
+					'responsiblesList' => $responsiblesList
 			), "editreservation" );
 		}
 		else{ // edit resa
@@ -1647,6 +1657,8 @@ class ControllerCalendar extends ControllerBooking {
 			// get sup data 
 			$calSupsData = $modelCalSup->getSupData($reservation_id);
 			
+			$responsiblesList = $modelUser->getUserResponsibles($reservationInfo["recipient_id"]);
+			
 			$this->generateView ( array (
 					'navBar' => $navBar,
 					'menuData' => $menuData,
@@ -1663,7 +1675,8 @@ class ControllerCalendar extends ControllerBooking {
 					'showSeries' => $showSeries,
 					'calSups' => $calSups,
 					'calSupsData' => $calSupsData,
-					'packages' => $packages
+					'packages' => $packages,
+					'responsiblesList' =>  $responsiblesList
 			), "editreservation");
 		}
 	}
@@ -1718,6 +1731,7 @@ class ControllerCalendar extends ControllerBooking {
 		$is_unitary = $this->request->getParameterNoException('is_unitary');
 		$is_timeandunitary = $this->request->getParameterNoException('is_timeandunitary');
 		$repeat_id = $this->request->getParameterNoException('repeat_id');
+		$responsible_id = $this->request->getParameterNoException('responsible_id');
 		
 		$quantity = 0;
 		if ($is_unitary != ""){
@@ -1814,6 +1828,12 @@ class ControllerCalendar extends ControllerBooking {
 		// get the series info
 		$series_type_id = $this->request->getParameterNoException("series_type_id");
 		
+		// get the responsible:
+		if ( $responsible_id == "" ){
+			$modelUser = new CoreUser();
+			$respList = $modelUser->getUserResponsibles($recipient_id);
+			$responsible_id = $respList[0]["id"]; 
+		}
 		
 		if ($series_type_id == 0 || $series_type_id == ""){
 			
@@ -1830,14 +1850,19 @@ class ControllerCalendar extends ControllerBooking {
 				$reservation_id = $modelCalEntry->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 										 $last_update, $color_type_id, $short_description, $full_description, $quantity, $package);
 				
+					$modelCalEntry->setEntryResponsible($reservation_id, $responsible_id);
 					$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id, 
 					                       $short_description, $full_description, $quantity, "add");
+					
+					
+					
+					
 			}
 			else{
 				$modelCalEntry->updateEntry($reservation_id, $start_time, $end_time, $resource_id, $booked_by_id, 
 						                   $recipient_id, $last_update, $color_type_id, $short_description, 
 						                   $full_description, $quantity, $package);
-				
+				$modelCalEntry->setEntryResponsible($reservation_id, $responsible_id);
 				$this->sendEditREservationEmail($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 					$short_description, $full_description, $quantity, "edit");
 				
@@ -1955,7 +1980,7 @@ class ControllerCalendar extends ControllerBooking {
 		$modelConfig = new CoreConfig();
 		if ( $modelConfig->getParam("SyEditBookingMailing") >= 2 && $booked_by_id != $recipient_id){
 		
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$fromEmail = $modelUser->getUserEmail($booked_by_id);
 			$toEmail = $modelUser->getUserEmail($recipient_id);
 			

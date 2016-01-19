@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Database" ?>
+<?php $this->title = "Pltaform-Manager" ?>
 
 <?php echo $navBar ?>
 
@@ -188,6 +188,95 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
+      
+      <!-- Booking options -->
+      <div>
+		  <div class="page-header">
+			<h2>
+				<?php echo CoreTranslator::User_list_options($lang)?> <br> <small></small>
+			</h2>
+		  </div>
+
+		  <form role="form" class="form-horizontal" action="coreconfig"
+		  method="post">
+		  
+		    <div class="col-xs-10">
+			  <input class="form-control" type="hidden" name="setuserlistoptionsquery" value="yes"
+			 	/>
+		    </div>
+		    
+		    <!-- date_convention -->
+		    <?php 
+			$visible = $this->clean($userListSettings['visible_date_convention']);			
+			?>
+		    <div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Convention:</label></div>
+		    <div class="col-xs-7"><select class="form-control" name="visible_date_convention">
+				<OPTION value="1" <?php if ($visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($visible == 0){echo "selected=\"selected\"";}?>> Hidden </OPTION>
+			</select>
+			</div>
+			</div>
+			
+			<!-- date_created -->
+		    <?php 
+			$visible = $this->clean($userListSettings['visible_date_created']);			
+			?>
+		    <div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Date created:</label></div>
+		    <div class="col-xs-7"><select class="form-control" name="visible_date_created">
+				<OPTION value="1" <?php if ($visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($visible == 0){echo "selected=\"selected\"";}?>> Hidden </OPTION>
+			</select>
+			</div>
+			</div>
+			
+			<!-- date_last_login -->
+		    <?php 
+			$visible = $this->clean($userListSettings['visible_date_last_login']);			
+			?>
+		    <div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Date last login:</label></div>
+		    <div class="col-xs-7"><select class="form-control" name="visible_date_last_login">
+				<OPTION value="1" <?php if ($visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($visible == 0){echo "selected=\"selected\"";}?>> Hidden </OPTION>
+			</select>
+			</div>
+			</div>
+			
+			<!-- date_end_contract -->
+		    <?php 
+			$visible = $this->clean($userListSettings['visible_date_end_contract']);			
+			?>
+		    <div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Date end contract:</label></div>
+		    <div class="col-xs-7"><select class="form-control" name="visible_date_end_contract">
+				<OPTION value="1" <?php if ($visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($visible == 0){echo "selected=\"selected\"";}?>> Hidden </OPTION>
+			</select>
+			</div>
+			</div>
+			
+			<!-- source -->
+		    <?php 
+			$visible = $this->clean($userListSettings['visible_source']);			
+			?>
+		    <div class="col-xs-12">
+		    <div class="col-xs-3"><label class="control-label">Source:</label></div>
+		    <div class="col-xs-7"><select class="form-control" name="visible_source">
+				<OPTION value="1" <?php if ($visible == 1){echo "selected=\"selected\"";}?>> Visible </OPTION>
+				<OPTION value="0" <?php if ($visible == 0){echo "selected=\"selected\"";}?>> Hidden </OPTION>
+			</select>
+			</div>
+			</div>
+			
+			
+ 			
+ 			  <div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="save" />
+		    </div>
+		  </form>
+      
        <!-- menu color -->
       <div>
 		  <div class="page-header">
@@ -207,14 +296,14 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::color($lang) ?> #</label>
 			<div class="col-xs-6">
-				<input class="form-control" id="coremenucolor" type="text" name="coremenucolor" value="<?php echo  $this->clean($coremenucolor) ?>"
+				<input class="form-control" id="coremenucolor" type="color" name="coremenucolor" value="<?php echo  $this->clean($coremenucolor) ?>"
 				/>
 			</div>
 		</div>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::text_color($lang) ?> #</label>
 			<div class="col-xs-6">
-				<input class="form-control" id="coremenucolor" type="text" name="coremenucolortxt" value="<?php echo  $this->clean($coremenucolortxt) ?>"
+				<input class="form-control" id="coremenucolor" type="color" name="coremenucolortxt" value="<?php echo  $this->clean($coremenucolortxt) ?>"
 				/>
 			</div>
 		</div>

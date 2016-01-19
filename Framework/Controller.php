@@ -81,6 +81,7 @@ abstract class Controller
     {
         $rootWeb = Configuration::get("rootWeb", "/");
         // Redirect to the URL /root_site/controller/action
+        header_remove();
         header("Location:" . $rootWeb . $controller . "/" . $action);
     }
 

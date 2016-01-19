@@ -2,6 +2,7 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 
 /**
  * Class defining the GRR area model
@@ -32,7 +33,8 @@ class SyCalendarEntry extends Model {
 		`quantity` varchar(30) NOT NULL,
 		`repeat_id` int(11) NOT NULL DEFAULT 0,	
 		`supplementary` text NOT NULL,	
-		`package_id` int(11) NOT NULL DEFAULT 0,									
+		`package_id` int(11) NOT NULL DEFAULT 0,
+		`responsible_id` int(11) NOT NULL DEFAULT 0,											
 		PRIMARY KEY (`id`)
 		);";
 
@@ -44,6 +46,15 @@ class SyCalendarEntry extends Model {
 		$isColumn = $pdo->fetch();
 		if ( $isColumn == false){
 			$sql = "ALTER TABLE `sy_calendar_entry` ADD `package_id` int(11) NOT NULL DEFAULT 0";
+			$pdo = $this->runRequest($sql);
+		}
+		
+		// add columns if no exists
+		$sql = "SHOW COLUMNS FROM `sy_calendar_entry` LIKE 'responsible_id'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `sy_calendar_entry` ADD `responsible_id` int(11) NOT NULL DEFAULT 0";
 			$pdo = $this->runRequest($sql);
 		}
 		
@@ -74,6 +85,18 @@ class SyCalendarEntry extends Model {
 		return $this->getDatabase()->lastInsertId();
 	}
 	
+	public function getAllEntries(){
+		$sql = "select * from sy_calendar_entry";
+		$req = $this->runRequest($sql);
+		return $req->fetchAll();
+	}
+	
+	public function getZeroRespEntries(){
+		$sql = "select * from sy_calendar_entry WHERE responsible_id=0";
+		$req = $this->runRequest($sql);
+		return $req->fetchAll();
+	}
+	
 	/**
 	 * Add a calendar entry if not exists  
 	 * @param unknown $id
@@ -92,7 +115,7 @@ class SyCalendarEntry extends Model {
 							$last_update, $color_type_id, $short_description, $full_description, $quantity = 0, $package = 0){
 		
 		if(!$this->isEntry($id)){
-			$this->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+			return $this->addEntry($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 							$last_update, $color_type_id, $short_description, $full_description, $quantity, $package);
 		}
 	}
@@ -142,6 +165,11 @@ class SyCalendarEntry extends Model {
 							$last_update, $color_type_id, $short_description, $full_description, $quantity, $package, $id));
 	}
 	
+	public function setEntryResponsible($id, $responsibleId){
+		$sql = "update sy_calendar_entry set responsible_id=? where id=?";
+		$this->runRequest($sql, array($responsibleId, $id));
+	}
+	
 	/**
 	 * Get all the entries for a given day
 	 * @param unknown $curentDate
@@ -186,7 +214,7 @@ class SyCalendarEntry extends Model {
 		$data = $req->fetchAll();	// Liste des bénéficiaire dans la période séléctionée
 		
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelColor = new SyColorCode();
 		for ($i = 0 ; $i < count($data) ; $i++){
 			//echo "color id = " . $data[$i]["color_type_id"] . "</br>";
@@ -305,18 +333,24 @@ class SyCalendarEntry extends Model {
 		//echo "endate = " . $enddate . "<br />";
 		
 		//echo "resp_id = " . $resp_id . "<br/>";
-		$q = array('start'=>$startdate, 'end'=>$enddate);
+		$q = array('start'=>$startdate, 'end'=>$enddate, 'resp'=>$resp_id);
 		$sql = 'SELECT DISTINCT recipient_id, id FROM sy_calendar_entry WHERE
-				(start_time >=:start AND start_time <= :end)';
+				(start_time >=:start AND start_time <= :end) AND (responsible_id = :resp OR responsible_id = 0)';
 		$req = $this->runRequest($sql, $q);
 		$recs = $req->fetchAll();
 		
 		//print_r($recs);
 		
+		$modelResp = new CoreResponsible();
 		foreach ($recs as $rec){
 			//echo "reservation id = " . $rec["id"] . "<br />";
 			//echo "reservation recipient id = " . $rec["recipient_id"] . "<br />";
 			//echo "resp id = " . $resp_id . "<br />";
+			
+			if ($modelResp->isUserRespJoin($rec["recipient_id"], $resp_id) || $rec["recipient_id"] == $resp_id){
+				return true;
+			}
+			/*
 			$sql = "select id_responsible from core_users where id=".$rec["recipient_id"];
 			$req = $this->runRequest($sql);
 			$resp_id_req = $req->fetch();
@@ -325,6 +359,7 @@ class SyCalendarEntry extends Model {
 			if ($resp_id_req == $resp_id || $rec["recipient_id"]== $resp_id){
 				return true;
 			}
+			*/
 		}
 		return false;
 	}

@@ -2,13 +2,15 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
-require_once 'Modules/sprojects/Model/SpUnitPricing.php';
+
 require_once 'Modules/sprojects/Model/SpBill.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
+
 require_once 'Modules/core/Model/CoreTranslator.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
@@ -36,15 +38,20 @@ class SpBillGenerator extends Model {
 		// get the pricing
 		$modelUser = "";
 		$modelUnit = "";
+
+		$modelBelonging = "";
+
 		$modelConfig = new CoreConfig();
 		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
 		if ($sprojectsusersdatabase == "local"){
 			$modelUser = new SpUser();
 			$modelUnit = new SpUnit();
+			$modelBelonging = new SpBelonging();
 		}
 		else{
-			$modelUser = new User();
-			$modelUnit = new Unit();
+			$modelUser = new CoreUser();
+			$modelUnit = new CoreUnit();
+			$modelBelonging = new CoreBelonging();
 		}
 		
 		// get the user unit:
@@ -53,8 +60,8 @@ class SpBillGenerator extends Model {
 		//echo "id_unit id = " . $id_unit . "<br/>";
 		
 		// get the pricing
-		$modelPricing = new SpUnitPricing();
-		$LABpricingid = $modelPricing->getPricing($id_unit);
+
+		$LABpricingid = $modelUnit->getBelonging($id_unit);
 		//echo "lab pricing id = " . $LABpricingid . "<br/>";
 		$unitName = $modelUnit->getUnitName($id_unit);
 		$responsibleFullName = $modelUser->getUserFUllName($id_resp);
@@ -62,8 +69,7 @@ class SpBillGenerator extends Model {
 		
 		// get the lab info
 		//echo "get the lab info <br/>";
-		$unitPricingModel = new SpUnitPricing();
-		$LABpricingid = $unitPricingModel->getPricing($id_unit);
+
 		//echo "get unit: " . $id_unit . "<br/>";
 		$unitInfo = $modelUnit->getUnit($id_unit);
 		$unitAddress = $unitInfo[2];

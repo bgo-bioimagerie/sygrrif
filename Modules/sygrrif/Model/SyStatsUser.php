@@ -36,7 +36,7 @@ class SyStatsUser extends Model {
 		
 		
 		$modelAuthorisation = new SyAuthorization();
-		$res = $modelAuthorisation->getActiveAuthorizationForResourceCategory($resource_id);
+		$res = $modelAuthorisation->getActiveAuthorizationSummaryForResourceCategory($resource_id, "");
 		
 		//$q = array('equipement'=>$equipement);
 		//$sql = 'SELECT DISTINCT nf, laboratoire, date_unix, visa FROM autorisation WHERE machine=:equipement ORDER by nf';
@@ -201,7 +201,7 @@ class SyStatsUser extends Model {
 			$colonne='A';
 			$sheet->getRowDimension($ligne)->setRowHeight(13);
 		
-			$sheet->SetCellValue($colonne.$ligne,$r["userName"] . " " . $r["userFirstname"]); // user name
+			$sheet->SetCellValue($colonne.$ligne,$r["userName"]); // user name
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
@@ -331,7 +331,7 @@ class SyStatsUser extends Model {
 	 * Statistics of the users allowed to book a resource
 	 * @param number $resource_id
 	 */
-	public function authorizedUsers($resource_id){
+	public function authorizedUsers($resource_id, $lang){
 		
 		include_once ("externals/PHPExcel/Classes/PHPExcel.php");
 		include_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
@@ -357,8 +357,8 @@ class SyStatsUser extends Model {
 		
 		
 		$modelAuthorisation = new SyAuthorization();
-		$res = $modelAuthorisation->getActiveAuthorizationForResourceCategory($resource_id);
-		
+		$res = $modelAuthorisation->getActiveAuthorizationSummaryForResourceCategory($resource_id, $lang);
+
 		//$q = array('equipement'=>$equipement);
 		//$sql = 'SELECT DISTINCT nf, laboratoire, date_unix, visa FROM autorisation WHERE machine=:equipement ORDER by nf';
 		//$req = $cnx->prepare($sql);
@@ -527,7 +527,7 @@ class SyStatsUser extends Model {
 			$colonne='A';
 			$sheet->getRowDimension($ligne)->setRowHeight(13);
 		
-			$sheet->SetCellValue($colonne.$ligne,$r["userName"] . " " . $r["userFirstname"]); // user name
+			$sheet->SetCellValue($colonne.$ligne,$r["userName"]); // user name
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);
@@ -664,4 +664,32 @@ class SyStatsUser extends Model {
 		$writer->save('php://output');
 	}
 	
+	public function bookingUsers($startdate, $enddate){
+	
+		// convert start date to unix date
+		$tabDate = explode("-",$startdate);
+		$date_debut = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
+		$searchDate_start= mktime(0,0,0,$tabDate[1],$tabDate[2],$tabDate[0]);
+		
+		// convert end date to unix date
+		$tabDate = explode("-",$enddate);
+		$date_fin = $tabDate[2].'/'.$tabDate[1].'/'.$tabDate[0];
+		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
+		
+		//  get all the booking users
+		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
+		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
+				(start_time >=:start AND start_time <= :end)';
+		$req = $this->runRequest($sql, $q);
+		$recs = $req->fetchAll();
+		
+		// get the users informations (name, firstname, unit, email)
+		$modelUser = new CoreUser();
+		for($i = 0 ; $i < count($recs) ; $i++){
+			$recs[$i]['name'] = $modelUser->getUserFUllName($recs[$i]['recipient_id']);
+			$recs[$i]['email'] = $modelUser->getUserEmail($recs[$i]['recipient_id']);
+		}
+	
+		return $recs;
+	}
 }

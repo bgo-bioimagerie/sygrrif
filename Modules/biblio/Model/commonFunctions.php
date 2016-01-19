@@ -2,6 +2,9 @@
 
 function monthShortNames($monthInt){
 	
+	if($monthInt == 0){
+		return "";
+	}
 	$month[1] = "Jan.";
 	$month[2] = "Feb.";
 	$month[3] = "Mar.";

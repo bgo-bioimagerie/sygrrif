@@ -341,15 +341,6 @@
 				</select>
 			</div>
 		</div>	
-		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Pricing_Type($lang)?></label>
-			<div class="col-xs-8">
-				<select class="form-control" name="use_package">
-						<OPTION value="1" <?php if( $use_package == 1){echo "selected=\"selected\"";} ?> > <?php echo SyTranslator::Use_time_and_package($lang)  ?> </OPTION>
-						<OPTION value="2" <?php if( $use_package == 2){echo "selected=\"selected\"";} ?> > <?php echo SyTranslator::Use_only_package($lang)  ?> </OPTION>
-				</select>
-			</div>
-		</div>	
 		
 		<div class="page-header">
 			<h3>
@@ -363,7 +354,7 @@
 		foreach ($pricingTable as $pricing){
 			
 			$pid = $this->clean($pricing['id']);
-			$pname = $this->clean($pricing['tarif_name']);
+			$pname = $this->clean($pricing['name']);
 			$punique = $this->clean($pricing['tarif_unique']);
 			$val_day = 0;
 			if (isset($pricing['val_day'])){
@@ -447,7 +438,7 @@
 						
 						<?php foreach ($pricingTable as $pricing){ 
 							?>
-							<td style="min-width:10em;">tarif <br/><?php echo  $pricing["tarif_name"] ?></td>
+							<td style="min-width:10em;">tarif <br/><?php echo  $pricing["name"] ?></td>
 							<?php 
 						}
 						?>
@@ -514,7 +505,7 @@
 		        <?php if ($this->clean($id) != ""){ ?>
 		        	<button type="button" onclick="location.href='<?php echo "calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
 				<?php } ?>
-				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
 		</div>
       </form>

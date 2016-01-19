@@ -14,7 +14,10 @@ class SuBill extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `su_bills` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 	    `number` varchar(50) NOT NULL,
-		`date_generated` DATE NOT NULL,	
+		`id_unit` int(11) NOT NULL,
+		`id_resp` int(11) NOT NULL,
+		`date_generated` DATE NOT NULL,
+		`total_ht` varchar(50) NOT NULL,		
 		`date_paid` DATE NOT NULL,			
 		`is_paid` int(1) NOT NULL,		
 		PRIMARY KEY (`id`)
@@ -29,11 +32,11 @@ class SuBill extends Model {
 	 *
 	 * @param string $name name of the unit
 	 */
-	public function addBill($number, $date_generated, $date_paid="", $is_paid=0){
+	public function addBill($number, $id_unit, $id_resp, $date_generated, $total_ht, $date_paid="", $is_paid=0){
 	
-		$sql = "insert into su_bills(number, date_generated, date_paid, is_paid)"
-				. " values(?, ?, ?, ?)";
-		$this->runRequest($sql, array($number, $date_generated, $date_paid, $is_paid));
+		$sql = "insert into su_bills(number, id_unit, id_resp, date_generated, total_ht, date_paid, is_paid)"
+				. " values(?, ?, ?, ?, ?, ?, ?)";
+		$this->runRequest($sql, array($number, $id_unit, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -78,14 +81,19 @@ class SuBill extends Model {
 	 * @param int $id Id of the item to update
 	 * @param string $name New name of the item
 	 */
-	public function editBills($id, $number, $date_generated, $date_paid, $is_paid){
+	public function editBills($id, $number, $id_unit, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid){
 	
-		$sql = "update su_bills set number=?, date_generated=?, date_paid=?, is_paid=?  where id=?";
-		$unit = $this->runRequest($sql, array($number, $date_generated, $date_paid, $is_paid, $id));
+		echo "edit bill <br/>";
+		
+		$sql = "update su_bills set number=?, id_unit=?, id_resp=?, date_generated=?, total_ht=?, date_paid=?, is_paid=?  where id=?";
+		$unit = $this->runRequest($sql, array($number, $id_unit, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid, $id));
+		
+		echo "edit bill done <br/>";
 	}
 	
 	public function removeEntry($id){
 		$sql="DELETE FROM su_bills WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
+	
 }

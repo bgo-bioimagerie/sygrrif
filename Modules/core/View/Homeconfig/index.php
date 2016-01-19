@@ -39,7 +39,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 	-->
 		<div class="form-group">
-          <label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::logo($lang) ?></label>
+          <label class="control-label col-xs-2"><?php echo  CoreTranslator::logo($lang) ?></label>
 			<div class="col-xs-8">
             <input type="file" name="logo" id="logo">
         </div>

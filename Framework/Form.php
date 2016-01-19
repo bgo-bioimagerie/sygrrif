@@ -14,7 +14,7 @@ class Form
 	/** form info */
 	private $title;
 	private $id;
-	
+	 
 	private $parseRequest;
 	private $errorMessage;
 	
@@ -43,6 +43,9 @@ class Form
     private $labelWidth;
     private $inputWidth;
 
+    /** for download feild */
+    private $useDownload;
+    
     /**
      * Constructor
      * @param Request $request Request that contains the post data
@@ -63,6 +66,8 @@ class Form
     	if ($formID == $this->id){
     		$this->parseRequest = true;
     	}
+    	
+    	$this->useDownload = false;
     }
     
     /**
@@ -125,10 +130,10 @@ class Form
      * @param string $label Input label 
      * @param string $value Input default value
      */
-    public function addHidden($name, $label, $value = ""){
+    public function addHidden($name, $value = ""){
     	$this->types[] = "hidden";
     	$this->names[] = $name;
-    	$this->labels[] = $label;
+    	$this->labels[] = "";
 		$this->setValue($name, $value);
     	$this->isMandatory[] = false;
     	$this->choices[] = array();
@@ -136,6 +141,16 @@ class Form
     	$this->validated[] = true;
     }
     
+    public function addDownload($name, $label){
+    	$this->types[] = "download";
+    	$this->names[] = $name;
+    	$this->labels[] = $label;
+    	$this->isMandatory[] = false;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+    	$this->useDownload = true;
+    }
     /**
      * Add text input to the form
      * @param string $name Input name
@@ -156,6 +171,24 @@ class Form
     
     public function addDate($name, $label, $isMandatory = false, $value = ""){
     	$this->types[] = "date";
+    	$this->names[] = $name;
+    	$this->labels[] = $label;
+    	$this->setValue($name, $value);
+    	$this->isMandatory[] = $isMandatory;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+    }
+    
+    /**
+     * Add color input to the form
+     * @param string $name Input name
+     * @param string $label Input label
+     * @param string $isMandatory True if mandatory input
+     * @param string $value Input default value
+     */
+    public function addColor($name, $label, $isMandatory = false, $value = ""){
+    	$this->types[] = "color";
     	$this->names[] = $name;
     	$this->labels[] = $label;
     	$this->setValue($name, $value);
@@ -257,7 +290,12 @@ class Form
     	}
     	
     	// form header
-    	$html .= "<form role=\"form\" class=\"form-horizontal\" action=\"".$this->validationURL."\" method=\"post\">";
+    	if (!$this->useDownload){
+    		$html .= "<form role=\"form\" class=\"form-horizontal\" action=\"".$this->validationURL."\" method=\"post\">";
+    	}
+    	else{
+    		$html .= "<form role=\"form\" class=\"form-horizontal\" action=\"".$this->validationURL."\" method=\"post\" enctype=\"multipart/form-data\">";
+    	}
     	
     	// form id
     	$html .= "<input class=\"form-control\" type=\"hidden\" name=\"formid\" value=\"".$this->id."\" />";
@@ -274,12 +312,38 @@ class Form
     			$validated = "alert alert-danger";
     		}
     		
+    		if($this->types[$i] == "hidden"){
+    			$html .= "<input class=\"form-control\" type=\"hidden\" name=\"".$this->names[$i]."\"";
+    			$html .= "value=\"".$this->values[$i]."\"" . $required;
+    			$html .= "/>";
+
+    		}
     		if($this->types[$i] == "text"){
     			$html .= "<div class=\"form-group".$validated."\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
     			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
     			$html .=				"<input class=\"form-control\" type=\"text\" name=\"".$this->names[$i]."\"";
     			$html .=				       "value=\"".$this->values[$i]."\"" . $required;  
+    			$html .=				"/>";
+    			$html .=			"</div>";
+    			$html .= "</div>";
+    		}
+    		if($this->types[$i] == "date"){
+    			$html .= "<div class=\"form-group".$validated."\">";
+    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
+    			$html .=				"<input class=\"form-control\" type=\"date\" name=\"".$this->names[$i]."\"";
+    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
+    			$html .=				"/>";
+    			$html .=			"</div>";
+    			$html .= "</div>";
+    		}
+    		if($this->types[$i] == "color"){
+    			$html .= "<div class=\"form-group".$validated."\">";
+    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
+    			$html .=				"<input class=\"form-control\" type=\"color\" name=\"".$this->names[$i]."\"";
+    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
     			$html .=				"/>";
     			$html .=			"</div>";
     			$html .= "</div>";
@@ -317,11 +381,19 @@ class Form
     		if($this->types[$i] == "textarea"){
     			$html .= "<div class=\"form-group\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
-    			$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";
+    			$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";    			 
     			$html .= 		"<textarea class=\"form-control\" name=\"".$this->names[$i]."\">".$this->values[$i]."</textarea>";
     			$html .=	"</div>";
     			$html .= "</div>";
     		}
+    	    if($this->types[$i] == "download"){
+    	    	$html .= "<div class=\"form-group\">";
+    	    	$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    	    	$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";
+    	    	$html .= 		" <input type=\"file\" name=\"".$this->names[$i]."\" id=\"".$this->names[$i]."\"> ";
+    	    	$html .=	"</div>";
+    			$html .= "</div>";
+	  		}
     		if($this->types[$i] == "select"){
     			$html .= "<div class=\"form-group\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";

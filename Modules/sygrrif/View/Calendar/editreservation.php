@@ -22,7 +22,7 @@ if (!isset($reservationInfo) ){
 <?php 
 }
 else{
-	if ( $reservationInfo["package_id"] == 0 && $resourceInfo["use_package"] < 2){
+	if ( $reservationInfo["package_id"] == 0){
 	?>
 	#package_div {
 	    display: none;
@@ -141,6 +141,22 @@ else{
 			</div>
 		</div>
 		
+		<?php if( count($responsiblesList) > 1 ){ ?>
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Responsible($lang)?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="responsible_id">
+				<?php   
+				foreach($responsiblesList as $resp){
+					?>
+					<OPTION value="<?php echo $this->clean($resp['id']) ?>"> <?php echo $this->clean($resp['fullname'])?> </OPTION>
+					<?php
+				}
+				?>
+				</select>
+			</div>
+		</div>
+		<?php } ?>
 		
 		<?php 
 		$modelCoreConfig = new CoreConfig();
@@ -289,9 +305,9 @@ else{
 			</div>
 		</div>
 		
+		
 		<?php 
 		if (count($packages) > 0){
-			if ($resourceInfo["use_package"] < 2){
 		?>	
 		<div class="checkbox col-xs-8 col-xs-offset-4">
     		<label>
@@ -303,27 +319,11 @@ else{
 	    		}
     		}
     		?>
-			<input id="use_package" type="checkbox" name="use_package" value="yes" <?php echo $checked?>> <?php echo  SyTranslator::Use_Package($lang) ?>
+			<input id="use_package" type="checkbox" name="use_package" value="yes"/ <?php echo $checked?>> <?php echo  SyTranslator::Use_Package($lang) ?>
 			</label>
   		</div>
-  		<?php 
-  			}
-  		?>
   		
-  		<?php 
-  		if ($resourceInfo["use_package"] < 2){
-  			?>
-  			<div id="package_div">
-  			<?php 
-  		}
-  		else{
-  			?>
-  			<div>
-  			<input type="hidden" name="use_package" value="yes" >
-  			<?php 
-  		}
-  		?>
-  		
+  		<div id="package_div">
   			<div class="form-group">
 				<label class="control-label col-xs-4"><?php echo SyTranslator::Select_Package($lang)?></label>
 				<div class="col-xs-8">
@@ -350,9 +350,6 @@ else{
 		}
 		?>
 		
-		<?php 
-		if ($resourceInfo["use_package"] < 2){ // if not "use only package"
-		?>
 		<div id="resa_time_div">
 		<?php 
 		
@@ -441,10 +438,6 @@ else{
 		}
 		?>
 		</div>
-		<?php 
-		} // end if use only package
-		?>
-		
 		<?php  
 		if ($this->clean($resourceBase["type_id"])==2){ // is unitary
 		?>

@@ -37,7 +37,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				}	
 				?>
 			
-				<li><a href="<?php echo $refHome ?>"><?php echo  CoreTranslator::Home($lang) ?></a></li>
+				<li><a href="<?php echo  $refHome ?>"><?php echo  CoreTranslator::Home($lang) ?></a></li>
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo  CoreTranslator::Tools($lang) ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
@@ -76,7 +76,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"> <?php echo  $userName ?> <span class="caret"></span></a>
 					<ul class="dropdown-menu" role="menu">
-        				<li><a href=users/manageaccount > <?php echo  CoreTranslator::My_Account($lang) ?> </a></li>
+        				<li><a href=coreusers/manageaccount > <?php echo  CoreTranslator::My_Account($lang) ?> </a></li>
         				<li><a href=settings > <?php echo  CoreTranslator::Settings($lang) ?> </a></li>
         				<li class="divider"></li>
         				<li><a href=connection/logout > <?php echo  CoreTranslator::logout($lang) ?> </a></li>

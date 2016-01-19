@@ -13,12 +13,15 @@ class CoreTranslator {
 		//echo "to translate = " . $date . "<br/>";
 		if ($lang == "Fr"){
 			$dateArray = explode("/", $date);
-			//print_r($dateArray);
-			$day = $dateArray[0];
-			$month = $dateArray[1];
-			$year = $dateArray[2];
-			//echo "translated = " . $year . "-" . $month . "-" . $day . "<br/>";
-			return $year . "-" . $month . "-" . $day; 
+			if (count($dateArray) == 3){
+				//print_r($dateArray);
+				$day = $dateArray[0];
+				$month = $dateArray[1];
+				$year = $dateArray[2];
+				//echo "translated = " . $year . "-" . $month . "-" . $day . "<br/>";
+				return $year . "-" . $month . "-" . $day; 
+			}
+			return "0000-00-00";
 		}
 		// En
 		return $date;
@@ -377,6 +380,7 @@ class CoreTranslator {
 			return "Utilisateurs inactifs";
 		}
 		return "Inactive Users";
+
 	}
 	
 	public static function Address($lang = ""){
@@ -904,11 +908,80 @@ class CoreTranslator {
 		return "Text color";
 	}
 	
+	public static function Belonging($lang){
+		if ($lang == "Fr"){
+			return "Appartenance";
+		}
+		return "Belonging";
+	}
+	
+	public static function Belongings($lang){
+		if ($lang == "Fr"){
+			return "Appartenances";
+		}
+		return "Belongings";
+	}
+
+	public static function add_belonging($lang){
+		if ($lang == "Fr"){
+			return "Ajouter";
+		}
+		return "Add belonging";
+	}
+	
+	public static function Edit_belonging($lang){
+		if ($lang == "Fr"){
+			return "Modifier appartenance";
+		}
+		return "Edit belonging";
+	}
+	
+	public static function Source($lang){
+		if ($lang == "Fr"){
+			return "Source";
+		}
+		return "Source";
+	}
+	
+	public static function User_list_options($lang){
+		if ($lang == "Fr"){
+			return "Champs optionnels table utilisateurs";
+		}
+		return "User list options";
+	} 
+	
 	public static function Display_order($lang){
 		if ($lang == "Fr"){
-			return "Ordre d'affichage";
+			return "Order d'afichage";
 		}
 		return "Display order";
 	}
 	
+	public static function Authorizations($lang){
+		if ($lang == "Fr"){
+			return "Autorisations";
+		}
+		return "Authorizations";
+	}
+	
+	public static function type($lang){
+		if ($lang == "Fr"){
+			return "type";
+		}
+		return "type";
+	}
+	
+	public static function Academic($lang){
+		if ($lang == "Fr"){
+			return "Académique";
+		}
+		return "Academic";
+	}
+	 
+	public static function Company($lang){
+		if ($lang == "Fr"){
+			return "Privé";
+		}
+		return "Private";
+	}
 }

@@ -35,7 +35,7 @@
 					<td><?php echo  $optionId ?></td>
 				    <td><?php echo  $this->clean ( $option ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='option/edit/<?php echo  $optionId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='option/edit/<?php echo  $optionId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

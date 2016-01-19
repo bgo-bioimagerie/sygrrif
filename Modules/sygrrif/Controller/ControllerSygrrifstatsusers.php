@@ -52,6 +52,7 @@ class ControllerSygrrifstatsusers extends ControllerSecureNav {
 		$resource_id = $this->request->getParameter("resource_id");
 		$email = $this->request->getParameterNoException("email");
 		
+		$lang = $this->getLanguage();
 		// query
 		$statUserModel = new SyStatsUser();
 		if($email != ""){
@@ -62,7 +63,7 @@ class ControllerSygrrifstatsusers extends ControllerSecureNav {
 		else{
 			header_remove();
 			ob_clean();
-			$statUserModel->authorizedUsers($resource_id);
+			$statUserModel->authorizedUsers($resource_id, $lang);
 		}	
 		
 		return;

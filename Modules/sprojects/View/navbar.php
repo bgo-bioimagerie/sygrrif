@@ -4,10 +4,10 @@ $modelCoreConfig = new CoreConfig();
 $sprojectsmenucolor = $modelCoreConfig->getParam("sprojectsmenucolor");
 $sprojectsmenucolortxt = $modelCoreConfig->getParam("sprojectsmenucolortxt");
 if ($sprojectsmenucolor == ""){
-	$sprojectsmenucolor = "337ab7";
+	$sprojectsmenucolor = "#337ab7";
 }
 if($sprojectsmenucolortxt == ""){
-	$sprojectsmenucolortxt = "ffffff";
+	$sprojectsmenucolortxt = "#ffffff";
 }
 ?>
 
@@ -24,22 +24,22 @@ if($sprojectsmenucolortxt == ""){
 <style>
 .bs-docs-header {
 	position: relative;
-	color: #<?php echo $sprojectsmenucolortxt?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
-	background-color: #<?php echo $sprojectsmenucolor?>;
+	background-color: <?php echo $sprojectsmenucolor?>;
 	border: none;
 }
 
 #navlink {
-	color: #<?php echo $sprojectsmenucolortxt?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 	border: none;
 }
 
 .well {
-	color: #<?php echo $sprojectsmenucolortxt?>;
-	background-color: #<?php echo $sprojectsmenucolor?>;
-	border: 0px solid #<?php echo $sprojectsmenucolor?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
+	background-color: <?php echo $sprojectsmenucolor?>;
+	border: 0px solid <?php echo $sprojectsmenucolor?>;
 -moz-box-shadow: 0px 0px px #000000;
 -webkit-box-shadow: 0px 0px px #000000;
 -o-box-shadow: 0px 0px 0px #000000;
@@ -47,7 +47,7 @@ box-shadow: 0px 0px 0px #000000;
 }
 
 legend {
-	color: #<?php echo $sprojectsmenucolortxt?>;
+	color: <?php echo $sprojectsmenucolortxt?>;
 	border: none;
 }
 </style>
@@ -69,23 +69,27 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 		<?php 
 		$modelConfig = new CoreConfig();
-		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
+		$supliesusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
 		if ($supliesusersdatabase == "local"){
 		?>
 		
 		<div class='col-md-3 well'>
-			<fieldset style="border: none;">
-				<legend style="border: none;"><?php echo  CoreTranslator::Users_Institutions($lang) ?> </legend>
-					<button onclick="location.href='sprojectsusers/index'"
-						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Users($lang) ?></button>
-					<button onclick="location.href='sprojectsusers/edit'"
-						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add($lang)?></button>
+			<fieldset>
+				<legend><?php echo  CoreTranslator::Users_Institutions($lang) ?> </legend>
+						<button onclick="location.href='sprojectsbelongings/index'"
+						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Belongings($lang) ?></button>
+						<button onclick="location.href='sprojectsbelongings/edit'"
+						class="btn btn-link" id="navlink">+</button>
 				<br/>
 					<button onclick="location.href='sprojectsunits/index'"
 						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Units($lang)?></button>
-					<button onclick="location.href='sprojectsunits/add'"
-						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add($lang)?></button>
-
+					<button onclick="location.href='sprojectsunits/edit'"
+						class="btn btn-link" id="navlink">+</button>
+				<br/>
+					<button onclick="location.href='sprojectsusers/index'"
+						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Users($lang) ?></button>
+					<button onclick="location.href='sprojectsusers/add'"
+						class="btn btn-link" id="navlink">+</button>
 			</fieldset>
 		</div>
 		<?php 
@@ -94,21 +98,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?php echo  SpTranslator::sprojects_Pricing($lang)?></legend>	
-							
-					<button onclick="location.href='sprojectspricing'"
-						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Pricing($lang)?></button>
-					<button onclick="location.href='sprojectspricing/addpricing'"
-						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add($lang)?></button>
-				<br/>
-					<button onclick="location.href='sprojectspricing/unitpricing'"
-						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Pricing_per_unit($lang) ?></button>
-					<button onclick="location.href='sprojectspricing/addunitpricing'"
-						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add($lang)?></button>
-				<br/>
+
 					<button onclick="location.href='sprojectsItems/index'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Items($lang) ?></button>
 					<button onclick="location.href='sprojectsItems/edit'"
-						class="btn btn-link" id="navlink"><?php echo  CoreTranslator::Add($lang)?></button>
+						class="btn btn-link" id="navlink">+</button>
 				
 			</fieldset>
 		</div>

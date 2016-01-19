@@ -77,7 +77,7 @@ class ControllerHomeconfig extends ControllerSecureNav {
 		$imageFileType = pathinfo($_FILES["logo"]["name"],PATHINFO_EXTENSION);
 	
 		// Check file size
-		if ($_FILES["fileToUpload"]["size"] > 500000000) {
+		if ($_FILES["logo"]["size"] > 500000000) {
 			return "Error: your file is too large.";
 			$uploadOk = 0;
 		}

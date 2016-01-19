@@ -1,6 +1,7 @@
 <?php
 
 require_once 'Framework/Model.php';
+require_once 'Modules/supplies/Model/SuUser.php';
 
 /**
  * Class defining the Responsible model
@@ -48,7 +49,7 @@ class SpResponsible extends Model {
 	public function addResponsible($id_user){
 		
 		// test if the user is already responsible
-		$sql = "SELECT EXISTS(SELECT 1 FROM sp_responsibles WHERE id = ?)";
+		$sql = "SELECT EXISTS(SELECT 1 FROM sp_responsibles WHERE id_users = ?)";
 		
 		$exists = $this->runRequest($sql, array($id_user));
 		$out = $exists->fetch();
@@ -57,6 +58,24 @@ class SpResponsible extends Model {
 			$sql = "insert into sp_responsibles(id_users)"
 				   . " values(?)";
 			$insertpdo = $this->runRequest($sql, array($id_user));	
+		}
+	}
+	
+	/**
+	 * Remove a responsible from his ID
+	 * @param number $id_user User ID
+	 */
+	public function removeResponsible($id_user){
+		// test if the user is already responsible
+		$sql = "SELECT EXISTS(SELECT 1 FROM sp_responsibles WHERE id_users = ?)";
+		
+		$exists = $this->runRequest($sql, array($id_user));
+		$out = $exists->fetch();
+	
+		
+		if ($out[0] != 0){
+			$sql="DELETE FROM sp_responsibles WHERE id_users = ?";
+			$req = $this->runRequest($sql, array($id_user));
 		}
 	}
 	
@@ -78,6 +97,10 @@ class SpResponsible extends Model {
 		return true;
 	}
 	
+	/**
+	 * Set a user responsible
+	 * @param unknown $id_user
+	 */
 	public function setResponsible($id_user){
 		if (!$this->isResponsible($id_user)){
 			$this->addResponsible($id_user);
@@ -129,14 +152,19 @@ class SpResponsible extends Model {
 	 * 
 	 * @return multitype: 2D array containing the users informations 
 	 */
-	public function responsibleSummaries(){
-		$sql = "SELECT id, firstname, name FROM sp_users WHERE id IN (SELECT id_users FROM sp_responsibles) ORDER BY name";
+	public function responsibleSummaries($sortentry = "name"){
+		$sql = "SELECT id, firstname, name FROM sp_users WHERE id IN (SELECT id_users FROM sp_responsibles) ORDER BY " . $sortentry;
 		$respPDO = $this->runRequest($sql);
 		$resps = $respPDO->fetchAll();
 
 		return $resps;
 	}
 	
+	/**
+	 * Get the responsible of a given user
+	 * @param number $user_id ID of the user to get the responsible
+	 * @return number ID of the responsible
+	 */
 	public function getUserResponsible($user_id){
 		 $sql = "SELECT id_responsible FROM sp_users WHERE id=?";
 		 $respPDO = $this->runRequest($sql, array($user_id));

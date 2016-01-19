@@ -12,8 +12,6 @@ class SyPricing extends Model {
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_pricing` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`tarif_name` varchar(100) NOT NULL DEFAULT '',
-		`tarif_print` varchar(100) NOT NULL DEFAULT '',
 		`tarif_unique` int(11) NOT NULL DEFAULT 1,
 		`tarif_night` int(3) NOT NULL DEFAULT 0,
 		`night_start` int(11) NOT NULL DEFAULT 19,
@@ -43,11 +41,13 @@ class SyPricing extends Model {
 	 * Get pricings IDs and names
 	 * @return multitype:
 	 */
+	/*
 	public function pricingsIDName(){
 		$sql = "select id, tarif_name from sy_pricing";
 		$data = $this->runRequest($sql);
 		return $data->fetchAll();
 	}
+	*/
 	
 	/**
 	 * get pricing ID from ID
@@ -69,6 +69,7 @@ class SyPricing extends Model {
 	 * @param unknown $name
 	 * @return mixed|number
 	 */
+	/*
 	public function getPricingId($name){
 		$sql = "select * from sy_pricing where tarif_name=?;";
 		$data = $this->runRequest($sql, array($name));
@@ -80,21 +81,22 @@ class SyPricing extends Model {
 			return 0;
 			}
 	}
+	*/
 	
 	/**
 	 * add a unique pricing
 	 * @param unknown $name
 	 * @return PDOStatement
 	 */
-	public function addUnique($name){
-		$sql = "INSERT INTO sy_pricing (tarif_name, tarif_print) VALUES(?,?)";
-		$pdo = $this->runRequest($sql, array($name, $name));
+	public function addUnique($id){
+		$sql = "INSERT INTO sy_pricing (id) VALUES(?)";
+		$pdo = $this->runRequest($sql, array($id));
 		return $pdo;
 	}
 	
 	/**
 	 * add a pricing
-	 * @param unknown $nom
+	 * @param unknown $id
 	 * @param unknown $tarif_unique
 	 * @param unknown $tarif_nuit
 	 * @param unknown $night_start
@@ -103,17 +105,16 @@ class SyPricing extends Model {
 	 * @param unknown $we_char
 	 * @return PDOStatement
 	 */
-	public function addPricing($nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
-		$sql = "INSERT INTO sy_pricing (tarif_name, tarif_print, tarif_unique, tarif_night, night_start,
-				                        night_end, tarif_we, choice_we ) VALUES(?,?,?,?,?,?,?,?)";
-		$pdo = $this->runRequest($sql, array($nom, $nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char));
+	public function addPricing($id, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
+		$sql = "INSERT INTO sy_pricing (id, tarif_unique, tarif_night, night_start,
+				                        night_end, tarif_we, choice_we ) VALUES(?,?,?,?,?,?,?)";
+		$pdo = $this->runRequest($sql, array($id, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char));
 		return $pdo;
 	}
 	
 	/**
 	 * Update a pricing infos
 	 * @param unknown $id
-	 * @param unknown $nom
 	 * @param unknown $tarif_unique
 	 * @param unknown $tarif_nuit
 	 * @param unknown $night_start
@@ -121,21 +122,21 @@ class SyPricing extends Model {
 	 * @param unknown $tarif_we
 	 * @param unknown $we_char
 	 */
-	public function editPricing($id, $nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
-		$sql = "update sy_pricing set tarif_name= ?, tarif_print=?, tarif_unique=?, tarif_night=?, night_start=?,
+	public function editPricing($id, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
+		$sql = "update sy_pricing set tarif_unique=?, tarif_night=?, night_start=?,
 				                      night_end=?, tarif_we=?, choice_we=?
 									  where id=?";
-		$this->runRequest($sql, array($nom, $nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char, $id));
-	}
+		$this->runRequest($sql, array($tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char, $id));
+	} 
 	
 	/**
 	 * Check if a pricing exists
 	 * @param unknown $name
 	 * @return boolean
 	 */
-	private function isPricing($name){
-		$sql = "select * from sy_pricing where tarif_name=?;";
-		$data = $this->runRequest($sql, array($name));
+	private function isPricing($id){
+		$sql = "select * from sy_pricing where id=?;";
+		$data = $this->runRequest($sql, array($id));
 		if ($data->rowCount() == 1)
 			return true;
 		else
@@ -152,10 +153,19 @@ class SyPricing extends Model {
 	 * @param unknown $tarif_we
 	 * @param unknown $we_char
 	 */
-	public function setPricing($nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
-		if (!$this->isPricing($nom)){
-			$this->addPricing($nom, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char);	
+	public function setPricing($id, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
+		if (!$this->isPricing($id)){
+			$this->addPricing($id, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char);	
 		}
+	}
+	
+	/**
+	 * Delete a unit
+	 * @param number $id Unit ID
+	 */
+	public function delete($id){
+		$sql="DELETE FROM sy_pricing WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
 	}
 	
 }

@@ -2,12 +2,15 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
-require_once 'Modules/sprojects/Model/SpPricing.php';
-require_once 'Modules/sprojects/Model/SpUser.php';
-require_once 'Modules/sprojects/Model/SpUnitPricing.php';
 
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/sprojects/Model/SpUser.php';
+require_once 'Modules/sprojects/Model/SpUnit.php';
+require_once 'Modules/sprojects/Model/SpBelonging.php';
+
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
+
 require_once 'Modules/core/Model/CoreTranslator.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
@@ -31,24 +34,33 @@ class SpStats extends Model {
 		$numberIndustryProjects = 0;
 		
 		$modelUser = "";
-		$modelUnit = new SpUnitPricing();
-		$modelPricing = new SpPricing();
+
+		$modelUnit = "";
+		$modelBelonging = "";
+
 		$modelConfig = new CoreConfig();
 		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
 		if ($sprojectsusersdatabase == "local"){
 			$modelUser = new SpUser();
+			$modelUnit = new SpUnit();
+			$modelBelonging = new SpBelonging();
 		}
 		else{
-			$modelUser = new User();
+			$modelUser = new CoreUser();
+			$modelUnit = new CoreUnit();
+			$modelBelonging = new CoreBelonging();
+
 		}
 		
 		foreach($projects as $project){
 			
 			// get the responsible unit
 			$id_unit = $modelUser->getUserUnit($project["id_resp"]);
-			$id_pricing = $modelUnit->getPricing($id_unit);
-			$pricingInfo = $modelPricing->getPricing($id_pricing);
-			if ($pricingInfo["tarif_type"] == 1){
+
+			$id_pricing = $modelUnit->getBelonging($id_unit);
+			$pricingInfo = $modelBelonging->getInfo($id_pricing);
+			if ($pricingInfo["type"] == 1){
+
 				$numberAccademicProjects++;
 			}
 			else{
@@ -83,7 +95,6 @@ class SpStats extends Model {
 		$numberNewIndustryTeam = $req->rowCount();
 		
 		//echo "numberNewIndustryTeam = " . $numberNewIndustryTeam . "<br/>";
-		
 		
 		$purcentageNewIndustryTeam  = 0;
 		$purcentageloyaltyIndustryProjects = 0;
@@ -130,7 +141,7 @@ class SpStats extends Model {
 			$modelUser = new SpUser();
 		}
 		else{
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 		}
 		
 		$content = CoreTranslator::Name($lang) . ";" . CoreTranslator::Email($lang) . "\r\n";

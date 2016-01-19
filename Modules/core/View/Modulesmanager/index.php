@@ -1,4 +1,4 @@
-<?php $this->title = "Modules manager"?>
+<?php $this->title = "Pltaform-Manager"?>
 
 <?php echo $navBar?>
 <?php 

@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Database - Connexion" ?>
+<?php $this->title = "Platform-Manager - Connexion" ?>
 
 <head>
     <!-- Bootstrap core CSS -->

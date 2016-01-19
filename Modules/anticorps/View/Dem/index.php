@@ -35,7 +35,7 @@
 					<td><?php echo  $demId ?></td>
 				    <td><?php echo  $this->clean ( $dem ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='dem/edit/<?php echo  $demId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='dem/edit/<?php echo  $demId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

@@ -20,8 +20,8 @@ class SyBookingTableCSS extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_bookingcss` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`id_area` int(11) NOT NULL,	
-		`header_background` varchar(6) NOT NULL DEFAULT '337ab7',
-		`header_color` varchar(6) NOT NULL DEFAULT 'ffffff',
+		`header_background` varchar(7) NOT NULL DEFAULT '#337ab7',
+		`header_color` varchar(7) NOT NULL DEFAULT '#ffffff',
 		`header_font_size` int(2) NOT NULL DEFAULT 12,
 		`resa_font_size` int(2) NOT NULL DEFAULT 12,
 		`header_height` int(3) NOT NULL DEFAULT 70,

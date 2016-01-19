@@ -35,7 +35,7 @@
 					<td><?php echo  $fixativeId ?></td>
 				    <td><?php echo  $this->clean ( $fixative ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='fixative/edit/<?php echo  $fixativeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='fixative/edit/<?php echo  $fixativeId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

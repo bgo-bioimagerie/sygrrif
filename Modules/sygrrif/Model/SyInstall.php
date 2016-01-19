@@ -2,7 +2,6 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
-require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 require_once 'Modules/sygrrif/Model/SyResourceType.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
@@ -34,12 +33,8 @@ class SyInstall extends Model {
 	 */
 	public function createDatabase(){
 		
-		
 		$pricingModel = new SyPricing();
 		$pricingModel->createTable();
-		
-		$unitpricingModel = new SyUnitPricing();
-		$unitpricingModel->createTable();
 		
 		$SyResourceModel = new SyResource();
 		$SyResourceModel->createTable();
