@@ -60,7 +60,7 @@
 			$idx = 0;
 			$found = false;
 			for($i = 0 ; $i < count($userAuthorizations) ; $i++){
-				if ($userAuthorizations[$i]["resource_id"] == $resource["id"]){
+				if ($userAuthorizations[$i]["resource_id"] == $resource["id"] && $userAuthorizations[$i]["is_active"] == 1){
 					$idx = $i;
 					$found = true;
 					break;

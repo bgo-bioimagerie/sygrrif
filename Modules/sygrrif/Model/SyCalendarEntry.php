@@ -425,6 +425,7 @@ class SyCalendarEntry extends Model {
 				FROM core_users AS user
 				INNER JOIN sy_calendar_entry AS sy_calendar_entry ON user.id = sy_calendar_entry.recipient_id
 				WHERE sy_calendar_entry.resource_id=?
+				AND user.is_active = 1 
 				;";
 		$req = $this->runRequest($sql, array($resource_id));
 		return $req->fetchAll();
@@ -440,7 +441,8 @@ class SyCalendarEntry extends Model {
 		$sql = "SELECT DISTINCT user.email AS email
 				FROM core_users AS user
 				INNER JOIN sy_calendar_entry AS sy_calendar_entry ON user.id = sy_calendar_entry.recipient_id
-				WHERE sy_calendar_entry.resource_id IN (select id from sy_resources where area_id=?)  
+				WHERE sy_calendar_entry.resource_id IN (select id from sy_resources where area_id=?) 
+				AND user.is_active = 1  
 				;";
 		$req = $this->runRequest($sql, array($area_id));
 		return $req->fetchAll();

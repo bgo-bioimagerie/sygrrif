@@ -182,4 +182,18 @@ class SyVisa extends Model {
 		$sql="DELETE FROM sy_visas WHERE id = ?";
 		$req = $this->runRequest($sql, array($id));
 	}
+	
+	public function getAllInstructors(){
+		$sql = "select distinct id_instructor from sy_visas";
+		$req = $this->runRequest($sql);
+		$instructors = $req->fetchAll();
+		
+		$modelUser = new CoreUser();
+		
+		for($i = 0 ; $i < count($instructors) ; $i++){
+			$instructors[$i]["name_instructor"] = $modelUser->getUserFUllName($instructors[$i]["id_instructor"]);
+		}
+		
+		return $instructors;
+	}
 }

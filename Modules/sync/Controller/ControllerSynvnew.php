@@ -29,7 +29,7 @@ class ControllerSynvnew extends Controller {
 
 	// affiche la liste des Sources
 	public function index() {
-		
+
 		// 1- install data  base
 		echo "<p> Install core database...  </p>";
 		$installModel = new CoreInitDatabase();

@@ -192,6 +192,63 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 	}
 	
 	/**
+	 * Export the visas in an xls file
+	 */
+	public function exportvisa(){
+		
+		$lang = $this->getLanguage();
+		
+		// get all the resources categories
+		$modelResources = new SyResourcesCategory();
+		$resources = $modelResources->getResourcesCategories("name");
+		
+		// get all the instructors
+		$modelVisa = new SyVisa();
+		$instructors = $modelVisa->getAllInstructors();
+		
+		//print_r($instructors);
+		
+		$visas = $modelVisa->getVisas();
+		
+		header("Content-Type: application/csv-tab-delimited-table");
+		header("Content-disposition: filename=visas.csv");
+		
+		// resources
+		$content = "\t";
+		foreach ($resources as $resource){
+			$content .= $resource["name"] . "\t" ;  
+		}
+		$content.= "\r\n";
+		
+		// instructors
+		foreach ($instructors as $instructor){
+			$content .= $instructor["name_instructor"] . "\t" ;
+			foreach ($resources as $resource){
+				$found = 0;
+				foreach($visas as $visa){
+					if ($visa["id_resource_category"] == $resource["id"] && $visa["id_instructor"] == $instructor["id_instructor"]){
+						
+						$instructorStatus = SyTranslator::Instructor($lang);
+						if ($visa["instructor_status"] == 2){
+							$instructorStatus = SyTranslator::Responsible($lang);
+						}
+						$content .= $instructorStatus . "\t" ;
+						$found = 1;
+						break;
+					}
+				}
+				if ($found == 0){
+					$content .= "\t" ;
+				}
+			}
+			$content.= "\r\n";
+		}
+		$content.= "\r\n";
+		echo $content;
+		
+	}
+	
+	/**
 	 * Delete  visa
 	 */
 	public function deletevisa(){
