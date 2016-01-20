@@ -17,7 +17,7 @@ class SyResourcePricing extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_j_resource_pricing` (
 		`id_resource` int(11) NOT NULL,
 		`id_pricing` int(11) NOT NULL,
-		`price_day` decimal(10,2) NOT NULL,
+		`price_day` varchar(250) NOT NULL,
 		`price_night` decimal(10,2) NOT NULL,
 		`price_we` decimal(10,2) NOT NULL	
 		);";

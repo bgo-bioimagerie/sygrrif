@@ -282,7 +282,7 @@
 		foreach ($pricingTable as $pricing){
 			
 			$pid = $this->clean($pricing['id']);
-			$pname = $this->clean($pricing['tarif_name']);
+			$pname = $this->clean($pricing['name']);
 			$val_day = 0;
 			if (isset($pricing['val_day'])){
 				$val_day = $this->clean($pricing['val_day']);

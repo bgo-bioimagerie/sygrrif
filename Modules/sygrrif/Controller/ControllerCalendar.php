@@ -378,12 +378,14 @@ class ControllerCalendar extends ControllerBooking {
 	
 		// fill the pricing table with the prices for this resource
 		$modelResourcesPricing = new SyResourcePricing();
+		$modelBelonging = new CoreBelonging();
 		for ($i = 0 ; $i < count($pricingTable) ; ++$i){
 			$pid = $pricingTable[$i]['id'];
 			$inter = $modelResourcesPricing->getPrice($id, $pid);
 			$pricingTable[$i]['val_day'] = $inter['price_day'];
 			$pricingTable[$i]['val_night'] = $inter['price_night'];
 			$pricingTable[$i]['val_we'] = $inter['price_we'];
+			$pricingTable[$i]['name'] = $modelBelonging->getName($pricingTable[$i]["id"]);
 		}
 	
 		// resources categories
@@ -499,7 +501,7 @@ class ControllerCalendar extends ControllerBooking {
 		$pricingTable = $modelPricing->getPrices();
 		foreach ($pricingTable as $pricing){
 			$pid = $pricing['id'];
-			$pname = $pricing['tarif_name'];
+			//$pname = $pricing['tarif_name'];
 			$punique = 1;
 			$pnight = 0;
 			$pwe = 0;
@@ -700,6 +702,8 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// fill the pricing table with the prices for this resource
 		$modelResourcesPricing = new SyResourcePricing();
+		$modelBelonging = new CoreBelonging();
+		$suppliesPrices = array();
 		for ($i = 0 ; $i < count($pricingTable) ; ++$i){
 			$pid = $pricingTable[$i]['id'];
 			$inter = $modelResourcesPricing->getPrice($resource_base["id"], $pid);
@@ -708,11 +712,13 @@ class ControllerCalendar extends ControllerBooking {
 			$pricingTable[$i]['val_day'] = $prices[0];
 			$pricingTable[$i]['val_night'] = $inter['price_night'];
 			$pricingTable[$i]['val_we'] = $inter['price_we'];
+			$pricingTable[$i]['name'] = $modelBelonging->getName($pricingTable[$i]["id"]);
 			
 			$count = 0;
+			
 			foreach($prices as $price){
 				if ($count > 0){
-					$suppliesPrices[] = $price;
+					$suppliesPrices[$i][] = $price;
 				}
 				$count++;
 			}
@@ -771,7 +777,7 @@ class ControllerCalendar extends ControllerBooking {
 			$pid = $pricing['id'];
 			
 			// time pricing
-			$pname = $pricing['tarif_name'];
+			//$pname = $pricing['tarif_name'];
 			$punique = $pricing['tarif_unique'];
 			$pnight = $pricing['tarif_night'];
 			$pwe = $pricing['tarif_we'];

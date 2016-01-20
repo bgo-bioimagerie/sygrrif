@@ -89,10 +89,12 @@
 		</thead>
 		<tbody>
 		<?php 
+		$pricingCount = -1;
 		foreach ($pricingTable as $pricing){
 			
+			$pricingCount++;
 			$pid = $this->clean($pricing['id']);
-			$pname = $this->clean($pricing['tarif_name']);
+			$pname = $this->clean($pricing['name']);
 			$punique = $this->clean($pricing['tarif_unique']);
 			$val_day = 0;
 			if (isset($pricing['val_day'])){
@@ -153,8 +155,12 @@
 			// supply
 			$count = 0;
 			foreach ($resource_info['supplynames'] as $supplyName){
+				$priceSup = 0;
+				if (isset($suppliesPrices[$pricingCount][$count])){
+					$priceSup = $suppliesPrices[$pricingCount][$count];	
+				}
 			?>
-				<td><input id="tarif" type="text" class="text-center" name="<?php echo  $pid. "_" . $count ?>" value="<?php echo  $suppliesPrices[$count] ?>"/> € (H.T.)</td>	
+				<td><input id="tarif" type="text" class="text-center" name="<?php echo  $pid. "_" . $count ?>" value="<?php echo $priceSup ?>"/> € (H.T.)</td>	
 			<?php
 			$count++;
 			}
