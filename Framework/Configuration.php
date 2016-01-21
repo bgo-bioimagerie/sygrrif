@@ -53,7 +53,7 @@ class Configuration
     public static function getConfigFile(){
     	$urlFile = "Config/dev.ini";
     	if (!file_exists($urlFile)) {
-    		$urlFile = "Config/prod.ini";
+    		$urlFile = "Config/conf.ini";
     	}
     	return $urlFile;
     }
