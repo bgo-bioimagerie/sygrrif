@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 
 /**
  * Mother class for controller using secure connection
@@ -22,7 +22,7 @@ abstract class ControllerSecure extends Controller
         	$login = $this->request->getSession()->getAttribut("login");
         	$company = $this->request->getSession()->getAttribut("company");
         	 
-        	$modelUser = new User();
+        	$modelUser = new CoreUser();
         	
         	//$connect = $modelUser->connect2($login, $pwd);
         	//echo "connect = " . $connect . "</br>";
@@ -39,7 +39,6 @@ abstract class ControllerSecure extends Controller
             $this->redirect("connection");
         }
     }
-    
     public function getLanguage(){
     	$lang = "En";
     	if (isset($_SESSION["user_settings"]["language"])){

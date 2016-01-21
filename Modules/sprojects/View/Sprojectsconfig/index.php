@@ -168,7 +168,11 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
       <div class="form-group col-xs-12">
 	  	<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Users_database($lang) ?></label>
 			<div class="col-xs-6">
+<<<<<<< HEAD
 				<select class="form-control" name="supliesusersdatabase">
+=======
+				<select class="form-control" name="sprojectsusersdatabase">
+>>>>>>> new
 					<OPTION value="local" <?php if($sprojectsusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
 					<OPTION value="core" <?php if($sprojectsusersdatabase=="core"){echo "selected=\"selected\"";} ?> > core </OPTION>
 				</select>
@@ -196,16 +200,20 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
 		    </div>
 		    
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::color($lang) ?> #</label>
+
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::color($lang) ?></label>
 			<div class="col-xs-6">
-				<input class="form-control" id="sprojectsmenucolor" type="text" name="sprojectsmenucolor" value="<?php echo  $this->clean($sprojectsmenucolor) ?>"
+				<input class="form-control" id="sprojectsmenucolor" type="color" name="sprojectsmenucolor" value="<?php echo  $this->clean($sprojectsmenucolor) ?>"
+
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::text_color($lang) ?> #</label>
+
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::text_color($lang) ?></label>
 			<div class="col-xs-6">
-				<input class="form-control" id="sprojectsmenucolortxt" type="text" name="sprojectsmenucolortxt" value="<?php echo  $this->clean($sprojectsmenucolortxt) ?>"
+				<input class="form-control" id="sprojectsmenucolortxt" type="color" name="sprojectsmenucolortxt" value="<?php echo  $this->clean($sprojectsmenucolortxt) ?>"
+
 				/>
 			</div>
 		</div>

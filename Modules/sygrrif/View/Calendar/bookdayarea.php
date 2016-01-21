@@ -17,7 +17,7 @@ $dayWidth = 100/count($resourcesBase);
 
 a{
 	width: 100%;
-	color: <?php echo  "#".$agendaStyle["header_backgroundf"] ?>;
+	color: <?php echo $agendaStyle["header_background"] ?>;
 }
 
 #tcell{
@@ -156,7 +156,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 <div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
-	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo  "#" . $agendaStyle["header_background"]?>;">
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo $agendaStyle["header_background"]?>;">
 
 	</div>
 	<?php 
@@ -174,7 +174,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 		}
 		?>
 	
-		<div id="tcell" style="height: <?php echo  $heightCol ?>; background-color: <?php echo  "#" . $agendaStyle["header_background"]?>; color: <?php echo  "#" . $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+		<div id="tcell" style="height: <?php echo  $heightCol ?>; background-color: <?php echo $agendaStyle["header_background"]?>; color: <?php echo $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
 		<?php echo $h?>:00
 		</div>
 	<?php 	
@@ -192,7 +192,7 @@ $size_bloc_resa = $this->clean($resourcesInfo[0]['size_bloc_resa']);
 	
 	<div class="col-lg-1 col-md-3 col-sm-4 col-xs-6" id="colDiv">
 
-	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color: <?php echo  "#".$agendaStyle["header_background"]?>; color: <?php echo  "#".$agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
+	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color: <?php echo $agendaStyle["header_background"]?>; color: <?php echo $agendaStyle["header_color"]?>; font-size: <?php echo  $agendaStyle["header_font_size"]?>px">
 	<p class="text-center"><b><?php echo  $this->clean($resourcesBase[$r]['name']) ?></b><br/><?php echo  $this->clean($resourcesBase[$r]['description']) ?></p>
 	</div>
 

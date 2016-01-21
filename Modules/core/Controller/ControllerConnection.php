@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/UserSettings.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/core/Model/Ldap.php';
@@ -20,7 +20,7 @@ class ControllerConnection extends Controller
      */
     public function __construct()
     {
-        $this->user = new User();
+        $this->user = new CoreUser();
     }
 
     /**
@@ -78,13 +78,18 @@ class ControllerConnection extends Controller
                 $this->user->updateLastConnection($user['idUser']);
                 
                 // update user active base if the user is manager or admin
+                $modulesManager = new ModulesManager();
                 if ($user['id_status'] >= 3){
                 	$this->user->updateUsersActive();
+                	if($modulesManager->isDataMenu("sygrrif")){
+                		require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+                		$modelSygrrif = new SyAuthorization();
+                		$modelSygrrif->desactivateUnactiveUserAuthorizations();
+                	}
                 }
                 
                 // redirect
         		$redirectController = "Home";
-        		$modulesManager = new ModulesManager();
         		if ($modulesManager->isDataMenu("sygrrif")){
         			$redirectController = "sygrrif/booking";
         		}

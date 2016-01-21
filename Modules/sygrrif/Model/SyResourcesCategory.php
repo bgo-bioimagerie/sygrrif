@@ -47,7 +47,6 @@ class SyResourcesCategory extends Model {
 		return $user->rowCount();
 	}
 	
-	
 	/**
 	 * get the names of all the resources categories
 	 *
@@ -148,10 +147,12 @@ class SyResourcesCategory extends Model {
 	public function getResourcesCategoryName($id){
 		$sql = "select name from sy_resourcescategory where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
-			return $unit->fetch();  // get the first line of the result
+		if ($unit->rowCount() == 1){
+			$tmp = $unit->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
 		else
-			throw new Exception("Cannot find the resources category using the given id");
+			return "";
 	}
 	
 	/**

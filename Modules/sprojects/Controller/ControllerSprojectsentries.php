@@ -4,13 +4,14 @@ require_once 'Framework/Controller.php';
 require_once 'Framework/TableView.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
-require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
 require_once 'Modules/sprojects/Model/SpResponsible.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
 require_once 'Modules/sprojects/Model/SpTranslator.php';
-require_once 'Modules/sprojects/Model/SpUnitPricing.php';
-require_once 'Modules/sprojects/Model/SpPricing.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 
 class ControllerSprojectsentries extends ControllerSecureNav {
@@ -48,15 +49,19 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		}
 		
 		$modelUser = "";
-		$modelUnit = new SpUnitPricing();
-		$modelPricing = new SpPricing();
+		$modelUnit = "";
+		$modelBelonging = "";
 		$modelConfig = new CoreConfig();
 		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
 		if ($sprojectsusersdatabase == "local"){
 			$modelUser = new SpUser();
+			$modelUnit = new SpUnit();
+			$modelBelonging = new SpBeloning();
 		}
 		else{
-			$modelUser = new User();
+			$modelUser = new CoreUser();
+			$modelUnit = new CoreUnit();
+			$modelBelonging = new CoreBelonging();
 		}
 		
 		for($i = 0 ; $i < count($entriesArray) ; $i++){
@@ -71,10 +76,9 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			
 			// get the pricing color
 			$id_unit = $modelUser->getUserUnit($entriesArray[$i]["id_resp"]);
-			$id_pricing = $modelUnit->getPricing($id_unit);
-			$pricingInfo = $modelPricing->getPricing($id_pricing);
-			$entriesArray[$i]["color"] = $pricingInfo["tarif_color"];
-			
+			$id_belonging = $modelUnit->getBelonging($id_unit);
+			$pricingInfo = $modelBelonging->getInfo($id_belonging);
+			$entriesArray[$i]["color"] = $pricingInfo["color"];
 			
 			$entriesArray[$i]["time_color"] = "#ffffff";
 			if ($entriesArray[$i]["time_limit"] != ""){
@@ -82,11 +86,6 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 				if (strval($entriesArray[$i]["time_limit"]) != "0000-00-00"){
 					$entriesArray[$i]["time_color"] = "#FFCC00";
 				}
-				/*
-				if (strval($entriesArray[$i]["time_limit"]) < strval(date("Y-m-d", time()))){ 
-					$entriesArray[$i]["time_color"] = "#FFCC00";
-				}
-				*/
 			}
 			
 			
@@ -207,9 +206,9 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			
 		}
 		else{
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$users = $modelUser->getUsersSummary("name");
-			$modelResp = new Responsible();
+			$modelResp = new CoreResponsible();
 			$resps = $modelResp->responsibleSummaries("name");
 		}
 		
@@ -314,18 +313,27 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		
 		// calculate total sum and price HT
 		$modelUser = "";
+
+		$modelUnit = "";
+		$modelBelonging = "";
+
 		$modelConfig = new CoreConfig();
 		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
 		if ($sprojectsusersdatabase == "local"){
 			$modelUser = new SpUser();
+			$modelBelonging = new SpBelonging();
+			$modelUnit = new SpUnit();
 		}
 		else{
-			$modelUser = new User();
+			$modelUser = new CoreUser();
+			$modelBelonging = new CoreBelonging();
+			$modelUnit = new CoreUnit();
 		}
 		$id_resp = $modelProject->getResponsible($idproject);
 		$id_unit = $modelUser->getUserUnit($id_resp);
-		$modelPricing = new SpUnitPricing();
-		$LABpricingid = $modelPricing->getPricing($id_unit);
+		
+		$LABpricingid = $modelUnit->getBelonging($id_unit);
+
 		$itemPricing = new SpItemPricing();
 		
 		$content .= "Total ;";

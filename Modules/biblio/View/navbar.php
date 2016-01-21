@@ -30,7 +30,7 @@ legend {
 <div class="bs-docs-header" id="content">
 	<div class="container">
 		<h1>Bibliography</h1>
-		<div class='col-md-3' id='well'>
+		<div class='col-md-2' id='well'>
 		</div>
 		
 		<div class='col-md-4' id='well'>
@@ -38,13 +38,13 @@ legend {
 				<legend>Search Publications</legend>
 					<button onclick="location.href='biblio/allpublications'"
 						class="btn btn-link" id="navlink2">All</button>
-				<br/>
+				
 					<button onclick="location.href='biblio/yearpublications'"
 						class="btn btn-link" id="navlink2">By year</button>
 				<br/>
 					<button onclick="location.href='biblio/typepublications'"
 						class="btn btn-link" id="navlink2">By type</button>
-				<br/>
+				
 					<button onclick="location.href='biblio/authorpublications'"
 						class="btn btn-link" id="navlink2">By author</button>
 			</fieldset>
@@ -54,11 +54,15 @@ legend {
 				<legend>Add Publication</legend>
 				<?php
 				$entryTypes = PublicationManager::entriesTypes(); 
+				$count = 0;
 				foreach ($entryTypes as $entryType){
+					$count++;
 				?>
 					<button onclick="location.href='biblio/editpublication/type_<?php echo $entryType?>'"
 						class="btn btn-link" id="navlink2">Add <?php echo $entryType?></button>
+						<?php if ($count == 3){?>
 					<br/>
+						<?php $count = 0;}?>
 				<?php 
 				}
 				?>

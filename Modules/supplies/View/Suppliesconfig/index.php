@@ -196,16 +196,16 @@ include_once 'Modules/supplies/Model/SuTranslator.php';
 		    </div>
 		    
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::color($lang) ?> #</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::color($lang) ?></label>
 			<div class="col-xs-6">
-				<input class="form-control" id="suppliesmenucolor" type="text" name="suppliesmenucolor" value="<?php echo  $this->clean($suppliesmenucolor) ?>"
+				<input class="form-control" id="suppliesmenucolor" type="color" name="suppliesmenucolor" value="<?php echo  $this->clean($suppliesmenucolor) ?>"
 				/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::text_color($lang) ?> #</label>
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::text_color($lang) ?></label>
 			<div class="col-xs-6">
-				<input class="form-control" id="suppliesmenucolortxt" type="text" name="suppliesmenucolortxt" value="<?php echo  $this->clean($suppliesmenucolortxt) ?>"
+				<input class="form-control" id="suppliesmenucolortxt" type="color" name="suppliesmenucolortxt" value="<?php echo  $this->clean($suppliesmenucolortxt) ?>"
 				/>
 			</div>
 		</div>

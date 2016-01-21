@@ -35,7 +35,7 @@
 					<td><?php echo  $prelevementId ?></td>
 				    <td><?php echo  $this->clean ( $prelevement ['nom'] ); ?></td>
 				    <td>
-				      <button type='button' onclick="location.href='prelevements/edit/<?php echo  $prelevementId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='prelevements/edit/<?php echo  $prelevementId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

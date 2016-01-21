@@ -17,7 +17,7 @@ require_once 'Modules/anticorps/Model/Aciinc.php';
 require_once 'Modules/anticorps/Model/Linker.php';
 require_once 'Modules/anticorps/Model/Inc.php';
 require_once 'Modules/anticorps/Model/Acii.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 
 require_once 'externals/PHPExcel/Classes/PHPExcel.php';
 

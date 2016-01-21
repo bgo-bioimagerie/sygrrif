@@ -282,7 +282,7 @@
 		foreach ($pricingTable as $pricing){
 			
 			$pid = $this->clean($pricing['id']);
-			$pname = $this->clean($pricing['tarif_name']);
+			$pname = $this->clean($pricing['name']);
 			$val_day = 0;
 			if (isset($pricing['val_day'])){
 				$val_day = $this->clean($pricing['val_day']);
@@ -306,7 +306,7 @@
 		        <?php if ($this->clean($id) != ""){ ?>
 		        	<button type="button" onclick="location.href='<?php echo "calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang)?></button>
 				<?php } ?>
-				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>

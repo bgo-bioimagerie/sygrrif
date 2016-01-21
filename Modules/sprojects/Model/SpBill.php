@@ -1,8 +1,12 @@
 <?php
 
 require_once 'Framework/Model.php';
-require_once 'Modules/sprojects/Model/SpUnitPricing.php';
-require_once 'Modules/sprojects/Model/SpPricing.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
+require_once 'Modules/sprojects/Model/SpUser.php';
+require_once 'Modules/sprojects/Model/SpUnit.php';
+require_once 'Modules/sprojects/Model/SpBelonging.php';
 
 /**
  * Class defining the Bill model. It is used to store the history 
@@ -85,7 +89,7 @@ class SpBill extends Model {
 	 */
 	public function editBills($id, $number, $no_project, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid){
 	
-		$sql = "update sp_bills set number=?, no_project=?, id_resp=?, date_generated=?, date_paid=?, total_ht=?, date_paid=?, is_paid=?  where id=?";
+		$sql = "update sp_bills set number=?, no_project=?, id_resp=?, date_generated=?, total_ht=?, date_paid=?, is_paid=?  where id=?";
 		$unit = $this->runRequest($sql, array($number, $no_project, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid, $id));
 	}
 	
@@ -105,15 +109,31 @@ class SpBill extends Model {
 		$totalPriceOfAcademicBills = 0;
 		$numberOfPrivateBills = 0;
 		$totalPriceOfPrivateBills = 0;
-		$modelUser = new User();
-		$modelUnit = new SpUnitPricing();
-		$modelPricing = new SpPricing();
+	
+		// instanciate models
+		$modelUser = "";
+		$modelUnit = "";
+		$modelBelonging = "";
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
+		if ($sprojectsusersdatabase == "local"){
+			$modelUser = new SpUser();
+			$modelUnit = new SpUnit();
+			$modelBelonging = new SpBeloning();
+		}
+		else{
+			$modelUser = new CoreUser();
+			$modelUnit = new CoreUnit();
+			$modelBelonging = new CoreBelonging();
+		}
+		
+		// stats
 		for($i = 0 ; $i < $totalNumberOfBills ; $i++){
 			
 			$id_unit = $modelUser->getUserUnit($bills[$i]["id_resp"]);
-			$id_pricing = $modelUnit->getPricing($id_unit);
-			$pricingInfo = $modelPricing->getPricing($id_pricing);
-			if ($pricingInfo["tarif_type"] == 1){
+			$id_pricing = $modelUnit->getBelonging($id_unit);
+			$pricingInfo = $modelBelonging->getInfo($id_pricing);
+			if ($pricingInfo["type"] == 1){
 				$numberOfAcademicBills++;
 				$totalPriceOfAcademicBills += $bills[$i]["total_ht"];
 			}

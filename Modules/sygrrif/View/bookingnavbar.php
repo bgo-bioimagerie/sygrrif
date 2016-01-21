@@ -40,6 +40,10 @@ if($sygrrifmenucolortxt == ""){
 	color: #<?php echo $sygrrifmenucolortxt?>;
 	background-color: #<?php echo $sygrrifmenucolor?>;
 	border:0px solid #<?php echo $sygrrifmenucolor?>;
+	-moz-box-shadow: 0px 0px px #000000;
+-webkit-box-shadow: 0px 0px px #000000;
+-o-box-shadow: 0px 0px 0px #000000;
+box-shadow: 0px 0px 0px #000000;
 }
 
 legend {

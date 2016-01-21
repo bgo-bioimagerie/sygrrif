@@ -7,8 +7,8 @@
     </head>
 
     <body>
-            <div id="contenu">
-                <?php echo  $content ?>
-            </div>
+    	<div id="contenu">
+        	<?php echo  $content ?>
+        </div>
     </body>
 </html>

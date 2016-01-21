@@ -1,6 +1,8 @@
 <?php
 require_once 'Framework/Model.php';
-require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/sygrrif/Model/SyVisa.php';
 
 /**
  * Class defining the Authorization model
@@ -99,7 +101,7 @@ class SyAuthorization extends Model {
 	public function setActive($id, $active){
 		$sql = "update sy_authorization set is_active=? where id=?";
 		$this->runRequest ( $sql, array (
-				$is_active,
+				$active,
 				$id
 		) );
 	}  
@@ -229,6 +231,8 @@ class SyAuthorization extends Model {
 	 */
 	public function getActiveAuthorizations($sortentry = 'id', $is_active=1) {
 	
+		
+		/*
 		$sqlSort = "sy_authorization.id";
 		if ($sortentry == "date"){
 			$sqlSort = "sy_authorization.date";
@@ -257,8 +261,11 @@ class SyAuthorization extends Model {
 					     INNER JOIN sy_resourcescategory on sy_authorization.resource_id = sy_resourcescategory.id
 				WHERE sy_authorization.is_active=".$is_active."
 				ORDER BY ". $sqlSort . ";";
+				*/
+		
+		$sql = "SELECT * from sy_authorization WHERE is_active=".$is_active. ";";
 		$auth = $this->runRequest ( $sql );
-		return $auth->fetchAll ();
+		return $auth->fetchAll();
 	}
 	
 	/**
@@ -270,6 +277,16 @@ class SyAuthorization extends Model {
 		$sql = "SELECT * from sy_authorization where id=?";
 		$auth = $this->runRequest ( $sql, array($id) );
 		return $auth->fetch();
+	}
+	
+	/**
+	 * get user authorizations
+	 * @param integer $userID User ID
+	 */
+	public function getUserAuthorizations($userID){
+		$sql = "SELECT * from sy_authorization where user_id=?";
+		$auth = $this->runRequest ( $sql, array($userID) );
+		return $auth->fetchAll();
 	}
 	
 	/**
@@ -285,6 +302,18 @@ class SyAuthorization extends Model {
 			return true;  // get the first line of the result
 		else
 			return false;
+	}
+	
+	public function getAuthorisationID($id_resource, $id_user){
+		$sql = "SELECT id from sy_authorization where user_id=? AND resource_id=? AND is_active=1";
+		$data = $this->runRequest ( $sql, array($id_user, $id_resource) );
+		if ($data->rowCount() >= 1){
+			$d = $data->fetch();
+			return $d[0];  // get the first line of the result
+		}
+		else{
+			return 0;
+		}
 	}
 	
 	/**
@@ -322,8 +351,6 @@ class SyAuthorization extends Model {
 		$req = $this->runRequest($sql, array($searchDate_start, $searchDate_end));
 		$numOfFormations = $req->rowCount(); // Nombre de formations dans la periode sélectionnée
 
-		//echo "numOfFormations = " . $numOfFormations . "<br/>";
-		
 		$q_search['start'] = $searchDate_start;
 		$q_search['end'] = $searchDate_end;
 		$sql_search = '';
@@ -333,8 +360,6 @@ class SyAuthorization extends Model {
 		$sql_search_3 = 'SELECT DISTINCT visa_id FROM sy_authorization WHERE ';
 		$sql_search_4 = 'SELECT DISTINCT resource_id FROM sy_authorization WHERE ';
 		
-		
-		//echo "user id = " . $user_id . "<br/>";
 		$criteres = "";
 		if ($user_id != "0") {
 			$sql='SELECT login, name, firstname from core_users WHERE id = ?';
@@ -401,7 +426,6 @@ class SyAuthorization extends Model {
 		$criteres .= "Date begin : ".$ddebut."<br/> Date end : ".$dfin."<br/>";
 		
 		$sql_search_0 = $sql_search_0.$sql_search.'date >=:start AND date <= :end ORDER BY date';
-		
 		$req = $this->runRequest($sql_search_0, $q_search);
 		$resultats = $req->fetchAll();
 		$numOfRows = $req->rowCount();
@@ -498,7 +522,7 @@ class SyAuthorization extends Model {
 	 * @return array Statistics
 	 */
 	public function statsDetails($searchDate_start, $searchDate_end, $user_id, $unit_id, 
-			                     $oldunit_id, $visa_id, $resource_id){
+			                     $oldunit_id, $visa_id, $resource_id, $lang){
 		
 		$t = array();
 		$t["erreur"] = "no";
@@ -581,9 +605,9 @@ class SyAuthorization extends Model {
 			$data = $req->fetchAll();
 			$datas = array();
 		
-			$modelResp = new Responsible();
-			$modelUser = new User();
-			$modelUnit = new Unit();
+			$modelResp = new CoreResponsible();
+			$modelUser = new CoreUser();
+			$modelUnit = new CoreUnit();
 			$modelVisa = new SyVisa();
 			$modelResource = new SyResourcesCategory();
 			foreach($data as $d){
@@ -591,14 +615,14 @@ class SyAuthorization extends Model {
 				$respInfo = $modelResp->getUserResponsible($d[1]);
 				$responsable = $respInfo["name"] . " " . $respInfo["firstname"];  
 					
-				$visas = $modelVisa->getVisaName($d[3]);
+				$visas = $modelVisa->getVisaDescription($d[3], $lang);
 				$machines = $modelResource->getResourcesCategoryName($d[4]);	
 				$datas[] = array(
 						'Date' 			=> $d[0],
 						'Utilisateur' 	=> $modelUser->getUserFUllName($d[1]),
 						'Laboratoire' 	=> $modelUnit->getUnitName($d[2]),
 						'Visa' 			=> $visas[0],
-						'machine' 		=> $machines[0],
+						'machine' 		=> $machines,
 						'responsable'   => $responsable
 				);
 			}
@@ -640,10 +664,16 @@ class SyAuthorization extends Model {
 		$test .= '<text x="450" y="40" font-size="20" fill="black" stroke="none" text-anchor="middle">Training for each resource from '.$searchDate_start.' to '.$searchDate_end.'</text>';
 		$test .= '</g>';
 		$couleur = array("#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
-						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
-						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
-						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
-						 "#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
+				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
 		);
 		
 		$modelResouces = new SyResourcesCategory();
@@ -686,6 +716,25 @@ class SyAuthorization extends Model {
 		return $camembert;
 	}
 	
+	
+	public function getActiveAuthorizationSummaryForResourceCategory($resource_id, $lang){
+		$sql = "SELECT * FROM sy_authorization WHERE sy_authorization.resource_id=? AND sy_authorization.is_active=1";
+		$req = $this->runRequest($sql, array($resource_id));
+		$auth = $req->fetchAll();
+		
+		$modelVisa = new SyVisa();
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		for($i = 0 ; $i < count($auth) ; $i++){
+			$auth[$i]["visa"] = $modelVisa->getVisaShortDescription($auth[$i]["visa_id"], $lang);
+			$auth[$i]["userName"] = $modelUser->getUserFUllName($auth[$i]["user_id"]);
+			$auth[$i]["userEmail"] = $modelUser->getUserEmail($auth[$i]["user_id"]);
+			$auth[$i]["unitName"] = $modelUnit->getUnitName($auth[$i]["lab_id"]);
+			
+			
+		}
+		return $auth;
+	}
 	/**
 	 * Get all the active authorizations for a given resource
 	 * @param number $resource_id
@@ -702,5 +751,23 @@ class SyAuthorization extends Model {
 				ORDER BY core_users.name;";
 		$req = $this->runRequest($sql, array($resource_id));
 		return $req->fetchAll();
+	}
+	
+	/**
+	 * Remove a visa
+	 * @param number $id
+	 */
+	public function delete($id){
+		$sql="DELETE FROM sy_authorization WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
+	
+	public function desactivateUnactiveUserAuthorizations(){
+		$sql = "SELECT * FROM core_users WHERE is_active=0";
+		$req = $this->runRequest($sql);
+		$users = $req->fetchAll();
+		foreach($users as $user){
+			$this->desactivateAthorizationsForUser($user['id']);
+		}
 	}
 }

@@ -49,7 +49,7 @@ class ModulesManager extends Model {
 		
 		if (!$this->isDataMenu("users/institutions")){
 			$sql = "INSERT INTO core_datamenu (name, link, usertype, icon) VALUES(?,?,?,?)";
-			$this->runRequest($sql, array("users/institutions", "users", 3, "glyphicon-user"));
+			$this->runRequest($sql, array("users/institutions", "coreusers", 3, "glyphicon-user"));
 		}
 	}
 	

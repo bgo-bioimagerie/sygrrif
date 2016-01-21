@@ -55,7 +55,20 @@ abstract class Model
     
     public function isTable($table){
     	
-    	$sql = 'SHOW TABLES FROM '. Configuration::get("dbname") . ' LIKE \''. $table. '\'';
+    	$dsn = Configuration::get("dsn");
+    	$dsnArray = explode(";", $dsn);
+    	$dbname = "";
+    	for($i = 0 ; $i < count($dsnArray) ; $i++){
+    		if (strpos($dsnArray[$i], "dbname") === false){
+    		}
+    		else{
+    			$dbnameArray = explode("=", $dsnArray[$i]);
+    			$dbname = $dbnameArray[0];
+    			break;
+    		}
+    	}
+    	
+    	$sql = 'SHOW TABLES FROM '. Configuration::get($dbname) . ' LIKE \''. $table. '\'';
     	$req = $this->runRequest($sql);
     	if ($req->rowCount() == 1){
     		return true;

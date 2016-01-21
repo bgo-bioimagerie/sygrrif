@@ -1,4 +1,4 @@
-<?php $this->title = "SyGRRiF Database" ?>
+<?php $this->title = "Pltaform-Manager" ?>
 
 <?php echo $navBar ?>
 

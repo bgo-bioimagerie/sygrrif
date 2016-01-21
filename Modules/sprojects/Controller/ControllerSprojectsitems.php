@@ -2,10 +2,11 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
-require_once 'Modules/sprojects/Model/SpPricing.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 require_once 'Modules/sprojects/Model/SpTranslator.php';
 require_once 'Modules/sprojects/Model/SpItemsTypes.php';
+require_once 'Modules/sprojects/Model/SpBelonging.php';
+require_once 'Modules/core/Model/CoreBelonging.php';
 require_once 'Framework/TableView.php';
 
 class ControllerSprojectsitems extends ControllerSecureNav {
@@ -53,6 +54,7 @@ class ControllerSprojectsitems extends ControllerSecureNav {
 		$table = new TableView();
 		$table->setTitle(SpTranslator::sprojects_Items($lang));
 		$table->addLineEditButton("sprojectsitems/edit");
+		$table->addDeleteButton("sprojectsitems/delete");
 		$tableHtml = $table->view($itemsArray, array("id" => "ID", "name" => CoreTranslator::Name($lang), "description" => CoreTranslator::Description($lang), "local_name" => SpTranslator::Type($lang), "is_active" => "actif", "display_order" => CoreTranslator::Display_order($lang)));
 		
 		
@@ -92,15 +94,25 @@ class ControllerSprojectsitems extends ControllerSecureNav {
 		$itemsTypes = $modelItemsTypes->getAll();
 		
 		// pricing
-		$modelPricing = new SpPricing();
-		$pricingTable = $modelPricing->getPrices();
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
+		
+		if ($sprojectsusersdatabase == "local"){
+			$modelBelonging = new SpBelonging();
+		}
+		else{
+			$modelBelonging = new CoreBelonging();
+		}
+		
+		$belongingTable = $modelBelonging->getAll();
 		
 		// fill the pricing table with the prices for this resource
 		$modelItemPricing = new SpItemPricing();
-		for ($i = 0 ; $i < count($pricingTable) ; ++$i){
-			$pid = $pricingTable[$i]['id'];
+		for ($i = 0 ; $i < count($belongingTable) ; ++$i){
+			$pid = $belongingTable[$i]['id'];
 			$inter = $modelItemPricing->getPrice($id, $pid);
-			$pricingTable[$i]['val_price'] = $inter['price'];
+			$belongingTable[$i]['val_price'] = $inter['price'];
+
 		}
 		
 		// view
@@ -111,7 +123,9 @@ class ControllerSprojectsitems extends ControllerSecureNav {
 				'name' => $name,
 				'description' => $description,
 				'is_active' => $is_active,
-				'pricingTable'=> $pricingTable,
+
+				'pricingTable'=> $belongingTable,
+
 				'displayOrder' => $displayOrder,
 				'type_id' => $type_id,
 				'itemsTypes' => $itemsTypes
@@ -142,15 +156,41 @@ class ControllerSprojectsitems extends ControllerSecureNav {
 	
 		// pricing
 		$modelItemPricing = new SpItemPricing();
-		$modelPricing = new SpPricing();
-		$pricingTable = $modelPricing->getPrices();
+
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
+		if ($sprojectsusersdatabase == "local"){
+			$modelBelonging = new SpBelonging();
+		}
+		else{
+			$modelBelonging = new CoreBelonging();
+		}
+		
+		$pricingTable = $modelBelonging->getAll();
 		foreach ($pricingTable as $pricing){
 			$pid = $pricing['id'];
-			$pname = $pricing['tarif_name'];
-			$price = $this->request->getParameter ($pid. "_price");
-			$modelItemPricing->setPricing($id_item, $pid, $price);
+			if ($pid > 1){
+				$pname = $pricing['name'];
+				$price = $this->request->getParameterNoException($pid. "_price");
+				if ($price != ""){
+					$modelItemPricing->setPricing($id_item, $pid, $price);
+				}
+			}
+
 		}
 	
 		$this->redirect ( "sprojectsitems" );
 	}
+
+	
+	public function delete(){
+		$id = $this->request->getParameter("actionid");
+		
+		$modelItem = new SpItem();
+		$modelItem->delete($id);
+		
+		// generate view
+		$this->redirect("sprojectsitems");
+	}
+
 }

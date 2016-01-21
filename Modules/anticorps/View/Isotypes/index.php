@@ -35,7 +35,7 @@
 					<td><?php echo  $isotypeId ?></td>
 				    <td><?php echo  $this->clean ( $isotype ['nom'] ); ?></td>
 				    <td class="text-center">
-				      <button type='button' onclick="location.href='isotypes/edit/<?php echo  $isotypeId ?>'" class="btn btn-xs btn-primary" id="navlink">Edit</button>
+				      <button type='button' onclick="location.href='isotypes/edit/<?php echo  $isotypeId ?>'" class="btn btn-xs btn-primary">Edit</button>
 				    </td>  
 	    		</tr>
 	    		<?php endforeach; ?>

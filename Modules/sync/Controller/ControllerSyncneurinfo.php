@@ -2,10 +2,10 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
-require_once 'Modules/core/Model/Responsible.php';
-require_once 'Modules/core/Model/Project.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
+require_once 'Modules/core/Model/CoreProject.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
@@ -182,7 +182,7 @@ class ControllerSyncneurinfo extends Controller {
 		$req = $pdo_grr->query($sql);
 		$users_old = $req->fetchAll();
 	
-		$userModel = new User();
+		$userModel = new CoreUser();
 		foreach ($users_old as $uo){
 			$name = $uo['nom'];
 			$firstname = $uo['prenom'];
@@ -228,9 +228,9 @@ class ControllerSyncneurinfo extends Controller {
 		$entry_oldq = $pdo_old->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
-		$modelProject = new Project();
+		$modelProject = new CoreProject();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
 			$recipientID = $modelUser->userIdFromLogin($entry['beneficiaire']);
@@ -270,7 +270,7 @@ class ControllerSyncneurinfo extends Controller {
 		$entry_oldq = $pdo_grr->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
@@ -291,7 +291,7 @@ class ControllerSyncneurinfo extends Controller {
 		$entry_oldq = $pdo_grr->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 		
-		$modelProject = new Project();
+		$modelProject = new CoreProject();
 		foreach($entry_old as $entry){
 			$modelProject->addProject($entry[0], "");
 		}
@@ -299,7 +299,7 @@ class ControllerSyncneurinfo extends Controller {
 	
 	public function closeOldProjects(){
 		
-		$modelProject = new Project();
+		$modelProject = new CoreProject();
 		$projects = $modelProject->projectsIDName();
 		
 		$modelCalEntry = new SyCalendarEntry();

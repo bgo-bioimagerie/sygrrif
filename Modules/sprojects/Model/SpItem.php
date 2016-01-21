@@ -132,4 +132,13 @@ class SpItem extends Model {
 		$sql = "update sp_items set name=?, description=?, display_order=?, type_id=? where id=?";
 		$unit = $this->runRequest($sql, array("".$name."", $description, $display_order, $type_id, $id));
 	}
+	
+	/**
+	 * Remove an item from the database
+	 * @param number $id item ID
+	 */
+	public function delete($id){
+		$sql="DELETE FROM sp_items WHERE id = ?";
+		$req = $this->runRequest($sql, array($id));
+	}
 }

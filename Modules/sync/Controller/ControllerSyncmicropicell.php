@@ -2,9 +2,9 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/sygrrif/Model/SyVisa.php';
 require_once 'Modules/sygrrif/Model/SyPricing.php';
-require_once 'Modules/core/Model/Unit.php';
-require_once 'Modules/core/Model/User.php';
-require_once 'Modules/core/Model/Responsible.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 require_once 'Modules/sygrrif/Model/SyResourcesCategory.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
 require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
@@ -253,7 +253,7 @@ class ControllerSyncmicropicell extends Controller {
 		$users_old = $req->fetchAll();
 		
 		
-		$userModel = new User();
+		$userModel = new CoreUser();
 		foreach($beneficiaires_old as $ben){
 			
 			$posUser = -1;
@@ -317,7 +317,7 @@ class ControllerSyncmicropicell extends Controller {
 		$entry_oldq = $pdo_old->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
@@ -364,7 +364,7 @@ class ControllerSyncmicropicell extends Controller {
 		$entry_oldq = $pdo_grr->query($sql);
 		$entry_old = $entry_oldq->fetchAll();
 	
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$modelCalEntry = new SyCalendarEntry();
 		foreach ($entry_old as $entry){
 			// get the recipient ID
@@ -386,7 +386,7 @@ class ControllerSyncmicropicell extends Controller {
 		$curentLine = 841;
 		$column = "B";
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		while ($curentLine <= 1128){
 			
 			// get units
@@ -408,9 +408,9 @@ class ControllerSyncmicropicell extends Controller {
 		$column = "C";
 		
 		// add user if not exists
-		$modelUser = new User();
-		$modelUnit = new Unit();
-		$modelResponsible = new Responsible();
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		$modelResponsible = new CoreResponsible();
 		while ($curentLine <= 1128){
 			
 			$unitName = $objPHPExcel->getActiveSheet()->getCell("B".$curentLine."")->getValue();
@@ -467,9 +467,9 @@ class ControllerSyncmicropicell extends Controller {
 		$curentLine = 841;
 
 		// add user if not exists
-		$modelUser = new User();
-		$modelUnit = new Unit();
-		$modelResponsible = new Responsible();
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		$modelResponsible = new CoreResponsible();
 		while ($curentLine <= 1128){
 			
 			// get the unit ID
@@ -548,7 +548,7 @@ class ControllerSyncmicropicell extends Controller {
 		$curentLine = 12;
 		$column = "D";
 		
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		while ($curentLine <= 1161){
 			
 			// get units
@@ -568,9 +568,9 @@ class ControllerSyncmicropicell extends Controller {
 		$curentLine = 12;
 	
 		// add user if not exists
-		$modelUser = new User();
-		$modelUnit = new Unit();
-		$modelResponsible = new Responsible();
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		$modelResponsible = new CoreResponsible();
 		while ($curentLine <= 1161){
 				
 			// get the unit ID
@@ -647,7 +647,7 @@ class ControllerSyncmicropicell extends Controller {
 		$modelVisa->addVisa("default");
 		
 		
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$users = $modelUser->getUsers();
 		
 		$modelResources = new SyResourcesCategory();

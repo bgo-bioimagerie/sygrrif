@@ -264,7 +264,7 @@ class SuTranslator {
 		if ($lang == "Fr"){
 			return "Ajouter un consommable";
 		}
-		return "Add_Item";
+		return "Add item";
 	}
 	
 	public static function Edit_Item($lang){
@@ -330,4 +330,38 @@ class SuTranslator {
 		}
 		return "Delete entry";
 	} 
+	
+	public static function Open($lang){
+		if ($lang == "Fr"){
+			return "Ouvert";
+		}
+		return "Open";
+	}
+	
+	public static function Closed($lang){
+		if ($lang == "Fr"){
+			return "Fermé";
+		}
+		return "Closed";
+	}
+	
+	public static function Total_HT($lang){
+		if ($lang == "Fr") {
+			return "Total HT";
+		}
+		return "Total HT";
+	}
+	
+	public static function Beginning_period($lang) {
+		if ($lang == "Fr") {
+			return "Début période";
+		}
+		return "Beginning period";
+	}
+	public static function End_period($lang) {
+		if ($lang == "Fr") {
+			return "Fin période";
+		}
+		return "End period";
+	}
 }

@@ -1,4 +1,4 @@
-<?php $this->title = "Anticorps: Edit Anticorp"?>
+<?php $this->title = "Biblio"?>
 
 <?php echo $navBar?>
 <?php include "Modules/biblio/View/navbar.php"; ?>
@@ -10,7 +10,7 @@
 
 		<div class="page-header">
 			<h1>
-				Author Pulications<br> <small></small>
+				Author Publications<br> <small></small>
 			</h1>
 		</div>
 

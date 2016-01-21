@@ -6,7 +6,7 @@ require_once 'Modules/anticorps/Model/Anticorps.php';
 require_once 'Modules/anticorps/Model/Espece.php';
 require_once 'Modules/anticorps/Model/Organe.php';
 require_once 'Modules/anticorps/Model/Prelevement.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 
 class ControllerAnticorps extends ControllerSecureNav {
@@ -236,7 +236,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$protocols = $protoModel->getProtocolsNo();
 		
 		// get users List
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$users = $modelUser->getUsersSummary('name');
 		
 		

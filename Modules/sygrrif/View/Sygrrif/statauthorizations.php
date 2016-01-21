@@ -142,7 +142,7 @@
 					<?php 
 					foreach ($visasList as $visa){
 						$visaId = $this->clean( $visa['id'] );	
-						$visaName = $this->clean( $visa['name'] );
+						$visaName = $this->clean( $visa['desc'] );
 						$checked = "";
 						if ($visa_id == $visaId){
 							$checked = ' selected="selected"';
@@ -232,7 +232,7 @@ if (!$resultsVisible){
 ?>
 
 <div <?php echo  $stylehidden ?>>
-  <div class="container">
+  
 	<div class="col-md-8 col-md-offset-2">
 	  <div class="page-header">
 		<h2>
@@ -320,9 +320,8 @@ if (!$resultsVisible){
 	  </tbody>
 	  </table>
 		<?php }?>
-		<button type="button" onclick="location.href='sygrrif/statauthorizationscountingcsv'" class="btn btn-primary"><?php echo SyTranslator::Export_as_xls($lang) ?></button>
-		 
 		 <?php }?>
+		 <button type="button" onclick="location.href='sygrrif/statauthorizationscountingcsv'" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_xls($lang) ?></button>
 		 
 
 		
@@ -378,11 +377,9 @@ if (!$resultsVisible){
 		 					<?php 
 	  }		 
 	?>
-	</div>
-	<button type="button" onclick="location.href='sygrrif/statauthorizationsdetailcsv'" class="btn btn-primary"><?php echo SyTranslator::Export_as_xls($lang) ?></button>
-	</div>
 	<?php }?>
-
+</div>
+<button type="button" onclick="location.href='sygrrif/statauthorizationsdetailcsv'" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_xls($lang) ?></button>
 </div>
 
 <?php include "Modules/core/View/timepicker_script.php" ?>

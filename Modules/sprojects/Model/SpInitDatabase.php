@@ -2,14 +2,14 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/ModulesManager.php';
-require_once 'Modules/sprojects/Model/SpUser.php';
-require_once 'Modules/sprojects/Model/SpUnit.php';
-require_once 'Modules/sprojects/Model/SpPricing.php';
-require_once 'Modules/sprojects/Model/SpUnitPricing.php';
+
+//require_once 'Modules/sprojects/Model/SpUser.php';
+//require_once 'Modules/sprojects/Model/SpUnit.php';
+//require_once 'Modules/sprojects/Model/SpResponsible.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
-require_once 'Modules/sprojects/Model/SpResponsible.php';
+
 require_once 'Modules/sprojects/Model/SpBill.php';
 require_once 'Modules/sprojects/Model/SpItemsTypes.php';
 
@@ -27,6 +27,7 @@ class SpInitDatabase extends Model {
 	 */
 	public function createDatabase(){
 		
+
 		$modulesModel = new SpUser();
 		$modulesModel->createTable();
 		$modulesModel->createDefaultUser();
@@ -35,11 +36,10 @@ class SpInitDatabase extends Model {
 		$modulesModel->createTable();
 		$modulesModel->createDefaultUnit();
 		
-		$modulesModel = new SpPricing();
+
+		$modulesModel = new SpResponsible();
 		$modulesModel->createTable();
-		
-		$modulesModel = new SpUnitPricing();
-		$modulesModel->createTable();
+		$modulesModel->createDefaultResponsible();
 
 		$modulesModel = new SpItemPricing();
 		$modulesModel->createTable();
@@ -49,10 +49,6 @@ class SpInitDatabase extends Model {
 		
 		$modulesModel = new SpProject();
 		$modulesModel->createTable();
-		
-		$modulesModel = new SpResponsible();
-		$modulesModel->createTable();
-		$modulesModel->createDefaultResponsible();
 		
 		$modulesModel = new SpBill();
 		$modulesModel->createTable();

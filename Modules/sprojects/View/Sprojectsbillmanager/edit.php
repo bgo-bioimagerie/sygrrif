@@ -69,8 +69,10 @@
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Date_paid($lang) ?></label>
 			<div class="col-xs-8">
-				<input class="form-control" id="name" type="text" name="date_paid"
-				       value="<?php echo CoreTranslator::dateFromEn($this->clean($billInfo["date_paid"]), $lang) ?>"  
+
+				<input class="form-control" id="name" type="date" name="date_paid"
+				       value="<?php echo $this->clean($billInfo["date_paid"]) ?>"  
+
 				/>
 			</div>
 		</div>

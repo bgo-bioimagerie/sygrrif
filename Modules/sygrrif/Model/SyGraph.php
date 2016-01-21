@@ -199,6 +199,12 @@ class SyGraph extends Model {
 		return $resaDayNightWe;
 	}
 	
+	private function getFirstPricing(){
+		$pricingModel = new SyPricing();
+		$pricingsInfo = $pricingModel->getPrices();
+		return $pricingsInfo[0];
+	}
+	
 	/**
 	 * Generate a pie chart number of hours of reservation per resource
 	 * @param unknown $year
@@ -221,8 +227,7 @@ class SyGraph extends Model {
 			$resourceType = $tmp[0];
 			
 			// get the night and we periods
-			$pricingModel = new SyPricing();
-			$pricingInfo = $pricingModel->getPricing(1); // the pricing id should be adapted if the pricings don't se the same hight and we settings
+			$pricingInfo = $this->getFirstPricing();
 			$night_start = $pricingInfo['night_start'];
 			$night_end = $pricingInfo['night_end'];
 			$we_array1 = explode(",", $pricingInfo['choice_we']);
@@ -462,8 +467,7 @@ class SyGraph extends Model {
 		$machinesFormesListe = $req->fetchAll();
 		
 		// get the night and we periods
-		$pricingModel = new SyPricing();
-		$pricingInfo = $pricingModel->getPricing(1); // the pricing id should be adapted if the pricings don't se the same hight and we settings
+		$pricingInfo = $this->getFirstPricing();
 		$night_start = $pricingInfo['night_start'];
 		$night_end = $pricingInfo['night_end'];
 		$we_array1 = explode(",", $pricingInfo['choice_we']);
@@ -593,8 +597,7 @@ class SyGraph extends Model {
 		$machinesFormesListe = $req->fetchAll();
 	
 		// get the night and we periods
-		$pricingModel = new SyPricing();
-		$pricingInfo = $pricingModel->getPricing(1); // the pricing id should be adapted if the pricings don't se the same hight and we settings
+		$pricingInfo = $this->getFirstPricing();
 		$night_start = $pricingInfo['night_start'];
 		$night_end = $pricingInfo['night_end'];
 		$we_array1 = explode(",", $pricingInfo['choice_we']);

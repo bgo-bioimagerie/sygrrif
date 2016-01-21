@@ -1,7 +1,8 @@
 <?php
 require_once 'Framework/Model.php';
 require_once 'Modules/sprojects/Model/SpUser.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
+require_once 'Modules/core/Model/CoreConfig.php';
 
 /**
  * Class defining the Consomable items model
@@ -212,7 +213,7 @@ class SpProject extends Model {
 		if ($sprojectsusersdatabase == "local") {
 			$modelUser = new SpUser ();
 		} else {
-			$modelUser = new User ();
+			$modelUser = new CoreUser ();
 		}
 		for($i = 0; $i < count ( $entries ); $i ++) {
 			$entries [$i] ["user_name"] = $modelUser->getUserFUllName ( $entries [$i] ['id_user'] );
@@ -224,18 +225,37 @@ class SpProject extends Model {
 		$req = $this->runRequest ( $sql );
 		
 		$entries = $req->fetchAll ();
-		$modelUser = new SpUser ();
+
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
+		$modelUser = "";
+		if ($sprojectsusersdatabase == "local") {
+			$modelUser = new SpUser ();
+		} else {
+			$modelUser = new CoreUser ();
+		}
+
 		for($i = 0; $i < count ( $entries ); $i ++) {
 			$entries [$i] ["user_name"] = $modelUser->getUserFUllName ( $entries [$i] ['id_user'] );
 		}
 		return $entries;
 	}
+
 	public function closedProjects($sortentry = 'id') {
 		$sql = "select * from sp_projects where id_status=0 order by " . $sortentry . " ASC;";
 		$req = $this->runRequest ( $sql );
 		
 		$entries = $req->fetchAll ();
-		$modelUser = new SpUser ();
+
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
+		$modelUser = "";
+		if ($sprojectsusersdatabase == "local") {
+			$modelUser = new SpUser ();
+		} else {
+			$modelUser = new CoreUser ();
+		}
+
 		for($i = 0; $i < count ( $entries ); $i ++) {
 			$entries [$i] ["user_name"] = $modelUser->getUserFUllName ( $entries [$i] ['id_user'] );
 		}

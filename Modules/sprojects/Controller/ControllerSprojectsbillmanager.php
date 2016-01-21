@@ -51,7 +51,14 @@ class ControllerSprojectsbillmanager extends ControllerSecureNav {
 				"is_paid" => SpTranslator::Is_Paid($lang)
 		);
 		// is restricted translation
-		$modelUser = new User();
+		$modelConfig = new CoreConfig();
+		$sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
+		if ($sprojectsusersdatabase == "local"){
+			$modelUser = new SpUser();
+		}
+		else{
+			$modelUser = new CoreUser();
+		}
 		for($i = 0; $i < count ( $billsList ); $i ++) {
 			
 			$billsList[$i]["date_generated"] = CoreTranslator::dateFromEn($billsList[$i]["date_generated"], $lang);
@@ -101,13 +108,21 @@ class ControllerSprojectsbillmanager extends ControllerSecureNav {
 	public function editquery(){
 		
 		$id = $this->request->getParameter("id");
+
+		$id_resp = $this->request->getParameter("id_resp");
 		$number = $this->request->getParameter("number");
+		$no_project = $this->request->getParameter("no_project");
+		$total_ht = $this->request->getParameter("total_ht");
+
 		$date_generated = $this->request->getParameter("date_generated");
 		$date_paid = $this->request->getParameter("date_paid");
 		$is_paid = $this->request->getParameter("is_paid");
 		
+		$date_generated = CoreTranslator::dateToEn($date_generated, $this->getLanguage());
+		//$date_paid = CoreTranslator::dateToEn($date_paid, $this->getLanguage());
+		
 		$modelBillManager = new SpBill();
-		$modelBillManager->editBills($id, $number, $date_generated, $date_paid, $is_paid);
+		$modelBillManager->editBills($id, $number, $no_project, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid);
 		
 		$this->redirect("sprojectsbillmanager");
 		

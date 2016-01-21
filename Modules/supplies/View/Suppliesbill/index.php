@@ -84,7 +84,7 @@
 		<br>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  CoreTranslator::Ok($lang) ?>" />
-				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default" id="navlink"><?php echo  CoreTranslator::Cancel($lang) ?></button>
+				<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

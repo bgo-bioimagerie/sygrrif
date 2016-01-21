@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Framework/Model.php';
-require_once 'Modules/sygrrif/Model/SyUnitPricing.php';
 require_once 'Modules/sygrrif/Model/SyBill.php';
 require_once 'Modules/sygrrif/Model/SyResourcePricing.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
@@ -289,7 +288,7 @@ class SyBillGenerator extends Model {
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Total H.T.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($totalHT,2), 2, ',', ' ')." â‚¬");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($totalHT,2), 2, ',', ' ')." euros");
 		
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
@@ -300,7 +299,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "T.V.A.:20%");
 		$honoraireTVA = 0.2*$totalHT;
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." â‚¬");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTVA,2), 2, ',', ' ')." euros");
 		
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
@@ -317,7 +316,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, "Total T.T.C.");
 		$honoraireTotal = 1.2*$totalHT;
-		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." â‚¬");
+		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, number_format(round($honoraireTotal,2), 2, ',', ' ')." euros");
 		
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('D'.$curentLine)->getFont()->setBold(true);
@@ -343,6 +342,8 @@ class SyBillGenerator extends Model {
 	 */
 	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
 		
+		$this->updateUnsetResponsibles(); // this is needed to setup responsible if a user has booked without setted responsible
+		
 		// /////////////////////////////////////////// //
 		//        get the input informations           //
 		// /////////////////////////////////////////// //
@@ -359,15 +360,18 @@ class SyBillGenerator extends Model {
 		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
 		
 		// get the lab info
-		$unitPricingModel = new SyUnitPricing();
-		$LABpricingid = $unitPricingModel->getPricing($unit_id);
-		
+		$modelUnit = new CoreUnit();
+		$LABpricingid = $modelUnit->getBelonging($unit_id);
+		if ($LABpricingid <= 1 ){
+			$LABpricingid = 0;
+		}
+
 		// responsible fullname
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
 		
 		// unit name
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitName = $modelUnit->getUnitName($unit_id);
 		
 		$unitInfo = $modelUnit->getUnit($unit_id);
@@ -381,6 +385,11 @@ class SyBillGenerator extends Model {
 		//             Main query                    //
 		// ///////////////////////////////////////// //
 		$bookingUsers = $this->generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id, $responsible_id);
+		if (count($bookingUsers) == 0){
+			echo "ERROR: no reservations found ! <br/>";
+			return;
+		}
+		
 		$packagesPrices = $this->getUnitPackagePricesForEachResource($resources, $LABpricingid);
 		$timePrices = $this->getUnitTimePricesForEachResource($resources, $LABpricingid);
 		
@@ -475,8 +484,7 @@ class SyBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, "Montant");
 		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($stylesheet["styleTableHeader"]);
 		
-		
-		
+	
 		// table content
 		$total = 0;
 		foreach($resources as $resource){
@@ -488,7 +496,7 @@ class SyBillGenerator extends Model {
 				$packages = $userResa["packages"];
 				$time = $userResa["time"];
 				
-				$modelUser = new User();
+				$modelUser = new CoreUser();
 				$userName = $modelUser->getUserFUllName($userID);
 				
 				// print the packages
@@ -580,8 +588,6 @@ class SyBillGenerator extends Model {
 							$objBold = $objRichTextP->createTextRun($rtimePrices["price_we"] . "hwe ");
 							$objBold->getFont()->setColor($phpColor);
 						}
-						
-						
 						
 						$prices =  $rtimePrices["price_day"] . "hj " . $rtimePrices["price_night"] . "hn " . $rtimePrices["price_we"] . "hwe" ;
 						$price = $time["nb_hours_day"]*$rtimePrices["price_day"] + $time["nb_hours_night"]*$rtimePrices["price_night"] + $time["nb_hours_we"]*$rtimePrices["price_we"];
@@ -726,13 +732,28 @@ class SyBillGenerator extends Model {
 		return $objPHPExcel;
 	}
 	
+	protected function updateUnsetResponsibles(){
+		$modelCalEntries = new SyCalendarEntry();
+		$modelUser = new CoreUser();
+		$entries = $modelCalEntries->getZeroRespEntries();
+		foreach($entries as $entry){
+			$recipientID = $entry["recipient_id"];
+			$resps = $modelUser->getUserResponsibles($recipientID);
+			if (count($resps) > 0){
+				$modelCalEntries->setEntryResponsible($entry["id"], $resps[0]["id"]);
+			}
+		}
+	}
+	
 	protected function generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id,$responsible_id){
 		// get the list of users in the selected period
-		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
+		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'resp'=>$responsible_id);
 		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
-				(start_time <:start AND end_time <= :end AND end_time>:start) OR
+				((start_time <:start AND end_time <= :end AND end_time>:start) OR
 				(start_time >=:start AND end_time <= :end) OR
-				(start_time >=:start AND start_time<:end AND end_time > :end) ORDER BY id';
+				(start_time >=:start AND start_time<:end AND end_time > :end))
+				AND (responsible_id = :resp)
+				ORDER BY id';
 		$req = $this->runRequest($sql, $q);
 		$beneficiaire = $req->fetchAll();	// Liste des beneficiaire dans la periode selectionee
 		
@@ -741,15 +762,15 @@ class SyBillGenerator extends Model {
 		$i = 0;
 		foreach($beneficiaire as $b){
 
-				// user info
-			$modelUser = new User();
-			$nomPrenom = $modelUser->getUserFromlup(($b[0]), $unit_id, $responsible_id);
+			// user info
+			$modelUser = new CoreUser();
+			$nomPrenom = $modelUser->userAllInfo($b[0]);
 			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){
-				$users[$i]["name"] = $nomPrenom[0]["name"]; //Nom du beneficiaire
-				$users[$i]["firstname"] = $nomPrenom[0]["firstname"]; //Prenom du beneficiaire
+				$users[$i]["name"] = $nomPrenom["name"]; //Nom du beneficiaire
+				$users[$i]["firstname"] = $nomPrenom["firstname"]; //Prenom du beneficiaire
 				$users[$i]["id"] = $b[0]; //id du beneficiaire
-				$users[$i]["id_responsible"] = $nomPrenom[0]["id_responsible"]; //Responsable du beneficiaire
+				$users[$i]["id_responsible"] = $responsible_id; //Responsable du beneficiaire
 				$users[$i]["pricing_id"] = $LABpricingid; //Tarif applique
 				$i++;
 			}
@@ -823,6 +844,7 @@ class SyBillGenerator extends Model {
 				$userCount++;
 			}
 		}
+		
 		return $reservationsSummaries;
 		
 	}
@@ -906,7 +928,7 @@ class SyBillGenerator extends Model {
 		// get the pricing informations
 		$pricingModel = new SyPricing();
 		$pricingInfo = $pricingModel->getPricing($LABpricingid);
-		$tarif_name = $pricingInfo['tarif_name'];
+		//$tarif_name = $pricingInfo['tarif_name'];
 		$tarif_unique = $pricingInfo['tarif_unique'];
 		$tarif_nuit = $pricingInfo['tarif_night'];
 		$tarif_we = $pricingInfo['tarif_we'];
@@ -1078,14 +1100,14 @@ class SyBillGenerator extends Model {
 		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
 		
 		// respondible fullname
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
 		
 		
 		// unit name
 		$unitName = "";
 		if ($unit_id > 0){
-			$modelUnit = new Unit();
+			$modelUnit = new CoreUnit();
 			$unitName = $modelUnit->getUnitName($unit_id);
 		}
 		
@@ -1108,7 +1130,7 @@ class SyBillGenerator extends Model {
 		$people = array();
 		foreach($beneficiaire as $b){
 			// user info
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$nomPrenom = $modelUser->getUserFromIdUnit(($b[0]), $unit_id);
 			if (count($nomPrenom) != 0){
 				
@@ -1515,7 +1537,7 @@ class SyBillGenerator extends Model {
 		$searchDate_end= mktime(0,0,0,$tabDate[1],$tabDate[2]+1,$tabDate[0]);
 		
 		$laboratoire = $unit_id;
-		$modelUnit = new Unit();
+		$modelUnit = new CoreUnit();
 		$unitInfo = $modelUnit->getUnit($unit_id);
 		
 		//----------------------------------------------------------------------------
@@ -1532,7 +1554,7 @@ class SyBillGenerator extends Model {
 		$i=0;
 		foreach($beneficiaire as $b){
 			// user info
-			$modelUser = new User();
+			$modelUser = new CoreUser();
 			$nomPrenom = $modelUser->getUserFromIdUnit(($b[0]), $unit_id);
 			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){

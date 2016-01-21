@@ -94,21 +94,23 @@
 		<?php 
 		foreach ($pricingTable as $pricing){
 			
-			$pid = $this->clean($pricing['id']);
-			$pname = $this->clean($pricing['tarif_name']);
-			$val_price = 0;
-			if (isset($pricing['val_price'])){
-				$val_price = $this->clean($pricing['val_price']);
-			}	
-			?>
-			<tr>
-				<td><b><?php echo  $pname ?></b></td>
-				<td></td>
-				<td> <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid. "_price" ?>" 
-				                         value="<?php echo  $val_price ?>"/> € (H.T.)</td>
-				<td></td>
-			</tr>
-			<?php
+			if ($pricing['id'] > 1){
+				$pid = $this->clean($pricing['id']);
+				$pname = $this->clean($pricing['name']);
+				$val_price = 0;
+				if (isset($pricing['val_price'])){
+					$val_price = $this->clean($pricing['val_price']);
+				}	
+				?>
+				<tr>
+					<td><b><?php echo  $pname ?></b></td>
+					<td></td>
+					<td> <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid. "_price" ?>" 
+					                         value="<?php echo  $val_price ?>"/> € (H.T.)</td>
+					<td></td>
+				</tr>
+				<?php
+			}
 		}
 		?>
 		</table>

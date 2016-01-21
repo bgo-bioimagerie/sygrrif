@@ -11,51 +11,8 @@
 <?php include "Modules/supplies/View/navbar.php"; ?>
 
 <br>
-<div class="contatiner">
-	<div class="col-md-6 col-md-offset-3">
-	
-		<div class="page-header">
-			<h1>
-			<?php echo  SuTranslator::Supplies_Items($lang) ?>
-				<br> <small></small>
-			</h1>
-		</div>
-
-		<table id="dataTable" class="table table-striped">
-			<thead>
-				<tr>
-					<td><a href="suppliesitems/index/id">ID</a></td>
-					<td><a href="suppliesitems/index/name"><?php echo  CoreTranslator::Name($lang) ?></a></td>
-					<td><a href="suppliesitems/index/name"><?php echo  CoreTranslator::Description($lang) ?></a></td>
-					<td><a href="suppliesitems/index/name"><?php echo  SuTranslator::Is_active($lang) ?></a></td>
-					<td></td>
-				</tr>
-			</thead>
-			<tbody>
-				<?php foreach ( $itemsArray as $item ) : 
-				
-				?> 
-				<tr>
-					<?php $itemId = $this->clean ( $item ['id'] ); ?>
-					<td><?php echo  $itemId ?></td>
-				    <td><?php echo  $this->clean ( $item ['name'] ); ?></td>
-				    <td><?php echo  $this->clean ( $item ['description'] ); ?></td>
-				    <?php 
-				    $is_active = $this->clean ( $item ['is_active'] );
-				    if ($is_active){$is_active = "yes";}
-				    else{$is_active = "no";}
-				    ?>
-				    <td><?php echo  $is_active; ?></td>
-				    <td>
-				      <button type='button' onclick="location.href='suppliesitems/edit/<?php echo  $itemId ?>'" class="btn btn-xs btn-primary"><?php echo  CoreTranslator::Edit($lang) ?></button>
-				    </td>  
-	    		</tr>
-	    		<?php endforeach; ?>
-				
-			</tbody>
-		</table>
-
-	</div>
+<div class="col-md-6 col-md-offset-3">
+	<?php echo $tableHtml ?>
 </div>
 
 <?php if (isset($msgError)): ?>

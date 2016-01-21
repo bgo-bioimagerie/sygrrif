@@ -89,10 +89,12 @@
 		</thead>
 		<tbody>
 		<?php 
+		$pricingCount = -1;
 		foreach ($pricingTable as $pricing){
 			
+			$pricingCount++;
 			$pid = $this->clean($pricing['id']);
-			$pname = $this->clean($pricing['tarif_name']);
+			$pname = $this->clean($pricing['name']);
 			$punique = $this->clean($pricing['tarif_unique']);
 			$val_day = 0;
 			if (isset($pricing['val_day'])){
@@ -130,20 +132,20 @@
 
 				if (($pnight == "1") AND ($pwe== "0")){
 					?>
-					<td><?php echo SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
+					<td><? SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
 					<td></td>
 					<?php
 				}
 				else if (($pnight == "0") AND ($pwe == "1")){
 					?>
-					<td><?php echo SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
+					<td><? SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
 					<td></td>
 					<?php
 				}
 				else if (($pnight == "1") AND ($pwe == "1")){
 					?>
-					<td><?php echo SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
-					<td><?php echo SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
+					<td><? SyTranslator::Price_Night($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_night" ?>" value="<?php echo  $val_night ?>"/> € (H.T.)</td>
+					<td><? SyTranslator::Price_w_e($lang) ?>: <input id="tarif" type="text" class="text-center"  name="<?php echo  $pid . "_we" ?>" value="<?php echo  $val_we ?>"/> € (H.T.)</td>
 				    <?php
 				}
 				?>
@@ -153,8 +155,12 @@
 			// supply
 			$count = 0;
 			foreach ($resource_info['supplynames'] as $supplyName){
+				$priceSup = 0;
+				if (isset($suppliesPrices[$pricingCount][$count])){
+					$priceSup = $suppliesPrices[$pricingCount][$count];	
+				}
 			?>
-				<td>.<input id="tarif" type="text" class="text-center" name="<?php echo  $pid. "_" . $count ?>" value="<?php if (isset( $suppliesPrices[$count])){ echo  $suppliesPrices[$count];} ?>"/> € (H.T.)</td>	
+				<td><input id="tarif" type="text" class="text-center" name="<?php echo  $pid. "_" . $count ?>" value="<?php echo $priceSup ?>"/> € (H.T.)</td>	
 			<?php
 			$count++;
 			}
@@ -174,7 +180,7 @@
 		</div>		
 		<div class="col-xs-3 col-xs-offset-6" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Save($lang) ?>" />
-				<button type="button" onclick="location.href='sygrrif/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
+				<button type="button" onclick="location.href='sygrrifareasresources/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
 		</div>
       </form>
 	</div>
