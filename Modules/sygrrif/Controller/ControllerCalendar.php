@@ -136,7 +136,7 @@ class ControllerCalendar extends ControllerBooking {
 		// get packages
 		$modelPackage = new SyPackage();
 		$pakages = $modelPackage->getPrices($id);
-		print_r($pakages);
+		//print_r($pakages);
 		
 		// view
 		$navBar = $this->navBar();
