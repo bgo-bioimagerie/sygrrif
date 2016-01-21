@@ -458,8 +458,12 @@
 								<td><input class="form-control" type="text" name="pname[]" value="<?php echo  $pakage["name"] ?>"/></td>
 								<td><input class="form-control" type="text" name="pduration[]" value="<?php echo  $pakage["duration"] ?>"/></td>
 								<?php foreach ($pricingTable as $pricing){ 
+									$priceValue = 0;
+									if (isset($pakage["price_" .$pricing["id"]])){
+										$priceValue = $pakage["price_" .$pricing["id"]];	
+									}
 									?>
-									<td><input class="form-control" type="text" name="p_<?php echo $pricing["id"]?>[]" value="<?php echo  $pakage["price_" .$pricing["id"]]?>"/></td>
+									<td><input class="form-control" type="text" name="p_<?php echo $pricing["id"]?>[]" value="<?php echo $priceValue?>"/></td>
 								<?php
 								}
 								?>
