@@ -14,19 +14,33 @@ class CaEntry extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`id_category` int(11) NOT NULL,
 	    `title` varchar(100) NOT NULL,
+		`image_url` varchar(300) NOT NULL,
 		`short_desc` text NOT NULL,
-		`full_desc` text NOT NULL,		
+		`full_desc` text NOT NULL,
 		PRIMARY KEY (`id`)
 		);";
 
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		
+		// add columns if no exists
+		$sql = "SHOW COLUMNS FROM `ca_entries` LIKE 'image_url'";
+		$pdo = $this->runRequest($sql);
+		$isColumn = $pdo->fetch();
+		if ( $isColumn == false){
+			$sql = "ALTER TABLE `ca_entries` ADD `image_url` varchar(300) NOT NULL";
+			$pdo = $this->runRequest($sql);
+		}
 	}
 	
 	public function add($id_category, $title, $short_desc, $full_desc){ 
 		$sql = "INSERT INTO ca_entries(id_category, title, short_desc, full_desc) VALUES(?,?,?,?)";
 		$this->runRequest($sql, array($id_category, $title, $short_desc, $full_desc));
 		return $this->getDatabase()->lastInsertId();
+	}
+	
+	public function setImageUrl($id, $url){
+		$sql = "update ca_entries set image_url=? where id=?";
+		$this->runRequest($sql, array($url, $id));
 	}
 	
 	public function edit($id, $id_category, $title, $short_desc, $full_desc){
