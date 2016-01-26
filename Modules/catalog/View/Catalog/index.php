@@ -57,7 +57,7 @@ a.mybutton:hover { background: #ffffff; color: #337ab7; border: 1px solid #337ab
     <figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
     	<?php 
     	
-    	$imageFile = "data/catalog/" . $entry["id"] . ".jpg";
+    	$imageFile = "data/catalog/" . $entry["image_url"];
     	if (!file_exists($imageFile)){
     		$imageFile = "Modules/catalog/View/images_icon.png";
     	}
