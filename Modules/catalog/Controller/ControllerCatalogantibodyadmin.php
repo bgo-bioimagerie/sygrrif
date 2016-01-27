@@ -12,7 +12,7 @@ require_once 'Modules/catalog/Model/CaTranslator.php';
 require_once 'Modules/catalog/Model/CaCategory.php';
 require_once 'Modules/catalog/Model/CaEntry.php';
 
-class ControllerCatalogadmin extends ControllerSecureNav {
+class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 
 	public function index(){
 		$navBar = $this->navBar();
@@ -20,101 +20,6 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 				'navBar' => $navBar
 		) );
 	}
-	
-	public function categories(){
-		$navBar = $this->navBar ();
-		
-		$lang = $this->getLanguage();
-		
-		// get sort action
-		$sortentry = "id";
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$sortentry = $this->request->getParameter ( "actionid" );
-		}
-		
-		// get the user list
-		$modelCategory = new CaCategory();
-		$categoriesArray = $modelCategory->getAll();
-		
-		$table = new TableView();
-		$table->setTitle(CaTranslator::Categories($lang));
-		$table->addLineEditButton("catalogadmin/editcategory");
-		$table->addDeleteButton("catalogadmin/deletecategory");
-		$table->addPrintButton("catalogadmin/categories/");
-		$tableHtml = $table->view($categoriesArray, array("id" => "ID", "name" => CoreTranslator::Name($lang)));
-		
-		$print = $this->request->getParameterNoException("print");
-		if ($table->isPrint()){
-			echo $tableHtml;
-			return;
-		}
-		
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'tableHtml' => $tableHtml
-		) );
-	}
-	
-	public function editcategory() {
-		
-		// get action
-		$id = 0;
-		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
-			$id = $this->request->getParameter ( "actionid" );
-		}
-		
-		$lang = $this->getLanguage();
-		
-		// get name
-		$name = "";
-		$modelCategory = new CaCategory();
-		if ($id > 0){
-			$name = $modelCategory->getName($id);
-		}
-		
-		// build the form
-		$form = new Form($this->request, "formcategories");
-		$form->setTitle(CaTranslator::Category($lang));
-		$form->addHidden("id", $id);
-		$form->addText("name", "name", true, $name);
-		$form->setValidationButton("Ok", "catalogadmin/editcategory/".$id);
-		$form->setCancelButton(CoreTranslator::Cancel($lang), "catalogadmin/categories");
-		
-		if ($form->check()){
-			if ($id > 0){
-				$modelCategory->edit($form->getParameter("id"), $form->getParameter("name"));
-			}
-			else{
-				$modelCategory->add($form->getParameter("name"));
-			}
-			
-			$this->redirect("catalogadmin","categories");
-		}
-		else{
-			// set the view
-			$formHtml = $form->getHtml();
-			// view
-			$navBar = $this->navBar();
-			$this->generateView ( array (
-					'navBar' => $navBar,
-					'formHtml' => $formHtml
-			) );
-		}
-	}
-	
-	/**
-	 * Remove a category from the database
-	 */
-	public function deletecategory(){
-	
-		$id = $this->request->getParameter("actionid");
-		$modelCategory = new CaCategory();
-		$modelCategory->delete($id);
-	
-		// generate view
-		$this->redirect("catalogadmin/categories");
-	}
-	
 	
 	public function entries(){
 		$navBar = $this->navBar ();
@@ -128,7 +33,7 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		}
 		
 		// get the user list
-		$modelEntry = new CaEntry();
+		$modelEntry = new CaAntibodyEntry();
 		$dataArray = $modelEntry->getAll();
 		$modelCategory = new CaCategory();
 		for($i = 0 ; $i < count($dataArray) ; $i++){
