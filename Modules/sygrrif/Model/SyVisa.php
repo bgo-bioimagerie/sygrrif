@@ -99,6 +99,17 @@ class SyVisa extends Model {
     		throw new Exception("Cannot find the visa using the given id"); 
 	}
 	
+	public function getVisaFromResourceAndInstructor($resource_id, $id_AF){
+		$sql = "select * from sy_visas where id_resource_category=? and id_instructor=?";
+		$unit = $this->runRequest($sql, array($resource_id, $id_AF));
+		if ($unit->rowCount() == 1){
+			$val = $unit->fetch();
+			return $val[0];  // get the first line of the result
+		}
+		else
+			return 0;
+	}
+	
 	public function getVisaShortDescription($id, $lang){
 		$sql = "select * from sy_visas where id=?";
 		$req = $this->runRequest($sql, array($id));

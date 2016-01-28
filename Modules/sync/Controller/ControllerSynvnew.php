@@ -66,7 +66,6 @@ class ControllerSynvnew extends Controller {
 		echo "<p> Copied syprincings to coreBelongings </p>";
 		
 		
-		/*
 		// 3- Associate belonging to unit depending on the syUnitPricing
 		echo "<p> Associate belonging to unit depending on the syUnitPricing... </p>";
 		// 3.1- Get all the unit pricing
@@ -75,8 +74,6 @@ class ControllerSynvnew extends Controller {
 		$syUnitPricings = $req->fetchAll();
 		echo "<p> Get all the unit pricing </p>";
 		
-		
-		/*
 		// 2.3 do +1 to pricing ids
 		$sql = "SELECT * FROM sy_j_resource_pricing;";
 		$req = $this->runRequest($sql);
@@ -156,7 +153,6 @@ class ControllerSynvnew extends Controller {
 			$moduleColorCode->editColorCode($id, $name, $color, $text_color, $display_order);
 		}
 	
-		/*
 		// 6- remove useless tables and columns
 		echo "<p> remove useless tables and columns... </p>";
 		$sql = "DROP TABLE sy_unitpricing;";
@@ -167,6 +163,7 @@ class ControllerSynvnew extends Controller {
 		$sql = "alter table sy_pricing drop column tarif_print;";
 		$this->runRequest($sql);
 		
+		/*
 		$sql = "DROP TABLE su_pricing;";
 		$this->runRequest($sql);
 		$sql = "DROP TABLE su_unitpricing;";

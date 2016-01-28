@@ -20,7 +20,7 @@ require_once 'Modules/sygrrif/Model/SyInstall.php';
  * @author sprigent
  */
 
-class ControllerSynvnew extends Controller {
+class ControllerSynvnewhistop extends Controller {
 
 	
 	private static $bdd;
@@ -29,6 +29,7 @@ class ControllerSynvnew extends Controller {
 
 	// affiche la liste des Sources
 	public function index() {
+
 
 		// 1- install data  base
 		echo "<p> Install core database...  </p>";
@@ -100,7 +101,7 @@ class ControllerSynvnew extends Controller {
 			$unitInfo = $modelUnit->getUnit($up["id_unit"]);
 			$modelUnit->editUnit($unitInfo["id"], $unitInfo["name"], $unitInfo["address"], $up["id_pricing"]+1);
 		}
-		
+
 		// 5- create visas
 		$modelVisa = new SyVisa();
 		
@@ -126,7 +127,7 @@ class ControllerSynvnew extends Controller {
 		$id_MS = 113;
 		$id_PB = 202;
 		$id_RV = 201;
-		$id_GB = 1; // todo add gaelle to users
+		$id_GB = 12;
 		
 		$status_resp = 2;
 		$status_instructor = 1;
@@ -203,23 +204,31 @@ class ControllerSynvnew extends Controller {
 			$resource_id = $au["resource_id"];
 			$visa_id = $au["visa_id"];
 			
+			//echo "visa_id = " . $visa_id . "<br/>"; 
+			
 			
 			$visaID = 1;
 			if ($visa_id == $id_visa_AF){
+				//echo "get visa for res:" . $resource_id . ", user id = " . $id_AF . "<br/>";
 				$visaID = $modelVisa->getVisaFromResourceAndInstructor($resource_id, $id_AF);
 			}
 			if ($visa_id == $id_visa_MS){
+				//echo "get visa for res:" . $resource_id . ", user id = " . $id_AF . "<br/>";
 				$visaID = $modelVisa->getVisaFromResourceAndInstructor($resource_id, $id_MS);
 			}
 			if ($visa_id == $id_visa_PB){
+				//echo "get visa for res:" . $resource_id . ", user id = " . $id_AF . "<br/>";
 				$visaID = $modelVisa->getVisaFromResourceAndInstructor($resource_id, $id_PB);
 			}
 			if ($visa_id == $id_visa_RV){
+				//echo "get visa for res:" . $resource_id . ", user id = " . $id_AF . "<br/>";
 				$visaID = $modelVisa->getVisaFromResourceAndInstructor($resource_id, $id_RV);
 			}
 			if ($visa_id == $id_visa_GB){
+				//echo "get visa for res:" . $resource_id . ", user id = " . $id_AF . "<br/>";
 				$visaID = $modelVisa->getVisaFromResourceAndInstructor($resource_id, $id_GB);
 			}
+			//echo "visa id = " . $visaID . "<br/>";
 				
 			$modelAuthorizations->editAuthorization($id, $date, $user_id, $lab_id, $visaID, $resource_id);
 		}
@@ -275,8 +284,7 @@ class ControllerSynvnew extends Controller {
 		$this->runRequest($sql);
 		$sql = "DROP TABLE su_unitpricing;";
 		$this->runRequest($sql);
-		
-/*		
+			
 		// copy responsibles to join table
 		$modelUser = new CoreUser();
 		$modelResp = new CoreResponsible();
@@ -296,7 +304,6 @@ class ControllerSynvnew extends Controller {
 				$modelCalEntries->setEntryResponsible($entry["id"], $resps[0]["id"]);
 			}
 		}
-*/
 		echo "<p> Done </p>";
 	}
 	
