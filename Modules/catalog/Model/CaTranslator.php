@@ -117,5 +117,81 @@ class CaTranslator {
 		return "Illustration";
 	}
 	
-	
+        public static function Plugins($lang){
+		if ($lang == "Fr"){
+			return "Plugins";
+		}
+		return "Plugins";
+	}
+        
+        public static function Antibody_plugin($lang){
+		if ($lang == "Fr"){
+			return "Plugin anticorps";
+		}
+		return "antibody plugin";
+	} 
+        
+        public static function Enabled($lang){
+		if ($lang == "Fr"){
+			return "Activé";
+		}
+		return "Enabled";
+	} 
+        
+        public static function Unabled($lang){
+		if ($lang == "Fr"){
+			return "Désactivé";
+		}
+		return "Unabled";
+	} 
+          
+        public static function Antibodies($lang){
+		if ($lang == "Fr"){
+			return "Anticorps";
+		}
+		return "Antibodies";
+	} 
+        
+        public static function Provider($lang){
+		if ($lang == "Fr"){
+			return "Fournisseur";
+		}
+		return "Provider";
+	}
+        
+        public static function Name($lang){
+		if ($lang == "Fr"){
+			return "Nom";
+		}
+		return "Name";
+	}
+        
+        public static function Reference($lang){
+		if ($lang == "Fr"){
+			return "Référence";
+		}
+		return "Reference";
+	}
+        
+        public static function Spices($lang){
+		if ($lang == "Fr"){
+			return "Espèce";
+		}
+		return "Spices";
+	}
+        
+        public static function Comment($lang){
+		if ($lang == "Fr"){
+			return "Commentaire";
+		}
+		return "Comment";
+	}
+        
+        public static function Antibody($lang){
+		if ($lang == "Fr"){
+			return "Anticorps";
+		}
+		return "Antibody";
+	}
+        
 }

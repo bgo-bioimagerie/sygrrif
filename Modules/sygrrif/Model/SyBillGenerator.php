@@ -1483,7 +1483,7 @@ class SyBillGenerator extends Model {
 		//$NouvelleHauteur = (($TailleImageChoisie[1] * $Reduction)/100 );
 		$NouvelleLargeur = (($TailleImageChoisie[0] * $Reduction)/100 );
 		//jâ€™initialise la nouvelle image
-		$NouvelleImage = imagecreatetruecolor($NouvelleLargeur , $NouvelleHauteur) or die (â€œErreurâ€�);
+		$NouvelleImage = imagecreatetruecolor($NouvelleLargeur , $NouvelleHauteur) or die ("Error");
 		
 		//je mets lâ€™image obtenue aprÃ¨s redimensionnement en variable
 		imagecopyresampled($NouvelleImage , $ImageChoisie, 0, 0, 0, 0, $NouvelleLargeur, $NouvelleHauteur, $TailleImageChoisie[0],$TailleImageChoisie[1]);

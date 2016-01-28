@@ -57,7 +57,7 @@ include_once 'Modules/catalog/Model/CaTranslator.php';
 		</div>
       </form>   
       
-      <!-- Supplies Menu -->
+      <!-- Menu -->
       <div>
 		  <div class="page-header">
 			<h2>
@@ -98,6 +98,36 @@ include_once 'Modules/catalog/Model/CaTranslator.php';
 		  </form>
       </div>
       <br/> 
+      
+      <!-- Options -->
+      <div>
+	<div class="page-header">
+            <h2>
+                <?php echo  CaTranslator::Plugins($lang) ?>
+		<br> <small></small>
+            </h2>
+	</div>
+              
+        <form role="form" class="form-horizontal" action="catalogconfig" method="post"> 
+            
+        <div class="col-xs-12">
+            <input class="form-control" type="hidden" name="setpluginsquery" value="yes"/>
+	</div>
+            
+      	<div class="form-group col-xs-12">
+            <label class="control-label col-xs-4"><?php echo  CaTranslator::Antibody_plugin($lang)?></label>
+                <div class="col-xs-6">
+                    <select class="form-control" name="antibody_plugin">
+                        <OPTION value="0" <?php if($antibody_plugin==0){echo "selected=\"selected\"";} ?> > <?php echo  CaTranslator::Unabled($lang) ?> </OPTION>
+                        <OPTION value="1" <?php if($antibody_plugin==1){echo "selected=\"selected\"";} ?> > <?php echo CaTranslator::Enabled($lang) ?> </OPTION>
+                    </select>
+		</div>
+	</div>
+          
+        <div class="col-xs-2 col-xs-offset-10" id="button-div">
+            <input type="submit" class="btn btn-primary" value="save" />
+	</div>
+        </form>
        
   </div>
 </div> 

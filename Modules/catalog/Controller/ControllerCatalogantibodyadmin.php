@@ -7,10 +7,10 @@ require_once 'Framework/TableView.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
 
-
 require_once 'Modules/catalog/Model/CaTranslator.php';
-require_once 'Modules/catalog/Model/CaCategory.php';
-require_once 'Modules/catalog/Model/CaEntry.php';
+require_once 'Modules/catalog/Model/CaAntibodyEntry.php';
+
+require_once 'Modules/anticorps/Model/Anticorps.php';
 
 class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 
@@ -22,8 +22,8 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 	}
 	
 	public function entries(){
+            
 		$navBar = $this->navBar ();
-		
 		$lang = $this->getLanguage();
 		
 		// get sort action
@@ -34,23 +34,22 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 		
 		// get the user list
 		$modelEntry = new CaAntibodyEntry();
-		$dataArray = $modelEntry->getAll();
-		$modelCategory = new CaCategory();
-		for($i = 0 ; $i < count($dataArray) ; $i++){
-			$dataArray[$i]["id_category"] = $modelCategory->getName($dataArray[$i]["id_category"]);
-		}
+		$dataArray = $modelEntry->getAllInfo();
 		
 		$table = new TableView();
-		$table->setTitle(CaTranslator::Entries($lang));
-		$table->addLineEditButton("catalogadmin/editentry", "id", "id");
-		$table->addDeleteButton("catalogadmin/deleteentry", "id", "title");
-		$table->addPrintButton("catalogadmin/entries/");
-		$tableHtml = $table->view($dataArray, array("id" => "ID", "title" => CaTranslator::Title($lang), 
-													"id_category" => CaTranslator::Category($lang), 
-													"short_desc" => CaTranslator::Short_desc($lang)
+		$table->setTitle(CaTranslator::Antibodies($lang));
+		$table->addLineEditButton("catalogantibodyadmin/editentry", "id", "id");
+		$table->addDeleteButton("catalogantibodyadmin/deleteentry", "id", "nom");
+		$table->addPrintButton("catalogantibodyadmin/entries/");
+		$tableHtml = $table->view($dataArray, array("no_h2p2" => "No", 
+                                                            "nom" => CaTranslator::Name($lang), 
+							    "fournisseur" => CaTranslator::Provider($lang), 
+						            "reference" => CaTranslator::Reference($lang),
+                                                            "especes" => CaTranslator::Spices($lang),
+                                                            "comment" => CaTranslator::Comment($lang)
 		));
-		
-		$print = $this->request->getParameterNoException("print");
+                
+		//$print = $this->request->getParameterNoException("print");
 		if ($table->isPrint()){
 			echo $tableHtml;
 			return;
@@ -73,56 +72,51 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 		$lang = $this->getLanguage();
 	
 		// get name
-		$name = "";
-		$modelEntry = new CaEntry();
-		$entryInfo = array("title" => "", "id_category" => 0, "short_desc" => "", "full_desc" => "");
+		$modelEntry = new CaAntibodyEntry();
+		$entryInfo = array("title" => "", "id_antibody" => 0, "comment" => "");
 		if ($id > 0){
 			$entryInfo = $modelEntry->getInfo($id);
 		}
 	
 		// categories choices
-		$modelCategory = new CaCategory();
-		$categories = $modelCategory->getAll();
+		$modelAntibodies = new Anticorps();
+		$antibodies = $modelAntibodies->getAnticorps("nom");
 		$cchoices = array();
 		$cchoicesid = array();
-		foreach($categories as $cat){
-			$cchoices[] = $cat["name"];
-			$cchoicesid[] = $cat["id"];
+		foreach($antibodies as $antib){
+			$cchoices[] = $antib["nom"];
+			$cchoicesid[] = $antib["id"];
 		}
 		
 		// build the form
-		$form = new Form($this->request, "formcategories");
-		$form->setTitle(CaTranslator::Entry($lang));
+		$form = new Form($this->request, "formantibodies");
+		$form->setTitle(CaTranslator::Antibodies($lang));
 		$form->addHidden("id", $id);
-		$form->addText("title", CaTranslator::Title($lang), true, $entryInfo["title"]);
-		$form->addSelect("id_category", CaTranslator::Category($lang), $cchoices, $cchoicesid, $entryInfo["id_category"]);
-		$form->addTextArea("short_desc", CaTranslator::Short_desc($lang), false, $entryInfo["short_desc"]);
-		//$form->addTextArea("full_desc", CaTranslator::Full_desc($lang), false, $entryInfo["full_desc"]);
+		$form->addSelect("id_antibody", CaTranslator::Antibody($lang), $cchoices, $cchoicesid, $entryInfo["id_antibody"]);
+		$form->addTextArea("comment", CaTranslator::Comment($lang), false, $entryInfo["comment"]);
 		$form->addDownload("illustration", CaTranslator::Illustration($lang));
-		$form->setValidationButton(CoreTranslator::Ok($lang), "catalogadmin/editentry/".$id);
-		$form->setCancelButton(CoreTranslator::Cancel($lang), "catalogadmin/entries");
+		$form->setValidationButton(CoreTranslator::Ok($lang), "catalogantibodyadmin/editentry/".$id);
+		$form->setCancelButton(CoreTranslator::Cancel($lang), "catalogantibodyadmin/entries");
 	
 		if ($form->check()){
-			$id_category = $form->getParameter("id_category");
-			$title = $form->getParameter("title");
-			$short_desc = $form->getParameter("short_desc");
-			$full_desc = "";//$form->getParameter("full_desc");
+			$id_antibody = $form->getParameter("id_antibody");
+			$comment = $form->getParameter("comment");
 			if ($id > 0){
-				$modelEntry->edit($id, $id_category, $title, $short_desc, $full_desc);
+				$modelEntry->edit($id, $id_antibody, $comment);
 			}
 			else{
-				$id = $modelEntry->add($id_category, $title, $short_desc, $full_desc);
+				$id = $modelEntry->add($id_antibody, $comment);
 			}
 			
-			echo "file = " . $_FILES["illustration"]["name"] . "<br/>";
+			//echo "file = " . $_FILES["illustration"]["name"] . "<br/>";
 			if ($_FILES["illustration"]["name"] != ""){
 				// download file
-				$this->downloadIllustration($id);
+				$this->downloadIllustration();
 				
 				// set filename to database
 				$modelEntry->setImageUrl($id, $_FILES["illustration"]["name"]);
 			}
-			$this->redirect("catalogadmin","entries");
+			$this->redirect("catalogantibodyadmin","entries");
 		}
 		else{
 			// set the view
@@ -136,25 +130,18 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 		}
 	}
 	
-	protected function downloadIllustration($id){
+	protected function downloadIllustration(){
 		$target_dir = "data/catalog/";
 		$target_file = $target_dir . $_FILES["illustration"]["name"];
-		echo "target file = " . $target_file . "<br/>";
+		//echo "target file = " . $target_file . "<br/>";
 		$uploadOk = 1;
-		$imageFileType = pathinfo($_FILES["illustration"]["name"],PATHINFO_EXTENSION);
-		
+
 		// Check file size
 		if ($_FILES["illustration"]["size"] > 500000000) {
 			return "Error: your file is too large.";
-			$uploadOk = 0;
+			//$uploadOk = 0;
 		}
-		// Allow certain file formats
-		/*
-		if($imageFileType != "jpg" || $imageFileType != "jpeg") {
-			return "Error: only jpg files are allowed.";
-			$uploadOk = 0;
-		}
-		*/
+                
 		// Check if $uploadOk is set to 0 by an error
 		if ($uploadOk == 0) {
 			return  "Error: your file was not uploaded.";
@@ -170,10 +157,9 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 	
 	public function deleteentry(){
 		$id = $this->request->getParameter("actionid");
-		$modelCategory = new CaEntry();
-		$modelCategory->delete($id);
-		
-		// generate view
-		$this->redirect("catalogadmin/entries");
+		$modelCategory = new CaAntibodyEntry();
+                $modelCategory->delete($id);
+
+		$this->redirect("catalogantibodyadmin/entries");
 	}
 }

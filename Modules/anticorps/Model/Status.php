@@ -50,10 +50,12 @@ class Status extends Model {
 	public function getStatu($id){
 		$sql = "select * from ac_status where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
-			return $unit->fetch();  
-		else
+		if ($unit->rowCount() == 1){
+			return $unit->fetch(); 
+                }
+		else{
 			throw new Exception("Cannot find the Status using the given id");
+                }
 	}
 	
 	/**
@@ -102,6 +104,6 @@ class Status extends Model {
 	
 	public function delete($id){
 		$sql="DELETE FROM ac_status WHERE id = ?";
-		$req = $this->runRequest($sql, array($id));
+		$this->runRequest($sql, array($id));
 	}
 }

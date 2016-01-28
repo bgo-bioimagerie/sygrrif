@@ -209,10 +209,10 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 				$id = $modelEntry->add($id_category, $title, $short_desc, $full_desc);
 			}
 			
-			echo "file = " . $_FILES["illustration"]["name"] . "<br/>";
+			//echo "file = " . $_FILES["illustration"]["name"] . "<br/>";
 			if ($_FILES["illustration"]["name"] != ""){
 				// download file
-				$this->downloadIllustration($id);
+				$this->downloadIllustration();
 				
 				// set filename to database
 				$modelEntry->setImageUrl($id, $_FILES["illustration"]["name"]);
@@ -231,17 +231,17 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		}
 	}
 	
-	protected function downloadIllustration($id){
+	protected function downloadIllustration(){
 		$target_dir = "data/catalog/";
 		$target_file = $target_dir . $_FILES["illustration"]["name"];
-		echo "target file = " . $target_file . "<br/>";
+		//echo "target file = " . $target_file . "<br/>";
 		$uploadOk = 1;
-		$imageFileType = pathinfo($_FILES["illustration"]["name"],PATHINFO_EXTENSION);
+		//$imageFileType = pathinfo($_FILES["illustration"]["name"],PATHINFO_EXTENSION);
 		
 		// Check file size
 		if ($_FILES["illustration"]["size"] > 500000000) {
 			return "Error: your file is too large.";
-			$uploadOk = 0;
+			//$uploadOk = 0;
 		}
 		// Allow certain file formats
 		/*
