@@ -193,5 +193,18 @@ class CaTranslator {
 		}
 		return "Antibody";
 	}
+ 
+        public static function Ranking($lang){
+		if ($lang == "Fr"){
+			return "Classement";
+		}
+		return "Ranking";
+	}
         
+        public static function Staining($lang){
+		if ($lang == "Fr"){
+			return "Marquage";
+		}
+		return "Staining";
+	}
 }

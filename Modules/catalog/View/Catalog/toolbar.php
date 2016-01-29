@@ -10,7 +10,7 @@
 </head>
 <style>
 
-a.mybutton {
+a.mybuttonactive {
  /* display et dimensions */
  display: inline-block;
  width: 200px;
@@ -30,7 +30,28 @@ a.mybutton {
  background: #337ab7;
 }
 
-a.mybutton:hover { background: #ffffff; color: #337ab7; border: 1px solid #337ab7;}
+a.mybutton {
+ /* display et dimensions */
+ display: inline-block;
+ width: 200px;
+ height: 50px;
+ /* centrage vertical */
+ line-height: 50px;
+ vertical-align: middle;
+ /* centrage horizontal */
+ text-align: center;
+ /* font style */
+ font-family: Arial,sans-serif;
+ font-size: medium; 
+ color: #337ab7;
+ text-decoration: none;
+ font-weight: bold;
+ /* background style */
+ background: #ffffff;
+ border: 1px solid #337ab7;
+}
+
+a.mybutton:hover { background: #337ab7; color: #ffffff; border: 1px solid #337ab7;}
 
 </style>
 <div class="page-header">
@@ -39,9 +60,13 @@ a.mybutton:hover { background: #ffffff; color: #337ab7; border: 1px solid #337ab
 <br/>
 <div class="col-md-12" style="text-align:center;">
 	<?php foreach ($categories as $cat){
-		?>
-		<a class="mybutton" href="catalog/index/<?php echo $cat["id"]?>"><?php echo $cat["name"]?></a>
-		<?php 
+            $buttonStyle = "mybutton";
+            if ($cat["id"] == $activeCategory){
+                $buttonStyle = "mybuttonactive";
+            }
+            ?>
+            <a class="<?php echo $buttonStyle ?>" href="catalog/index/<?php echo $cat["id"]?>"><?php echo $cat["name"]?></a>
+            <?php 
 	}
         ?>
 

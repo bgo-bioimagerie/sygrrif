@@ -13,7 +13,8 @@ class CaAntibodyEntry extends Model {
             $sql = "CREATE TABLE IF NOT EXISTS `ca_entries_antibodies` (
                     `id` int(11) NOT NULL AUTO_INCREMENT,
                     `id_antibody` int(11) NOT NULL,
-                    `comment` text NOT NULL,
+                    `ranking` varchar(400) NOT NULL,
+                    `staining` varchar(400) NOT NULL,
                     `image_url` varchar(300) NOT NULL,
                     PRIMARY KEY (`id`)
 		);";
@@ -30,9 +31,9 @@ class CaAntibodyEntry extends Model {
 		}
 	}
 	
-	public function add($id_antibody, $comment){ 
-		$sql = "INSERT INTO ca_entries_antibodies(id_antibody, comment) VALUES(?,?)";
-		$this->runRequest($sql, array($id_antibody, $comment));
+	public function add($id_antibody, $ranking, $staining){ 
+		$sql = "INSERT INTO ca_entries_antibodies(id_antibody, ranking, staining) VALUES(?,?,?)";
+		$this->runRequest($sql, array($id_antibody, $ranking, $staining));
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -41,9 +42,9 @@ class CaAntibodyEntry extends Model {
 		$this->runRequest($sql, array($url, $id));
 	}
 	
-	public function edit($id, $id_antibody, $comment){
-		$sql = "update ca_entries_antibodies set id_antibody=?, comment=? where id=?";
-		$this->runRequest($sql, array($id_antibody, $comment, $id));
+	public function edit($id, $id_antibody, $ranking, $staining){
+		$sql = "update ca_entries_antibodies set id_antibody=?, ranking=?, staining=? where id=?";
+		$this->runRequest($sql, array($id_antibody, $ranking, $staining, $id));
 	}
 	
 	public function getAll(){
@@ -63,10 +64,10 @@ class CaAntibodyEntry extends Model {
                     $sql1 = "SELECT * FROM ac_anticorps WHERE id=?";
                     $infosReq = $this->runRequest($sql1, array($antibodies[$i]["id_antibody"]));
                     $infos = $infosReq->fetchAll();
-                    $antibodies[$i]["no_h2p2"] = $infos[$i]["no_h2p2"];
-                    $antibodies[$i]["nom"] = $infos[$i]["nom"];
-                    $antibodies[$i]["fournisseur"] = $infos[$i]["fournisseur"];
-                    $antibodies[$i]["reference"] = $infos[$i]["reference"];
+                    $antibodies[$i]["no_h2p2"] = $infos[0]["no_h2p2"];
+                    $antibodies[$i]["nom"] = $infos[0]["nom"];
+                    $antibodies[$i]["fournisseur"] = $infos[0]["fournisseur"];
+                    $antibodies[$i]["reference"] = $infos[0]["reference"];
                     
                     // get the tissus information
                     $sql2 = "SELECT * from ac_j_tissu_anticorps WHERE id_anticorps=?";

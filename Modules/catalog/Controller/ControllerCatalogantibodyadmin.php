@@ -46,7 +46,8 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 							    "fournisseur" => CaTranslator::Provider($lang), 
 						            "reference" => CaTranslator::Reference($lang),
                                                             "especes" => CaTranslator::Spices($lang),
-                                                            "comment" => CaTranslator::Comment($lang)
+                                                            "ranking" => CaTranslator::Ranking($lang),
+                                                            "staining" => CaTranslator::Staining($lang),
 		));
                 
 		//$print = $this->request->getParameterNoException("print");
@@ -73,7 +74,7 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 	
 		// get name
 		$modelEntry = new CaAntibodyEntry();
-		$entryInfo = array("title" => "", "id_antibody" => 0, "comment" => "");
+		$entryInfo = array("title" => "", "id_antibody" => 0, "ranking" => "", "staining" => "");
 		if ($id > 0){
 			$entryInfo = $modelEntry->getInfo($id);
 		}
@@ -93,19 +94,21 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 		$form->setTitle(CaTranslator::Antibodies($lang));
 		$form->addHidden("id", $id);
 		$form->addSelect("id_antibody", CaTranslator::Antibody($lang), $cchoices, $cchoicesid, $entryInfo["id_antibody"]);
-		$form->addTextArea("comment", CaTranslator::Comment($lang), false, $entryInfo["comment"]);
+		$form->addText("ranking", CaTranslator::Ranking($lang), false, $entryInfo["ranking"]);
+                $form->addText("staining", CaTranslator::Staining($lang), false, $entryInfo["staining"]);
 		$form->addDownload("illustration", CaTranslator::Illustration($lang));
 		$form->setValidationButton(CoreTranslator::Ok($lang), "catalogantibodyadmin/editentry/".$id);
 		$form->setCancelButton(CoreTranslator::Cancel($lang), "catalogantibodyadmin/entries");
 	
 		if ($form->check()){
 			$id_antibody = $form->getParameter("id_antibody");
-			$comment = $form->getParameter("comment");
+			$ranking = $form->getParameter("ranking");
+                        $staining = $form->getParameter("staining");
 			if ($id > 0){
-				$modelEntry->edit($id, $id_antibody, $comment);
+				$modelEntry->edit($id, $id_antibody, $ranking, $staining);
 			}
 			else{
-				$id = $modelEntry->add($id_antibody, $comment);
+				$id = $modelEntry->add($id_antibody, $ranking, $staining);
 			}
 			
 			//echo "file = " . $_FILES["illustration"]["name"] . "<br/>";

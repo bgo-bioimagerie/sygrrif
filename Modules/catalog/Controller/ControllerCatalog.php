@@ -52,7 +52,8 @@ class ControllerCatalog extends ControllerSecureNav {
 				'navBar' => $navBar,
 				'categories' => $categories,
 				'entries' => $entries,
-				'lang' => $this->getLanguage()
+				'lang' => $this->getLanguage(),
+                                'activeCategory' => $idCategory   
 		) );
 	}
         
@@ -79,7 +80,8 @@ class ControllerCatalog extends ControllerSecureNav {
 			'navBar' => $navBar,
 			'categories' => $categories,
 			'entries' => $entries,
-			'lang' => $this->getLanguage()
+			'lang' => $lang,
+                        'activeCategory' => -12   
 		), "antibodies" );
         }
 }

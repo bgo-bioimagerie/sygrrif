@@ -14,7 +14,8 @@
 					<th><?php echo CaTranslator::Provider($lang) ?></th>
                                         <th><?php echo CaTranslator::Reference($lang) ?></th>
                                         <th><?php echo CaTranslator::Spices($lang) ?></th>
-                                        <th><?php echo CaTranslator::Comment($lang) ?></th>
+                                        <th><?php echo CaTranslator::Ranking($lang) ?></th>
+                                        <th><?php echo CaTranslator::Staining($lang) ?></th>
 				</tr>
 			</thead>
                      
@@ -30,7 +31,7 @@
                                     list($width, $height, $type, $attr) = getimagesize($imageFile);
                                     ?>
                                     <a href="<?php echo $imageFile?>" itemprop="contentUrl" data-size="<?php echo $width?>x<?php echo $height?>">
-                                        <img src="<?php echo $imageFile?>" itemprop="thumbnail" alt="photo" width="100" height="100"/>
+                                        <img src="<?php echo $imageFile?>" itemprop="thumbnail" alt="photo" width="25" height="25"/>
                                     </a>
                                 </td>
                                 <td><?php echo  $this->clean ( $entry ['no_h2p2'] ); ?></td>
@@ -38,7 +39,8 @@
                                 <td><?php echo  $this->clean ( $entry ['fournisseur'] ); ?></td> 
                                 <td><?php echo  $this->clean ( $entry ['reference'] ); ?></td> 
                                 <td><?php echo  $this->clean ( $entry ['especes'] ); ?></td> 
-                                <td><?php echo  $this->clean ( $entry ['comment'] ); ?></td> 
+                                <td><?php echo  $this->clean ( $entry ['ranking'] ); ?></td> 
+                                <td><?php echo  $this->clean ( $entry ['staining'] ); ?></td>
                             </tr>
                             <?php endforeach; ?>
 				
