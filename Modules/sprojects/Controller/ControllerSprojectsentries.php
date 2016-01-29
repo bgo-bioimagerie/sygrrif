@@ -404,48 +404,51 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$item_id = $this->request->getParameterNoException("item_id");
 		$item_date = $this->request->getParameterNoException("item_date");
 		
+                //echo 
+		//print_r($item_id);
+                //return;
+		if ($item_id != ""){
 		
+                    // remove the items that are in the database but not in the request
+                    $databaseItemsIds = $modelProject->getProjectEntriesItemsIds($id_project);
+                    foreach ($databaseItemsIds as $dbID){
+
+                            $found = false;
+                            for( $i = 0 ; $i < count($item_id) ; $i++){
+                                    if ($dbID["id"] == $item_id[$i]){
+                                            $found = true;
+                                            break;
+                                    }
+                            }
+                            if (!$found){
+                                    $modelProject->deleteProjectItem($dbID["id"]);
+                            }
+                    }
 		
-		
-		// remove the items that are in the database but not in the request
-		$databaseItemsIds = $modelProject->getProjectEntriesItemsIds($id_project);
-		foreach ($databaseItemsIds as $dbID){
-				
-			$found = false;
-			for( $i = 0 ; $i < count($item_id) ; $i++){
-				if ($dbID["id"] == $item_id[$i]){
-					$found = true;
-					break;
-				}
-			}
-			if (!$found){
-				$modelProject->deleteProjectItem($dbID["id"]);
-			}
-		}
-		
-		// add/update items
-		$modelItem = new SpItem();
-		$activeItems = $modelItem->getActiveItems();
-		for( $i = 0 ; $i < count($item_id) ; $i++){
-			
-			$content = "";
-			foreach ($activeItems as $activeItem){
-				$curentitem = $this->request->getParameterNoException("item_" . $activeItem['id']);
-				//print_r($curentitem); echo "<br/>";
-				//if ($curentitem[$i] != ""){
-					$content .= $activeItem['id'] . "=" . $curentitem[$i] . ";";
-				//}
-			}
-			//echo "content = " . $content . "<br/>";
-			//echo "id = " . $item_id[$i] . "<br/>";
-			$c_date = $item_date[$i];
-			$pos = strpos($c_date, "-");
-			if ($pos === false){
-				$c_date = CoreTranslator::dateToEn($c_date, $lang);
-			}
-			
-			$modelProject->setProjectEntry($item_id[$i], $id_project, $c_date, $content);
-		}
+                    // add/update items
+                    $modelItem = new SpItem();
+                    $activeItems = $modelItem->getActiveItems();
+                    for( $i = 0 ; $i < count($item_id) ; $i++){
+
+                            $content = "";
+                            foreach ($activeItems as $activeItem){
+                                    $curentitem = $this->request->getParameterNoException("item_" . $activeItem['id']);
+                                    //print_r($curentitem); echo "<br/>";
+                                    //if ($curentitem[$i] != ""){
+                                            $content .= $activeItem['id'] . "=" . $curentitem[$i] . ";";
+                                    //}
+                            }
+                            //echo "content = " . $content . "<br/>";
+                            //echo "id = " . $item_id[$i] . "<br/>";
+                            $c_date = $item_date[$i];
+                            $pos = strpos($c_date, "-");
+                            if ($pos === false){
+                                    $c_date = CoreTranslator::dateToEn($c_date, $lang);
+                            }
+
+                            $modelProject->setProjectEntry($item_id[$i], $id_project, $c_date, $content);
+                    }
+                }
 		
 		$this->redirect("sprojectsentries");
 	}

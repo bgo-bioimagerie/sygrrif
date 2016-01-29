@@ -181,15 +181,15 @@ class SpTranslator {
 	}
 	public static function Add_Order($lang) {
 		if ($lang == "Fr") {
-			return "Ajouter une commande";
+			return "Nouveau projet";
 		}
-		return "Add Order";
+		return "New project";
 	}
 	public static function Edit_Order($lang) {
 		if ($lang == "Fr") {
-			return "Modifier une commande";
+			return "Modifier projet";
 		}
-		return "Edit Order";
+		return "Edit project";
 	}
 	public static function Description($lang) {
 		if ($lang == "Fr") {

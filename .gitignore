@@ -5,3 +5,4 @@ html2pdf/*
 data/*
 PHPExcel/*
 Config/*
+/nbproject/private/
