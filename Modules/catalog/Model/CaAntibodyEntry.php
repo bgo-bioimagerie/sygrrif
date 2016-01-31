@@ -2,6 +2,7 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/anticorps/Model/Espece.php';
+require_once 'Modules/anticorps/Model/Tissus.php';
 /**
  * Class defining the template table model. 
  *
@@ -54,35 +55,28 @@ class CaAntibodyEntry extends Model {
 	}
         
         public function getAllInfo(){
-                $modelEspece = new Espece();
-		$sql = "SELECT * FROM ca_entries_antibodies";
-		$req = $this->runRequest($sql);
-		$antibodies = $req->fetchAll();
-                // get the antibody informations
-                for($i = 0 ; $i < count($antibodies) ; $i++){
-                    // basic informations
-                    $sql1 = "SELECT * FROM ac_anticorps WHERE id=?";
-                    $infosReq = $this->runRequest($sql1, array($antibodies[$i]["id_antibody"]));
-                    $infos = $infosReq->fetchAll();
-                    $antibodies[$i]["no_h2p2"] = $infos[0]["no_h2p2"];
-                    $antibodies[$i]["nom"] = $infos[0]["nom"];
-                    $antibodies[$i]["fournisseur"] = $infos[0]["fournisseur"];
-                    $antibodies[$i]["reference"] = $infos[0]["reference"];
-                    
-                    // get the tissus information
-                    $sql2 = "SELECT * from ac_j_tissu_anticorps WHERE id_anticorps=?";
-                    $tissusReq = $this->runRequest($sql2, array($antibodies[$i]["id_antibody"]));
-                    $tissus = $tissusReq->fetchAll();
-                    $especes = "";
-                    for($j = 0 ; $j < count($tissus) ; $j++){
-                        if ($tissus[$j]["status"] == 1){ 
-                            $espece = $modelEspece->getEspece($tissus[$j]["espece"]);
-                            $especes .= $espece["nom"] . ", ";
-                        }
-                    }
-                    $antibodies[$i]["especes"] = $especes;
-                }
-                return $antibodies;
+            
+            $ac = $this->getAll();
+          
+            //$isotypeModel = new Isotype();
+            //$sourceModel = new Source();
+            $tissusModel = new Tissus();
+            for ($i = 0 ; $i < count($ac) ; $i++){
+                
+                // antibody informations
+                $sql1 = "SELECT * FROM ac_anticorps WHERE id=?";
+                $infosReq = $this->runRequest($sql1, array($ac[$i]["id_antibody"]));
+                $infos = $infosReq->fetchAll();
+                $ac[$i]["no_h2p2"] = $infos[0]["no_h2p2"];
+                $ac[$i]["nom"] = $infos[0]["nom"];
+                $ac[$i]["fournisseur"] = $infos[0]["fournisseur"];
+                $ac[$i]["reference"] = $infos[0]["reference"];
+                
+                // tissus
+		$ac[$i]['tissus'] = $tissusModel->getTissusCatalog($ac[$i]['id']);
+            }
+            return $ac;
+      
 	}
 	
 	public function getInfo($id){
@@ -92,6 +86,30 @@ class CaAntibodyEntry extends Model {
 		return $inter;
 	}
 	
+        public function importAll(){
+            
+            $sql = "SELECT id FROM ac_anticorps";
+            $req = $this->runRequest($sql);
+            $antibodies = $req->fetchAll();
+                
+            foreach($antibodies as $ac){
+                if (!$this->isAntibody($ac["id"])){
+                    $this->add($ac["id"], "", "");
+                }
+            }
+        }
+        
+        public function isAntibody($id){
+		$sql = "select * from ca_entries_antibodies where id=?";
+		$unit = $this->runRequest($sql, array($id));
+		if ($unit->rowCount() == 1){
+			return true;
+                }
+		else{
+			return false;
+                }
+	}
+        
 	/**
 	 * Delete a category
 	 * @param number $id Entry ID

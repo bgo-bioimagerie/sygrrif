@@ -45,7 +45,6 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
                                                             "nom" => CaTranslator::Name($lang), 
 							    "fournisseur" => CaTranslator::Provider($lang), 
 						            "reference" => CaTranslator::Reference($lang),
-                                                            "especes" => CaTranslator::Spices($lang),
                                                             "ranking" => CaTranslator::Ranking($lang),
                                                             "staining" => CaTranslator::Staining($lang),
 		));
@@ -133,6 +132,23 @@ class ControllerCatalogantibodyadmin extends ControllerSecureNav {
 		}
 	}
 	
+        public function importall(){
+            
+            // view
+            $navBar = $this->navBar();
+            $this->generateView ( array (
+            'navBar' => $navBar,
+            ) );
+        }
+        
+        public function importallquery(){
+            
+            $model = new CaAntibodyEntry();
+            $model->importAll();
+            
+            $this->redirect("catalogantibodyadmin","entries");
+        }
+        
 	protected function downloadIllustration(){
 		$target_dir = "data/catalog/";
 		$target_file = $target_dir . $_FILES["illustration"]["name"];

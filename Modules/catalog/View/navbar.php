@@ -93,6 +93,7 @@ $classWell = 'col-md-4 well';
                             <br/>            
                             <button onclick="location.href='catalogantibodyadmin/entries'" class="btn btn-link" id="navlink"><?php echo  CaTranslator::Antibodies($lang) ?> </button>
                             <button onclick="location.href='catalogantibodyadmin/editentry/0'" class="btn btn-link" id="navlink">+</button>
+                            <button onclick="location.href='catalogantibodyadmin/importall'" class="btn btn-link" id="navlink">++</button>
                     <?php
                     }
                     ?>

@@ -10,6 +10,8 @@ require_once 'Modules/catalog/Model/CaCategory.php';
 require_once 'Modules/catalog/Model/CaEntry.php';
 require_once 'Modules/catalog/Model/CaAntibodyEntry.php';
 require_once 'Modules/catalog/Model/CaTranslator.php';
+
+require_once 'Modules/anticorps/Model/Status.php';
 		
 class ControllerCatalog extends ControllerSecureNav {
 
@@ -63,17 +65,11 @@ class ControllerCatalog extends ControllerSecureNav {
             
             $modelAntibody = new CaAntibodyEntry();
             $entries = $modelAntibody->getAllInfo();
+           
+            $statusModel = new Status();
+            $status = $statusModel->getStatus();
+            //print_r();
             
-            /*
-            $table = new TableView();
-            $tableHtml = $table->view($entries, array("no_h2p2" => "No", 
-                                                            "nom" => CaTranslator::Name($lang), 
-							    "fournisseur" => CaTranslator::Provider($lang), 
-						            "reference" => CaTranslator::Reference($lang),
-                                                            "especes" => CaTranslator::Spices($lang),
-                                                            "comment" => CaTranslator::Comment($lang)
-		));
-            */
             // view
             $navBar = $this->navBar();
             $this->generateView ( array (
@@ -81,7 +77,8 @@ class ControllerCatalog extends ControllerSecureNav {
 			'categories' => $categories,
 			'entries' => $entries,
 			'lang' => $lang,
-                        'activeCategory' => -12   
+                        'activeCategory' => -12,
+                        'status' => $status
 		), "antibodies" );
         }
 }

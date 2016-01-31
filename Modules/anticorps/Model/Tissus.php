@@ -54,6 +54,22 @@ class Tissus extends Model {
 		$this->runRequest($sql, array($id, $id_anticorps, $espece, $organe, $status, $ref_bloc, $dilution, $temps_incubation, $ref_protocol, $prelevement, $comment));
 	}
 	
+        public function getTissusCatalog($id_anticorps){
+                    
+            $sql = "SELECT DISTINCT ac_j_tissu_anticorps.status AS status,
+				    ac_especes.nom AS espece,
+                                    ac_prelevements.nom AS prelevement			
+				FROM ac_j_tissu_anticorps
+				INNER JOIN ac_especes on ac_j_tissu_anticorps.espece = ac_especes.id
+				INNER JOIN ac_organes on ac_j_tissu_anticorps.organe = ac_organes.id
+				INNER JOIN ac_prelevements on ac_j_tissu_anticorps.prelevement = ac_prelevements.id
+				WHERE ac_j_tissu_anticorps.id_anticorps=?";
+		
+		//$sql = "select * from ac_j_tissu_anticorps where id_anticorps=?";
+		$res = $this->runRequest($sql, array($id_anticorps));
+		return $res->fetchAll();
+        }
+        
 	public function getTissus($id_anticorps){
 		
 		$sql = "SELECT ac_j_tissu_anticorps.id AS id, 

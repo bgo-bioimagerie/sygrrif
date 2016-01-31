@@ -207,4 +207,26 @@ class CaTranslator {
 		}
 		return "Staining";
 	}
+        
+        public static function Status($lang){
+		if ($lang == "Fr"){
+			return "Statut";
+		}
+		return "Status";
+	}
+        
+        public static function Sample($lang){
+		if ($lang == "Fr"){
+			return "prélevement";
+		}
+		return "Sample";
+	}
+        
+        public static function importMessage($lang){
+		if ($lang == "Fr"){
+			return "Importer tout les anticorps de la base de donnée vers le catalogue ?";
+		}
+		return "Are you sure you want to import all the antibodies from antibodies database to the catalog ?";
+	}
+        
 }
