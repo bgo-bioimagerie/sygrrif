@@ -80,7 +80,7 @@ $(document).ready(function() {
                             <th class="text-center" style="width:5%; color:#337AB7;"></th>
                             <th class="text-center" style="width:5%; color:#337AB7;">No</th>
                             <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Name($lang) ?></th>
-                            <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Ranking($lang) ?></th>
+                            <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Application($lang) ?></th>
                             <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Staining($lang) ?></th>
                             <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Provider($lang) ?></th>
                             <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Reference($lang) ?></th>
@@ -96,8 +96,8 @@ $(document).ready(function() {
                             <tr>
                                 <td width="10%" class="text-left">
                                     <?php
-                                    $imageFile = "data/catalog/" . $entry["image_url"];
-                                    if (!file_exists($imageFile)){
+                                    $imageFile = "data/antibodies/" . $entry["image_url"];
+                                    if (!file_exists($imageFile) || is_dir($imageFile)){
                                         $imageFile = "Modules/catalog/View/images_icon.png";
                                     }
                                     list($width, $height, $type, $attr) = getimagesize($imageFile);
@@ -108,7 +108,7 @@ $(document).ready(function() {
                                 </td>
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['no_h2p2'] ); ?></td>
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['nom'] ); ?></td> 
-                                <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['ranking'] ); ?></td> 
+                                <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['application'] ); ?></td> 
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['staining'] ); ?></td>
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['fournisseur'] ); ?></td> 
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['reference'] ); ?></td> 

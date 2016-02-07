@@ -22,6 +22,9 @@ require_once 'Modules/anticorps/Model/Fixative.php';
 require_once 'Modules/anticorps/Model/AcOption.php';
 require_once 'Modules/anticorps/Model/Enzyme.php';
 
+require_once 'Modules/anticorps/Model/AcApplication.php';
+require_once 'Modules/anticorps/Model/AcStaining.php';
+
 /**
  * Class defining methods to install and initialize the core database
  *
@@ -92,7 +95,15 @@ class AcInstall extends Model {
 		
 		$model = new Enzyme();
 		$model->createTable();
-		
+                
+                $modelApp = new AcApplication();
+		$modelApp->createTable();
+                
+                $modelStaining = new AcStaining();
+		$modelStaining->createTable();
+		 
+                //mkdir("/data/antibodies");
+                
 		$message = 'success';
 		return $message;
 	}

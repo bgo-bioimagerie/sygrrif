@@ -63,6 +63,13 @@ class SpBill extends Model {
 		$user = $this->runRequest($sql);
 		return $user->fetchAll();
 	}
+        
+        public function getBillsPeriod($periodBegin, $periodEnd){
+			
+		$sql = "select * from sp_bills WHERE date_generated >= ? AND date_generated <= ?";
+		$user = $this->runRequest($sql, array($periodBegin, $periodEnd));
+		return $user->fetchAll();
+	}
 	
 	/**
 	 * get the informations of an item

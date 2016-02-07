@@ -41,9 +41,8 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		$table->addLineEditButton("catalogadmin/editcategory");
 		$table->addDeleteButton("catalogadmin/deletecategory");
 		$table->addPrintButton("catalogadmin/categories/");
-		$tableHtml = $table->view($categoriesArray, array("id" => "ID", "name" => CoreTranslator::Name($lang)));
-		
-		$print = $this->request->getParameterNoException("print");
+		$tableHtml = $table->view($categoriesArray, array("id" => "ID", "name" => CoreTranslator::Name($lang), "display_order" => CoreTranslator::Display_order($lang)));
+	
 		if ($table->isPrint()){
 			echo $tableHtml;
 			return;
@@ -67,9 +66,11 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		
 		// get name
 		$name = "";
+                $display_order = 0;
 		$modelCategory = new CaCategory();
 		if ($id > 0){
 			$name = $modelCategory->getName($id);
+                        $display_order = $modelCategory->getDisplayOrder($id);
 		}
 		
 		// build the form
@@ -77,15 +78,16 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		$form->setTitle(CaTranslator::Category($lang));
 		$form->addHidden("id", $id);
 		$form->addText("name", "name", true, $name);
+                $form->addText("display_order", CoreTranslator::Display_order($lang), true, $display_order);
 		$form->setValidationButton("Ok", "catalogadmin/editcategory/".$id);
 		$form->setCancelButton(CoreTranslator::Cancel($lang), "catalogadmin/categories");
 		
 		if ($form->check()){
 			if ($id > 0){
-				$modelCategory->edit($form->getParameter("id"), $form->getParameter("name"));
+				$modelCategory->edit($form->getParameter("id"), $form->getParameter("name"), $form->getParameter("display_order"));
 			}
 			else{
-				$modelCategory->add($form->getParameter("name"));
+				$modelCategory->add($form->getParameter("name"), $form->getParameter("display_order"));
 			}
 			
 			$this->redirect("catalogadmin","categories");

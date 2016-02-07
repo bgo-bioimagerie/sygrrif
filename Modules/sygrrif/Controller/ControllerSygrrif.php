@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Model/CoreUnit.php';
 require_once 'Modules/core/Model/CoreUser.php';
@@ -39,11 +39,12 @@ class ControllerSygrrif extends ControllerBooking {
 	/**
 	 * Constructor
 	 */
+        /*
 	public function __construct() {
-		ob_end_clean();
+		//ob_end_clean();
 	}
-
-	
+        */
+        
 	/**
 	 * (non-PHPdoc)
 	 * @see Controller::index()
@@ -53,9 +54,7 @@ class ControllerSygrrif extends ControllerBooking {
 		if($this->secureCheck()){
 			return;
 		}
-		
 		$navBar = $this->navBar();
-
 		$this->generateView ( array (
 				'navBar' => $navBar
 		) );

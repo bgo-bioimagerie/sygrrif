@@ -13,7 +13,7 @@
     	<?php 
     	
     	$imageFile = "data/catalog/" . $entry["image_url"];
-    	if (!file_exists($imageFile)){
+    	if (!file_exists($imageFile) || is_dir($imageFile)){
     		$imageFile = "Modules/catalog/View/images_icon.png";
     	}
     	list($width, $height, $type, $attr) = getimagesize($imageFile);

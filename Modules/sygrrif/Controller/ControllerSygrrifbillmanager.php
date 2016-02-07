@@ -15,12 +15,6 @@ require_once 'Modules/sygrrif/Model/SyTranslator.php';
 class ControllerSygrrifbillmanager extends ControllerSecureNav {
 	
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-	}
-	
-	/**
 	 * (non-PHPdoc)
 	 * @see Controller::index()
 	 */
@@ -95,7 +89,7 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		}
 		$tableHtml = $table->view ( $billsList, $tableContent );
 		
-		$print = $this->request->getParameterNoException ( "print" );
+		//$print = $this->request->getParameterNoException ( "print" );
 		if ($table->isPrint ()) {
 			echo $tableHtml;
 			return;

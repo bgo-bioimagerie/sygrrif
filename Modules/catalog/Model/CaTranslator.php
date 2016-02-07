@@ -201,6 +201,14 @@ class CaTranslator {
 		return "Ranking";
 	}
         
+        public static function Application($lang){
+		if ($lang == "Fr"){
+			return "Application";
+		}
+		return "Application";
+	}
+        
+        
         public static function Staining($lang){
 		if ($lang == "Fr"){
 			return "Marquage";

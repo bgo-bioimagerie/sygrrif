@@ -53,6 +53,17 @@ abstract class Model
         return self::$bdd;
     }
     
+    public function addColumn($tableName, $columnName, $columnType, $defaultValue){
+    
+        $sql = "SHOW COLUMNS FROM `".$tableName."` LIKE '".$columnName."'";
+	$pdo = $this->runRequest($sql);
+	$isColumn = $pdo->fetch();
+        if ( $isColumn == false){
+            $sql = "ALTER TABLE `".$tableName."` ADD `".$columnName."` ".$columnType." NOT NULL DEFAULT '".$defaultValue."'";
+            $pdo = $this->runRequest($sql);
+        }
+    }
+            
     public function isTable($table){
     	
     	$dsn = Configuration::get("dsn");

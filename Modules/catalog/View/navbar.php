@@ -63,8 +63,6 @@ if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
 
-$useAntibodies = $modelCoreConfig->getParam("ca_use_antibodies");
-
 $classWell = 'col-md-4 well';
 ?>
 
@@ -85,18 +83,7 @@ $classWell = 'col-md-4 well';
 				<legend><?php echo  CaTranslator::Entries($lang) ?></legend>
 					<button onclick="location.href='catalogadmin/entries'" class="btn btn-link" id="navlink"><?php echo  CaTranslator::Entries($lang) ?> </button>
 					<button onclick="location.href='catalogadmin/editentry/0'" class="btn btn-link" id="navlink">+</button>
-			
-                    
-                    <?php 
-                    if ($useAntibodies == 1){
-                    ?>
-                            <br/>            
-                            <button onclick="location.href='catalogantibodyadmin/entries'" class="btn btn-link" id="navlink"><?php echo  CaTranslator::Antibodies($lang) ?> </button>
-                            <button onclick="location.href='catalogantibodyadmin/editentry/0'" class="btn btn-link" id="navlink">+</button>
-                            <button onclick="location.href='catalogantibodyadmin/importall'" class="btn btn-link" id="navlink">++</button>
-                    <?php
-                    }
-                    ?>
+		
                             </fieldset>
                     
 		</div>

@@ -36,13 +36,6 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		return false;
 	}
 	
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		ob_end_clean();
-	}
-	
 	public function index(){
 	
 	}
@@ -214,15 +207,15 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		header("Content-disposition: filename=visas.csv");
 		
 		// resources
-		$content = "\t";
+		$content = ";";
 		foreach ($resources as $resource){
-			$content .= $resource["name"] . "\t" ;  
+			$content .= $resource["name"] . ";" ;  
 		}
 		$content.= "\r\n";
 		
 		// instructors
 		foreach ($instructors as $instructor){
-			$content .= $instructor["name_instructor"] . "\t" ;
+			$content .= $instructor["name_instructor"] . ";" ;
 			foreach ($resources as $resource){
 				$found = 0;
 				foreach($visas as $visa){
@@ -232,13 +225,13 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 						if ($visa["instructor_status"] == 2){
 							$instructorStatus = SyTranslator::Responsible($lang);
 						}
-						$content .= $instructorStatus . "\t" ;
+						$content .= $instructorStatus . ";" ;
 						$found = 1;
 						break;
 					}
 				}
 				if ($found == 0){
-					$content .= "\t" ;
+					$content .= ";" ;
 				}
 			}
 			$content.= "\r\n";
@@ -319,7 +312,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		
 		$tableHtml = $table->view ( $authorizationTable, $tableContent );
 		
-		$print = $this->request->getParameterNoException ( "print" );
+		//$print = $this->request->getParameterNoException ( "print" );
 		if ($table->isPrint()) {
 			echo $tableHtml;
 			return;
@@ -371,12 +364,6 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 			$uschoices[] = $us["name"] . " " . $us["firstname"];
 			$uschoicesid[] = $us["id"];
 		}
-		$modelUnit = new CoreUnit();
-		$units = $modelUnit->getUnits("name");
-		foreach($units as $un){
-			$unchoices[] = $un["name"];
-			$unchoicesid[] = $un["id"];
-		}
 		$modelVisa = new SyVisa();
 		$modelResourcesCategory = new SyResourcesCategory();
 		$visas = $modelVisa->getVisas("id");
@@ -399,7 +386,6 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		$form->addDate("date", SyTranslator::Date($lang), true, $authInfo["date"]);
 		$form->addSelect("user_id", SyTranslator::User($lang), $uschoices, $uschoicesid, $authInfo["user_id"]);
 		$form->addSelect("resource_id", SyTranslator::Resource_categories($lang), $reschoices, $reschoicesid, $authInfo["resource_id"]);
-		$form->addSelect("lab_id", SyTranslator::Unit($lang), $unchoices, $unchoicesid, $authInfo["lab_id"]);
 		$form->addSelect("visa_id", SyTranslator::Visa($lang), $vichoices, $vichoicesid, $authInfo["visa_id"]);
 		$form->setValidationButton(CoreTranslator::Ok($lang), "sygrrifauthorisations/editauthorization/" . $authId);
 		
@@ -408,7 +394,8 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 			$modelAuth = new SyAuthorization();
 			$date = $form->getParameter("date");
 			$user_id = $form->getParameter("user_id");
-			$lab_id = $form->getParameter("lab_id");
+			//$lab_id = $form->getParameter("lab_id");
+                        $lab_id = $modelUser->getUserUnit($user_id);
 			$visa_id = $form->getParameter("visa_id");
 			$resource_id = $form->getParameter("resource_id");
 			if ($authId > 0){

@@ -43,7 +43,7 @@ legend {
 	<div class="container">
 		<h2>Anticorps</h2>
 		<div class="col-md-12">
-				<div class='col-md-2 well'>
+		<div class='col-md-2 well'>
 			<fieldset style="margin-bottom:-20px">
 				<legend>Listing </legend>
 					<button onclick="location.href='anticorps'" class="btn btn-link" id="navlink">Anticorps</button>
@@ -65,7 +65,7 @@ legend {
 			</fieldset>
 		</div>
 		
-		<div class='col-md-3 well'>
+		<div class='col-md-2 well'>
 			<fieldset style="margin-bottom:-20px">
 				<legend>Tissus </legend>	
 				    <button onclick="location.href='especes/'" class="btn btn-link" id="navlink">Espèces</button>
@@ -122,6 +122,18 @@ legend {
 			</fieldset>
 		</div>
 		
+                <div class='col-md-2 well'>
+			<fieldset style="margin-bottom:-20px">
+				<legend> ... </legend>	
+				    <button onclick="location.href='application/'" class="btn btn-link" id="navlink">Application</button>
+                                    <button onclick="location.href='application/add'" class="btn btn-link" id="navlink">+</button>
+				<br/>		
+				    <button onclick="location.href='staining/'" class="btn btn-link" id="navlink">Marquage</button>
+                                    <button onclick="location.href='staining/add'" class="btn btn-link" id="navlink">+</button>	
+				
+			</fieldset>
+		</div>    
+                    
 		</div>
 	</div>
 </div>

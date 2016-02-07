@@ -31,7 +31,7 @@ class ControllerSprojectsstats extends ControllerSecureNav {
 			// run the database query
 			$modelStats = new SpStats();
 			$stats = $modelStats->computeStats($myform->getParameter("begining_period"),
-											   $myform->getParameter("end_period"));
+                                                           $myform->getParameter("end_period"));
 				
 			if ($myform->getParameter("exporttype") == 1){
 				$this->exportStats($stats, $myform->getParameter("begining_period"), $myform->getParameter("end_period"));

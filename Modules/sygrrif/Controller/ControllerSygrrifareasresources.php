@@ -33,12 +33,6 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		return false;
 	}
 	
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		ob_end_clean ();
-	}
 	public function index() {
 		if ($this->secureCheck ()) {
 			return;

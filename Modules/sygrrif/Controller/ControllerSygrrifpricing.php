@@ -30,14 +30,6 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
 	}
 	
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		ob_end_clean();
-	}
-
-	
-	/**
 	 * (non-PHPdoc)
 	 * @see Controller::index()
 	 */
@@ -170,7 +162,7 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
 		$modelBelonging = new CoreBelonging();
 		$pricing["name"] = $modelBelonging->getName($id);
 		
-		print_r($pricing);
+		//print_r($pricing);
 		
 		$navBar = $this->navBar();
 		$this->generateView ( array (

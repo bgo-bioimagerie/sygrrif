@@ -51,7 +51,6 @@ if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
 
-$modelCoreConfig = new CoreConfig();
 $authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
 
 $classWell = 'col-md-3 well';

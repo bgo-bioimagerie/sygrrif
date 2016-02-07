@@ -8,10 +8,10 @@ require_once 'Framework/TableView.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/catalog/Model/CaCategory.php';
 require_once 'Modules/catalog/Model/CaEntry.php';
-require_once 'Modules/catalog/Model/CaAntibodyEntry.php';
 require_once 'Modules/catalog/Model/CaTranslator.php';
 
 require_once 'Modules/anticorps/Model/Status.php';
+require_once 'Modules/anticorps/Model/Anticorps.php';
 		
 class ControllerCatalog extends ControllerSecureNav {
 
@@ -63,8 +63,8 @@ class ControllerCatalog extends ControllerSecureNav {
             
             $lang = $this->getLanguage();
             
-            $modelAntibody = new CaAntibodyEntry();
-            $entries = $modelAntibody->getAllInfo();
+            $modelAntibody = new Anticorps();
+            $entries = $modelAntibody->getAnticorpsInfoCatalog();
            
             $statusModel = new Status();
             $status = $statusModel->getStatus();

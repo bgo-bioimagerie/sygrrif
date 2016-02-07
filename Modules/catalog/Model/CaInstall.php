@@ -4,7 +4,6 @@ require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/catalog/Model/CaCategory.php';
 require_once 'Modules/catalog/Model/CaEntry.php';
-require_once 'Modules/catalog/Model/CaAntibodyEntry.php';
 
 
 /**
@@ -27,9 +26,6 @@ class CaInstall extends Model {
 		$modulesModel2 = new CaEntry();
 		$modulesModel2->createTable();
                 
-                $modelAntibody = new CaAntibodyEntry();
-                $modelAntibody->createTable();
-		
 		$message = 'success';
 		return $message;
 	}

@@ -3,6 +3,9 @@
 require_once 'Framework/Model.php';
 require_once 'Modules/anticorps/Model/Isotype.php';
 require_once 'Modules/anticorps/Model/Source.php';
+require_once 'Modules/anticorps/Model/Tissus.php';
+require_once 'Modules/anticorps/Model/AcStaining.php';
+require_once 'Modules/anticorps/Model/AcApplication.php';
 
 /**
  * Class defining the Anticorps model
@@ -41,10 +44,37 @@ class Anticorps extends Model {
 				);
 				";
 		
-		$pdo = $this->runRequest($sql);
-		return true;
+		$this->runRequest($sql);
+		
+                // add new column
+                $this->addColumn("ac_anticorps", "id_staining", "float(11)", 1);
+                $this->addColumn("ac_anticorps", "id_application", "float(11)", 1);
+                $this->addColumn("ac_anticorps", "export_catalog", "int(1)", 1);
+                $this->addColumn("ac_anticorps", "image_url", "varchar(250)", "");
+                $this->addColumn("ac_anticorps", "image_desc", "varchar(250)", "");
+                
 	}
 	
+        public function setExportCatalog($id, $exportCatalog){
+            $sql = "UPDATE ac_anticorps SET export_catalog=? WHERE id=?";
+            $this->runRequest($sql, array($exportCatalog, $id));
+        }
+        
+        public function setImageDesc($id, $image_desc){
+            $sql = "UPDATE ac_anticorps SET image_desc=? WHERE id=?";
+            $this->runRequest($sql, array($image_desc, $id));
+        }
+        
+        public function setImageUrl($id, $image_url){
+            $sql = "UPDATE ac_anticorps SET image_url=? WHERE id=?";
+            $this->runRequest($sql, array($image_url, $id));
+        }
+        
+        public function setApplicationStaining($id, $id_staining, $id_application){
+            $sql = "UPDATE ac_anticorps SET id_staining=?, id_application=? WHERE id=?";
+            $this->runRequest($sql, array($id_staining, $id_application, $id));
+        }
+        
 	/**
 	 * Get the anticorps information
 	 *
@@ -149,11 +179,21 @@ class Anticorps extends Model {
 		 return $this->anticorpsInfo($ac);
 		
 	}
+        
+        public function getAnticorpsInfoCatalog(){
+            $sql = "select * from ac_anticorps WHERE export_catalog=1 ORDER BY no_h2p2 ASC;";
+            $user = $this->runRequest($sql);
+            $ac = $user->fetchAll();
+            
+            return $this->anticorpsInfo($ac);
+        }
 	
 	private function anticorpsInfo($ac){
 		$isotypeModel = new Isotype();
 		$sourceModel = new Source();
 		$tissusModel = new Tissus();
+                $stainingModel = new AcStaining();
+                $applicationModel = new AcApplication();
 		for ($i = 0 ; $i < count($ac) ; $i++){
 			$tmp = $isotypeModel->getIsotype($ac[$i]['id_isotype']);
 			$ac[$i]['isotype'] = $tmp['nom'];
@@ -161,6 +201,9 @@ class Anticorps extends Model {
 			$ac[$i]['source'] = $tmp['nom'];
 			$ac[$i]['tissus'] = $tissusModel->getTissus($ac[$i]['id']);
 			$ac[$i]['proprietaire'] = $this->getOwners($ac[$i]['id']);
+                        
+                        $ac[$i]['staining'] = $stainingModel->getNameFromId($ac[$i]['id_staining']);
+                        $ac[$i]['application'] = $applicationModel->getNameFromId($ac[$i]['id_application']);
 			//print_r($ac[$i]['tissus']);
 		}
 		return $ac;

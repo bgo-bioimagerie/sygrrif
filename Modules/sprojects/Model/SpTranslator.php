@@ -546,5 +546,40 @@ class SpTranslator {
 		}
 		return "View";
 	}
+        
+        public static function Balance_sheet($lang){
+                if ($lang == "Fr") {
+			return "Bilan";
+		}
+		return "Balance sheet";
+        }
+        
+        public static function OPENED($lang){
+                if ($lang == "Fr") {
+			return "OUVERTURE";
+		}
+		return "OPENED";
+        }
+        
+        public static function Invoice_details($lang){
+                if ($lang == "Fr") {
+                    return "DETAILS FACTURES";
+		}
+		return "INVOICE DETAILS";
+        }
+        
+        public static function invoices($lang){
+                if ($lang == "Fr") {
+                    return "FACTURES";
+		}
+		return "INVOICES";
+        }
+        
+        public static function StatisticsMaj($lang){
+                if ($lang == "Fr") {
+                    return "STATISTIQUES";
+		}
+		return "STATISTICS";
+        }
 	
 }
