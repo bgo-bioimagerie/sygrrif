@@ -263,12 +263,17 @@ $newTeam = $this->clean($project["new_project"]);
                         <input class="form-control" id="id" type="date"  name="date_open" value="<?php echo $this->clean($project["date_open"]) ?>" />
                     </div>
                 </div>
+                
+                <?php if ($this->clean($project["id"]) != "") {
+                    ?>
                 <div class="form-group">
                     <label for="inputEmail" class="control-label col-xs-4"><?php echo SpTranslator::Closed_date($lang) ?></label>
                     <div class="col-xs-8">
                         <input class="form-control" id="id" type="date"  name="date_close" value="<?php echo $this->clean($project["date_close"]) ?>" />
                     </div>
                 </div>
+                <?php }
+                    ?>
             </div>
         </div>
 

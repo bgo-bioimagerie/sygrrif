@@ -197,14 +197,14 @@ $(document).ready(function() {
 		<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
 			<thead>	 
 				<tr>
-					<th class="text-center" colspan="9" style="width:45%; color:#337AB7;">Anticorps</th>
+					<th class="text-center" colspan="10" style="width:45%; color:#337AB7;">Anticorps</th>
 					<th class="text-center" colspan="2" style="width:10%; background-color: #ffeeee; color:#337AB7;">Protocole</th>
 					<th class="text-center" colspan="6" style="width:25%; background-color: #eeffee; color:#337AB7;">Tissus</th>
 					<th class="text-center" colspan="4" style="width:20%; background-color: #eeeeff; color:#337AB7;">Propriétaire</th>
-					
 				</tr>
 				 
-				<tr>					
+				<tr>			
+                                        <th></th>
 					<th class="text-center" style="width:1em; color:#337AB7;">No</th> 
 					<th class="text-center" style="width:5%; color:#337AB7;">Nom</th>
 					<th class="text-center" style="width:2%; color:#337AB7;">St</th>
@@ -235,7 +235,20 @@ $(document).ready(function() {
 			
 			<tbody>
 				<?php foreach ( $anticorpsArray as $anticorps ) : ?> 
+                                
 				<tr>
+                                    <td width="10%" class="text-left">
+                                    <?php
+                                    $imageFile = "data/antibodies/" . $anticorps["image_url"];
+                                    if (!file_exists($imageFile) || is_dir($imageFile)){
+                                        $imageFile = "Modules/catalog/View/images_icon.png";
+                                    }
+                                    list($width, $height, $type, $attr) = getimagesize($imageFile);
+                                    ?>
+                                    <a href="<?php echo $imageFile?>" itemprop="contentUrl" data-size="<?php echo $width?>x<?php echo $height?>">
+                                        <img src="<?php echo $imageFile?>" itemprop="thumbnail" alt="photo" width="25" height="25"/>
+                                    </a>
+                                </td>
 					<?php $anticorpsId = $this->clean ( $anticorps['id'] ); ?>
 					
 					<td style="width:1em;" class="text-left"><a href="anticorps/edit/<?php echo  $anticorpsId ?>"><?php echo  $this->clean ( $anticorps ['no_h2p2'] ); ?></a></td>

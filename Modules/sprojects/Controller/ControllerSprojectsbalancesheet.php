@@ -68,10 +68,10 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $invoices = $modelBillManager->getBillsPeriod($periodStart, $periodEnd);
 
 
-        $this->makeBalanceXlsFile($openedProjects, $projectsBalance, $invoices, $stats);
+        $this->makeBalanceXlsFile($periodStart, $periodEnd, $openedProjects, $projectsBalance, $invoices, $stats);
     }
 
-    private function makeBalanceXlsFile($openedProjects, $projectsBalance, $invoices, $stats) {
+    private function makeBalanceXlsFile($periodStart, $periodEnd, $openedProjects, $projectsBalance, $invoices, $stats) {
 
         $modelUser = new CoreUser();
         $modelUnit = new CoreUnit();
@@ -259,10 +259,16 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
 
         }
         
-        for($col = 'A'; $col !== 'K'; $col++) {
+        for($col = 'A'; $col !== 'L'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
 
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore(1, 1);
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:K1');
+        $text = SpTranslator::BalanceSheetFrom($lang) . CoreTranslator::dateFromEn($periodStart, $lang)
+                . SpTranslator::To($lang) . CoreTranslator::dateFromEn($periodEnd, $lang);
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', $text);
+        
         // ////////////////////////////////////////////////////
         //                  closed projects details
         // ////////////////////////////////////////////////////
@@ -333,6 +339,11 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore(1, 1);
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:K1');
+        $text = SpTranslator::BalanceSheetFrom($lang) . CoreTranslator::dateFromEn($periodStart, $lang)
+                . SpTranslator::To($lang) . CoreTranslator::dateFromEn($periodEnd, $lang);
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', $text);
         // ////////////////////////////////////////////////////
         //                  Bill list
         // ////////////////////////////////////////////////////
@@ -373,6 +384,11 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
         
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore(1, 1);
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:K1');
+        $text = SpTranslator::BalanceSheetFrom($lang) . CoreTranslator::dateFromEn($periodStart, $lang)
+                . SpTranslator::To($lang) . CoreTranslator::dateFromEn($periodEnd, $lang);
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', $text);
         // ////////////////////////////////////////////////////
         //                  Stats
         // ////////////////////////////////////////////////////
@@ -413,13 +429,19 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         for($col = 'A'; $col !== 'C'; $col++) {
             $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
         }
+        
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore(1, 1);
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:K1');
+        $text = SpTranslator::BalanceSheetFrom($lang) . CoreTranslator::dateFromEn($periodStart, $lang)
+                . SpTranslator::To($lang) . CoreTranslator::dateFromEn($periodEnd, $lang);
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', $text);
 
         // write excel file
         $objWriter = new PHPExcel_Writer_Excel2007($objPHPExcel);
 
         //On enregistre les modifications et on met en téléchargement le fichier Excel obtenu
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="Excel_protected.xlsx"');
+        header('Content-Disposition: attachment;filename="platorm-manager-projet-bilan.xlsx"');
         header('Cache-Control: max-age=0');
         $objWriter->save('php://output');
     }

@@ -442,9 +442,9 @@ class SpTranslator {
 	
 	public static function to($lang){
 		if ($lang == "Fr") {
-			return "au ";
+			return " au ";
 		}
-		return "to ";
+		return " to ";
 	}
 	
 	public static function Project_number($lang){
@@ -582,4 +582,10 @@ class SpTranslator {
 		return "STATISTICS";
         }
 	
+        public static function BalanceSheetFrom($lang){
+                if ($lang == "Fr") {
+                    return "Bilan sur la période du ";
+                }
+		return "Balance sheet from ";
+        }
 }

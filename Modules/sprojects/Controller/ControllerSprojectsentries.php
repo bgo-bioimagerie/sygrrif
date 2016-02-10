@@ -374,7 +374,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$id_user = $this->request->getParameter("id_user"); 
 		$id_status = $this->request->getParameter("id_status"); 
 		$date_open = $this->request->getParameter("date_open");
-		$date_close = $this->request->getParameter("date_close");
+		$date_close = $this->request->getParameterNoException("date_close");
 		$new_team = $this->request->getParameter("new_team");
 		$new_project = $this->request->getParameter("new_project");
 		$time_limit = $this->request->getParameter("time_limit");
@@ -461,7 +461,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$unitId = 0;
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$unitId = $this->request->getParameter("actionid");
-		};
+		}
 	
 		// generate view
 		$navBar = $this->navBar();
