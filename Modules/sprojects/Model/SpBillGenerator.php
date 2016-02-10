@@ -187,6 +187,25 @@ class SpBillGenerator extends Model {
 		if ($insertCol != ""){
 			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("d/m/Y", time()));
 		}
+                
+                // replace the project number
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{no_projet}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					break;
+				}
+			}
+		}
+		if ($insertCol != ""){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $projectInfo["name"]);
+		}
 		
 		// replace the year
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -280,6 +299,10 @@ class SpBillGenerator extends Model {
 			
 			if ($lastNumberY == date("Y", time())){
 				$lastNumberN = (int)$lastNumberN + 1;
+			}
+			else{
+				$lastNumberY = date("Y", time());
+				$lastNumberN = 1;
 			}
 			$num = "".$lastNumberN."";
 			if ($lastNumberN < 10){
@@ -510,7 +533,7 @@ class SpBillGenerator extends Model {
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Total T.T.C.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, (float)$totalHT*(float)1.2." €");		
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, (float)$totalHT*(float)(1.2)."€");		
 
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->getFont()->setBold(true);
