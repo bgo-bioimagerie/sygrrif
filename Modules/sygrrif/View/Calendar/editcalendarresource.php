@@ -36,6 +36,9 @@
                     case "text":
                             newcell.childNodes[0].value = "";
                             break;
+                    case "hidden":
+                            newcell.childNodes[0].value = "";
+                            break;        
                     case "checkbox":
                             newcell.childNodes[0].checked = false;
                             break;
@@ -425,7 +428,7 @@
 			</h3>
 		</div>
 		
-		<!--   TISSUS    -->
+		<!--   FORFAIT    -->
 		<div class="form-group">
 			<div class="col-xs-12">
 				<table id="dataTable" class="table table-striped">
@@ -453,7 +456,7 @@
 							<tr>
 								<td><input type="checkbox" name="chk" />
 								
-								<input class="form-control" type="hidden" name="pid[]" value="<?php echo  $pakage["id"] ?>"/>
+								<input class="form-control" type="hidden" name="pid[]" value="<?php echo  $pakage["id_package"] ?>"/>
 								</td>
 								<td><input class="form-control" type="text" name="pname[]" value="<?php echo  $pakage["name"] ?>"/></td>
 								<td><input class="form-control" type="text" name="pduration[]" value="<?php echo  $pakage["duration"] ?>"/></td>

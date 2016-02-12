@@ -432,6 +432,12 @@ class Anticorps extends Model {
 		$anticorps["stockage"] = "";
 		$anticorps["proprietaire"] = array();
 		$anticorps['tissus'] = array();
+                
+                $anticorps['id_staining'] = 1;
+                $anticorps['id_application'] = 1;
+                $anticorps['export_catalog'] = 1;
+                $anticorps['image_url'] = "";
+                $anticorps['image_desc'] = "";
 		
 		return $anticorps;
 	}

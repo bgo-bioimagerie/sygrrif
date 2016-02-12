@@ -892,7 +892,7 @@ class CoreUser extends Model {
 		
 		// insert
 		if (! $this->isUser ( $login )){
-			$sql = "insert into core_users(login, firstname, name, email, id_status, source, date_created, id_unit)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$sql = "insert into core_users(login, firstname, name, email, id_status, source, date_created, id_unit)" . " values(?, ?, ?, ?, ?, ?, ?, ?)";
 			$this->runRequest ( $sql, array (
 					$login,
 					$firstname,

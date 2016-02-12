@@ -108,8 +108,9 @@ class ControllerConnection extends Controller
                         */
             }
         }
-        else
+        else{
             throw new Exception("Action not allowed : login or passeword undefined");
+        }
     }
 
     /**

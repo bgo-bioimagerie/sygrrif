@@ -101,7 +101,8 @@ class ControllerSygrrifstats extends ControllerBooking {
 			$camembertTimeContent = $modelGraph->getCamembertTimeContent($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
 			$camembertContentResourcesType = $modelGraph->getCamembertContentResourceType($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
 			$camembertTimeContentResourcesType = $modelGraph->getCamembertTimeContentResourceType($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
-			$navBar = $this->navBar();
+			//echo "time total = " . $graphTimeArray['timeTotal'] . "<br/>";
+                        $navBar = $this->navBar();
 			$this->generateView ( array (
 					'navBar' => $navBar,
 					'month_start' => $month_start,

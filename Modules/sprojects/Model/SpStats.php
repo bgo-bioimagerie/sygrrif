@@ -129,7 +129,7 @@ class SpStats extends Model {
 	}
 	
 	public function getResponsiblesCsv($startDate_min, $startDate_max, $lang){
-		$sql = "select id_resp from sp_projects where date_open >= ? AND date_open <= ?";
+		$sql = "select distinct id_resp from sp_projects where date_open >= ? AND date_open <= ?";
 		$req = $this->runRequest ( $sql, array ($startDate_min, $startDate_max) );
 		$totalNumberOfProjects = $req->rowCount();
 		$projects = $req->fetchAll();
