@@ -1902,6 +1902,10 @@ class SyBillGenerator extends Model {
 			if ($lastNumberY == date("Y", time())){
 				$lastNumberN = (int)$lastNumberN + 1;
 			}
+                        else{
+				$lastNumberY = date("Y", time());
+				$lastNumberN = 1;
+			}
 			$num = "".$lastNumberN."";
 			if ($lastNumberN < 10){
 				$num = "00" . $lastNumberN;
