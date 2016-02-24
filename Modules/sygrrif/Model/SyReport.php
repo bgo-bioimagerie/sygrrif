@@ -31,24 +31,37 @@ class SyReport extends Model {
 		
 		//echo "contition_et_ou = " . $contition_et_ou . "<br/>";
 		
-		$sql .= " AND (";
-		$first = true;
-		for($i = 0 ; $i < count($champ) ; $i++){
-			
-			if( $text[$i] != "" ){
-				
-				if(!$first){
-					$sql .= " " . $contition_et_ou . " ";
-				}
-				if ($first){
-					$first = false;
-				}
-				
-				
-				$sql .= $this->extractQueryFrom( $champ[$i], $text[$i], $type_recherche[$i] );
-			}
-		}
-		$sql .= ")";
+                //print_r($champ);
+                //echo "<br/>";
+                $emptyFields = 0;
+                $countF = 0;
+                for($i = 0 ; $i < count($champ) ; $i++){
+                    $countF++;
+                    //echo "ch = " . $text[$i] . "<br/>";
+                    if ($text[$i] == ""){
+                        $emptyFields++;
+                    }
+                }
+                
+                //echo "empty fields = " . $emptyFields . ", count fields = " . $countF . "<br/>"; 
+                if ($countF != $emptyFields){
+                    $sql .= " AND (";
+                    $first = true;
+                    for($i = 0 ; $i < count($champ) ; $i++){
+
+                            if( $text[$i] != "" ){
+
+                                    if(!$first){
+                                            $sql .= " " . $contition_et_ou . " ";
+                                    }
+                                    if ($first){
+                                            $first = false;
+                                    }
+                                    $sql .= $this->extractQueryFrom( $champ[$i], $text[$i], $type_recherche[$i] );
+                            }
+                    }
+                    $sql .= ")";
+                }
 		//echo "sql = " . $sql . "<br/>";
 		//return;
 		
