@@ -168,11 +168,8 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
       <div class="form-group col-xs-12">
 	  	<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Users_database($lang) ?></label>
 			<div class="col-xs-6">
-<<<<<<< HEAD
-				<select class="form-control" name="supliesusersdatabase">
-=======
+
 				<select class="form-control" name="sprojectsusersdatabase">
->>>>>>> new
 					<OPTION value="local" <?php if($sprojectsusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
 					<OPTION value="core" <?php if($sprojectsusersdatabase=="core"){echo "selected=\"selected\"";} ?> > core </OPTION>
 				</select>

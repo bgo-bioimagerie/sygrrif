@@ -261,13 +261,14 @@ class ControllerCalendar extends ControllerBooking {
 		$packageName = $this->request->getParameterNoException("pname");
 		$packageDuration = $this->request->getParameterNoException("pduration");
                 
-                
+                /*
                 echo "package ID = ";
                 print_r($packageID); echo "<br/>";
                 echo "package name = ";
                 print_r($packageName); echo "<br/>";
                 echo "package duration = ";
                 print_r($packageDuration); echo "<br/>";
+                 */
                 
                 
 		
