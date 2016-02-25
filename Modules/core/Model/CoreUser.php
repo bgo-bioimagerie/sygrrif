@@ -36,6 +36,7 @@ class CoreUser extends Model {
 		);";
 		
 		$this->runRequest ( $sql );
+                
 	}
 	
 	/**

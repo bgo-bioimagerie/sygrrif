@@ -23,7 +23,11 @@ class CoreStatus extends Model {
 		);";
 
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		
+                
+                $sql2="DELETE FROM core_status WHERE id > 4";
+                $this->runRequest($sql2);
+                return $pdo;
 	}
 	
 	/**
