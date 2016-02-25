@@ -270,8 +270,6 @@ class ControllerCalendar extends ControllerBooking {
                 print_r($packageDuration); echo "<br/>";
                  */
                 
-                
-		
                 // add packages
 		$modelPackage = new SyPackage();
 		$count = 0;
@@ -279,36 +277,39 @@ class ControllerCalendar extends ControllerBooking {
                 // get the last package id
                 $lastID = 0;
                 for( $p = 0 ; $p < count($packageID) ; $p++){
-                    if ($packageID[$p] > $lastID){
-                        $lastID = $packageID[$p];
+                    if ($packageName[$p] != "" ){
+                        if ($packageID[$p] > $lastID){
+                            $lastID = $packageID[$p];
+                        }
                     }
                 }
                 
 		for( $p = 0 ; $p < count($packageID) ; $p++){
-			
-			$curentID = $packageID[$p];
-			
-                        if ($curentID == ""){
-                            $lastID++;
-                            $curentID = $lastID;
-                            $packageID[$p] = $lastID;
+			if ($packageName[$p] != "" ){
+                            $curentID = $packageID[$p];
+
+                            if ($curentID == ""){
+                                $lastID++;
+                                $curentID = $lastID;
+                                $packageID[$p] = $lastID;
+                            }
+                            if ($curentID == 1 && $p > 0){
+                                $lastID++;
+                                $curentID = $lastID;
+                                $packageID[$p] = $lastID;
+                            }
+
+                            //echo "set package (".$curentID." , " . $id_resource ." , " . $packageName[$p]." , ". $packageDuration[$p] . ")<br/>";
+                            $package_id = $modelPackage->setPackage($curentID, $id_resource, $packageName[$p], $packageDuration[$p]);
+
+                            //echo "package id = " . $package_id . "<br/>";
+
+                            foreach ($pricingTable as $pricing){
+                                    $price = $this->request->getParameterNoException("p_" . $pricing['id']); 
+                                    $modelPackage->setPrice($package_id, $pricing['id'], $price[$count]);
+                            } 
+                            $count++;
                         }
-                        if ($curentID == 1 && $p > 0){
-                            $lastID++;
-                            $curentID = $lastID;
-                            $packageID[$p] = $lastID;
-                        }
-                        
-                        //echo "set package (".$curentID." , " . $id_resource ." , " . $packageName[$p]." , ". $packageDuration[$p] . ")<br/>";
-			$package_id = $modelPackage->setPackage($curentID, $id_resource, $packageName[$p], $packageDuration[$p]);
-			
-			//echo "package id = " . $package_id . "<br/>";
-			
-			foreach ($pricingTable as $pricing){
-				$price = $this->request->getParameterNoException("p_" . $pricing['id']); 
-				$modelPackage->setPrice($package_id, $pricing['id'], $price[$count]);
-			} 
-			$count++;
 		}
                 
                 // remove packages

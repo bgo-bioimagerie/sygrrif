@@ -32,6 +32,13 @@ class SyPackage extends Model {
 		`price` decimal(10,2) NOT NULL
 		);";
 		$this->runRequest ( $sql2 );
+                
+                // delete package with zero id
+                $sql3="DELETE FROM sy_j_packages_prices WHERE id_package IN(SELECT id FROM sy_packages WHERE id_package=0)";
+                $this->runRequest($sql3);
+                
+                $sql4="DELETE FROM sy_packages WHERE id_package = 0";
+                $this->runRequest($sql4);
 	}
 	
 	public function getPrices($resourceID) {

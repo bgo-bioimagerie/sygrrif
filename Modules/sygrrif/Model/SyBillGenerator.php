@@ -340,7 +340,7 @@ class SyBillGenerator extends Model {
 	 * @param number $unit_id ID of the unit to bill
 	 * @param number $responsible_id ID of the responsible to bill
 	 */
-	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
+	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $billDir = ""){
 		
 		$this->updateUnsetResponsibles(); // this is needed to setup responsible if a user has booked without setted responsible
 		
@@ -424,12 +424,13 @@ class SyBillGenerator extends Model {
 		// fill the table
 		$objPHPExcel = $this->fillTable($objPHPExcel, $date_debut, $date_fin, $resources, $reservationsSummary,
 				 $packagesPrices, $timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end,
-				 $number, $responsible_id);
+				 $number, $responsible_id, $billDir);
 
 	}
 	
 	protected function fillTable($objPHPExcel, $date_debut, $date_fin, $resources, $reservationsSummary, $packagesPrices, 
-			$timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end, $number, $responsible_id){
+			$timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end, 
+                        $number, $responsible_id, $billDir = ""){
 		
 		// search the table line index
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -664,12 +665,18 @@ class SyBillGenerator extends Model {
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
 		$nom = $unitName . '_' . $responsibleFullName . "_" . date("d-m-Y", $searchDate_start) . "_" . date("d-m-Y", $searchDate_end-3600) ."_facture_sygrrif.xls";
 		
-		header_remove();
-		//ob_clean();
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$nom.'"');
-		header('Cache-Control: max-age=0');
-		$objWriter->save('php://output');
+                if ($billDir == ""){
+                    header_remove();
+                    //ob_clean();
+                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    header('Content-Disposition: attachment;filename="'.$nom.'"');
+                    header('Cache-Control: max-age=0');
+                    $objWriter->save('php://output');
+                }
+                else{
+                    //echo "save bill file to :" . $billDir . "/" . $nom;
+                    $objWriter->save($billDir . "/" . $nom);
+                }
 	}
 	
 	protected function calculateBillNumber($objPHPExcel){
