@@ -363,7 +363,7 @@ class SyBillGenerator extends Model {
 		$modelUnit = new CoreUnit();
 		$LABpricingid = $modelUnit->getBelonging($unit_id);
 		if ($LABpricingid <= 1 ){
-			$LABpricingid = 0;
+			return;
 		}
 
 		// responsible fullname

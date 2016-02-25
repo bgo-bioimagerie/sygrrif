@@ -407,22 +407,7 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
         }
         
         public function generateAllBills($searchDate_start, $searchDate_end){
-            /*
-            $lang = $this->getLanguage();
-            
-            echo "date start bill fun a= " . $searchDate_start . "<br/>";
-            echo "date end bill fun a= " . $searchDate_end . "<br/>";
-            
-            if ($searchDate_start != ""){
-                $searchDate_start = CoreTranslator::dateToEn($searchDate_start, $lang);
-            }
-            if ($searchDate_end != ""){
-                $searchDate_end = CoreTranslator::dateToEn($searchDate_end, $lang);
-            }
-             */
-            
-            //echo "date start bill fun= " . $searchDate_start . "<br/>";
-            //echo "date end bill fun = " . $searchDate_end . "<br/>";
+
             
             // get all the unit with a reservation
             $modelCalEntry = new SyCalendarEntry();
@@ -443,7 +428,7 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
             }
             
             // create the output dir
-            $dataDir = date("y-m-d_H-i");
+            $dataDir = date("y-m-d_H-i-s");
             $billDir = "data/sygrrif/".$dataDir;
             if (!mkdir($billDir)){
                 return;
@@ -491,12 +476,15 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
         }
    
         public function generateZipFile($billDir){
+            
+            
             $zip = new ZipArchive();
-            $fileUrl = "'/data/sygrrif/Zip.zip'";
-
-            // On ouvre l’archive.
-            if($zip->open($fileUrl) == TRUE){
-                    // On cree l’archive.
+            $fileUrl = "data/sygrrif/tmp.zip";
+      
+            if(is_dir($billDir))
+            {
+                // On teste si le dossier existe, car sans ça le script risque de provoquer des erreurs.
+	
                 if($zip->open($fileUrl, ZipArchive::CREATE) == TRUE)
                 {
                     // Ouverture de l’archive réussie.
@@ -510,6 +498,7 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
                     {
                         // On ajoute chaque fichier à l’archive en spécifiant l’argument optionnel.
                         // Pour ne pas créer de dossier dans l’archive.
+                        //echo "add file " . $f . "<br/>";
                         if(!$zip->addFile($billDir.'/'.$f, $f))
                         {
                             echo 'Impossible d&#039;ajouter &quot;'.$f.'&quot;.<br/>';
@@ -517,20 +506,27 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
                     }
 	
                     // On ferme l’archive.
-                    //$zip->close();
-	
+                    $zip->close();
+                    //return;
                     // On peut ensuite, comme dans le tuto de DHKold, proposer le téléchargement.
                     header('Content-Transfer-Encoding: binary'); //Transfert en binaire (fichier).
-                    header('Content-Disposition: attachment; filename="invoices.zip"'); //Nom du fichier.
-                    header('Content-Length: '.filesize('invoices.zip')); //Taille du fichier.
-	  
-                    readfile('invoices.zip');
+                    header('Content-Disposition: attachment; filename="invoice.zip"'); //Nom du fichier.
+                    header('Content-Length: '.filesize($fileUrl)); //Taille du fichier.
+
+                    readfile($fileUrl);
+                    unlink($fileUrl);
                 }
                 else
                 {
-                    echo 'Impossible d&#039;ouvrir &quot;Zip.zip&quot;';
-                    // Traitement des erreurs avec un switch(), par exemple.
+                    // Erreur lors de l’ouverture.
+                    // On peut ajouter du code ici pour gérer les différentes erreurs.
+                    echo 'Erreur, impossible de créer l&#039;archive.';
                 }
             }
+            else
+            {
+              // Possibilité de créer le dossier avec mkdir().
+              echo 'Le dossier &quot;upload/&quot; n&#039;existe pas.';
+            } 
         }
 }
