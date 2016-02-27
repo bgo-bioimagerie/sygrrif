@@ -371,7 +371,7 @@ class ControllerAnticorps extends ControllerSecureNav {
                     $export_catalog = 0;
                 }
                 $modelAnticorps->setExportCatalog($id, $export_catalog);
-                $modelAnticorps->setApplicationStaining($id, $id_application, $id_staining);
+                $modelAnticorps->setApplicationStaining($id, $id_staining, $id_application);
                 $modelAnticorps->setImageDesc($id, $image_desc);
                 if ($_FILES["image_url"]["name"] != ""){
                     // download file

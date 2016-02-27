@@ -453,7 +453,7 @@ else{
 				}
 				?>
 				<input class="form-control" id="id" type="number"  name="quantity" value="<?php echo $quantity?>"
-				<?php echo $readOnlyGlobal?>/>
+				<?php echo $readOnlyGlobal?> required/>
 			</div>
 		</div>
 		<?php 	
@@ -483,7 +483,7 @@ else{
 						$quantity = 0;
 						?>
 						<input class="form-control" id="id" type="number"  name="quantity[]" value="<?php echo $quantities[$i]?>"
-						<?php echo $readOnlyGlobal?>/>
+						<?php echo $readOnlyGlobal?> required/>
 					</div>
 				</div>
 				<?php
