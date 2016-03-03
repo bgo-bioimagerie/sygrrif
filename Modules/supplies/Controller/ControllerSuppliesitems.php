@@ -15,6 +15,7 @@ class ControllerSuppliesitems extends ControllerSecureNav {
 	private $itemModel;
 	
 	public function __construct() {
+                parent::__construct();
 		$this->itemModel = new SuItem ();
 	}
 	
@@ -57,7 +58,7 @@ class ControllerSuppliesitems extends ControllerSecureNav {
 		
 		$tableHtml = $table->view($itemsArray,$tableContent);
 		
-		$print = $this->request->getParameterNoException("print");
+		//$print = $this->request->getParameterNoException("print");
 		if ($table->isPrint()){
 			echo $tableHtml;
 			return;
@@ -161,7 +162,7 @@ class ControllerSuppliesitems extends ControllerSecureNav {
 		foreach ($pricingTable as $pricing){
 			$pid = $pricing['id'];
 			if ($pid > 1){
-				$pname = $pricing['name'];
+				//$pname = $pricing['name'];
 				$price = $this->request->getParameterNoException($pid. "_price");
 				if ($price != ""){
 					$modelItemPricing->setPricing($id_item, $pid, $price);

@@ -345,13 +345,13 @@ class SuBillGenerator extends Model {
 		foreach($beneficiaire as $b){
 			// user info
 			
-			$nomPrenom = $modelUser->getUserFromlup(($b[0]), $unit_id, $responsible_id);
+			$nomPrenom = $modelUser->getUserFromlup(($b[0]), $unit_id);
 			// name, firstname, id_responsible
 			if (count($nomPrenom) != 0){
 				$people[0][$i] = $nomPrenom[0]["name"]; 	//Nom du beneficiaire
 				$people[1][$i] = $nomPrenom[0]["firstname"]; 	//Prénom du bénéficiaire
 				$people[2][$i] = $b[0];				//id du bénéficiaire
-				$people[3][$i] = $nomPrenom[0]["id_responsible"];	//Responsable du bénéficiaire
+				$people[3][$i] = $modelUser->getUserResponsibles($b[0]);	//Responsable du bénéficiaire
 				$people[4][$i] = $LABpricingid;	//Tarif appliqué
 				$i++;
 			}

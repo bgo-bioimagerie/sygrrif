@@ -1102,13 +1102,12 @@ class CoreUser extends Model {
 	 * @param number $responsible_id Responsible ID
 	 * @return array User info
 	 */
-	public function getUserFromlup($id, $unit_id, $responsible_id) {
+	public function getUserFromlup($id, $unit_id) {
 		
-		$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE id=? AND id_unit=? AND id_responsible=?';
+		$sql = 'SELECT name, firstname FROM core_users WHERE id=? AND id_unit=?';
 		$req = $this->runRequest ( $sql, array (
 				$id,
-				$unit_id,
-				$responsible_id 
+				$unit_id
 		) );
 		return $req->fetchAll ();
 	}

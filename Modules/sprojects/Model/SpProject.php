@@ -18,8 +18,7 @@ class SpProject extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(150) NOT NULL DEFAULT '',
 		`id_resp` int(11) NOT NULL,					
-	    `id_user` int(11) NOT NULL,
-		`id_status` int(1) NOT NULL,
+                `id_user` int(11) NOT NULL,
 		`date_open` DATE NOT NULL,
 		`date_close` DATE NOT NULL,
 		`new_team` int(4) NOT NULL DEFAULT 1,
@@ -31,64 +30,66 @@ class SpProject extends Model {
         $this->runRequest($sql);
 
         // add columns if no exists
-        $sql = "SHOW COLUMNS FROM `sp_projects` LIKE 'new_team'";
-        $pdo = $this->runRequest($sql);
-        $isColumn = $pdo->fetch();
-        if ($isColumn == false) {
+        $sql2 = "SHOW COLUMNS FROM `sp_projects` LIKE 'new_team'";
+        $pdo2 = $this->runRequest($sql2);
+        $isColumn2 = $pdo2->fetch();
+        if ($isColumn2 == false) {
             $sql = "ALTER TABLE `sp_projects` ADD `new_team` int(4) NOT NULL DEFAULT 1";
             $pdo = $this->runRequest($sql);
         }
 
-        $sql = "SHOW COLUMNS FROM `sp_projects` LIKE 'new_project'";
-        $pdo = $this->runRequest($sql);
-        $isColumn = $pdo->fetch();
-        if ($isColumn == false) {
+        $sql3 = "SHOW COLUMNS FROM `sp_projects` LIKE 'new_project'";
+        $pdo3 = $this->runRequest($sql3);
+        $isColumn3 = $pdo3->fetch();
+        if ($isColumn3 == false) {
             $sql = "ALTER TABLE `sp_projects` ADD `new_project` int(4) NOT NULL DEFAULT 1";
             $pdo = $this->runRequest($sql);
         }
 
-        $sql = "SHOW COLUMNS FROM `sp_projects` LIKE 'time_limit'";
-        $pdo = $this->runRequest($sql);
-        $isColumn = $pdo->fetch();
-        if ($isColumn == false) {
+        $sql4 = "SHOW COLUMNS FROM `sp_projects` LIKE 'time_limit'";
+        $pdo4 = $this->runRequest($sql4);
+        $isColumn4 = $pdo4->fetch();
+        if ($isColumn4 == false) {
             $sql = "ALTER TABLE `sp_projects` ADD `time_limit` varchar(100) NOT NULL DEFAULT ''";
             $pdo = $this->runRequest($sql);
         }
 
         // entries
-        $sql = "CREATE TABLE IF NOT EXISTS `sp_projects_entries` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
+        $sql5 = "CREATE TABLE IF NOT EXISTS `sp_projects_entries` (
 		`id_proj` int(11) NOT NULL,
 		`date` DATE NOT NULL,
-		`content` TEXT NOT NULL,
-		PRIMARY KEY (`id`)
+                `id_item` int(11) NOT NULL, 
+		`quantity` varchar(150) NOT NULL,
+                `invoice_id` int(11) NOT NULL DEFAULT '0'
 		);";
 
-        $pdo = $this->runRequest($sql);
+        $this->runRequest($sql5);
+        $this->addColumn("sp_projects_entries", "invoice_id", "int(11)", "0");
     }
 
+    public function getProjectItemEntries($id_proj, $id_item) {
+        $sql = "select * from sp_projects_entries where id_proj=? AND id_item=?";
+        $req = $this->runRequest($sql, array(
+            $id_proj,
+            $id_item
+        ));
+        return $req->fetchAll();
+    }
+    
     public function getProjectEntries($id_proj) {
-        $sql = "select * from sp_projects_entries where id_proj=? ORDER BY date ASC";
+        $sql = "select * from sp_projects_entries where id_proj=?";
         $req = $this->runRequest($sql, array(
             $id_proj
         ));
         $entries = $req->fetchAll();
-
-        for ($i = 0; $i < count($entries); $i++) {
-            $orderc = explode(";", $entries[$i]["content"]);
-            $content = array();
-            $itemIDS = array();
-            foreach ($orderc as $oc) {
-                $ockv = explode("=", $oc);
-                if (count($ockv) > 1) {
-                    $content["item_" . $ockv[0]] = $ockv[1];
-                    $itemIDS[] = $ockv[0];
-                }
+        
+        $modelBill = new SpBill();
+        for($i = 0 ; $i < count($entries) ; $i++){
+            if ($entries[$i]["invoice_id"] > 0){
+                $entries[$i]["invoice"] = $modelBill->getBillNumber($entries[$i]["invoice_id"]);
             }
-            $content["items_ids"] = $itemIDS;
-            $entries[$i]["content"] = $content;
         }
-
+        
         return $entries;
     }
 
@@ -101,46 +102,22 @@ class SpProject extends Model {
     }
 
     public function getProjectEntriesItems($id_proj) {
-        $sql = "select * from sp_projects_entries where id_proj=?";
+        
+        $sql = "SELECT * FROM sp_items WHERE id IN(select distinct id_item from sp_projects_entries where id_proj=?) ORDER BY display_order ASC;";
         $req = $this->runRequest($sql, array(
             $id_proj
         ));
-        $entries = $req->fetchAll();
+        return $req->fetchAll();
 
-        $items = array();
-        $modelItem = new SpItem();
-        for ($i = 0; $i < count($entries); $i++) {
-            $orderc = explode(";", $entries[$i]["content"]);
-            $content = array();
-            $itemIDS = array();
-            foreach ($orderc as $oc) {
-                $ockv = explode("=", $oc);
-                if (count($ockv) > 1) {
-                    $item_id = $ockv[0];
-                    $items[$item_id] = $modelItem->getItem($item_id);
-                }
-            }
-        }
-
-        // sort due to the display order column
-        foreach ($items as $key => $row) {
-            $volume[$key] = $row['display_order'];
-            $edition[$key] = $row['id'];
-        }
-
-        array_multisort($volume, SORT_ASC, $edition, SORT_ASC, $items);
-
-        return $items;
     }
 
-    public function addProject($name, $id_resp, $id_user, $id_status, $date_open, $date_close, $new_team, $new_project, $time_limit) {
-        $sql = "INSERT INTO sp_projects (name, id_resp, id_user, id_status, date_open, date_close, new_team, new_project, time_limit)
-				 VALUES(?,?,?,?,?,?,?,?,?)";
+    public function addProject($name, $id_resp, $id_user, $date_open, $date_close, $new_team, $new_project, $time_limit) {
+        $sql = "INSERT INTO sp_projects (name, id_resp, id_user, date_open, date_close, new_team, new_project, time_limit)
+				 VALUES(?,?,?,?,?,?,?,?)";
         $pdo = $this->runRequest($sql, array(
             $name,
             $id_resp,
             $id_user,
-            $id_status,
             $date_open,
             $date_close,
             $new_team,
@@ -150,14 +127,13 @@ class SpProject extends Model {
         return $this->getDatabase()->lastInsertId();
     }
 
-    public function updateProject($id, $name, $id_resp, $id_user, $id_status, $date_open, $date_close, $new_team, $new_project, $time_limit) {
-        $sql = "update sp_projects set name=?, id_resp=?, id_user=?, id_status=?, date_open=?, date_close=?, new_team=?, new_project=?, time_limit=?
+    public function updateProject($id, $name, $id_resp, $id_user, $date_open, $date_close, $new_team, $new_project, $time_limit) {
+        $sql = "update sp_projects set name=?, id_resp=?, id_user=?, date_open=?, date_close=?, new_team=?, new_project=?, time_limit=?
 		        where id=?";
         $this->runRequest($sql, array(
             $name,
             $id_resp,
             $id_user,
-            $id_status,
             $date_open,
             $date_close,
             $new_team,
@@ -168,19 +144,20 @@ class SpProject extends Model {
     }
 
     public function closeProject($id_project) {
-        $sql = "update sp_projects set id_status=0
+        $sql = "update sp_projects set date_close=?
 		        where id=?";
         $this->runRequest($sql, array(
+            date("Y-m-d"),
             $id_project
         ));
     }
 
-    public function setProject($id, $name, $id_resp, $id_user, $id_status, $date_open, $date_close, $new_team, $new_project, $time_limit) {
+    public function setProject($id, $name, $id_resp, $id_user, $date_open, $date_close, $new_team, $new_project, $time_limit) {
         if ($this->isProject($id)) {
-            $this->updateProject($id, $name, $id_resp, $id_user, $id_status, $date_open, $date_close, $new_team, $new_project, $time_limit);
+            $this->updateProject($id, $name, $id_resp, $id_user, $date_open, $date_close, $new_team, $new_project, $time_limit);
             return $id;
         } else {
-            return $this->addProject($name, $id_resp, $id_user, $id_status, $date_open, $date_close, $new_team, $new_project, $time_limit);
+            return $this->addProject($name, $id_resp, $id_user, $date_open, $date_close, $new_team, $new_project, $time_limit);
         }
     }
 
@@ -189,10 +166,12 @@ class SpProject extends Model {
         $unit = $this->runRequest($sql, array(
             $id
         ));
-        if ($unit->rowCount() == 1)
+        if ($unit->rowCount() == 1){
             return true;
-        else
+        }
+        else{
             return false;
+        }
     }
 
     public function getResponsible($id_project) {
@@ -229,7 +208,7 @@ class SpProject extends Model {
     }
 
     public function openedProjects($sortentry = 'id') {
-        $sql = "select * from sp_projects where id_status=1 order by " . $sortentry . " ASC;";
+        $sql = "select * from sp_projects where date_close='0000-00-00' order by " . $sortentry . " ASC;";
         $req = $this->runRequest($sql);
 
         $entries = $req->fetchAll();
@@ -250,7 +229,7 @@ class SpProject extends Model {
     }
 
     public function closedProjects($sortentry = 'id') {
-        $sql = "select * from sp_projects where id_status=0 order by " . $sortentry . " ASC;";
+        $sql = "select * from sp_projects where date_close!='0000-00-00' order by " . $sortentry . " ASC;";
         $req = $this->runRequest($sql);
 
         $entries = $req->fetchAll();
@@ -293,13 +272,8 @@ class SpProject extends Model {
     }
 
     // entries
-    public function setProjectEntry($id, $id_project, $date, $content) {
-        if ($this->isProjectEntry($id)) {
-            $this->updateProjectEntry($id, $id_project, $date, $content);
-            return $id;
-        } else {
-            return $this->addProjectEntry($id_project, $date, $content);
-        }
+    public function setProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $cinvoiceid) {
+        return $this->addProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $cinvoiceid);
     }
 
     public function isProjectEntry($id) {
@@ -307,31 +281,33 @@ class SpProject extends Model {
         $unit = $this->runRequest($sql, array(
             $id
         ));
-        if ($unit->rowCount() == 1)
+        if ($unit->rowCount() == 1){
             return true;
-        else
+        }
+        else{
             return false;
+        }
     }
 
-    public function addProjectEntry($id_project, $date, $content) {
-        $sql = "INSERT INTO sp_projects_entries (id_proj, date, content)
-				 VALUES(?,?,?)";
-        $pdo = $this->runRequest($sql, array(
-            $id_project,
-            $date,
-            $content
+    public function addProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $cinvoiceid) {
+        $sql = "INSERT INTO sp_projects_entries (id_proj, date, id_item, quantity, invoice_id)
+				 VALUES(?,?,?,?,?)";
+        $this->runRequest($sql, array(
+            $id_proj,
+            $cdate,
+            $ciditem,
+            $cquantity,
+            $cinvoiceid
         ));
         return $this->getDatabase()->lastInsertId();
     }
-
-    public function updateProjectEntry($id, $id_project, $date, $content) {
-        $sql = "update sp_projects_entries set id_proj=?, date=?, content=?
-		        where id=?";
+    
+    public function setEntryInvoiceId($id_project, $invoice_id){
+        $sql = "update sp_projects_entries set invoice_id=?
+		        where id_proj=? AND invoice_id=0";
         $this->runRequest($sql, array(
-            $id_project,
-            $date,
-            $content,
-            $id
+            $invoice_id,
+            $id_project
         ));
     }
 
@@ -356,11 +332,11 @@ class SpProject extends Model {
             $id
         ));
     }
-
-    public function deleteProjectItem($id) {
-        $sql = "DELETE FROM sp_projects_entries WHERE id=?";
-        $req = $this->runRequest($sql, array(
-            $id
+    
+    public function deleteAllProjetItems($id_project){
+        $sql = "DELETE FROM sp_projects_entries WHERE id_proj=?";
+        $this->runRequest($sql, array(
+            $id_project
         ));
     }
 

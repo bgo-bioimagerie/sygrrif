@@ -23,12 +23,6 @@ require_once 'Modules/sygrrif/Model/SyStatsUser.php';
 class ControllerSygrrifstats extends ControllerBooking {
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * Check if the user have the right to view SyGRRif pages
 	 * @return boolean
 	 */

@@ -250,7 +250,7 @@ class SyGraph extends Model {
 			$timeResaWe = 0.0;
 			foreach($resas as $resa){
 				if ($resourceType == 1){
-					$timeResaArray = calculateReservationTime($resa["start_time"], $resa["end_time"], $night_start, $night_end, $we_array);
+					$timeResaArray = $this->calculateReservationTime($resa["start_time"], $resa["end_time"], $night_start, $night_end, $we_array);
 					$timeResa += $timeResaArray[0];
 					$timeResaNight += $timeResaArray[1];
 					$timeResaWe += $timeResaArray[2];

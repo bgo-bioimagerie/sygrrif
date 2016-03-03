@@ -12,7 +12,7 @@ class SpItem extends Model {
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `sp_items` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-	    `name` varchar(100) NOT NULL,
+                `name` varchar(100) NOT NULL,
 		`description` varchar(250) NOT NULL,
 		`display_order` int(11) NOT NULL DEFAULT 0,		
 		`is_active` int(1) NOT NULL DEFAULT 1,	 
@@ -20,29 +20,29 @@ class SpItem extends Model {
 		PRIMARY KEY (`id`)
 		);";
 
-		$pdo = $this->runRequest($sql);
+		$this->runRequest($sql);
 		
 		// add columns if no exists
-		$sql = "SHOW COLUMNS FROM `sp_items` LIKE 'display_order'";
-		$pdo = $this->runRequest($sql);
-		$isColumn = $pdo->fetch();
-		if ( $isColumn == false){
+		$sql2 = "SHOW COLUMNS FROM `sp_items` LIKE 'display_order'";
+		$req2 = $this->runRequest($sql2);
+		$isColumn2 = $req2->fetch();
+		if ( $isColumn2 == false){
 			$sql = "ALTER TABLE `sp_items` ADD `display_order` int(11) NOT NULL DEFAULT 0";
-			$pdo = $this->runRequest($sql);
+			$this->runRequest($sql);
 		}
 		
-		$sql = "SHOW COLUMNS FROM `sp_items` LIKE 'is_active'";
-		$pdo = $this->runRequest($sql);
-		$isColumn = $pdo->fetch();
-		if ( $isColumn == false){
+		$sql3 = "SHOW COLUMNS FROM `sp_items` LIKE 'is_active'";
+		$pdo3 = $this->runRequest($sql3);
+		$isColumn3 = $pdo3->fetch();
+		if ( $isColumn3 == false){
 			$sql = "ALTER TABLE `sp_items` ADD `is_active` int(1) NOT NULL DEFAULT 1";
 			$pdo = $this->runRequest($sql);
 		}
 		
-		$sql = "SHOW COLUMNS FROM `sp_items` LIKE 'type_id'";
-		$pdo = $this->runRequest($sql);
-		$isColumn = $pdo->fetch();
-		if ( $isColumn == false){
+		$sql4 = "SHOW COLUMNS FROM `sp_items` LIKE 'type_id'";
+		$req4 = $this->runRequest($sql4);
+		$isColumn4 = $req4->fetch();
+		if ( $isColumn4 == false){
 			$sql = "ALTER TABLE `sp_items` ADD `type_id` int(11) NOT NULL DEFAULT 1";
 			$pdo = $this->runRequest($sql);
 		}
@@ -63,7 +63,7 @@ class SpItem extends Model {
 	
 	public function setActive($id, $active){
 		$sql = "update sp_items set is_active=? where id=?";
-		$unit = $this->runRequest($sql, array($active, $id));
+		$this->runRequest($sql, array($active, $id));
 	}
 	
 	/**

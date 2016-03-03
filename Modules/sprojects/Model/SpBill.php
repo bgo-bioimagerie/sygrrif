@@ -19,7 +19,7 @@ class SpBill extends Model {
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `sp_bills` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-	    `number` varchar(50) NOT NULL,
+                `number` varchar(50) NOT NULL,
 		`no_project` varchar(50) NOT NULL,
 		`id_resp` int(11) NOT NULL,
 		`date_generated` DATE NOT NULL,
@@ -29,8 +29,9 @@ class SpBill extends Model {
 		PRIMARY KEY (`id`)
 		);";
 
-		$pdo = $this->runRequest($sql);
-		return $pdo;
+		$this->runRequest($sql);
+                
+                $this->addColumn("sp_bills", "file_url", "varchar(350)", "");
 	}
 	
 	/**
@@ -48,7 +49,7 @@ class SpBill extends Model {
 	
 	public function setPaid($id, $is_paid){
 		$sql = "update sp_bills set is_paid=? where id=?";
-		$unit = $this->runRequest($sql, array($is_paid, $id));
+		$this->runRequest($sql, array($is_paid, $id));
 	}
 	
 	/**
@@ -81,13 +82,30 @@ class SpBill extends Model {
 	public function getBill($id){
 		$sql = "select * from sp_bills where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
+		if ($unit->rowCount() == 1){
 			return $unit->fetch();  // get the first line of the result
-		else
+                }
+		else{
 			throw new Exception("Cannot find the item using the given id");
+                }
 	}
+        
+        public function getBillNumber($id){
+            $sql = "select number from sp_bills where id=?";
+		$unit = $this->runRequest($sql, array($id));
+		if ($unit->rowCount() == 1){
+			$tmp = $unit->fetch();  // get the first line of the result
+                        return $tmp[0];
+                }
+		else{
+			return "";
+                }
+        }
 	
-	
+	public function setBillFile($id, $fileURL){
+            $sql = "update sp_bills set file_url=? where id=?";
+            $this->runRequest($sql, array($fileURL, $id));
+        }
 	/**
 	 * update the information of an item
 	 *
@@ -97,12 +115,12 @@ class SpBill extends Model {
 	public function editBills($id, $number, $no_project, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid){
 	
 		$sql = "update sp_bills set number=?, no_project=?, id_resp=?, date_generated=?, total_ht=?, date_paid=?, is_paid=?  where id=?";
-		$unit = $this->runRequest($sql, array($number, $no_project, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid, $id));
+		$this->runRequest($sql, array($number, $no_project, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid, $id));
 	}
 	
 	public function removeEntry($id){
 		$sql="DELETE FROM sp_bills WHERE id = ?";
-		$req = $this->runRequest($sql, array($id));
+		$this->runRequest($sql, array($id));
 	}
 	
 	public function computeStats($period_begin, $period_end){

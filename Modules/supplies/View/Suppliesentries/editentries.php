@@ -37,7 +37,6 @@
 			</h1>
 		</div>
 	
-	
 		<div class="page-header">
 			<h3>
 			<?php echo  SuTranslator::Description($lang) ?>
@@ -45,20 +44,17 @@
 			</h3>
 		</div>
 	
-		<?php if ($this->clean($entry["id"]) != ""){
-			?>
-			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4">ID</label>
-				<div class="col-xs-8">
-				<input class="form-control" id="id" type="text"  name="id" value="<?php echo $this->clean($entry["id"]) ?>" readonly/>
-				</div>
+                <input class="form-control" type="hidden"  name="id" value="<?php echo $this->clean($entry["id"]) ?>">
+                
+                <div class="form-group">
+			<label class="control-label col-xs-4"><?php echo  SuTranslator::No_identification($lang) ?></label>
+			<div class="col-xs-8">
+				<input class="form-control" type="text"  name="no_identification" value="<?php echo $this->clean($entry["no_identification"])?>"/>
 			</div>
-
-			<?php 		
-		}
-		?>
+		</div>
+                       
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  CoreTranslator::User($lang) ?></label>
+			<label class="control-label col-xs-4"><?php echo  CoreTranslator::User($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="id_user">
 				<?php foreach($users as $user){ 
@@ -90,13 +86,13 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Opened_date($lang) ?></label>
+			<label class="control-label col-xs-4"><?php echo  SuTranslator::Opened_date($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="id" type="text"  name="date_open" value="<?php echo  CoreTranslator::dateFromEn($this->clean($entry["date_open"]), $lang) ?>" readonly/>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SuTranslator::Closed_date($lang)?></label>
+			<label class="control-label col-xs-4"><?php echo  SuTranslator::Closed_date($lang)?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="id" type="text"  name="date_close" value="<?php echo  CoreTranslator::dateFromEn($this->clean($entry["date_close"]), $lang) ?>" readonly/>
 			</div>

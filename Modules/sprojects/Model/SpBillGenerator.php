@@ -65,7 +65,7 @@ class SpBillGenerator extends Model {
 		//echo "lab pricing id = " . $LABpricingid . "<br/>";
 		$unitName = $modelUnit->getUnitName($id_unit);
 		$responsibleFullName = $modelUser->getUserFUllName($id_resp);
-		$userFullName = $modelUser->getUserFUllName($id_user);
+		//$userFullName = $modelUser->getUserFUllName($id_user);
 		
 		// get the lab info
 		//echo "get the lab info <br/>";
@@ -354,7 +354,7 @@ class SpBillGenerator extends Model {
 		
 		// add the project informations
 		$titleTab = "";
-		
+		/*
 		if ($projectInfo["date_open"] == $projectInfo["date_close"]){
 			$titleTab = "Prestations du ". CoreTranslator::dateFromEn($projectInfo["date_open"], "Fr")."";
 		}
@@ -365,7 +365,8 @@ class SpBillGenerator extends Model {
 			}
 			$titleTab = "Prestations du ". CoreTranslator::dateFromEn($projectInfo["date_open"], "Fr")." au ". CoreTranslator::dateFromEn($date_close, "Fr")."";
 		}
-		$titleTab .= "   No Projet: " .  $projectInfo["name"];
+                 */
+		$titleTab .= "Prestations du project No: " .  $projectInfo["name"];
 		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $titleTab);
 		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->getFont()->setBold(true);
 		
@@ -382,15 +383,6 @@ class SpBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, "Consommable");
 		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableHeader);
 		
-		/*
-		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Utilisateur");
-		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
-		
-		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Nombre de \n commandes");
-		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableHeader);
-		*
-		*/
-		
 		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Quantité");
 		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
 		
@@ -403,30 +395,28 @@ class SpBillGenerator extends Model {
 		// ///////////////////////////////////////// //
 		//             Main query                    //
 		// ///////////////////////////////////////// //
-		$projectEntries = $modelProject->getProjectEntries($id_project);
-		$projectItems = $modelProject->getProjectEntriesItems($id_project);
 		
+                // add the order to the history
+		$projectItems = $modelProject->getProjectEntriesItems($id_project);
+                
 		$itemPricing = new SpItemPricing();
 		$data = array();
 		foreach($projectItems as $item){
-			
-			// count the number of each items
-			$quantity = 0;
-			$commandNumber = 0;
-			foreach($projectEntries as $entry){
-				$content = $entry["content"];
-				if (isset($content["item_" . $item["id"]])){
-					$quantity += $content["item_" . $item["id"]];
-					$commandNumber++;
-				}
-			}
-			//echo "get item price : item = " . $item["id"] . ", price = " . $LABpricingid . "<br/>"; 
-			$unitaryPrice = $itemPricing->getPrice($item["id"], $LABpricingid);
-			//print_r($unitaryPrice);
-			$price = 0;
-			
-			//print_r($item);
-			//echo "<br/>";
+                    
+                        //print_r($item);
+                    
+                        // calculate the item quantity
+                        $projectItemEntries = $modelProject->getProjectItemEntries($id_project, $item["id"]);
+                        $quantity = 0;
+                        foreach($projectItemEntries as $entry){
+                            if ($entry["invoice_id"] == 0){
+                                $quantity += $entry["quantity"];
+                            }
+                        }
+                        
+                        // get the item price
+                        $unitaryPrice = $itemPricing->getPrice($item["id"], $LABpricingid);
+                        
 			
 			if ($item["type_id"] == 1 || $item["type_id"] == 3){
 				$price = (float)$quantity*(float)$unitaryPrice["price"];
@@ -442,16 +432,12 @@ class SpBillGenerator extends Model {
 				$unitaryPrice["price"] = $price;
 			}
 			
-			$data[] = array("item_name" => $item["name"], "quantity" => $quantity, "commandNumber" => $commandNumber, 
+			$data[] = array("item_name" => $item["name"], "quantity" => $quantity,
 							"unitary_price" => $unitaryPrice["price"], "price" => $price  );
 		}
 		
-		
-		//print_r($data);
-		//return;
-		
 		$addedLine = 0;
-		$totalHT = 0;
+                $totalHT = 0;
 		foreach($data as $dat){
 			
 			if ($dat["price"] > 0){
@@ -466,16 +452,6 @@ class SpBillGenerator extends Model {
 				// Consommable
 				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$lineIdx, $dat["item_name"]);
 				$objPHPExcel->getActiveSheet()->getStyle('A'.$lineIdx)->applyFromArray($styleTableCell);
-
-				/*
-				// user full name
-				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $userFullName);
-				$objPHPExcel->getActiveSheet()->getStyle('B'.$lineIdx)->applyFromArray($styleTableCell);
-					
-				// number of order
-				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$lineIdx, $dat["commandNumber"]);
-				$objPHPExcel->getActiveSheet()->getStyle('C'.$lineIdx)->applyFromArray($styleTableCell);
-				*/
 					
 				// order quantity
 				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $dat["quantity"]);
@@ -492,13 +468,6 @@ class SpBillGenerator extends Model {
 				$objPHPExcel->getActiveSheet()->getStyle('D'.$lineIdx)->applyFromArray($styleTableCell);
 			}
 		}
-		
-		
-		// close the orders
-		$modelProject->closeProject($id_project);
-				
-		// add the order to thehistory
-		$modelBill->addBill($number, $projectInfo["name"], $id_resp, date("Y-m-d", time()), $totalHT);
 		
 		// bilan
 		// total HT
@@ -542,10 +511,23 @@ class SpBillGenerator extends Model {
 		// Save the xls file
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
 		$filename = $responsibleFullName . date("Y-m-d") ."_sprojects_invoice.xls";
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$filename.'"');
-		header('Cache-Control: max-age=0');
-		$objWriter->save('php://output');
+                $fileURL = "data/sproject" . "/" . $filename;
+                
+                // set the file to the bill manager
+                $billManagerId = $modelBill->addBill($number, $projectInfo["name"], $id_resp, date("Y-m-d", time()), $totalHT);
+                $modelBill->setBillFile($billManagerId, $fileURL);
+                
+                //echo "invoice ID = " . $billManagerId . "<br/>";
+                $modelProject->setEntryInvoiceId($id_project, $billManagerId);
+                
+                // save the file
+                $objWriter->save($fileURL);
+                
+		return $filename;
 			
 	}
+        
+        public function billAPeriod($date_start, $date_end){
+            
+        }
 }

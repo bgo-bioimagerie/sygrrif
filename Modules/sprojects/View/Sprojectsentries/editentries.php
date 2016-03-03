@@ -92,7 +92,7 @@
     <form role="form" class="form-horizontal" action="sprojectsentries/editquery"
           method="post">
 
-        <div class="page-header col-md-12">
+        <div class="page-header col-xs-12">
             <div class="col-xs-10">
                 <h1>
                     <?php
@@ -109,10 +109,12 @@
                     ?>	
                 </h1>
             </div>
+            <!--
             <div class="col-xs-2">
 
                 <button type="button" onclick="location.href = 'sprojectsbill/<?php echo $projectID ?>'" class="btn btn-primary"><?php echo SpTranslator::Billit($lang) ?></button>
             </div>
+            -->
         </div>
 
         <div class="page-header">
@@ -180,34 +182,6 @@
                 </div>
 
                 
-                <?php if ($this->clean($project["id"]) != "") {
-                ?>
-                <div class="form-group">
-                    <label for="inputEmail" class="control-label col-xs-4"><?php echo CoreTranslator::Status($lang) ?></label>
-                    <div class="col-xs-8">
-                        <select class="form-control" name="id_status">
-                            <?php
-                            $selected = "selected=\"selected\"";
-                            $status = $this->clean($project["id_status"]);
-                            ?>
-                            <option value="1" <?php if ($status == 1) {
-                                echo $selected;
-                            } ?>> <?php echo CoreTranslator::Open($lang) ?>  </option>
-                            <option value="0" <?php if ($status == 0) {
-                                echo $selected;
-                            } ?>> <?php echo CoreTranslator::Close($lang) ?> </option>
-                        </select>
-                    </div>
-                </div>
-                <?php
-                }
-                else{
-                    ?>
-                <input type="hidden" name="id_status" value="1"/>
-                    <?php
-                }
-                ?>
-
                 <div class="form-group">
                     <label for="inputEmail" class="control-label col-xs-4"><?php echo SpTranslator::New_team($lang) ?></label>
                     <div class="col-xs-8">
@@ -268,9 +242,13 @@ $newTeam = $this->clean($project["new_project"]);
                     ?>
                 <div class="form-group">
                     <label for="inputEmail" class="control-label col-xs-4"><?php echo SpTranslator::Closed_date($lang) ?></label>
-                    <div class="col-xs-8">
+                    <div class="col-xs-6">
                         <input class="form-control" id="id" type="date"  name="date_close" value="<?php echo $this->clean($project["date_close"]) ?>" />
                     </div>
+                    <div class="col-xs-2">
+                        <input type="submit" class="btn btn-primary" formaction="sprojectsentries/saveandbill" value="<?php echo SpTranslator::Billit($lang) ?>" />
+                    </div>
+                    
                 </div>
                 <?php }
                     ?>
@@ -292,72 +270,109 @@ $newTeam = $this->clean($project["new_project"]);
         </div>
 
         <!--  add here the order list -->
-        <table id="dataTable" class="table table-striped">
-            <thead>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td style="min-width:120px;">Date</td>
-                    <?php
-                    foreach ($items as $item) {
-                        ?>
-                        <td style="min-width:1px;"><?php echo $item["name"] ?></td>
-                        <?php
-                    }
-                    ?>
-                </tr>
-            </thead>
-            <tbody>
-                    <?php
-                    foreach ($projectEntries as $order) {
-                        ?>
-                    <tr>
-                        <td style="width:7px;"><input type="checkbox" name="chk" /></td>
-                        <td style="width:1px;"><input style="width:0px; margin-left:-50px;" type="hidden" name="item_id[]" value="<?php echo $order["id"] ?>"/>
-                        </td>					
-                        <td><input style="max-width:150px;" class="form-control" type="date" name="item_date[]" value="<?php echo $order['date'] ?>" required/></td>
-                        <?php
-                        foreach ($items as $item) {
-                            $quantity = "";
-                            if (isset($order["content"]["item_" . $item["id"]])) {
-                                $quantity = $order["content"]["item_" . $item["id"]];
+        <div class="form-group">
+                    <div class="col-xs-12">
+                        <table id="dataTable" class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td></td>
+                                    <td><?php echo SpTranslator::Date($lang); ?> </td>
+                                    <td><?php echo SpTranslator::Prestation($lang); ?></td>
+                                    <td><?php echo SpTranslator::Quantity($lang); ?></td>
+                                    <td><?php echo SpTranslator::invoiced($lang); ?></td>
+				</tr>
+                            </thead>
+                            <tbody>
+                            <?php 
+                            if (count($projectEntries) > 0){
+                                
+                                foreach ($projectEntries as $projEntry){									
+				?>
+                                    <tr>
+                                        <td><input type="checkbox" name="chk" /></td>
+                                        <td>
+                                            <input class="form-control" type="date" name="cdate[]" value="<?php echo $projEntry['date'] ?>"/>
+                                        </td> 
+                                        <td>
+                                        <select class="form-control" name="ciditem[]">   
+                                            <?php foreach ($items as $item):?>
+                                            <?php   $respId = $this->clean( $item['id'] );
+                                            $respSummary = $this->clean( $item['name'] );
+						$selected = "";
+                                                if ($respId == $projEntry["id_item"]){
+                                                            $selected = "selected=\"selected\"";
+                                                    }    	
+							?>
+							<OPTION value="<?php echo  $respId ?>" <?php echo $selected ?> > <?php echo $respSummary ?> </OPTION>
+							<?php endforeach; ?>
+					</select>
+                                        </td>
+                                        <td>
+                                            <input class="form-control" type="text" name="cquantity[]" value="<?php echo $projEntry["quantity"] ?>">
+					</td>
+                                        <td>
+                                        <select class="form-control" name="cinvoiceid[]">   
+                                            <?php
+                                            if ($projEntry["invoice_id"] > 0){
+                                                ?>
+                                                <OPTION value="<?php echo  $projEntry["invoice_id"] ?>" selected="selected" > <?php echo $projEntry["invoice"] ?> </OPTION>
+                                                <OPTION value="0"> <?php echo SpTranslator::RemoveInvoice($lang) ?> </OPTION>
+                                            <?php
+                                            }
+                                            else{
+                                                ?>
+                                                <OPTION value="0"> <?php echo SpTranslator::NotInvoiced($lang) ?> </OPTION>
+                                                <?php
+                                            }
+                                            
+                                            ?>
+					</select>    
+                                        </td>    
+                                    </tr>  
+                                <?php 
+                                } 
                             }
-                        ?>
-                            <td><input style="min-width: 100px;" class="form-control" type="text" name="item_<?php echo $item["id"] ?>[]" value="<?php echo $quantity ?>" /></td>
-                            <?php
-                        }
-                        ?>
-                    </tr>
-                    <?php
-                }
-                ?>
-                <?php
-                if (count($projectEntries) < 1) {
-                    ?>
-                    <tr>
-                        <td><input type="checkbox" name="chk" /></td>
-                        <td><input type="hidden" name="item_id[]" /></td>
-                        <td><input style="max-width:150px;" class="form-control" type="date" name="item_date[]" required/></td>
-    <?php
-    foreach ($items as $item) {
-        ?>
-                            <td><input style="min-width: 100px;" class="form-control" type="text" name="item_<?php echo $item["id"] ?>[]" /></td>
-        <?php
-    }
-    ?>
-                    </tr>
-    <?php
-}
-?>
-            </tbody>
-        </table>
-
-        <div class="col-md-6">
-            <input type="button" class="btn btn-default" value="<?php echo CoreTranslator::Add($lang) ?>"
-                   onclick="addRow('dataTable')" /> 
-            <input type="button" class="btn btn-default" value="<?php echo CoreTranslator::Delete($lang) ?>"
-                   onclick="deleteRow('dataTable')" /> <br>
-        </div>
+                            else
+                                {
+				?>
+                                <tr>
+                                    <td><input type="checkbox" name="chk" /></td>
+                                    <td>
+                                        <input class="form-control" type="date" name="cdate[]"/>
+                                    </td> 
+                                    <td>
+                                        <select class="form-control" name="ciditem[]">   
+					<?php foreach ($items as $item):?>
+                                            <?php   $respId = $this->clean( $item["id"] );
+                                            $respSummary = $this->clean( $item["name"] );
+						    	
+							?>
+							<OPTION value="<?php echo  $respId ?>"> <?php echo $respSummary ?> </OPTION>
+							<?php endforeach; ?>
+							</select>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" name="cquantity[]"/>
+                                    </td> 
+                                    <td>
+                                        <input class="form-control" type="hidden" name="cinvoiceid[]" value=""/>
+                                    <td/>    
+				</tr>
+				<?php 
+				}
+                                ?>
+                            </tbody>
+			</table>
+		
+				
+				<div class="col-md-6">
+					<input type="button" class="btn btn-default" value="<?php echo SpTranslator::Add($lang)?>"
+						onclick="addRow('dataTable')" /> 
+					<input type="button" class="btn btn-default" value="<?php echo SpTranslator::Remove($lang)?>"
+						onclick="deleteRow('dataTable')" /> <br>
+				</div>
+			</div>
+		</div>
 
         <?php
      }
@@ -372,4 +387,4 @@ $newTeam = $this->clean($project["new_project"]);
 
 <?php if (isset($msgError)): ?>
     <p><?php echo $msgError ?></p>
-<?php endif; ?>
+<?php endif;

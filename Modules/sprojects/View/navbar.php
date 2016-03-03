@@ -129,10 +129,24 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?php echo  SpTranslator::Billing($lang)?></legend>	
-					<button onclick="location.href='sprojectsbillmanager'"
-						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_manager($lang)?></button>
-				<br/>
-					<button onclick="location.href='sprojectsbillmanager/billsstats'"
+                                    <button onclick="location.href='sprojectsbill/billperiod'"
+                                        class="btn btn-link" id="navlink"><?php echo  SpTranslator::BillPerPeriode($lang)?></button>
+                                <br/>
+                                    <button onclick="location.href='sprojectsbill/oneBillMultipleProjects'"
+                                        class="btn btn-link" id="navlink"><?php echo  SpTranslator::OneBillMultipleProjects($lang)?></button>
+                                <br/>
+                                    <button onclick="location.href='sprojectsbillmanager'"
+                                        class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_manager($lang)?></button>
+			</fieldset>
+		</div>
+                
+                <div class='col-md-3 well'>
+			<fieldset>
+                            <legend><?php echo  SpTranslator::ExportAndStats($lang)?></legend>	
+                                <button onclick="location.href='sprojectsbalancesheet'"
+						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Balance_sheet($lang)?></button>
+                                <br/>
+                                        <button onclick="location.href='sprojectsbillmanager/billsstats'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_statistics($lang)?></button>
 				<br/>		 
 					<button onclick="location.href='sprojectsstats'"
@@ -140,15 +154,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<br/>
 					<button onclick="location.href='sprojectsstats/responsiblelist'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Responsible_list($lang)?></button>		
-			</fieldset>
-		</div>
-                
-                <div class='col-md-3 well'>
-			<fieldset>
-                            <legend><?php echo  SpTranslator::Statistics($lang)?></legend>	
-                                <button onclick="location.href='sprojectsbalancesheet'"
-						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Balance_sheet($lang)?></button>
-			</fieldset>
+                        </fieldset>
 		</div>
 
 	</div>

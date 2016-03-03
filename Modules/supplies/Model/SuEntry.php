@@ -14,31 +14,32 @@ class SuEntry extends Model {
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `su_entries` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-	    `id_user` int(11) NOT NULL,
+                `id_user` int(11) NOT NULL,
 		`content` varchar(500) NOT NULL,
 		`id_status` int(1) NOT NULL,
 		`date_open` DATE NOT NULL,						
 		`date_last_modified` DATE NOT NULL,
 		`date_close` DATE NOT NULL,
+                `no_identification` varchar(150) NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
 
-		$pdo = $this->runRequest($sql);
-		return $pdo;
+		$this->runRequest($sql);
+                $this->addColumn("su_entries", "no_identification", "varchar(150)", "");
 	}
 	
-	public function addEntry($id_user, $content, $id_status, $date_open, $date_last_modified="", $date_close=""){
-		$sql = "INSERT INTO su_entries (id_user, content, id_status, date_open, date_last_modified, date_close)
-				 VALUES(?,?,?,?,?,?)";
-		$pdo = $this->runRequest ( $sql, array (
-				$id_user, $content, $id_status, $date_open, $date_last_modified, $date_close
+	public function addEntry($id_user, $no_identification, $content, $id_status, $date_open, $date_last_modified="", $date_close=""){
+		$sql = "INSERT INTO su_entries (id_user, no_identification, content, id_status, date_open, date_last_modified, date_close)
+				 VALUES(?,?,?,?,?,?,?)";
+		$this->runRequest ( $sql, array (
+				$id_user, $no_identification, $content, $id_status, $date_open, $date_last_modified, $date_close
 		) );
 	}
 	
-	public function updateEntry($id, $id_user, $content, $id_status, $date_open, $date_last_modified="", $date_close=""){
-		$sql = "update su_entries set id_user=?, content=?, id_status=?, date_open=?, date_last_modified=?, date_close=?
+	public function updateEntry($id, $id_user, $no_identification, $content, $id_status, $date_open, $date_last_modified="", $date_close=""){
+		$sql = "update su_entries set id_user=?, no_identification=?, content=?, id_status=?, date_open=?, date_last_modified=?, date_close=?
 		        where id=?";
-		$this->runRequest($sql, array($id_user, $content, $id_status, $date_open, $date_last_modified, $date_close, $id));
+		$this->runRequest($sql, array($id_user, $no_identification, $content, $id_status, $date_open, $date_last_modified, $date_close, $id));
 	}
 	
 	public function entries($sortentry = 'id'){
@@ -110,6 +111,7 @@ class SuEntry extends Model {
 		$entry["date_last_modified"] = "";
 		$entry["date_close"] = "";
 		$entry["orders"] = array();
+                $entry["no_identification"] = "";
 		return $entry;
 	}
 	
@@ -134,6 +136,6 @@ class SuEntry extends Model {
 	public function delete($id){
 		
 		$sql="DELETE FROM su_entries WHERE id = ?";
-		$req = $this->runRequest($sql, array($id));
+		$this->runRequest($sql, array($id));
 	}
 }
