@@ -23,19 +23,20 @@ class CoreUser extends Model {
 		`email` varchar(100) NOT NULL DEFAULT '',
 		`tel` varchar(30) NOT NULL DEFAULT '',
 		`pwd` varchar(50) NOT NULL DEFAULT '',
-		`id_unit` int(11) NOT NULL,
-		`id_status` int(11) NOT NULL,
+		`id_unit` int(11) NOT NULL DEFAULT 1,
+		`id_status` int(11) NOT NULL DEFAULT 1,
 		`convention` int(11) NOT NULL DEFAULT 0,		
-		`date_convention` DATE NOT NULL,
-	    `date_created` DATE NOT NULL,
-		`date_last_login` DATE NOT NULL,
-		`date_end_contract` DATE NOT NULL,	
+		`date_convention` DATE NOT NULL DEFAULT '0000-00-00',
+                `date_created` DATE NOT NULL DEFAULT '0000-00-00',
+		`date_last_login` DATE NOT NULL DEFAULT '0000-00-00',
+		`date_end_contract` DATE NOT NULL DEFAULT '0000-00-00',	
 		`is_active` int(1) NOT NULL DEFAULT 1,
 		`source` varchar(30) NOT NULL DEFAULT 'local',									
 		PRIMARY KEY (`id`)
 		);";
 		
 		$this->runRequest ( $sql );
+                
 	}
 	
 	/**
@@ -1101,13 +1102,12 @@ class CoreUser extends Model {
 	 * @param number $responsible_id Responsible ID
 	 * @return array User info
 	 */
-	public function getUserFromlup($id, $unit_id, $responsible_id) {
+	public function getUserFromlup($id, $unit_id) {
 		
-		$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE id=? AND id_unit=? AND id_responsible=?';
+		$sql = 'SELECT name, firstname FROM core_users WHERE id=? AND id_unit=?';
 		$req = $this->runRequest ( $sql, array (
 				$id,
-				$unit_id,
-				$responsible_id 
+				$unit_id
 		) );
 		return $req->fetchAll ();
 	}

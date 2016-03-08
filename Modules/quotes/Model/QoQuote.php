@@ -1,78 +1,152 @@
 <?php
 
 require_once 'Framework/Model.php';
-require_once 'Modules/sprojects/Model/SpProject.php';
 
-require_once 'Modules/sprojects/Model/SpBill.php';
-require_once 'Modules/sprojects/Model/SpItem.php';
-require_once 'Modules/sprojects/Model/SpItemPricing.php';
-
-require_once 'Modules/core/Model/CoreUnit.php';
-require_once 'Modules/core/Model/CoreUser.php';
-require_once 'Modules/core/Model/CoreBelonging.php';
-
-require_once 'Modules/core/Model/CoreTranslator.php';
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
 /**
- * Class defining the supplies pricing model
+ * Class defining the template table model. 
  *
  * @author Sylvain Prigent
  */
-class SpBillGenerator extends Model {
+class QoQuote extends Model {
+
+	public function createTable(){
+		$sql = "CREATE TABLE IF NOT EXISTS `qo_quotes` (
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+                `recipient` varchar(100) NOT NULL DEFAULT '',
+                `address` text NOT NULL DEFAULT '',
+                `id_belonging` int(11) NOT NULL DEFAULT 0,
+                `date_open` DATE NOT NULL,						
+		`date_last_modified` DATE NOT NULL,
+                `content` varchar(1000) NOT NULL DEFAULT '',
+		PRIMARY KEY (`id`)
+		);";
+
+		$pdo = $this->runRequest($sql);
+		return $pdo;
+	}
 	
-	public function generateBill($id_project){
-		
-		
-		//echo "id project = " . $id_project . "<br/>";
-		// /////////////////////////////////////////// // 
-		//        get the input informations           //
-		// /////////////////////////////////////////// //
-		
-		$modelProject = new SpProject();
-		// get the pricing information
-		$id_resp = $modelProject->getResponsible($id_project);
-		$id_user = $modelProject->getUser($id_project);
-		$projectInfo = $modelProject->getProject($id_project);
-		
-		// get the pricing
-		$modelUser = "";
-		$modelUnit = "";
-
-		$modelBelonging = "";
-
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-			$modelUnit = new SpUnit();
-			$modelBelonging = new SpBelonging();
-		}
-		else{
-			$modelUser = new CoreUser();
-			$modelUnit = new CoreUnit();
-			$modelBelonging = new CoreBelonging();
-		}
-		
-		// get the user unit:
-		//echo "resp id = " . $id_resp . "<br/>";
-		$id_unit = $modelUser->getUserUnit($id_resp);
-		//echo "id_unit id = " . $id_unit . "<br/>";
-		
-		// get the pricing
-
-		$LABpricingid = $modelUnit->getBelonging($id_unit);
-		//echo "lab pricing id = " . $LABpricingid . "<br/>";
-		$unitName = $modelUnit->getUnitName($id_unit);
-		$responsibleFullName = $modelUser->getUserFUllName($id_resp);
-		//$userFullName = $modelUser->getUserFUllName($id_user);
-		
-		// get the lab info
-		//echo "get the lab info <br/>";
-
-		//echo "get unit: " . $id_unit . "<br/>";
-		$unitInfo = $modelUnit->getUnit($id_unit);
-		$unitAddress = $unitInfo[2];
+	/*
+	 * 
+	 * Add here the query methods
+	 * 
+	 */
+        public function set($id, $recipient, $address, $id_belonging, $date_open, $date_last_modified){
+            if ($id > 0){
+                $sql = "UPDATE qo_quotes SET recipient=?, address=?, id_belonging=?, date_open=?, date_last_modified=?
+		        WHERE id=?";
+		$this->runRequest($sql, array($recipient, $address, $id_belonging, $date_open, $date_last_modified, $id));
+                return $id;
+            }
+            else{
+                $sql = "INSERT INTO qo_quotes (recipient, address, id_belonging, date_open, date_last_modified)
+				 VALUES(?,?,?,?,?)";
+		$this->runRequest ( $sql, array (
+				$recipient, $address, $id_belonging, $date_open, $date_last_modified
+		) );
+                return $this->getDatabase()->lastInsertId();
+            }
+            
+        }
+      
+        public function get($id){
+            $sql = "SELECT content FROM qo_quotes WHERE id=?";
+            $req = $this->runRequest($sql, array($id));
+            $tmp = $req->fetch();
+            return $tmp[0];
+        }
+        
+        public function getInfo($id){
+            $sql = "SELECT * FROM qo_quotes WHERE id=?";
+            $req = $this->runRequest($sql, array($id));
+            return $req->fetch();
+            
+        }
+        
+        public function getDateCreated($id){
+            $sql = "SELECT date_open FROM qo_quotes WHERE id=?";
+            $req = $this->runRequest($sql, array($id));
+            $tmp = $req->fetch();
+            return $tmp[0];
+        }
+        
+        public function getAll($sortentry = "date_open"){
+       
+            $sql = "SELECT quotes.* ,
+                            belongings.name AS belonging
+    			FROM qo_quotes AS quotes
+    			INNER JOIN core_belongings AS belongings ON quotes.id_belonging = belongings.id
+    			ORDER BY " . $sortentry . " ASC;";
+            $req = $this->runRequest($sql);
+            return $req->fetchAll();
+        }
+        
+        public function setContent($quoteID, $contentKeys, $contentValues){
+            // create the content line
+            $content = "";
+            for($i = 0 ; $i < count($contentKeys) ; $i++){
+                $content .= $contentKeys[$i] . "=" . $contentValues[$i] . ";";
+            }
+            
+            $sql = "UPDATE qo_quotes SET content=? WHERE id=?";
+            $this->runRequest($sql, array($content, $quoteID));
+        }
+        
+        public function getContent($quoteID){
+            $sql = "SELECT content FROM qo_quotes WHERE id=?";
+            $req = $this->runRequest($sql, array($quoteID));
+            $tmp = $req->fetch();
+            $content = $tmp[0];
+            
+            $entries = explode(";", $content);
+            $contentArray = array();
+            foreach($entries as $entry){
+                $entryData = explode("=", $entry);
+                if (count($entryData) == 2){
+                    $contentArray[$entryData[0]] = $entryData[1];
+                }
+            }
+            return $contentArray;
+        }
+        
+        public function getDefault(){
+            $quote['id'] = 0;
+            $quote['recipient'] = "";
+            $quote['address'] = "";
+            $quote['id_belonging'] = 0;
+            $quote['date_open'] = 0;
+            $quote['date_last_modified'] = 0;
+        }
+        
+        public function getAllSupplies(){
+            
+            $supplies = array();
+            // from sygrrif
+            if ($this->isTable("sy_resources")){
+                $sql = "SELECT id, name FROM sy_resources";
+                $res = $this->runRequest($sql)->fetchAll();
+                for($i = 0 ; $i < count($res) ; $i++){
+                    $supplies['sy_'.$res[$i]['id']] = $res[$i]['name']; 
+                }
+            }
+            
+            if ($this->isTable("sp_items")){
+                $sql = "SELECT id, name FROM sp_items";
+                $res = $this->runRequest($sql)->fetchAll();
+                for($i = 0 ; $i < count($res) ; $i++){
+                    $supplies['sp_'.$res[$i]['id']] = $res[$i]['name']; 
+                }
+            }
+            return $supplies;
+        }
+        
+        public function generateQuoteXls($idQuote){
+            	
+		// get the quote informations
+                $quoteInfo = $this->getInfo($idQuote);
+		$LABpricingid = $quoteInfo["id_belonging"];
+ 
 		//echo "get unit done <br/>";
 		// /////////////////////////////////////////// //
 		//            Pepare the xls output            //
@@ -162,7 +236,7 @@ class SpBillGenerator extends Model {
 		);
 		
 		// load the template
-		$file = "data/template_supplies.xls";
+		$file = "data/template.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
@@ -188,25 +262,6 @@ class SpBillGenerator extends Model {
 			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("d/m/Y", time()));
 		}
                 
-                // replace the project number
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{no_projet}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		if ($insertCol != ""){
-			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $projectInfo["name"]);
-		}
-		
 		// replace the year
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
 		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
@@ -242,7 +297,7 @@ class SpBillGenerator extends Model {
 			}
 		}
 		if ($insertCol != ""){
-			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $responsibleFullName);
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $quoteInfo["recipient"]);
 		}
 		
 		// replace $unitName
@@ -261,7 +316,7 @@ class SpBillGenerator extends Model {
 			}
 		}
 		if ($insertCol != ""){
-			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitName);
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, "Unit Name");
 		}
 		
 		// replace address $unitAddress
@@ -280,62 +335,12 @@ class SpBillGenerator extends Model {
 			}
 		}
 		if ($insertCol != ""){
-			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitAddress);
-		}
-		
-		// replace the bill number
-		// calculate the number
-		$modelBill = new SpBill();
-		$bills = $modelBill->getBills("number");
-		$lastNumber = "";
-		$number = "";
-		if (count($bills) > 0){
-			$lastNumber = $bills[count($bills)-1]["number"];
-		}
-		if ($lastNumber != ""){
-			$lastNumber = explode("-", $lastNumber);
-			$lastNumberY = $lastNumber[0];
-			$lastNumberN = $lastNumber[1];
-			
-			if ($lastNumberY == date("Y", time())){
-				$lastNumberN = (int)$lastNumberN + 1;
-			}
-			else{
-				$lastNumberY = date("Y", time());
-				$lastNumberN = 1;
-			}
-			$num = "".$lastNumberN."";
-			if ($lastNumberN < 10){
-				$num = "00" . $lastNumberN;
-			}
-			else if ($lastNumberN >= 10 && $lastNumberN < 100){
-				$num = "0" . $lastNumberN;
-			}
-			$number = $lastNumberY ."-". $num ;
-		}
-		else{
-			$number = date("Y", time()) . "-001";
-		}
-		// replace the number
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{nombre}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		if ($insertCol != ""){
-			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $number);
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $quoteInfo["address"]);
 		}
 		
 		
+		
+		// get the table index
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
 		foreach($rowIterator as $row) {
 				
@@ -351,27 +356,6 @@ class SpBillGenerator extends Model {
 		$curentLine = $insertLine;
 		$curentLine++;
 		
-		
-		// add the project informations
-		$titleTab = "";
-		/*
-		if ($projectInfo["date_open"] == $projectInfo["date_close"]){
-			$titleTab = "Prestations du ". CoreTranslator::dateFromEn($projectInfo["date_open"], "Fr")."";
-		}
-		else{
-			$date_close = $projectInfo["date_close"];
-			if ($date_close == "0000-00-00"){
-				$date_close = date("d/m/Y", time());
-			}
-			$titleTab = "Prestations du ". CoreTranslator::dateFromEn($projectInfo["date_open"], "Fr")." au ". CoreTranslator::dateFromEn($date_close, "Fr")."";
-		}
-                 */
-		$titleTab .= "Prestations du project No: " .  $projectInfo["name"];
-		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $titleTab);
-		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->getFont()->setBold(true);
-		
-		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
-		$curentLine++;
 
 		
 		// set the row
@@ -380,9 +364,9 @@ class SpBillGenerator extends Model {
 		->getRowDimension($curentLine)
 		->setRowHeight(25);
 		
-		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, "Consommable");
+		$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, "Prestation");
 		$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->applyFromArray($styleTableHeader);
-		
+	
 		$objPHPExcel->getActiveSheet()->SetCellValue('B'.$curentLine, "Quantité");
 		$objPHPExcel->getActiveSheet()->getStyle('B'.$curentLine)->applyFromArray($styleTableHeader);
 		
@@ -395,80 +379,52 @@ class SpBillGenerator extends Model {
 		// ///////////////////////////////////////// //
 		//             Main query                    //
 		// ///////////////////////////////////////// //
-		
-                // add the order to the history
-		$projectItems = $modelProject->getProjectEntriesItems($id_project);
-                
-		$itemPricing = new SpItemPricing();
-		$data = array();
-		foreach($projectItems as $item){
-                    
-                        //print_r($item);
-                    
-                        // calculate the item quantity
-                        $projectItemEntries = $modelProject->getProjectItemEntries($id_project, $item["id"]);
-                        $quantity = 0;
-                        foreach($projectItemEntries as $entry){
-                            if ($entry["invoice_id"] == 0){
-                                $quantity += $entry["quantity"];
-                            }
-                        }
-                        
-                        // get the item price
-                        $unitaryPrice = $itemPricing->getPrice($item["id"], $LABpricingid);
-                        
-			
-			if ($item["type_id"] == 1 || $item["type_id"] == 3){
-				$price = (float)$quantity*(float)$unitaryPrice["price"];
-			}
-			else if($item["type_id"] == 2){
-				$q = (float)$quantity/60.0;
-				$price = (float)$q*(float)$unitaryPrice["price"];
-				$quantity = $quantity . " min";
-			}
-			else if($item["type_id"] == 4){
-				$price = $quantity;
-				$quantity = "-";
-				$unitaryPrice["price"] = $price;
-			}
-			
-			$data[] = array("item_name" => $item["name"], "quantity" => $quantity,
-							"unitary_price" => $unitaryPrice["price"], "price" => $price  );
-		}
-		
+                $content = $this->getContent($idQuote);
+	
 		$addedLine = 0;
-                $totalHT = 0;
-		foreach($data as $dat){
+		$totalHT = 0;
+		foreach($content as $datKey => $datValue){
 			
-			if ($dat["price"] > 0){
+			if ($datValue > 0){
 			
 				$addedLine++;
 				$lineIdx = $curentLine + 1;
 				$curentLine = $lineIdx;
-				$totalHT += $dat["price"];
+                                
+                                // get the prestation name
+                                //echo "key = " . $datKey . ", value = " . $datValue ."<br/>";
+                                $prestaName = $this->getPrestationNameFromKey($datKey);
+                                
+                                // get the prestation price
+                                
+                                $prestaPrice = $this->getPrestationPriceFromKey($datKey, $LABpricingid);
+                                
+                                $datPice = (float)$datValue*(float)$prestaPrice;
+                                
+				$totalHT += $datPice;
 					
 				$objPHPExcel->getActiveSheet()->insertNewRowBefore($lineIdx, 1);
 					
 				// Consommable
-				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$lineIdx, $dat["item_name"]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('A'.$lineIdx, $prestaName);
 				$objPHPExcel->getActiveSheet()->getStyle('A'.$lineIdx)->applyFromArray($styleTableCell);
+
 					
 				// order quantity
-				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $dat["quantity"]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('B'.$lineIdx, $datValue);
 				$objPHPExcel->getActiveSheet()->getStyle('B'.$lineIdx)->applyFromArray($styleTableCell);
 					
 				// unitary price
 				//echo "line idx = " . $lineIdx . "<br/>";
 				//echo "unit price = " . $dat["unitary_price"] . "<br/>";
-				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$lineIdx, $dat["unitary_price"]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('C'.$lineIdx, $prestaPrice);
 				$objPHPExcel->getActiveSheet()->getStyle('C'.$lineIdx)->applyFromArray($styleTableCell);
 					
 				// Total HT
-				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$lineIdx, $dat["price"]);
+				$objPHPExcel->getActiveSheet()->SetCellValue('D'.$lineIdx, $datPice);
 				$objPHPExcel->getActiveSheet()->getStyle('D'.$lineIdx)->applyFromArray($styleTableCell);
 			}
 		}
-		
 		// bilan
 		// total HT
 		$curentLine++;
@@ -510,24 +466,45 @@ class SpBillGenerator extends Model {
 		
 		// Save the xls file
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-		$filename = $responsibleFullName . date("Y-m-d") ."_sprojects_invoice.xls";
-                $fileURL = "data/sproject" . "/" . $filename;
-                
-                // set the file to the bill manager
-                $billManagerId = $modelBill->addBill($number, $projectInfo["name"], $id_resp, date("Y-m-d", time()), $totalHT);
-                $modelBill->setBillFile($billManagerId, $fileURL);
-                
-                //echo "invoice ID = " . $billManagerId . "<br/>";
-                $modelProject->setEntryInvoiceId($id_project, $billManagerId);
-                
-                // save the file
-                $objWriter->save($fileURL);
-                
-		return $filename;
+		$filename = $quoteInfo["recipient"] . date("Y-m-d") ."_quote.xls";
+		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+		header('Content-Disposition: attachment;filename="'.$filename.'"');
+		header('Cache-Control: max-age=0');
+		$objWriter->save('php://output');
 			
 	}
         
-        public function billAPeriod($date_start, $date_end){
-            
+        private function getPrestationNameFromKey($datKey){
+            $keyArray = explode("_", $datKey);
+            if (count($keyArray) == 2){
+                if ($keyArray[0] == "sy"){
+                    $sql = "SELECT name FROM sy_resources WHERE id=?";
+                    $tmp = $this->runRequest($sql, array($keyArray[1]))->fetch();
+                    return $tmp[0]; 
+                }
+                else if($keyArray[0] == "sp"){
+                    $sql = "SELECT name FROM sp_items WHERE id=?";
+                    $tmp = $this->runRequest($sql, array($keyArray[1]))->fetch();
+                    return $tmp[0]; 
+                }
+            }
+            return "";
+        }
+        
+        private function getPrestationPriceFromKey($datKey, $id_belonging){
+            $keyArray = explode("_", $datKey);
+            if (count($keyArray) == 2){
+                if ($keyArray[0] == "sy"){
+                    $sql = "SELECT price_day FROM sy_j_resource_pricing WHERE id_resource=? AND id_pricing=?";
+                    $tmp = $this->runRequest($sql, array($keyArray[1], $id_belonging))->fetch();
+                    return $tmp[0]; 
+                }
+                else if($keyArray[0] == "sp"){
+                    $sql = "SELECT price FROM sp_j_item_pricing WHERE id_item=? AND id_pricing=?";
+                    $tmp = $this->runRequest($sql, array($keyArray[1], $id_belonging))->fetch();
+                    return $tmp[0]; 
+                }
+            }
+            return 0;
         }
 }

@@ -14,12 +14,6 @@ require_once 'Modules/sygrrif/Model/SyStatsUser.php';
 class ControllerSygrrifstatsusers extends ControllerSecureNav {
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-	}
-
-	/**
 	 * (non-PHPdoc)
 	 * @see Controller::index()
 	 */

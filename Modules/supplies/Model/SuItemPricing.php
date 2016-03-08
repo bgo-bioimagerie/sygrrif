@@ -22,7 +22,7 @@ class SuItemPricing extends Model {
 	
 	public function addPricing($id_item, $id_pricing, $price){
 			
-		echo " data = " . $id_item ." ". $id_pricing ." ". $price . "<br/>"; 
+		//echo " data = " . $id_item ." ". $id_pricing ." ". $price . "<br/>"; 
 		$sql = "INSERT INTO su_j_item_pricing (id_item, id_pricing, price)
 				 VALUES(?,?,?)";
 		$pdo = $this->runRequest ( $sql, array (

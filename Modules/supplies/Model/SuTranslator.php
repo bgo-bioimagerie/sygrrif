@@ -364,4 +364,11 @@ class SuTranslator {
 		}
 		return "End period";
 	}
+        
+        public static function No_identification($lang){
+            if ($lang == "Fr") {
+			return "No identification";
+		}
+		return "# identificaiton";
+        }
 }

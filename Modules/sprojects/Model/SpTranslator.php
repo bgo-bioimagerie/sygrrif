@@ -588,4 +588,83 @@ class SpTranslator {
                 }
 		return "Balance sheet from ";
         }
+        
+        public static function Date($lang){
+                if ($lang == "Fr") {
+                    return "Date";
+                }
+		return "Date";
+        }
+        
+        public static function Prestation($lang){
+                if ($lang == "Fr") {
+                    return "Prestation";
+                }
+		return "Prestation";
+        }
+        
+        public static function Quantity($lang){
+                if ($lang == "Fr") {
+                    return "Quantity";
+                }
+		return "Quantity";
+        }
+        
+        public static function Add($lang){
+                if ($lang == "Fr") {
+                    return "Ajouter";
+                }
+		return "Add";
+        }
+                
+        public static function Remove($lang){
+                if ($lang == "Fr") {
+                    return "Enlever";
+                }
+		return "Remove";
+        }
+        
+        public static function invoiced($lang){
+            if ($lang == "Fr") {
+                return "Facturé";
+            }
+            return "Invoiced";
+        } 
+        
+        public static function RemoveInvoice($lang){
+            if ($lang == "Fr") {
+                return "Annuler facture";
+            }
+            return "Cancel invoice";
+        }
+        
+        public static function NotInvoiced($lang){
+            if ($lang == "Fr") {
+                return "Pas encore facturé";
+            }
+            return "Not invoiced yet";
+        }
+        
+        public static function ExportAndStats($lang){
+            if ($lang == "Fr") {
+                return "Export & Statistiques";
+            }
+            return "Exports & Statistics";
+        }
+        
+        public static function BillPerPeriode($lang){
+            if ($lang == "Fr") {
+                return "Facturation par période";
+            }
+            return "Invoice a period";
+        }
+        
+        public static function OneBillMultipleProjects($lang){
+            if ($lang == "Fr") {
+                return "Une facture pour plusieurs projets";
+            }
+            return "One bill multiple projects";
+        }
+        
+        
 }

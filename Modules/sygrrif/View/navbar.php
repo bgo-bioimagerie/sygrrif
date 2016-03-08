@@ -124,6 +124,9 @@ $classWell = 'col-md-3 well';
 						?>
 						<button onclick="location.href='sygrrifpricing/statpriceunits'"
 						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Bill_per_unit($lang) ?></button>
+                                                <br/>
+                                                <button onclick="location.href='sygrrifpricing/statpriceall'"
+						class="btn btn-link" id="navlink"><?php echo  SyTranslator::Bill_all($lang) ?></button>
 					<?php	
 					}
 					?>

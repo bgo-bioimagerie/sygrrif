@@ -9,13 +9,6 @@ require_once 'Modules/core/Controller/ControllerSecureNav.php';
  * Manage the modules: starting page to install and config each module	
  */
 class ControllerModulesmanager extends ControllerSecureNav {
-		
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-
-	}
 	
 	/**
 	 * (non-PHPdoc)

@@ -74,17 +74,19 @@ abstract class Model
     		}
     		else{
     			$dbnameArray = explode("=", $dsnArray[$i]);
-    			$dbname = $dbnameArray[0];
+    			$dbname = $dbnameArray[1];
     			break;
     		}
     	}
     	
-    	$sql = 'SHOW TABLES FROM '. Configuration::get($dbname) . ' LIKE \''. $table. '\'';
+        
+    	$sql = 'SHOW TABLES FROM '. $dbname . ' LIKE \''. $table. '\'';
     	$req = $this->runRequest($sql);
     	if ($req->rowCount() == 1){
     		return true;
     	}
     	return false;
+         
     	
     }
 

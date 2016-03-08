@@ -2,6 +2,14 @@
 
 <?php echo $navBar?>
 
+<script type="text/javascript">
+    	function ConfirmDelete()
+    	{
+            if (confirm("Are you sure you want to Delete this resource ?")){
+                location.href='calendar/deletecalendarresource/<?php echo $this->clean($resource_base["id"])?>';
+            }
+    	}
+</script>
 <head>
 <style>
 #button-div{
@@ -175,7 +183,7 @@
 				
 		<div class="col-xs-3" id="button-div">
 			<?php if ($this->clean($resource_base["id"]) != ""){ ?>
-			<button type="button" onclick="location.href='<?php echo "calendar/deletecalendarresource/".$this->clean($resource_base["id"]) ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
+			<button type="button" onclick="ConfirmDelete();" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
 			<?php } ?>
 		</div>		
 		<div class="col-xs-3 col-xs-offset-6" id="button-div">
@@ -188,4 +196,4 @@
 
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

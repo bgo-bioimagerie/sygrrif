@@ -3,9 +3,9 @@
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 
-//require_once 'Modules/sprojects/Model/SpUser.php';
-//require_once 'Modules/sprojects/Model/SpUnit.php';
-//require_once 'Modules/sprojects/Model/SpResponsible.php';
+require_once 'Modules/sprojects/Model/SpUser.php';
+require_once 'Modules/sprojects/Model/SpUnit.php';
+require_once 'Modules/sprojects/Model/SpResponsible.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
