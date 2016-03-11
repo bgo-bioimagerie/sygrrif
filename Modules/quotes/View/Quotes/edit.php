@@ -244,17 +244,10 @@
 			</div>
 		</div>
                 
-                
-                
-                
-                
-                
-                
-              
-		
+   
 		<div class="col-xs-3 col-xs-offset-9" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  $buttonName ?>" />
-			<button type="button" onclick="location.href='suppliesentries'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?></button>
+			<button type="button" onclick="location.href='quotes'" class="btn btn-default"><?php echo  CoreTranslator::Cancel($lang) ?></button>
 		</div>
       </form>
 	</div>

@@ -328,7 +328,7 @@ class SpProject extends Model {
      */
     public function delete($id) {
         $sql = "DELETE FROM sp_projects WHERE `id`=?";
-        $req = $this->runRequest($sql, array(
+        $this->runRequest($sql, array(
             $id
         ));
     }
@@ -380,23 +380,43 @@ class SpProject extends Model {
     }
 
     protected function getProjectItemsSymmary($projectEntries, $activeItems){
+        
+        $activeItemsSummary = array();
         for ($i = 0; $i < count($activeItems); $i++) {
             $qi = 0;
             foreach ($projectEntries as $order) {
-                if (isset($order["content"]["item_" . $activeItems[$i]["id"]])) {
-                    $qi += $order["content"]["item_" . $activeItems[$i]["id"]];
+                if ( $order["id_item"] == $activeItems[$i] ){
+                    $qi += $order["quantity"];
                 }
             }
-            $activeItems[$i]["pos"] = 0;
+            $activeItemsSummary[$i]["id"] = $activeItems[$i];
+            $activeItemsSummary[$i]["pos"] = 0;
             if ($qi > 0) {
-                $activeItems[$i]["pos"] = 1;
-                $activeItems[$i]["sum"] = $qi;
+                $activeItemsSummary[$i]["pos"] = 1;
+                $activeItemsSummary[$i]["sum"] = $qi;
             }
         }
-        return $activeItems;
+        return $activeItemsSummary;
     }
     
     protected function getProjectItems($projectEntries) {
+        
+        $projectItems = array();
+        foreach ($projectEntries as $entry) {
+            $itemID = $entry["id_item"];
+            $found = false;
+            foreach ($projectItems as $item) {
+                if ($item == $itemID) {
+                    $found = true;
+                }
+            }
+            if ($found == false) {
+                $projectItems[] = $itemID;
+            }
+        }
+        return $projectItems;
+        
+        /*
         // get active items
         $modelItem = new SpItem();
         $activeItems = $modelItem->getActiveItems("display_order");
@@ -420,6 +440,7 @@ class SpProject extends Model {
         }
 
         return $activeItems;
+        */
     }
 
     protected function calculateProjectTotal($activeItems, $LABpricingid){

@@ -71,6 +71,11 @@ class QoQuote extends Model {
             return $tmp[0];
         }
         
+        public function delete($id){
+            $sql="DELETE FROM qo_quotes WHERE id = ?";
+            $this->runRequest($sql, array($id));
+        } 
+        
         public function getAll($sortentry = "date_open"){
        
             $sql = "SELECT quotes.* ,

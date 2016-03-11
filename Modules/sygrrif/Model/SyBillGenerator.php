@@ -329,6 +329,9 @@ class SyBillGenerator extends Model {
 		header('Content-Disposition: attachment;filename='. $filename);
 		header('Cache-Control: max-age=0');
 		$objWriter->save('php://output');
+                unset($objPHPExcel);
+                unset($XLSDocument);
+                unset($objWriter);
 	}
 	
 	
@@ -804,6 +807,10 @@ class SyBillGenerator extends Model {
 				foreach($packagesPrices[$resource["id"]] as $p){
 					$userPackages[$p["id"]] = 0;
 				}
+                                
+                                //echo "resource id = " . $resource["id"] . "<br/>";
+                                //print_r($userPackages);
+                                //echo "<br/>";
 				
 				// initialize time booking summary
 				$userTime = array();
@@ -830,6 +837,7 @@ class SyBillGenerator extends Model {
 				foreach($reservations as $reservation){
 					
 					if ($reservation["package_id"] > 0){
+                                                //echo "pid = " . $reservation["package_id"] . "<br/>";
 						$userPackages[$reservation["package_id"]] ++;
 					}
 					else if($reservation["quantity"] > 0){

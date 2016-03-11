@@ -107,4 +107,12 @@ class ControllerQuotes extends ControllerSecureNav {
             //$this->redirect("quotes");
         }
         
+        public function delete(){
+            $id = $this->request->getParameterNoException ( "actionid" );
+            
+            $modelQuotes = new QoQuote();
+            $modelQuotes->delete($id);
+            
+            $this->redirect("quotes");
+        }
 }

@@ -563,9 +563,9 @@ class SpTranslator {
         
         public static function Invoice_details($lang){
                 if ($lang == "Fr") {
-                    return "DETAILS FACTURES";
+                    return "DETAILS PRESTATIONS";
 		}
-		return "INVOICE DETAILS";
+		return "BENEFIT DETAILS";
         }
         
         public static function invoices($lang){

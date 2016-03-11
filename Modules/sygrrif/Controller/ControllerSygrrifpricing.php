@@ -406,9 +406,13 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
             ) );
         }
         
-        public function generateAllBills($searchDate_start, $searchDate_end){
+        public function generateAllBills($searchDate_starti, $searchDate_endi){
 
-            
+            $lang = $this->getLanguage();
+            $searchDate_start = CoreTranslator::dateToEn($searchDate_starti, $lang);
+            $searchDate_end = CoreTranslator::dateToEn($searchDate_endi, $lang);
+            //echo "searchDate_start = " . $searchDate_start . "<br/>";
+            //return;
             // get all the unit with a reservation
             $modelCalEntry = new SyCalendarEntry();
             $modelUnit = new CoreUnit();

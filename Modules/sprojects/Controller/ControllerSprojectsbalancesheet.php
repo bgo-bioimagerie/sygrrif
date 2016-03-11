@@ -298,7 +298,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $name);
         }
         $itemIdx++;
-        $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, SpTranslator::TotalPrice($lang));
+        //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, SpTranslator::TotalPrice($lang));
 
         $projects = $projectsBalance["projects"];
         foreach ($projects as $proj) {
@@ -327,7 +327,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         
                 }
             }
-            $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $proj["total"]);
+            //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $proj["total"]);
         }
 
         for($r=1 ; $r <= $curentLine ; $r++){
@@ -344,6 +344,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $text = SpTranslator::BalanceSheetFrom($lang) . CoreTranslator::dateFromEn($periodStart, $lang)
                 . SpTranslator::To($lang) . CoreTranslator::dateFromEn($periodEnd, $lang);
         $objPHPExcel->getActiveSheet()->setCellValue('A1', $text);
+        
         // ////////////////////////////////////////////////////
         //                  Bill list
         // ////////////////////////////////////////////////////

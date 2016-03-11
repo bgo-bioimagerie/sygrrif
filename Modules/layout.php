@@ -7,7 +7,7 @@
     </head>
 
     <body>
-    	<div id="contenu">
+        <div id="contenu"/>
         	<?php echo  $content ?>
         </div>
     </body>
