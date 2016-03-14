@@ -167,8 +167,13 @@ else{
 				<select class="form-control" name="responsible_id">
 				<?php   
 				foreach($responsiblesList as $resp){
+                                   
+					$selected = "";
+					if ($resp['id'] == $reservationInfo["responsible_id"]){
+                                            $selected = "selected=\"selected\"";
+					}
 					?>
-					<OPTION value="<?php echo $this->clean($resp['id']) ?>"> <?php echo $this->clean($resp['fullname'])?> </OPTION>
+					<OPTION value="<?php echo $this->clean($resp['id']) ?>" <?php echo  $selected ?> > <?php echo $this->clean($resp['fullname'])?> </OPTION>
 					<?php
 				}
 				?>

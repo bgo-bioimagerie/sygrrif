@@ -329,9 +329,6 @@ class SyBillGenerator extends Model {
 		header('Content-Disposition: attachment;filename='. $filename);
 		header('Cache-Control: max-age=0');
 		$objWriter->save('php://output');
-                unset($objPHPExcel);
-                unset($XLSDocument);
-                unset($objWriter);
 	}
 	
 	
@@ -387,6 +384,10 @@ class SyBillGenerator extends Model {
 		// ///////////////////////////////////////// //
 		//             Main query                    //
 		// ///////////////////////////////////////// //
+		
+		//echo "responsible id = " . $responsible_id . "<br/>";
+		//return;
+		
 		$bookingUsers = $this->generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id, $responsible_id);
 		if (count($bookingUsers) == 0){
 			echo "ERROR: no reservations found ! <br/>";
@@ -397,7 +398,7 @@ class SyBillGenerator extends Model {
 		$timePrices = $this->getUnitTimePricesForEachResource($resources, $LABpricingid);
 		
 		$reservationsSummary = $this->generateBillGetReservations($searchDate_start, $searchDate_end, $resources, $bookingUsers, 
-				$packagesPrices, $timePrices);
+				$packagesPrices, $timePrices, $responsible_id);
 		
 		
 		// ///////////////////////////////////////// //
@@ -790,7 +791,7 @@ class SyBillGenerator extends Model {
 
 	}
 	
-	protected function generateBillGetReservations($searchDate_start, $searchDate_end, $resources, $users, $packagesPrices, $timePrices){
+	protected function generateBillGetReservations($searchDate_start, $searchDate_end, $resources, $users, $packagesPrices, $timePrices, $resp_id){
 
 		$reservationsSummaries = array();
 		// calculate the reservations for each equipments
@@ -807,10 +808,6 @@ class SyBillGenerator extends Model {
 				foreach($packagesPrices[$resource["id"]] as $p){
 					$userPackages[$p["id"]] = 0;
 				}
-                                
-                                //echo "resource id = " . $resource["id"] . "<br/>";
-                                //print_r($userPackages);
-                                //echo "<br/>";
 				
 				// initialize time booking summary
 				$userTime = array();
@@ -824,12 +821,12 @@ class SyBillGenerator extends Model {
 				$userReservationSummary["user_id"] = $user["id"];
 				
 				// get all the reservations
-				$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'res_id'=>$user["id"], ':resou_id'=>$resource["id"]);
+				$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'res_id'=>$user["id"], ':resou_id'=>$resource["id"], ':resp'=>$resp_id );
 				$sql = 'SELECT * FROM sy_calendar_entry WHERE
 					recipient_id =:res_id AND resource_id =:resou_id AND (	
 					(start_time <:start AND end_time <= :end AND end_time>:start) OR
 					(start_time >=:start AND end_time <= :end) OR
-					(start_time >=:start AND start_time<:end AND end_time > :end)) ORDER BY id';
+					(start_time >=:start AND start_time<:end AND end_time > :end)) AND (responsible_id = :resp) ORDER BY id';
 				$req = $this->runRequest($sql, $q);
 				$reservations = $req->fetchAll();
 				
@@ -837,7 +834,6 @@ class SyBillGenerator extends Model {
 				foreach($reservations as $reservation){
 					
 					if ($reservation["package_id"] > 0){
-                                                //echo "pid = " . $reservation["package_id"] . "<br/>";
 						$userPackages[$reservation["package_id"]] ++;
 					}
 					else if($reservation["quantity"] > 0){
