@@ -442,6 +442,64 @@ class SpProject extends Model {
         return $activeItems;
         */
     }
+    
+    public function getRespOpenedProjects($resp){
+        $sql = "SELECT id, name FROM sp_projects WHERE id_resp=?";
+        $req = $this->runRequest($sql, array($resp));
+        return $req->fetchAll();
+    }
+    
+    public function setPojectItemsAsBilled($resp, $date_start, $date_end, $noBill){
+        
+        $modelItem = new SpItem();
+        $items = $modelItem->getItems();
+        
+        foreach($items as $item){
+            $sql = "SELECT * FROM sp_projects_entries WHERE "
+                    . "id_proj IN(SELECT id FROM sp_projects WHERE id_resp=?) "
+                    . "AND id_item=? "
+                    . "AND invoice_id=0 "
+                    . "AND date>=? "
+                    . "AND date<=? ;";
+            $req = $this->runRequest($sql, array($resp, $item["id"], $date_start, $date_end));
+            $founditems = $req->fetchAll();
+            foreach($founditems as $it){
+                
+                $sql = "update sp_projects_entries set invoice_id=?
+		        where id_proj=? AND date=? AND id_item=? AND quantity=? AND invoice_id=0";
+                $this->runRequest($sql, array($noBill, $it["id_proj"], $it["date"], $it["id_item"], $it["quantity"]  ));
+                 
+            }
+        }
+    }
+    
+    
+    public function getProjectItemsCount($resp, $date_start, $date_end){
+        
+        $modelItem = new SpItem();
+        $items = $modelItem->getItems();
+        
+        $outItem = array();
+        
+        foreach($items as $item){
+            $count = 0;
+            $sql = "SELECT * FROM sp_projects_entries WHERE "
+                    . "id_proj IN(SELECT id FROM sp_projects WHERE id_resp=?) "
+                    . "AND id_item=? "
+                    . "AND invoice_id=0 "
+                    . "AND date>=? "
+                    . "AND date<=? ;";
+            $req = $this->runRequest($sql, array($resp, $item["id"], $date_start, $date_end));
+            $founditems = $req->fetchAll();
+            foreach($founditems as $it){
+                $count += $it["quantity"];
+            }
+            if ($count > 0){
+                $outItem[] = array("id" => $item["id"], "type_id" => $item["type_id"], "name" => $item["name"], "count" => $count);
+            }
+        }
+        return $outItem;
+    }
 
     protected function calculateProjectTotal($activeItems, $LABpricingid){
 

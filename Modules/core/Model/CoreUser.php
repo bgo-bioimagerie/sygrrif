@@ -704,11 +704,29 @@ class CoreUser extends Model {
 				$id 
 		) );
 		$userquery = null;
-		if ($user->rowCount () == 1)
+		if ($user->rowCount () == 1){
 			return $user->fetch (); // get the first line of the result
-		else
-			throw new Exception ( "Cannot find the user using the given parameters: " . $id );
-	}
+                }
+		else{
+			return array("id" => 0,
+                                    "login" => 'unknown',
+                                    "firstname" => 'unknown',
+                                    "name" => 'unknown',
+                                    "email" => '',
+                                    "tel" => '',
+                                    "pwd" => '',
+                                    "id_unit" => 1,
+                                    "id_status" => 1,
+                                    "convention" => 0,		
+                                    "date_convention" => '0000-00-00',
+                                    "date_created" => '0000-00-00',
+                                    "date_last_login" => '0000-00-00',
+                                    "date_end_contract" => '0000-00-00',	
+                                    "is_active" => 1,
+                                    "source" => 'local');
+                }
+        }
+      
 	
 	/**
 	 * add a user to the table

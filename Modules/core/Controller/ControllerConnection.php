@@ -63,6 +63,7 @@ class ControllerConnection extends Controller
             if ($connect == "allowed") {
             	
             	// open the session
+                session_unset();
                 $user = $this->user->getUserByLogin($login);
                 $this->request->getSession()->setAttribut("id_user", $user['idUser']);
                 $this->request->getSession()->setAttribut("login", $user['login']);
@@ -89,13 +90,13 @@ class ControllerConnection extends Controller
                 }
                 
                 // redirect
-        		$redirectController = "Home";
-        		if ($modulesManager->isDataMenu("sygrrif")){
-        			$redirectController = "sygrrif/booking";
-        		}
-        		if(isset($_SESSION["user_settings"]["homepage"])){
-        			$redirectController = $_SESSION["user_settings"]["homepage"];
-        		}	
+        	$redirectController = "Home";
+        	if ($modulesManager->isDataMenu("sygrrif")){
+        		$redirectController = "sygrrif/booking";
+        	}
+        	if(isset($_SESSION["user_settings"]["homepage"])){
+        		$redirectController = $_SESSION["user_settings"]["homepage"];
+        	}	
                 
                 $this->redirect($redirectController);
             }

@@ -36,9 +36,8 @@ class ControllerSprojectsbill extends ControllerSecureNav {
             
             if ($form->check()){
                 // run the database query
-                $modelBill = new SyBillGenerator();
-                $modelBill->billAPeriod($date_start, $date_end);
-                echo "query: ". "<br/>";
+                $modelBill = new SpBillGenerator();
+                $modelBill->billAPeriod(CoreTranslator::dateToEn($date_start, $lang), CoreTranslator::dateToEn($date_end, $lang));
                 return;
             }
             else{

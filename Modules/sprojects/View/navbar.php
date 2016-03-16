@@ -146,12 +146,14 @@ if (isset($_SESSION["user_settings"]["language"])){
                                 <button onclick="location.href='sprojectsbalancesheet'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Balance_sheet($lang)?></button>
                                 <br/>
+                                <!--
                                         <button onclick="location.href='sprojectsbillmanager/billsstats'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_statistics($lang)?></button>
 				<br/>		 
 					<button onclick="location.href='sprojectsstats'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Statistics($lang)?></button>
 				<br/>
+                                -->
 					<button onclick="location.href='sprojectsstats/responsiblelist'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Responsible_list($lang)?></button>		
                         </fieldset>

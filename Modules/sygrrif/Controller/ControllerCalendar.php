@@ -31,9 +31,6 @@ require_once 'Modules/sygrrif/Model/SyPackage.php';
  *
  */
 class ControllerCalendar extends ControllerBooking {
-
-	public function __construct() {
-	}
 	
 	/**
 	 * (non-PHPdoc)
@@ -873,6 +870,7 @@ class ControllerCalendar extends ControllerBooking {
 	 */
 	public function bookday($message = ""){
 		
+                //print_r($_SESSION);
 		$_SESSION['lastbookview'] = "bookday";
 		
 		$lang = "En";
@@ -885,6 +883,8 @@ class ControllerCalendar extends ControllerBooking {
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
 		
+                //echo "curent resource bookday 1 = " . $curentResource . "<br/>";
+                
 		if ($curentDate != ""){
 			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
 		}
@@ -895,6 +895,9 @@ class ControllerCalendar extends ControllerBooking {
 			$curentDate = $_SESSION['curentDate'];
 		}
 		
+                //print_r($_SESSION);
+                //echo "curent resource bookday 2 = " . $curentResource . "<br/>";
+                //sreturn;
 		// change input if action
 		$action = "";
 		if ($this->request->isParameterNotEmpty("actionid")) {

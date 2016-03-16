@@ -10,12 +10,6 @@ require_once 'Modules/sygrrif/Model/SyAuthorization.php';
  *
  */
 abstract class ControllerBooking extends ControllerSecureNav {
-
-	/**
-	 * Construct
-	 */
-	public function __construct() {
-	}
 	
 	/**
 	 * Get the content of of the booking menu for the calendar pages
@@ -37,7 +31,7 @@ abstract class ControllerBooking extends ControllerSecureNav {
 		
 		$modelResource = new SyResource();
 		$resources = $modelResource->resourceIDNameForArea($curentAreaId);
-		
+                
 		return array('areas' => $areas, 
 				'resources' => $resources,
 				'curentAreaId' => $curentAreaId, 

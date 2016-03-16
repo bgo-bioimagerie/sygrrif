@@ -6,14 +6,10 @@ require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/storage/Model/StTranslator.php';
 require_once 'Modules/storage/Model/StUploader.php';
 require_once 'Modules/storage/Model/StDirectories.php';
-require_once 'Modules/core/Model/User.php';
+require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreConfig.php';
 
 class ControllerStorage extends ControllerSecureNav {
-
-	public function __construct() {
-
-	}
 
 	protected function viewMenu(){
 		
@@ -41,7 +37,7 @@ class ControllerStorage extends ControllerSecureNav {
 		$menu = $this->viewMenu();
 		
 		$idUser = $_SESSION["id_user"];
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$userlogin = $modelUser->userLogin($idUser);
 		
 		$modelFiles = new StUploader();
@@ -106,7 +102,7 @@ class ControllerStorage extends ControllerSecureNav {
 		
 		// get the user login
 		$idUser = $_SESSION["id_user"];
-		$modelUser = new User();
+		$modelUser = new CoreUser();
 		$userlogin = $modelUser->userLogin($idUser);
 		
 		$storageDir = Configuration::get("storageDir");
