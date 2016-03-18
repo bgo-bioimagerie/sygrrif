@@ -27,14 +27,16 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         // build the form
         $form = new Form($this->request, "formbalancesheet");
         $form->setTitle(SpTranslator::Balance_sheet($lang));
-        $form->addDate("begining_period", SpTranslator::Beginning_period($lang), true, "0000-00-00");
-        $form->addDate("end_period", SpTranslator::End_period($lang), true, "0000-00-00");
+        $form->addDate("begining_period", SpTranslator::Beginning_period($lang), true, "");
+        $form->addDate("end_period", SpTranslator::End_period($lang), true, "");
 
         $form->setValidationButton("Ok", "sprojectsbalancesheet/index");
 
         $stats = "";
         if ($form->check()) {
-            $this->generateBalance($form->getParameter("begining_period"), $form->getParameter("end_period"));
+            $date_start = CoreTranslator::dateToEn($form->getParameter("begining_period"), $lang);
+            $date_end = CoreTranslator::dateToEn($form->getParameter("end_period"), $lang);
+            $this->generateBalance($date_start, $date_end);
             return;
         }
 
@@ -55,9 +57,10 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         // get all the opened projects informations
         $modelProjects = new SpProject();
         $openedProjects = $modelProjects->getProjectsOpenedPeriod($periodStart, $periodEnd);
-
+        
         // get all the priced projects details
-        $projectsBalance = $modelProjects->getBalances($periodStart, $periodEnd);
+        $projectsBalance = $modelProjects->getPeriodeServicesBalances($periodStart, $periodEnd);
+        $projectsBilledBalance = $modelProjects->getPeriodeBilledServicesBalances($periodStart, $periodEnd);
 
         // get the stats
         $modelStats = new SpStats();
@@ -68,10 +71,10 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $invoices = $modelBillManager->getBillsPeriod($periodStart, $periodEnd);
 
 
-        $this->makeBalanceXlsFile($periodStart, $periodEnd, $openedProjects, $projectsBalance, $invoices, $stats);
+        $this->makeBalanceXlsFile($periodStart, $periodEnd, $openedProjects, $projectsBalance, $projectsBilledBalance, $invoices, $stats);
     }
 
-    private function makeBalanceXlsFile($periodStart, $periodEnd, $openedProjects, $projectsBalance, $invoices, $stats) {
+    private function makeBalanceXlsFile($periodStart, $periodEnd, $openedProjects, $projectsBalance, $projectsBilledBalance, $invoices, $stats) {
 
         $modelUser = new CoreUser();
         $modelUnit = new CoreUnit();
@@ -270,10 +273,10 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $objPHPExcel->getActiveSheet()->setCellValue('A1', $text);
         
         // ////////////////////////////////////////////////////
-        //                  closed projects details
+        //                Services details
         // ////////////////////////////////////////////////////
         $objWorkSheet = $objPHPExcel->createSheet();
-        $objWorkSheet->setTitle(SpTranslator::Invoice_details($lang));
+        $objWorkSheet->setTitle(SpTranslator::Sevices_details($lang));
         $objPHPExcel->setActiveSheetIndex(1);
         $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 
@@ -292,10 +295,12 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $itemIdx = 4;
         $items = $projectsBalance["items"];
         $modelItem = new SpItem();
+        
         foreach ($items as $item) {
             $itemIdx++;
             $name = $modelItem->getItemName($item);
             $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $name);
+            
         }
         $itemIdx++;
         //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, SpTranslator::TotalPrice($lang));
@@ -315,21 +320,123 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
 
             // "entries"
-
+            $idx = -1;
             $entries = $proj["entries"];
-
             foreach ($entries as $entry) {
+                $idx++;
                 $pos = $this->findItemPos($items, $entry["id"]);
                 if ($pos > 0 && $entry["pos"] > 0) {
                     //print_r($entry);
                     $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($pos + 4) . $curentLine, $entry["sum"]);
                     $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($pos + 4) . $curentLine)->applyFromArray($styleBorderedCell);
-        
+                
+                    //$itemsTotal[$idx] += floatval($entry["sum"]);
                 }
+                
             }
             //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $proj["total"]);
         }
+        
+        // total services sum
+        $itemIdx = 4;
+        $lastLine = $curentLine;
+        $curentLine++;
+        foreach ($items as $itemsT) {
+            $itemIdx++;
+            $colLetter = $this->get_col_letter($itemIdx);
+            $objPHPExcel->getActiveSheet()->SetCellValue($colLetter . $curentLine, "=SUM(".$colLetter."3:".$colLetter.$lastLine.")");
+        }
+        
+        for($r=1 ; $r <= $curentLine ; $r++){
+            for($c=1 ; $c <= $itemIdx ; $c++){
+                $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($c).$r)->applyFromArray($styleBorderedCell);
+            }
+        }
+        for($col = 'A'; $col !== $this->get_col_letter($itemIdx+1); $col++) {
+            $objPHPExcel->getActiveSheet()->getColumnDimension($col)->setAutoSize(true);
+        }
+        
+        $objPHPExcel->getActiveSheet()->insertNewRowBefore(1, 1);
+        $objPHPExcel->getActiveSheet()->mergeCells('A1:K1');
+        $text = SpTranslator::BalanceSheetFrom($lang) . CoreTranslator::dateFromEn($periodStart, $lang)
+                . SpTranslator::To($lang) . CoreTranslator::dateFromEn($periodEnd, $lang);
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', $text);
+        
+        // ////////////////////////////////////////////////////
+        //                Services billed details
+        // ////////////////////////////////////////////////////
+        $objWorkSheet = $objPHPExcel->createSheet();
+        $objWorkSheet->setTitle(SpTranslator::Sevices_billed_details($lang));
+        $objPHPExcel->setActiveSheetIndex(2);
+        $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 
+
+        $curentLine = 1;
+        $objPHPExcel->getActiveSheet()->SetCellValue('A' . $curentLine, CoreTranslator::Unit($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, CoreTranslator::User($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, SpTranslator::Date_paid($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, SpTranslator::No_Projet($lang));
+        
+        $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
+        $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
+        $objPHPExcel->getActiveSheet()->getStyle('C' . $curentLine)->applyFromArray($styleBorderedCell);
+        $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
+
+        $itemIdx = 4;
+        $items = $projectsBilledBalance["items"];
+        $modelItem = new SpItem();
+        
+        foreach ($items as $item) {
+            $itemIdx++;
+            $name = $modelItem->getItemName($item);
+            $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $name);
+            
+        }
+        $itemIdx++;
+        //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, SpTranslator::TotalPrice($lang));
+
+        $projects = $projectsBilledBalance["projects"];
+        foreach ($projects as $proj) {
+            $curentLine++;
+            $unitName = $modelUnit->getUnitName($modelUser->getUserUnit($proj["id_resp"]));
+            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $curentLine, $unitName);
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, $modelUser->getUserFUllName($proj["id_resp"]));
+            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, $proj["date_close"]);
+            $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, $proj["name"]);
+            
+            $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
+            $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
+            $objPHPExcel->getActiveSheet()->getStyle('C' . $curentLine)->applyFromArray($styleBorderedCell);
+            $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
+
+            // "entries"
+            $idx = -1;
+            $entries = $proj["entries"];
+            foreach ($entries as $entry) {
+                $idx++;
+                $pos = $this->findItemPos($items, $entry["id"]);
+                if ($pos > 0 && $entry["pos"] > 0) {
+                    //print_r($entry);
+                    $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($pos + 4) . $curentLine, $entry["sum"]);
+                    $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($pos + 4) . $curentLine)->applyFromArray($styleBorderedCell);
+                
+                    //$itemsTotal[$idx] += floatval($entry["sum"]);
+                }
+                
+            }
+            //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $proj["total"]);
+        }
+        
+        // total services sum
+        $itemIdx = 4;
+        $lastLine = $curentLine;
+        $curentLine++;
+        foreach ($items as $itemsT) {
+            $itemIdx++;
+            $colLetter = $this->get_col_letter($itemIdx);
+            $objPHPExcel->getActiveSheet()->SetCellValue($colLetter . $curentLine, "=SUM(".$colLetter."3:".$colLetter.$lastLine.")");
+        }
+        
         for($r=1 ; $r <= $curentLine ; $r++){
             for($c=1 ; $c <= $itemIdx ; $c++){
                 $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($c).$r)->applyFromArray($styleBorderedCell);
@@ -350,7 +457,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         // ////////////////////////////////////////////////////
         $objWorkSheet = $objPHPExcel->createSheet();
         $objWorkSheet->setTitle(SpTranslator::invoices($lang));
-        $objPHPExcel->setActiveSheetIndex(2);
+        $objPHPExcel->setActiveSheetIndex(3);
         $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 
 
@@ -396,7 +503,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
 
         $objWorkSheet = $objPHPExcel->createSheet();
         $objWorkSheet->setTitle(SpTranslator::StatisticsMaj($lang));
-        $objPHPExcel->setActiveSheetIndex(3);
+        $objPHPExcel->setActiveSheetIndex(4);
 
         $curentLine = 1;
         $objPHPExcel->getActiveSheet()->SetCellValue('A' . $curentLine, SpTranslator::numberNewIndustryTeam($lang));

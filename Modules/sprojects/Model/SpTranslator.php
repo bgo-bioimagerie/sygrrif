@@ -666,5 +666,18 @@ class SpTranslator {
             return "One bill multiple projects";
         }
         
+        public static function Sevices_details($lang){
+            if ($lang == "Fr") {
+                return "PRESTATIONS";
+            }
+            return "Sevices details";    
+        }
+        
+        public static function Sevices_billed_details($lang){
+            if ($lang == "Fr") {
+                return "PRESTATIONS FACTUREES";
+            }
+            return "BILLED SERVICES";    
+        }
         
 }

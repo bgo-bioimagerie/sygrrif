@@ -4,9 +4,6 @@ require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreUnit.php';
 require_once 'Modules/core/Model/CoreBelonging.php';
-require_once 'Modules/sprojects/Model/SpUser.php';
-require_once 'Modules/sprojects/Model/SpUnit.php';
-require_once 'Modules/sprojects/Model/SpBelonging.php';
 
 /**
  * Class defining the Bill model. It is used to store the history 
@@ -136,21 +133,10 @@ class SpBill extends Model {
 		$totalPriceOfPrivateBills = 0;
 	
 		// instanciate models
-		$modelUser = "";
-		$modelUnit = "";
-		$modelBelonging = "";
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-			$modelUnit = new SpUnit();
-			$modelBelonging = new SpBeloning();
-		}
-		else{
-			$modelUser = new CoreUser();
-			$modelUnit = new CoreUnit();
-			$modelBelonging = new CoreBelonging();
-		}
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		$modelBelonging = new CoreBelonging();
+		
 		
 		// stats
 		for($i = 0 ; $i < $totalNumberOfBills ; $i++){

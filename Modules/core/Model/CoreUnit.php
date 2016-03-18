@@ -200,6 +200,18 @@ class CoreUnit extends Model {
 		}
 	}
 	
+        public function getAdress($id){
+		$sql = "select address from core_units where id=?";
+		$unit = $this->runRequest($sql, array($id));
+		if ($unit->rowCount() == 1){
+			$tmp = $unit->fetch();
+			return $tmp[0];  // get the first line of the result
+		}
+		else{
+			return "";
+		}
+	}
+        
 	public function getBelonging($id){
 		$sql = "select id_belonging from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));

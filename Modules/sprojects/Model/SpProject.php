@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Framework/Model.php';
-require_once 'Modules/sprojects/Model/SpUser.php';
 require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreConfig.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
@@ -93,6 +92,40 @@ class SpProject extends Model {
         return $entries;
     }
 
+    public function getPeriodProjectEntries($id_proj, $beginPeriod, $endPeriod){
+        $sql = "select * from sp_projects_entries where id_proj=? AND date>=? AND date<=?";
+        $req = $this->runRequest($sql, array(
+            $id_proj, $beginPeriod, $endPeriod
+        ));
+        $entries = $req->fetchAll();
+        
+        $modelBill = new SpBill();
+        for($i = 0 ; $i < count($entries) ; $i++){
+            if ($entries[$i]["invoice_id"] > 0){
+                $entries[$i]["invoice"] = $modelBill->getBillNumber($entries[$i]["invoice_id"]);
+            }
+        }
+        
+        return $entries;
+    }
+    
+    public function getPeriodBilledProjectEntries($id_proj, $beginPeriod, $endPeriod){
+        $sql = "select * from sp_projects_entries where id_proj=? AND invoice_id IN (SELECT id FROM sp_bills WHERE date_generated>=? AND date_generated<=?)";
+        $req = $this->runRequest($sql, array(
+            $id_proj, $beginPeriod, $endPeriod
+        ));
+        $entries = $req->fetchAll();
+        
+        $modelBill = new SpBill();
+        for($i = 0 ; $i < count($entries) ; $i++){
+            if ($entries[$i]["invoice_id"] > 0){
+                $entries[$i]["invoice"] = $modelBill->getBillNumber($entries[$i]["invoice_id"]);
+            }
+        }
+        
+        return $entries;
+    }
+    
     public function getProjectEntriesItemsIds($id_proj) {
         $sql = "select id from sp_projects_entries where id_proj=?";
         $req = $this->runRequest($sql, array(
@@ -193,14 +226,9 @@ class SpProject extends Model {
         $req = $this->runRequest($sql);
         $entries = $req->fetchAll();
 
-        $modelUser = "";
         $modelConfig = new CoreConfig ();
-        $sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
-        if ($sprojectsusersdatabase == "local") {
-            $modelUser = new SpUser ();
-        } else {
-            $modelUser = new CoreUser ();
-        }
+        $modelUser = new CoreUser ();
+        
         for ($i = 0; $i < count($entries); $i ++) {
             $entries [$i] ["user_name"] = $modelUser->getUserFUllName($entries [$i] ['id_user']);
         }
@@ -212,16 +240,9 @@ class SpProject extends Model {
         $req = $this->runRequest($sql);
 
         $entries = $req->fetchAll();
-
-        $modelConfig = new CoreConfig();
-        $sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
-        $modelUser = "";
-        if ($sprojectsusersdatabase == "local") {
-            $modelUser = new SpUser ();
-        } else {
-            $modelUser = new CoreUser ();
-        }
-
+        
+        $modelUser = new CoreUser ();
+        
         for ($i = 0; $i < count($entries); $i ++) {
             $entries [$i] ["user_name"] = $modelUser->getUserFUllName($entries [$i] ['id_user']);
         }
@@ -234,15 +255,8 @@ class SpProject extends Model {
 
         $entries = $req->fetchAll();
 
-        $modelConfig = new CoreConfig();
-        $sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
-        $modelUser = "";
-        if ($sprojectsusersdatabase == "local") {
-            $modelUser = new SpUser ();
-        } else {
-            $modelUser = new CoreUser ();
-        }
-
+        $modelUser = new CoreUser ();
+        
         for ($i = 0; $i < count($entries); $i ++) {
             $entries [$i] ["user_name"] = $modelUser->getUserFUllName($entries [$i] ['id_user']);
         }
@@ -379,6 +393,75 @@ class SpProject extends Model {
         return array("items" => $items, "projects" => $projects);
     }
 
+    public function getPeriodeServicesBalances($beginPeriod, $endPeriod){
+        $sql = "select * from sp_projects where date_close<? OR date_close='0000-00-00'";
+        $req = $this->runRequest($sql, array($beginPeriod));
+        $projects = $req->fetchAll();
+        $items = array();
+        $modelUser = new CoreUser();
+        $modelUnit = new CoreUnit();
+        for ($i = 0; $i < count($projects); $i++) {
+
+            $projectEntries = $this->getPeriodProjectEntries($projects[$i]["id"], $beginPeriod, $endPeriod);
+
+            // get active items
+            $activeItems = $this->getProjectItems($projectEntries);
+            $itemsSummary = $this->getProjectItemsSymmary($projectEntries, $activeItems); 
+            //print_r($itemsSummary);
+
+            $projects[$i]["entries"] = $itemsSummary;
+            //print_r($itemsSummary);
+            foreach ($itemsSummary as $itSum){
+                if ($itSum["pos"] > 0 && !in_array($itSum["id"], $items)){
+                    $items[] = $itSum["id"];
+                }
+            }
+      
+            $id_unit = $modelUser->getUserUnit($projects[$i]["id_resp"]);
+            $LABpricingid = $modelUnit->getBelonging($id_unit);
+            $projects[$i]["total"] = $this->calculateProjectTotal($itemsSummary, $LABpricingid);
+            
+        }
+        
+        return array("items" => $items, "projects" => $projects);
+    }
+    
+    public function getPeriodeBilledServicesBalances($beginPeriod, $endPeriod){
+   
+        // get the projects 
+        $sql1 = "select * from sp_projects where id IN (SELECT DISTINCT id_proj FROM sp_projects_entries WHERE invoice_id IN(SELECT id FROM sp_bills WHERE date_generated>=? AND date_generated<=?))";
+        $req1 = $this->runRequest($sql1, array($beginPeriod, $endPeriod));
+        $projects = $req1->fetchAll();
+        
+        $items = array();
+        $modelUser = new CoreUser();
+        $modelUnit = new CoreUnit();
+        for ($i = 0; $i < count($projects); $i++) {
+
+            $projectEntries = $this->getPeriodBilledProjectEntries($projects[$i]["id"], $beginPeriod, $endPeriod);
+
+            // get active items
+            $activeItems = $this->getProjectItems($projectEntries);
+            $itemsSummary = $this->getProjectItemsSymmary($projectEntries, $activeItems); 
+            //print_r($itemsSummary);
+
+            $projects[$i]["entries"] = $itemsSummary;
+            //print_r($itemsSummary);
+            foreach ($itemsSummary as $itSum){
+                if ($itSum["pos"] > 0 && !in_array($itSum["id"], $items)){
+                    $items[] = $itSum["id"];
+                }
+            }
+      
+            $id_unit = $modelUser->getUserUnit($projects[$i]["id_resp"]);
+            $LABpricingid = $modelUnit->getBelonging($id_unit);
+            $projects[$i]["total"] = $this->calculateProjectTotal($itemsSummary, $LABpricingid);
+            
+        }
+        
+        return array("items" => $items, "projects" => $projects);
+    }
+    
     protected function getProjectItemsSymmary($projectEntries, $activeItems){
         
         $activeItemsSummary = array();

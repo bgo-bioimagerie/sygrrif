@@ -237,4 +237,10 @@ class CaTranslator {
 		return "Are you sure you want to import all the antibodies from antibodies database to the catalog ?";
 	}
         
+        public static function Source($lang){
+		if ($lang == "Fr"){
+			return "Source";
+		}
+		return "Source";
+	}
 }

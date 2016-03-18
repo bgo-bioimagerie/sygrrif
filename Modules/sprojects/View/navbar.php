@@ -131,9 +131,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<legend><?php echo  SpTranslator::Billing($lang)?></legend>	
                                     <button onclick="location.href='sprojectsbill/billperiod'"
                                         class="btn btn-link" id="navlink"><?php echo  SpTranslator::BillPerPeriode($lang)?></button>
+                                <!--
                                 <br/>
                                     <button onclick="location.href='sprojectsbill/oneBillMultipleProjects'"
                                         class="btn btn-link" id="navlink"><?php echo  SpTranslator::OneBillMultipleProjects($lang)?></button>
+                                -->
                                 <br/>
                                     <button onclick="location.href='sprojectsbillmanager'"
                                         class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_manager($lang)?></button>

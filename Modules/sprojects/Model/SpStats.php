@@ -3,10 +3,6 @@
 require_once 'Framework/Model.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
 
-require_once 'Modules/sprojects/Model/SpUser.php';
-require_once 'Modules/sprojects/Model/SpUnit.php';
-require_once 'Modules/sprojects/Model/SpBelonging.php';
-
 require_once 'Modules/core/Model/CoreUnit.php';
 require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreBelonging.php';
@@ -33,25 +29,10 @@ class SpStats extends Model {
 		$numberAccademicProjects = 0;
 		$numberIndustryProjects = 0;
 		
-		$modelUser = "";
+                $modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		$modelBelonging = new CoreBelonging();
 
-		$modelUnit = "";
-		$modelBelonging = "";
-
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-			$modelUnit = new SpUnit();
-			$modelBelonging = new SpBelonging();
-		}
-		else{
-			$modelUser = new CoreUser();
-			$modelUnit = new CoreUnit();
-			$modelBelonging = new CoreBelonging();
-
-		}
-		
 		foreach($projects as $project){
 			
 			// get the responsible unit
@@ -134,15 +115,9 @@ class SpStats extends Model {
 		$totalNumberOfProjects = $req->rowCount();
 		$projects = $req->fetchAll();
 		
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
-		$modelUser = "";
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-		}
-		else{
-			$modelUser = new CoreUser();
-		}
+		
+		$modelUser = new CoreUser();
+		
 		
 		$content = CoreTranslator::Name($lang) . ";" . CoreTranslator::Email($lang) . "\r\n";
 		foreach($projects as $project){

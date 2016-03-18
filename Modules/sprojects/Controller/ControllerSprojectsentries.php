@@ -8,7 +8,6 @@ require_once 'Modules/core/Model/CoreResponsible.php';
 require_once 'Modules/core/Model/CoreUser.php';
 require_once 'Modules/core/Model/CoreUnit.php';
 require_once 'Modules/core/Model/CoreBelonging.php';
-require_once 'Modules/sprojects/Model/SpResponsible.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
 require_once 'Modules/sprojects/Model/SpTranslator.php';
@@ -437,7 +436,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
             // generate bill
             $modelBill = new SpBillGenerator();
             $fileName = $modelBill->generateBill($id_project);
-            $fileUrl = "data/sproject/" . $fileName;
+            $fileUrl = "data/sprojects/" . $fileName;
 
             // send the bill file    
             header('Content-Transfer-Encoding: binary'); //Transfert en binaire (fichier).

@@ -70,7 +70,7 @@ class Tissus extends Model {
 		return $res->fetchAll();
         }
         
-	public function getTissus($id_anticorps){
+	public function getTissus($id_anticorps, $catalog = false){
 		
 		$sql = "SELECT ac_j_tissu_anticorps.id AS id, 
 					   ac_j_tissu_anticorps.id_anticorps AS id_anticorps, 	
@@ -91,7 +91,28 @@ class Tissus extends Model {
 		
 		//$sql = "select * from ac_j_tissu_anticorps where id_anticorps=?";
 		$res = $this->runRequest($sql, array($id_anticorps));
-		return $res->fetchAll();
+		$tissus = $res->fetchAll();
+                
+                if ($catalog){
+                    $tissuscp = array();
+                    foreach ($tissus as $tissus){
+                        
+                        // try to find the redondance
+                        $found = false;
+                        foreach ($tissuscp as $tcp){
+                            if ($tcp["espece_id"] == $tissus["espece_id"]
+                                    && $tcp["prelevement_id"] == $tissus["prelevement_id"]){
+                                $found = true;
+                                break;
+                            }
+                        }
+                        if (!$found){
+                            $tissuscp[] = $tissus;
+                        }
+                    }
+                    return $tissuscp;
+                }
+                return $tissus;
 		
 	}
 	

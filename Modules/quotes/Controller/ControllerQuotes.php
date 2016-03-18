@@ -23,6 +23,23 @@ class ControllerQuotes extends ControllerSecureNav {
                 $modelQuote = new QoQuote();
                 $data = $modelQuote->getAll();
                 
+                $modelUser = new CoreUser();
+                $modelUnit = new CoreUnit();
+                $modelBelonging = new CoreBelonging();
+                for($i = 0 ; $i <  count($data) ; $i++){
+                    if ($data[$i]["id_user"] > 0){
+                        $data[$i]["recipient"] = $modelUser->getUserFUllName($data[$i]["id_user"]);
+                        $idUnit = $modelUser->getUserUnit($data[$i]["id_user"]);
+                        $data[$i]["address"] = $modelUnit->getAdress($idUnit);
+                        $data[$i]["belonging"] = $modelBelonging->getName($modelUnit->getBelonging($idUnit));
+                    }
+                    else{
+                        $data[$i]["belonging"] = $modelBelonging->getName($data[$i]["id_belonging"]);
+                    }
+                    $data[$i]["date_open"] = CoreTranslator::dateFromEn($data[$i]["date_open"], $lang);
+                    $data[$i]["date_last_modified"] = CoreTranslator::dateFromEn($data[$i]["date_last_modified"], $lang);
+                }
+                
 		$table = new TableView();
 		$table->setTitle(QoTranslator::Quotes($lang));
 		$table->addLineEditButton("quotes/edit");
@@ -81,9 +98,10 @@ class ControllerQuotes extends ControllerSecureNav {
             
             // get post 
             $id = $this->request->getParameter ( "id" );
-            $recipient = $this->request->getParameter ( "recipient" );
-            $address = $this->request->getParameter ( "address" );
-            $id_belonging = $this->request->getParameter ( "id_belonging" );
+            $recipient = $this->request->getParameterNoException ( "recipient" );
+            $address = $this->request->getParameterNoException ( "address" );
+            $id_belonging = $this->request->getParameterNoException ( "id_belonging" );
+            $id_user = $this->request->getParameterNoException ( "id_user" );
             $contentKeys = $this->request->getParameter ( "cid" );
             $contentValues = $this->request->getParameter ( "cvalue" );
             
@@ -98,13 +116,46 @@ class ControllerQuotes extends ControllerSecureNav {
             $date_last_modified = date("Y-m-d");
             
             // set to database
-            $quoteID = $modelQuote->set($id, $recipient, $address, $id_belonging, $date_open, $date_last_modified);
+            $quoteID = $modelQuote->set($id, $id_user, $recipient, $address, $id_belonging, $date_open, $date_last_modified);
             $modelQuote->setContent($quoteID, $contentKeys, $contentValues);
             
             // todo generate a xls quote
             $modelQuote->generateQuoteXls($quoteID);
             
             //$this->redirect("quotes");
+        }
+        
+        public function editexistinguser(){
+            // get parameters
+            $id = $this->request->getParameter ( "actionid" );
+            
+            $modelQuote = new QoQuote();
+            if ($id > 0){
+                $entry = $modelQuote->getInfo($id);
+            }
+            else{
+                $entry = $modelQuote->getDefault();
+            }
+            
+            // get the content
+            $content = $modelQuote->getContent($id);
+            
+            // get the list of entries
+            $entryList = $modelQuote->getAllSupplies();
+            //print_r($entryList);
+            
+            $UserModel = new CoreUser();
+            $users = $UserModel->getActiveUsers();
+            
+             // view
+            $navBar = $this->navBar ();
+            $this->generateView ( array (
+				'navBar' => $navBar,
+				'users' => $users,
+                                'entry' => $entry,
+                                'content' => $content,
+                                'entryList' => $entryList
+		) );
         }
         
         public function delete(){

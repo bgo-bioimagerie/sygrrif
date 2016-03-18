@@ -185,10 +185,10 @@ class Anticorps extends Model {
             $user = $this->runRequest($sql);
             $ac = $user->fetchAll();
             
-            return $this->anticorpsInfo($ac);
+            return $this->anticorpsInfo($ac, true);
         }
 	
-	private function anticorpsInfo($ac){
+	private function anticorpsInfo($ac, $catalog = false){
 		$isotypeModel = new Isotype();
 		$sourceModel = new Source();
 		$tissusModel = new Tissus();
@@ -199,7 +199,7 @@ class Anticorps extends Model {
 			$ac[$i]['isotype'] = $tmp['nom'];
 			$tmp = $sourceModel->getSource($ac[$i]['id_source']);
 			$ac[$i]['source'] = $tmp['nom'];
-			$ac[$i]['tissus'] = $tissusModel->getTissus($ac[$i]['id']);
+			$ac[$i]['tissus'] = $tissusModel->getTissus($ac[$i]['id'], $catalog);
 			$ac[$i]['proprietaire'] = $this->getOwners($ac[$i]['id']);
                         
                         $ac[$i]['staining'] = $stainingModel->getNameFromId($ac[$i]['id_staining']);
@@ -210,11 +210,11 @@ class Anticorps extends Model {
 	}
 	
 	public function getAnticorpsInfoSearch($columnName, $searchTxt){
-		$sql = "select * from ac_anticorps where ". $columnName . " LIKE '%$searchTxt%'";
-    	$user = $this->runRequest($sql, array($searchTxt));
-    	$ac =  $user->fetchAll();
+            $sql = "select * from ac_anticorps where ". $columnName . " LIKE '%$searchTxt%'";
+            $user = $this->runRequest($sql, array($searchTxt));
+            $ac =  $user->fetchAll();
     	
-    	return $this->anticorpsInfo($ac);
+            return $this->anticorpsInfo($ac);
 	}
 	
 	public function getAnticorpsProprioSearch($columnName, $searchTxt){

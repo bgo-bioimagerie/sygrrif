@@ -12,7 +12,7 @@ class SpUnitPricing extends Model {
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `sp_unitpricing` (
 		`id_unit` int(11) NOT NULL,	
-	    `id_pricing` int(11) NOT NULL,		
+                `id_pricing` int(11) NOT NULL,		
 		PRIMARY KEY (`id_unit`)
 		);";
 		

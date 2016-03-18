@@ -72,8 +72,8 @@ $(document).ready(function() {
                     <thead>
                         
                         <tr>
-                            <th class="text-center" colspan="7" style="width:75%; color:#337AB7;">Anticorps</th>
-                            <th class="text-center" colspan="4" style="width:25%; background-color: #eeffee; color:#337AB7;">Tissus</th>
+                            <th class="text-center" colspan="8" style="width:75%; color:#337AB7;">Anticorps</th>
+                            <th class="text-center" colspan="3" style="width:25%; background-color: #eeffee; color:#337AB7;">Tissus</th>
                         </tr>
                         
 			<tr>
@@ -84,6 +84,7 @@ $(document).ready(function() {
                             <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Staining($lang) ?></th>
                             <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Provider($lang) ?></th>
                             <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Reference($lang) ?></th>
+                            <th class="text-center" style="width:5%; color:#337AB7;"><?php echo CaTranslator::Source($lang) ?></th>               
                             <th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;"><?php echo CaTranslator::Spices($lang) ?></th>
                             <th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;"><?php echo CaTranslator::Sample($lang) ?></th>
                             <th class="text-center" style="width:5%; background-color: #eeffee; color:#337AB7;"><?php echo CaTranslator::Status($lang) ?></th>
@@ -112,8 +113,10 @@ $(document).ready(function() {
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['staining'] ); ?></td>
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['fournisseur'] ); ?></td> 
                                 <td width="10%" class="text-left"><?php echo  $this->clean ( $entry ['reference'] ); ?></td> 
+                                <td width="5%" class="text-left"><?php echo  $this->clean ( $entry ['source'] ); ?></td>
                                 
                                 <!-- Tissus -->
+                                
                                 <td width="10%" class="text-left" style="background-color: #eeffee;">
                                     <?php 
 				    	$tissus = $entry ['tissus'];

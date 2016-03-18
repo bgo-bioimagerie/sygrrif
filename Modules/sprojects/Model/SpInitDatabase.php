@@ -3,9 +3,6 @@
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 
-require_once 'Modules/sprojects/Model/SpUser.php';
-require_once 'Modules/sprojects/Model/SpUnit.php';
-require_once 'Modules/sprojects/Model/SpResponsible.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpProject.php';
@@ -26,20 +23,6 @@ class SpInitDatabase extends Model {
 	 * @return boolean True if the base is created successfully
 	 */
 	public function createDatabase(){
-		
-
-		$modulesModel = new SpUser();
-		$modulesModel->createTable();
-		$modulesModel->createDefaultUser();
-		
-		$modulesModel = new SpUnit();
-		$modulesModel->createTable();
-		$modulesModel->createDefaultUnit();
-		
-
-		$modulesModel = new SpResponsible();
-		$modulesModel->createTable();
-		$modulesModel->createDefaultResponsible();
 
 		$modulesModel = new SpItemPricing();
 		$modulesModel->createTable();

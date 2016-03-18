@@ -63,7 +63,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
 
-$classWell = 'col-md-4 well';
+$classWell = 'col-md-12 well';
 ?>
 
 <div class="bs-docs-header" id="content">
@@ -74,7 +74,10 @@ $classWell = 'col-md-4 well';
 			<fieldset>
 				<legend><?php echo  QoTranslator::Quotes($lang) ?></legend>
 					<button onclick="location.href='quotes'" class="btn btn-link" id="navlink"><?php echo  QoTranslator::Quotes($lang) ?> </button>
-					<button onclick="location.href='quotes/edit/0'" class="btn btn-link" id="navlink">+</button>
+				
+                                        <button onclick="location.href='quotes/edit/0'" class="btn btn-link" id="navlink"><?php echo  QoTranslator::CreateNewUserQuote($lang) ?></button>
+                                
+                                        <button onclick="location.href='quotes/editexistinguser/0'" class="btn btn-link" id="navlink"><?php echo  QoTranslator::CreateExistingUserQuote($lang) ?></button>
 		
                             </fieldset>
 		</div>

@@ -123,6 +123,20 @@ class QoTranslator {
                 return "Modifier Devis";
             }
             return "Edit quote";
-            
         }
+        
+        public static function CreateNewUserQuote($lang){
+            if ($lang == "Fr"){
+                return "Nouveau devis nouvel utilisateur";
+            }
+            return "Create new user quote";
+        }
+        
+        public static function CreateExistingUserQuote($lang){
+            if ($lang == "Fr"){
+                return "Nouveau devis utilisateur";
+            }
+            return "Create new quote";
+        }
+        
 }

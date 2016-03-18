@@ -27,7 +27,7 @@ class ControllerSynchistopproj extends Controller {
 	// affiche la liste des Sources
 	public function index() {	
 
-		$dsn_grr = 'mysql:host=localhost;dbname=sygrrif2_h2p2;charset=utf8';
+		$dsn_grr = 'mysql:host=localhost;dbname=h2p2tmp;charset=utf8';
 		$login_grr = "root";
 		$pwd_grr = "root";
 		

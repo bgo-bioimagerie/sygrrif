@@ -151,35 +151,7 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
       </div>
 	  </form>   
 	  
-	  
-	  
-	  <form role="form" class="form-horizontal" action="sprojectsconfig" method="post">
-      <div class="col-xs-12">
-			<input class="form-control" type="hidden" name="usersquery" value="yes" />
-	  </div>
-      
-    
-      <div class="page-header">
-		  <h2>
-		  <?php echo  SpTranslator::Users_database($lang); ?>
-			<br> <small></small>
-		  </h2>
-		</div>
-      <div class="form-group col-xs-12">
-	  	<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Users_database($lang) ?></label>
-			<div class="col-xs-6">
 
-				<select class="form-control" name="sprojectsusersdatabase">
-					<OPTION value="local" <?php if($sprojectsusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
-					<OPTION value="core" <?php if($sprojectsusersdatabase=="core"){echo "selected=\"selected\"";} ?> > core </OPTION>
-				</select>
-			</div>
-		</div>
-		<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="save" />
-		</div>
-	  </form> 
-       
         <!-- menu color -->
       <div class="col-xs-12">
 		  <div class="page-header">

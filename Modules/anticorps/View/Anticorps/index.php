@@ -129,6 +129,7 @@ $(document).ready(function() {
 							<input class="form-control" id="searchName" type="text" name="searchName" value="<?php echo  $searchName ?>"
 							/>
 						</div>
+                                               
 						<label for="inputEmail" class="control-label col-md-1">No H2P2:</label>
 						<div class="col-md-2">
 							<input class="form-control" id="searchNoH2P2" type="text" name="searchNoH2P2" value="<?php echo  $searchNoH2P2 ?>"
@@ -249,9 +250,14 @@ $(document).ready(function() {
                                         <img src="<?php echo $imageFile?>" itemprop="thumbnail" alt="photo" width="25" height="25"/>
                                     </a>
                                 </td>
-					<?php $anticorpsId = $this->clean ( $anticorps['id'] ); ?>
+					<?php $anticorpsId = $this->clean ( $anticorps['id'] ); 
+                                        $isCatalogue = "";
+                                        if ($anticorps['export_catalog'] == 1){
+                                            $isCatalogue = " (c)";
+                                        } 
+                                        ?>
 					
-					<td style="width:1em;" class="text-left"><a href="anticorps/edit/<?php echo  $anticorpsId ?>"><?php echo  $this->clean ( $anticorps ['no_h2p2'] ); ?></a></td>
+					<td style="width:1em;" class="text-left"><a href="anticorps/edit/<?php echo  $anticorpsId ?>"><?php echo  $this->clean ( $anticorps ['no_h2p2'] . $isCatalogue ); ?></a></td>
 					<td width="5%" class="text-left"><a href="anticorps/edit/<?php echo  $anticorpsId ?>"><?php echo  $this->clean ( $anticorps ['nom'] ); ?></a></td>
 					<td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['stockage'] ); ?></td>
 				    <td width="5%" class="text-left"><?php echo  $this->clean ( $anticorps ['fournisseur'] ); ?></td>

@@ -1,6 +1,8 @@
 <?php
 
 require_once 'Framework/Model.php';
+require_once 'Modules/core/Model/CoreUnit.php';
+require_once 'Modules/core/Model/CoreUser.php';
 
 require_once("externals/PHPExcel/Classes/PHPExcel.php");
 
@@ -17,14 +19,16 @@ class QoQuote extends Model {
                 `recipient` varchar(100) NOT NULL DEFAULT '',
                 `address` text NOT NULL DEFAULT '',
                 `id_belonging` int(11) NOT NULL DEFAULT 0,
+                `id_user` int(11) NOT NULL DEFAULT 0,
                 `date_open` DATE NOT NULL,						
 		`date_last_modified` DATE NOT NULL,
                 `content` varchar(1000) NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
 
-		$pdo = $this->runRequest($sql);
-		return $pdo;
+		$this->runRequest($sql);
+		
+                $this->addColumn("qo_quotes", "id_user", "int(11)", 0);
 	}
 	
 	/*
@@ -32,18 +36,18 @@ class QoQuote extends Model {
 	 * Add here the query methods
 	 * 
 	 */
-        public function set($id, $recipient, $address, $id_belonging, $date_open, $date_last_modified){
+        public function set($id, $id_user, $recipient, $address, $id_belonging, $date_open, $date_last_modified){
             if ($id > 0){
-                $sql = "UPDATE qo_quotes SET recipient=?, address=?, id_belonging=?, date_open=?, date_last_modified=?
+                $sql = "UPDATE qo_quotes SET id_user=?, recipient=?, address=?, id_belonging=?, date_open=?, date_last_modified=?
 		        WHERE id=?";
-		$this->runRequest($sql, array($recipient, $address, $id_belonging, $date_open, $date_last_modified, $id));
+		$this->runRequest($sql, array($id_user, $recipient, $address, $id_belonging, $date_open, $date_last_modified, $id));
                 return $id;
             }
             else{
-                $sql = "INSERT INTO qo_quotes (recipient, address, id_belonging, date_open, date_last_modified)
-				 VALUES(?,?,?,?,?)";
+                $sql = "INSERT INTO qo_quotes (id_user, recipient, address, id_belonging, date_open, date_last_modified)
+				 VALUES(?,?,?,?,?,?)";
 		$this->runRequest ( $sql, array (
-				$recipient, $address, $id_belonging, $date_open, $date_last_modified
+				$id_user, $recipient, $address, $id_belonging, $date_open, $date_last_modified
 		) );
                 return $this->getDatabase()->lastInsertId();
             }
@@ -78,10 +82,8 @@ class QoQuote extends Model {
         
         public function getAll($sortentry = "date_open"){
        
-            $sql = "SELECT quotes.* ,
-                            belongings.name AS belonging
-    			FROM qo_quotes AS quotes
-    			INNER JOIN core_belongings AS belongings ON quotes.id_belonging = belongings.id
+            $sql = "SELECT *
+    			FROM qo_quotes
     			ORDER BY " . $sortentry . " ASC;";
             $req = $this->runRequest($sql);
             return $req->fetchAll();
@@ -120,6 +122,7 @@ class QoQuote extends Model {
             $quote['recipient'] = "";
             $quote['address'] = "";
             $quote['id_belonging'] = 0;
+            $quote['id_user'] = 0;
             $quote['date_open'] = 0;
             $quote['date_last_modified'] = 0;
         }
@@ -151,6 +154,13 @@ class QoQuote extends Model {
 		// get the quote informations
                 $quoteInfo = $this->getInfo($idQuote);
 		$LABpricingid = $quoteInfo["id_belonging"];
+                if ($LABpricingid == 0 || $LABpricingid == ""){
+                    $modelUser = new CoreUser();
+                    $unit_id = $modelUser->getUserUnit($quoteInfo["id_user"]);
+                    
+                    $modelUnit = new CoreUnit();
+                    $LABpricingid = $modelUnit->getBelonging($unit_id);
+                }
  
 		//echo "get unit done <br/>";
 		// /////////////////////////////////////////// //

@@ -9,10 +9,6 @@ require_once 'Modules/sprojects/Model/SpInitDatabase.php';
 
 class ControllerSprojectsconfig extends ControllerSecureNav {
 
-	public function __construct() {
-
-	}
-
 	/**
 	 * (non-PHPdoc)
 	 * Show the config index page
@@ -31,10 +27,6 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 		
 		// user database
 		$modelConfig = new CoreConfig();
-		if (!$modelConfig->isKey("sprojectsusersdatabase")){
-			$modelConfig->setParam("sprojectsusersdatabase", "core");
-		}
-		$sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
 		
 		$sprojectsmenucolor = $modelConfig->getParam("sprojectsmenucolor");
 		$sprojectsmenucolortxt = $modelConfig->getParam("sprojectsmenucolortxt");
@@ -52,9 +44,8 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
     			$this->generateView ( array ('navBar' => $navBar, 
     					                     'installError' => $installError,
     					                     'menus' => $menus,
-    										 'sprojectsusersdatabase' => $sprojectsusersdatabase,
-									 'sprojectsmenucolor' => $sprojectsmenucolor,
-							         'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+                                                            'sprojectsmenucolor' => $sprojectsmenucolor,
+                                                                'sprojectsmenucolortxt' => $sprojectsmenucolortxt
     			) );
     			return;
 			}
@@ -62,9 +53,8 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
 					                     'menus' => $menus,
-										 'sprojectsusersdatabase' => $sprojectsusersdatabase,
-									 'sprojectsmenucolor' => $sprojectsmenucolor,
-							         'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+                                                             'sprojectsmenucolor' => $sprojectsmenucolor,
+                                                             'sprojectsmenucolortxt' => $sprojectsmenucolortxt
 			) );
 			return;
 		}
@@ -83,7 +73,6 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 			
 			$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus,
-									 'sprojectsusersdatabase' => $sprojectsusersdatabase,
 									 'sprojectsmenucolor' => $sprojectsmenucolor,
 							         'sprojectsmenucolortxt' => $sprojectsmenucolortxt
 									 	
@@ -99,23 +88,6 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar,
 					'menus' => $menus,
 					'templateMessage' => $templateMessage,
-					'sprojectsusersdatabase' => $sprojectsusersdatabase,
-									 'sprojectsmenucolor' => $sprojectsmenucolor,
-							         'sprojectsmenucolortxt' => $sprojectsmenucolortxt
-			) );
-			return;
-		}
-		
-		// set user database choice
-		$usersquery = $this->request->getParameterNoException ( "usersquery");
-		if ($usersquery == "yes"){
-			
-			$sprojectsusersdatabase = $this->request->getParameter("sprojectsusersdatabase");
-			$modelConfig->setParam("sprojectsusersdatabase", $sprojectsusersdatabase);
-			
-			$this->generateView ( array ('navBar' => $navBar,
-					'menus' => $menus,
-					'sprojectsusersdatabase' => $sprojectsusersdatabase,
 									 'sprojectsmenucolor' => $sprojectsmenucolor,
 							         'sprojectsmenucolortxt' => $sprojectsmenucolortxt
 			) );
@@ -140,7 +112,6 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
 				'menus' => $menus,
-				'sprojectsusersdatabase' => $sprojectsusersdatabase,
 									 'sprojectsmenucolor' => $sprojectsmenucolor,
 							         'sprojectsmenucolortxt' => $sprojectsmenucolortxt
 		) );

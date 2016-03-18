@@ -36,23 +36,9 @@ class SpBillGenerator extends Model {
 		$projectInfo = $modelProject->getProject($id_project);
 		
 		// get the pricing
-		$modelUser = "";
-		$modelUnit = "";
-
-		$modelBelonging = "";
-
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-			$modelUnit = new SpUnit();
-			$modelBelonging = new SpBelonging();
-		}
-		else{
-			$modelUser = new CoreUser();
-			$modelUnit = new CoreUnit();
-			$modelBelonging = new CoreBelonging();
-		}
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		$modelBelonging = new CoreBelonging();
 		
 		// get the user unit:
 		//echo "resp id = " . $id_resp . "<br/>";
@@ -162,7 +148,7 @@ class SpBillGenerator extends Model {
 		);
 		
 		// load the template
-		$file = "data/template_supplies.xls";
+		$file = "data/sprojects/template_supplies.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
@@ -502,7 +488,7 @@ class SpBillGenerator extends Model {
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Total T.T.C.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, (float)$totalHT*(float)(1.2)."€");		
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, round((float)$totalHT*(float)(1.2),2)."€");		
 
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->getFont()->setBold(true);
@@ -511,7 +497,7 @@ class SpBillGenerator extends Model {
 		// Save the xls file
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
 		$filename = $responsibleFullName . date("Y-m-d") ."_sprojects_invoice.xls";
-                $fileURL = "data/sproject" . "/" . $filename;
+                $fileURL = "data/sprojects" . "/" . $filename;
                 
                 // set the file to the bill manager
                 $billManagerId = $modelBill->addBill($number, $projectInfo["name"], $id_resp, date("Y-m-d", time()), $totalHT);
@@ -658,7 +644,7 @@ class SpBillGenerator extends Model {
 		);
 		
             // load the template
-            $file = "data/sproject/template_supplies.xls";
+            $file = "data/sprojects/template_supplies.xls";
             $XLSDocument = new PHPExcel_Reader_Excel5();
             $objPHPExcel = $XLSDocument->load($file);
 		
@@ -992,7 +978,7 @@ class SpBillGenerator extends Model {
             
             // create directory
             $dataDir = date("y-m-d_H-i-s");
-            $billDir = "data/sproject/".$dataDir."/";
+            $billDir = "data/sprojects/".$dataDir."/";
             if (!mkdir($billDir)){
                 echo "cannot create the directory to generate bills";
                 return;
@@ -1065,7 +1051,7 @@ class SpBillGenerator extends Model {
         public function generateZipFile($billDir){
             
             $zip = new ZipArchive();
-            $fileUrl = "data/sproject/tmp.zip";
+            $fileUrl = "data/sprojects/tmp.zip";
       
             if(is_dir($billDir))
             {
