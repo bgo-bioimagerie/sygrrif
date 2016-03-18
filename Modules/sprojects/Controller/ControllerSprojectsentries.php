@@ -105,7 +105,9 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$table = new TableView();
 		$table->setTitle($title);
 		$table->addLineEditButton("sprojectsentries/editentries");
-		$table->addDeleteButton("sprojectsentries/deleteentries");
+		if ($status != "closed"){
+			$table->addDeleteButton("sprojectsentries/deleteentries");
+		}
 		$table->addPrintButton("sprojectsentries/index/");
 		$table->addExportButton("sprojectsentries/index/", $title);
 		$table->setColorIndexes(array("all" => "color", "time_limit" => "time_color", "date_close" => "closed_color"));
@@ -188,26 +190,13 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		
 		// get active items
 		$activeItems = $this->getProjectItems($projectEntries);
-               
-		
+                
 		//print_r($itemsOrder);
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
-		$users = array();
-		$resps = array();
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-			$users = $modelUser->getUsersSummary("name");
-			$modelResp = new SpResponsible();
-			$resps = $modelResp->responsibleSummaries("name");
-			
-		}
-		else{
-			$modelUser = new CoreUser();
-			$users = $modelUser->getUsersSummary("name");
-			$modelResp = new CoreResponsible();
-			$resps = $modelResp->responsibleSummaries("name");
-		}
+		$modelUser = new CoreUser();
+		$users = $modelUser->getUsersSummary("name");
+		$modelResp = new CoreResponsible();
+		$resps = $modelResp->responsibleSummaries("name");
+		
 		/*
 		print_r($projectEntries);
                  echo "<br/>";
@@ -404,6 +393,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$cdate = $this->request->getParameterNoException("cdate");
                 $ciditem = $this->request->getParameterNoException("ciditem");
                 $cquantity = $this->request->getParameterNoException("cquantity");
+                $ccomment = $this->request->getParameterNoException("ccomment");
                 $cinvoiceid = $this->request->getParameterNoException("cinvoiceid");
                 
                 //echo 
@@ -415,7 +405,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
                     $modelProject->deleteAllProjetItems($id_project);
                     // add/update items
                     for($it = 0 ; $it < count($cdate) ; $it++){
-                        $modelProject->setProjectEntry($id_project, $cdate[$it], $ciditem[$it], $cquantity[$it], $cinvoiceid[$it]);
+                        $modelProject->setProjectEntry($id_project, $cdate[$it], $ciditem[$it], $cquantity[$it], $ccomment[$it], $cinvoiceid[$it]);
                     }
                 }
 		

@@ -680,4 +680,11 @@ class SpTranslator {
             return "BILLED SERVICES";    
         }
         
+        public static function Comment($lang){
+            if ($lang == "Fr") {
+                return "Commentaire";
+            }
+            return "Comment";    
+        }
+        
 }
