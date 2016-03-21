@@ -59,11 +59,13 @@ class SpProject extends Model {
 		`date` DATE NOT NULL,
                 `id_item` int(11) NOT NULL, 
 		`quantity` varchar(150) NOT NULL,
+                `comment` varchar(150) NOT NULL,
                 `invoice_id` int(11) NOT NULL DEFAULT '0'
 		);";
 
         $this->runRequest($sql5);
         $this->addColumn("sp_projects_entries", "invoice_id", "int(11)", "0");
+        $this->addColumn("sp_projects_entries", "comment", "varchar(300)", "");
     }
 
     public function getProjectItemEntries($id_proj, $id_item) {
@@ -286,8 +288,8 @@ class SpProject extends Model {
     }
 
     // entries
-    public function setProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $cinvoiceid) {
-        return $this->addProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $cinvoiceid);
+    public function setProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $ccomment, $cinvoiceid) {
+        return $this->addProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $ccomment, $cinvoiceid);
     }
 
     public function isProjectEntry($id) {
@@ -303,14 +305,15 @@ class SpProject extends Model {
         }
     }
 
-    public function addProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $cinvoiceid) {
-        $sql = "INSERT INTO sp_projects_entries (id_proj, date, id_item, quantity, invoice_id)
-				 VALUES(?,?,?,?,?)";
+    public function addProjectEntry($id_proj, $cdate, $ciditem, $cquantity, $ccomment, $cinvoiceid) {
+        $sql = "INSERT INTO sp_projects_entries (id_proj, date, id_item, quantity, comment, invoice_id)
+				 VALUES(?,?,?,?,?,?)";
         $this->runRequest($sql, array(
             $id_proj,
             $cdate,
             $ciditem,
             $cquantity,
+            $ccomment,
             $cinvoiceid
         ));
         return $this->getDatabase()->lastInsertId();

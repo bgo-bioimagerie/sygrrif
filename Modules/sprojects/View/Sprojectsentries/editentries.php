@@ -277,6 +277,7 @@ $newTeam = $this->clean($project["new_project"]);
                                 <tr>
                                     <td></td>
                                     <td><?php echo SpTranslator::Date($lang); ?> </td>
+                                    <td><?php echo SpTranslator::Comment($lang); ?></td>
                                     <td><?php echo SpTranslator::Prestation($lang); ?></td>
                                     <td><?php echo SpTranslator::Quantity($lang); ?></td>
                                     <td><?php echo SpTranslator::invoiced($lang); ?></td>
@@ -293,6 +294,9 @@ $newTeam = $this->clean($project["new_project"]);
                                         <td>
                                             <input class="form-control" type="date" name="cdate[]" value="<?php echo $projEntry['date'] ?>"/>
                                         </td> 
+                                         <td>
+                                            <input class="form-control" type="text" name="ccomment[]" value="<?php echo $projEntry["comment"] ?>">
+					</td>
                                         <td>
                                         <select class="form-control" name="ciditem[]">   
                                             <?php foreach ($items as $item):?>
@@ -340,6 +344,9 @@ $newTeam = $this->clean($project["new_project"]);
                                     <td>
                                         <input class="form-control" type="date" name="cdate[]"/>
                                     </td> 
+                                     <td>
+                                            <input class="form-control" type="text" name="ccomment[]" >
+					</td>
                                     <td>
                                         <select class="form-control" name="ciditem[]">   
 					<?php foreach ($items as $item):?>
