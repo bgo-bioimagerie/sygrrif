@@ -425,6 +425,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 	}
         
         public function saveandbill(){
+            
             // save the project informations
             $this->editquery(false);
             

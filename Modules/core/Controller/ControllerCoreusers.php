@@ -26,7 +26,8 @@ class ControllerCoreusers extends ControllerSecureNav {
 	 * Constructor
 	 */
 	public function __construct() {
-		header_remove();
+            parent::__construct();
+            header_remove();
 		$this->userModel = new CoreUser();
 	}
 	
@@ -213,31 +214,40 @@ class ControllerCoreusers extends ControllerSecureNav {
 				'respsList' => $respsList,
 				'conventionsList' => $conventionsList,
 				'userResponsibles' => $userResponsibles
-		) );
+		), "add" );
 	}
 	
 	/**
 	 * Add a new user query to database
 	 */
 	public function addquery(){
-		$name = $this->request->getParameter ( "name");
-		$firstname = $this->request->getParameter ( "firstname");
-		$login = $this->request->getParameter ( "login");
-		$pwd = $this->request->getParameter ( "pwd");
-		$email = $this->request->getParameter ( "email");
-		$phone = $this->request->getParameter ( "phone");
-		$id_unit = $this->request->getParameter ( "unit");
-		$id_responsible = $this->request->getParameter ( "responsible");
-		$id_status = $this->request->getParameter ( "status");
-		$is_responsible = $this->request->getParameterNoException ( "is_responsible");
-		$convention = $this->request->getParameterNoException ( "convention");
-		$date_convention = $this->request->getParameterNoException ( "date_convention");
-		$date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
+            
+            $lang = $this->getLanguage();
+            
+            // check if the login is already taken
+            $login = $this->request->getParameter ( "login");
+            
+            if ($this->userModel->isLogin($login)){
+                echo '<script language="javascript">';
+                echo 'alert("'. CoreTranslator::LoginAlreadyExists($lang) .'")';
+                echo '</script>';
+                return;
+            }
+            
+            $name = $this->request->getParameter ( "name");
+            $firstname = $this->request->getParameter ( "firstname");
+            $pwd = $this->request->getParameter ( "pwd");
+            $email = $this->request->getParameter ( "email");
+            $phone = $this->request->getParameter ( "phone");
+            $id_unit = $this->request->getParameter ( "unit");
+            $id_responsible = $this->request->getParameter ( "responsible");
+            $id_status = $this->request->getParameter ( "status");
+            $is_responsible = $this->request->getParameterNoException ( "is_responsible");
+            $convention = $this->request->getParameterNoException ( "convention");
+            $date_convention = $this->request->getParameterNoException ( "date_convention");
+            $date_end_contract = $this->request->getParameterNoException ( "date_end_contract");
 		
-		$lang = 'En';
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
-		}
+		
 			
 		if ($date_convention != ""){
 			$date_convention = CoreTranslator::dateToEn($date_convention, $lang);

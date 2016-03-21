@@ -987,4 +987,11 @@ class CoreTranslator {
 		}
 		return "Private";
 	}
+        
+        public static function LoginAlreadyExists($lang){
+            if ($lang == "Fr"){
+			return "Le login est déjà pris";
+		}
+		return "The login already exists";
+        }
 }

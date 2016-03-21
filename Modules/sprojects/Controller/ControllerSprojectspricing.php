@@ -13,9 +13,6 @@ require_once 'Framework/TableView.php';
 
 class ControllerSprojectspricing extends ControllerSecureNav {
 
-	public function __construct() {
-	}
-
 	public function index() {
 
 		// Lang

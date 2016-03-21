@@ -438,21 +438,55 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
                 return;
             }
             
+            // get the next bill number
+            $billgenaratorModel = new SyBillGenerator();
+            $noBill = $billgenaratorModel->calculateBillNumber();
+            
+            //echo "noBill = " . $noBill . "<br/>";
+            //return;
+            
             // generate a bill for each responsible
             //echo "bokking units = ";
             //print_r($unitsList);
             //echo "<br/>";
+            $pass = 0;
             for($u = 0 ; $u < count($unitsList) ; $u++){
                 $responsiblesList = $this->getResponsibleList($searchDate_start, $searchDate_end, $unitsList[$u]['id']);
                 for ($r = 0 ; $r < count($responsiblesList) ; $r++){
+                    $pass++;
+                    // increment bill number
+                    if ($pass > 1){
+                        $noArray = explode("-", $noBill);
+                        $numYearBill = floatval($noArray[1]) + 1;
+                        $noBill = $noArray[0] . "-" . $this->float2ZeroStr($numYearBill);
+                    }
+                    //echo "noBill next = " . $noBill . "<br>";
                     //echo "generate bill for responsible: " . $responsiblesList[$r]['id'] . "<br/>";
-                    $billgenaratorModel = new SyBillGenerator();
-                    $billgenaratorModel->generateBill($searchDate_start, $searchDate_end, $unitsList[$u]['id'], $responsiblesList[$r]['id'], $billDir);
+                    
+                    $billgenaratorModel->generateBill($searchDate_start, $searchDate_end, $unitsList[$u]['id'], $responsiblesList[$r]['id'], $billDir, $noBill);
+                    
                 }
             }
             
             $this->generateZipFile($billDir);
             
+        }
+        
+        public function float2ZeroStr($numYearBill){
+                    $nyb = "";
+                    if ($numYearBill < 10){
+                        $nyb = "000" . $numYearBill; 
+                    }
+                    else if($numYearBill >= 10 && $numYearBill < 100){
+                        $nyb = "00" . $numYearBill; 
+                    }
+                    else if($numYearBill >= 100 && $numYearBill < 1000){
+                        $nyb = "0" . $numYearBill; 
+                    }
+                    else{
+                        $nyb = $numYearBill;
+                    }
+                    return $nyb;
         }
         
         public function getResponsibleList($searchDate_start, $searchDate_end, $selectedUnitId){

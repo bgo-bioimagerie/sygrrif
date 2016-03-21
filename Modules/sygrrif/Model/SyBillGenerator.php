@@ -176,7 +176,7 @@ class SyBillGenerator extends Model {
 		);
 		
 		// load the template
-		$file = "data/template.xls";
+		$file = "data/sygrrif/template.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
@@ -340,7 +340,7 @@ class SyBillGenerator extends Model {
 	 * @param number $unit_id ID of the unit to bill
 	 * @param number $responsible_id ID of the responsible to bill
 	 */
-	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $billDir = ""){
+	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $billDir = "", $noBill = ""){
 		
 		$this->updateUnsetResponsibles(); // this is needed to setup responsible if a user has booked without setted responsible
 		
@@ -363,6 +363,7 @@ class SyBillGenerator extends Model {
 		$modelUnit = new CoreUnit();
 		$LABpricingid = $modelUnit->getBelonging($unit_id);
 		if ($LABpricingid <= 1 ){
+                        //echo "no price id for the unit " . $unit_id . "<br/>";
 			return;
 		}
 
@@ -422,7 +423,12 @@ class SyBillGenerator extends Model {
 		// replace unit address
 		$objPHPExcel = $this->replaceVariable($objPHPExcel, "{adresse}", $unitAddress, true);
 		// set bill number
-		$number = $this->calculateBillNumber($objPHPExcel);
+                if ($noBill == ""){
+                    $number = $this->calculateBillNumber();
+                }
+                else{
+                    $number = $noBill;
+                }
 		$objPHPExcel = $this->replaceVariable($objPHPExcel, "{nombre}", $number);
 		
 		// fill the table
@@ -632,7 +638,10 @@ class SyBillGenerator extends Model {
 		
 		// add the bill to the bill manager
 		$modelBill = new SyBill();
-		$modelBill->addBillUnit($number, $searchDate_start, $searchDate_end, date("Y-m-d", time()), $unit_id, $responsible_id, $total);
+                
+                $bgdatebill = date("Y-m-d", $searchDate_start);
+                $enddatebill = date("Y-m-d", $searchDate_end);
+		$modelBill->addBillUnit($number, $bgdatebill, $enddatebill, date("Y-m-d", time()), $unit_id, $responsible_id, $total);
 		
 		
 		// TVA 20p
@@ -683,7 +692,7 @@ class SyBillGenerator extends Model {
                 }
 	}
 	
-	protected function calculateBillNumber($objPHPExcel){
+	public function calculateBillNumber(){
 		// calculate the number
 		$modelBill = new SyBill();
 		$bills = $modelBill->getBills("number");
@@ -702,15 +711,18 @@ class SyBillGenerator extends Model {
 			}
 			$num = "".$lastNumberN."";
 			if ($lastNumberN < 10){
-				$num = "00" . $lastNumberN;
+				$num = "000" . $lastNumberN;
 			}
 			else if ($lastNumberN >= 10 && $lastNumberN < 100){
+				$num = "00" . $lastNumberN;
+			}
+                        else if ($lastNumberN >= 100 && $lastNumberN < 1000){
 				$num = "0" . $lastNumberN;
 			}
 			$number = $lastNumberY ."-". $num ;
 		}
 		else{
-			$number = date("Y", time()) . "-001";
+			$number = date("Y", time()) . "-0001";
 		}
 		
 		return $number;

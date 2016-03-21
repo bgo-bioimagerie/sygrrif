@@ -15,13 +15,6 @@ require_once 'Modules/sygrrif/Model/SyCalSupplementary.php';
 class ControllerSygrrifconfig extends ControllerSecureNav {
 
 	/**
-	 * Constructor
-	 */
-	public function __construct() {
-
-	}
-
-	/**
 	 * (non-PHPdoc)
 	 * Show the config index page
 	 * 
@@ -378,7 +371,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 	 * @return string
 	 */
 	public function uploadTemplate(){
-		$target_dir = "data/";
+		$target_dir = "data/sygrrif/";
 		$target_file = $target_dir . "template.xls";
 		$uploadOk = 1;
 		$imageFileType = pathinfo($_FILES["fileToUpload"]["name"],PATHINFO_EXTENSION);

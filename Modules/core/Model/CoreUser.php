@@ -105,6 +105,16 @@ class CoreUser extends Model {
 			return "Login or password not correct";
 		}
 	}
+        
+        public function isLogin($login){
+            $sql = "select * from core_users where login=?";
+            $user = $this->runRequest ( $sql, array ($login) );
+            if ($user->rowCount () == 1) {
+		return true;
+            } else {
+		return false;
+            }
+        }
 	/**
 	 * Verify that a user is in the database
 	 *
