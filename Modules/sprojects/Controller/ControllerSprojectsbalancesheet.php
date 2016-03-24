@@ -342,7 +342,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         }
         
         // total services sum
-        $itemIdx = 4;
+        $itemIdx = 5;
         $lastLine = $curentLine;
         $curentLine++;
         foreach ($items as $itemsT) {
@@ -470,17 +470,19 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
 
 
         $curentLine = 1;
-        $objPHPExcel->getActiveSheet()->SetCellValue('A' . $curentLine, CoreTranslator::Unit($lang));
-        $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, CoreTranslator::User($lang));
-        $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, SpTranslator::Date_paid($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('A' . $curentLine, CoreTranslator::Responsible($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, CoreTranslator::Unit($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, CoreTranslator::User($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, SpTranslator::No_Projet($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, SpTranslator::Date_paid($lang));
         
         $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('C' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
+        $objPHPExcel->getActiveSheet()->getStyle('E' . $curentLine)->applyFromArray($styleBorderedCell);
 
-        $itemIdx = 4;
+        $itemIdx = 5;
         $items = $projectsBalance["items"];
         $modelItem = new SpItem();
         
@@ -497,15 +499,17 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         foreach ($projects as $proj) {
             $curentLine++;
             $unitName = $modelUnit->getUnitName($modelUser->getUserUnit($proj["id_resp"]));
-            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $curentLine, $unitName);
-            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, $modelUser->getUserFUllName($proj["id_resp"]));
-            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, $proj["date_close"]);
+            $objPHPExcel->getActiveSheet()->SetCellValue('A' . $curentLine, $modelUser->getUserFUllName($proj["id_resp"]));
+            $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, $unitName);
+            $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, $modelUser->getUserFUllName($proj["id_user"]));
             $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, $proj["name"]);
+            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, $proj["date_close"]);
             
             $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('C' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
+            $objPHPExcel->getActiveSheet()->getStyle('E' . $curentLine)->applyFromArray($styleBorderedCell);
 
             // "entries"
             $idx = -1;
