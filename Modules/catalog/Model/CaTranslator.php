@@ -203,9 +203,9 @@ class CaTranslator {
         
         public static function Application($lang){
 		if ($lang == "Fr"){
-			return "Application";
+			return "Voie de signalisation";
 		}
-		return "Application";
+		return "Signaling pathway";
 	}
         
         
@@ -213,7 +213,7 @@ class CaTranslator {
 		if ($lang == "Fr"){
 			return "Marquage";
 		}
-		return "Staining";
+		return "Marker";
 	}
         
         public static function Status($lang){
