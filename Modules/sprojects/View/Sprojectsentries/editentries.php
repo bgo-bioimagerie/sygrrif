@@ -31,22 +31,22 @@
                 var newcell = row.insertCell(i);
 
                 newcell.innerHTML = table.rows[idx].cells[i].innerHTML;
-                //alert(newcell.childNodes);
+                
                 switch (newcell.childNodes[0].type) {
                     case "text":
-                        newcell.childNodes[0].value = "";
+                        newcell.childNodes[0].value = '';
                         break;
                     case "date":
-                        newcell.childNodes[0].value = "";
+                        newcell.childNodes[0].value = '';
                         break;
                     case "hidden":
-                        newcell.childNodes[0].value = "";
+                        newcell.childNodes[0].value = '';
                         break;
                     case "checkbox":
                         newcell.childNodes[0].checked = false;
                         break;
                     case "select-one":
-                        newcell.childNodes[0].selectedIndex = 0;
+                        newcell.childNodes[0].selectedIndex = 1;
                         break;
                 }
             }
@@ -291,14 +291,9 @@ $newTeam = $this->clean($project["new_project"]);
 				?>
                                     <tr>
                                         <td><input type="checkbox" name="chk" /></td>
-                                        <td>
-                                            <input class="form-control" type="date" name="cdate[]" value="<?php echo $projEntry['date'] ?>"/>
-                                        </td> 
-                                         <td>
-                                            <input class="form-control" type="text" name="ccomment[]" value="<?php echo $projEntry["comment"] ?>">
-					</td>
-                                        <td>
-                                        <select class="form-control" name="ciditem[]">   
+                                        <td><input type="date" class="form-control" name="cdate[]" value="<?php echo $projEntry['date'] ?>" ></td> 
+                                        <td><input type="text" class="form-control" name="ccomment[]" value="<?php echo $projEntry["comment"] ?>" ></td>
+					<td><select class="form-control" name="ciditem[]">   
                                             <?php foreach ($items as $item):?>
                                             <?php   $respId = $this->clean( $item['id'] );
                                             $respSummary = $this->clean( $item['name'] );
@@ -309,13 +304,9 @@ $newTeam = $this->clean($project["new_project"]);
 							?>
 							<OPTION value="<?php echo  $respId ?>" <?php echo $selected ?> > <?php echo $respSummary ?> </OPTION>
 							<?php endforeach; ?>
-					</select>
-                                        </td>
-                                        <td>
-                                            <input class="form-control" type="text" name="cquantity[]" value="<?php echo $projEntry["quantity"] ?>">
-					</td>
-                                        <td>
-                                        <select class="form-control" name="cinvoiceid[]">   
+					</select></td>
+                                        <td><input class="form-control" type="text" name="cquantity[]" value="<?php echo $projEntry["quantity"] ?>"></td>
+					<td><select class="form-control" name="cinvoiceid[]">   
                                             <?php
                                             if ($projEntry["invoice_id"] > 0){
                                                 ?>
@@ -330,8 +321,7 @@ $newTeam = $this->clean($project["new_project"]);
                                             }
                                             
                                             ?>
-					</select>    
-                                        </td>    
+					</select></td>    
                                     </tr>  
                                 <?php 
                                 } 
@@ -345,18 +335,18 @@ $newTeam = $this->clean($project["new_project"]);
                                         <input class="form-control" type="date" name="cdate[]"/>
                                     </td> 
                                      <td>
-                                            <input class="form-control" type="text" name="ccomment[]" >
-					</td>
+                                        <input class="form-control" type="text" name="ccomment[]" >
+                                    </td>
                                     <td>
                                         <select class="form-control" name="ciditem[]">   
 					<?php foreach ($items as $item):?>
                                             <?php   $respId = $this->clean( $item["id"] );
                                             $respSummary = $this->clean( $item["name"] );
 						    	
-							?>
-							<OPTION value="<?php echo  $respId ?>"> <?php echo $respSummary ?> </OPTION>
-							<?php endforeach; ?>
-							</select>
+                                            ?>
+                                            <OPTION value="<?php echo  $respId ?>"> <?php echo $respSummary ?> </OPTION>
+                                            <?php endforeach; ?>
+					</select>
                                     </td>
                                     <td>
                                         <input class="form-control" type="text" name="cquantity[]"/>

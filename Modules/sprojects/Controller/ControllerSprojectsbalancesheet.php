@@ -294,7 +294,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('E' . $curentLine)->applyFromArray($styleBorderedCell);
 
-        $itemIdx = 4;
+        $itemIdx = 5;
         $items = $projectsBilledBalance["items"];
         $modelItem = new SpItem();
         
@@ -331,8 +331,8 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
                 $pos = $this->findItemPos($items, $entry["id"]);
                 if ($pos > 0 && $entry["pos"] > 0) {
                     //print_r($entry);
-                    $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($pos + 4) . $curentLine, $entry["sum"]);
-                    $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($pos + 4) . $curentLine)->applyFromArray($styleBorderedCell);
+                    $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($pos + 5) . $curentLine, $entry["sum"]);
+                    $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($pos + 5) . $curentLine)->applyFromArray($styleBorderedCell);
                 
                     //$itemsTotal[$idx] += floatval($entry["sum"]);
                 }
@@ -514,13 +514,14 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             // "entries"
             $idx = -1;
             $entries = $proj["entries"];
+            $offset = 5;
             foreach ($entries as $entry) {
                 $idx++;
                 $pos = $this->findItemPos($items, $entry["id"]);
                 if ($pos > 0 && $entry["pos"] > 0) {
                     //print_r($entry);
-                    $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($pos + 4) . $curentLine, $entry["sum"]);
-                    $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($pos + 4) . $curentLine)->applyFromArray($styleBorderedCell);
+                    $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($pos + $offset) . $curentLine, $entry["sum"]);
+                    $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($pos + $offset) . $curentLine)->applyFromArray($styleBorderedCell);
                 
                     //$itemsTotal[$idx] += floatval($entry["sum"]);
                 }
@@ -530,7 +531,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         }
         
         // total services sum
-        $itemIdx = 4;
+        $itemIdx = 5;
         $lastLine = $curentLine;
         $curentLine++;
         foreach ($items as $itemsT) {

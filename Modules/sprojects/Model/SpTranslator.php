@@ -397,7 +397,7 @@ class SpTranslator {
 	}
 	public static function numberNewAccademicTeam($lang) {
 		if ($lang == "Fr") {
-			return "Nb de nouveaux accadémiques";
+			return "Nb de nouveaux académiques";
 		}
 		return "Number of new accademic team";
 	}
