@@ -687,4 +687,18 @@ class SpTranslator {
             return "Comment";    
         }
         
+        public static function bill_per_periode($lang){
+            if ($lang == "Fr") {
+                return "Facturation par periode";
+            }
+            return "bill per periode";    
+        }
+        
+        public static function bill_per_project($lang){
+            if ($lang == "Fr") {
+                return "Facturation par projet";
+            }
+            return "bill per project";    
+        }
+        
 }

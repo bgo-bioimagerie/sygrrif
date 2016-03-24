@@ -260,66 +260,15 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$modelProject = new SpProject();
 		$projectEntries = $modelProject->getProjectEntries($idproject);
 		
-		// get active items
-		$activeItems = $this->getProjectItems($projectEntries);
-		
-		// select the items with not null data
-		for($i = 0 ; $i < count($activeItems) ; $i++){
-			$qi = 0;
-			foreach ($projectEntries as $order){
-				if (isset($order["content"]["item_".$activeItems[$i]["id"]])){
-					$qi += $order["content"]["item_".$activeItems[$i]["id"]];
-				}
-			}
-			$activeItems[$i]["pos"] = 0;
-			if ($qi > 0){
-				$activeItems[$i]["pos"] = 1;
-				$activeItems[$i]["sum"] = $qi;
-			}
-		}
-		
-		// write into string
-		$content = "Date;";
-		foreach($activeItems as $item){
-			if ($item["pos"] > 0){
-				$content .= $item["name"] . ";";
-			}
-		}
-		$content .= " total (€ HT) ; \n";
-		foreach ($projectEntries as $order){
-			$content .= CoreTranslator::dateFromEn($order['date'], $lang) . ";";
-			foreach($activeItems as $item){
-					
-				if ($item["pos"] > 0){
-					$quantity = "";
-					if (isset($order["content"]["item_".$item["id"]])){
-						$quantity = $order["content"]["item_".$item["id"]];
-					}
-					
-					$content .= $quantity . ";";
-				}	
-			}
-			$content .= "\n";
-		}
+                //echo "project entries <br/>";
+                //print_r($projectEntries);
+                
+                
 		
 		// calculate total sum and price HT
-		$modelUser = "";
-
-		$modelUnit = "";
-		$modelBelonging = "";
-
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam ( "sprojectsusersdatabase" );
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-			$modelBelonging = new SpBelonging();
-			$modelUnit = new SpUnit();
-		}
-		else{
-			$modelUser = new CoreUser();
-			$modelBelonging = new CoreBelonging();
-			$modelUnit = new CoreUnit();
-		}
+		$modelUser = new CoreUser();
+		$modelUnit = new CoreUnit();
+		
 		$id_resp = $modelProject->getResponsible($idproject);
 		$id_unit = $modelUser->getUserUnit($id_resp);
 		
@@ -327,20 +276,24 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 
 		$itemPricing = new SpItemPricing();
 		
-		$content .= "Total ;";
+                
+                $content = "Date ; Prestation ; Commentaire ; Quantité ; Prix ; Total \r\n";
 		$totalHT = 0;
-		$numActivItem = 0;
-		foreach($activeItems as $item){
-				
-			if ($item["pos"] > 0){
-				$unitaryPrice = $itemPricing->getPrice($item["id"], $LABpricingid);
-				$content .= $item["sum"] . ";";
-				$totalHT += (float)$item["sum"]*(float)$unitaryPrice["price"];
-				$numActivItem++;
-			}
-		}
-		$content .= "\r\n";
-		for($i = 0 ; $i <= $numActivItem ; $i++){
+                $modelItem = new SpItem();
+                foreach($projectEntries as $entry){
+                    
+                    $content .= $entry["date"] . ";";
+                    $content .= $modelItem->getItemName($entry["id_item"]) . ";";
+                    $content .= str_replace(";", ",", $entry["comment"]) . ";";  
+                    $unitPrice = $itemPricing->getPrice($entry["id_item"], $LABpricingid);
+                    $content .= $unitPrice[0] . ";";
+                    $content .= $entry["quantity"] . ";";         
+                    $price = (float)$entry["quantity"]*(float)$unitPrice[0];
+                    $totalHT += $price;  
+                    $content .= $price . "\r\n"; 
+                }
+                
+		for($i = 0 ; $i <= 4 ; $i++){
 			$content .= " ; ";
 		}
 		$content .= $totalHT . "\r\n";

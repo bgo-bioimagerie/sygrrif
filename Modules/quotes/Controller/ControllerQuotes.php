@@ -42,7 +42,7 @@ class ControllerQuotes extends ControllerSecureNav {
                 
 		$table = new TableView();
 		$table->setTitle(QoTranslator::Quotes($lang));
-		$table->addLineEditButton("quotes/edit");
+		$table->addLineEditButton("quotes/editquote");
 		$table->addDeleteButton("quotes/delete", "id", "id");
 		$table->addPrintButton("quotes/index/");
 		$tableHtml = $table->view($data, array("id" => "ID", "recipient" => QoTranslator::Recipient($lang), "address" => CoreTranslator::Address($lang), "belonging" => CoreTranslator::Belonging($lang),
@@ -57,6 +57,21 @@ class ControllerQuotes extends ControllerSecureNav {
 				'navBar' => $navBar,
 				'tableHtml' => $tableHtml 
 		) );
+        }
+        
+        public function editquote(){
+            $id = $this->request->getParameter ( "actionid" );
+            $modelQuote = new QoQuote();
+            $info = $modelQuote->getInfo($id);
+            
+            //echo "user id = " . $info["id_user"] . "<br/>";
+            //return;
+            if ($info["id_user"] > 0){
+                $this->editexistinguser();
+            }
+            else{
+                $this->edit();
+            }
         }
         
         public function edit(){
@@ -91,7 +106,7 @@ class ControllerQuotes extends ControllerSecureNav {
                                 'entry' => $entry,
                                 'content' => $content,
                                 'entryList' => $entryList
-		) );
+		), "edit" );
         }
         
         public function editquery(){
@@ -155,7 +170,7 @@ class ControllerQuotes extends ControllerSecureNav {
                                 'entry' => $entry,
                                 'content' => $content,
                                 'entryList' => $entryList
-		) );
+		), "editexistinguser" );
         }
         
         public function delete(){

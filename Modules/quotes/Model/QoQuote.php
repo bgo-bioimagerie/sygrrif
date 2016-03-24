@@ -162,6 +162,17 @@ class QoQuote extends Model {
                     $LABpricingid = $modelUnit->getBelonging($unit_id);
                 }
  
+                $quoteInfo["unit"] = "";
+                if ($quoteInfo["id_user"] > 0){
+                    
+                    $modelUser = new CoreUser();
+                    $modelUnit = new CoreUnit();
+                    $unitID = $modelUser->getUserUnit($quoteInfo["id_user"]);
+                    $quoteInfo["unit"] = $modelUnit->getUnitName($unitID); 
+                    $quoteInfo["address"] = $modelUnit->getAdress($unitID);
+                    $quoteInfo["recipient"] = $modelUser->getUserFUllName($quoteInfo["id_user"]);
+                }
+                
 		//echo "get unit done <br/>";
 		// /////////////////////////////////////////// //
 		//            Pepare the xls output            //
@@ -251,7 +262,7 @@ class QoQuote extends Model {
 		);
 		
 		// load the template
-		$file = "data/template.xls";
+		$file = "data/quotes/template.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
@@ -331,7 +342,7 @@ class QoQuote extends Model {
 			}
 		}
 		if ($insertCol != ""){
-			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, "Unit Name");
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $quoteInfo["unit"]);
 		}
 		
 		// replace address $unitAddress

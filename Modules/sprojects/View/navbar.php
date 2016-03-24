@@ -129,14 +129,25 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?php echo  SpTranslator::Billing($lang)?></legend>	
+                                
+                                <?php
+                                
+                                $billingMode = $modelConfig->getParam("sprojectsbillingmode");
+                                if($billingMode == 1){
+                                ?>
                                     <button onclick="location.href='sprojectsbill/billperiod'"
                                         class="btn btn-link" id="navlink"><?php echo  SpTranslator::BillPerPeriode($lang)?></button>
-                                <!--
-                                <br/>
-                                    <button onclick="location.href='sprojectsbill/oneBillMultipleProjects'"
+                                <?php
+                                }
+                                else{
+                                    ?>
+                                         <button onclick="location.href='sprojectsbill/oneBillMultipleProjects'"
                                         class="btn btn-link" id="navlink"><?php echo  SpTranslator::OneBillMultipleProjects($lang)?></button>
-                                -->
-                                <br/>
+                               
+                                    <?php
+                                }
+                                ?>
+                               <br/>
                                     <button onclick="location.href='sprojectsbillmanager'"
                                         class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_manager($lang)?></button>
 			</fieldset>

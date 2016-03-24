@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/CoreConfig.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 
 /**
  * Class defining the User model
@@ -1245,20 +1246,32 @@ class CoreUser extends Model {
 		$req = $this->runRequest ( $sql );
 		$users = $req->fetchAll ();
 		
+                $modelResp = new CoreResponsible();
 		foreach ( $users as $user ) {
-			$lastLoginDate = $user ["date_last_login"];
-			$lastLoginDate = explode ( "-", $lastLoginDate );
-			$timell = mktime ( 0, 0, 0, $lastLoginDate [1], $lastLoginDate [2], $lastLoginDate [0] );
-			$timell = date ( "Y-m-d", $timell + $numberYear * 31556926 );
-			$today = date ( "Y-m-d", time () );
-			
-			$changedUsers = array ();
-			if ($lastLoginDate [0] != "0000") {
-				if ($timell <= $today) {
-					$this->setactive ( $user ['id'], 0 );
-					$changedUsers [] = $user ['id'];
-				}
-			}
+                    
+                        if (!$modelResp->isResponsible($user ['id'])){
+                        
+                            // get the last login date in second
+                            $lastLoginDate = $user ["date_last_login"];
+                            $lastLoginDate = explode ( "-", $lastLoginDate );
+                            $timell = mktime ( 0, 0, 0, $lastLoginDate [1], $lastLoginDate [2], $lastLoginDate [0] );
+                            $timell = date ( "Y-m-d", $timell + $numberYear * 31556926 );
+                            $today = date ( "Y-m-d", time () );
+
+                            // get the date created in seconds
+                            $createdDate = $user ["date_last_login"];
+                            $createdDate = explode ( "-", $createdDate );
+                            $timec = mktime ( 0, 0, 0, $createdDate [1], $createdDate [2], $createdDate [0] );
+                            $timec = date ( "Y-m-d", $timec + $numberYear * 31556926/2 );
+                            
+                            $changedUsers = array ();
+                            if ($timec <= $today) {
+                                    if ($timell <= $today) {
+                                            $this->setactive ( $user ['id'], 0 );
+                                            $changedUsers [] = $user ['id'];
+                                    }
+                            }
+                        }
 		}
 		
 		$modelConfig = new CoreConfig ();
