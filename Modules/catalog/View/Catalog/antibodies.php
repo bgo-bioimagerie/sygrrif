@@ -36,6 +36,7 @@ $(document).ready( function() {
 	                     { "bSearchable": true },
 	                     { "bSearchable": true },
 	                     { "bSearchable": true },
+						 { "bSearchable": true },
 	                     { "bSearchable": true },
 	                     { "bSearchable": true },
 	                     { "bSearchable": true },
