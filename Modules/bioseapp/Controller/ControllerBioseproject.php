@@ -45,9 +45,6 @@ class ControllerBioseproject extends ControllerSecureNav {
             }
             else{
                 $project = $projectModel->getInfo($id);
-                //"echo project info = ";
-                //print_r($project);
-                //echo "<br/>";
             }
             
             if ($id == ""){
@@ -87,5 +84,31 @@ class ControllerBioseproject extends ControllerSecureNav {
             $modelProjectData->setProjectTags($idProject, $tags_name, $tags_content);
         }
         
-
+        public function import(){
+            
+            // action
+            $id = "";
+            if ($this->request->isParameterNotEmpty ( 'actionid' )) {
+            	$id = $this->request->getParameter ( "actionid" );
+            }
+            
+            $lang = $this->getLanguage();
+            
+            // queries
+            $headerInfo = array("curentTab" => "import", "projectId" => $id);
+            
+            $projectModel = new BiProjectData();
+            $tags = $projectModel->tags($id);
+            //print_r($tags);
+            
+            
+            // view
+            $navBar = $this->navBar();
+            $this->generateView ( array (
+                        	'navBar' => $navBar,
+                                'headerInfo' => $headerInfo,  
+                                'lang' => $lang,  
+                                'tags' => $tags  
+            ) );
+        }
 }

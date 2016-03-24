@@ -130,5 +130,34 @@ class BiTranslator {
 		}
 		return "Values (separated by ;)";
 	}
- 
+        
+        public static function Import($lang = ""){
+		if ($lang == "Fr"){
+			return "Importer";
+		}
+		return "Import";
+	}
+        
+        public static function Data($lang = ""){
+		if ($lang == "Fr"){
+			return "Données";
+		}
+		return "Data";
+	}
+        
+        public static function DataOnServer($lang = ""){
+		if ($lang == "Fr"){
+			return "Données personnelles sur le serveur";
+		}
+		return "Data on server";
+	}
+        
+        public static function SelectedData($lang = ""){
+		if ($lang == "Fr"){
+			return "Données selectionnées";
+		}
+		return "Selected data";
+	}
+        
+        
 }
