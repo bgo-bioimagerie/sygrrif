@@ -192,7 +192,7 @@
                         <td style="width:7px;"><input type="checkbox" name="chk" /></td>
                         <td style="width:1px;"><input style="width:0px; margin-left:-50px;" type="hidden" name="tag_id[]" value="<?php echo $tag["id"] ?>"/>
                         </td>					
-                        <td><input  class="form-control" type="text" name="item_name[]" value="<?php echo $tag['key'] ?>" required/></td>
+                        <td><input  class="form-control" type="text" name="item_name[]" value="<?php echo $tag['name'] ?>" required/></td>
                         <td><input  class="form-control" type="text" name="item_content[]" value="<?php echo $tag['content'] ?>" required/></td>
                     </tr>
                     <?php

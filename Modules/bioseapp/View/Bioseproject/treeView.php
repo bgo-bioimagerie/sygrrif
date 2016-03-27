@@ -1,6 +1,12 @@
  <?php
 $_POST['dir'] = urldecode($_POST['dir']);
-$root = "/home/sylvain/Images/";
+//$root = "/Users/sprigent/www/biose/sygrrif/data/storage/admin/";
+
+//echo "conf = " . Configuration::get("rootWeb") . "<br/>";
+$rootWeb = "/biose/sygrrif/";
+$root = $_SERVER['DOCUMENT_ROOT'] . $rootWeb . "/data/storage/admin/";
+
+//echo "root = " . $root . "<br/>";
 
 if( file_exists($root . $_POST['dir']) ) {
 	$files = scandir($root . $_POST['dir']);

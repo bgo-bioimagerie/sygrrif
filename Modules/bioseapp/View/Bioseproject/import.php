@@ -19,8 +19,11 @@
 			
                                 border-top: solid 1px #BBB;
 				border-left: solid 1px #BBB;
-				border-bottom: solid 1px #FFF;
-				border-right: solid 1px #FFF;
+				border-bottom: solid 1px #BBB;
+				border-right: solid 1px #BBB;
+                                -webkit-border-radius: 5px;
+                                -moz-border-radius: 5px;
+                                border-radius: 5px;
 				background: #FFF;
 				overflow: scroll;
 				/*padding: 5px;*/
@@ -86,9 +89,9 @@
         <?php foreach($tags as $tag){
             ?>
             <div class="form-group">
-            <label for="inputEmail" class="control-label col-xs-4"><?php echo $tag["key"]?></label>
+            <label class="control-label col-xs-4"><?php echo $tag["name"]?></label>
                 <div class="col-xs-6">
-                    <select class="form-control" name="<?php echo $tag["key"]?>">
+                    <select class="form-control" name="<?php echo $tag["name"]?>">
                             <?php
                             $tagVals = explode(";", $tag["content"]);
                             foreach ($tagVals as $tagVal) {
@@ -120,15 +123,16 @@
         <div class="col-xs-2">
             <p style="height: 200px;"></p>
             <p style="text-align:center;"><span class="glyphicon glyphicon-arrow-right"></span></p>
-            </div>
+        </div>
         <div class="col-xs-4">
             <p style="text-align: center;"><?php echo BiTranslator::SelectedData($lang) ?></p>
-                    <select id="mySelect" class="form-control" name="selected_data[]" style="height: 400px;" size="10" multiple="multiple">
+            <select id="mySelect" class="form-control" name="selected_data[]" style="height: 400px;" size="15" multiple="multiple">
                                             
-                    </select>
+            </select>
             <button type="button" class="btn btn-default" onclick="DeleteProbs();">Delete selected data</button>
-		</div>
+	</div>
         
+        <input type="hidden" name="id_proj" value="<?php echo $id_proj?>" >
         <div class="col-xs-1 col-xs-offset-11" id="button-div">
             <input type="submit" class="btn btn-primary" value="<?php echo $buttonName ?>" />
         </div>
