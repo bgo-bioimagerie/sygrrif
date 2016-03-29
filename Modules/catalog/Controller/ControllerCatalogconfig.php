@@ -11,10 +11,6 @@ require_once 'Modules/catalog/Model/CaInstall.php';
  */
 class ControllerCatalogconfig extends ControllerSecureNav {
 
-	public function __construct() {
-
-	}
-
 	/**
 	 * (non-PHPdoc)
 	 * Show the config index page
@@ -30,8 +26,13 @@ class ControllerCatalogconfig extends ControllerSecureNav {
 		$ModulesManagerModel = new ModulesManager();
 		$status = $ModulesManagerModel->getDataMenusUserType("catalog");
 		$menus[0] = array("name" => "catalog", "status" => $status);
-		$status = $ModulesManagerModel->getDataMenusUserType("catalog manager");
-		$menus[1] = array("name" => "catalogadmin", "status" => $status);
+		$status1 = $ModulesManagerModel->getDataMenusUserType("catalog manager");
+		$menus[1] = array("name" => "catalogadmin", "status" => $status1);
+                
+                $modelConfig = new CoreConfig();
+                $antibody_plugin = $modelConfig->getParam("ca_use_antibodies");
+                
+                
 
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
@@ -45,14 +46,16 @@ class ControllerCatalogconfig extends ControllerSecureNav {
     			$installSuccess = "<b>Success:</b> the database have been successfully installed";
     			$this->generateView ( array ('navBar' => $navBar, 
     					                     'installError' => $installError,
-    					                     'menus' => $menus	
+    					                     'menus' => $menus,
+                                                             'antibody_plugin' => $antibody_plugin
     			) );
     			return;
 			}
 			$installSuccess = "<b>Success:</b> the database have been successfully installed";
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
-					                     'menus' => $menus
+					                     'menus' => $menus,
+                                                             'antibody_plugin' => $antibody_plugin
 			) );
 			return;
 		}
@@ -66,21 +69,32 @@ class ControllerCatalogconfig extends ControllerSecureNav {
 			$ModulesManagerModel->setDataMenu("catalog", "catalog", $menusStatus[0], "glyphicon glyphicon-th-list");
 			$ModulesManagerModel->setDataMenu("catalog manager", "catalogadmin", $menusStatus[1], "glyphicon glyphicon-th-list");
 			
-			$status = $ModulesManagerModel->getDataMenusUserType("catalog");
-			$menus[0] = array("name" => "catalog", "status" => $status);
-			$status = $ModulesManagerModel->getDataMenusUserType("catalog manager");
-			$menus[1] = array("name" => "catalog manager", "status" => $status);	
+			$status1 = $ModulesManagerModel->getDataMenusUserType("catalog");
+			$menus[0] = array("name" => "catalog", "status" => $status1);
+			$status2 = $ModulesManagerModel->getDataMenusUserType("catalog manager");
+			$menus[1] = array("name" => "catalog manager", "status" => $status2);	
 			
 			$this->generateView ( array ('navBar' => $navBar,
-				                     'menus' => $menus
+				                     'menus' => $menus,
+                                                     'antibody_plugin' => $antibody_plugin
 									 	
 			) );
 			return;
 		}
 		
+                // plugins activation
+		$setpluginsquery = $this->request->getParameterNoException ( "setpluginsquery");
+		if ($setpluginsquery == "yes"){
+			$antibody_pluginR = $this->request->getParameterNoException("antibody_plugin");
+                        $modelConfig->setParam("ca_use_antibodies", $antibody_pluginR);
+                        $antibody_plugin = $modelConfig->getParam("ca_use_antibodies");
+                }
+                        
+                 
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				'menus' => $menus
+				'menus' => $menus,
+                                'antibody_plugin' => $antibody_plugin
 		) );
 	}
 }

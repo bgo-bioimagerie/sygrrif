@@ -78,7 +78,7 @@
 									
 <br>
 <div class="col-lg-12">
-	  <form role="form" class="form-horizontal" action="anticorps/editquery" method="post">
+	  <form role="form" class="form-horizontal" action="anticorps/editquery" method="post" enctype="multipart/form-data">
 		<div class="page-header">
 			<h1>
 				Edit Anticorps <br> <small></small>
@@ -529,31 +529,84 @@
 		</div>
 		
 		<br>
-		
-		<!-- Date Reception 
-		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2">Date Reception</label>
-			<div class="col-xs-10">
-				<div class='input-group date' id='datetimepicker5'>
-					<input type='text' class="form-control" data-date-format="YYYY-MM-DD" name="date_recept" value="<?php echo  CoreTranslator::dateFromEn($anticorps['date_recept'], $lang) ?>"/>
-					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-				</div>
-		        <script src="externals/datepicker/js/moments.js"></script>
-				<script src="externals/jquery-1.11.1.js"></script>
-				<script src="externals/datepicker/js/bootstrap-datetimepicker.min.js"></script>
-	      		<script type="text/javascript">
-				$(function () {
-					$('#datetimepicker5').datetimepicker({
-						pickTime: false
-					});
-				});
-			    </script>
-		    </div>
+		<!-- Export catalog -->
+		<div class="form-group">
+                    <label class="control-label col-xs-1">Catalogue</label>
+                    <div class="col-xs-11">
+                        <div class="checkbox">
+			<label>
+                            <?php if ( $anticorps['export_catalog'] ){  
+                                $checked = "checked"; 
+                            } 
+                            else {
+                                $checked = "";
+                            } 
+                            ?>
+                            <input type="checkbox" name="export_catalog" <?php echo $checked ?>> Apparait dans le catalogue
+			</label>
+                        </div>
+                    </div>
 		</div>
-		-->
-		
+		<!-- Application -->
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-1">Application</label>
+			<div class="col-xs-11">
+				<select class="form-control" name="id_application">
+					<?php foreach($applicationsList as $application){
+						$appID = $this->clean($application["id"]);
+						$appName = $this->clean($application["name"]);
+						$selected = "";
+						if ($anticorps["id_application"] == $appID){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?php echo  $appID ?>" <?php echo  $selected ?>> <?php echo  $appName ?> </OPTION>
+						<?php 
+					}?>
+  				</select>
+			</div>
+		</div>
+                <!-- Staining -->
+		<div class="form-group">
+			<label class="control-label col-xs-1">Marquage</label>
+			<div class="col-xs-11">
+				<select class="form-control" name="id_staining">
+					<?php foreach($stainingsList as $staining){
+						$stainingID = $this->clean($staining["id"]);
+						$stainingName = $this->clean($staining["name"]);
+						$selected = "";
+						if ($anticorps["id_staining"] == $stainingID){
+							$selected = "selected=\"selected\"";
+						}
+						?>
+						<OPTION value="<?php echo  $stainingID ?>" <?php echo  $selected ?>> <?php echo  $stainingName ?> </OPTION>
+						<?php 
+					}?>
+  				</select>
+			</div>
+		</div>
+	
+                <!-- Image -->   
+                <div class="form-group">
+                    <label class="control-label col-xs-1">Image</label>
+                    <div class="col-xs-11">
+                        <input type="file" name="image_url" id="image_url">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-xs-1">Image actuelle</label>
+                    <div class="col-xs-11">
+                        <?php echo $anticorps["image_url"] ?>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="control-label col-xs-1">Image description</label>
+                    <div class="col-xs-11">
+                        <textarea class="form-control" name="image_desc" id="image_desc"><?php echo $anticorps["image_desc"] ?></textarea>
+                    </div>
+                </div>
+                
 		<!-- Buttons -->
 		
 		<div class="col-xs-2 col-xs-offset-10" id="button-div">
@@ -570,4 +623,4 @@
 
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

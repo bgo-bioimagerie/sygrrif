@@ -31,9 +31,6 @@ require_once 'Modules/sygrrif/Model/SyPackage.php';
  *
  */
 class ControllerCalendar extends ControllerBooking {
-
-	public function __construct() {
-	}
 	
 	/**
 	 * (non-PHPdoc)
@@ -255,34 +252,65 @@ class ControllerCalendar extends ControllerBooking {
 			$modelResourcePricing->setPricing($id_resource, $pid, $priceDay, $price_night, $price_we);
 		}
 		
-		// package
+		
+                // package
 		$packageID = $this->request->getParameterNoException("pid");
 		$packageName = $this->request->getParameterNoException("pname");
 		$packageDuration = $this->request->getParameterNoException("pduration");
-		
-	// package
-		$packageID = $this->request->getParameterNoException("pid");
-		$packageName = $this->request->getParameterNoException("pname");
-		$packageDuration = $this->request->getParameterNoException("pduration");
-		
+                
+                /*
+                echo "package ID = ";
+                print_r($packageID); echo "<br/>";
+                echo "package name = ";
+                print_r($packageName); echo "<br/>";
+                echo "package duration = ";
+                print_r($packageDuration); echo "<br/>";
+                 */
+                
+                // add packages
 		$modelPackage = new SyPackage();
 		$count = 0;
+                
+                // get the last package id
+                $lastID = 0;
+                for( $p = 0 ; $p < count($packageID) ; $p++){
+                    if ($packageName[$p] != "" ){
+                        if ($packageID[$p] > $lastID){
+                            $lastID = $packageID[$p];
+                        }
+                    }
+                }
+                
 		for( $p = 0 ; $p < count($packageID) ; $p++){
-			
-			$curentID = $packageID[$p];
-			if ($p != 0 && $curentID ==1){
-				$curentID = 0;
-			}
-			$package_id = $modelPackage->setPackage($curentID, $id_resource, $packageName[$p], $packageDuration[$p]);
-			
-			//echo "package id = " . $package_id . "<br/>";
-			
-			foreach ($pricingTable as $pricing){
-				$price = $this->request->getParameterNoException("p_" . $pricing['id']); 
-				$modelPackage->setPrice($package_id, $pricing['id'], $price[$count]);
-			} 
-			$count++;
+			if ($packageName[$p] != "" ){
+                            $curentID = $packageID[$p];
+
+                            if ($curentID == ""){
+                                $lastID++;
+                                $curentID = $lastID;
+                                $packageID[$p] = $lastID;
+                            }
+                            if ($curentID == 1 && $p > 0){
+                                $lastID++;
+                                $curentID = $lastID;
+                                $packageID[$p] = $lastID;
+                            }
+
+                            //echo "set package (".$curentID." , " . $id_resource ." , " . $packageName[$p]." , ". $packageDuration[$p] . ")<br/>";
+                            $package_id = $modelPackage->setPackage($curentID, $id_resource, $packageName[$p], $packageDuration[$p]);
+
+                            //echo "package id = " . $package_id . "<br/>";
+
+                            foreach ($pricingTable as $pricing){
+                                    $price = $this->request->getParameterNoException("p_" . $pricing['id']); 
+                                    $modelPackage->setPrice($package_id, $pricing['id'], $price[$count]);
+                            } 
+                            $count++;
+                        }
 		}
+                
+                // remove packages
+                $modelPackage->removeUnlistedPackages($packageID, $id_resource);
 		
 		$this->redirect("sygrrifareasresources", "resources");
 	}
@@ -842,6 +870,7 @@ class ControllerCalendar extends ControllerBooking {
 	 */
 	public function bookday($message = ""){
 		
+                //print_r($_SESSION);
 		$_SESSION['lastbookview'] = "bookday";
 		
 		$lang = "En";
@@ -854,6 +883,8 @@ class ControllerCalendar extends ControllerBooking {
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
 		
+                //echo "curent resource bookday 1 = " . $curentResource . "<br/>";
+                
 		if ($curentDate != ""){
 			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
 		}
@@ -864,6 +895,9 @@ class ControllerCalendar extends ControllerBooking {
 			$curentDate = $_SESSION['curentDate'];
 		}
 		
+                //print_r($_SESSION);
+                //echo "curent resource bookday 2 = " . $curentResource . "<br/>";
+                //sreturn;
 		// change input if action
 		$action = "";
 		if ($this->request->isParameterNotEmpty("actionid")) {

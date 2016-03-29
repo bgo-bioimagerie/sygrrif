@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/CoreConfig.php';
+require_once 'Modules/core/Model/CoreResponsible.php';
 
 /**
  * Class defining the User model
@@ -23,19 +24,20 @@ class CoreUser extends Model {
 		`email` varchar(100) NOT NULL DEFAULT '',
 		`tel` varchar(30) NOT NULL DEFAULT '',
 		`pwd` varchar(50) NOT NULL DEFAULT '',
-		`id_unit` int(11) NOT NULL,
-		`id_status` int(11) NOT NULL,
+		`id_unit` int(11) NOT NULL DEFAULT 1,
+		`id_status` int(11) NOT NULL DEFAULT 1,
 		`convention` int(11) NOT NULL DEFAULT 0,		
-		`date_convention` DATE NOT NULL,
-	    `date_created` DATE NOT NULL,
-		`date_last_login` DATE NOT NULL,
-		`date_end_contract` DATE NOT NULL,	
+		`date_convention` DATE NOT NULL DEFAULT '0000-00-00',
+                `date_created` DATE NOT NULL DEFAULT '0000-00-00',
+		`date_last_login` DATE NOT NULL DEFAULT '0000-00-00',
+		`date_end_contract` DATE NOT NULL DEFAULT '0000-00-00',	
 		`is_active` int(1) NOT NULL DEFAULT 1,
 		`source` varchar(30) NOT NULL DEFAULT 'local',									
 		PRIMARY KEY (`id`)
 		);";
 		
-		$pdo = $this->runRequest ( $sql );
+		$this->runRequest ( $sql );
+                
 	}
 	
 	/**
@@ -104,6 +106,16 @@ class CoreUser extends Model {
 			return "Login or password not correct";
 		}
 	}
+        
+        public function isLogin($login){
+            $sql = "select * from core_users where login=?";
+            $user = $this->runRequest ( $sql, array ($login) );
+            if ($user->rowCount () == 1) {
+		return true;
+            } else {
+		return false;
+            }
+        }
 	/**
 	 * Verify that a user is in the database
 	 *
@@ -703,11 +715,29 @@ class CoreUser extends Model {
 				$id 
 		) );
 		$userquery = null;
-		if ($user->rowCount () == 1)
+		if ($user->rowCount () == 1){
 			return $user->fetch (); // get the first line of the result
-		else
-			throw new Exception ( "Cannot find the user using the given parameters: " . $id );
-	}
+                }
+		else{
+			return array("id" => 0,
+                                    "login" => 'unknown',
+                                    "firstname" => 'unknown',
+                                    "name" => 'unknown',
+                                    "email" => '',
+                                    "tel" => '',
+                                    "pwd" => '',
+                                    "id_unit" => 1,
+                                    "id_status" => 1,
+                                    "convention" => 0,		
+                                    "date_convention" => '0000-00-00',
+                                    "date_created" => '0000-00-00',
+                                    "date_last_login" => '0000-00-00',
+                                    "date_end_contract" => '0000-00-00',	
+                                    "is_active" => 1,
+                                    "source" => 'local');
+                }
+        }
+      
 	
 	/**
 	 * add a user to the table
@@ -892,7 +922,7 @@ class CoreUser extends Model {
 		
 		// insert
 		if (! $this->isUser ( $login )){
-			$sql = "insert into core_users(login, firstname, name, email, id_status, source, date_created, id_unit)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+			$sql = "insert into core_users(login, firstname, name, email, id_status, source, date_created, id_unit)" . " values(?, ?, ?, ?, ?, ?, ?, ?)";
 			$this->runRequest ( $sql, array (
 					$login,
 					$firstname,
@@ -1101,13 +1131,12 @@ class CoreUser extends Model {
 	 * @param number $responsible_id Responsible ID
 	 * @return array User info
 	 */
-	public function getUserFromlup($id, $unit_id, $responsible_id) {
+	public function getUserFromlup($id, $unit_id) {
 		
-		$sql = 'SELECT name, firstname, id_responsible FROM core_users WHERE id=? AND id_unit=? AND id_responsible=?';
+		$sql = 'SELECT name, firstname FROM core_users WHERE id=? AND id_unit=?';
 		$req = $this->runRequest ( $sql, array (
 				$id,
-				$unit_id,
-				$responsible_id 
+				$unit_id
 		) );
 		return $req->fetchAll ();
 	}
@@ -1217,20 +1246,32 @@ class CoreUser extends Model {
 		$req = $this->runRequest ( $sql );
 		$users = $req->fetchAll ();
 		
+                $modelResp = new CoreResponsible();
 		foreach ( $users as $user ) {
-			$lastLoginDate = $user ["date_last_login"];
-			$lastLoginDate = explode ( "-", $lastLoginDate );
-			$timell = mktime ( 0, 0, 0, $lastLoginDate [1], $lastLoginDate [2], $lastLoginDate [0] );
-			$timell = date ( "Y-m-d", $timell + $numberYear * 31556926 );
-			$today = date ( "Y-m-d", time () );
-			
-			$changedUsers = array ();
-			if ($lastLoginDate [0] != "0000") {
-				if ($timell <= $today) {
-					$this->setactive ( $user ['id'], 0 );
-					$changedUsers [] = $user ['id'];
-				}
-			}
+                    
+                        if (!$modelResp->isResponsible($user ['id'])){
+                        
+                            // get the last login date in second
+                            $lastLoginDate = $user ["date_last_login"];
+                            $lastLoginDate = explode ( "-", $lastLoginDate );
+                            $timell = mktime ( 0, 0, 0, $lastLoginDate [1], $lastLoginDate [2], $lastLoginDate [0] );
+                            $timell = date ( "Y-m-d", $timell + $numberYear * 31556926 );
+                            $today = date ( "Y-m-d", time () );
+
+                            // get the date created in seconds
+                            $createdDate = $user ["date_last_login"];
+                            $createdDate = explode ( "-", $createdDate );
+                            $timec = mktime ( 0, 0, 0, $createdDate [1], $createdDate [2], $createdDate [0] );
+                            $timec = date ( "Y-m-d", $timec + $numberYear * 31556926/2 );
+                            
+                            $changedUsers = array ();
+                            if ($timec <= $today) {
+                                    if ($timell <= $today) {
+                                            $this->setactive ( $user ['id'], 0 );
+                                            $changedUsers [] = $user ['id'];
+                                    }
+                            }
+                        }
 		}
 		
 		$modelConfig = new CoreConfig ();

@@ -181,15 +181,15 @@ class SpTranslator {
 	}
 	public static function Add_Order($lang) {
 		if ($lang == "Fr") {
-			return "Ajouter une commande";
+			return "Nouveau projet";
 		}
-		return "Add Order";
+		return "New project";
 	}
 	public static function Edit_Order($lang) {
 		if ($lang == "Fr") {
-			return "Modifier une commande";
+			return "Modifier projet";
 		}
-		return "Edit Order";
+		return "Edit project";
 	}
 	public static function Description($lang) {
 		if ($lang == "Fr") {
@@ -397,7 +397,7 @@ class SpTranslator {
 	}
 	public static function numberNewAccademicTeam($lang) {
 		if ($lang == "Fr") {
-			return "Nb de nouveaux accadémiques";
+			return "Nb de nouveaux académiques";
 		}
 		return "Number of new accademic team";
 	}
@@ -442,9 +442,9 @@ class SpTranslator {
 	
 	public static function to($lang){
 		if ($lang == "Fr") {
-			return "au ";
+			return " au ";
 		}
-		return "to ";
+		return " to ";
 	}
 	
 	public static function Project_number($lang){
@@ -546,5 +546,159 @@ class SpTranslator {
 		}
 		return "View";
 	}
+        
+        public static function Balance_sheet($lang){
+                if ($lang == "Fr") {
+			return "Bilan";
+		}
+		return "Balance sheet";
+        }
+        
+        public static function OPENED($lang){
+                if ($lang == "Fr") {
+			return "OUVERTURE";
+		}
+		return "OPENED";
+        }
+        
+        public static function Invoice_details($lang){
+                if ($lang == "Fr") {
+                    return "DETAILS PRESTATIONS";
+		}
+		return "BENEFIT DETAILS";
+        }
+        
+        public static function invoices($lang){
+                if ($lang == "Fr") {
+                    return "FACTURES";
+		}
+		return "INVOICES";
+        }
+        
+        public static function StatisticsMaj($lang){
+                if ($lang == "Fr") {
+                    return "STATISTIQUES";
+		}
+		return "STATISTICS";
+        }
 	
+        public static function BalanceSheetFrom($lang){
+                if ($lang == "Fr") {
+                    return "Bilan sur la période du ";
+                }
+		return "Balance sheet from ";
+        }
+        
+        public static function Date($lang){
+                if ($lang == "Fr") {
+                    return "Date";
+                }
+		return "Date";
+        }
+        
+        public static function Prestation($lang){
+                if ($lang == "Fr") {
+                    return "Prestation";
+                }
+		return "Prestation";
+        }
+        
+        public static function Quantity($lang){
+                if ($lang == "Fr") {
+                    return "Quantity";
+                }
+		return "Quantity";
+        }
+        
+        public static function Add($lang){
+                if ($lang == "Fr") {
+                    return "Ajouter";
+                }
+		return "Add";
+        }
+                
+        public static function Remove($lang){
+                if ($lang == "Fr") {
+                    return "Enlever";
+                }
+		return "Remove";
+        }
+        
+        public static function invoiced($lang){
+            if ($lang == "Fr") {
+                return "Facturé";
+            }
+            return "Invoiced";
+        } 
+        
+        public static function RemoveInvoice($lang){
+            if ($lang == "Fr") {
+                return "Annuler facture";
+            }
+            return "Cancel invoice";
+        }
+        
+        public static function NotInvoiced($lang){
+            if ($lang == "Fr") {
+                return "Pas encore facturé";
+            }
+            return "Not invoiced yet";
+        }
+        
+        public static function ExportAndStats($lang){
+            if ($lang == "Fr") {
+                return "Export & Statistiques";
+            }
+            return "Exports & Statistics";
+        }
+        
+        public static function BillPerPeriode($lang){
+            if ($lang == "Fr") {
+                return "Facturation par période";
+            }
+            return "Invoice a period";
+        }
+        
+        public static function OneBillMultipleProjects($lang){
+            if ($lang == "Fr") {
+                return "Une facture pour plusieurs projets";
+            }
+            return "One bill multiple projects";
+        }
+        
+        public static function Sevices_details($lang){
+            if ($lang == "Fr") {
+                return "PRESTATIONS";
+            }
+            return "Sevices details";    
+        }
+        
+        public static function Sevices_billed_details($lang){
+            if ($lang == "Fr") {
+                return "PRESTATIONS FACTUREES";
+            }
+            return "BILLED SERVICES";    
+        }
+        
+        public static function Comment($lang){
+            if ($lang == "Fr") {
+                return "Commentaire";
+            }
+            return "Comment";    
+        }
+        
+        public static function bill_per_periode($lang){
+            if ($lang == "Fr") {
+                return "Facturation par periode";
+            }
+            return "bill per periode";    
+        }
+        
+        public static function bill_per_project($lang){
+            if ($lang == "Fr") {
+                return "Facturation par projet";
+            }
+            return "bill per project";    
+        }
+        
 }

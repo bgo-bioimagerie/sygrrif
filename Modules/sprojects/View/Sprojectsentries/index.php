@@ -12,11 +12,11 @@
 
 <br>
 <div class="contatiner">
-	<div class="col-md-10 col-md-offset-1">
+	<div class="col-md-12">
 		<?php echo  $table ?> 
 	</div>
 </div>
 
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

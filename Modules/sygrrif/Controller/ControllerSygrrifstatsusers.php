@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
@@ -12,12 +12,6 @@ require_once 'Modules/sygrrif/Model/SyStatsUser.php';
  *
  */
 class ControllerSygrrifstatsusers extends ControllerSecureNav {
-
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-	}
 
 	/**
 	 * (non-PHPdoc)

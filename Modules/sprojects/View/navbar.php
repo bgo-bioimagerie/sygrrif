@@ -129,21 +129,47 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<div class='col-md-3 well'>
 			<fieldset>
 				<legend><?php echo  SpTranslator::Billing($lang)?></legend>	
-					<button onclick="location.href='sprojectsbillmanager'"
-						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_manager($lang)?></button>
-				<br/>
-					<button onclick="location.href='sprojectsbillmanager/billsstats'"
+                                
+                                <?php
+                                
+                                $billingMode = $modelConfig->getParam("sprojectsbillingmode");
+                                if($billingMode == 1){
+                                ?>
+                                    <button onclick="location.href='sprojectsbill/billperiod'"
+                                        class="btn btn-link" id="navlink"><?php echo  SpTranslator::BillPerPeriode($lang)?></button>
+                                <?php
+                                }
+                                else{
+                                    ?>
+                                         <button onclick="location.href='sprojectsbill/oneBillMultipleProjects'"
+                                        class="btn btn-link" id="navlink"><?php echo  SpTranslator::OneBillMultipleProjects($lang)?></button>
+                               
+                                    <?php
+                                }
+                                ?>
+                               <br/>
+                                    <button onclick="location.href='sprojectsbillmanager'"
+                                        class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_manager($lang)?></button>
+			</fieldset>
+		</div>
+                
+                <div class='col-md-3 well'>
+			<fieldset>
+                            <legend><?php echo  SpTranslator::ExportAndStats($lang)?></legend>	
+                                <button onclick="location.href='sprojectsbalancesheet'"
+						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Balance_sheet($lang)?></button>
+                                <br/>
+                                <!--
+                                        <button onclick="location.href='sprojectsbillmanager/billsstats'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Bills_statistics($lang)?></button>
 				<br/>		 
 					<button onclick="location.href='sprojectsstats'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Statistics($lang)?></button>
 				<br/>
+                                -->
 					<button onclick="location.href='sprojectsstats/responsiblelist'"
 						class="btn btn-link" id="navlink"><?php echo  SpTranslator::Responsible_list($lang)?></button>		
-			</fieldset>
-			
-			
-			
+                        </fieldset>
 		</div>
 
 	</div>

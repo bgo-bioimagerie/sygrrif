@@ -64,6 +64,7 @@ class ControllerSynvnew extends Controller {
 		}
 		echo "<p> Copied syprincings to coreBelongings </p>";
 		
+		
 		// 3- Associate belonging to unit depending on the syUnitPricing
 		echo "<p> Associate belonging to unit depending on the syUnitPricing... </p>";
 		// 3.1- Get all the unit pricing
@@ -150,7 +151,7 @@ class ControllerSynvnew extends Controller {
 			$display_order = $cc["display_order"];
 			$moduleColorCode->editColorCode($id, $name, $color, $text_color, $display_order);
 		}
-		
+	
 		// 6- remove useless tables and columns
 		echo "<p> remove useless tables and columns... </p>";
 		$sql = "DROP TABLE sy_unitpricing;";
@@ -161,11 +162,12 @@ class ControllerSynvnew extends Controller {
 		$sql = "alter table sy_pricing drop column tarif_print;";
 		$this->runRequest($sql);
 		
+		/*
 		$sql = "DROP TABLE su_pricing;";
 		$this->runRequest($sql);
 		$sql = "DROP TABLE su_unitpricing;";
 		$this->runRequest($sql);
-		
+*/		
 		// copy responsibles to join table
 		$modelUser = new CoreUser();
 		$modelResp = new CoreResponsible();
@@ -185,7 +187,6 @@ class ControllerSynvnew extends Controller {
 				$modelCalEntries->setEntryResponsible($entry["id"], $resps[0]["id"]);
 			}
 		}
-
 		echo "<p> Done </p>";
 	}
 	

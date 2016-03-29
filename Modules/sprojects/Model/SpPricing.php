@@ -109,5 +109,4 @@ class SpPricing extends Model {
 				$id
 		) );
 	}
-	
 }

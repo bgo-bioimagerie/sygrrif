@@ -250,7 +250,7 @@ class SyGraph extends Model {
 			$timeResaWe = 0.0;
 			foreach($resas as $resa){
 				if ($resourceType == 1){
-					$timeResaArray = calculateReservationTime($resa["start_time"], $resa["end_time"], $night_start, $night_end, $we_array);
+					$timeResaArray = $this->calculateReservationTime($resa["start_time"], $resa["end_time"], $night_start, $night_end, $we_array);
 					$timeResa += $timeResaArray[0];
 					$timeResaNight += $timeResaArray[1];
 					$timeResaWe += $timeResaArray[2];
@@ -461,6 +461,7 @@ class SyGraph extends Model {
 	 * @return string
 	 */
 	public function getCamembertTimeContentResourceType($month_start, $year_start, $month_end, $year_end, $numTotal){
+            
 		$sql = 'SELECT DISTINCT resource_id FROM sy_calendar_entry WHERE start_time >='.mktime(0,0,0,$month_start,1,$year_start).' AND end_time <='.mktime(0,0,0,$month_end+1,0,$year_end).' ORDER by resource_id';
 		$req = $this->runRequest($sql);
 		$numMachinesFormesTotal = $req->rowCount();
@@ -504,9 +505,10 @@ class SyGraph extends Model {
 		);
 		
 		$resourceType = 1; // forced to count night and we prices (to be modified if needed)
-		
+	
 		for($i = 0 ; $i < count($resourceTypeList) ; $i++){
 				
+                        
 			$resTypID = $resourceTypeList[$i]["id"];
 			$timeResa = 0;
 			$timeResaNight = 0;
@@ -533,7 +535,7 @@ class SyGraph extends Model {
 				}
 			}
 			
-			$curentAngle = 2*pi()*($timeResa+$timeResaNight+$timeResaWe)/$numTotal;
+                        $curentAngle = 2*pi()*($timeResa+$timeResaNight+$timeResaWe)/$numTotal;
 			
 			if ($curentAngle > pi()){
 			
@@ -566,7 +568,7 @@ class SyGraph extends Model {
 			$res = $req->fetchAll();
 			$nomMachine = $resourceTypeList[$i]["name"];
 			
-			if ($timeResaNight != 0 && $timeResaWe != 0){
+			if ($timeResaNight != 0 || $timeResaWe != 0){
 				$test .= '<text x="615" y="'.(90+40*$i).'" font-size="20" fill="black" stroke="none" text-anchor="start" baseline-shift="-11px">'.$nomMachine.' : '.$timeResa. "|" . $timeResaNight . "|" .$timeResaWe . '</text>';
 			}
 			else{

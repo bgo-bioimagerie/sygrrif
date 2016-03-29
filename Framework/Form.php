@@ -46,6 +46,8 @@ class Form
     /** for download feild */
     private $useDownload;
     
+    private $isDate;
+    
     /**
      * Constructor
      * @param Request $request Request that contains the post data
@@ -68,6 +70,7 @@ class Form
     	}
     	
     	$this->useDownload = false;
+        $this->isDate = false;
     }
     
     /**
@@ -170,6 +173,7 @@ class Form
     }
     
     public function addDate($name, $label, $isMandatory = false, $value = ""){
+        $this->isDate = true;
     	$this->types[] = "date";
     	$this->names[] = $name;
     	$this->labels[] = $label;
@@ -274,7 +278,7 @@ class Form
      * Generate the html code
      * @return string
      */
-    public function getHtml(){
+    public function getHtml($lang = "Fr"){
     	
     	$html = "";
  
@@ -329,6 +333,20 @@ class Form
     			$html .= "</div>";
     		}
     		if($this->types[$i] == "date"){
+                    
+                    $html .= "<div class=\"form-group".$validated."\">";
+                    $html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    			
+                    $html .= "<div class='col-xs-".$this->labelWidth." input-group date form_date_".$lang."'>";
+                    $html .= "<input id=\"date-daily\" type='text' class=\"form-control\" name=\"".$this->names[$i]."\" value=\"". $this->values[$i] ."\"/>";
+                    $html .= "          <span class=\"input-group-addon\">";
+                    $html .= "          <span class=\"glyphicon glyphicon-calendar\"></span>";
+                    $html .= "          </span>";
+                    $html .= "</div>";
+                    $html .= "</div>";
+                    
+                    
+                    /*
     			$html .= "<div class=\"form-group".$validated."\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
     			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
@@ -337,6 +355,8 @@ class Form
     			$html .=				"/>";
     			$html .=			"</div>";
     			$html .= "</div>";
+                     
+                     */
     		}
     		if($this->types[$i] == "color"){
     			$html .= "<div class=\"form-group".$validated."\">";
@@ -382,9 +402,9 @@ class Form
     	    	$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";
     	    	$html .= 		" <input type=\"file\" name=\"".$this->names[$i]."\" id=\"".$this->names[$i]."\"> ";
     	    	$html .=	"</div>";
-    			$html .= "</div>";
-	  		}
-    		if($this->types[$i] == "select"){
+                $html .= "</div>";
+            }
+            if($this->types[$i] == "select"){
     			$html .= "<div class=\"form-group\">";
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
     			$html .= "	<div class=\"col-xs-".$this->inputWidth."\">";
@@ -414,6 +434,10 @@ class Form
     		$html .= "<button type=\"button\" onclick=\"location.href='".$this->deleteURL."/".$this->deleteID."'\" class=\"btn btn-danger\">".$this->deleteButtonName."</button>";
     	}
     	$html .= "</div>";
+        
+        if ($this->isDate == true ){
+            $html .= file_get_contents("Framework/timepicker_script.php");
+        }
     	
     	return $html;
     }

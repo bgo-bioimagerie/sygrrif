@@ -176,7 +176,7 @@ class SyBillGenerator extends Model {
 		);
 		
 		// load the template
-		$file = "data/template.xls";
+		$file = "data/sygrrif/template.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
@@ -340,7 +340,7 @@ class SyBillGenerator extends Model {
 	 * @param number $unit_id ID of the unit to bill
 	 * @param number $responsible_id ID of the responsible to bill
 	 */
-	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
+	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $billDir = "", $noBill = ""){
 		
 		$this->updateUnsetResponsibles(); // this is needed to setup responsible if a user has booked without setted responsible
 		
@@ -363,7 +363,8 @@ class SyBillGenerator extends Model {
 		$modelUnit = new CoreUnit();
 		$LABpricingid = $modelUnit->getBelonging($unit_id);
 		if ($LABpricingid <= 1 ){
-			$LABpricingid = 0;
+                        //echo "no price id for the unit " . $unit_id . "<br/>";
+			return;
 		}
 
 		// responsible fullname
@@ -384,6 +385,10 @@ class SyBillGenerator extends Model {
 		// ///////////////////////////////////////// //
 		//             Main query                    //
 		// ///////////////////////////////////////// //
+		
+		//echo "responsible id = " . $responsible_id . "<br/>";
+		//return;
+		
 		$bookingUsers = $this->generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id, $responsible_id);
 		if (count($bookingUsers) == 0){
 			echo "ERROR: no reservations found ! <br/>";
@@ -394,7 +399,7 @@ class SyBillGenerator extends Model {
 		$timePrices = $this->getUnitTimePricesForEachResource($resources, $LABpricingid);
 		
 		$reservationsSummary = $this->generateBillGetReservations($searchDate_start, $searchDate_end, $resources, $bookingUsers, 
-				$packagesPrices, $timePrices);
+				$packagesPrices, $timePrices, $responsible_id);
 		
 		
 		// ///////////////////////////////////////// //
@@ -418,18 +423,24 @@ class SyBillGenerator extends Model {
 		// replace unit address
 		$objPHPExcel = $this->replaceVariable($objPHPExcel, "{adresse}", $unitAddress, true);
 		// set bill number
-		$number = $this->calculateBillNumber($objPHPExcel);
+                if ($noBill == ""){
+                    $number = $this->calculateBillNumber();
+                }
+                else{
+                    $number = $noBill;
+                }
 		$objPHPExcel = $this->replaceVariable($objPHPExcel, "{nombre}", $number);
 		
 		// fill the table
 		$objPHPExcel = $this->fillTable($objPHPExcel, $date_debut, $date_fin, $resources, $reservationsSummary,
 				 $packagesPrices, $timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end,
-				 $number, $responsible_id);
+				 $number, $responsible_id, $billDir);
 
 	}
 	
 	protected function fillTable($objPHPExcel, $date_debut, $date_fin, $resources, $reservationsSummary, $packagesPrices, 
-			$timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end, $number, $responsible_id){
+			$timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end, 
+                        $number, $responsible_id, $billDir = ""){
 		
 		// search the table line index
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -627,7 +638,10 @@ class SyBillGenerator extends Model {
 		
 		// add the bill to the bill manager
 		$modelBill = new SyBill();
-		$modelBill->addBillUnit($number, $searchDate_start, $searchDate_end, date("Y-m-d", time()), $unit_id, $responsible_id, $total);
+                
+                $bgdatebill = date("Y-m-d", $searchDate_start);
+                $enddatebill = date("Y-m-d", $searchDate_end);
+		$modelBill->addBillUnit($number, $bgdatebill, $enddatebill, date("Y-m-d", time()), $unit_id, $responsible_id, $total);
 		
 		
 		// TVA 20p
@@ -664,15 +678,21 @@ class SyBillGenerator extends Model {
 		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
 		$nom = $unitName . '_' . $responsibleFullName . "_" . date("d-m-Y", $searchDate_start) . "_" . date("d-m-Y", $searchDate_end-3600) ."_facture_sygrrif.xls";
 		
-		header_remove();
-		//ob_clean();
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="'.$nom.'"');
-		header('Cache-Control: max-age=0');
-		$objWriter->save('php://output');
+                if ($billDir == ""){
+                    header_remove();
+                    //ob_clean();
+                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    header('Content-Disposition: attachment;filename="'.$nom.'"');
+                    header('Cache-Control: max-age=0');
+                    $objWriter->save('php://output');
+                }
+                else{
+                    //echo "save bill file to :" . $billDir . "/" . $nom;
+                    $objWriter->save($billDir . "/" . $nom);
+                }
 	}
 	
-	protected function calculateBillNumber($objPHPExcel){
+	public function calculateBillNumber(){
 		// calculate the number
 		$modelBill = new SyBill();
 		$bills = $modelBill->getBills("number");
@@ -691,15 +711,18 @@ class SyBillGenerator extends Model {
 			}
 			$num = "".$lastNumberN."";
 			if ($lastNumberN < 10){
-				$num = "00" . $lastNumberN;
+				$num = "000" . $lastNumberN;
 			}
 			else if ($lastNumberN >= 10 && $lastNumberN < 100){
+				$num = "00" . $lastNumberN;
+			}
+                        else if ($lastNumberN >= 100 && $lastNumberN < 1000){
 				$num = "0" . $lastNumberN;
 			}
 			$number = $lastNumberY ."-". $num ;
 		}
 		else{
-			$number = date("Y", time()) . "-001";
+			$number = date("Y", time()) . "-0001";
 		}
 		
 		return $number;
@@ -780,7 +803,7 @@ class SyBillGenerator extends Model {
 
 	}
 	
-	protected function generateBillGetReservations($searchDate_start, $searchDate_end, $resources, $users, $packagesPrices, $timePrices){
+	protected function generateBillGetReservations($searchDate_start, $searchDate_end, $resources, $users, $packagesPrices, $timePrices, $resp_id){
 
 		$reservationsSummaries = array();
 		// calculate the reservations for each equipments
@@ -810,12 +833,12 @@ class SyBillGenerator extends Model {
 				$userReservationSummary["user_id"] = $user["id"];
 				
 				// get all the reservations
-				$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'res_id'=>$user["id"], ':resou_id'=>$resource["id"]);
+				$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'res_id'=>$user["id"], ':resou_id'=>$resource["id"], ':resp'=>$resp_id );
 				$sql = 'SELECT * FROM sy_calendar_entry WHERE
 					recipient_id =:res_id AND resource_id =:resou_id AND (	
 					(start_time <:start AND end_time <= :end AND end_time>:start) OR
 					(start_time >=:start AND end_time <= :end) OR
-					(start_time >=:start AND start_time<:end AND end_time > :end)) ORDER BY id';
+					(start_time >=:start AND start_time<:end AND end_time > :end)) AND (responsible_id = :resp) ORDER BY id';
 				$req = $this->runRequest($sql, $q);
 				$reservations = $req->fetchAll();
 				
@@ -1483,7 +1506,7 @@ class SyBillGenerator extends Model {
 		//$NouvelleHauteur = (($TailleImageChoisie[1] * $Reduction)/100 );
 		$NouvelleLargeur = (($TailleImageChoisie[0] * $Reduction)/100 );
 		//jâ€™initialise la nouvelle image
-		$NouvelleImage = imagecreatetruecolor($NouvelleLargeur , $NouvelleHauteur) or die (â€œErreurâ€�);
+		$NouvelleImage = imagecreatetruecolor($NouvelleLargeur , $NouvelleHauteur) or die ("Error");
 		
 		//je mets lâ€™image obtenue aprÃ¨s redimensionnement en variable
 		imagecopyresampled($NouvelleImage , $ImageChoisie, 0, 0, 0, 0, $NouvelleLargeur, $NouvelleHauteur, $TailleImageChoisie[0],$TailleImageChoisie[1]);
@@ -1901,6 +1924,10 @@ class SyBillGenerator extends Model {
 		
 			if ($lastNumberY == date("Y", time())){
 				$lastNumberN = (int)$lastNumberN + 1;
+			}
+                        else{
+				$lastNumberY = date("Y", time());
+				$lastNumberN = 1;
 			}
 			$num = "".$lastNumberN."";
 			if ($lastNumberN < 10){

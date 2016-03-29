@@ -98,6 +98,41 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
 		  </form>
       </div>
       <br/> 
+      
+      <!-- billingmodequery -->
+      <div>
+		  <div class="page-header">
+			<h2>
+			<?php echo  SpTranslator::Billing($lang) ?>
+				<br> <small></small>
+			</h2>
+		  </div>
+		
+		  <form role="form" class="form-horizontal" action="sprojectsconfig"
+		  method="post">
+		  
+		    <div class="col-xs-12">
+			  <input class="form-control" type="hidden" name="billingmodequery" value="yes"
+			 	/>
+		    </div>
+		    
+		    <div class="form-group col-xs-12">
+                        <label class="control-label col-xs-4"><?php echo  SpTranslator::Billing($lang) ?></label>
+				<div class="col-xs-6">
+					<select class="form-control" name="billingmode">
+						<OPTION value="1" <?php if($billingMode==1){echo "selected=\"selected\"";} ?> > <?php echo  SpTranslator::bill_per_periode($lang) ?> </OPTION>
+						<OPTION value="2" <?php if($billingMode==2){echo "selected=\"selected\"";} ?> > <?php echo  SpTranslator::bill_per_project($lang) ?> </OPTION>
+					</select>
+				</div>
+			</div>
+		  
+		  	<div class="col-xs-2 col-xs-offset-10" id="button-div">
+			  <input type="submit" class="btn btn-primary" value="save" />
+		    </div>
+		  </form>
+      </div>
+      <br/> 
+      
       <!-- set bill template section -->
       <div>
 		<div class="page-header">
@@ -151,38 +186,7 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
       </div>
 	  </form>   
 	  
-	  
-	  
-	  <form role="form" class="form-horizontal" action="sprojectsconfig" method="post">
-      <div class="col-xs-12">
-			<input class="form-control" type="hidden" name="usersquery" value="yes" />
-	  </div>
-      
-    
-      <div class="page-header">
-		  <h2>
-		  <?php echo  SpTranslator::Users_database($lang); ?>
-			<br> <small></small>
-		  </h2>
-		</div>
-      <div class="form-group col-xs-12">
-	  	<label for="inputEmail" class="control-label col-xs-4"><?php echo  SpTranslator::Users_database($lang) ?></label>
-			<div class="col-xs-6">
-<<<<<<< HEAD
-				<select class="form-control" name="supliesusersdatabase">
-=======
-				<select class="form-control" name="sprojectsusersdatabase">
->>>>>>> new
-					<OPTION value="local" <?php if($sprojectsusersdatabase=="local"){echo "selected=\"selected\"";} ?> > local </OPTION>
-					<OPTION value="core" <?php if($sprojectsusersdatabase=="core"){echo "selected=\"selected\"";} ?> > core </OPTION>
-				</select>
-			</div>
-		</div>
-		<div class="col-xs-2 col-xs-offset-10" id="button-div">
-			  <input type="submit" class="btn btn-primary" value="save" />
-		</div>
-	  </form> 
-       
+
         <!-- menu color -->
       <div class="col-xs-12">
 		  <div class="page-header">

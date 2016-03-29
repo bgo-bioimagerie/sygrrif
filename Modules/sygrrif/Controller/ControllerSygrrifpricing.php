@@ -1,6 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
 require_once 'Framework/TableView.php';
+require_once 'Framework/Form.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/CoreBelonging.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
@@ -28,14 +29,6 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
 		}
 		return false;
 	}
-	
-	/**
-	 * Constructor
-	 */
-	public function __construct() {
-		ob_end_clean();
-	}
-
 	
 	/**
 	 * (non-PHPdoc)
@@ -170,7 +163,7 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
 		$modelBelonging = new CoreBelonging();
 		$pricing["name"] = $modelBelonging->getName($id);
 		
-		print_r($pricing);
+		//print_r($pricing);
 		
 		$navBar = $this->navBar();
 		$this->generateView ( array (
@@ -370,9 +363,208 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
 		$id = $this->request->getParameter("actionid");
 		
 		$modelPricing = new SyPricing();
-		$user = $modelPricing->delete($id);
+		$modelPricing->delete($id);
 	
 		// generate view
 		$this->redirect("sygrrifpricing/pricing");
 	}
+        
+        public function statpriceall(){
+            
+            // lang
+            $lang = $this->getLanguage();
+		
+            $dateStart = $this->request->getParameterNoException("date_start");
+            $dateEnd = $this->request->getParameterNoException("date_end");
+            
+            //echo "date start = " . $dateStart . "<br/>";
+            //echo "date end = " . $dateEnd . "<br/>";
+            
+            // form
+            // build the form
+            $form = new Form($this->request, "sygrrifpricing/statpriceall");
+            $form->setTitle(SyTranslator::Bill_all($lang));
+            $form->addDate("date_start", SyTranslator::Date_Start($lang), true, $dateStart);
+            $form->addDate("date_end", SyTranslator::Date_End($lang), true, $dateEnd);
+	
+            $form->setValidationButton(CoreTranslator::Ok($lang), "sygrrifpricing/statpriceall");
+	    $form->setCancelButton(CoreTranslator::Cancel($lang), "sygrrif");
+            
+            if ($form->check()){
+                $dateStart = $form->getParameter("date_start");
+                $dateEnd = $form->getParameter("date_end");
+                //echo "date start = " . $dateStart . "<br/>";
+                //echo "date end = " . $dateEnd . "<br/>";
+                $this->generateAllBills($dateStart, $dateEnd);
+            }
+            
+            $formHtml = $form->getHtml();
+            $navBar = $this->navBar();
+            $this->generateView ( array (
+                'navBar' => $navBar,
+		'formHtml' => $formHtml,
+            ) );
+        }
+        
+        public function generateAllBills($searchDate_starti, $searchDate_endi){
+
+            $lang = $this->getLanguage();
+            $searchDate_start = CoreTranslator::dateToEn($searchDate_starti, $lang);
+            $searchDate_end = CoreTranslator::dateToEn($searchDate_endi, $lang);
+            //echo "searchDate_start = " . $searchDate_start . "<br/>";
+            //return;
+            // get all the unit with a reservation
+            $modelCalEntry = new SyCalendarEntry();
+            $modelUnit = new CoreUnit();
+            $unitsListTmp = $modelUnit->unitsIDName();
+            $unitsList = array();
+	
+            if ($searchDate_start!= "" && $searchDate_end!= "" ){
+		$startdate = explode("-", $searchDate_start);
+		$startdate = mktime(0, 0, 0, $startdate[1], $startdate[2], $startdate[0]);
+		$enddate = explode("-", $searchDate_end);
+		$enddate = mktime(0, 0, 0, $enddate[1], $enddate[2], $enddate[0]);
+		foreach ($unitsListTmp as $unit){
+                    if ($modelCalEntry->hasUnitEntry($unit["id"], $startdate, $enddate) == true){
+                        $unitsList[] = $unit;
+                    }
+                }
+            }
+            
+            // create the output dir
+            $dataDir = date("y-m-d_H-i-s");
+            $billDir = "data/sygrrif/".$dataDir;
+            if (!mkdir($billDir)){
+                return;
+            }
+            
+            // get the next bill number
+            $billgenaratorModel = new SyBillGenerator();
+            $noBill = $billgenaratorModel->calculateBillNumber();
+            
+            //echo "noBill = " . $noBill . "<br/>";
+            //return;
+            
+            // generate a bill for each responsible
+            //echo "bokking units = ";
+            //print_r($unitsList);
+            //echo "<br/>";
+            $pass = 0;
+            for($u = 0 ; $u < count($unitsList) ; $u++){
+                $responsiblesList = $this->getResponsibleList($searchDate_start, $searchDate_end, $unitsList[$u]['id']);
+                for ($r = 0 ; $r < count($responsiblesList) ; $r++){
+                    $pass++;
+                    // increment bill number
+                    if ($pass > 1){
+                        $noArray = explode("-", $noBill);
+                        $numYearBill = floatval($noArray[1]) + 1;
+                        $noBill = $noArray[0] . "-" . $this->float2ZeroStr($numYearBill);
+                    }
+                    //echo "noBill next = " . $noBill . "<br>";
+                    //echo "generate bill for responsible: " . $responsiblesList[$r]['id'] . "<br/>";
+                    
+                    $billgenaratorModel->generateBill($searchDate_start, $searchDate_end, $unitsList[$u]['id'], $responsiblesList[$r]['id'], $billDir, $noBill);
+                    
+                }
+            }
+            
+            $this->generateZipFile($billDir);
+            
+        }
+        
+        public function float2ZeroStr($numYearBill){
+                    $nyb = "";
+                    if ($numYearBill < 10){
+                        $nyb = "000" . $numYearBill; 
+                    }
+                    else if($numYearBill >= 10 && $numYearBill < 100){
+                        $nyb = "00" . $numYearBill; 
+                    }
+                    else if($numYearBill >= 100 && $numYearBill < 1000){
+                        $nyb = "0" . $numYearBill; 
+                    }
+                    else{
+                        $nyb = $numYearBill;
+                    }
+                    return $nyb;
+        }
+        
+        public function getResponsibleList($searchDate_start, $searchDate_end, $selectedUnitId){
+            $responsiblesList = array();
+		$modelCalEntry = new SyCalendarEntry();
+		if ($selectedUnitId > 0){
+                    $modeluser = new CoreUser();
+				
+                    $responsiblesListInter = $modeluser->getResponsibleOfUnit($selectedUnitId);
+                    foreach ($responsiblesListInter as $respi){
+	
+                        //print_r($respi);
+                        $startdate = explode("-", $searchDate_start);
+                        $startdate = mktime(0, 0, 0, $startdate[1], $startdate[2], $startdate[0]);
+
+                        $enddate = explode("-", $searchDate_end);
+                        $enddate = mktime(23, 59, 59, $enddate[1], $enddate[2], $enddate[0]);
+
+                        if ( $modelCalEntry->hasResponsibleEntry($respi["id"], $startdate, $enddate) == true){
+                            $responsiblesList[] = $respi;
+                        }
+                    }
+                }
+            return $responsiblesList;    
+        }
+   
+        public function generateZipFile($billDir){
+            
+            
+            $zip = new ZipArchive();
+            $fileUrl = "data/sygrrif/tmp.zip";
+      
+            if(is_dir($billDir))
+            {
+                // On teste si le dossier existe, car sans ça le script risque de provoquer des erreurs.
+	
+                if($zip->open($fileUrl, ZipArchive::CREATE) == TRUE)
+                {
+                    // Ouverture de l’archive réussie.
+
+                    // Récupération des fichiers.
+                    $fichiers = scandir($billDir);
+                    // On enlève . et .. qui représentent le dossier courant et le dossier parent.
+                    unset($fichiers[0], $fichiers[1]);
+	  
+                    foreach($fichiers as $f)
+                    {
+                        // On ajoute chaque fichier à l’archive en spécifiant l’argument optionnel.
+                        // Pour ne pas créer de dossier dans l’archive.
+                        //echo "add file " . $f . "<br/>";
+                        if(!$zip->addFile($billDir.'/'.$f, $f))
+                        {
+                            echo 'Impossible d&#039;ajouter &quot;'.$f.'&quot;.<br/>';
+                        }
+                    }
+	
+                    // On ferme l’archive.
+                    $zip->close();
+                    //return;
+                    // On peut ensuite, comme dans le tuto de DHKold, proposer le téléchargement.
+                    header('Content-Transfer-Encoding: binary'); //Transfert en binaire (fichier).
+                    header('Content-Disposition: attachment; filename="invoice.zip"'); //Nom du fichier.
+                    header('Content-Length: '.filesize($fileUrl)); //Taille du fichier.
+
+                    readfile($fileUrl);
+                    unlink($fileUrl);
+                }
+                else
+                {
+                    // Erreur lors de l’ouverture.
+                    // On peut ajouter du code ici pour gérer les différentes erreurs.
+                    echo 'Erreur, impossible de créer l&#039;archive.';
+                }
+            }
+            else
+            {
+              // Possibilité de créer le dossier avec mkdir().
+              echo 'Le dossier &quot;upload/&quot; n&#039;existe pas.';
+            } 
+        }
 }

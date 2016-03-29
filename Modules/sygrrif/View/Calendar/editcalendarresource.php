@@ -36,6 +36,9 @@
                     case "text":
                             newcell.childNodes[0].value = "";
                             break;
+                    case "hidden":
+                            newcell.childNodes[0].value = "";
+                            break;        
                     case "checkbox":
                             newcell.childNodes[0].checked = false;
                             break;
@@ -75,9 +78,16 @@
                 alert(e);
             }
         }
- 
     </script>
 
+<script type="text/javascript">
+    	function ConfirmDelete()
+    	{
+            if (confirm("Are you sure you want to Delete this resource ?")){
+                location.href='calendar/deletecalendarresource/<?php echo $this->clean($id)?>';
+            }
+    	}
+</script>
 </head>
 
 
@@ -425,7 +435,7 @@
 			</h3>
 		</div>
 		
-		<!--   TISSUS    -->
+		<!--   FORFAIT    -->
 		<div class="form-group">
 			<div class="col-xs-12">
 				<table id="dataTable" class="table table-striped">
@@ -453,7 +463,7 @@
 							<tr>
 								<td><input type="checkbox" name="chk" />
 								
-								<input class="form-control" type="hidden" name="pid[]" value="<?php echo  $pakage["id"] ?>"/>
+								<input class="form-control" type="hidden" name="pid[]" value="<?php echo  $pakage["id_package"] ?>"/>
 								</td>
 								<td><input class="form-control" type="text" name="pname[]" value="<?php echo  $pakage["name"] ?>"/></td>
 								<td><input class="form-control" type="text" name="pduration[]" value="<?php echo  $pakage["duration"] ?>"/></td>
@@ -507,7 +517,7 @@
 		<div class="col-xs-5 col-xs-offset-7" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  $buttonName ?>" />
 		        <?php if ($this->clean($id) != ""){ ?>
-		        	<button type="button" onclick="location.href='<?php echo "calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
+		        	<button type="button" onclick="ConfirmDelete();" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang) ?></button>
 				<?php } ?>
 				<button type="button" onclick="location.href='sygrrifareasresources/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>
 		</div>
@@ -518,4 +528,4 @@
 
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

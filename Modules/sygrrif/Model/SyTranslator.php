@@ -1603,4 +1603,10 @@ class SyTranslator {
 		return "Statistics booking users";
 	}
 
+        public static function Bill_all($lang){
+            if ($lang == "Fr") {
+                return "Facturer tous";
+            }
+            return "Bill all units";
+        }
 }

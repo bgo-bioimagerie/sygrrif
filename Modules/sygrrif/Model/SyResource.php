@@ -223,7 +223,7 @@ class SyResource extends Model {
 	 * @return mixed
 	 */
 	public function firstResourceIDForArea($areaId){
-		$sql = "select id from sy_resources where area_id=?";
+		$sql = "select id from sy_resources where area_id=? ORDER BY display_order ASC;";
 		$req = $this->runRequest($sql, array($areaId));
 		$tmp = $req->fetch();
 		return $tmp[0];

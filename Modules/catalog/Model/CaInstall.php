@@ -20,12 +20,12 @@ class CaInstall extends Model {
 	 */
 	public function createDatabase(){
 		
-		$modulesModel = new CaCategory();
-		$modulesModel->createTable();
+		$modulesModel1 = new CaCategory();
+		$modulesModel1->createTable();
 		
-		$modulesModel = new CaEntry();
-		$modulesModel->createTable();
-		
+		$modulesModel2 = new CaEntry();
+		$modulesModel2->createTable();
+                
 		$message = 'success';
 		return $message;
 	}

@@ -41,9 +41,8 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		$table->addLineEditButton("catalogadmin/editcategory");
 		$table->addDeleteButton("catalogadmin/deletecategory");
 		$table->addPrintButton("catalogadmin/categories/");
-		$tableHtml = $table->view($categoriesArray, array("id" => "ID", "name" => CoreTranslator::Name($lang)));
-		
-		$print = $this->request->getParameterNoException("print");
+		$tableHtml = $table->view($categoriesArray, array("id" => "ID", "name" => CoreTranslator::Name($lang), "display_order" => CoreTranslator::Display_order($lang)));
+	
 		if ($table->isPrint()){
 			echo $tableHtml;
 			return;
@@ -67,9 +66,11 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		
 		// get name
 		$name = "";
+                $display_order = 0;
 		$modelCategory = new CaCategory();
 		if ($id > 0){
 			$name = $modelCategory->getName($id);
+                        $display_order = $modelCategory->getDisplayOrder($id);
 		}
 		
 		// build the form
@@ -77,15 +78,16 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		$form->setTitle(CaTranslator::Category($lang));
 		$form->addHidden("id", $id);
 		$form->addText("name", "name", true, $name);
+                $form->addText("display_order", CoreTranslator::Display_order($lang), true, $display_order);
 		$form->setValidationButton("Ok", "catalogadmin/editcategory/".$id);
 		$form->setCancelButton(CoreTranslator::Cancel($lang), "catalogadmin/categories");
 		
 		if ($form->check()){
 			if ($id > 0){
-				$modelCategory->edit($form->getParameter("id"), $form->getParameter("name"));
+				$modelCategory->edit($form->getParameter("id"), $form->getParameter("name"), $form->getParameter("display_order"));
 			}
 			else{
-				$modelCategory->add($form->getParameter("name"));
+				$modelCategory->add($form->getParameter("name"), $form->getParameter("display_order"));
 			}
 			
 			$this->redirect("catalogadmin","categories");
@@ -193,7 +195,7 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		$form->addSelect("id_category", CaTranslator::Category($lang), $cchoices, $cchoicesid, $entryInfo["id_category"]);
 		$form->addTextArea("short_desc", CaTranslator::Short_desc($lang), false, $entryInfo["short_desc"]);
 		//$form->addTextArea("full_desc", CaTranslator::Full_desc($lang), false, $entryInfo["full_desc"]);
-		$form->addDownload("illustration", CaTranslator::Illustration($lang) . "(png)");
+		$form->addDownload("illustration", CaTranslator::Illustration($lang));
 		$form->setValidationButton(CoreTranslator::Ok($lang), "catalogadmin/editentry/".$id);
 		$form->setCancelButton(CoreTranslator::Cancel($lang), "catalogadmin/entries");
 	
@@ -208,7 +210,15 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 			else{
 				$id = $modelEntry->add($id_category, $title, $short_desc, $full_desc);
 			}
-			$this->downloadIllustration($id);	
+			
+			//echo "file = " . $_FILES["illustration"]["name"] . "<br/>";
+			if ($_FILES["illustration"]["name"] != ""){
+				// download file
+				$this->downloadIllustration();
+				
+				// set filename to database
+				$modelEntry->setImageUrl($id, $_FILES["illustration"]["name"]);
+			}
 			$this->redirect("catalogadmin","entries");
 		}
 		else{
@@ -223,22 +233,25 @@ class ControllerCatalogadmin extends ControllerSecureNav {
 		}
 	}
 	
-	protected function downloadIllustration($id){
+	protected function downloadIllustration(){
 		$target_dir = "data/catalog/";
-		$target_file = $target_dir . $id . ".jpg";
+		$target_file = $target_dir . $_FILES["illustration"]["name"];
+		//echo "target file = " . $target_file . "<br/>";
 		$uploadOk = 1;
-		$imageFileType = pathinfo($_FILES["illustration"]["name"],PATHINFO_EXTENSION);
+		//$imageFileType = pathinfo($_FILES["illustration"]["name"],PATHINFO_EXTENSION);
 		
 		// Check file size
 		if ($_FILES["illustration"]["size"] > 500000000) {
 			return "Error: your file is too large.";
-			$uploadOk = 0;
+			//$uploadOk = 0;
 		}
 		// Allow certain file formats
+		/*
 		if($imageFileType != "jpg" || $imageFileType != "jpeg") {
 			return "Error: only jpg files are allowed.";
 			$uploadOk = 0;
 		}
+		*/
 		// Check if $uploadOk is set to 0 by an error
 		if ($uploadOk == 0) {
 			return  "Error: your file was not uploaded.";

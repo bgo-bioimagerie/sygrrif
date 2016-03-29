@@ -45,7 +45,7 @@ if($coremenucolortxt == ""){
 	background-color: <?php echo  $coremenucolor ?>;
 	border: none;
 	-moz-box-shadow: 0px 0px px #000000;
--webkit-box-shadow: 0px 0px px #000000;
+-webkit-box-shadow: 0 0 0 #000000;
 -o-box-shadow: 0px 0px 0px #000000;
 box-shadow: 0px 0px 0px #000000;
 }
@@ -62,9 +62,6 @@ $lang = "En";
 if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
-
-$modelCoreConfig = new CoreConfig();
-$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
 
 $classWell = 'col-md-4 well';
 ?>
@@ -86,9 +83,10 @@ $classWell = 'col-md-4 well';
 				<legend><?php echo  CaTranslator::Entries($lang) ?></legend>
 					<button onclick="location.href='catalogadmin/entries'" class="btn btn-link" id="navlink"><?php echo  CaTranslator::Entries($lang) ?> </button>
 					<button onclick="location.href='catalogadmin/editentry/0'" class="btn btn-link" id="navlink">+</button>
-			</fieldset>
-		</div>
 		
+                            </fieldset>
+                    
+		</div>
 	</div>
 </div>
 

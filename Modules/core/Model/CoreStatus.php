@@ -23,7 +23,11 @@ class CoreStatus extends Model {
 		);";
 
 		$pdo = $this->runRequest($sql);
-		return $pdo;
+		
+                
+                $sql2="DELETE FROM core_status WHERE id > 4";
+                $this->runRequest($sql2);
+                return $pdo;
 	}
 	
 	/**
@@ -91,21 +95,23 @@ class CoreStatus extends Model {
 		//echo "id status = " . $id;
 		$sql = "select name from core_status where id=?";
 		$status = $this->runRequest($sql, array($id));
-		if ($status->rowCount() == 1)
+		if ($status->rowCount() == 1){
 			return $status->fetch();  // get the first line of the result
-		else
+                }
+		else{
 			throw new Exception("Cannot find the status using the given parameters");
+                }
 	}
 
 	public function isStatus($id) {
 		$sql = "select id from core_status where id=?";
-		$user = $this->runRequest ( $sql, array (
-				$id
-		) );
-		if ($user->rowCount () == 1)
-			return true; // get the first line of the result
-		else
-			return false;
+		$user = $this->runRequest ( $sql, array ($id) );
+		if ($user->rowCount () == 1){
+                    return true; // get the first line of the result
+                }
+		else{
+                    return false;
+                }
 	}
 }
 

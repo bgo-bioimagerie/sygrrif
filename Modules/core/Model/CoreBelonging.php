@@ -128,10 +128,12 @@ class CoreBelonging extends Model {
 	public function exists($id){
 		$sql = "select * from core_belongings where id=?";
 		$req = $this->runRequest($sql, array($id));
-		if ($req->rowCount() == 1)
+		if ($req->rowCount() == 1){
 			return true;
-		else
+                }
+		else{
 			return false;
+                }
 	}
 	
 	/**
@@ -157,10 +159,12 @@ class CoreBelonging extends Model {
 	public function getInfo($id){
 		$sql = "select * from core_belongings where id=?";
 		$req = $this->runRequest($sql, array($id));
-		if ($req->rowCount() == 1)
-    		return $req->fetch();  // get the first line of the result
-    	else
-    		throw new Exception("Cannot find the belonging using the given id"); 
+		if ($req->rowCount() == 1){
+                    return $req->fetch();  // get the first line of the result
+                }
+                else{
+                    return array('id' => 0, "name" => 'unknown', 'color' => '#ffffff', 'type' => 1);
+                }
 	}
 	
 	/**

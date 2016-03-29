@@ -10,7 +10,14 @@
 
 </style>
 
-
+<script type="text/javascript">
+    	function ConfirmDelete()
+    	{
+            if (confirm("Are you sure you want to Delete this resource ?")){
+                location.href='calendar/deletecalendarresource/<?php echo $this->clean($id)?>';
+            }
+    	}
+</script>
 </head>
 
 
@@ -304,7 +311,7 @@
 		<div class="col-xs-5 col-xs-offset-7" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  $buttonName ?>" />
 		        <?php if ($this->clean($id) != ""){ ?>
-		        	<button type="button" onclick="location.href='<?php echo "calendar/deletecalendarresource/".$this->clean($id) ?>'" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang)?></button>
+		        	<button type="button" onclick="ConfirmDelete();" class="btn btn-danger"><?php echo  SyTranslator::Delete($lang)?></button>
 				<?php } ?>
 				<button type="button" onclick="location.href='sygrrifareasresources/resources'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang)?></button>
 		</div>

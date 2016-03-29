@@ -15,24 +15,34 @@ class SyPackage extends Model {
 	 */
 	public function createTable() {
 		$sql = "CREATE TABLE IF NOT EXISTS `sy_packages` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,	
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+                `id_package` int(11) NOT NULL,
 		`id_resource` int(11) NOT NULL,
 		`duration` decimal(10,2) NOT NULL,
 		`name` varchar(100) NOT NULL,			
 		PRIMARY KEY (`id`)
 		);";
-		$pdo = $this->runRequest ( $sql );
+		$this->runRequest ( $sql );
+                
+                $this->addColumn("sy_packages", "id_package",  "int(11)", 0);
 		
-		$sql = "CREATE TABLE IF NOT EXISTS `sy_j_packages_prices` (
+		$sql2 = "CREATE TABLE IF NOT EXISTS `sy_j_packages_prices` (
 		`id_package` int(11) NOT NULL,
 		`id_pricing` int(11) NOT NULL,
 		`price` decimal(10,2) NOT NULL
 		);";
-		$pdo = $this->runRequest ( $sql );
+		$this->runRequest ( $sql2 );
+                
+                // delete package with zero id
+                $sql3="DELETE FROM sy_j_packages_prices WHERE id_package IN(SELECT id FROM sy_packages WHERE id_package=0)";
+                $this->runRequest($sql3);
+                
+                $sql4="DELETE FROM sy_packages WHERE id_package = 0";
+                $this->runRequest($sql4);
 	}
 	
 	public function getPrices($resourceID) {
-		$sql = "SELECT id, name, duration FROM sy_packages WHERE id_resource=?";
+		$sql = "SELECT id, id_package, name, duration FROM sy_packages WHERE id_resource=? ORDER BY id_package ASC;";
 		$data = $this->runRequest ( $sql, array (
 				$resourceID 
 		) );
@@ -64,38 +74,55 @@ class SyPackage extends Model {
 		return $duration[0];
 	}
 
-	public function setPackage($id, $id_resource, $name, $duration){
+	public function setPackage($id_package, $id_resource, $name, $duration){
 		
-		if ($this->isPackage($id)){
-			$this->updatePackage($id, $id_resource, $duration, $name);
-			return $id;
-		}
+            $id = $this->getPackageID($id_package, $id_resource);
+            if ($id > 0){
+                $this->updatePackage($id, $id_package, $id_resource, $duration, $name);
+                return $id;
+            }
+            else{
+                return $this->addPackage($id_package, $id_resource, $duration, $name);
+            }
+	}
+        
+        public function getPackageID($id_package, $id_resource){
+                $sql = "select id from sy_packages where id_package=? and id_resource=?";
+		$req = $this->runRequest($sql, array($id_package, $id_resource));
+		if ($req->rowCount() == 1){
+                        $tmp = $req->fetch();
+			return $tmp[0];
+                }
 		else{
-			return $this->addPackage($id_resource, $duration, $name);
-		}
+			return 0;
+                }
+        }
+	
+	public function addPackage($id_package, $id_resource, $duration, $name){
+            
+            $sql = "insert into sy_packages(id_package, id_resource, duration, name)"
+				. " values(?, ?, ?, ?)";
+            $this->runRequest($sql, array($id_package, $id_resource, (float)($duration), $name));
+            return $this->getDatabase()->lastInsertId();
+                
 	}
 	
-	public function addPackage($id_resource, $duration, $name){
-		$sql = "insert into sy_packages(id_resource, duration, name)"
-				. " values(?, ?, ?)";
-		$this->runRequest($sql, array($id_resource, $duration, $name));
-		return $this->getDatabase()->lastInsertId();
-	}
-	
-	public function updatePackage($id, $id_resource, $duration, $name){
-		
-		$sql = "update sy_packages set id_resource=?, duration=?, name=? where id=?";
-		$this->runRequest($sql, array($id_resource, $duration, $name, $id));
+	public function updatePackage($id, $id_package, $id_resource, $duration, $name){
+	    
+            $sql = "update sy_packages set id_package=?, id_resource=?, duration=?, name=? where id=?";
+            $this->runRequest($sql, array($id_package, $id_resource, $duration, $name, $id));
 		
 	}
 	
 	public function isPackage($id){
 		$sql = "select * from sy_packages where id=?";
 		$req = $this->runRequest($sql, array($id));
-		if ($req->rowCount() == 1)
+		if ($req->rowCount() == 1){
 			return true;
-		else
+                }
+		else{
 			return false;
+                }
 	}
 
 	public function setPrice($id_package, $id_pricing, $price){
@@ -110,10 +137,12 @@ class SyPackage extends Model {
 	public function isPackagePrice($id_package, $id_pricing){
 		$sql = "select * from sy_j_packages_prices where id_package=? AND id_pricing=?";
 		$req = $this->runRequest($sql, array($id_package, $id_pricing));
-		if ($req->rowCount() == 1)
+		if ($req->rowCount() == 1){
 			return true;
-		else
+                }
+		else{
 			return false;
+                }
 	}
 	
 	public function updatePackagePrice($id_package, $id_pricing, $price){
@@ -126,4 +155,51 @@ class SyPackage extends Model {
 				. " values(?, ?, ?)";
 		$this->runRequest($sql, array($id_package, $id_pricing, $price));
 	}
+        
+        public function removeUnlistedPackages($packageID, $id_resource){
+            
+            /*
+            echo "packages ids in the request :" . "<br/>";
+            foreach($packageID as $pid){
+                echo "- " . $pid . "<br/>";
+            }
+             */
+            
+            $sql = "select id, id_package from sy_packages where id_resource=?";
+            $req = $this->runRequest($sql, array($id_resource));
+            $databasePackages = $req->fetchAll();
+            
+            /*
+            echo "packages ids in the database :" . "<br/>";
+            foreach($databasePackages as $dbPackage){
+                echo "- " . $dbPackage["id_package"] . "<br/>";
+            }
+             */
+            
+            
+            foreach($databasePackages as $dbPackage){
+                $found = false;
+                foreach($packageID as $pid){
+                    if ($dbPackage["id_package"] == $pid){
+                        //echo "found package " . $pid . "in the database <br/>";
+                        $found = true;
+                        break;
+                    }
+                }
+                if (!$found){
+                    //echo "delete pacjkage id = " . $dbPackage["id"] . " package-id = " . $dbPackage["id_package"] . "<br/>"; 
+                    $this->deletePackage($dbPackage["id"]);
+                }
+            }
+            
+        }
+        
+        public function deletePackage($id){
+            $sql="DELETE FROM sy_packages WHERE id = ?";
+            $this->runRequest($sql, array($id));
+            
+            $sql2="DELETE FROM sy_j_packages_prices WHERE id_package = ?";
+            $this->runRequest($sql2, array($id));
+        }
+        
 }

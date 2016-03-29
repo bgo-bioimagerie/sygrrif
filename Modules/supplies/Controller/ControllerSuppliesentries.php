@@ -196,6 +196,7 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$date_open = $this->request->getParameter("date_open");
 		$date_close = $this->request->getParameter("date_close");
 		$date_last_modified = $this->request->getParameter("date_last_modified"); 
+                $no_identification = $this->request->getParameter("no_identification");
 		
 		if ($date_open != ""){
 			$date_open = CoreTranslator::dateToEn($date_open, $lang);
@@ -221,11 +222,11 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		
 		$modelEntry = new SuEntry();
 		if ($id == ""){
-			$modelEntry->addEntry($id_user, $content, $id_status, $date_open);
+			$modelEntry->addEntry($id_user, $no_identification, $content, $id_status, $date_open);
 		}
 		else{
 			$date_last_modified = date("Y-m-d", time());
-			$modelEntry->updateEntry($id, $id_user, $content, $id_status, $date_open, $date_last_modified,$date_close);
+			$modelEntry->updateEntry($id, $id_user, $no_identification, $content, $id_status, $date_open, $date_last_modified,$date_close);
 		}
 		
 		$this->redirect("suppliesentries");

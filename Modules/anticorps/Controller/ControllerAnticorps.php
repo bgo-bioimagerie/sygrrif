@@ -11,12 +11,8 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 
 class ControllerAnticorps extends ControllerSecureNav {
 	
-	public function __construct() {
-	}
-	
 	// Affiche la liste de tous les billets du blog
 	public function index() {
-		
 		
 		if ( isset($_SESSION["ac_advSearch"])){
 			$this->advsearchquery("index");
@@ -222,7 +218,15 @@ class ControllerAnticorps extends ControllerSecureNav {
 		// get sources list
 		$modelSource = new Source();
 		$sourcesList = $modelSource->getSources();
-		
+                
+                // get applications list
+                $modelApp = new AcApplication();
+                $applicationsList = $modelApp->getApplications();
+                
+                // get applications list
+                $modelStaining = new AcStaining();
+                $stainingsList = $modelStaining->getStainings();
+                
 		// get especes list
 		$especesModel = new Espece();
 		$especes = $especesModel->getEspeces("nom");
@@ -273,7 +277,9 @@ class ControllerAnticorps extends ControllerSecureNav {
 				'users' => $users,
 				'protocols' => $protocols,
 				'prelevements' => $prelevements,
-				'status' => $status	  
+				'status' => $status,
+                                'applicationsList' => $applicationsList,
+                                'stainingsList' => $stainingsList    
 		) );
 	}
 	public function editquery(){
@@ -309,8 +315,15 @@ class ControllerAnticorps extends ControllerSecureNav {
 		$temps_incubation = $this->request->getParameterNoException ("temps_incubation");
 		$ref_protocol = $this->request->getParameter ("ref_protocol");
 		$comment = $this->request->getParameter ("comment");
+                
+                $export_catalog = $this->request->getParameterNoException ("export_catalog");
+                $id_application = $this->request->getParameter ("id_application");
+                $id_staining = $this->request->getParameter ("id_staining");
+                $image_desc = $this->request->getParameter ("image_desc");
 		
-		print_r($comment);
+                
+		//print_r($export_catalog);
+                //print_r($image_desc);
 		
 		$modelAnticorps = new Anticorps();
 		$modelTissus = new Tissus();
@@ -349,11 +362,55 @@ class ControllerAnticorps extends ControllerSecureNav {
 			$modelTissus->addTissus($id, $espece[$i], $organe[$i], $valide[$i], $ref_bloc[$i],
 					$dilution[$i], $temps_incubation, $ref_protocol[$i], $prelevement[$i], $comment[$i]);
 		}
+                
+                // add catalog informations
+                if ($export_catalog == "on"){
+                    $export_catalog = 1;
+                }
+                else{
+                    $export_catalog = 0;
+                }
+                $modelAnticorps->setExportCatalog($id, $export_catalog);
+                $modelAnticorps->setApplicationStaining($id, $id_staining, $id_application);
+                $modelAnticorps->setImageDesc($id, $image_desc);
+                if ($_FILES["image_url"]["name"] != ""){
+                    // download file
+                    $this->downloadIllustration();
+				
+                    // set filename to database
+                    $modelAnticorps->setImageUrl($id, $_FILES["image_url"]["name"]);
+		}
 		    
 	    // generate view
 	    $this->redirect("anticorps", "index");
 	    
 	}
+        
+        protected function downloadIllustration(){
+		$target_dir = "data/antibodies/";
+		$target_file = $target_dir . $_FILES["image_url"]["name"];
+		//echo "target file = " . $target_file . "<br/>";
+		$uploadOk = 1;
+
+		// Check file size
+		if ($_FILES["image_url"]["size"] > 500000000) {
+			return "Error: your file is too large.";
+			//$uploadOk = 0;
+		}
+                
+		// Check if $uploadOk is set to 0 by an error
+		if ($uploadOk == 0) {
+			return  "Error: your file was not uploaded.";
+			// if everything is ok, try to upload file
+		} else {
+			if (move_uploaded_file($_FILES["image_url"]["tmp_name"], $target_file)) {
+				return  "The file logo file". basename( $_FILES["image_url"]["name"]). " has been uploaded.";
+			} else {
+				return "Error, there was an error uploading your file.";
+			}
+		}
+	}
+	
 	
 	public function searchquery(){
 		

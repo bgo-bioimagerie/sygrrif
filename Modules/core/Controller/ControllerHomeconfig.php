@@ -59,7 +59,9 @@ class ControllerHomeconfig extends ControllerSecureNav {
 		$modelSettings->setParam("home_title", $home_title);
 		$modelSettings->setParam("home_message", $home_message);
 
-		$this->uploadLogo();
+		if ($_FILES["logo"]["name"] != ""){
+			$this->uploadLogo();
+		}
 		$this->redirect("coreconfig");
 	}
 	
@@ -69,7 +71,7 @@ class ControllerHomeconfig extends ControllerSecureNav {
 	 * @return string
 	 */
 	public function uploadLogo(){
-		$target_dir = "Themes/";
+		$target_dir = "data/";
 		$target_file = $target_dir . $_FILES["logo"]["name"];
 		$modelSettings = new CoreConfig();
 		$modelSettings->setParam("logo", $target_file);

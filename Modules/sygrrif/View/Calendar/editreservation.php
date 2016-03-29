@@ -11,6 +11,25 @@ if (!$canEditReservation){
 ?>
 
 <header>
+  
+<script type="text/javascript">
+    	function ConfirmDeleteSeries()
+    	{
+            if (confirm("Are you sure you want to Delete this series of reserations ?")){
+                location.href='calendar/removeseries/<?php echo $this->clean($seriesInfo['id'])?>';
+            }
+    	}
+</script>    
+    
+<script type="text/javascript">
+    	function ConfirmDelete()
+    	{
+            if (confirm("Are you sure you want to Delete this reseration ?")){
+                location.href='calendar/removeentry/<?php echo $this->clean($reservationInfo['id']) ?>';
+            }
+    	}
+</script>  
+
 <style>
 
 <?php 
@@ -148,8 +167,13 @@ else{
 				<select class="form-control" name="responsible_id">
 				<?php   
 				foreach($responsiblesList as $resp){
+                                   
+					$selected = "";
+					if ($resp['id'] == $reservationInfo["responsible_id"]){
+                                            $selected = "selected=\"selected\"";
+					}
 					?>
-					<OPTION value="<?php echo $this->clean($resp['id']) ?>"> <?php echo $this->clean($resp['fullname'])?> </OPTION>
+					<OPTION value="<?php echo $this->clean($resp['id']) ?>" <?php echo  $selected ?> > <?php echo $this->clean($resp['fullname'])?> </OPTION>
 					<?php
 				}
 				?>
@@ -453,7 +477,7 @@ else{
 				}
 				?>
 				<input class="form-control" id="id" type="number"  name="quantity" value="<?php echo $quantity?>"
-				<?php echo $readOnlyGlobal?>/>
+				<?php echo $readOnlyGlobal?> required/>
 			</div>
 		</div>
 		<?php 	
@@ -483,7 +507,7 @@ else{
 						$quantity = 0;
 						?>
 						<input class="form-control" id="id" type="number"  name="quantity[]" value="<?php echo $quantities[$i]?>"
-						<?php echo $readOnlyGlobal?>/>
+						<?php echo $readOnlyGlobal?> required/>
 					</div>
 				</div>
 				<?php
@@ -531,16 +555,16 @@ else{
 		
 		<?php if ($canEditReservation){
 			?>
-			<div class="col-xs-4 col-xs-offset-8">
+			<div class="col-xs-5 col-xs-offset-7">
 		<?php
 		}else{
 		?>
-		<div class="col-xs-1 col-xs-offset-11">
+		<div class="col-xs-12">
 		        <?php } if ($canEditReservation){
 				?>	
 				<input type="submit" class="btn btn-primary" value="<?php echo SyTranslator::Save($lang)?>" />
 				<?php if (isset($reservationInfo)){?>
-		        <button type="button" onclick="location.href='calendar/removeentry/<?php echo $this->clean($reservationInfo['id']) ?>'" class="btn btn-danger">Delete</button>
+                                <button type="button" onclick="ConfirmDelete();" class="btn btn-danger"><?php echo SyTranslator::Delete($lang) ?></button>
 		        <?php }} ?>
 				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'"><?php echo SyTranslator::Cancel($lang)?></button>
 		</div>
@@ -671,7 +695,7 @@ else{
 				?>	
 				<input type="submit" class="btn btn-primary" value="Save" />
 				<?php if (isset($reservationInfo)){?>
-		        <button type="button" onclick="location.href='calendar/removeseries/<?php echo $this->clean($seriesInfo['id']) ?>'" class="btn btn-danger">Delete</button>
+		        <button type="button" onclick="ConfirmDeleteSeries();" class="btn btn-danger">Delete</button>
 		        <?php }} ?>
 				<button type="button" class="btn btn-default" onclick="location.href='calendar/book'">Cancel</button>
 		</div>

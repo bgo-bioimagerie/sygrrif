@@ -9,11 +9,6 @@ require_once 'Modules/core/Model/CoreUser.php';
 
 class ControllerSuppliesbill extends ControllerSecureNav {
 	
-	/**
-	 * User model object
-	 */
-	public function __construct() {
-	}
 	
 	// Affiche la liste de tous les billets du blog
 	public function index() {

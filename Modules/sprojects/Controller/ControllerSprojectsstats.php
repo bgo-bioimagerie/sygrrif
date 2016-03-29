@@ -31,7 +31,7 @@ class ControllerSprojectsstats extends ControllerSecureNav {
 			// run the database query
 			$modelStats = new SpStats();
 			$stats = $modelStats->computeStats($myform->getParameter("begining_period"),
-											   $myform->getParameter("end_period"));
+                                                           $myform->getParameter("end_period"));
 				
 			if ($myform->getParameter("exporttype") == 1){
 				$this->exportStats($stats, $myform->getParameter("begining_period"), $myform->getParameter("end_period"));
@@ -99,15 +99,17 @@ class ControllerSprojectsstats extends ControllerSecureNav {
 		// build the form
 		$myform = new Form($this->request, "formstatslisting");
 		$myform->setTitle(SpTranslator::Responsible_list($lang));
-		$myform->addDate("begining_period", SpTranslator::Beginning_period($lang), true, "0000-00-00");
-		$myform->addDate("end_period", SpTranslator::End_period($lang), true, "0000-00-00");
+		$myform->addDate("begining_period", SpTranslator::Beginning_period($lang), true, "");
+		$myform->addDate("end_period", SpTranslator::End_period($lang), true, "");
 		$myform->setValidationButton("Ok", "sprojectsstats/responsiblelist");
 		
 		$stats = "";
 		if ($myform->check()){
 			// run the database query
 			$modelStat = new SpStats();
-			$modelStat->getResponsiblesCsv($myform->getParameter("begining_period"), $myform->getParameter("end_period"), $lang);
+                        $date_start = CoreTranslator::dateToEn($myform->getParameter("begining_period"), $lang);
+                        $date_end = CoreTranslator::dateToEn($myform->getParameter("end_period"), $lang);
+			$modelStat->getResponsiblesCsv($date_start, $date_end, $lang);
 			return;
 		}
 		

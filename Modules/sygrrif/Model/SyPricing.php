@@ -58,10 +58,12 @@ class SyPricing extends Model {
 	public function getPricing($id){
 		$sql = "select * from sy_pricing where id=?;";
 		$data = $this->runRequest($sql, array($id));
-		if ($data->rowCount() == 1)
+		if ($data->rowCount() == 1){
 			return $data->fetch();  // get the first line of the result
-		else
-			throw new Exception("Cannot find the pricing using the given id");
+                }
+		else{
+			throw new Exception("Cannot find the pricing using the given id:".$id);
+                }
 	}
 	
 	/**

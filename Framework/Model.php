@@ -53,6 +53,17 @@ abstract class Model
         return self::$bdd;
     }
     
+    public function addColumn($tableName, $columnName, $columnType, $defaultValue){
+    
+        $sql = "SHOW COLUMNS FROM `".$tableName."` LIKE '".$columnName."'";
+	$pdo = $this->runRequest($sql);
+	$isColumn = $pdo->fetch();
+        if ( $isColumn == false){
+            $sql = "ALTER TABLE `".$tableName."` ADD `".$columnName."` ".$columnType." NOT NULL DEFAULT '".$defaultValue."'";
+            $pdo = $this->runRequest($sql);
+        }
+    }
+            
     public function isTable($table){
     	
     	$dsn = Configuration::get("dsn");
@@ -63,17 +74,19 @@ abstract class Model
     		}
     		else{
     			$dbnameArray = explode("=", $dsnArray[$i]);
-    			$dbname = $dbnameArray[0];
+    			$dbname = $dbnameArray[1];
     			break;
     		}
     	}
     	
-    	$sql = 'SHOW TABLES FROM '. Configuration::get($dbname) . ' LIKE \''. $table. '\'';
+        
+    	$sql = 'SHOW TABLES FROM '. $dbname . ' LIKE \''. $table. '\'';
     	$req = $this->runRequest($sql);
     	if ($req->rowCount() == 1){
     		return true;
     	}
     	return false;
+         
     	
     }
 

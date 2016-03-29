@@ -117,5 +117,130 @@ class CaTranslator {
 		return "Illustration";
 	}
 	
-	
+        public static function Plugins($lang){
+		if ($lang == "Fr"){
+			return "Plugins";
+		}
+		return "Plugins";
+	}
+        
+        public static function Antibody_plugin($lang){
+		if ($lang == "Fr"){
+			return "Plugin anticorps";
+		}
+		return "antibody plugin";
+	} 
+        
+        public static function Enabled($lang){
+		if ($lang == "Fr"){
+			return "Activé";
+		}
+		return "Enabled";
+	} 
+        
+        public static function Unabled($lang){
+		if ($lang == "Fr"){
+			return "Désactivé";
+		}
+		return "Unabled";
+	} 
+          
+        public static function Antibodies($lang){
+		if ($lang == "Fr"){
+			return "Anticorps";
+		}
+		return "Antibodies";
+	} 
+        
+        public static function Provider($lang){
+		if ($lang == "Fr"){
+			return "Fournisseur";
+		}
+		return "Provider";
+	}
+        
+        public static function Name($lang){
+		if ($lang == "Fr"){
+			return "Nom";
+		}
+		return "Name";
+	}
+        
+        public static function Reference($lang){
+		if ($lang == "Fr"){
+			return "Référence";
+		}
+		return "Reference";
+	}
+        
+        public static function Spices($lang){
+		if ($lang == "Fr"){
+			return "Espèce";
+		}
+		return "Spices";
+	}
+        
+        public static function Comment($lang){
+		if ($lang == "Fr"){
+			return "Commentaire";
+		}
+		return "Comment";
+	}
+        
+        public static function Antibody($lang){
+		if ($lang == "Fr"){
+			return "Anticorps";
+		}
+		return "Antibody";
+	}
+ 
+        public static function Ranking($lang){
+		if ($lang == "Fr"){
+			return "Classement";
+		}
+		return "Ranking";
+	}
+        
+        public static function Application($lang){
+		if ($lang == "Fr"){
+			return "Voie de signalisation";
+		}
+		return "Signaling pathway";
+	}
+        
+        
+        public static function Staining($lang){
+		if ($lang == "Fr"){
+			return "Marquage";
+		}
+		return "Marker";
+	}
+        
+        public static function Status($lang){
+		if ($lang == "Fr"){
+			return "Statut";
+		}
+		return "Status";
+	}
+        
+        public static function Sample($lang){
+		if ($lang == "Fr"){
+			return "prélevement";
+		}
+		return "Sample";
+	}
+        
+        public static function importMessage($lang){
+		if ($lang == "Fr"){
+			return "Importer tout les anticorps de la base de donnée vers le catalogue ?";
+		}
+		return "Are you sure you want to import all the antibodies from antibodies database to the catalog ?";
+	}
+        
+        public static function Source($lang){
+		if ($lang == "Fr"){
+			return "Source";
+		}
+		return "Source";
+	}
 }
