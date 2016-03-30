@@ -36,7 +36,7 @@ class SyResourceType extends Model {
 		if (!$this->isType("Unitary Calendar")){
 			$this->addType ( "Unitary Calendar", "calendar", "editunitaryresource", "book" );
 		}
-		if (!$this->isType("Time and Unitary Calendar")){
+		if (!$this->isType("Time add unitary calendar")){
 			$this->addType ( "Time add unitary calendar", "calendar", "edittimeunitaryresource", "book" );
 		}
 	}
