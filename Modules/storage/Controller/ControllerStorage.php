@@ -54,7 +54,6 @@ class ControllerStorage extends ControllerSecureNav {
 			$filesDir = $modelFiles->getFiles($storageDir . $pDir["name"] . "/" . $userlogin);
 			$files[$count]["name"] =  $pDir["name"];
 			$files[$count]["files"] =  $filesDir;
-			
 			$count++;
 		}
 		
@@ -76,14 +75,20 @@ class ControllerStorage extends ControllerSecureNav {
 		$filename = $this->request->getParameter("filename");
 		$dirname = $this->request->getParameter("dir");
 		
+		//echo "filename = " . $filename . "<br/>";
+		//echo "dirname = " . $dirname . "<br/>";
+		
 		// remove some caracters for security
 		$filename = str_replace ( "./" , "" , $filename );
 		$filename = str_replace ( "../" , "" , $filename );
-		$filename = str_replace ( "/" , "" , $filename );
+		//$filename = str_replace ( "/" , "" , $filename );
 		
 		$dirname = str_replace ( "./" , "" , $dirname );
 		$dirname = str_replace ( "../" , "" , $dirname );
-		$dirname = str_replace ( "/" , "" , $dirname );
+		//$dirname = str_replace ( "/" , "" , $dirname );
+		
+		//echo "filename = " . $filename . "<br/>";
+		//echo "dirname = " . $dirname . "<br/>";
 		
 		// get the user login
 		$idUser = $_SESSION["id_user"];
@@ -91,11 +96,11 @@ class ControllerStorage extends ControllerSecureNav {
 		$userlogin = $modelUser->userLogin($idUser);
 		
 		$storageDir = Configuration::get("storageDir");
-		$fileUrl = $storageDir . $dirname . "/" . $userlogin . "/" . basename($filename);
+		$fileUrl = $storageDir . $dirname . "/" . $userlogin . "/" . $filename;
 		
 		// download
 		$modelFiles = new StUploader();
-		$modelFiles->outputFile($fileUrl, $filename);
+		$modelFiles->outputFile($fileUrl, basename($filename));
 		
 	}
 }

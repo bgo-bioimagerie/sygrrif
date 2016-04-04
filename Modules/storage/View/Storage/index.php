@@ -74,7 +74,7 @@ if($menu){
                 ?>
 		<?php foreach($filesDir["files"] as $file){
                     
-                    //echo "file = <br/>";
+                    //echo "<br/>file = <br/>";
                     //print_r($file);
                     //echo "<br/>";
                     if (isset($file[0])){
