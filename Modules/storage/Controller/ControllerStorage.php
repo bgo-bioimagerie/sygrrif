@@ -58,21 +58,6 @@ class ControllerStorage extends ControllerSecureNav {
 			$count++;
 		}
 		
-		/*
-		$userUsage = 0;
-		if (count($files) == 0){
-			$lang = "En";
-			if (isset ( $_SESSION ["user_settings"] ["language"] )) {
-				$lang = $_SESSION ["user_settings"] ["language"];
-			}
-			$message = StTranslator::noUserDirMessage($lang, $userlogin);
-		}
-		else{
-			// get quotas informations
-			$userUsage = $modelFiles->getUsage($storageDir . $userlogin);
-			$userUsage = $modelFiles->formatFileSize($userUsage);
-		}
-		*/
 		// default
 		$this->generateView ( array ('navBar' => $navBar, "files" => $files, "userlogin" => $userlogin, "message" => $message,
 				"menu" => $menu

@@ -117,7 +117,8 @@ class SpItem extends Model {
 			return $tmp[0];  // get the first line of the result
 		}
 		else{
-			throw new Exception("Cannot find the item using the given id");
+                    return "unknown";
+		//	throw new Exception("Cannot find the item using the given id = " . $id);
 		}
 	}
 	

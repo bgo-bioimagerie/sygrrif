@@ -18,19 +18,37 @@ class StUploader extends Model {
 	public function getFiles($dir) {
 		
 		$files = array ();
-		
 		if (is_dir ( $dir )) {	
 			$filesdir = scandir ( $dir );
-			$i = 0;
+			//$i = 0;
 			foreach ( $filesdir as $file ) {
-				if ($file != "." && $file != ".." && ! is_dir ( $dir . "/" . $file )) {
+				if ($file != "." && $file != ".."){
+                                    if( !is_dir ( $dir . "/" . $file) ) {
+                                        
+                                        $tmp = array();
+                                        $tmp["name"] = $file;
+                                        $fp = fopen ( $dir . "/" . $file, "r" );
+                                        $tmp["size"] = $this->formatFileSize ( $this->my_filesize ( $fp ) );
+                                        fclose ( $fp );
+                                        $tmp["mtime"] = filemtime($dir . "/" . $file);
+                                        
+                                        print_r($tmp);
+                                        $files[] = $tmp;
+                                        /*
 					$files [$i] ["name"] = $file;
 					$fp = fopen ( $dir . "/" . $file, "r" );
 					$files [$i] ["size"] = $this->formatFileSize ( $this->my_filesize ( $fp ) );
 					fclose ( $fp );
 					$files [$i] ["mtime"] = filemtime($dir . "/" . $file);
-					$i ++;
-				}
+					$i++;
+                                         */
+                                    }
+                                    else{
+                                        echo "enter into dir " . $dir . "/" . $file . "/<br/>";
+                                        $files[] = $this->getFiles($dir . "/" . $file . "/"); 
+                                        //print_r($files);
+                                    }
+                                }
 			}
 		}
 		return $files;
