@@ -471,12 +471,12 @@ else{
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  $this->clean($resourceInfo["quantity_name"]) ?></label>
 			<div class="col-xs-8">
 				<?php 
-				$quantity = 1;
+				$quantity = "";
 				if (isset($reservationInfo)){
 					$quantity = $this->clean($reservationInfo["quantity"]);
 				}
 				?>
-				<input class="form-control" id="id" type="number"  name="quantity" value="<?php echo $quantity?>"
+				<input class="form-control" id="id" type="text"  name="quantity" value="<?php echo $quantity?>"
 				<?php echo $readOnlyGlobal?> required/>
 			</div>
 		</div>
