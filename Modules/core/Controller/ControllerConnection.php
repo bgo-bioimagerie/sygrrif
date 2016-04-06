@@ -88,7 +88,7 @@ class ControllerConnection extends Controller
                 		$modelSygrrif->desactivateUnactiveUserAuthorizations();
                 	}
                 }
-                
+                //return;
                 // redirect
         	$redirectController = "Home";
         	if ($modulesManager->isDataMenu("sygrrif")){
