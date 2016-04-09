@@ -24,6 +24,7 @@ class Form
     private $values;
     private $labels;
     private $isMandatory;
+    private $enabled;
     private $choices;
     private $choicesid;
     private $validated;
@@ -110,7 +111,7 @@ class Form
     public function setDeleteButton($name, $url, $dataID){
     	$this->deleteButtonName = $name;
     	$this->deleteURL = $url;
-    	$this->deleteID = dataID;
+    	$this->deleteID = $dataID;
     }
     
     /**
@@ -142,6 +143,7 @@ class Form
     	$this->choices[] = array();
     	$this->choicesid[] = array();
     	$this->validated[] = true;
+        $this->enabled[] = "";
     }
     
     public function addDownload($name, $label){
@@ -153,6 +155,18 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
     	$this->useDownload = true;
+        $this->enabled[] = "";
+    }
+    
+    public function addDownloadButton($label, $url){
+    	$this->types[] = "downloadbutton";
+    	$this->names[] = $url;
+    	$this->labels[] = $label;
+    	$this->isMandatory[] = false;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+        $this->enabled[] = "";
     }
     /**
      * Add text input to the form
@@ -161,7 +175,7 @@ class Form
      * @param string $isMandatory True if mandatory input
      * @param string $value Input default value
      */
-    public function addText($name, $label, $isMandatory = false, $value = ""){
+    public function addText($name, $label, $isMandatory = false, $value = "", $enabled = ""){
     	$this->types[] = "text";
     	$this->names[] = $name;
     	$this->labels[] = $label;
@@ -170,6 +184,7 @@ class Form
     	$this->choices[] = array();
     	$this->choicesid[] = array();
     	$this->validated[] = true;
+        $this->enabled[] = $enabled;
     }
     
     public function addDate($name, $label, $isMandatory = false, $value = ""){
@@ -182,6 +197,7 @@ class Form
     	$this->choices[] = array();
     	$this->choicesid[] = array();
     	$this->validated[] = true;
+        $this->enabled[] = "";
     }
     
     /**
@@ -200,6 +216,7 @@ class Form
     	$this->choices[] = array();
     	$this->choicesid[] = array();
     	$this->validated[] = true;
+        $this->enabled[] = "";
     }
     
     /**
@@ -218,6 +235,7 @@ class Form
     	$this->choices[] = array();
     	$this->choicesid[] = array();
     	$this->validated[] = true;
+        $this->enabled[] = "";
     }
     
     /**
@@ -236,6 +254,7 @@ class Form
     	$this->choices[] = array();
     	$this->choicesid[] = array();
     	$this->validated[] = true;
+        $this->enabled[] = "";
     }
    	/**
    	 * Add select input to the form
@@ -254,6 +273,7 @@ class Form
     	$this->choices[] = $choices;
     	$this->choicesid[] = $choicesid;
     	$this->validated[] = true;
+        $this->enabled[] = "";
     }
     
     /**
@@ -272,6 +292,7 @@ class Form
     	$this->choices[] = array();
     	$this->choicesid[] = array();
     	$this->validated[] = true;
+        $this->enabled[] = "";
     }
     
     /**
@@ -327,7 +348,7 @@ class Form
     			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
     			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
     			$html .=				"<input class=\"form-control\" type=\"text\" name=\"".$this->names[$i]."\"";
-    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;  
+    			$html .=				       "value=\"".$this->values[$i]."\"" . $required . " " . $this->enabled[$i];  
     			$html .=				"/>";
     			$html .=			"</div>";
     			$html .= "</div>";
@@ -336,27 +357,17 @@ class Form
                     
                     $html .= "<div class=\"form-group".$validated."\">";
                     $html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
-    			
-                    $html .= "<div class='col-xs-".$this->labelWidth." input-group date form_date_".$lang."'>";
+    		
+                    $html .= "<div class='col-xs-".$this->labelWidth."'>";
+                    $html .= "<div class='col-xs-12 input-group date form_date_".$lang."'>";
                     $html .= "<input id=\"date-daily\" type='text' class=\"form-control\" name=\"".$this->names[$i]."\" value=\"". $this->values[$i] ."\"/>";
                     $html .= "          <span class=\"input-group-addon\">";
                     $html .= "          <span class=\"glyphicon glyphicon-calendar\"></span>";
                     $html .= "          </span>";
                     $html .= "</div>";
                     $html .= "</div>";
+                    $html .= "</div>";
                     
-                    
-                    /*
-    			$html .= "<div class=\"form-group".$validated."\">";
-    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
-    			$html .=			"<div class=\"col-xs-".$this->inputWidth."\">";
-    			$html .=				"<input class=\"form-control\" type=\"date\" name=\"".$this->names[$i]."\"";
-    			$html .=				       "value=\"".$this->values[$i]."\"" . $required;
-    			$html .=				"/>";
-    			$html .=			"</div>";
-    			$html .= "</div>";
-                     
-                     */
     		}
     		if($this->types[$i] == "color"){
     			$html .= "<div class=\"form-group".$validated."\">";
@@ -402,6 +413,14 @@ class Form
     	    	$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";
     	    	$html .= 		" <input type=\"file\" name=\"".$this->names[$i]."\" id=\"".$this->names[$i]."\"> ";
     	    	$html .=	"</div>";
+                $html .= "</div>";
+            }
+            if($this->types[$i] == "downloadbutton"){
+    	    	$html .= "<div class=\"form-group\">";
+    	    	$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+    	    	$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";
+                $html .=                "<button class=\"btn btn-default\" type=\"button\" onclick=\"location.href = '".$this->names[$i]."'\">".$this->labels[$i]."</button>"; 
+                $html .=	"</div>";
                 $html .= "</div>";
             }
             if($this->types[$i] == "select"){
