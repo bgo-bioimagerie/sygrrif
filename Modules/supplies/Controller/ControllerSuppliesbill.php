@@ -1,8 +1,7 @@
 <?php
 require_once 'Framework/Controller.php';
+require_once 'Framework/Form.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
-require_once 'Modules/supplies/Model/SuUnit.php';
-require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/supplies/Model/SuBillGenerator.php';
 require_once 'Modules/core/Model/CoreUnit.php';
 require_once 'Modules/core/Model/CoreUser.php';
@@ -70,8 +69,30 @@ class ControllerSuppliesbill extends ControllerSecureNav {
 		) );
 	}
 	
-	protected function billOutput($selectedUnitId, $responsible_id){
+	protected function billOutput($responsible_id){
+                $lang = $this->getLanguage();
 		$billgenaratorModel = new SuBillGenerator();
-		$billgenaratorModel->generateBill($selectedUnitId, $responsible_id);
+		$billgenaratorModel->invoiceResponsible($responsible_id, $lang);
 	}
+        
+        public function billall(){
+            
+            $lang = $this->getLanguage();
+        
+            // view
+            $navBar = $this->navBar();
+            $this->generateView(array(
+                'navBar' => $navBar,
+                'lang' => $lang
+            ));
+        }
+        
+        public function billallquery(){
+            
+            $lang = $this->getLanguage();
+            // get all the units and responsible with an opened 
+            $modelBill = new SuBillGenerator();
+            $modelBill->billAll($lang);
+            
+        }
 }

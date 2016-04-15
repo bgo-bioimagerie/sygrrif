@@ -29,6 +29,12 @@ class PsSector extends Model {
         $this->runRequest($sql, array($name));
         return $this->getDatabase()->lastInsertId();
     }
+    
+    public function import($id, $name) {
+
+        $sql = "insert into ps_sectors(id, name) values(?,?)";
+        $this->runRequest($sql, array($id, $name));
+    }
 
     public function editSector($id, $name) {
 

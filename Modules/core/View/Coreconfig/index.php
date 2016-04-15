@@ -11,7 +11,53 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 <div class="container">
     	<div class="col-md-8 col-md-offset-2">
-    	
+
+
+    <!-- Maintenance mode -->
+      <div>
+        <div class="page-header">
+            <h2>
+                <?php echo CoreTranslator::Maintenance_Mode($lang)?> <br> <small></small>
+            </h2>
+        </div>
+
+	<form role="form" class="form-horizontal" action="coreconfig"
+		  method="post">
+		  
+	<div class="col-xs-10">
+	<input class="form-control" type="hidden" name="maintenancequery" value="yes"/>
+	</div>
+	<!-- is_maintenance -->
+	 <?php 
+            $visibleM = $this->clean($is_maintenance);			
+	?>
+	<div class="col-xs-12">
+            <div class="form-group">
+                <label class="control-label col-xs-3"><?php echo  CoreTranslator::InMaintenance($lang) ?></label>
+	
+                <div class="col-xs-7">
+                    <select class="form-control" name="is_maintenance">
+                        <OPTION value="1" <?php if ($visibleM == 1){echo "selected=\"selected\"";}?>> <?php echo CoreTranslator::yes($lang) ?> </OPTION>
+                        <OPTION value="0" <?php if ($visibleM == 0){echo "selected=\"selected\"";}?>> <?php echo CoreTranslator::no($lang) ?> </OPTION>
+                    </select>
+                </div>
+            </div>
+			
+            <div class="form-group">
+                <label class="control-label col-xs-3"><?php echo  CoreTranslator::MaintenanceMessage($lang) ?></label>
+			<div class="col-xs-7">
+				<input class="form-control" id="email" type="text" name="maintenance_message" value="<?php echo  $this->clean($maintenance_message) ?>"
+				/>
+			</div>
+            </div>
+		
+            <div class="col-xs-2 col-xs-offset-10" id="button-div">
+                <input type="submit" class="btn btn-primary" value="save" />
+            </div>
+	</form>
+      
+      </div>
+
     	<div class="page-header">
 			<h1>
 				<?php echo  CoreTranslator::Core_configuration($lang) ?> <br> <small></small>
@@ -342,4 +388,4 @@ if (isset($_SESSION["user_settings"]["language"])){
 
 <?php if (isset($msgError)): ?>
     <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif; 

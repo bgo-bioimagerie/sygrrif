@@ -41,7 +41,7 @@ class ControllerPstypes extends ControllerSecureNav {
         $unitsArray = $this->model->getAll($sortentry);
 
         $table = new TableView();
-        $table->ignoreEntry("id", 1);
+        //$table->ignoreEntry("id", 1);
         $table->setTitle(PsTranslator::AnimalSpecies($lang));
         $table->addLineEditButton("pstypes/edit");
         $table->addDeleteButton("pstypes/delete");

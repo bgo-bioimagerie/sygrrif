@@ -15,6 +15,7 @@ class router {
 	 * Examine a request and run the dedicated action
 	 */
 	public function routerRequest() {
+            
 		try {
 			// Merge parameters GET and POST
 			$request = new Request ( array_merge ( $_GET, $_POST ) );

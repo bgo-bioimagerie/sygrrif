@@ -60,6 +60,12 @@ class PsSupplier extends Model {
                 . " values(?,?)";
         $this->runRequest($sql, array($name, $address));
     }
+    
+    public function import($id, $name, $address) {
+        $sql = "insert into ps_suppliers(id, name, address)"
+                . " values(?,?,?)";
+        $this->runRequest($sql, array($id, $name, $address));
+    }
 
     public function edit($id, $name, $address) {
         $sql = "update ps_suppliers set name=?,address=? where id=?";

@@ -994,4 +994,27 @@ class CoreTranslator {
 		}
 		return "The login already exists";
         }
+        
+        public static function Maintenance_Mode($lang){
+            if ($lang == "Fr"){
+			return "Mode maintenance";
+		}
+		return "Maintenance mode";
+        }
+        
+        public static function InMaintenance($lang){
+            if ($lang == "Fr"){
+			return "En maintenance";
+		}
+		return "Maintenance on";
+        }
+        
+        public static function MaintenanceMessage($lang){
+            if ($lang == "Fr"){
+			return "Message";
+		}
+		return "Message";
+        }
+        
+        
 }

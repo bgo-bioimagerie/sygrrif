@@ -31,15 +31,15 @@ class PsInitDatabase extends Model {
 
         $modulesupplier = new PsSupplier();
         $modulesupplier->createTable();
-        $modulesupplier->createDefault();
+        //$modulesupplier->createDefault();
 
         $moduletype = new PsType();
         $moduletype->createTable();
-        $moduletype->createDefault();
+        //$moduletype->createDefault();
 
         $moduleProceedings = new PsProceedings();
         $moduleProceedings->createTable();
-        $moduleProceedings->createDefault();
+        //$moduleProceedings->createDefault();
 
         $moduleSectors = new PsSector();
         $moduleSectors->createTable();

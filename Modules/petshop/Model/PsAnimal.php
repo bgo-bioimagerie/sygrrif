@@ -22,8 +22,8 @@ class PsAnimal extends Model {
                         `num_bon` varchar(50) NOT NULL,
                         `observation` varchar(500) NOT NULL,
                         `date_exit` date NOT NULL,
-                        `exit_reason` varchar(50) NOT NULL,
-                        `entry_reason` varchar(50) NOT NULL,
+                        `exit_reason` int(11) NOT NULL,
+                        `entry_reason` int(11) NOT NULL,
                         `user1` int(11) NOT NULL,
                         `user2` int(11) NOT NULL,
                         `collaboration` varchar(150) NOT NULL,
@@ -56,10 +56,10 @@ class PsAnimal extends Model {
             $this->addhistory($idanimal, $id_sector, $date_entry, "", $id_unit, $no_salle);
         }
     }
-
+    
     public function addOne($id_project, $no_animals, $type_animal, $date_entry, $entry_reason, $lineage, $birth_date, $father, $mother, $sexe, $genotypage, $supplier, $collaboration, $num_bon, $user1, $user2, $observation) {
 
-        $sql = "INSERT INTO ps_animals (id_project, no_animal, type_animal, date_entry, entry_reason, 
+        $sql = "INSERT INTO ps_animals (id, id_project, no_animal, type_animal, date_entry, entry_reason, 
                                             lineage, birth_date, father, mother, sexe, 
                                             genotypage, supplier, collaboration,
                                             num_bon, user1, user2, observation
@@ -72,6 +72,26 @@ class PsAnimal extends Model {
             $genotypage, $supplier, $collaboration, $num_bon,
             $user1, $user2, $observation));
         return $this->getDatabase()->lastInsertId();
+    }
+
+    public function import($id, $id_project, $no_animals, $type_animal, $date_entry, 
+            $entry_reason, $lineage, $birth_date, $father, $mother, $sexe, $genotypage, 
+            $supplier, $collaboration, $num_bon, $user1, $user2, $observation,
+            $avertissement, $date_sortie, $raison_sortie) {
+
+        $sql = "INSERT INTO ps_animals (id, id_project, no_animal, type_animal, date_entry, entry_reason, 
+                                            lineage, birth_date, father, mother, sexe, 
+                                            genotypage, supplier, collaboration,
+                                            num_bon, user1, user2, observation,
+                                            avertissement, date_exit, exit_reason
+                                            ) 
+                                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        $this->runRequest($sql, array($id, $id_project, $no_animals,
+            $type_animal, $date_entry, $entry_reason,
+            $lineage, $birth_date, $father, $mother, $sexe,
+            $genotypage, $supplier, $collaboration, $num_bon,
+            $user1, $user2, $observation, $avertissement, $date_sortie, $raison_sortie));
     }
 
     public function getProjectAnimalsID($id_project, $exitDate) {

@@ -574,7 +574,7 @@ class SyTranslator {
 		if ($lang == "Fr") {
 			return "Tarif unique";
 		}
-		return "Add pricing";
+		return "Unique pricing";
 	}
 	public static function Price_night($lang = ""){
 		if ($lang == "Fr"){
@@ -1610,3 +1610,4 @@ class SyTranslator {
             return "Bill all units";
         }
 }
+

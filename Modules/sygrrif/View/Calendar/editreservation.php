@@ -41,7 +41,7 @@ if (!isset($reservationInfo) ){
 <?php 
 }
 else{
-	if ( $reservationInfo["package_id"] == 0){
+	if ( $reservationInfo["package_id"] == 0 && $resourceInfo["use_package"] < 2){
 	?>
 	#package_div {
 	    display: none;
@@ -332,6 +332,7 @@ else{
 		
 		<?php 
 		if (count($packages) > 0){
+                    if ($resourceInfo["use_package"] < 2){
 		?>	
 		<div class="checkbox col-xs-8 col-xs-offset-4">
     		<label>
@@ -343,11 +344,25 @@ else{
 	    		}
     		}
     		?>
-			<input id="use_package" type="checkbox" name="use_package" value="yes"/ <?php echo $checked?>> <?php echo  SyTranslator::Use_Package($lang) ?>
+                    <input id="use_package" type="checkbox" name="use_package" value="yes" <?php echo $checked?>> <?php echo  SyTranslator::Use_Package($lang) ?>
 			</label>
   		</div>
+                
+                    <?php } ?>
   		
-  		<div id="package_div">
+  		<?php 
+  		if ($resourceInfo["use_package"] < 2){
+  			?>
+  			<div id="package_div">
+  			<?php 
+  		}
+  		else{
+  			?>
+  			<div>
+  			<input type="hidden" name="use_package" value="yes" >
+  			<?php 
+  		}
+  		?>
   			<div class="form-group">
 				<label class="control-label col-xs-4"><?php echo SyTranslator::Select_Package($lang)?></label>
 				<div class="col-xs-8">
@@ -371,9 +386,14 @@ else{
   		
   		</div>
 		<?php
-		}
+                    }
+	
 		?>
 		
+                <?php 
+                   if ($resourceInfo["use_package"] < 2){ // if not "use only package"
+		?>
+                            
 		<div id="resa_time_div">
 		<?php 
 		
@@ -461,7 +481,11 @@ else{
 		<?php
 		}
 		?>
-		</div>
+                    </div>
+                    <?php 
+		} // end if use only package
+		?>
+		
 		<?php  
 		if ($this->clean($resourceBase["type_id"])==2){ // is unitary
 		?>

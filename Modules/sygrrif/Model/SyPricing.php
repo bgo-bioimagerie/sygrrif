@@ -107,7 +107,7 @@ class SyPricing extends Model {
 	 * @param unknown $we_char
 	 * @return PDOStatement
 	 */
-	public function addPricing($id, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
+	public function addPricing($id, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char){
 		$sql = "INSERT INTO sy_pricing (id, tarif_unique, tarif_night, night_start,
 				                        night_end, tarif_we, choice_we ) VALUES(?,?,?,?,?,?,?)";
 		$pdo = $this->runRequest($sql, array($id, $tarif_unique, $tarif_nuit, $night_start, $night_end, $tarif_we, $we_char));

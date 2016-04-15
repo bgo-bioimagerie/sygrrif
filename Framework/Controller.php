@@ -35,6 +35,8 @@ abstract class Controller
      */
     public function runAction($action)
     {
+        
+       
         if (method_exists($this, $action)) {
             $this->action = $action;
             $this->{$this->action}();

@@ -17,6 +17,16 @@ abstract class ControllerSecure extends Controller
     public function runAction($action)
     {
 
+         $modelConfig = new CoreConfig();
+        if ($modelConfig->getParam("is_maintenance") ){
+            if ($this->request->getSession()->isAttribut("user_status")){
+                if ( $_SESSION["user_status"] < 4 ){
+                    echo $modelConfig->getParam("maintenance_message");
+                    return; 
+                }
+            }
+        }
+        
         if ($this->request->getSession()->isAttribut("id_user")) {
         	
         	$login = $this->request->getSession()->getAttribut("login");

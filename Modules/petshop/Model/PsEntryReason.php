@@ -66,6 +66,13 @@ class PsEntryReason extends Model {
                 . " values(?)";
         $this->runRequest($sql, array($name));
     }
+    
+    public function import($id, $name) {
+
+        $sql = "insert into ps_entry_reason(id, name)"
+                . " values(?,?)";
+        $this->runRequest($sql, array($id, $name));
+    }
 
     /**
      * update the information of a exit reason

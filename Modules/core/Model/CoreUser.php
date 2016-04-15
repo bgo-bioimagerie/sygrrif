@@ -840,7 +840,7 @@ class CoreUser extends Model {
 		if (! $this->isUser ( $login )) {
 			
 			$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, 
-    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active,source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active,source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 			$this->runRequest ( $sql, array (
 					$login,
 					$firstname,
@@ -858,11 +858,13 @@ class CoreUser extends Model {
 					$source 		
 			) );
 			
+                        $idUser = $this->getDatabase()->lastInsertId();
+                        
 			// add the link between user and responsibles
 			$modelResponsible = new CoreResponsible();
 			$modelResponsible->removeAllUserRespJoin($idUser);
 			foreach ($id_responsible as $id_resp){
-				$modelResponsible->addUserRespJoin($idUser, $idResp);
+				$modelResponsible->addUserRespJoin($idUser, $id_resp);
 			}
 		}
 	}

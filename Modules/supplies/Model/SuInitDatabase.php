@@ -2,13 +2,9 @@
 
 require_once 'Framework/Model.php';
 require_once 'Modules/core/Model/ModulesManager.php';
-require_once 'Modules/supplies/Model/SuUser.php';
-require_once 'Modules/supplies/Model/SuUnit.php';
-require_once 'Modules/supplies/Model/SuBelonging.php';
 require_once 'Modules/supplies/Model/SuItemPricing.php';
 require_once 'Modules/supplies/Model/SuItem.php';
 require_once 'Modules/supplies/Model/SuEntry.php';
-require_once 'Modules/supplies/Model/SuResponsible.php';
 require_once 'Modules/supplies/Model/SuBill.php';
 
 /**
@@ -25,33 +21,17 @@ class SuInitDatabase extends Model {
 	 */
 	public function createDatabase(){
 		
-		$modulesModel = new SuUser();
-		$modulesModel->createTable();
-		$modulesModel->createDefaultUser();
+		$modulesModel1 = new SuItemPricing();
+		$modulesModel1->createTable();
 		
-		$modulesModel = new SuUnit();
-		$modulesModel->createTable();
-		$modulesModel->createDefaultUnit();
+		$modulesModel2 = new SuItem();
+		$modulesModel2->createTable();
 		
-		$modelBelonging = new SuBelonging();
-		$modelBelonging->createTable();
-		$modelBelonging->createDefault();
-
-		$modulesModel = new SuItemPricing();
-		$modulesModel->createTable();
+		$modulesModel3 = new SuEntry();
+		$modulesModel3->createTable();
 		
-		$modulesModel = new SuItem();
-		$modulesModel->createTable();
-		
-		$modulesModel = new SuEntry();
-		$modulesModel->createTable();
-		
-		$modulesModel = new SuResponsible();
-		$modulesModel->createTable();
-		$modulesModel->createDefaultResponsible();
-		
-		$modulesModel = new SuBill();
-		$modulesModel->createTable();
+		$modulesModel5 = new SuBill();
+		$modulesModel5->createTable();
 		
 		$message = 'success';
 		return $message;

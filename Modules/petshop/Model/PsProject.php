@@ -140,6 +140,17 @@ class PsProject extends Model {
             $chirurgie, $type_project, $date_reel_lancement, $date_closed));
         return $this->getDatabase()->lastInsertId();
     }
+    
+    public function import($id, $name, $no_projet, $id_unit, $id_responsible, $user1, $user2, $date_envoi, $date_rencontre_commite, $type_animal, $souche_lignee, $nbr_animaux, $nbr_procedures, $type_procedure, $chirurgie, $type_project, $date_reel_lancement, $date_closed) {
+
+                $sql = "INSERT INTO ps_projects (id, name, no_projet, id_unit, id_responsible, user1, user2, date_envoi, date_rencontre_commite,
+                        type_animal, souche_lignee, nbr_animaux, nbr_procedures, type_procedure,
+                        chirurgie, type_project, date_reel_lancement, date_closed) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+        $this->runRequest($sql, array($id, $name, $no_projet, $id_unit, $id_responsible, $user1, $user2, $date_envoi, $date_rencontre_commite,
+            $type_animal, $souche_lignee, $nbr_animaux, $nbr_procedures, $type_procedure,
+            $chirurgie, $type_project, $date_reel_lancement, $date_closed));
+        return $this->getDatabase()->lastInsertId();
+    }
 
     public function edit($id, $name, $no_projet, $id_unit, $id_responsible, $user1, $user2, $date_envoi, $date_rencontre_commite, $type_animal, $souche_lignee, $nbr_animaux, $nbr_procedures, $type_procedure, $chirurgie, $type_project, $date_reel_lancement, $date_closed) {
 

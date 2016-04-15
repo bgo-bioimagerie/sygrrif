@@ -14,7 +14,7 @@ class ControllerCoreconfig extends ControllerSecureNav {
 	 * Constructor
 	 */
 	public function __construct() {
-
+            Parent::__construct();
 	}
 
 	/**
@@ -42,11 +42,14 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		$coremenucolortxt = $modelCoreConfig->getParam("coremenucolortxt");
 		
 		// admin email
-		$modelCoreConfig = new CoreConfig();
 		$admin_email = $modelCoreConfig->getParam("admin_email");
 		
 		// user list setting
 		$userListSettings = $this->getUserListSettings($modelCoreConfig);
+                
+                // maintenance
+                $is_maintenance = $modelCoreConfig->getParam("is_maintenance");
+                $maintenance_message = $modelCoreConfig->getParam("maintenance_message");
 		
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
@@ -65,7 +68,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
     										 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
 							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings
+    								 'userListSettings' => $userListSettings,
+                                                                 'is_maintenance' => $is_maintenance,
+                                                                 'maintenance_message' => $maintenance_message 
     			) );
     			return;
 			}
@@ -77,7 +82,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
 										 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
 							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings	
+    								 'userListSettings' => $userListSettings,
+                                                                 'is_maintenance' => $is_maintenance,
+                                                                 'maintenance_message' => $maintenance_message 
 			) );
 			return;
 		}
@@ -103,7 +110,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
 									 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
 							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings
+    								 'userListSettings' => $userListSettings,
+                                                                 'is_maintenance' => $is_maintenance,
+                                                                 'maintenance_message' => $maintenance_message 
 			) );
 			return;
 			
@@ -123,7 +132,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
 					'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
 							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings
+    								 'userListSettings' => $userListSettings,
+                                                                 'is_maintenance' => $is_maintenance,
+                                                                 'maintenance_message' => $maintenance_message 
 			) );
 			return;
 		}
@@ -180,6 +191,17 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			
 			
 		}
+                
+                $maintenancequery = $this->request->getParameterNoException("maintenancequery");
+                if($maintenancequery == "yes"){
+                    $is_maintenance = $this->request->getParameterNoException("is_maintenance");
+                    $maintenance_message = $this->request->getParameterNoException("maintenance_message");
+                    
+                    $modelCoreConfig->setParam("is_maintenance", $is_maintenance);
+                    $modelCoreConfig->setParam("maintenance_message", $maintenance_message);
+                    $is_maintenance = $modelCoreConfig->getParam("is_maintenance");
+                    $maintenance_message = $modelCoreConfig->getParam("maintenance_message");
+                }
 		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
@@ -188,7 +210,9 @@ class ControllerCoreconfig extends ControllerSecureNav {
 									 'admin_email' => $admin_email,
 									 'coremenucolor' => $coremenucolor,
 							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings
+    								 'userListSettings' => $userListSettings,
+                                                                 'is_maintenance' => $is_maintenance,
+                                                                 'maintenance_message' => $maintenance_message   
 		) );
 	}
 	

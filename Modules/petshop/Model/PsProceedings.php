@@ -49,6 +49,12 @@ class PsProceedings extends Model {
         $sql = "insert into ps_proceedings(name) values(?)";
         $this->runRequest($sql, array($name));
     }
+    
+    public function import($id, $name) {
+
+        $sql = "insert into ps_proceedings(id, name) values(?,?)";
+        $this->runRequest($sql, array($id, $name));
+    }
 
     /**
      * update the information of a proceeding

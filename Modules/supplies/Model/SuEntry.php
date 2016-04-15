@@ -1,7 +1,6 @@
 <?php
 
 require_once 'Framework/Model.php';
-require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/core/Model/CoreUser.php';
 
 /**

@@ -82,10 +82,12 @@ class SyResource extends Model {
 	public function isResource($id){
 		$sql = "select * from sy_resources where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
+		if ($unit->rowCount() == 1){
 			return true;  // get the first line of the result
-		else
+                }
+		else{
 			return false;
+                }
 	}
 	
 	/**

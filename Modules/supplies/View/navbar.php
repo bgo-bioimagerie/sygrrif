@@ -27,6 +27,7 @@ if($suppliesmenucolortxt == ""){
 	color: <?php echo $suppliesmenucolortxt?>;
 	text-shadow: 0 1px 0 rgba(0, 0, 0, .1);
 	background-color: <?php echo $suppliesmenucolor?>;
+        
 }
 
 #navlink {
@@ -37,11 +38,16 @@ if($suppliesmenucolortxt == ""){
 .well {
 	color: <?php echo $suppliesmenucolortxt?>;
 	background-color: <?php echo $suppliesmenucolor?>;
-	border: none;
+	border: 0px solid red;
+	-moz-box-shadow: 0px 0px 0px <?php echo $suppliesmenucolor?>;
+        -webkit-box-shadow: 0px 0px 0px <?php echo $suppliesmenucolor?>;
+        -o-box-shadow: 0px 0px 0px <?php echo $suppliesmenucolor?>;
+        box-shadow: 0px 0px 0px <?php echo $suppliesmenucolor?>;
 }
 
 legend {
 	color: <?php echo $suppliesmenucolortxt?>;
+        
 }
 </style>
 
@@ -120,7 +126,10 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<legend><?php echo  SuTranslator::Billing($lang)?></legend>
 					<button onclick="location.href='suppliesbill'"
 						class="btn btn-link" id="navlink"><?php echo  SuTranslator::Bill($lang)?></button>
-				<br/>		
+				<br/>
+                                	<button onclick="location.href='suppliesbill/billall'"
+						class="btn btn-link" id="navlink"><?php echo  SuTranslator::BillAll($lang)?></button>
+				<br/>
 					<button onclick="location.href='Suppliesbillmanager'"
 						class="btn btn-link" id="navlink"><?php echo  SuTranslator::Bills_manager($lang)?></button>
 						

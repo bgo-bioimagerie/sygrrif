@@ -92,4 +92,4 @@
 
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

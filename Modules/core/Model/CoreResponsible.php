@@ -173,14 +173,27 @@ class CoreResponsible extends Model {
 	 * @return number ID of the responsible
 	 */
 	public function getUserResponsible($user_id){
-		 $sql = "SELECT id_responsible FROM core_users WHERE id=?";
+		 $sql = "SELECT id_resp FROM core_users WHERE id=?";
 		 $respPDO = $this->runRequest($sql, array($user_id));
 		 $tmp = $respPDO->fetch();
 		 $respID = $tmp[0];
 		 return $this->responsibleName($respID);
 	}
-	
-	/**
+        
+        public function getResponsibleId($user_id){
+            $sql = "SELECT id_resp FROM core_j_user_responsible WHERE id_user=?";
+            $respPDO = $this->runRequest($sql, array($user_id));
+            if ($respPDO->rowCount() > 0){
+                $tmp = $respPDO->fetch();
+                return $tmp[0];
+            }
+            else{
+                return 0;
+            }
+        }
+
+
+        /**
 	 * 
 	 * Test if a user is linked to a responsible
 	 * @param number $idUser User ID

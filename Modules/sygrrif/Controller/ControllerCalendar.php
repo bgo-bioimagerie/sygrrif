@@ -65,6 +65,7 @@ class ControllerCalendar extends ControllerBooking {
 		$resa_time_setting = 0;
 		$default_color_id = 0;
 		$display_order = 0;
+                $use_package = 1;
 		
 		// type id
 		$mrs = new SyResourceType();
@@ -97,6 +98,7 @@ class ControllerCalendar extends ControllerBooking {
 			$size_bloc_resa = $resourceCInfo["size_bloc_resa"];
 			$resa_time_setting = $resourceCInfo["resa_time_setting"];
 			$default_color_id = $resourceCInfo["default_color_id"];
+                        $use_package = $resourceCInfo["use_package"];
 		}
 		
 		// colors
@@ -159,7 +161,8 @@ class ControllerCalendar extends ControllerBooking {
 				'colors' => $colors,
 				'default_color_id' => $default_color_id,
 				'display_order' => $display_order,
-				'pakages' => $pakages
+				'pakages' => $pakages,
+                                'use_package' => $use_package
 		) );
 		
 	}
@@ -177,6 +180,7 @@ class ControllerCalendar extends ControllerBooking {
 		$category_id = $this->request->getParameter("category_id");
 		$area_id = $this->request->getParameter("area_id");
 		$display_order = $this->request->getParameter("display_order");
+                $use_package = $this->request->getParameter("use_package");
 		
 		if ($this->secureEditCheck($id)){
 			echo "Permission denied: you're not allowed to edit this resource";
@@ -227,7 +231,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		
 		$modelCResource = new SyResourceCalendar();
-		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting,"", $default_color_id);
+		$modelCResource->setResource($id_resource, $nb_people_max, $available_days, $day_begin, $day_end, $size_bloc_resa, $resa_time_setting,"", $default_color_id, $use_package);
 		
 		// pricing
 		$modelResourcePricing = new SyResourcePricing();
