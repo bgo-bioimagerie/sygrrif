@@ -215,7 +215,7 @@ class ModulesManager extends Model {
 	 * @return multitype: Menus informations
 	 */
 	public function getDataMenus($user_status=1){
-		$sql = "select name, link, icon from core_datamenu where usertype<=?";
+		$sql = "select name, link, icon, usertype from core_datamenu where usertype<=?";
 		$data = $this->runRequest($sql, array($user_status));
 		return $data->fetchAll();
 	}
