@@ -13,6 +13,7 @@ class ControllerHome extends ControllerSecureNav {
 	 * Constructor
 	 */
 	public function __construct() {
+            parent::__construct();
 	}
 	
 	/**

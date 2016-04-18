@@ -1016,5 +1016,13 @@ class CoreTranslator {
 		return "Message";
         }
         
+        public static function Management($lang){
+            if ($lang == "Fr"){
+			return "Gestion";
+		}
+		return "Management";
+        }
+        
+        
         
 }
