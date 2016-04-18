@@ -12,9 +12,13 @@ if (isset($_SESSION["user_settings"]["language"])){
 <div class="container">
     	<div class="col-md-8 col-md-offset-2">
 
-
+    	<div class="page-header">
+            <h1>
+                <?php echo  CoreTranslator::Core_configuration($lang) ?> <br> <small></small>
+            </h1>
+	</div>
     <!-- Maintenance mode -->
-      <div>
+    <div class="col-xs-12">
         <div class="page-header">
             <h2>
                 <?php echo CoreTranslator::Maintenance_Mode($lang)?> <br> <small></small>
@@ -24,11 +28,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 	<form role="form" class="form-horizontal" action="coreconfig"
 		  method="post">
 		  
-	<div class="col-xs-10">
-	<input class="form-control" type="hidden" name="maintenancequery" value="yes"/>
+	<div class="col-xs-12">
+            <input class="form-control" type="hidden" name="maintenancequery" value="yes"/>
 	</div>
 	<!-- is_maintenance -->
-	 <?php 
+	<?php 
             $visibleM = $this->clean($is_maintenance);			
 	?>
 	<div class="col-xs-12">
@@ -54,24 +58,16 @@ if (isset($_SESSION["user_settings"]["language"])){
             <div class="col-xs-2 col-xs-offset-10" id="button-div">
                 <input type="submit" class="btn btn-primary" value="save" />
             </div>
+        </div>    
 	</form>
-      
-      </div>
-
-    	<div class="page-header">
-			<h1>
-				<?php echo  CoreTranslator::Core_configuration($lang) ?> <br> <small></small>
-			</h1>
-		</div>
+     	
+        <div class="page-header">
+            <h2>
+                <?php echo  CoreTranslator::Install_Repair_database($lang) ?> <br> <small></small>
+            </h2>
+	</div>
 		
-		<div class="col-xs-12">
-		<div class="page-header">
-			<h2>
-				<?php echo  CoreTranslator::Install_Repair_database($lang) ?> <br> <small></small>
-			</h2>
-		</div>
-		
-		<form role="form" class="form-horizontal" action="coreconfig"
+	<form role="form" class="form-horizontal" action="coreconfig"
 		method="post">
 		
 		<?php if (isset($installError)): ?>
