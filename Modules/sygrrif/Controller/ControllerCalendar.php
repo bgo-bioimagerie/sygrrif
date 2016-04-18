@@ -1906,6 +1906,9 @@ class ControllerCalendar extends ControllerBooking {
 					$short_description, $full_description, $quantity, "edit");
 				
 			}
+                        
+                        $this->sendEmailToManagers($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+					$short_description, $full_description, $quantity, "edit");
 		}
 		else{
 			// get the series info
@@ -2077,6 +2080,64 @@ class ControllerCalendar extends ControllerBooking {
 		}
 		
 	}
+        
+        private function sendEmailToManagers($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
+					$short_description, $full_description, $quantity, $editstatus){
+            
+            $modelConfig = new CoreConfig();
+            if ( $modelConfig->getParam("SyBookingMailingAdmin") >= 2){
+		
+                $modelUser = new CoreUser();
+		$fromEmail = $modelUser->getUserEmail($booked_by_id);
+		$toEmails = $modelUser->getActiveManagersEmails();
+                $recipient_name = $modelUser->getUserFUllName($recipient_id);
+			
+		if ($fromEmail != "" && $toEmail!= ""){
+				
+                    $modelUserSettings = new UserSettings();
+                    $settings = $modelUserSettings->getUserSettings($recipient_id);
+                    $lang = "En";
+                    if (isset($settings["language"])){
+                        $lang = $settings["language"];
+                    }
+				
+                    $subject = SyTranslator::Reservation($lang) . " " . $recipient_name;
+                    $content = "";
+                    if ($editstatus == "add"){
+                        $content .= SyTranslator::Your_reservation_has_been_added($lang) . ": <br/>";
+                    }
+                    else if($editstatus == "edit"){
+                        $content .= SyTranslator::Your_reservation_has_been_modified($lang) . ": <br/>";
+                    }
+                    else if($editstatus == "deleted"){
+                        $content .= SyTranslator::Your_reservation_has_been_deleted($lang) . ": <br/>";
+                    }
+				
+                    $modelResource = new SyResource();
+                    $resourceInfo = $modelResource->resource($resource_id);
+				
+                    $content .= "<br/>";
+                    $content .= "<b>" . SyTranslator::Edited_by($lang) . ": </b> " . $modelUser->getUserFUllName($booked_by_id). "<br/>";
+                    $content .= "<b>" . SyTranslator::Recipient($lang) . ": </b> " . $modelUser->getUserFUllName($recipient_id). "<br/>";
+                    $content .= "<b>" . SyTranslator::Resource($lang) . "</b> " . $resourceInfo["name"]. "<br/>";
+                    $content .= "<b>" . SyTranslator::Beginning($lang) . ": </b> " . date("F j, Y, g:i a", $start_time). "<br/>";
+                    $content .= "<b>" . SyTranslator::End($lang) . ": </b> " . date("F j, Y, g:i a", $end_time). "<br/>";
+				
+                    if ($short_description != ""){
+                        $content .= "<b>" . SyTranslator::Short_description($lang) . ": </b> " . $short_description . "<br/>";
+                    }
+                    if ($short_description != ""){
+                        $content .= "<b>" . SyTranslator::Full_description($lang) . ": </b> " . $full_description . "<br/>";
+                    }
+                    if ($quantity != ""){
+                        $content .= "<b>" . SyTranslator::Quantity($lang) . ": </b> " . $quantity . "<br/>";
+                    }
+				
+                    $modelMailer = new MailerSend();
+                    $modelMailer->sendEmail($fromEmail, Configuration::get("name"), $toEmails, $subject, $content, false);
+		}
+            }
+        }
 	
 	/**
 	 * Remove a reservation query
