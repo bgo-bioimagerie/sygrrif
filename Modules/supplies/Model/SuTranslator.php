@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Class to translate the syggrif views
  * 
@@ -371,4 +370,39 @@ class SuTranslator {
 		}
 		return "# identificaiton";
         }
+        
+        public static function Yes($lang){
+            if ($lang == "Fr") {
+                return "Oui";
+            }
+		return "Yes";
+        }
+        public static function No($lang){
+            if ($lang == "Fr") {
+                return "Non";
+            }
+		return "No";
+        }
+        
+        public static function Download($lang){
+            if ($lang == "Fr") {
+                return "Télécharger";
+            }
+		return "Download";
+        }
+        
+        public static function BillAll($lang){
+            if ($lang == "Fr") {
+                return "Facturer tous";
+            }
+		return "Bill all";
+        }
+        
+        public static function BillAllMessage($lang){
+            if ($lang == "Fr") {
+                return "Facturer et clore tous les bon de commandes ouverts ?";
+            }
+		return "Invoice and close all opened orders ?";
+        }
+        
 }

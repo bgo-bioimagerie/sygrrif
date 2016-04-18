@@ -331,7 +331,15 @@
 				</select>
 			</div>
 		</div>	
-		
+		<div class="form-group">
+			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Pricing_Type($lang)?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="use_package">
+						<OPTION value="1" <?php if( $use_package == 1){echo "selected=\"selected\"";} ?> > <?php echo SyTranslator::Use_time_and_package($lang)  ?> </OPTION>
+						<OPTION value="2" <?php if( $use_package == 2){echo "selected=\"selected\"";} ?> > <?php echo SyTranslator::Use_only_package($lang)  ?> </OPTION>
+				</select>
+			</div>
+		</div>	
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Default_color($lang)?></label>
 			<div class="col-xs-8">
@@ -362,6 +370,7 @@
 		<table class="table table-striped text-center">
 		<?php 
 		foreach ($pricingTable as $pricing){
+                    if($pricing["name"] != "--"){
 			
 			$pid = $this->clean($pricing['id']);
 			$pname = $this->clean($pricing['name']);
@@ -421,6 +430,7 @@
 				?>
 				</tr>
 				<?php
+                        }
 			}
 		}
 		
@@ -447,9 +457,11 @@
 						<td style="min-width:10em;">Duration</td>
 						
 						<?php foreach ($pricingTable as $pricing){ 
+                                                    if($pricing["name"] != "--"){
 							?>
 							<td style="min-width:10em;">tarif <br/><?php echo  $pricing["name"] ?></td>
 							<?php 
+                                                    }
 						}
 						?>
 						
@@ -468,6 +480,7 @@
 								<td><input class="form-control" type="text" name="pname[]" value="<?php echo  $pakage["name"] ?>"/></td>
 								<td><input class="form-control" type="text" name="pduration[]" value="<?php echo  $pakage["duration"] ?>"/></td>
 								<?php foreach ($pricingTable as $pricing){ 
+                                                                    if($pricing["name"] != "--"){
 									$priceValue = 0;
 									if (isset($pakage["price_" .$pricing["id"]])){
 										$priceValue = $pakage["price_" .$pricing["id"]];	
@@ -475,6 +488,7 @@
 									?>
 									<td><input class="form-control" type="text" name="p_<?php echo $pricing["id"]?>[]" value="<?php echo $priceValue?>"/></td>
 								<?php
+                                                                    }
 								}
 								?>
 									
@@ -491,10 +505,12 @@
 								<td><input class="form-control" type="text" name="pname[]" value=""/></td>
 								<td><input class="form-control" type="text" name="pduration[]" value=""/></td>
 	
-								<?php foreach ($pricingTable as $pricing){ 
+								<?php foreach ($pricingTable as $pricing){
+                                                                    if($pricing["name"] != "--"){
 									?>
 									<td><input class="form-control" type="text" name="p_<?php echo $pricing["id"]?>[]" value=""/></td>
 								<?php
+                                                                    }
 								}
 								?>
 						</tr>

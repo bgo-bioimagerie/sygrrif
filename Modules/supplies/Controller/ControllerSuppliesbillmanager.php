@@ -5,20 +5,23 @@ require_once 'Framework/Form.php';
 
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/CoreTranslator.php';
+require_once 'Modules/core/Model/CoreUnit.php';
 
 require_once 'Modules/supplies/Model/SuBill.php';
-require_once 'Modules/supplies/Model/SuUser.php';
 require_once 'Modules/supplies/Model/SuTranslator.php';
 
+/**
+ * Manage the bills: history of generated bills with status (generated, payed)
+ * 
+ * @author sprigent
+ *
+ */
 class ControllerSuppliesbillmanager extends ControllerSecureNav {
 	
 	/**
-	 * User model object
+	 * (non-PHPdoc)
+	 * @see Controller::index()
 	 */
-	public function __construct() {
-	}
-	
-	// Affiche la liste de tous les billets du blog
 	public function index() {
 		
 		// get the sort entry
@@ -28,55 +31,44 @@ class ControllerSuppliesbillmanager extends ControllerSecureNav {
 		}
 		
 		// get bill list
-		$modelBillManager = new SuBill();
-		$billsList = $modelBillManager->getBills($sortentry);
+                $modelInvoice = new SuBill();
+		$billsList = $modelInvoice->getAllInfo();
 		
-		$lang = "En";
-		if (isset($_SESSION["user_settings"]["language"])){
-			$lang = $_SESSION["user_settings"]["language"];
+		$lang = $this->getLanguage();
+		for($i = 0 ; $i < count($billsList) ; $i++){
+                    //id_responsible
+			$billsList[$i]["responsible"] = $billsList[$i]['resp_name'] . " " . $billsList[$i]['resp_firstname'];
+			if ($billsList[$i]['is_paid'] == 1){
+				$billsList[$i]['is_paid'] = SuTranslator::Yes($lang);
+			}
+			else{
+				$billsList[$i]['is_paid'] = SuTranslator::No($lang);
+			}
+			$billsList[$i]['date_generated'] = CoreTranslator::dateFromEn($billsList[$i]['date_generated'], $lang);
+			$billsList[$i]['date_paid'] = CoreTranslator::dateFromEn($billsList[$i]['date_paid'], $lang);
 		}
 		
 		$table = new TableView ();
-		$table->setTitle ( SuTranslator::supplies_bill( $lang ) );
+		
+		$table->setTitle ( SuTranslator::Bills_manager($lang) );
+		$table->ignoreEntry("id", 1);
 		$table->addLineEditButton ( "suppliesbillmanager/edit" );
-		$table->addDeleteButton ( "suppliesbillmanager/removeentry", "id", "number" );
+		$table->addDeleteButton ( "suppliesbillmanager/delete", "id", "number" );
 		$table->addPrintButton ( "suppliesbillmanager/index/" );
 		
 		$tableContent = array (
-				"number" => SuTranslator::Number($lang),
-				"id_resp" => CoreTranslator::Responsible($lang),
-				"date_generated" => SuTranslator::Date_generated($lang), 
-				"total_ht" => SuTranslator::Total_HT($lang), 
-				"date_paid" => SuTranslator::Date_paid($lang), 
-				"is_paid" => SuTranslator::Is_Paid($lang)
-		);
-		// is restricted translation
-		$modelConfig = new CoreConfig();
-		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
-		if ($supliesusersdatabase == "local"){
-			$modelUser = new SuUser();
-		}
-		else{
-			$modelUser = new CoreUser();
-		}
-		
-		
-		for($i = 0; $i < count ( $billsList ); $i ++) {
-			
-			$billsList[$i]["date_generated"] = CoreTranslator::dateFromEn($billsList[$i]["date_generated"], $lang);
-			$billsList[$i]["date_paid"] = CoreTranslator::dateFromEn($billsList[$i]["date_paid"], $lang);
-			if ($billsList[$i]["is_paid"] > 0){
-				$billsList[$i]["is_paid"] = CoreTranslator::yes($lang);
-			}	
-			else{
-				$billsList[$i]["is_paid"] = CoreTranslator::no($lang);
-			}
-			$billsList[$i]["id_resp"] = $modelUser->getUserFUllName($billsList[$i]["id_resp"]);
-		}
+                    "number" => SuTranslator::Number($lang),
+                    "responsible" => CoreTranslator::Responsible($lang),
+                    "unit" =>  CoreTranslator::Unit($lang),
+                    "date_generated" => SuTranslator::Date_Generated($lang),
+                    "total_ht" => SuTranslator::Total_HT($lang),
+                    "date_paid" => SuTranslator::Date_Paid($lang),
+                    "is_paid" => SuTranslator::Is_Paid($lang)
+                    );
 		
 		$tableHtml = $table->view ( $billsList, $tableContent );
 		
-		$print = $this->request->getParameterNoException ( "print" );
+		//$print = $this->request->getParameterNoException ( "print" );
 		if ($table->isPrint ()) {
 			echo $tableHtml;
 			return;
@@ -89,92 +81,92 @@ class ControllerSuppliesbillmanager extends ControllerSecureNav {
 		) );
 	}
 	
+	/**
+	 * Form to edit a bill history
+	 */
 	public function edit(){
+        
+            $id = "";
+            if ($this->request->isParameterNotEmpty("actionid")) {
+                $id = $this->request->getParameter ( "actionid" );
+            }
+	
+            if ($id == ""){
+                $id = $this->request->getParameter ( "id" );
+            }
+            
+            // lang
+            $lang = $this->getLanguage();
+            
+            // get
+            $modelInvoice = new SuBill();
+            $info = $modelInvoice->getBill($id);
+            
+            // get names
+            $modelUnit = new CoreUnit();
+            $unitName = $modelUnit->getUnitName($info["id_unit"]);
+            
+            $modelUser = new CoreUser();
+            $responsibleName = $modelUser->getUserFUllName($info["id_resp"]);
+
+            // form
+            // build the form
+            $form = new Form($this->request, "suppliesbillmanager/edit");
+            $form->setTitle(SuTranslator::Edit_Bill_Informations($lang));
+            $form->addHidden("id", $info["id"]);
+            $form->addText("number", SuTranslator::Number($lang), true, $info["number"], "readonly");
+            $form->addText("id_unit", CoreTranslator::Unit($lang), true, $unitName, "readonly");
+            $form->addText("id_responsible", CoreTranslator::Responsible($lang), true, $responsibleName, "readonly");
+            $form->addText("date_generated", SuTranslator::Date_Generated($lang), true, CoreTranslator::dateFromEn($info["date_generated"],$lang), "readonly");
+            $dp = $info["date_paid"];
+            if ($dp == "0000-00-00"){
+                $dp = "";
+            }
+            $form->addDate("date_paid", SuTranslator::Date_Paid($lang), true, CoreTranslator::dateFromEn($dp,$lang));
+            $form->addSelect("is_paid", SuTranslator::Is_Paid($lang), array(SuTranslator::No($lang), SuTranslator::Yes($lang)), array(0,1), $info["is_paid"]);
+            $form->addText("total_ht", SuTranslator::Total_HT($lang), true, $info["total_ht"]);
+            $form->addDownloadButton(SuTranslator::Download($lang), $info["url"]);
+            
+            $form->setValidationButton(CoreTranslator::Ok($lang), "suppliesbillmanager/edit");
+            $form->setCancelButton(CoreTranslator::Cancel($lang), "suppliesbillmanager");
+
+            if ($form->check()) {
+                // run the database query
+                
+                $modelInvoice->edit( $this->request->getParameter("id"),
+                        CoreTranslator::dateToEn($this->request->getParameter("date_paid"), $lang), 
+                        $this->request->getParameter("is_paid"),
+                        $this->request->getParameter("total_ht")
+                        );
+
+                $this->redirect("suppliesbillmanager");
+                 
+            } else {
+                // set the view
+                $formHtml = $form->getHtml();
+                // view
+                $navBar = $this->navBar();
+                $this->generateView(array(
+                    'navBar' => $navBar,
+                    'formHtml' => $formHtml
+                ));
+            }
+	}
+	
+	/**
+	 * Query to remove a bill from history
+	 */
+	public function delete(){
 		$id = "";
 		if ($this->request->isParameterNotEmpty("actionid")) {
 			$id = $this->request->getParameter ( "actionid" );
 		}
 		
-		$modelBillManager = new SuBill();
-		$billInfo = $modelBillManager->getBill($id);
-		
-		//print_r($billInfo);
-		
-		$navBar = $this->navBar ();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'billInfo' => $billInfo
-		) );
-	}
-	
-	public function editquery(){
-		
-		$id = $this->request->getParameter("id");
-		$number = $this->request->getParameter("number");
-		$id_unit = $this->request->getParameter("id_unit");
-		$id_resp = $this->request->getParameter("id_resp");
-		$total_ht = $this->request->getParameter("total_ht");
-		$date_generated = $this->request->getParameter("date_generated");
-		$date_paid = $this->request->getParameter("date_paid");
-		$is_paid = $this->request->getParameter("is_paid");
-		
-		$modelBillManager = new SuBill();
-		$modelBillManager->editBills($id, $number, $id_unit, $id_resp, $date_generated, $total_ht, $date_paid, $is_paid);
-		
-		$this->redirect("suppliesbillmanager");
-		
-	}
-	
-	public function removeentry(){
-		$id = "";
-		if ($this->request->isParameterNotEmpty("actionid")) {
-			$id = $this->request->getParameter ( "actionid" );
-		}
-	
 		if ($id != ""){
 			$modelBillManager = new SuBill();
-			$modelBillManager->removeEntry($id);
+			$modelBillManager->delete($id);
 		}
-
 		$this->redirect("suppliesbillmanager");
 	}
-	
-	public function billsstats(){
-		
-		$lang = $this->getLanguage();
-		
-		// build the form
-		$myform = new Form($this->request, "formstatsbills");
-		$myform->setTitle(SuTranslator::Bills_statistics($lang));
-		$myform->addDate("begining_period", SuTranslator::Beginning_period($lang), true, "0000-00-00");
-		$myform->addDate("end_period", SuTranslator::End_period($lang), true, "0000-00-00");
-		
-		$choices = array(SuTranslator::view($lang), SuTranslator::Export_csv($lang) );
-		$choicesid = array(0,1);
-		$myform->addSelect("exporttype", SuTranslator::ExportType($lang), $choices, $choicesid);
-		$myform->setValidationButton("Ok", "suppliesbillmanager/billsstats");
-		
-		$stats = "";
-		if ($myform->check()){
-			
-			// run the database query
-			$modelStat = new SuBill();
-			$stats = $modelStat->computeStats($myform->getParameter("begining_period"), $myform->getParameter("end_period"));
-			
-			if ($myform->getParameter("exporttype") == 1){
-				$this->exportStats($stats, $myform->getParameter("begining_period"), $myform->getParameter("end_period"));
-				return;
-			}
-		}
-		
-		// set the view
-		$formHtml = $myform->getHtml();
-		// view
-		$navBar = $this->navBar();
-		$this->generateView ( array (
-				'navBar' => $navBar,
-				'formHtml' => $formHtml,
-				'stats' => $stats
-		) );
-	}
+
 }

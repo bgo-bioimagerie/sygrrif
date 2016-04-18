@@ -4,7 +4,7 @@
 <?php include "Modules/sygrrif/View/navbar.php"; ?>
 
 <br>
-<div class="contatiner">
+<div class="container">
 	<div class="col-md-6 col-md-offset-3">
 		<?php echo $tableHtml ?>
 	</div>

@@ -103,8 +103,14 @@ class CoreUnit extends Model {
 		
 		$sql = "insert into core_units(name, address, id_belonging)"
 				. " values(?, ?, ?)";
-		$user = $this->runRequest($sql, array($name, $address, $id_belonging));		
+		$this->runRequest($sql, array($name, $address, $id_belonging));		
 	}
+        
+        public function importUnit($id, $name, $address, $id_belonging){
+            $sql = "insert into core_units(id, name, address, id_belonging)"
+				. " values(?, ?, ?, ?)";
+		$this->runRequest($sql, array($id, $name, $address, $id_belonging));
+        }
 	
 	/**
 	 * update the information of a unit
@@ -116,7 +122,7 @@ class CoreUnit extends Model {
 	public function editUnit($id, $name, $address, $id_belonging){
 		
 		$sql = "update core_units set name=?, address=?, id_belonging=? where id=?";
-		$unit = $this->runRequest($sql, array($name, $address, $id_belonging, $id));
+		$this->runRequest($sql, array($name, $address, $id_belonging, $id));
 	}
 	
 	/**
@@ -127,10 +133,12 @@ class CoreUnit extends Model {
 	public function isUnit($id){
 		$sql = "select * from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
+		if ($unit->rowCount() == 1){
 			return true;
-		else
+                }
+		else{
 			return false;
+                }
 	}
 	
 	/**
@@ -157,10 +165,12 @@ class CoreUnit extends Model {
 	public function getUnit($id){
 		$sql = "select * from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
-    		return $unit->fetch();  // get the first line of the result
-    	else
-    		throw new Exception("Cannot find the unit using the given id"); 
+		if ($unit->rowCount() == 1){
+                    return $unit->fetch();
+                }
+                else {
+                    throw new Exception("Cannot find the unit using the given id: " . $id); 
+                }
 	}
 	
 	/**
@@ -173,10 +183,12 @@ class CoreUnit extends Model {
 	public function getInfo($id){
 		$sql = "select * from core_units where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
-			return $unit->fetch();  // get the first line of the result
-		else
+		if ($unit->rowCount() == 1){
+			return $unit->fetch();  
+                }
+		else{
 			throw new Exception("Cannot find the unit using the given id");
+                }
 	}
 	
 	

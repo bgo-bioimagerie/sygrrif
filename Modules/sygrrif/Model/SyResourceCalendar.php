@@ -43,13 +43,8 @@ class SyResourceCalendar extends Model {
 			$pdo = $this->runRequest($sql);
 		}
 		
-		$sql = "SHOW COLUMNS FROM `sy_resources_calendar` LIKE 'use_package'";
-		$pdo = $this->runRequest($sql);
-		$isColumn = $pdo->fetch();
-		if ( $isColumn == false){
-			$sql = "ALTER TABLE `sy_resources_calendar` ADD `use_package` int(2) NOT NULL DEFAULT 1";
-			$pdo = $this->runRequest($sql);
-		}
+                $this->addColumn("sy_resources_calendar", "use_package", "int(2)", 1);
+		
 		
 	}
 

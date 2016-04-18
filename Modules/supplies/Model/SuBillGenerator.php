@@ -14,40 +14,75 @@ require_once("externals/PHPExcel/Classes/PHPExcel.php");
  */
 class SuBillGenerator extends Model {
 	
-	public function generateBill($unit_id, $responsible_id){
+        public function invoiceResponsible($responsibleID, $lang){
+            $invoiceNumber = $this->calculateBillNumber();
+            $this->invoice($responsibleID, $invoiceNumber, "", $lang);
+        }
+        
+        public function billAll($lang){
+            
+            $sql = "SELECT DISTINCT id_user FROM su_entries WHERE id_status=1";
+            $users = $this->runRequest($sql)->fetchAll();
+            
+            $modelResp = new CoreResponsible();
+            //$resps = array();
+            //print_r($users); echo "<br/>";
+            foreach($users as $user){
+                //print_r($user); echo "<br/>";
+                $resps[] = $modelResp->getResponsibleId($user[0]);
+                //echo "resp of " . $user[0] . " is " . $modelResp->getResponsibleId($user[0]) . "<br/>";
+            }
+            //print_r($resps); echo "<br/>";
+            $respsList = array_unique($resps);
+            
+            // create the output dir
+            $dataDir = date("y-m-d_H-i-s");
+            $billDir = "data/supplies/".$dataDir;
+            if (!mkdir($billDir)){
+                return;
+            }
+            
+            $invoiceNumber = $this->calculateBillNumber();
+            
+            $pass = 0;
+            foreach($respsList as $resp){
+                
+                //echo "generate bill for resp :" . $resp . "<br/>";
+                if ($resp > 0){
+                    $pass++;
+                    // increment bill number
+                    if ($pass > 1){
+                        $noArray = explode("-", $invoiceNumber);
+                        $numYearBill = floatval($noArray[1]) + 1;
+                        $invoiceNumber = $noArray[0] . "-" . $this->float2ZeroStr($numYearBill);
+                    }
+                    $this->invoice($resp, $invoiceNumber, $billDir, $lang);
+                }
+            }
+            
+            // generate output file
+            $this->generateZipFile($billDir);
+        }
+    
+	public function invoice($responsible_id, $invoiceNumber, $billDir, $lang){
 		
 		
 		// /////////////////////////////////////////// // 
 		//        get the input informations           //
 		// /////////////////////////////////////////// //
-		
-		$modelConfig = new CoreConfig();
-		$supliesusersdatabase = $modelConfig->getParam("supliesusersdatabase");
-		
-		
+                
 		// get the responsibnle info
-		$responsibleFullName = "";
-		$unitName = "";
-		$modelUnit = "";
-		$modelUser = "";
-		if ($supliesusersdatabase == "local"){
-			// responsible fullname
-			$modelUser = new SuUser();
-			$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
-			
-			// unit name
-			$modelUnit = new SuUnit();
-			$unitName = $modelUnit->getUnitName($unit_id);
-		}
-		else{
-			// responsible fullname
-			$modelUser = new CoreUser();
-			$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
-				
-			// unit name
-			$modelUnit = new CoreUnit();
-			$unitName = $modelUnit->getUnitName($unit_id);
-		}
+		// responsible fullname
+		$modelUser = new CoreUser();
+		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
+		$unit_id = $modelUser->getUserUnit($responsible_id); 	
+                
+                if ($unit_id < 2){
+                    return;
+                }
+		// unit name
+		$modelUnit = new CoreUnit();
+		$unitName = $modelUnit->getUnitName($unit_id);
 		
 		$LABpricingid = $modelUnit->getBelonging($unit_id);
 		$unitInfo = $modelUnit->getUnit($unit_id);
@@ -140,7 +175,7 @@ class SuBillGenerator extends Model {
 		);
 		
 		// load the template
-		$file = "data/template_supplies.xls";
+		$file = "data/supplies/template_supplies.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
@@ -148,139 +183,25 @@ class SuBillGenerator extends Model {
 		$insertLine = 0;
 		
 		// replace the date
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{date}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("d/m/Y", time()));
+                $this->replaceVariable($objPHPExcel, "date", date("d/m/Y", time()));
 		
 		// replace the year
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{annee}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		if($insertCol != ""){
-			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, date("Y", time()));
-		}
+                $this->replaceVariable($objPHPExcel, "annee", date("Y", time()));
 		
 		// replace the responsible
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{responsable}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $responsibleFullName);
-		
+                $this->replaceVariable($objPHPExcel, "responsable", $responsibleFullName);
+                
 		// replace $unitName
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{unite}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitName);
-		
+                $this->replaceVariable($objPHPExcel, "unite", $unitName);
+                
+                
 		// replace address $unitAddress
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{adresse}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $unitAddress);
-		
+                $this->replaceVariable($objPHPExcel, "adresse", $unitAddress);
+               
 		// replace the bill number
-		// calculate the number
-		$modelBill = new SuBill();
-		$bills = $modelBill->getBills("number");
-		$lastNumber = "";
-		$number = "";
-		if (count($bills) > 0){
-			$lastNumber = $bills[count($bills)-1]["number"];
-		}
-		if ($lastNumber != ""){
-			$lastNumber = explode("-", $lastNumber);
-			$lastNumberY = $lastNumber[0];
-			$lastNumberN = $lastNumber[1];
-			
-			if ($lastNumberY == date("Y", time())){
-				$lastNumberN = (int)$lastNumberN + 1;
-			}
-			$num = "".$lastNumberN."";
-			if ($lastNumberN < 10){
-				$num = "00" . $lastNumberN;
-			}
-			else if ($lastNumberN >= 10 && $lastNumberN < 100){
-				$num = "0" . $lastNumberN;
-			}
-			$number = $lastNumberY ."-". $num ;
-		}
-		else{
-			$number = date("Y", time()) . "-001";
-		}
-		// replace the number
-		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
-		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
-		$insertCol = "";
-		foreach($rowIterator as $row) {
-			for ($i = 0 ; $i < count($col) ; $i++){
-				$rowIndex = $row->getRowIndex ();
-				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
-				if (strpos($num,"{nombre}") !== false){
-					$insertLine = $rowIndex;
-					$insertCol = $col[$i];
-					break;
-				}
-			}
-		}
-		$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $number);
+                $this->replaceVariable($objPHPExcel, "nombre", $invoiceNumber);
 		
-		
+		// get table row index table
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
 		foreach($rowIterator as $row) {
 				
@@ -294,17 +215,6 @@ class SuBillGenerator extends Model {
 		$objPHPExcel->getActiveSheet()->SetCellValue("A".$rowIndex, "");
 		
 		$curentLine = $insertLine;
-		// Fill the pricing table
-		// table headers
-		//$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
-		//$objPHPExcel->getActiveSheet()->mergeCells('A'.$curentLine.':F'.$curentLine);
-		
-		//$titleTab = "";
-		//$titleTab = "Prestations du "." au "."";
-		
-		//$objPHPExcel->getActiveSheet()->SetCellValue('A'.$curentLine, $titleTab);
-		//$objPHPExcel->getActiveSheet()->getStyle('A'.$curentLine)->getFont()->setBold(true);
-		
 		$curentLine++;
 		
 		// set the row
@@ -334,7 +244,7 @@ class SuBillGenerator extends Model {
 		// ///////////////////////////////////////// //
 		//             Main query                    //
 		// ///////////////////////////////////////// //
-		// get all users having an active order
+                // get all users having an active order
 		$sql = "SELECT DISTINCT id_user FROM su_entries WHERE id_status = 1";
 		$req = $this->runRequest($sql);
 		$beneficiaire = $req->fetchAll();
@@ -342,23 +252,27 @@ class SuBillGenerator extends Model {
 		// select users whose unit and responsible is the selected one
 		$i=0;
 		$people = array();
-		foreach($beneficiaire as $b){
+		$modelResp = new CoreResponsible();
+                foreach($beneficiaire as $b){
 			// user info
 			
-			$nomPrenom = $modelUser->getUserFromlup(($b[0]), $unit_id);
-			// name, firstname, id_responsible
-			if (count($nomPrenom) != 0){
-				$people[0][$i] = $nomPrenom[0]["name"]; 	//Nom du beneficiaire
-				$people[1][$i] = $nomPrenom[0]["firstname"]; 	//Prénom du bénéficiaire
-				$people[2][$i] = $b[0];				//id du bénéficiaire
-				$people[3][$i] = $modelUser->getUserResponsibles($b[0]);	//Responsable du bénéficiaire
-				$people[4][$i] = $LABpricingid;	//Tarif appliqué
-				$i++;
-			}
+                    if ($modelResp->isUserRespJoin($b[0], $responsible_id) ){
+                        $sql = "SELECT name, firstname FROM core_users WHERE id=?";
+                        $req = $this->runRequest($sql, array($b[0]));
+                        
+                        $nomPrenom = $req->fetch();
+                        $people[0][$i] = $nomPrenom["name"]; 	//Nom du beneficiaire
+                        $people[1][$i] = $nomPrenom["firstname"]; 	//Prénom du bénéficiaire
+                        $people[2][$i] = $b[0];				//id du bénéficiaire
+                        $people[3][$i] = $modelUser->getUserResponsibles($b[0]);	//Responsable du bénéficiaire
+                        $people[4][$i] = $LABpricingid;	//Tarif appliqué
+                        $i++;
+                    }
+                        
 		}
 		if (count($people) == 0){
-			echo "There are no open orders for the given responsible";
-			return;
+                    echo "There are no open orders for the given responsible";
+                    return;
 		}
 		array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);
 		
@@ -456,19 +370,18 @@ class SuBillGenerator extends Model {
 		}
 		
 		// close the orders
+                //print_r($ordersToClose);
 		$modelEntry = new SuEntry();
 		foreach ($ordersToClose as $toClose){
 			$modelEntry->setEntryCloded($toClose);
 		}
-		// add the order to thehistory
-		$modelBill->addBill($number, $unit_id, $responsible_id, date("Y-m-d", time()), $totalHT);
 				
 		// bilan
 		// total HT
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Total H.T.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, $totalHT." €");
+		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round($totalHT,2), 2, ',', ' ')." €");
 		
 		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
@@ -496,18 +409,170 @@ class SuBillGenerator extends Model {
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('E'.$curentLine, "Total T.T.C.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, (float)$totalHT*(float)1.2." €");		
+		$objPHPExcel->getActiveSheet()->SetCellValue('F'.$curentLine, number_format(round((float)$totalHT*(float)1.2,2), 2, ',', ' ')." €");		
 
 		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('E'.$curentLine)->getFont()->setBold(true);
 		$objPHPExcel->getActiveSheet()->getStyle('F'.$curentLine)->applyFromArray($styleTableCellTotal);
 		
+                $nom = $unitName . '_' . $responsibleFullName ."_supplies.xls";
+		// add the order to thehistory
+                if ($billDir == ""){
+                    $invoiceurl = "data/supplies/".$nom;
+                }
+                else{
+                    $invoiceurl = $billDir . "/" . $nom;
+                }
+                $modelBill = new SuBill();
+                $modelBill->addBill($invoiceNumber, $unit_id, $responsible_id, date("Y-m-d", time()), $totalHT, $invoiceurl);
+		
 		// Save the xls file
-		$objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
-		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-		header('Content-Disposition: attachment;filename="bill.xls"');
-		header('Cache-Control: max-age=0');
-		$objWriter->save('php://output');
+                $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+		if ($billDir == ""){
+            
+                    $objWriter->save($invoiceurl);
+            
+                    header_remove();
+                    //ob_clean();
+                    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                    header('Content-Disposition: attachment;filename="'.$nom.'"');
+                    header('Cache-Control: max-age=0');
+                    readfile($invoiceurl);
+                    //$objWriter->save('php://output');
+            
+                }
+                else{
+                    //echo "save bill file to :" . $billDir . "/" . $nom;
+                    $objWriter->save($invoiceurl);
+                }
 			
 	}
+        
+        public function calculateBillNumber(){
+            // calculate the number
+		$modelBill = new SuBill();
+		$bills = $modelBill->getBills("number");
+		$lastNumber = "";
+		$number = "";
+		if (count($bills) > 0){
+			$lastNumber = $bills[count($bills)-1]["number"];
+		}
+		if ($lastNumber != ""){
+			$lastNumber = explode("-", $lastNumber);
+			$lastNumberY = $lastNumber[0];
+			$lastNumberN = $lastNumber[1];
+			
+			if ($lastNumberY == date("Y", time())){
+				$lastNumberN = (int)$lastNumberN + 1;
+			}
+                        else{
+                            $number = date("Y", time()) . "-001";
+                        }
+			$num = "".$lastNumberN."";
+			$number = $lastNumberY ."-". $this->float2ZeroStr($num) ;
+		}
+		else{
+			$number = date("Y", time()) . "-001";
+		}
+                return $number;
+        }
+        
+        public function float2ZeroStr($numYearBill){
+                    $nyb = "";
+                    if ($numYearBill < 10){
+                        $nyb = "000" . $numYearBill; 
+                    }
+                    else if($numYearBill >= 10 && $numYearBill < 100){
+                        $nyb = "00" . $numYearBill; 
+                    }
+                    else if($numYearBill >= 100 && $numYearBill < 1000){
+                        $nyb = "0" . $numYearBill; 
+                    }
+                    else{
+                        $nyb = $numYearBill;
+                    }
+                    return $nyb;
+        }
+        
+        protected function replaceVariable($objPHPExcel, $key, $value, $wrapText = false){
+		// replace the date
+		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		$keyfound = false;
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,$key) !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					$keyfound = true;
+					break;
+				}
+			}
+		}
+		if ($keyfound){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $value);
+			if ($wrapText){
+				$objPHPExcel->getActiveSheet()->getStyle($insertCol.$insertLine)->getAlignment()->setWrapText(true);
+			}
+		}
+		return $objPHPExcel;
+	}
+        
+        public function generateZipFile($billDir){
+            
+            
+            $zip = new ZipArchive();
+            $fileUrl = "data/supplies/tmp.zip";
+      
+            if(is_dir($billDir))
+            {
+                // On teste si le dossier existe, car sans ça le script risque de provoquer des erreurs.
+	
+                if($zip->open($fileUrl, ZipArchive::CREATE) == TRUE)
+                {
+                    // Ouverture de l’archive réussie.
+
+                    // Récupération des fichiers.
+                    $fichiers = scandir($billDir);
+                    // On enlève . et .. qui représentent le dossier courant et le dossier parent.
+                    unset($fichiers[0], $fichiers[1]);
+	  
+                    foreach($fichiers as $f)
+                    {
+                        // On ajoute chaque fichier à l’archive en spécifiant l’argument optionnel.
+                        // Pour ne pas créer de dossier dans l’archive.
+                        //echo "add file " . $f . "<br/>";
+                        if(!$zip->addFile($billDir.'/'.$f, $f))
+                        {
+                            echo 'Impossible d&#039;ajouter &quot;'.$f.'&quot;.<br/>';
+                        }
+                    }
+	
+                    // On ferme l’archive.
+                    $zip->close();
+                    //return;
+                    // On peut ensuite, comme dans le tuto de DHKold, proposer le téléchargement.
+                    header('Content-Transfer-Encoding: binary'); //Transfert en binaire (fichier).
+                    header('Content-Disposition: attachment; filename="invoice.zip"'); //Nom du fichier.
+                    header('Content-Length: '.filesize($fileUrl)); //Taille du fichier.
+
+                    readfile($fileUrl);
+                    unlink($fileUrl);
+                }
+                else
+                {
+                    // Erreur lors de l’ouverture.
+                    // On peut ajouter du code ici pour gérer les différentes erreurs.
+                    echo 'Erreur, impossible de créer l&#039;archive.';
+                }
+            }
+            else
+            {
+              // Possibilité de créer le dossier avec mkdir().
+              echo 'Le dossier &quot;upload/&quot; n&#039;existe pas.';
+            } 
+        }
 }

@@ -35,8 +35,9 @@ class MailerSend extends Model {
 		if (is_array ($toAdress)){
 			foreach($toAdress as $addres){
 				if ($addres[0] && $addres[0] != ""){
-					//echo $addres[0] . "<br/>";
-                                       $mail->AddBCC($addres[0]);
+                                    //echo $addres[0] . "<br/>";
+                                    //$mail->AddAddress($addres[0]);
+                                    $mail->addBCC($addres[0]);
 				}
 			}
 		}

@@ -46,7 +46,7 @@
                         newcell.childNodes[0].checked = false;
                         break;
                     case "select-one":
-                        newcell.childNodes[0].selectedIndex = 1;
+                        newcell.childNodes[0].selectedIndex = 0;
                         break;
                 }
             }

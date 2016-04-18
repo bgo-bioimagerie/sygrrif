@@ -5,7 +5,6 @@ require_once 'Modules/sprojects/Model/SpItem.php';
 require_once 'Modules/sprojects/Model/SpItemPricing.php';
 require_once 'Modules/sprojects/Model/SpTranslator.php';
 require_once 'Modules/sprojects/Model/SpItemsTypes.php';
-require_once 'Modules/sprojects/Model/SpBelonging.php';
 require_once 'Modules/core/Model/CoreBelonging.php';
 require_once 'Framework/TableView.php';
 

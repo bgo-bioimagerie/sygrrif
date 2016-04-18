@@ -15,25 +15,59 @@ class StUploader extends Model {
 	 *        	directory to explore
 	 * @return multitype: array
 	 */
-	public function getFiles($dir) {
+	public function getFiles($dir, $subdir = "") {
 		
 		$files = array ();
-		
 		if (is_dir ( $dir )) {	
 			$filesdir = scandir ( $dir );
-			$i = 0;
+			//$i = 0;
 			foreach ( $filesdir as $file ) {
-				if ($file != "." && $file != ".." && ! is_dir ( $dir . "/" . $file )) {
+				if ($file != "." && $file != ".."){
+                                    if( !is_dir ( $dir . "/" . $file) ) {
+                                        
+                                        $tmp = array();
+                                        $tmp["name"] = $subdir . "/" . $file;
+                                        $fp = fopen ( $dir . "/" . $file, "r" );
+                                        $tmp["size"] = $this->formatFileSize ( $this->my_filesize ( $fp ) );
+                                        fclose ( $fp );
+                                        $tmp["mtime"] = filemtime($dir . "/" . $file);
+                                        
+                                        //print_r($tmp);
+                                        $files[] = $tmp;
+                                        /*
 					$files [$i] ["name"] = $file;
 					$fp = fopen ( $dir . "/" . $file, "r" );
 					$files [$i] ["size"] = $this->formatFileSize ( $this->my_filesize ( $fp ) );
 					fclose ( $fp );
 					$files [$i] ["mtime"] = filemtime($dir . "/" . $file);
-					$i ++;
-				}
+					$i++;
+                                         */
+                                    }
+                                    else{
+                                        //echo "enter into dir " . $dir . "/" . $file . "/<br/>";
+                                        $files[] = $this->getFiles($dir . "/" . $file . "/", $subdir . "/" . $file); 
+                                        //print_r($files);
+                                    }
+                                }
 			}
 		}
-		return $files;
+		
+		$outfile = array();
+		$i = 0;
+		foreach($files as $file){
+			if( isset($file[1]) ){
+				foreach($file as $f){
+					$i++;
+					$outfile[$i] = $f;
+				}
+			}
+			else{
+				$i++;
+				$outfile[$i] = $file;
+			}
+		}
+		
+		return $outfile;
 	}
 	public function getUsage($userdir) {
 		$filesdir = scandir ( $userdir );
@@ -52,7 +86,8 @@ class StUploader extends Model {
 	public function outputFile($file, $name, $mime_type = '') {
 		$fileChunkSize = 1024 * 30;
 		
-		// echo "file = " . $file . "<br/>";
+		//echo "file = " . $file . "<br/>";
+		//return;
 		
 		if (! is_readable ( $file ))
 			die ( 'File not found or inaccessible!' );

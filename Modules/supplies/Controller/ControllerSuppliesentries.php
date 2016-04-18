@@ -46,7 +46,7 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		$table->addExportButton("suppliesentries/index/");
 		
 		$headersArray = array(
-				"id" => "ID", 
+				"no_identification" => SuTranslator::No_identification($lang), 
 				"user_name" => CoreTranslator::User($lang), 
 				"id_status" => CoreTranslator::Status($lang), 
 				"date_open" => SuTranslator::Opened_date($lang),
@@ -128,9 +128,11 @@ class ControllerSuppliesentries extends ControllerSecureNav {
 		for ($i = 0 ; $i < count($contentArray) ; $i++){
 			$val = explode("=", $contentArray[$i]);
 			if (count($val) > 1){
+                            if ($modelItem->getItemName($val[0]) != ""){
 				$itemsOrderC[$i]['id'] = $val[0];
 				$itemsOrderC[$i]['quantity'] = $val[1];
 				$itemsOrderC[$i]['name'] = $modelItem->getItemName($val[0]);
+                            }
 			}
 		}
 		

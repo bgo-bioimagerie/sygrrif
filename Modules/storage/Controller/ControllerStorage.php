@@ -54,25 +54,9 @@ class ControllerStorage extends ControllerSecureNav {
 			$filesDir = $modelFiles->getFiles($storageDir . $pDir["name"] . "/" . $userlogin);
 			$files[$count]["name"] =  $pDir["name"];
 			$files[$count]["files"] =  $filesDir;
-			
 			$count++;
 		}
 		
-		/*
-		$userUsage = 0;
-		if (count($files) == 0){
-			$lang = "En";
-			if (isset ( $_SESSION ["user_settings"] ["language"] )) {
-				$lang = $_SESSION ["user_settings"] ["language"];
-			}
-			$message = StTranslator::noUserDirMessage($lang, $userlogin);
-		}
-		else{
-			// get quotas informations
-			$userUsage = $modelFiles->getUsage($storageDir . $userlogin);
-			$userUsage = $modelFiles->formatFileSize($userUsage);
-		}
-		*/
 		// default
 		$this->generateView ( array ('navBar' => $navBar, "files" => $files, "userlogin" => $userlogin, "message" => $message,
 				"menu" => $menu
@@ -91,14 +75,20 @@ class ControllerStorage extends ControllerSecureNav {
 		$filename = $this->request->getParameter("filename");
 		$dirname = $this->request->getParameter("dir");
 		
+		//echo "filename = " . $filename . "<br/>";
+		//echo "dirname = " . $dirname . "<br/>";
+		
 		// remove some caracters for security
 		$filename = str_replace ( "./" , "" , $filename );
 		$filename = str_replace ( "../" , "" , $filename );
-		$filename = str_replace ( "/" , "" , $filename );
+		//$filename = str_replace ( "/" , "" , $filename );
 		
 		$dirname = str_replace ( "./" , "" , $dirname );
 		$dirname = str_replace ( "../" , "" , $dirname );
-		$dirname = str_replace ( "/" , "" , $dirname );
+		//$dirname = str_replace ( "/" , "" , $dirname );
+		
+		//echo "filename = " . $filename . "<br/>";
+		//echo "dirname = " . $dirname . "<br/>";
 		
 		// get the user login
 		$idUser = $_SESSION["id_user"];
@@ -106,11 +96,11 @@ class ControllerStorage extends ControllerSecureNav {
 		$userlogin = $modelUser->userLogin($idUser);
 		
 		$storageDir = Configuration::get("storageDir");
-		$fileUrl = $storageDir . $dirname . "/" . $userlogin . "/" . basename($filename);
+		$fileUrl = $storageDir . $dirname . "/" . $userlogin . "/" . $filename;
 		
 		// download
 		$modelFiles = new StUploader();
-		$modelFiles->outputFile($fileUrl, $filename);
+		$modelFiles->outputFile($fileUrl, basename($filename));
 		
 	}
 }

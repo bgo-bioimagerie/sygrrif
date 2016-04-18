@@ -54,17 +54,19 @@ if (isset($_SESSION["user_settings"]["language"])){
     	<ul class="bs-glyphicons-list">
 		<?php 
 		foreach ($toolMenu as $tool) {
-        	$key = $tool['link'];
-       		$value = $tool['name'];
-       		$icon = $tool['icon'];
-       		?>
-       		<li>
-        		<a href="<?php echo $key?>">
-          			<span class="glyphicon <?php echo $icon?>" aria-hidden="true"></span>
-          			<span class="glyphicon-class"><?php echo CoreTranslator::MenuItem($value, $lang)?></span>
-        		</a>
-        	</li>
-        	<?php 
+                    if ($tool['usertype'] <= 2){
+                    $key = $tool['link'];
+                    $value = $tool['name'];
+                    $icon = $tool['icon'];
+                    ?>
+                    <li>
+                            <a href="<?php echo $key?>">
+                                    <span class="glyphicon <?php echo $icon?>" aria-hidden="true"></span>
+                                    <span class="glyphicon-class"><?php echo CoreTranslator::MenuItem($value, $lang)?></span>
+                            </a>
+                    </li>
+                    <?php 
+                    }
 		}
         ?>
         </ul>
@@ -73,16 +75,33 @@ if (isset($_SESSION["user_settings"]["language"])){
 	</div>
         
         <?php 
-		if ($toolAdmin){
+		if ($_SESSION["user_status"] > 2){
 		?>
 		<div class="page-header">
 			<h2>
-			<?php echo  CoreTranslator::Admin($lang) ?>
+			<?php echo  CoreTranslator::Management($lang) ?>
 			<br>
 			</h2>
 		</div>
 		<div class="bs-glyphicons">
     	<ul class="bs-glyphicons-list">
+        <?php 
+		foreach ($toolMenu as $tool) {
+                    if ($tool['usertype'] > 2){
+                    $key = $tool['link'];
+                    $value = $tool['name'];
+                    $icon = $tool['icon'];
+                    ?>
+                    <li>
+                            <a href="<?php echo $key?>">
+                                    <span class="glyphicon <?php echo $icon?>" aria-hidden="true"></span>
+                                    <span class="glyphicon-class"><?php echo CoreTranslator::MenuItem($value, $lang)?></span>
+                            </a>
+                    </li>
+                    <?php 
+                    }
+		}
+        ?>
     	<?php 
         foreach ($toolAdmin as $tool) {
         	$key = $tool['link'];

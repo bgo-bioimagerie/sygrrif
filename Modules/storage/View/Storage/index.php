@@ -68,7 +68,20 @@ if($menu){
 		</thead>
 		<tbody>
 		
-		<?php foreach($filesDir["files"] as $file){?>
+                <?php
+                //print_r($filesDir["files"]);
+                //echo "<br/>";
+                ?>
+		<?php foreach($filesDir["files"] as $file){
+                    
+                    //echo "<br/>file = <br/>";
+                    //print_r($file);
+                    //echo "<br/>";
+                    if (isset($file[0])){
+                        //print_r($file[0]);
+                        $file = $file[0];
+                    }
+                    ?>
 			<tr>
 				<td><?= $file["name"] ?></td>
 				<td><?= $file["size"] ?></td>

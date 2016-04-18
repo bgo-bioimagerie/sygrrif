@@ -840,7 +840,7 @@ class CoreUser extends Model {
 		if (! $this->isUser ( $login )) {
 			
 			$sql = "insert into core_users(login, firstname, name, email, tel, pwd, id_unit, 
-    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active,source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
+    			                       id_status, date_created, convention, date_convention, date_end_contract,is_active,source)" . " values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
 			$this->runRequest ( $sql, array (
 					$login,
 					$firstname,
@@ -858,11 +858,13 @@ class CoreUser extends Model {
 					$source 		
 			) );
 			
+                        $idUser = $this->getDatabase()->lastInsertId();
+                        
 			// add the link between user and responsibles
 			$modelResponsible = new CoreResponsible();
 			$modelResponsible->removeAllUserRespJoin($idUser);
 			foreach ($id_responsible as $id_resp){
-				$modelResponsible->addUserRespJoin($idUser, $idResp);
+				$modelResponsible->addUserRespJoin($idUser, $id_resp);
 			}
 		}
 	}
@@ -1242,7 +1244,7 @@ class CoreUser extends Model {
 	 * @param number $numberYear Number of years
 	 */
 	private function updateUserActiveLastLogin($numberYear) {
-		$sql = "select id, date_last_login from core_users where is_active=1";
+		$sql = "select id, date_last_login, date_created from core_users where is_active=1";
 		$req = $this->runRequest ( $sql );
 		$users = $req->fetchAll ();
 		
@@ -1259,11 +1261,19 @@ class CoreUser extends Model {
                             $today = date ( "Y-m-d", time () );
 
                             // get the date created in seconds
-                            $createdDate = $user ["date_last_login"];
+                            $createdDate = $user ["date_created"];
                             $createdDate = explode ( "-", $createdDate );
                             $timec = mktime ( 0, 0, 0, $createdDate [1], $createdDate [2], $createdDate [0] );
-                            $timec = date ( "Y-m-d", $timec + $numberYear * 31556926/2 );
-                            
+                            $timec = date ( "Y-m-d", $timec + $numberYear * 31556926 );
+                            /*
+                            if ($user["name"] == "test"){
+                                print_r($createdDate);
+                                print_r($lastLoginDate);
+                                echo "today = " . $today . "<br/>";
+                                echo "timell = " . $timell . "<br/>";
+                                echo "timec = " . $timec . "<br/>";
+                            }
+                             */
                             $changedUsers = array ();
                             if ($timec <= $today) {
                                     if ($timell <= $today) {

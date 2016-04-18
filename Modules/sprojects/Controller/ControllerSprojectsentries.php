@@ -277,17 +277,17 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		$itemPricing = new SpItemPricing();
 		
                 
-                $content = "Date ; Prestation ; Commentaire ; Quantité ; Prix ; Total \r\n";
+                $content = "Date ; Commentaire ; Prestation ; Quantité ; Prix ;  Total \r\n";
 		$totalHT = 0;
                 $modelItem = new SpItem();
                 foreach($projectEntries as $entry){
                     
                     $content .= $entry["date"] . ";";
-                    $content .= $modelItem->getItemName($entry["id_item"]) . ";";
                     $content .= str_replace(";", ",", $entry["comment"]) . ";";  
+                    $content .= $modelItem->getItemName($entry["id_item"]) . ";";
+                    $content .= $entry["quantity"] . ";"; 
                     $unitPrice = $itemPricing->getPrice($entry["id_item"], $LABpricingid);
                     $content .= $unitPrice[0] . ";";
-                    $content .= $entry["quantity"] . ";";         
                     $price = (float)$entry["quantity"]*(float)$unitPrice[0];
                     $totalHT += $price;  
                     $content .= $price . "\r\n"; 
@@ -297,8 +297,8 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			$content .= " ; ";
 		}
 		$content .= $totalHT . "\r\n";
-		
-		header("Content-Type: application/csv-tab-delimited-table");
+                
+		header("Content-Type: application/csv-tab-delimited-table;charset=UTF-8");
 		header("Content-disposition: filename=projet.csv");
 		echo $content;
 	}

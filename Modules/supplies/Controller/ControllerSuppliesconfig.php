@@ -10,7 +10,7 @@ require_once 'Modules/supplies/Model/SuInitDatabase.php';
 class ControllerSuppliesconfig extends ControllerSecureNav {
 
 	public function __construct() {
-
+            Parent::__construct();
 	}
 
 	/**

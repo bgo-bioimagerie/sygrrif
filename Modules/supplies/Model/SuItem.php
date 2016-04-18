@@ -77,10 +77,13 @@ class SuItem extends Model {
 	public function getItem($id){
 		$sql = "select * from su_items where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
+		if ($unit->rowCount() == 1){
 			return $unit->fetch();  // get the first line of the result
-		else
-			throw new Exception("Cannot find the item using the given id");
+                }
+		else{
+                    return array("id" => 0, "name" => "", "description" => "");
+			//throw new Exception("Cannot find the item using the given id");
+                }
 	}
 	
 	public function getItemName($id){
@@ -91,7 +94,8 @@ class SuItem extends Model {
 			return $tmp[0];  // get the first line of the result
 		}
 		else{
-			throw new Exception("Cannot find the item using the given id");
+                    return "";
+			//throw new Exception("Cannot find the item using the given id");
 		}
 	}
 	
