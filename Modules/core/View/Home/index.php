@@ -103,18 +103,20 @@ if (isset($_SESSION["user_settings"]["language"])){
 		}
         ?>
     	<?php 
-        foreach ($toolAdmin as $tool) {
-        	$key = $tool['link'];
-        	$value = $tool['name'];
-        	$icon = $tool['icon'];
-        	?>
-        	<li>
-        		<a href="<?php echo $key?>">
-        	    	<span class="glyphicon <?php echo $icon?>" aria-hidden="true"></span>
-        	   		<span class="glyphicon-class"><?php echo $value?></span>
-        		</a>
-        	</li>
-        <?php 
+        if ( isset($toolAdmin) ){
+            foreach ($toolAdmin as $tool) {
+                    $key = $tool['link'];
+                    $value = $tool['name'];
+                    $icon = $tool['icon'];
+                    ?>
+                    <li>
+                            <a href="<?php echo $key?>">
+                            <span class="glyphicon <?php echo $icon?>" aria-hidden="true"></span>
+                                    <span class="glyphicon-class"><?php echo $value?></span>
+                            </a>
+                    </li>
+                <?php 
+            }
         }
         ?>
         </ul>

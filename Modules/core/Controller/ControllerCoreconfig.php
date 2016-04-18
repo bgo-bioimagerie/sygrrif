@@ -78,13 +78,13 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$this->generateView ( array ('navBar' => $navBar, 
 					                     'installSuccess' => $installSuccess,
 					                     'menus' => $menus,
-										 'activeUserSetting' => $activeUserSetting,
-										 'admin_email' => $admin_email,
-									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings,
-                                                                 'is_maintenance' => $is_maintenance,
-                                                                 'maintenance_message' => $maintenance_message 
+							     'activeUserSetting' => $activeUserSetting,
+							     'admin_email' => $admin_email,
+							     'coremenucolor' => $coremenucolor,
+							     'coremenucolortxt' => $coremenucolortxt,
+                                                             'userListSettings' => $userListSettings,
+                                                             'is_maintenance' => $is_maintenance,
+                                                             'maintenance_message' => $maintenance_message 
 			) );
 			return;
 		}
@@ -103,16 +103,15 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$status = $ModulesManagerModel->getDataMenusUserType("projects");
 			$menus[1] = array("name" => "projects", "status" => $status);
 			
-			
 			$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus,
-									 'activeUserSetting' => $activeUserSetting,
-									 'admin_email' => $admin_email,
-									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings,
-                                                                 'is_maintenance' => $is_maintenance,
-                                                                 'maintenance_message' => $maintenance_message 
+						     'activeUserSetting' => $activeUserSetting,
+						     'admin_email' => $admin_email,
+						     'coremenucolor' => $coremenucolor,
+                                                     'coremenucolortxt' => $coremenucolortxt,
+    						     'userListSettings' => $userListSettings,
+                                                     'is_maintenance' => $is_maintenance,
+                                                     'maintenance_message' => $maintenance_message 
 			) );
 			return;
 			
@@ -130,11 +129,11 @@ class ControllerCoreconfig extends ControllerSecureNav {
 					'menus' => $menus,
 					'activeUserSetting' => $activeUserSetting,
 					'admin_email' => $admin_email,
-									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings,
-                                                                 'is_maintenance' => $is_maintenance,
-                                                                 'maintenance_message' => $maintenance_message 
+					'coremenucolor' => $coremenucolor,
+					'coremenucolortxt' => $coremenucolortxt,
+    					'userListSettings' => $userListSettings,
+                                        'is_maintenance' => $is_maintenance,
+                                        'maintenance_message' => $maintenance_message 
 			) );
 			return;
 		}
@@ -189,7 +188,6 @@ class ControllerCoreconfig extends ControllerSecureNav {
 			$coremenucolor = $modelCoreConfig->getParam("coremenucolor");
 			$coremenucolortxt = $modelCoreConfig->getParam("coremenucolortxt");
 			
-			
 		}
                 
                 $maintenancequery = $this->request->getParameterNoException("maintenancequery");
@@ -206,13 +204,13 @@ class ControllerCoreconfig extends ControllerSecureNav {
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
 				                     'menus' => $menus, 
-									 'activeUserSetting' => $activeUserSetting,
-									 'admin_email' => $admin_email,
-									 'coremenucolor' => $coremenucolor,
-							         'coremenucolortxt' => $coremenucolortxt,
-    								 'userListSettings' => $userListSettings,
-                                                                 'is_maintenance' => $is_maintenance,
-                                                                 'maintenance_message' => $maintenance_message   
+                                                     'activeUserSetting' => $activeUserSetting,
+						     'admin_email' => $admin_email,
+						     'coremenucolor' => $coremenucolor,
+                                                     'coremenucolortxt' => $coremenucolortxt,
+                                                     'userListSettings' => $userListSettings,
+                                                     'is_maintenance' => $is_maintenance,
+                                                     'maintenance_message' => $maintenance_message   
 		) );
 	}
 	
