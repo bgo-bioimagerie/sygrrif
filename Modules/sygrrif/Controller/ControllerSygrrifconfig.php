@@ -39,14 +39,18 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		// series booking
 		$modelCoreConfig = new CoreConfig();
 		$seriesBooking = $modelCoreConfig->getParam("SySeriesBooking");
-		$editBookingMailing = $modelCoreConfig->getParam("SySeriesBooking");
+                
+		$editBookingMailing = $modelCoreConfig->getParam("SyEditBookingMailing");
+                $bookingMailingAdmin = $modelCoreConfig->getParam("SyBookingMailingAdmins");
+                
 		$sygrrifEditReservation = $modelCoreConfig->getParam("sygrrifEditReservation");
 		
 		$authorisations_location = $modelCoreConfig->getParam("sy_authorisations_location");
 		
 		// edit reservatin fields
 		$editBookingDescriptionSettings = $modelCoreConfig->getParam("SyDescriptionFields");
-		
+		$bookingMailingAdmin = $modelCoreConfig->getParam("bookingMailingAdmin");
+                                       
 		// core config
 		$sygrrifmenucolor = $modelCoreConfig->getParam("sygrrifmenucolor");
 		$sygrrifmenucolortxt = $modelCoreConfig->getParam("sygrrifmenucolortxt");
@@ -73,6 +77,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
     										 'seriesBooking' => $seriesBooking,
 											 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
     										 'editBookingMailing' => $editBookingMailing,
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
     										 'authorisations_location' => $authorisations_location,
     					                     'calSups' => $calSups,
     										 'installError' => $installError,
@@ -89,6 +94,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 										 'seriesBooking' => $seriesBooking,
 					                     'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
     								     'editBookingMailing' => $editBookingMailing,
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
 										 'authorisations_location' => $authorisations_location,
 									     'calSups' => $calSups,
 										 'installSuccess' => $installSuccess,
@@ -125,6 +131,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 									 'seriesBooking' => $seriesBooking,
 									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
     								 'editBookingMailing' => $editBookingMailing,
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
 									 'authorisations_location' => $authorisations_location,
 									 'calSups' => $calSups,
 								     'sygrrifEditReservation' => $sygrrifEditReservation,
@@ -147,6 +154,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
 					'editBookingMailing' => $editBookingMailing,
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
 					'sygrrifEditReservation' => $sygrrifEditReservation,
@@ -171,11 +179,12 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
 					'editBookingMailing' => $editBookingMailing, 
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
 					'sygrrifEditReservation' => $sygrrifEditReservation,
-									 'sygrrifmenucolor' => $sygrrifmenucolor,
-							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
+					'sygrrifmenucolor' => $sygrrifmenucolor,
+					'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -216,6 +225,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
 					'editBookingMailing' => $editBookingMailing,
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
 					'sygrrifEditReservation' => $sygrrifEditReservation,
@@ -238,12 +248,13 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    				'editBookingMailing' => $editBookingMailing, 
+                                        'editBookingMailing' => $editBookingMailing, 
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
 					'sygrrifEditReservation' => $sygrrifEditReservation,
-									 'sygrrifmenucolor' => $sygrrifmenucolor,
-							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
+					'sygrrifmenucolor' => $sygrrifmenucolor,
+					'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -255,18 +266,24 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$editBookingMailing = $this->request->getParameterNoException ( "email_when" );
 			$modelCoreConfig = new CoreConfig();
 			$modelCoreConfig->setParam("SyEditBookingMailing", $editBookingMailing);
-			
+                        $editBookingMailing = $modelCoreConfig->getParam("SyEditBookingMailing");
+                        
+                        $bookingMailingAdmin = $this->request->getParameterNoException ( "email_admin" );
+			$modelCoreConfig->setParam("SyBookingMailingAdmins", $bookingMailingAdmin);
+                        $bookingMailingAdmin = $modelCoreConfig->getParam("SyBookingMailingAdmins");
+
 			$this->generateView ( array ('navBar' => $navBar,
 					'menus' => $menus,
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
 					'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
 					'sygrrifEditReservation' => $sygrrifEditReservation,
-									 'sygrrifmenucolor' => $sygrrifmenucolor,
-							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
+					'sygrrifmenucolor' => $sygrrifmenucolor,
+					'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -316,12 +333,13 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 					'bookingSettings' => $bookingSettings,
 					'seriesBooking' => $seriesBooking,
 					'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    				'editBookingMailing' => $editBookingMailing, 
+                                        'bookingMailingAdmin' => $bookingMailingAdmin,
+                                        'editBookingMailing' => $editBookingMailing, 
 					'authorisations_location' => $authorisations_location,
 					'calSups' => $calSups,
 					'sygrrifEditReservation' => $sygrrifEditReservation,
-									 'sygrrifmenucolor' => $sygrrifmenucolor,
-							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
+					'sygrrifmenucolor' => $sygrrifmenucolor,
+					'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 			) );
 			return;
 		}
@@ -349,19 +367,19 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 			$sygrrifmenucolortxt = $modelCoreConfig->getParam("sygrrifmenucolortxt");
 		}
 		
-		
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				                     'menus' => $menus,
-									 'bookingSettings' => $bookingSettings,
-									 'seriesBooking' => $seriesBooking,
-									 'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
-    								 'editBookingMailing' => $editBookingMailing, 
-									 'authorisations_location' => $authorisations_location, 
-									 'calSups' => $calSups,
-									 'sygrrifEditReservation' => $sygrrifEditReservation,
-									 'sygrrifmenucolor' => $sygrrifmenucolor,
-							         'sygrrifmenucolortxt' => $sygrrifmenucolortxt
+				             'menus' => $menus,
+                                             'bookingSettings' => $bookingSettings,
+                                             'seriesBooking' => $seriesBooking,
+					     'editBookingDescriptionSettings' => $editBookingDescriptionSettings,
+                                             'editBookingMailing' => $editBookingMailing, 
+                                             'bookingMailingAdmin' => $bookingMailingAdmin,
+                                             'authorisations_location' => $authorisations_location, 
+					     'calSups' => $calSups,
+					     'sygrrifEditReservation' => $sygrrifEditReservation,
+                                             'sygrrifmenucolor' => $sygrrifmenucolor,
+                                             'sygrrifmenucolortxt' => $sygrrifmenucolortxt
 		) );
 	}
 	

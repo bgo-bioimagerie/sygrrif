@@ -1783,5 +1783,11 @@ class CoreUser extends Model {
 				$login
 		) );
 	}
+        
+        public function getActiveManagersEmails(){
+            $sql = "select distinct email from core_users WHERE id_status>2";
+            $req = $this->runRequest ( $sql );
+            return $req->fetchAll();
+        }
 	
 }

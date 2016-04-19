@@ -1396,23 +1396,31 @@ class SyTranslator {
 		}
 		return "Your reservation";
 	}
+        
+        static public function reservation($lang) {
+		if ($lang == "Fr") {
+			return "Réservation";
+		}
+		return "Reservation";
+	}
+        
 	static public function Your_reservation_has_been_added($lang) {
 		if ($lang == "Fr") {
-			return "Une réservation a été ajoutée à votre nom";
+			return "Une réservation a été ajoutée ";
 		}
-		return "Your reservation has been added";
+		return "A reservation has been added";
 	}
 	static public function Your_reservation_has_been_modified($lang) {
 		if ($lang == "Fr") {
-			return "Votre réservation à été modifiée";
+			return "Une réservation à été modifiée ";
 		}
-		return "Your reservation has been modified";
+		return "A reservation has been modified";
 	}
 	static public function Your_reservation_has_been_deleted($lang){
 		if ($lang == "Fr"){
-			return "Votre réservation a été supprimée";
+			return "Une réservation a été supprimée";
 		}
-		return "Your reservation has been deleted";
+		return "A reservation has been deleted";
 	}
 	static public function Authorisations_menu_location($lang) {
 		if ($lang == "Fr") {
@@ -1609,5 +1617,35 @@ class SyTranslator {
             }
             return "Bill all units";
         }
+        
+        public static function EmailManagers($lang){
+            if ($lang == "Fr") {
+                return "Prévenir les gestionnaires";
+            }
+            return "Email managers";
+        }
+        
+        public static function Never($lang){
+            if ($lang == "Fr") {
+                return "Jamais";
+            }
+            return "Never";
+        }
+        
+        public static function WhenAUserBook($lang){
+            if ($lang == "Fr") {
+                return "Lorsqu'un utilisateur réserve";
+            }
+            return "When a user book";
+        }
+        
+        public static function When_manager_admin_edit_a_reservation($lang){
+            if ($lang == "Fr") {
+                return "Lorsqu'un gestionnaire modifie un réservation";
+            }
+            return "When manager/admin edit a reservation";
+        }
+        
 }
+
 
