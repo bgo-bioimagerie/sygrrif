@@ -19,11 +19,13 @@ class CoreConfig extends Model {
 		$sql = "CREATE TABLE IF NOT EXISTS `core_config` (
 		`id` varchar(30) NOT NULL DEFAULT '',
 		`value` text NOT NULL DEFAULT '',
+                `id_site` int(11) DEFAULT 1, 
 		PRIMARY KEY (`id`)
 		);";
 		
-		$pdo = $this->runRequest($sql);
-		return $pdo;
+		$this->runRequest($sql);
+                
+                $this->addColumn("core_config", "id_site", "int(11)", 1);
 	}
 	
 	/**
@@ -33,11 +35,11 @@ class CoreConfig extends Model {
 	 */
 	public function createDefaultConfig(){
 	
-		$this->setParam("admin_email", "firstname.name@adress.com");
-		$this->setParam("user_desactivate", "0");
-		$this->setParam("logo", "Themes/logo.jpg");
-		$this->setParam("home_title", "Database");
-		$this->setParam("home_message", "");
+		$this->setParam("admin_email", "firstname.name@adress.com", 1);
+		$this->setParam("user_desactivate", "0", 1);
+		$this->setParam("logo", "Themes/logo.jpg", 1);
+		$this->setParam("home_title", "Database", 1);
+		$this->setParam("home_message", "", 1);
 	}
 	
 	/**
@@ -46,10 +48,12 @@ class CoreConfig extends Model {
 	public function isKey($key){
 		$sql = "select id from core_config where id='".$key."'";
 		$unit = $this->runRequest($sql);
-		if ($unit->rowCount() == 1)
+		if ($unit->rowCount() == 1){
 			return true;
-		else
+                }
+		else{
 			return false;
+                }
 	}
 	
 	/**
@@ -57,9 +61,9 @@ class CoreConfig extends Model {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function addParam($key, $value){
-		$sql = "INSERT INTO core_config (id, value) VALUES(?,?)";
-		$this->runRequest($sql, array($key, $value));
+	public function addParam($key, $value, $id_site = 1){
+		$sql = "INSERT INTO core_config (id, value, id_site) VALUES(?,?,?)";
+		$this->runRequest($sql, array($key, $value, $id_site));
 	}
 	
 	/**
@@ -67,9 +71,9 @@ class CoreConfig extends Model {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function updateParam($key, $value){
-		$sql = "update core_config set value=? where id=?";
-		$this->runRequest($sql, array($value, $key));
+	public function updateParam($key, $value, $id_site = 1){
+		$sql = "update core_config set value=?, id_site=? where id=?";
+		$this->runRequest($sql, array($value, $key, $id_site));
 	}
 	
 	/**
@@ -77,9 +81,9 @@ class CoreConfig extends Model {
 	 * @param string $key
 	 * @return string: value
 	 */
-	public function getParam($key){
-		$sql = "SELECT value FROM core_config WHERE id=?";
-		$req = $this->runRequest($sql, array($key));
+	public function getParam($key, $id_site = 1){
+		$sql = "SELECT value FROM core_config WHERE id=? AND id_site=?";
+		$req = $this->runRequest($sql, array($key, $id_site));
 		
 		if ($req->rowCount() == 1){
 			$tmp = $req->fetch();
@@ -95,12 +99,12 @@ class CoreConfig extends Model {
 	 * @param string $key
 	 * @param string $value
 	 */
-	public function setParam($key, $value){
+	public function setParam($key, $value, $id_site = 1){
 		if ($this->isKey($key)){
-			$this->updateParam($key, $value);
+			$this->updateParam($key, $value, $id_site);
 		}
 		else{
-			$this->addParam($key, $value);
+			$this->addParam($key, $value, $id_site);
 		}
 	}
 	

@@ -56,10 +56,11 @@ class CoreStatus extends Model {
 			$sql = 'INSERT INTO `core_status` (`name`) VALUES("admin")';
 			$pdo = $this->runRequest($sql);
 		}
-		
-		//return $pdo;
-				
-		//INSERT INTO `membres` (`pseudo`, `passe`, `email`) VALUES("Pierre", SHA1("dupont"), "pierre@dupont.fr");
+                
+                if (!$this->isStatus(5)){
+			$sql = 'INSERT INTO `core_status` (`name`) VALUES("super admin")';
+			$pdo = $this->runRequest($sql);
+		}
 	}
 	
 	/**

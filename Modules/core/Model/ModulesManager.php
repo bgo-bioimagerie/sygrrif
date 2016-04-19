@@ -17,25 +17,26 @@ class ModulesManager extends Model {
 	public function createTable(){
 			
 		$sql = "CREATE TABLE IF NOT EXISTS `core_adminmenu` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(40) NOT NULL DEFAULT '',
-		`link` varchar(150) NOT NULL DEFAULT '',
-		`icon` varchar(40) NOT NULL DEFAULT '',		
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `name` varchar(40) NOT NULL DEFAULT '',
+                    `link` varchar(150) NOT NULL DEFAULT '',
+                    `icon` varchar(40) NOT NULL DEFAULT '',	
+                    `id_site` int(11) NOT NULL DEFAULT 1,	
 		PRIMARY KEY (`id`)
 		);
 
 		CREATE TABLE IF NOT EXISTS `core_datamenu` (
-		`id` int(11) NOT NULL AUTO_INCREMENT,
-		`name` varchar(40) NOT NULL DEFAULT '',
-		`link` varchar(150) NOT NULL DEFAULT '',
-		`usertype` int(11) NOT NULL,
-		`icon` varchar(40) NOT NULL DEFAULT '',			
+                    `id` int(11) NOT NULL AUTO_INCREMENT,
+                    `name` varchar(40) NOT NULL DEFAULT '',
+                    `link` varchar(150) NOT NULL DEFAULT '',
+                    `usertype` int(11) NOT NULL,
+                    `icon` varchar(40) NOT NULL DEFAULT '',	
+                    `id_site` int(11) NOT NULL DEFAULT 1,
 		PRIMARY KEY (`id`)
 		);
 		";
 		
-		$pdo = $this->runRequest($sql);
-		return $pdo;
+		$this->runRequest($sql);		
 	}
 	
 	/**
@@ -43,13 +44,13 @@ class ModulesManager extends Model {
 	 */
 	public function addCoreDefaultMenus(){
 		if (!$this->isAdminMenu("Modules")){
-			$sql = "INSERT INTO core_adminmenu (name, link, icon) VALUES(?,?,?)";
-			$this->runRequest($sql, array("Modules", "modulesmanager","glyphicon-th-large"));
+			$sql = "INSERT INTO core_adminmenu (name, link, id_site, icon) VALUES(?,?,?,?)";
+			$this->runRequest($sql, array("Modules", "modulesmanager", 1, "glyphicon-th-large"));
 		}
 		
 		if (!$this->isDataMenu("users/institutions")){
-			$sql = "INSERT INTO core_datamenu (name, link, usertype, icon) VALUES(?,?,?,?)";
-			$this->runRequest($sql, array("users/institutions", "coreusers", 3, "glyphicon-user"));
+			$sql = "INSERT INTO core_datamenu (name, link, id_site, usertype, icon) VALUES(?,?,?,?,?)";
+			$this->runRequest($sql, array("users/institutions", "coreusers", 3, 1, "glyphicon-user"));
 		}
 	}
 	
@@ -61,8 +62,8 @@ class ModulesManager extends Model {
 	 * @param string $icon Menu bootstrap icon (for home page)
 	 * @return PDOStatement
 	 */
-	public function addAdminMenu($name, $link, $icon){
-		$sql = "INSERT INTO core_adminmenu (name, link, icon) VALUES(?,?,?)";
+	public function addAdminMenu($name, $link, $icon, $id_site = 1){
+		$sql = "INSERT INTO core_adminmenu (name, link, id_site, icon) VALUES(?,?,?,?)";
 		$pdo = $this->runRequest($sql, array($name, $link, $icon));
 		return $pdo;
 	}

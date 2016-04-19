@@ -18,55 +18,54 @@ require_once 'Modules/core/Model/CoreBelonging.php';
  */
 class CoreInitDatabase extends Model {
 
-	/**
-	 * Create the core database
-	 *
-	 * @return boolean True if the base is created successfully
-	 */
-	public function createDatabase(){
-		
-		$modulesModel = new ModulesManager();
-		$modulesModel->createTable();
-		$modulesModel->addCoreDefaultMenus();
-		
-		$userModel = new CoreUser();
-		$pdo = $userModel->createTable();
-		$pdo = $userModel->createDefaultUser();
-		$pdo = $userModel->createDefaultAdmin();
-		
-		$unitModel = new CoreUnit();
-		$pdo = $unitModel->createTable();
-		$pdo = $unitModel->createDefaultUnit();
-		
-		$respModel = new CoreResponsible();
-		$pdo = $respModel->createTable();
-		$pdo = $respModel->createDefaultResponsible();
-		
-		$statusModel = new CoreStatus();
-		$pdo = $statusModel->createTable();
-		$pdo = $statusModel->createDefaultStatus();
-		
-		$configModel = new CoreConfig();
-		$configModel->createTable();
-		$configModel->createDefaultConfig();
-		
-		$projectModel = new CoreProject();
-		$projectModel->createTable();
-		
-		$UserSettingsModel = new UserSettings();
-		$UserSettingsModel->createTable();
-		
-		$model = new CoreBelonging();
-		$model->createTable();
-		$model->createDefault();
-		
-		
-		if (!file_exists('data/core')) {
-    		mkdir('data/core', 0777, true);
-		}
-		
-		$message = 'success';
-		return $message;
-	}
-}
+    /**
+     * Create the core database
+     *
+     * @return boolean True if the base is created successfully
+     */
+    public function createDatabase() {
 
+        $modulesModel = new ModulesManager();
+        $modulesModel->createTable();
+        $modulesModel->addCoreDefaultMenus();
+
+        $userModel = new CoreUser();
+        $userModel->createTable();
+        $userModel->createDefaultUser();
+        $userModel->createDefaultAdmin();
+
+        $unitModel = new CoreUnit();
+        $unitModel->createTable();
+        $unitModel->createDefaultUnit();
+
+        $respModel = new CoreResponsible();
+        $respModel->createTable();
+        $respModel->createDefaultResponsible();
+
+        $statusModel = new CoreStatus();
+        $statusModel->createTable();
+        $statusModel->createDefaultStatus();
+
+        $configModel = new CoreConfig();
+        $configModel->createTable();
+        $configModel->createDefaultConfig();
+
+        $projectModel = new CoreProject();
+        $projectModel->createTable();
+
+        $UserSettingsModel = new UserSettings();
+        $UserSettingsModel->createTable();
+
+        $model = new CoreBelonging();
+        $model->createTable();
+        $model->createDefault();
+
+        if (!file_exists('data/core/')) {
+            mkdir('data/core/', 0777, true);
+        }
+
+        $message = 'success';
+        return $message;
+    }
+
+}
