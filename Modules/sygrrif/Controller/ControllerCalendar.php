@@ -1908,10 +1908,10 @@ class ControllerCalendar extends ControllerBooking {
 				
 			}
                         
-                        echo "send email <br/>";
+                        //echo "send email <br/>";
                         $this->sendEmailToManagers($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 					$short_description, $full_description, $quantity, "edit");
-                        return;
+                        //return;
 		}
 		else{
 			// get the series info
@@ -2088,7 +2088,6 @@ class ControllerCalendar extends ControllerBooking {
 					$short_description, $full_description, $quantity, $editstatus){
             
             $modelConfig = new CoreConfig();
-            echo "boooking mailing = " . $modelConfig->getParam("SyBookingMailingAdmins") . "<br/>";
             if ( $modelConfig->getParam("SyBookingMailingAdmins") >= 2){
 		
                 $modelUser = new CoreUser();
@@ -2096,10 +2095,6 @@ class ControllerCalendar extends ControllerBooking {
 		$toEmails = $modelUser->getActiveManagersEmails();
                 $recipient_name = $modelUser->getUserFUllName($recipient_id);
 			
-                echo "send email to managers </br>";
-                print_r($toEmails);
-                return;
-                
 		if ($fromEmail != "" && $toEmail!= ""){
 				
                     $modelUserSettings = new UserSettings();
