@@ -340,7 +340,6 @@ class ControllerPsprojects extends ControllerSecureNav {
         $navBar = $this->navBar();
         $lang = $this->getLanguage();
 
-
         // get user id
         $id_project = 0;
         if ($this->request->isParameterNotEmpty('actionid')) {
@@ -351,10 +350,8 @@ class ControllerPsprojects extends ControllerSecureNav {
         $proj = $modelProject->get($id_project);
         $headerInfo = array("curentTab" => "animalsin", "projectId" => $id_project, "projectName" => $proj["name"]);
 
-
         $modelAnimals = new PsAnimal();
         $animals = $modelAnimals->getProjectAnimals($id_project, false);
-
 
         $this->generateView(array("animals" => $animals, "headerInfo" => $headerInfo, "navBar" => $navBar,
             "lang" => $lang, "id_project" => $id_project

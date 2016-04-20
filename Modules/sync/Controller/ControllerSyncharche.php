@@ -37,22 +37,28 @@ class ControllerSyncharche extends Controller {
     
     public function index(){
         
-        $this->importGRR();
+        //$this->importGRR();
         $this->importAnimals();
     }
 
     public function importAnimals(){
         $dsn_grr = 'mysql:host=localhost;dbname=arche_old;charset=utf8';
         $login_grr = "root";
-        $pwd_grr = "root";
+        $pwd_grr = "";
 
         $pdo_arche = new PDO($dsn_grr, $login_grr, $pwd_grr, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 
         // Create petshop database
         echo "arche<br/>";
+        $installModel = new CoreInitDatabase();
+        $installModel->createDatabase();
         $modelDatabase = new PsInitDatabase();
         $modelDatabase->createDatabase();
         echo "arche database created <br/>";
+        
+        // import arche users
+        $this->importArcheUsers($pdo_arche);
+        echo "arche users added <br/>";
         
         // import equipe to unit
         $this->importArcheUnits($pdo_arche);
@@ -305,6 +311,50 @@ class ControllerSyncharche extends Controller {
         
     }
     
+    public function importArcheUsers($pdo_arche){
+        	// get all users from old db
+		$sql = "select * from grr_utilisateurs";
+		$users_oldq = $pdo_grr->query($sql);
+		$users_old = $users_oldq->fetchAll();
+		
+		$userModel = new CoreUser();
+		$unitModel = new CoreUnit();
+		foreach ($users_old as  $uo){	
+			$name = $uo['nom'];
+			$firstname = $uo['prenom']; 
+			$login = $uo['login']; 
+			$pwd = $uo['password'];
+			$email = $uo['email']; 
+			$phone = $uo['telephone'];
+			
+			$id_unit = $unitModel->getUnitId($uo['equipe']);
+			
+			$id_responsible = array(1);
+			
+			$is_active = 1;
+			if ($uo['etat'] == "inactif"){
+				$is_active = 0;
+			}
+			
+			$id_status = 2;
+			if($uo['statut'] == "administrateur"){
+				$id_status = 4;
+			}
+			$convention = 0;
+			$date_fin_contrat = '';
+			
+			$date_convention = "0000-00-00";
+                        
+                        $userModel->setUserMd5($name , $firstname , $login , $pwd , 
+		           			$email , $phone , $id_unit , 
+		           			$id_responsible , $id_status ,
+    						$convention , $date_convention , 
+					        $date_fin_contrat , $is_active
+
+        );
+		}
+    }
+    
     // affiche la liste des Sources
     public function importGRR() {
 
@@ -317,8 +367,7 @@ class ControllerSyncharche extends Controller {
 
 
         // install data  base
-        $installModel = new CoreInitDatabase();
-        $installModel->createDatabase();
+
 
         $sygrrifInstall = new SyInstall();
         $sygrrifInstall->createDatabase();

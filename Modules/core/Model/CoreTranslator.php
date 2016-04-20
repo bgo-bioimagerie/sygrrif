@@ -99,8 +99,11 @@ class CoreTranslator {
 			if($item == "sprojects"){
 				return "projets";
 			}
-                        if($item == "quotes"){
+            if($item == "quotes"){
 				return "devis";
+			}
+			if($item == "petshop"){
+				return "animalerie";
 			}
 		}
 		return $item;

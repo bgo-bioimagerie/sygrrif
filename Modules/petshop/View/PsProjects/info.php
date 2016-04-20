@@ -1,4 +1,4 @@
-<?php $this->title = "Pltaform-Manager" ?>
+<?php $this->title = "Platform-Manager" ?>
 
 <?php echo $navBar ?>
 
@@ -9,7 +9,7 @@
 </head>
 
 <?php include "Modules/petshop/View/petshopnavbar.php"; ?>
-<?php include "Modules/petshop/View/PsProjects/tabs.php"; ?>
+<?php include "Modules/petshop/View/Psprojects/tabs.php"; ?>
 
 <br>
 <div class="contatiner">

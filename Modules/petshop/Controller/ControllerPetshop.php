@@ -6,7 +6,7 @@ require_once 'Modules/petshop/Model/PsProjectType.php';
 class ControllerPetshop extends ControllerSecureNav {
 
     public function __construct() {
-        Parent::__construct();
+        parent::__construct();
     }
 
     /**

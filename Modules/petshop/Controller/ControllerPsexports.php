@@ -11,7 +11,7 @@ class ControllerPsexports extends ControllerSecureNav {
 
 
     public function __construct() {
-        Parent::__construct();
+        parent::__construct();
     }
     
     public function index(){

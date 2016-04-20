@@ -14,7 +14,7 @@ class ControllerPssectors extends ControllerSecureNav {
     private $model;
 
     public function __construct() {
-        Parent::__construct();
+        parent::__construct();
         $this->model = new PsSector();
     }
 

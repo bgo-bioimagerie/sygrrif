@@ -133,11 +133,13 @@ class ControllerConnection extends Controller
     	
     	// test if local account
     	if ($this->user->isLocalUser($login)){
+                //echo "found local user <br/>";
     		return $this->user->connect($login, $pwd);
     	}
     	
     	// search for LDAP account
     	else{
+            //echo "into LDap <br/>";
 	    	$modelCoreConfig = new CoreConfig();
 	    	if ($modelCoreConfig->getParam("useLdap") == true){
 	    		

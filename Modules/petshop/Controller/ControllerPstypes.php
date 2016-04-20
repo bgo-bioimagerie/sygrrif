@@ -18,7 +18,7 @@ class ControllerPstypes extends ControllerSecureNav {
      * Constructor
      */
     public function __construct() {
-        Parent::__construct();
+        parent::__construct();
         $this->model = new PsType();
     }
 

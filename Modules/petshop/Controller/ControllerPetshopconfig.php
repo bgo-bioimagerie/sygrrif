@@ -9,7 +9,7 @@ require_once 'Modules/petshop/Model/PsTranslator.php';
 class ControllerPetshopconfig extends ControllerSecureNav {
 
     public function __construct() {
-        Parent::__construct();
+        parent::__construct();
     }
 
     /**

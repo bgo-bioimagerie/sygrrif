@@ -9,7 +9,7 @@
 </head>
 
 <?php include "Modules/petshop/View/petshopnavbar.php"; ?>
-<?php include "Modules/petshop/View/PsProjects/tabs.php"; ?>
+<?php include "Modules/petshop/View/Psprojects/tabs.php"; ?>
 
 <br>
 <div class="col-md-12">
