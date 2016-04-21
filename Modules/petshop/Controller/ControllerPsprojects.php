@@ -300,7 +300,7 @@ class ControllerPsprojects extends ControllerSecureNav {
         $form->addDate("date_naissance", PsTranslator::BirthDate($lang), false);
         $form->addText("pere", PsTranslator::Father($lang), false);
         $form->addText("mere", PsTranslator::Mother($lang), false);
-        $form->addSelect("sexe", PsTranslator::Sexe($lang), array(PsTranslator::Male($lang), PsTranslator::female($lang)), array(1, 2));
+        $form->addSelect("sexe", PsTranslator::Sexe($lang), array(PsTranslator::Male($lang), PsTranslator::female($lang)), array("M", "F"));
         $form->addText("genotypage", PsTranslator::Genotype($lang), false);
         $form->addSelect("fournisseur", PsTranslator::supplier($lang), $choicesSupplier, $choicesSupplierid);
         $form->addText("collaboration", PsTranslator::Collaboration($lang), false);
