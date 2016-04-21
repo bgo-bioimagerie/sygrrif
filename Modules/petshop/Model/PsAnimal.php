@@ -59,7 +59,7 @@ class PsAnimal extends Model {
     
     public function addOne($id_project, $no_animals, $type_animal, $date_entry, $entry_reason, $lineage, $birth_date, $father, $mother, $sexe, $genotypage, $supplier, $collaboration, $num_bon, $user1, $user2, $observation) {
 
-        $sql = "INSERT INTO ps_animals (id, id_project, no_animal, type_animal, date_entry, entry_reason, 
+        $sql = "INSERT INTO ps_animals (id_project, no_animal, type_animal, date_entry, entry_reason, 
                                             lineage, birth_date, father, mother, sexe, 
                                             genotypage, supplier, collaboration,
                                             num_bon, user1, user2, observation

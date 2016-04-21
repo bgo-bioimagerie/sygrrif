@@ -49,8 +49,7 @@ class ControllerSygrrifconfig extends ControllerSecureNav {
 		
 		// edit reservatin fields
 		$editBookingDescriptionSettings = $modelCoreConfig->getParam("SyDescriptionFields");
-		$bookingMailingAdmin = $modelCoreConfig->getParam("bookingMailingAdmin");
-                                       
+		                       
 		// core config
 		$sygrrifmenucolor = $modelCoreConfig->getParam("sygrrifmenucolor");
 		$sygrrifmenucolortxt = $modelCoreConfig->getParam("sygrrifmenucolortxt");

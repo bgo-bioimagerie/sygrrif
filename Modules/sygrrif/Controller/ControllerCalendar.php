@@ -1874,7 +1874,7 @@ class ControllerCalendar extends ControllerBooking {
 			$responsible_id = $respList[0]["id"]; 
 		}
 		
-                echo "series_type_id = " . $series_type_id . "</br>";
+                //echo "series_type_id = " . $series_type_id . "</br>";
 		if ($series_type_id == 0 || $series_type_id == ""){
 			
 			$modelCalEntry = new SyCalendarEntry();
@@ -1911,7 +1911,7 @@ class ControllerCalendar extends ControllerBooking {
                         //echo "send email <br/>";
                         $this->sendEmailToManagers($start_time, $end_time, $resource_id, $booked_by_id, $recipient_id,
 					$short_description, $full_description, $quantity, "edit");
-                        //return;
+                        return;
 		}
 		else{
 			// get the series info
