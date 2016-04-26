@@ -25,6 +25,11 @@ class ControllerCoreconfig extends ControllerSecureNav {
 	 */
 	public function index() {
 
+            if ($_SESSION["user_status"] < 4){
+                echo "permission denied";
+                return;
+            }
+            
 		// nav bar
 		$navBar = $this->navBar();
 

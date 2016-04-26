@@ -75,7 +75,7 @@ class CoreUser extends Model {
 					"admin",
 					"administrateur",
 					"admin",
-					"4",
+					"5",
 					md5 ( "admin" ),
 					1,
 					"" . date ( "Y-m-d" ) . "" 

@@ -43,7 +43,7 @@ abstract class ControllerSecureNav extends ControllerSecure
     	$user_status_id = $_SESSION["user_status"];
     	
     	$toolAdmin = null;
-    	if ($user_status_id == 4){
+    	if ($user_status_id >= 4){
     		$modulesModel = new ModulesManager();
     		$toolAdmin = $modulesModel->getAdminMenus();
     	}

@@ -17,8 +17,8 @@ class ControllerHomeconfig extends ControllerSecureNav {
 	 * Constructor
 	 */
 	public function __construct() {
-
-	}
+            parent::__construct();
+        }
 
 	/**
 	 * (non-PHPdoc)

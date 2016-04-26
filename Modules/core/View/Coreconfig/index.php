@@ -18,6 +18,7 @@ if (isset($_SESSION["user_settings"]["language"])){
             </h1>
 	</div>
     <!-- Maintenance mode -->
+    <?php if ($_SESSION["user_status"] > 4) { ?>
     <div class="col-xs-12">
         <div class="page-header">
             <h2>
@@ -61,6 +62,8 @@ if (isset($_SESSION["user_settings"]["language"])){
         </div>    
 	</form>
      	
+        <?php } ?>
+        <?php if ($_SESSION["user_status"] > 4) { ?>
         <div class="page-header">
             <h2>
                 <?php echo  CoreTranslator::Install_Repair_database($lang) ?> <br> <small></small>
@@ -95,7 +98,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
       </form>
       
-      
+      <?php } ?>
+      <?php if ($_SESSION["user_status"] > 4) { ?>
+        
       <!-- Menu -->
       <div>
 		  <div class="page-header">
@@ -136,6 +141,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
+      <?php } ?>
+      <?php if ($_SESSION["user_status"] > 4) { ?>
       <!-- LDAP -->
       <div>
 		  <div class="page-header">
@@ -230,7 +237,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
-      
+      <?php } ?>
+      <?php if ($_SESSION["user_status"] >= 4) { ?>
       <!-- Booking options -->
       <div>
 		  <div class="page-header">
@@ -356,6 +364,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
+       <?php } ?>
+        <?php if ($_SESSION["user_status"] > 4) { ?>
       <!-- Backup -->
       <div>
 		  <div class="page-header">
@@ -378,6 +388,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  </form>
       </div>
       
+        <?php } ?>
        
   </div>
 </div>    

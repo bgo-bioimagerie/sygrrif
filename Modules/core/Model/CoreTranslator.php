@@ -1023,6 +1023,18 @@ class CoreTranslator {
 		return "Management";
         }
         
+        public function Sites($lang){
+            if ($lang == "Fr"){
+			return "Sites";
+		}
+		return "Sites";
+        }
         
+        public function Edit_Site($lang){
+            if ($lang == "Fr"){
+			return "Sites";
+		}
+		return "Sites";
+        }
         
 }

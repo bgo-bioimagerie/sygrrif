@@ -10,6 +10,7 @@ require_once 'Modules/core/Model/CoreStatus.php';
 require_once 'Modules/core/Model/CoreConfig.php';
 require_once 'Modules/core/Model/UserSettings.php';
 require_once 'Modules/core/Model/CoreBelonging.php';
+require_once 'Modules/core/Model/CoreSite.php';
 
 /**
  * Class defining methods to install and initialize the core database
@@ -25,6 +26,10 @@ class CoreInitDatabase extends Model {
      */
     public function createDatabase() {
 
+        $modelSite = new CoreSite();
+        $modelSite->createTable();
+        $modelSite->createDefault();
+        
         $modulesModel = new ModulesManager();
         $modulesModel->createTable();
         $modulesModel->addCoreDefaultMenus();
