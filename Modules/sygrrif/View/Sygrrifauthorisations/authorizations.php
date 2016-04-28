@@ -10,10 +10,10 @@ include "Modules/sygrrif/View/navbar.php";
 ?>
 
 <br>
-<div class="col-md-8 col-md-offset-2">
+<div class="col-md-12">
 	<?php echo $tableHtml ?>
 </div>
 
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

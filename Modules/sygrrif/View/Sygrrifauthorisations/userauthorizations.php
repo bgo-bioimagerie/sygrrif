@@ -57,21 +57,37 @@
 		foreach($resources as $resource){
 			
 			// search if there is an authorization
-			$idx = 0;
+			$idx = -1;
+                        $idx_active = -1;
+                        $idx_inactive = -1;
 			$found = false;
+                        // found an active one
 			for($i = 0 ; $i < count($userAuthorizations) ; $i++){
 				if ($userAuthorizations[$i]["resource_id"] == $resource["id"] && $userAuthorizations[$i]["is_active"] == 1){
-					$idx = $i;
-					$found = true;
+					$idx_active = $i;
+					//$found = true;
 					break;
 				}
+                                if($userAuthorizations[$i]["resource_id"] == $resource["id"] && $userAuthorizations[$i]["is_active"] == 0){
+                                    $idx_inactive = $i;
+                                    //echo "found inactive authorization for ressource " .  $resource["id"] . "i=" . $i . "<br/>";
+                                }
 			}
+                        if ($idx_active > -1){
+                            $idx = $idx_active;
+                            $found = true;
+                        }
+                        else if($idx_inactive > -1){
+                            $idx = $idx_inactive;
+                            $found = true;
+                        }
+                        
 			?>
 			<tr>
 			<td> <input type="hidden" name="resource_id[]" value="<?php echo $resource["id"]?>"> <?php echo $resource["name"] ?> </td>
 			<?php 
 			if ($found){
-				?>
+                            ?>
 					<td> 
 					    <?php 
 					    $is_active = $this->clean($userAuthorizations[$idx]['is_active']);
@@ -98,7 +114,7 @@
 						</div> 
 					</td>
 					<td>
-						<select class="form-control" name="visa_id[]">
+						<select class="form-control" name="visa_id[]" autocomplete="off">
 							<OPTION value="1"> -- </OPTION>
 							<?php 
 							$authVisaId = $this->clean($userAuthorizations[$idx]['visa_id']);
@@ -110,7 +126,7 @@
 							          	$checked = "selected=\"selected\"";
 							          }
 							    ?>
-								<OPTION value="<?php echo  $visaId ?>" <?php echo  $checked ?> > <?php echo  $visaname ?> </OPTION>
+								<OPTION value="<?php echo  $visaId ?>" <?php echo $checked ?> > <?php echo  $visaname ?> </OPTION>
 							<?php endforeach; ?>
 						</select>
 						

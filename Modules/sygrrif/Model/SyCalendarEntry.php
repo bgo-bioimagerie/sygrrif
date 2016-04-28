@@ -337,10 +337,15 @@ class SyCalendarEntry extends Model {
 		$sql = 'SELECT DISTINCT recipient_id, id FROM sy_calendar_entry WHERE
 				(start_time >=:start AND start_time <= :end) AND (responsible_id = :resp OR responsible_id = 0)';
 		$req = $this->runRequest($sql, $q);
-		$recs = $req->fetchAll();
+		//$recs = $req->fetchAll();
 		
+                if ($req->rowCount() > 0){
+                    return true;
+                }
+                return false;
+                
 		//print_r($recs);
-		
+		/*
 		$modelResp = new CoreResponsible();
 		foreach ($recs as $rec){
 			//echo "reservation id = " . $rec["id"] . "<br />";
@@ -350,18 +355,11 @@ class SyCalendarEntry extends Model {
 			if ($modelResp->isUserRespJoin($rec["recipient_id"], $resp_id) || $rec["recipient_id"] == $resp_id){
 				return true;
 			}
-			/*
-			$sql = "select id_responsible from core_users where id=".$rec["recipient_id"];
-			$req = $this->runRequest($sql);
-			$resp_id_req = $req->fetch();
-			$resp_id_req = $resp_id_req[0];
-			//echo "resp_id_req = " . $resp_id_req . "<br />";
-			if ($resp_id_req == $resp_id || $rec["recipient_id"]== $resp_id){
-				return true;
-			}
-			*/
+			
 		}
 		return false;
+                 
+                 */
 	}
 	
 	/**

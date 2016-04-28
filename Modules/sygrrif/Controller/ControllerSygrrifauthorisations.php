@@ -351,7 +351,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 			$authId = $this->request->getParameter ( "actionid" );
 		}
 		
-		$authInfo = array("id" => 0, "date" => "0000-00-00", "user_id" => 0, "lab_id" => 0,
+		$authInfo = array("id" => 0, "date" => "", "user_id" => 0, "lab_id" => 0,
 								   "visa_id" => 0, "resource_id" => 0, "is_active" => 0);	 
 		if ($authId > 0){
 			$modelAuth = new SyAuthorization();
@@ -383,7 +383,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 			$title = SyTranslator::Edit_Authorization($lang);
 		}
 		$form->setTitle($title);
-		$form->addDate("date", SyTranslator::Date($lang), true, $authInfo["date"]);
+		$form->addDate("date", SyTranslator::Date($lang), true, CoreTranslator::dateFromEn($authInfo["date"], $lang));
 		$form->addSelect("user_id", SyTranslator::User($lang), $uschoices, $uschoicesid, $authInfo["user_id"]);
 		$form->addSelect("resource_id", SyTranslator::Resource_categories($lang), $reschoices, $reschoicesid, $authInfo["resource_id"]);
 		$form->addSelect("visa_id", SyTranslator::Visa($lang), $vichoices, $vichoicesid, $authInfo["visa_id"]);
@@ -392,7 +392,7 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		if ($form->check()){
 			// run the database query
 			$modelAuth = new SyAuthorization();
-			$date = $form->getParameter("date");
+			$date = CoreTranslator::dateToEn($form->getParameter("date"), $lang);
 			$user_id = $form->getParameter("user_id");
 			//$lab_id = $form->getParameter("lab_id");
                         $lab_id = $modelUser->getUserUnit($user_id);
