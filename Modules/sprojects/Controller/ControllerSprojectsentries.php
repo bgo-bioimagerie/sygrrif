@@ -175,6 +175,10 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$idproject = $this->request->getParameter("actionid");
 		}
+                if ($idproject == "home"){
+                    $this->redirect("sprojectsbillmanager");
+                    return;
+                }
 		
 		$project = array();
 		$modelProject = new SpProject();
@@ -256,6 +260,7 @@ class ControllerSprojectsentries extends ControllerSecureNav {
 			$idproject = $this->request->getParameter("actionid");
 		}
 		
+                
 		// get project entries
 		$modelProject = new SpProject();
 		$projectEntries = $modelProject->getProjectEntries($idproject);
@@ -381,12 +386,16 @@ class ControllerSprojectsentries extends ControllerSecureNav {
             $modelBill = new SpBillGenerator();
             $fileName = $modelBill->generateBill($id_project);
             $fileUrl = "data/sprojects/" . $fileName;
-
+            
             // send the bill file    
             header('Content-Transfer-Encoding: binary'); //Transfert en binaire (fichier).
-            header('Content-Disposition: attachment; filename='. $fileName); //Nom du fichier.
+            header('Content-Disposition: attachment; filename="' . $fileName .'"' ); //Nom du fichier.
             header('Content-Length: '.filesize($fileUrl)); //Taille du fichier.
+            header('Refresh: 0;url=home');
             readfile($fileUrl);
+            
+            //header('Location: /'.$_SERVER["REQUEST_URI"]);
+            //$this->redirect("sprojectsentries/editentries/".$id_project);
             
         }
 	
