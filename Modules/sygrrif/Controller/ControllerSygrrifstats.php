@@ -492,7 +492,9 @@ class ControllerSygrrifstats extends ControllerBooking {
 		if ($form->check()){
 			// run the database query
 			$model = new SyStatsUser();
-			$users = $model->bookingUsers($form->getParameter("startdate"), $form->getParameter("enddate"));
+			$users = $model->bookingUsers(
+                                CoreTranslator::dateToEn($form->getParameter("startdate"), $lang), 
+                                CoreTranslator::dateToEn($form->getParameter("enddate"), $lang));
 			
 			$this->exportstatbookingusersCSV($users);
 		}

@@ -32,7 +32,7 @@ class SyStatsUser extends Model {
 		$id = $resource_id;
 		$nom = date('Y-m-d-H-i')."_".$id.".xlsx";
 		$teamName = Configuration::get("name");
-		$footer = "https://bioimagerie.univ-rennes1.fr/".$teamName."/exportFiles/".$nom;
+		$footer = "".$teamName."/exportFiles/".$nom;
 		
 		
 		$modelAuthorisation = new SyAuthorization();
