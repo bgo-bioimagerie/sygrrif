@@ -488,7 +488,7 @@ class SpBillGenerator extends Model {
 		$curentLine++;
 		$objPHPExcel->getActiveSheet()->insertNewRowBefore($curentLine + 1, 1);
 		$objPHPExcel->getActiveSheet()->SetCellValue('C'.$curentLine, "Total T.T.C.");
-		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, round((float)$totalHT*(float)(1.2),2)."€");		
+		$objPHPExcel->getActiveSheet()->SetCellValue('D'.$curentLine, number_format(round((float)$totalHT*(float)(1.2),2), 2, ',', ' ')."€");		
 
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->applyFromArray($styleTableCell);
 		$objPHPExcel->getActiveSheet()->getStyle('C'.$curentLine)->getFont()->setBold(true);

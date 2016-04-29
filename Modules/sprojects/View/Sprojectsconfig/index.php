@@ -133,7 +133,36 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
       </div>
       <br/> 
       
-      <!-- set bill template section -->
+      <!-- set bill tracking -->
+      <div>
+		<div class="page-header">
+		  <h2>
+		  <?php echo  SpTranslator::Bill_tracking($lang) ?>
+			<br> <small></small>
+		  </h2>
+		</div>
+		
+		
+      <form action="sprojectsconfig" method="post">
+        <div class="col-xs-12">
+            <input class="form-control" type="hidden" name="invoicetrackingquery" value="yes"/>
+	</div>
+        <div class="form-group col-xs-12">
+            <label class="control-label col-xs-4"><?php echo  SpTranslator::Bill_tracking($lang) ?></label>
+                <div class="col-xs-6">
+                    <select class="form-control" name="sprojectuseinvoicetracking">
+                        <OPTION value="1" <?php if($sprojectuseinvoicetracking==1){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::yes($lang) ?> </OPTION>
+                        <OPTION value="0" <?php if($sprojectuseinvoicetracking==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::no($lang) ?> </OPTION>
+                    </select>
+		</div>
+	</div>
+        <div class="col-xs-2 col-xs-offset-10" id="button-div">
+            <input type="submit" class="btn btn-primary" value="save" />
+	</div>
+      
+	</form>   
+	  
+<!-- set bill template section -->
       <div>
 		<div class="page-header">
 		  <h2>
@@ -185,8 +214,6 @@ include_once 'Modules/sprojects/Model/SpTranslator.php';
       </div>
       </div>
 	  </form>   
-	  
-
         <!-- menu color -->
       <div class="col-xs-12">
 		  <div class="page-header">

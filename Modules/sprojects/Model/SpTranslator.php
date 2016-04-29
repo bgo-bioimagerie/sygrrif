@@ -701,4 +701,10 @@ class SpTranslator {
             return "bill per project";    
         }
         
+        public static function Bill_tracking($lang){
+            if ($lang == "Fr") {
+                return "Suivi de facturation";
+            }
+            return "Invoices tracking";
+        }
 }

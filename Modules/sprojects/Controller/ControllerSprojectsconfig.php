@@ -32,6 +32,7 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 		$sprojectsmenucolortxt = $modelConfig->getParam("sprojectsmenucolortxt");
                 
                 $billingMode = $modelConfig->getParam('sprojectsbillingmode');
+                $sprojectuseinvoicetracking = $modelConfig->getParam("sprojectuseinvoicetracking");
 
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
@@ -48,7 +49,8 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
     					             'menus' => $menus,
                                                      'billingMode' => $billingMode,
                                                      'sprojectsmenucolor' => $sprojectsmenucolor,
-                                                     'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+                                                     'sprojectsmenucolortxt' => $sprojectsmenucolortxt,
+                                                     'sprojectuseinvoicetracking' => $sprojectuseinvoicetracking
     			) );
     			return;
 			}
@@ -58,7 +60,8 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 					             'menus' => $menus,
                                                      'billingMode' => $billingMode,
                                                      'sprojectsmenucolor' => $sprojectsmenucolor,
-                                                     'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+                                                     'sprojectsmenucolortxt' => $sprojectsmenucolortxt,
+                                                     'sprojectuseinvoicetracking' => $sprojectuseinvoicetracking
 			) );
 			return;
 		}
@@ -79,7 +82,8 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 				                     'menus' => $menus,
                                                      'billingMode' => $billingMode,
                                                      'sprojectsmenucolor' => $sprojectsmenucolor,
-						     'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+						     'sprojectsmenucolortxt' => $sprojectsmenucolortxt,
+                                                     'sprojectuseinvoicetracking' => $sprojectuseinvoicetracking
 									 	
 			) );
 			return;
@@ -101,7 +105,8 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 				                     'menus' => $menus,
                                                      'billingMode' => $billingMode2,
                                                      'sprojectsmenucolor' => $sprojectsmenucolor,
-                                                     'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+                                                     'sprojectsmenucolortxt' => $sprojectsmenucolortxt,
+                                                     'sprojectuseinvoicetracking' => $sprojectuseinvoicetracking
 			) );
 			return;
 		}
@@ -116,11 +121,23 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 					'templateMessage' => $templateMessage,
                                         'billingMode' => $billingMode,
 					'sprojectsmenucolor' => $sprojectsmenucolor,
-					'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+					'sprojectsmenucolortxt' => $sprojectsmenucolortxt,
+                                        'sprojectuseinvoicetracking' => $sprojectuseinvoicetracking
 			) );
 			return;
 		}
 		
+                // use invoicing tracking:
+		$invoicetrackingquery = $this->request->getParameterNoException("invoicetrackingquery");
+		if($invoicetrackingquery == "yes"){
+				
+			$sprojectuseinvoicetracking = $this->request->getParameterNoException("sprojectuseinvoicetracking");
+				
+			$modelConfig->setParam("sprojectuseinvoicetracking", $sprojectuseinvoicetracking);
+			$sprojectuseinvoicetracking = $modelConfig->getParam("sprojectuseinvoicetracking");
+				
+		}
+                
 		// menu color:
 		$menucolorquery = $this->request->getParameterNoException("menucolorquery");
 		if($menucolorquery == "yes"){
@@ -141,7 +158,8 @@ class ControllerSprojectsconfig extends ControllerSecureNav {
 				'menus' => $menus,
                                 'billingMode' => $billingMode,
 				'sprojectsmenucolor' => $sprojectsmenucolor,
-				'sprojectsmenucolortxt' => $sprojectsmenucolortxt
+				'sprojectsmenucolortxt' => $sprojectsmenucolortxt,
+                                'sprojectuseinvoicetracking' => $sprojectuseinvoicetracking
 		) );
 	}
 	

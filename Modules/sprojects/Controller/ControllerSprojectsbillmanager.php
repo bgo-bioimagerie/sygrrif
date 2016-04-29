@@ -29,13 +29,20 @@ class ControllerSprojectsbillmanager extends ControllerSecureNav {
 			$lang = $_SESSION["user_settings"]["language"];
 		}
 		
+                $modelConfig = new CoreConfig();
+                $useInvoiceTracking = $modelConfig->getParam("sprojectuseinvoicetracking");
+                
 		$table = new TableView ();
 		$table->setTitle ( SpTranslator::sprojects_bill( $lang ) );
-		$table->addLineEditButton ( "sprojectsbillmanager/edit" );
-		$table->addDeleteButton ( "sprojectsbillmanager/removeentry", "id", "number" );
-		$table->addPrintButton ( "sprojectsbillmanager/index/" );
+                if ($useInvoiceTracking == 1){
+                    $table->addLineEditButton ( "sprojectsbillmanager/edit" );
+                }
+                    $table->addDeleteButton ( "sprojectsbillmanager/removeentry", "id", "number" );
+                    $table->addPrintButton ( "sprojectsbillmanager/index/" );
+                
 		
-		$tableContent = array (
+                if ($useInvoiceTracking == 1){
+                    $tableContent = array (
 				"number" => SpTranslator::Number($lang), 
 				"no_project" => SpTranslator::Project_number($lang),
 				"id_resp" => CoreTranslator::Responsible($lang),
@@ -43,16 +50,22 @@ class ControllerSprojectsbillmanager extends ControllerSecureNav {
 				"total_ht" => SpTranslator::Total_HT($lang), 
 				"date_paid" => SpTranslator::Date_paid($lang), 
 				"is_paid" => SpTranslator::Is_Paid($lang)
-		);
+                    );
+                }
+                else{
+                    $tableContent = array (
+				"number" => SpTranslator::Number($lang), 
+				"no_project" => SpTranslator::Project_number($lang),
+				"id_resp" => CoreTranslator::Responsible($lang),
+				"date_generated" => SpTranslator::Date_generated($lang), 
+				"total_ht" => SpTranslator::Total_HT($lang)
+                    );
+                }
+                
+		
 		// is restricted translation
-		$modelConfig = new CoreConfig();
-		$sprojectsusersdatabase = $modelConfig->getParam("sprojectsusersdatabase");
-		if ($sprojectsusersdatabase == "local"){
-			$modelUser = new SpUser();
-		}
-		else{
-			$modelUser = new CoreUser();
-		}
+		$modelUser = new CoreUser();
+		
 		for($i = 0; $i < count ( $billsList ); $i ++) {
 			
 			$billsList[$i]["date_generated"] = CoreTranslator::dateFromEn($billsList[$i]["date_generated"], $lang);

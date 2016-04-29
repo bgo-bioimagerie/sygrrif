@@ -280,13 +280,12 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $objPHPExcel->setActiveSheetIndex(1);
         $objPHPExcel->getActiveSheet()->getRowDimension('1')->setRowHeight(40);
 
-
         $curentLine = 1;
         $objPHPExcel->getActiveSheet()->setCellValue('A' . $curentLine, CoreTranslator::Responsible($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, CoreTranslator::Unit($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, CoreTranslator::User($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, SpTranslator::No_Projet($lang));
-        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, SpTranslator::Date_paid($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, SpTranslator::Closed_date($lang));
         
         $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
@@ -474,7 +473,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, CoreTranslator::Unit($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, CoreTranslator::User($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, SpTranslator::No_Projet($lang));
-        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, SpTranslator::Date_paid($lang));
+        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, SpTranslator::Closed_date($lang));
         
         $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
