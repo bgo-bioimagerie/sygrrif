@@ -31,6 +31,16 @@ class CoreSite extends Model {
             $this->runRequest($sql2);
 	}
 	
+        public function getUserAdminSites($id_user){
+            $sql = "SELECT * FROM core_sites WHERE id IN(SELECT id_site FROM core_j_user_site WHERE id_user=? AND id_status>=4)";
+            return $this->runRequest($sql, array($id_user))->fetchAll();
+        }
+        
+        public function getSiteAdmins($id_site){
+            $sql = "SELECT * FROM core_j_user_site WHERE id_site=? AND id_status>=3";
+            return $this->runRequest($sql, array($id_site))->fetchAll();
+        }
+        
         public function setUserToSite($id_user, $id_site, $id_status){
             if ($this->isUserSite($id_user, $id_site)){
                 $this->updateUserSite($id_user, $id_site, $id_status);
@@ -209,7 +219,12 @@ class CoreSite extends Model {
 	 * @param number $id Unit ID
 	 */
 	public function delete($id){
-		$sql="DELETE FROM core_sites WHERE id = ?";
-		$this->runRequest($sql, array($id));
+            $sql="DELETE FROM core_sites WHERE id = ?";
+            $this->runRequest($sql, array($id));
 	}
+        
+        public function removeSiteAdmins($id_site){
+            $sql="DELETE FROM core_j_user_site WHERE id_site = ? AND id_status>=3";
+            $this->runRequest($sql, array($id_site));
+        }
 }

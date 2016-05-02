@@ -63,6 +63,13 @@ class CoreTranslator {
 		}
 		return "Admin";
 	}
+        
+        public static function Admins($lang = ""){
+		if ($lang == "Fr"){
+			return "Administrateurs";
+		}
+		return "Admins";
+	}
 	
 	public static function My_Account($lang = ""){
 		if ($lang == "Fr"){
@@ -1023,18 +1030,67 @@ class CoreTranslator {
 		return "Management";
         }
         
-        public function Sites($lang){
+        public static function Sites($lang){
             if ($lang == "Fr"){
 			return "Sites";
 		}
 		return "Sites";
         }
         
-        public function Edit_Site($lang){
+        public static function Edit_Site($lang){
             if ($lang == "Fr"){
 			return "Sites";
 		}
 		return "Sites";
+        }
+        
+        public static function enable_for_super_admin($lang){
+            if ($lang == "Fr"){
+			return "activé pour les super-administrateurs";
+		}
+		return "enabled for super admin";
+        }
+        
+        public static function Site_managers($lang){
+             if ($lang == "Fr"){
+			return "Gestionnaires du site";
+		}
+		return "Site managers";
+        }
+        
+        public static function Visitor($lang){
+             if ($lang == "Fr"){
+			return "Visiteur";
+		}
+		return "Visitor";
+        }
+        
+        public static function Manager($lang){
+             if ($lang == "Fr"){
+			return "Gestionaire";
+		}
+		return "Manager";
+        }
+        
+        public static function Remove($lang){
+             if ($lang == "Fr"){
+			return "Enlever";
+		}
+		return "Remove";
+        }
+        
+        public static function Managers_for_site($lang){
+             if ($lang == "Fr"){
+			return "Gestionnaires du site";
+		}
+		return "Managers for site";
+        }
+        
+        public static function Siteadminchangemessage($lang){
+            if ($lang == "Fr"){
+			return "La liste des gestionnaires du site a bien été modifiée";
+		}
+		return "The site managers list has been modified";
         }
         
 }

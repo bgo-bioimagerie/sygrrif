@@ -4,6 +4,7 @@ require_once 'Framework/TableView.php';
 require_once 'Framework/Form.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/CoreSite.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
 
 /**
  * Manage the units (each user belongs to an unit)
@@ -48,7 +49,8 @@ class ControllerCoresites extends ControllerSecureNav {
 		$table->setTitle(CoreTranslator::Sites($lang));
 		$table->addLineEditButton("coresites/edit");
 		$table->addDeleteButton("coresites/delete");
-		$table->addPrintButton("coresites/index/");
+                $table->addLineButton("coresites/siteusers", "id", CoreTranslator::Admins($lang));
+                $table->addPrintButton("coresites/index/");
 		$tableHtml = $table->view($unitsArray, array("id" => "ID", "name" => CoreTranslator::Name($lang)));
 		
 		if ($table->isPrint()){
@@ -111,6 +113,52 @@ class ControllerCoresites extends ControllerSecureNav {
 		}
 	}
 
+        public function siteusers($message = "", $idSite = ""){
+            
+            if ($idSite == ""){
+                $id_site = $this->request->getParameter("actionid");
+            }
+            else{
+                $id_site = $idSite;
+            }
+            
+            // get all the admins for a given site
+            $siteAdmins = $this->siteModel->getSiteAdmins($id_site);
+            
+            $modelUser = new CoreUser();
+            $users = $modelUser->getActiveUsers("name");
+            
+            $siteInfo = $this->siteModel->get($id_site);
+            
+            // view
+            $navBar = $this->navBar();
+            $this->generateView ( array (
+                    'navBar' => $navBar,
+                    'admins' => $siteAdmins,
+                    'users' => $users,
+                    'siteInfo' => $siteInfo,
+                    'message' => $message
+		), "siteusers" );
+            
+        }
+        
+        public function siteusersquery(){
+            
+            $lang = $this->getLanguage();
+            
+            $id_site = $this->request->getParameter("id_site");
+            $id_user = $this->request->getParameter("id_user");
+            $id_status = $this->request->getParameter("id_status");
+            
+            $modelSite = new CoreSite();
+            $modelSite->removeSiteAdmins($id_site);
+            
+            for($i = 0 ; $i < count($id_user) ; $i++){
+                $modelSite->addUserToSite($id_user[$i], $id_site, $id_status[$i]);
+            }
+            
+            $this->siteusers(CoreTranslator::Siteadminchangemessage($lang), $id_site);
+        }
 	/**
 	 * Remove an unit query to database
 	 */

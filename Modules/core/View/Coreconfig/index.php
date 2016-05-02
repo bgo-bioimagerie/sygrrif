@@ -122,7 +122,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    	$menuStatus = $menu["status"];
 		    ?>
 		    <div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4"><?php echo $menuName?></label>
+				<label class="control-label col-xs-4"><?php echo $menuName?></label>
 				<div class="col-xs-6">
 					<select class="form-control" name="menus[]">
 						<OPTION value="0" <?php if($menuStatus==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::disable($lang) ?> </OPTION>
@@ -130,7 +130,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 						<OPTION value="2" <?php if($menuStatus==2){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_users($lang) ?> </OPTION>
 						<OPTION value="3" <?php if($menuStatus==3){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_manager($lang) ?> </OPTION>
 						<OPTION value="4" <?php if($menuStatus==4){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_admin($lang) ?> </OPTION>
-					</select>
+                                                <OPTION value="5" <?php if($menuStatus==5){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::enable_for_super_admin($lang) ?> </OPTION>
+					
+                                        </select>
 				</div>
 			</div>
 			<?php }?>
@@ -240,10 +242,14 @@ if (isset($_SESSION["user_settings"]["language"])){
       <?php } ?>
       <?php if ($_SESSION["user_status"] >= 4) { ?>
       <!-- Booking options -->
+      
+      <?php
+      foreach($sites as $site){
+      ?>
       <div>
 		  <div class="page-header">
 			<h2>
-				<?php echo CoreTranslator::User_list_options($lang)?> <br> <small></small>
+                            <?php echo CoreTranslator::User_list_options($lang)?> for site: <?php echo $site["name"] ?> <br> <small></small>
 			</h2>
 		  </div>
 
@@ -251,8 +257,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  method="post">
 		  
 		    <div class="col-xs-10">
-			  <input class="form-control" type="hidden" name="setuserlistoptionsquery" value="yes"
-			 	/>
+			  <input class="form-control" type="hidden" name="setuserlistoptionsquery" value="yes"/>
+                          <input class="form-control" type="hidden" name="id_site" value="<?php echo $site["id"] ?>"/>
 		    </div>
 		    
 		    <!-- date_convention -->
@@ -327,11 +333,16 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    </div>
 		  </form>
       
+          
+       <?php
+      }
+        foreach($sites as $site){
+      ?>   
        <!-- menu color -->
       <div>
 		  <div class="page-header">
 			<h2>
-				<?php echo  CoreTranslator::menu_color($lang) ?> <br> <small></small>
+				<?php echo  CoreTranslator::menu_color($lang) ?> for site: <?php echo $site["name"] ?> <br> <small></small>
 			</h2>
 		  </div>
 		
@@ -339,8 +350,8 @@ if (isset($_SESSION["user_settings"]["language"])){
 		  method="post">
 		  
 		    <div class="col-xs-12">
-			  <input class="form-control" type="hidden" name="menucolorquery" value="yes"
-			 	/>
+			  <input class="form-control" type="hidden" name="menucolorquery" value="yes"/>
+                          <input class="form-control" type="hidden" name="id_site" value="<?php echo $site["id"]?>"/>
 		    </div>
 		    
 		<div class="form-group">
@@ -363,6 +374,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    </div>
 		  </form>
       </div>
+       <?php
+        }
+       ?>
       
        <?php } ?>
         <?php if ($_SESSION["user_status"] > 4) { ?>

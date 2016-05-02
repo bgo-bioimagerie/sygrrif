@@ -67,7 +67,7 @@ $classWell = 'col-md-4 well';
 
 <div class="bs-docs-header" id="content">
 	<div class="container">
-		<h2><?php echo  CoreTranslator::Users($lang) ?></h2>
+		<!-- <h2><?php echo  CoreTranslator::Users($lang) ?></h2> -->
 
 		<div class=<?php echo  $classWell ?> >
 			<fieldset>

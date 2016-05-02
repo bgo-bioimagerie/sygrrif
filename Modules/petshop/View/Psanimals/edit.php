@@ -119,7 +119,7 @@ width: auto;
 		</div>
 
 	<div class="form-group">
-	    <label for="inputEmail" class="control-label col-xs-2">ID</label>
+	    <label class="control-label col-xs-2">ID</label>
 	    <div class="col-xs-10">
 	        <input type="text" class="form-control" id="address" name="id"
 	               value="<?= $animal['id'] ?>" readonly>
@@ -127,7 +127,7 @@ width: auto;
 	</div>
 
 	<div class="form-group">
-            <label for="inputEmail" class="control-label col-xs-2"><?php echo PsTranslator::NoAnimal($lang) ?></label>
+            <label class="control-label col-xs-2"><?php echo PsTranslator::NoAnimal($lang) ?></label>
 	    <div class="col-xs-10">
 	        <input type="text" class="form-control" id="address" name="no_animal"
 	               value="<?= $animal['no_animal'] ?>">
