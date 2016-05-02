@@ -10,7 +10,7 @@ require_once 'Modules/mailer/Model/MailerTranslator.php';
 class ControllerMailerconfig extends ControllerSecureNav {
 
 	public function __construct() {
-
+            parent::__construct();
 	}
 
 	/**
@@ -27,7 +27,7 @@ class ControllerMailerconfig extends ControllerSecureNav {
 		// activated menus list
 		$ModulesManagerModel = new ModulesManager();
 		
-		$status = $ModulesManagerModel->getDataMenusUserType("projects");
+		$status = $ModulesManagerModel->getDataMenusUserType("email");
 		$menuStatus = array("name" => "email", "status" => $status);
 		
 		// set menus section
@@ -51,7 +51,7 @@ class ControllerMailerconfig extends ControllerSecureNav {
 	
 		// default
 		$this->generateView ( array ('navBar' => $navBar,
-				                     'menuStatus' => $menuStatus
+				             'menuStatus' => $menuStatus
 		) );
 	}
 }

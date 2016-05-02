@@ -72,7 +72,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		    </div>
 		    
 		    <div class="form-group col-xs-12">
-				<label for="inputEmail" class="control-label col-xs-4">email</label>
+				<label class="control-label col-xs-4">email</label>
 				<div class="col-xs-6">
 					<select class="form-control" name="emailmenu">
 						<OPTION value="0" <?php if($menuStatus["status"]==0){echo "selected=\"selected\"";} ?> > <?php echo  CoreTranslator::disable($lang) ?> </OPTION>
