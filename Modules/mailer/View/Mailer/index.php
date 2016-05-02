@@ -20,7 +20,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div> 
 		<br><br/>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  MailerTranslator::From($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  MailerTranslator::From($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="from" type="text" name="from" value="<?php echo  $from ?>" readonly
 				/>
@@ -28,10 +28,11 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br><br/>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  MailerTranslator::To($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  MailerTranslator::To($lang) ?></label>
 			<div class="col-xs-10">
 				<select class="form-control" name="to">
 					<OPTION value="all" > all </OPTION>
+                                        <OPTION value="managers" > <?php echo CoreTranslator::Managers($lang) ?> </OPTION>
 					<?php foreach ($areasList as $area):?>
 					    <?php $areaname = $this->clean( $area['name'] );
 					          $areaId = $this->clean( $area['id'] );

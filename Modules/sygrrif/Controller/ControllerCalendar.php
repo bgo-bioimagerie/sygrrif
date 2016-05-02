@@ -1828,7 +1828,6 @@ class ControllerCalendar extends ControllerBooking {
 			return;
 		}
 
-		
 		if (count($endDate) > 2){
 			$end_time = mktime($end_hour, $end_min, 0, $endDate[1], $endDate[2], $endDate[0]);
 		}

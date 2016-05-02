@@ -11,7 +11,8 @@ require_once 'Modules/core/Model/ModulesManager.php';
 class ControllerMailer extends ControllerSecureNav {
 
 	public function __construct() {
-	}
+            parent::__construct();
+        }
 
 	// Affiche la liste de tous les billets du blog
 	public function index() {
@@ -63,6 +64,10 @@ class ControllerMailer extends ControllerSecureNav {
 			$modelUser = new CoreUser();
 			$toAdress = $modelUser->getAllActifEmails();
 		}
+                elseif ($to == "managers") {
+                        $modelUser = new CoreUser();
+                        $toAdress = $modelUser->getActiveManagersEmails();
+                }
 		else{
 			$toEx = explode("_", $to);
 			if ($toEx[0] == "a"){ // area

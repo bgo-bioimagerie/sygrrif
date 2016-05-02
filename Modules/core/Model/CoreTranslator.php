@@ -1026,6 +1026,11 @@ class CoreTranslator {
 		return "Management";
         }
         
-        
+        public static function Managers($lang){
+               if ($lang == "Fr"){
+			return "Gestionnaires";
+		}
+		return "Managers";
+        }
         
 }
