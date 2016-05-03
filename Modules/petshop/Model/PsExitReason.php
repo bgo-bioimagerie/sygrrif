@@ -130,6 +130,17 @@ class PsExitReason extends Model {
             return "Unknown";
         }
     }
+    
+    public function getName($id){
+        $sql = "select name from ps_exit_reason where id=?";
+        $req = $this->runRequest($sql, array($id));
+        if ($req->rowCount() == 1) {
+            $tmp = $req->fetch();
+            return $tmp[0];
+        } else {
+            return "Unknown";
+        }
+    }
 
     /**
      * get the id of a Exit reason from it's name

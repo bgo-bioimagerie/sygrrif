@@ -411,12 +411,26 @@ width: auto;
         </div>
         
 	<div class="form-group">
-            <label for="text" class="control-label col-xs-2"><?php echo PsTranslator::ExitReason($lang) ?> </label>
-    	<div class="col-xs-10">
-        	<input type="text" class="form-control" id="date_arrive" name="exit_reason"
-       	    	    value="<?= $animal['exit_reason'] ?>">
-  		 </div>
-	</div>
+            <label for="inputEmail" class="control-label col-xs-2"><?php echo PsTranslator::ExitReason($lang) ?></label>
+	    <div class="col-xs-10">
+	        <select class="form-control" name="exit_reason">
+                        <?php
+                        $entryReasonId = $this->clean($animal["exit_reason"]);
+                        foreach ($exitReasons as $entryReason) {
+                            $ide = $this->clean($entryReason["id"]);
+                            $namee = $this->clean($entryReason["name"]);
+                            $selected = "";
+                            if ($entryReasonId == $ide) {
+                                $selected = "selected=\"selected\"";
+                            }
+                            ?>
+                            <OPTION value="<?= $ide ?>" <?= $selected ?>> <?= $namee ?> </OPTION>
+                        <?php
+                        }
+                        ?>
+             </select>
+	    </div>
+	</div>    
 
 	<div class="form-group">
             <label for="text" class="control-label col-xs-2"><?php echo PsTranslator::Observation($lang) ?></label>

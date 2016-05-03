@@ -10,6 +10,7 @@ require_once 'Modules/petshop/Model/PsType.php';
 require_once 'Modules/petshop/Model/PsProjectType.php';
 require_once 'Modules/mailer/Model/MailerSend.php';
 require_once 'Modules/petshop/Model/PsEntryReason.php';
+require_once 'Modules/petshop/Model/PsExitReason.php';
 require_once 'Modules/petshop/Model/PsTranslator.php';
 
 class ControllerPsanimals extends ControllerSecureNav {
@@ -44,10 +45,13 @@ class ControllerPsanimals extends ControllerSecureNav {
 
         $modelEntryReason = new PsEntryReason();
         $entryReasons = $modelEntryReason->getAll("name");
+        
+        $modelExitReason = new PsExitReason();
+        $exitReasons = $modelExitReason->getAll("name");
 
         $this->generateView(array('animal' => $animal, 'sectors' => $sectors, 'navBar' => $navBar,
             'suppliers' => $suppliers, 'projects' => $projets, "users" => $users,
-            'units' => $units, "entryReasons" => $entryReasons, "message" => $message
+            'units' => $units, "entryReasons" => $entryReasons, "exitReasons" => $exitReasons, "message" => $message
                 ), "edit");
     }
 

@@ -12,6 +12,7 @@ require_once 'Modules/petshop/Model/PsSector.php';
 require_once 'Modules/petshop/Model/PsEntryReason.php';
 require_once 'Modules/petshop/Model/PsSupplier.php';
 require_once 'Modules/petshop/Model/PsAnimal.php';
+require_once 'Modules/petshop/Model/PsExitReason.php';
 
 require_once 'Framework/TableView.php';
 require_once 'Framework/Form.php';
@@ -430,10 +431,12 @@ class ControllerPsprojects extends ControllerSecureNav {
         $modelAnimals = new PsAnimal();
         $animals = $modelAnimals->getProjectAnimals($id_project, true);
 
+        $modelExitReason = new PsExitReason();
         for ($i = 0; $i < count($animals); $i++) {
             $animals[$i]["unitName"] = $animals[$i]["hist"][0]["unitName"];
             $animals[$i]["sectorName"] = $animals[$i]["hist"][0]["sectorName"];
             $animals[$i]["no_room"] = $animals[$i]["hist"][0]["no_room"];
+            $animals[$i]["exit_reason"] = $modelExitReason->getName($animals[$i]["exit_reason"]);
         }
 
         $table = new TableView();
