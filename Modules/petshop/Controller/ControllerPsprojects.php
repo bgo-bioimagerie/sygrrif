@@ -373,6 +373,16 @@ class ControllerPsprojects extends ControllerSecureNav {
                 $exitArray[] = $an["id"];
             }
         }
+        
+        $modelExitReason = new PsExitReason();
+        $exitReasons = $modelExitReason->getAll("name");
+        //print_r($exitReasons);
+        $exitReasonsIds = array();
+        $exitReasonsNames = array();
+        foreach($exitReasons as $exitRes){
+            $exitReasonsIds[] = $exitRes["id"];
+            $exitReasonsNames[] = $exitRes["name"];
+        }
 
         // create the form
         $lang = $this->getLanguage();
@@ -381,8 +391,7 @@ class ControllerPsprojects extends ControllerSecureNav {
         $form->setTitle(PsTranslator::ExitAnimal($lang));
         $form->addHidden("id_project", $id_project);
         $form->addDate("exit_date", PsTranslator::ExitDate($lang), true, date("Y-m-d"));
-        $form->addText("exit_reason", PsTranslator::ExitReason($lang), false);
-
+        $form->addSelect("exit_reason", PsTranslator::ExitReason($lang), $exitReasonsNames, $exitReasonsIds);
 
         $form->setValidationButton(CoreTranslator::Save($lang), "psprojects/exitanimalsquery/");
         $form->setCancelButton(CoreTranslator::Cancel($lang), "psprojects/animalsin/");
