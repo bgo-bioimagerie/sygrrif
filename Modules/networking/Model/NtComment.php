@@ -14,7 +14,7 @@ class NtComment extends Model {
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `text` text NOT NULL DEFAULT '',	
             `id_author` int(11) NOT NULL DEFAULT 1,
-            `date` DATE NOT NULL,
+            `unix_date` int(11) NOT NULL,
             PRIMARY KEY (`id`)
             );";
 
@@ -23,13 +23,13 @@ class NtComment extends Model {
 	}
 	
 	public function add($text, $id_author, $date){
-            $sql = "INERT INTO nt_comments (text, id_author, date) VALUES(?, ?, ?)";
+            $sql = "INSERT INTO nt_comments (text, id_author, unix_date) VALUES(?, ?, ?)";
             $this->runRequest($sql, array($text, $id_author, $date));
             return $this->getDatabase()->lastInsertId();
         }
         
         public function update($id, $text, $id_author, $date){
-            $sql = "UPDATE nt_comments SET text=?, id_author=?, date=? WHERE id=?";
+            $sql = "UPDATE nt_comments SET text=?, id_author=?, unix_date=? WHERE id=?";
             $this->runRequest($sql, array($text, $id_author, $date, $id));
             return $id;
         }

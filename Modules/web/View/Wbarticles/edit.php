@@ -1,10 +1,10 @@
-<?php $this->title = "Pltaform-Manager"?>
+<?php $this->title = "Platform-Manager"?>
 
 <?php echo $navBar?>
-<?php include 'Modules/networking/View/adminnavbar.php'; ?>
+<?php include "Modules/web/View/webnavbar.php" ?>
 
 <div class="col-xs-12">
-    
+	<?php echo $formHtml ?>
 </div>
 
 <?php if (isset($msgError)): ?>

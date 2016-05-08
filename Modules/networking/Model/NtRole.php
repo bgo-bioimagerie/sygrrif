@@ -12,14 +12,28 @@ class NtRole extends Model {
 	public function createTable(){
 		$sql = "CREATE TABLE IF NOT EXISTS `nt_roles` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
-                `name` varchar(50) NOT NULL DEFAULT ''
+                `name` varchar(50) NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
 		$this->runRequest($sql);
 	}
 	
+        public function createDefault(){
+            if (!$this->isEntry(1)){
+                $this->add("user");
+            }
+            if (!$this->isEntry(2)){
+                $this->add("admin");
+            }
+        }
+        
+        public function getAll(){
+            $sql = "SELECT * FROM nt_roles";
+            return $this->runRequest($sql)->fetchAll();
+        }
+        
         public function add($name){
-            $sql = "INERT INTO nt_roles (name) VALUES(?)";
+            $sql = "INSERT INTO nt_roles (name) VALUES(?)";
             $this->runRequest($sql, array($name));
             return $this->getDatabase()->lastInsertId();
         }

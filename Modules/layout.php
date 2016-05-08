@@ -7,6 +7,15 @@
     </head>
 
     <body>
+        <?php 
+        require_once 'Modules/core/Model/CoreConfig.php';
+        $modelConfig = new CoreConfig();
+        $menuUrl = $modelConfig->getParam("menuUrl");
+        if ($menuUrl != ""){
+            include $menuUrl;
+        }
+        ?>
+        
         <div id="contenu"/>
         	<?php echo  $content ?>
         </div>

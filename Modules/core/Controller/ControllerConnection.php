@@ -28,7 +28,7 @@ class ControllerConnection extends Controller
      * @see Controller::index()
      * 
      */
-    public function index($message = "")
+    public function index($message = "", $redirection = "")
     {
     	
     	$modelConfig = new CoreConfig();
@@ -38,7 +38,7 @@ class ControllerConnection extends Controller
     	$home_message = $modelConfig->getParam("home_message");
     	
     	
-        $this->generateView( array("msgError"=>$message, "admin_email" => $admin_email, "logo" => $logo,  "home_title" => $home_title, "home_message" => $home_message), "index");
+        $this->generateView( array("msgError"=>$message, "admin_email" => $admin_email, "logo" => $logo,  "home_title" => $home_title, "home_message" => $home_message, "redirection" => $redirection), "index");
     }
 
     /**
@@ -97,16 +97,15 @@ class ControllerConnection extends Controller
         	if(isset($_SESSION["user_settings"]["homepage"])){
         		$redirectController = $_SESSION["user_settings"]["homepage"];
         	}	
+                $redirectionForm = $this->request->getParameter('redirection');
+                if ($redirectionForm != ""){
+                    $redirectController = $redirectionForm;
+                }
                 
                 $this->redirect($redirectController);
             }
             else{
-            	//echo "error = " . $connect . "<br/>"; 
             	$this->index($connect);
-            	/*
-                $this->generateView(array('msgError' => $connect, "admin_email" => $admin_email),
-                        "index");
-                        */
             }
         }
         else{

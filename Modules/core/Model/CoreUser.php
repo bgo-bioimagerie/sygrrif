@@ -200,10 +200,12 @@ class CoreUser extends Model {
 				$login,
 				md5 ( $pwd ) 
 		) );
-		if ($user->rowCount () == 1)
+		if ($user->rowCount () == 1){
 			return $user->fetch (); // get the first line of the result
-		else
+                }
+		else{
 			throw new Exception ( "Cannot find the user using the given parameters" );
+                }
 	}
 	
 	/**
@@ -218,10 +220,12 @@ class CoreUser extends Model {
 		$user = $this->runRequest ( $sql, array (
 				$login
 		) );
-		if ($user->rowCount () == 1)
+		if ($user->rowCount () == 1){
 			return $user->fetch (); // get the first line of the result
-		else
+                }
+		else{
 			throw new Exception ( "Cannot find the user using the given parameters" );
+                }
 	}
 	
 	/**

@@ -1,7 +1,9 @@
 <?php
 
 require_once 'Framework/Controller.php';
+require_once 'Modules/core/Controller/ControllerConnection.php';
 require_once 'Modules/core/Model/CoreUser.php';
+
 
 /**
  * Mother class for controller using secure connection
@@ -41,12 +43,14 @@ abstract class ControllerSecure extends Controller
         	}
         	else{
         		//echo "redirect to connection here";
-        		$this->redirect("connection");
+                        $this->callAction($action);
+        		//$this->redirect("connection");
         	}
         }
         else {
-        	//echo "redirect to connection";
-            $this->redirect("connection");
+            //echo "redirect to connection";
+            //$this->redirect("connection");
+            $this->callAction($action);
         }
     }
     public function getLanguage(){
@@ -55,6 +59,12 @@ abstract class ControllerSecure extends Controller
     		$lang = $_SESSION["user_settings"]["language"];
     	}
     	return $lang;
+    }
+    
+    public function callAction($action){
+        $controller = str_replace("Controller", "", get_class($this)); 
+        $controllerConnection = new ControllerConnection();
+        $controllerConnection->index("", $controller . "/" . $action);
     }
 }
 

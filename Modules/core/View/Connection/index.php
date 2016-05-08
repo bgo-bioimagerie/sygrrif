@@ -42,9 +42,10 @@ if ($language == "fr"){
                 <br></br>
                 
                 <form class="form-signin" action="connection/login" method="post">
-	                <input name="login" type="text" class="form-control" placeholder="<?php echo  CoreTranslator::Login($language) ?>" required autofocus>
-	                <input name="pwd" type="password" class="form-control" placeholder="<?php echo  CoreTranslator::Password($language) ?>" required>
-	                <button class="btn btn-lg btn-primary btn-block" type="submit"> <?php echo  CoreTranslator::Ok($language) ?> </button>
+                    <input name="redirection" type="hidden" value="<?php echo $redirection ?>">
+	            <input name="login" type="text" class="form-control" placeholder="<?php echo  CoreTranslator::Login($language) ?>" required autofocus>
+	            <input name="pwd" type="password" class="form-control" placeholder="<?php echo  CoreTranslator::Password($language) ?>" required>
+	            <button class="btn btn-lg btn-primary btn-block" type="submit"> <?php echo  CoreTranslator::Ok($language) ?> </button>
                 </form>
                     
             </div>

@@ -43,6 +43,8 @@ class Form
     private $totalWidth;
     private $labelWidth;
     private $inputWidth;
+    private $buttonsWidth;
+    private $buttonsOffset;
 
     /** for download feild */
     private $useDownload;
@@ -59,6 +61,8 @@ class Form
     	$this->id = $id;
     	$this->labelWidth = 4;
     	$this->inputWidth = 6;
+        $this->buttonsWidth = 6;
+        $this->buttonsOffset = 6;
     	$this->title = "";
     	$this->validationURL = "";
     	$this->cancelURL = "";
@@ -72,6 +76,16 @@ class Form
     	
     	$this->useDownload = false;
         $this->isDate = false;
+    }
+    
+    public function setButtonsWidth($buttonsWidth, $buttonsOffset){
+        $this->buttonsWidth = $buttonsWidth;
+    	$this->buttonsOffset = $buttonsOffset;
+    }
+    
+    public function setColumnsWidth($labelWidth, $inputWidth){
+        $this->labelWidth = $labelWidth;
+    	$this->inputWidth = $inputWidth;
     }
     
     /**
@@ -121,13 +135,25 @@ class Form
      */
     protected function setValue($name, $value){
     	if ($this->parseRequest){
-    		$this->values[] = $this->request->getParameter($name);
+    		$this->values[] = $this->request->getParameterNoException($name);
     	}
     	else{
     		$this->values[] = $value;
     	}
     }
     
+    
+    public function addSeparator($name){
+        $this->types[] = "separator";
+    	$this->names[] = $name;
+    	$this->labels[] = "";
+    	$this->setValue($name, "");
+    	$this->isMandatory[] = false;
+    	$this->choices[] = array();
+    	$this->choicesid[] = array();
+    	$this->validated[] = true;
+        $this->enabled[] = "";
+    }
     /**
      * Add hidden input to the form
      * @param string $name Input name
@@ -156,6 +182,7 @@ class Form
     	$this->validated[] = true;
     	$this->useDownload = true;
         $this->enabled[] = "";
+        $this->setValue($name, "");
     }
     
     public function addDownloadButton($label, $url){
@@ -303,10 +330,12 @@ class Form
     	
     	$html = "";
  
-    	// form title
-    	$html .= "<div class=\"page-header\">";
-    	$html .= 	"<h1>".$this->title."</h1>";
-    	$html .= "</div>";
+        // form title
+        if ($this->title != ""){
+            $html .= "<div class=\"page-header\">";
+            $html .= 	"<h1>".$this->title."</h1>";
+            $html .= "</div>";
+        }
     	
     	if ($this->errorMessage != ""){
     		$html .= "<div class=\"alert alert-danger text-center\">";
@@ -337,6 +366,12 @@ class Form
     			$validated = "alert alert-danger";
     		}
     		
+                if ($this->types[$i] == "separator"){
+                    $html .= "<div class=\"page-header\">";
+                    $html .= 	"<h3>".$this->names[$i]."</h3>";
+                    $html .= "</div>";
+                }
+                
     		if($this->types[$i] == "hidden"){
     			$html .= "<input class=\"form-control\" type=\"hidden\" name=\"".$this->names[$i]."\"";
     			$html .= "value=\"".$this->values[$i]."\"" . $required;
@@ -442,7 +477,7 @@ class Form
     	}
     	
     	// buttons area
-    	$html .= "<div class=\"col-xs-6 col-xs-offset-6\">";
+    	$html .= "<div class=\"col-xs-".$this->buttonsWidth." col-xs-offset-".$this->buttonsOffset."\">";
     	if ($this->validationURL != ""){
     		$html .= "<input type=\"submit\" class=\"btn btn-primary\" value=\"".$this->validationButtonName."\" />";
     	}
@@ -453,6 +488,7 @@ class Form
     		$html .= "<button type=\"button\" onclick=\"location.href='".$this->deleteURL."/".$this->deleteID."'\" class=\"btn btn-danger\">".$this->deleteButtonName."</button>";
     	}
     	$html .= "</div>";
+        $html .= "</form>";
         
         if ($this->isDate == true ){
             $html .= file_get_contents("Framework/timepicker_script.php");
@@ -468,6 +504,7 @@ class Form
     public function check(){
     	    	
     	$formID = $this->request->getParameterNoException("formid");
+        //echo "this id = " . $this->id . ", formID = " . $formID . "<br/>";
     	if ($formID ==  $this->id){
 	    	for($i = 0 ; $i < count($this->types) ; $i++ ){
 	    		if ($this->types[$i] == "email"){
@@ -480,8 +517,10 @@ class Form
 	    			}
 	    		}
 	    	}
+                
 	    	return 1;
     	}
+        
     	return 0;
     }
     

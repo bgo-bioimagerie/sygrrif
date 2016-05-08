@@ -23,7 +23,8 @@ class ControllerCoreunits extends ControllerSecureNav {
 	 * Constructor
 	 */
 	public function __construct() {
-		$this->unitModel = new CoreUnit ();
+            parent::__construct();
+            $this->unitModel = new CoreUnit ();
 	}
 	
 	/**

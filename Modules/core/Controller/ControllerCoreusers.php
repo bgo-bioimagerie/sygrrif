@@ -518,7 +518,7 @@ class ControllerCoreusers extends ControllerSecureNav {
 		$unit = $modelUnit->getUnitName($user['id_unit']);
 		
 		// responsible list
-		$resp = $this->userModel->getUserFUllName($user['id_responsible']);
+		//$resp = $this->userModel->getUserFUllName($user['id_responsible']);
 		
 		// is responsoble user
 		$respModel = new CoreResponsible();
@@ -528,7 +528,7 @@ class ControllerCoreusers extends ControllerSecureNav {
 		$this->generateView ( array (
 				'navBar' => $navBar, 'status' => $status['name'],
 				'unit' => $unit,
-				'resp' => $resp, 'user' => $user
+				'user' => $user
 		) );
 		
 	}

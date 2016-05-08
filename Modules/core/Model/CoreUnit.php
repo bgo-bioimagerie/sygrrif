@@ -26,7 +26,6 @@ class CoreUnit extends Model {
 		
 		$pdo = $this->runRequest($sql);
 		
-		
 		// add columns if no exists
 		$sql = "SHOW COLUMNS FROM `core_units` LIKE 'id_belonging'";
 		$pdo = $this->runRequest($sql);

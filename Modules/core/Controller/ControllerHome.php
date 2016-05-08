@@ -1,13 +1,13 @@
 <?php
 require_once 'Framework/Controller.php';
-require_once 'Modules/core/Controller/ControllerSecureNav.php';
+require_once 'Modules/core/Controller/ControllerOpen.php';
 
 /**
  * 
  * @author sprigent
  * Controller for the home page
  */
-class ControllerHome extends ControllerSecureNav {
+class ControllerHome extends ControllerOpen {
 
 	/**
 	 * Constructor
@@ -22,6 +22,12 @@ class ControllerHome extends ControllerSecureNav {
 	 */
 	public function index() {
 		
+            $modelConfig = new CoreConfig();
+            $home_url = $modelConfig->getParam("home_url");
+            if ($home_url != ""){
+                $this->redirect($home_url);
+            }
+            else{
 		$navBar = $this->navBar();
 		
 		$toolMenu = $this->getToolsMenu();
@@ -32,6 +38,7 @@ class ControllerHome extends ControllerSecureNav {
 				'toolMenu' => $toolMenu, 
 				'toolAdmin' => $toolAdmin
 		) );
+            }
 	}
 	
 }

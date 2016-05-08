@@ -7,7 +7,7 @@ $lang = "En";
 if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
-include_once 'Modules/template/Model/TeTranslator.php';
+include_once 'Modules/networking/Model/NtTranslator.php';
 ?>
 
 <div class="container">
@@ -15,7 +15,7 @@ include_once 'Modules/template/Model/TeTranslator.php';
     	
     	<div class="page-header">
 			<h1>
-			<?php echo  TeTranslator::Template_configuration($lang) ?>
+			<?php echo  NtTranslator::Nt_configuration($lang) ?>
 			 <br> <small></small>
 			</h1>
 		</div>
@@ -24,12 +24,12 @@ include_once 'Modules/template/Model/TeTranslator.php';
 		<div class="col-xs-12">
 		<div class="page-header">
 			<h2>
-			<?php echo  TeTranslator::Install_Repair_database($lang) ?>
+			<?php echo  NtTranslator::Install_Repair_database($lang) ?>
 				<br> <small></small>
 			</h2>
 		</div>
 		
-		<form role="form" class="form-horizontal" action="templateconfig"
+		<form role="form" class="form-horizontal" action="networkingconfig"
 		method="post">
 		
 		<?php if (isset($installError)): ?>
@@ -44,7 +44,7 @@ include_once 'Modules/template/Model/TeTranslator.php';
 		<?php endif; ?>
 		
 		<p>
-		<?php echo  TeTranslator::Install_Txt($lang) ?>
+		<?php echo  NtTranslator::Install_Txt($lang) ?>
 		</p>
 		
 		<div class="col-xs-10">
@@ -61,12 +61,12 @@ include_once 'Modules/template/Model/TeTranslator.php';
       <div>
 		  <div class="page-header">
 			<h2>
-			<?php echo  TeTranslator::Activate_desactivate_menus($lang) ?>
+			<?php echo  NtTranslator::Activate_desactivate_menus($lang) ?>
 				<br> <small></small>
 			</h2>
 		  </div>
 		
-		  <form role="form" class="form-horizontal" action="templateconfig"
+		  <form role="form" class="form-horizontal" action="networkingconfig"
 		  method="post">
 		  
 		    <div class="col-xs-12">
@@ -105,4 +105,4 @@ include_once 'Modules/template/Model/TeTranslator.php';
 
 <?php if (isset($msgError)): ?>
     <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

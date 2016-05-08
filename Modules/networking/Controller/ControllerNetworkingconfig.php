@@ -3,13 +3,14 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
-require_once 'Modules/template/Model/TeInstall.php';
+require_once 'Modules/networking/Model/NtInstall.php';
+require_once 'Modules/networking/Model/NtTranslator.php';
 
 /**
  * Configuation controller for the template module
  * @author sprigent
  */
-class ControllerTemplateconfig extends ControllerSecureNav {
+class ControllerNetworkingconfig extends ControllerSecureNav {
 
 	public function __construct() {
             parent::__construct();
@@ -28,14 +29,14 @@ class ControllerTemplateconfig extends ControllerSecureNav {
 		
 		// activated menus list
 		$ModulesManagerModel = new ModulesManager();
-		$status = $ModulesManagerModel->getDataMenusUserType("template");
-		$menus[0] = array("name" => "template", "status" => $status);
+		$status = $ModulesManagerModel->getDataMenusUserType("networking");
+		$menus[0] = array("name" => "networking", "status" => $status);
 
 		// install section
 		$installquery = $this->request->getParameterNoException ( "installquery");
 		if ($installquery == "yes"){
 			try{
-				$installModel = new TeInstall();
+				$installModel = new NtInstall();
 				$installModel->createDatabase();
 			}
 			catch (Exception $e) {
@@ -61,10 +62,10 @@ class ControllerTemplateconfig extends ControllerSecureNav {
 			$menusStatus = $this->request->getParameterNoException("menus");
 			
 			$ModulesManagerModel = new ModulesManager();
-			$ModulesManagerModel->setDataMenu("template", "template", $menusStatus[0], "glyphicon glyphicon-plus");
+			$ModulesManagerModel->setDataMenu("networking", "networking", $menusStatus[0], "glyphicon glyphicon-globe");
 			
-			$status = $ModulesManagerModel->getDataMenusUserType("template");
-			$menus[0] = array("name" => "template", "status" => $status);
+			$status = $ModulesManagerModel->getDataMenusUserType("networking");
+			$menus[0] = array("name" => "networking", "status" => $status);
 			
 			
 			$this->generateView ( array ('navBar' => $navBar,

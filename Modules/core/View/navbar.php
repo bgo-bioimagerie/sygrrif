@@ -4,7 +4,7 @@
 
     <!-- Custom styles for this template -->
     <link href="Themes/navbar-fixed-top.css" rel="stylesheet">
-	
+
 </head>
 
 <?php 
@@ -13,10 +13,18 @@ $lang = "En";
 if (isset($_SESSION["user_settings"]["language"])){
 	$lang = $_SESSION["user_settings"]["language"];
 }
+
+$modelConfig = new CoreConfig();
+$menuUrl = $modelConfig->getParam("menuUrl");
+$margin = "";
+if ($menuUrl != ""){
+    $margin = "style=\"margin-top: 50px;\"";
+}
 ?>
     
+
 <!-- Fixed navbar -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-default navbar-fixed-top" <?php echo $margin ?> role="navigation">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -25,13 +33,15 @@ if (isset($_SESSION["user_settings"]["language"])){
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
+                    <!--
 			<a class="navbar-brand" href=""><img style="height:35px; margin-top: -9px;"
-             src="Themes/logo.jpg"></a>
+                src="Themes/logo.jpg"></a>
+                    -->
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<ul class="nav navbar-nav">
 				<?php 
-				$refHome = "Home";
+				$refHome = "Tiles";
 				if (isset($_SESSION["user_settings"]["homepage"])){
 						$refHome = $_SESSION["user_settings"]["homepage"];
 				}	

@@ -14,7 +14,7 @@ require_once 'Modules/networking/Model/NtData.php';
  *
  * @author Sylvain Prigent
  */
-class NtGroup extends Model {
+class NtInstall extends Model {
 
 	/**
 	 * Create the core database
@@ -25,6 +25,7 @@ class NtGroup extends Model {
 		
             $roleModel = new NtRole();
             $roleModel->createTable();
+            $roleModel->createDefault();
                 
             $groupModel = new NtGroup();
             $groupModel->createTable();

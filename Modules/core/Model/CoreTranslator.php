@@ -1033,4 +1033,10 @@ class CoreTranslator {
 		return "Managers";
         }
         
+        public static function UnixDate($unitTime, $lang){
+            if ($lang == "Fr"){
+			return date("d/m/Y \à H:i", $unitTime);
+		}
+		return date("Y-m-d  H:i", $unitTime);
+        }
 }

@@ -95,5 +95,170 @@ class NtTranslator {
 		return "Projects";
         }
         
+        public static function Tools($lang){
+            if ($lang == "Fr"){
+			return "Outils";
+		}
+		return "Tools";
+        }
+        
+        public static function MyProfile($lang){
+            if ($lang == "Fr"){
+			return "Profile";
+		}
+		return "Profile";
+        }
+        
+        public static function Newsfeed($lang){
+            if ($lang == "Fr"){
+			return "File d'actualité";
+		}
+		return "Newsfeed";
+        }
+        
+        public static function Notifications($lang){
+            if ($lang == "Fr"){
+			return "Notifications";
+		}
+		return "Notifications";
+        }
+        
+        public static function Add_Group($lang){
+            if ($lang == "Fr"){
+			return "Ajouter group";
+		}
+		return "Add group";
+        }
+        
+        public static function Add_Project($lang){
+            if ($lang == "Fr"){
+			return "Ajouter project";
+		}
+		return "Add project";
+        }
+        
+        
+        public static function Edit_Group($lang){
+            if ($lang == "Fr"){
+			return "Editer group";
+		}
+		return "Edit group";
+        }
+        
+        public static function Image($lang){
+            if ($lang == "Fr"){
+			return "Image";
+		}
+		return "Image";
+        }
+        
+        public static function Group_info($lang){
+            if ($lang == "Fr"){
+			return "Information groupe";
+		}
+		return "Group informations";
+        }
+        
+        public static function Add_User($lang){
+            if ($lang == "Fr"){
+			return "Ajouter utilisateur";
+		}
+		return "Add user";
+        }
+        
+        public static function ConfirmDeleteGroup($name, $lang){
+            if ($lang == "Fr"){
+			return "Suprimmer le groupe '" . $name . "' ? " . " cela supprimera toutes les données du groupe";
+		}
+		return "Delete the group '" . $name . "' ? " . " this will delete all the group data";
+		
+        }
+        
+        public static function ConfirmDeleteProject($name, $lang){
+            if ($lang == "Fr"){
+			return "Suprimmer le projet '" . $name . "' ? " . " cela supprimera toutes les données du projet";
+		}
+		return "Delete the project '" . $name . "' ? " . " this will delete all the project data";
+		
+        }
+        
+        
+        public static function Role($lang){
+            if ($lang == "Fr"){
+			return "Role";
+		}
+		return "Role";
+        }
+        
+        public static function Publish($lang){
+            if ($lang == "Fr"){
+			return "Publier";
+		}
+		return "Publish";
+        }
+        
+        public static function Comment($lang){
+            if ($lang == "Fr"){
+			return "Commenter";
+		}
+		return "Comment";
+        }
+        
+        public static function at($lang){
+            if ($lang == "Fr"){
+			return "à";
+		}
+		return "at";
+        }
+        
+        public static function WroteThe($lang){
+            if ($lang == "Fr"){
+			return "à écrit le";
+		}
+		return "wrote the";
+        }
+        
+        
+        public static function adressed_problem($lang){
+            if ($lang == "Fr"){
+			return "Problème traité";
+		}
+		return "Adressed problem";
+        }
+        
+        public static function expected_results($lang){
+            if ($lang == "Fr"){
+			return "Résultats attendu";
+		}
+		return "Expected results";
+        }
+       
+        public static function protocol($lang){
+            if ($lang == "Fr"){
+			return "Protocole";
+		}
+		return "Protocol";
+        }
+        
+        public static function Project_info($lang){
+            if ($lang == "Fr"){
+			return "Information projet";
+		}
+		return "Project informations";
+        }
+        
+        public static function Files($lang){
+            if ($lang == "Fr"){
+			return "Fichiers";
+		}
+		return "Files";
+        }
+        
+         public static function File($lang){
+            if ($lang == "Fr"){
+			return "Fichier";
+		}
+		return "File";
+        }
         
 }

@@ -7,13 +7,22 @@ require_once 'Framework/TableView.php';
 
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 
-require_once 'Modules/networking/Controller/NtTranslator.php';
-require_once 'Modules/networking/Controller/NtGroup.php';
+require_once 'Modules/networking/Model/NtTranslator.php';
+require_once 'Modules/networking/Model/NtGroup.php';
 
 class ControllerNetworking extends ControllerSecureNav {
 
     public function index(){
-        // last inserted informations
+        
+        $lang = $this->getLanguage();
+       
+        // get newsfeed here
+         
+        $navBar = $this->navBar();
+        $this->generateView ( array (
+            'navBar' => $navBar,
+            'lang' => $lang
+	) );
     }
     
     public function groups(){

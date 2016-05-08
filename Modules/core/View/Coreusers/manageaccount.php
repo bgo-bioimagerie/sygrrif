@@ -52,7 +52,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Email($lang)?></label>
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Email($lang)?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="email" type="text" name="email"
 				       value = "<?php echo  $user['email'] ?>"
@@ -61,7 +61,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Phone($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Phone($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="phone" type="text" name="phone"
 				       value = "<?php echo  $user['tel'] ?>"
@@ -70,7 +70,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
 				       value = "<?php echo  $unit ?>" readonly
@@ -78,17 +78,9 @@ if (isset($_SESSION["user_settings"]["language"])){
 			</div>
 		</div>
 		<br>
+		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Responsible($lang)?></label>
-			<div class="col-xs-10">
-				<input class="form-control" id="" type="text" name=""
-				       value = "<?php echo  $resp ?>" readonly
-				/>
-			</div>
-		</div>
-		<br>
-		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"></label>
+			<label class="control-label col-xs-2"></label>
 			<div class="col-xs-10">
 			  <div class="checkbox">
 			    <label>
@@ -111,7 +103,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Status($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Status($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="" type="text" name=""
 				       value = "<?php echo  $status ?>" readonly
@@ -120,7 +112,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Convention($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" id="convention" type="text" name="convention" value = "<?php echo  $user['convention'] ?>"
 				disabled="disabled" />
@@ -128,7 +120,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 		</div>
 		<br>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  CoreTranslator::Date_convention($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Date_convention($lang) ?></label>
 			<div class="col-xs-10">
 				<input class="form-control" type="text" value = "<?php echo  $user['date_convention'] ?>" name="date_convention" disabled="disabled">
 		    </div>

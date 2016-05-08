@@ -17,6 +17,9 @@ abstract class Controller
     /** recieved request */
     protected $request;
 
+    public function __construct() {
+      
+    }
     /** 
      * Define the input request
      * 
