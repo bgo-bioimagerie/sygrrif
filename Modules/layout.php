@@ -13,7 +13,13 @@
         $menuUrl = $modelConfig->getParam("menuUrl");
         if ($menuUrl != ""){
             include $menuUrl;
+            ?>
+            <div style="height:40px;"/>
+                   <p></p>
+            </div>
+        <?php
         }
+        
         ?>
         
         <div id="contenu"/>

@@ -1,9 +1,14 @@
 <?php
 
 require_once 'Framework/Controller.php';
+require_once 'Framework/Form.php';
+require_once 'Framework/Upload.php';
+
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/ModulesManager.php';
 require_once 'Modules/core/Model/LdapConfiguration.php';
+require_once 'Modules/core/Model/CoreTranslator.php';
+
 
 /**
  * 
@@ -27,77 +32,48 @@ class ControllerHomeconfig extends ControllerSecureNav {
 	 * @see Controller::index()
 	 */
 	public function index() {
+            
+            $lang = $this->getLanguage();
+        
+            $modelSettings = new CoreConfig();
+            $home_title = $modelSettings->getParam("home_title");
+            $home_message = $modelSettings->getParam("home_message");
 
-		// nav bar
-		$navBar = $this->navBar();
-		
-		$modelSettings = new CoreConfig();
-		$logo = $modelSettings->getParam("logo");	
-		$home_title = $modelSettings->getParam("home_title");
-		$home_message = $modelSettings->getParam("home_message");
-		
-		
-		$this->generateView ( array ('navBar' => $navBar,
-									 'logo' => $logo,
-									 'home_title' => $home_title,
-									 'home_message' => $home_message 
-		) );
-	}
+            $form = new Form($this->request, "homeconfig/request");
+            $form->setTitle(CoreTranslator::ConnectionPageData($lang));
+            $form->addText("home_title", CoreTranslator::title($lang), false, $home_title);
+            $form->addText("home_message", CoreTranslator::Description($lang), false, $home_message);
 
-	/**
-	 * Edit the home settings
-	 */
-	public function editquery(){
-		
-		// get the post parameters
-		//$logo = $this->request->getParameter ("logo");
-		$home_title = $this->request->getParameter ("home_title");
-		$home_message = $this->request->getParameter ("home_message");
-		
-		$modelSettings = new CoreConfig();
-		//$modelSettings->setParam("logo", $logo);
-		$modelSettings->setParam("home_title", $home_title);
-		$modelSettings->setParam("home_message", $home_message);
+            for($i=1 ; $i < 4 ; $i++){
+                $form->addSeparator(CoreTranslator::Carousel($lang) . " " . strval($i) );
+                $form->addDownload("image_url" . strval($i), CoreTranslator::Image_Url($lang));        
+            }
+            $form->setButtonsWidth(2, 10);
+            $form->setValidationButton(CoreTranslator::Save($lang), "homeconfig/index");
 
-		if ($_FILES["logo"]["name"] != ""){
-			$this->uploadLogo();
-		}
-		$this->redirect("coreconfig");
-	}
-	
-	/**
-	 * Upload the sygrrif bill template
-	 *
-	 * @return string
-	 */
-	public function uploadLogo(){
-		$target_dir = "data/";
-		$target_file = $target_dir . $_FILES["logo"]["name"];
-		$modelSettings = new CoreConfig();
-		$modelSettings->setParam("logo", $target_file);
-		$uploadOk = 1;
-		$imageFileType = pathinfo($_FILES["logo"]["name"],PATHINFO_EXTENSION);
-	
-		// Check file size
-		if ($_FILES["logo"]["size"] > 500000000) {
-			return "Error: your file is too large.";
-			$uploadOk = 0;
-		}
-		// Allow certain file formats
-		if($imageFileType != "jpeg" && $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "gif") {
-			return "Error: only jpeg, jpg, png, gif files are allowed.";
-			$uploadOk = 0;
-		}
-		// Check if $uploadOk is set to 0 by an error
-		if ($uploadOk == 0) {
-			return  "Error: your file was not uploaded.";
-			// if everything is ok, try to upload file
-		} else {
-			if (move_uploaded_file($_FILES["logo"]["tmp_name"], $target_file)) {
-				return  "The file logo file". basename( $_FILES["logo"]["name"]). " has been uploaded.";
-			} else {
-				return "Error, there was an error uploading your file.";
-			}
-		}
+            if ($form->check()){
+
+                $modelSettings->setParam("home_title", $this->request->getParameter("home_title"));
+                $modelSettings->setParam("home_message", $this->request->getParameter("home_message"));
+                
+                for($i=1 ; $i < 4 ; $i++){
+                    $target_dir = "data/core/";
+                    if ($_FILES["image_url" . $i]["name"] != ""){
+                        Upload::uploadFile($target_dir, "image_url" . $i);
+                        $modelSettings->setParam("connection_carousel" . strval($i), $target_dir . $_FILES["image_url" . $i]["name"]);
+                    }
+                }
+                $this->redirect("homeconfig/index");
+            }
+            else{
+                $formHtml = $form->getHtml($lang);
+                // view
+                $navBar = $this->navBar();
+                $this->generateView(array(
+                    'navBar' => $navBar,
+                    'formHtml' => $formHtml
+                ));
+            }
+            
 	}
 }

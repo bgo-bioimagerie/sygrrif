@@ -20,6 +20,7 @@ class ControllerConnection extends Controller
      */
     public function __construct()
     {
+        parent::__construct();
         $this->user = new CoreUser();
     }
 
@@ -36,9 +37,17 @@ class ControllerConnection extends Controller
     	$logo = $modelConfig->getParam("logo");
     	$home_title = $modelConfig->getParam("home_title");
     	$home_message = $modelConfig->getParam("home_message");
-    	
-    	
-        $this->generateView( array("msgError"=>$message, "admin_email" => $admin_email, "logo" => $logo,  "home_title" => $home_title, "home_message" => $home_message, "redirection" => $redirection), "index");
+        $urlCarousel1 = $modelConfig->getParam("connection_carousel1");
+        $urlCarousel2 = $modelConfig->getParam("connection_carousel2");
+        $urlCarousel3 = $modelConfig->getParam("connection_carousel3");
+        
+        $this->generateView( array("msgError"=>$message, "admin_email" => $admin_email, "logo" => $logo,  
+                                    "home_title" => $home_title, "home_message" => $home_message, 
+                                    "redirection" => $redirection, 
+                                    "urlCarousel1" => $urlCarousel1,
+                                    "urlCarousel2" => $urlCarousel2,
+                                    "urlCarousel3" => $urlCarousel3),
+                                    "index");
     }
 
     /**

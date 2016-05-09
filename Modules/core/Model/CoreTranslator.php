@@ -1039,4 +1039,27 @@ class CoreTranslator {
 		}
 		return date("Y-m-d  H:i", $unitTime);
         }
+        
+        public static function ConnectionPageData($lang){
+            if ($lang == "Fr"){
+			return "Informations page de connexion";
+		}
+		return "Connection page data";
+        }
+        
+        public static function Carousel($lang){
+            if ($lang == "Fr"){
+			return "Carousel";
+		}
+		return "Carousel";
+        }
+        
+        public static function Image_Url($lang){
+            if ($lang == "Fr"){
+			return "Image url";
+		}
+		return "Image url";
+        }
+        
+        
 }
