@@ -84,13 +84,13 @@ $classWell = 'col-md-3 well';
 		<div class=<?php echo  $classWell ?> >
 			<fieldset>
 				<legend><?php echo  WbTranslator::Home($lang) ?></legend>
-                                    <button onclick="location.href='wbhome/carousel'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Carousel($lang) ?></button>
+                                    <button onclick="location.href='wbhomeadmin/carousel'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Carousel($lang) ?></button>
 				<br/>
-                                    <button onclick="location.href='wbhome/features'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Features($lang) ?></button>
+                                    <button onclick="location.href='wbhomeadmin/features'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Features($lang) ?></button>
 				<br/>	
-                                    <button onclick="location.href='wbhome/events'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Events($lang) ?></button>
+                                    <button onclick="location.href='wbhomeadmin/events'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Events($lang) ?></button>
                                 <br/>	
-                                    <button onclick="location.href='wbhome/news'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::News($lang) ?></button>
+                                    <button onclick="location.href='wbhomeadmin/news'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::News($lang) ?></button>
                         
                         </fieldset>
 		</div>
@@ -103,8 +103,8 @@ $classWell = 'col-md-3 well';
                                     <button onclick="location.href='wbsubmenus/items'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Submenusitems($lang) ?></button>
 				    <button onclick="location.href='wbsubmenus/edititem/0'" class="btn btn-link" id="navlink">+</button>
                                 <br/> 
-                                    <button onclick="location.href='wbarticles'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Articles($lang) ?></button>
-				    <button onclick="location.href='wbarticles/edit/0'" class="btn btn-link" id="navlink">+</button>
+                                    <button onclick="location.href='wbarticlesadmin'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Articles($lang) ?></button>
+				    <button onclick="location.href='wbarticlesadmin/edit/0'" class="btn btn-link" id="navlink">+</button>
                                        
                         </fieldset>
 		</div>

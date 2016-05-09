@@ -13,7 +13,7 @@ require_once 'Modules/web/Model/WbMenu.php';
 require_once 'Modules/web/Model/WbCarousel.php';
 require_once 'Modules/web/Model/WbFeature.php';
 
-class ControllerWbadminhome extends ControllerSecureNav {
+class ControllerWbhomeadmin extends ControllerSecureNav {
 
     public function index() {
 
@@ -26,7 +26,7 @@ class ControllerWbadminhome extends ControllerSecureNav {
         $modelCarousel = new WbCarousel();
         $carousel = $modelCarousel->selectAll("id");
         
-        $form = new Form($this->request, "wbhome/request");
+        $form = new Form($this->request, "wbhomeadmin/request");
         $form->setTitle(WbTranslator::Carousel($lang));
         
         for($i=1 ; $i < 4 ; $i++){
@@ -39,7 +39,7 @@ class ControllerWbadminhome extends ControllerSecureNav {
             $form->addDownload("image_url" . strval($i), WbTranslator::Image_Url($lang));        
         }
         $form->setButtonsWidth(2, 10);
-        $form->setValidationButton(CoreTranslator::Save($lang), "wbhome/carousel");
+        $form->setValidationButton(CoreTranslator::Save($lang), "wbhomeadmin/carousel");
         
         if ($form->check()){
             
@@ -59,7 +59,7 @@ class ControllerWbadminhome extends ControllerSecureNav {
                                           ); 
                 }
             }
-            $this->redirect("wbhome/carousel");
+            $this->redirect("wbhomeadmin/carousel");
         }
         else{
             $formHtml = $form->getHtml($lang);
@@ -80,7 +80,7 @@ class ControllerWbadminhome extends ControllerSecureNav {
         $modelCoreConfig = new CoreConfig();
         $carousel = $modelFeature->selectAll("id");
         
-        $form = new Form($this->request, "wbhome/feature");
+        $form = new Form($this->request, "wbhomeadmin/feature");
         $form->setTitle(WbTranslator::Features($lang));
         $form->addSelect("webViewFeatures", WbTranslator::ViewFeatures($lang), array(CoreTranslator::no($lang), CoreTranslator::yes($lang)), array(0,1), $modelCoreConfig->getParam("webViewFeatures"));
         
@@ -94,7 +94,7 @@ class ControllerWbadminhome extends ControllerSecureNav {
             $form->addDownload("image_url" . strval($i), WbTranslator::Image_Url($lang));        
         }
         $form->setButtonsWidth(2, 10);
-        $form->setValidationButton(CoreTranslator::Save($lang), "wbhome/features");
+        $form->setValidationButton(CoreTranslator::Save($lang), "wbhomeadmin/features");
         
         if ($form->check()){
             
@@ -116,7 +116,7 @@ class ControllerWbadminhome extends ControllerSecureNav {
                                           ); 
                 }
             }
-            $this->redirect("wbhome/features");
+            $this->redirect("wbhomeadmin/features");
         }
         else{
             $formHtml = $form->getHtml($lang);

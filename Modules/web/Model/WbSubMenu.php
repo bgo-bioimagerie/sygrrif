@@ -62,6 +62,11 @@ class WbSubMenu extends Model {
             return $this->runRequest($sql, array($id))->fetch();
         }
         
+        public function selectSubMenuItems($id_sub_menu){
+            $sql = "SELECT * FROM wb_submenusitems WHERE id_menu ORDER BY display_order ASC;";
+            return $this->runRequest($sql, array($id_sub_menu))->fetchAll();
+        }
+        
         public function selectAllItems(){
             $sql = "SELECT * FROM wb_submenusitems";
             return $this->runRequest($sql)->fetchAll();

@@ -271,4 +271,34 @@ class WbTranslator {
 		}
 		return "Is published";
 	}
+        
+        public static function is_news($lang = ""){
+		if ($lang == "Fr"){
+			return "apparait dans actualités";
+		}
+		return "is news";
+	}
+        
+        public static function All_News($lang = ""){
+		if ($lang == "Fr"){
+			return "Toutes les actualité";
+		}
+		return "All news";
+	}
+        
+        public static function Short_desc($lang = ""){
+		if ($lang == "Fr"){
+			return "Description courte";
+		}
+		return "Short description";
+	}
+        
+        
+        public static function All_Events($lang = ""){
+		if ($lang == "Fr"){
+			return "Tous les evenements";
+		}
+		return "All events";
+	}
+        
 }
