@@ -1,9 +1,4 @@
 <?php 
-$news = array();
-$news[] = array("id" => 1, "title" => "article test", "short_desc" => "duliuh fhruij hdeu dhuh", "image_url" => "data/core/carousel1.png" );
-$news[] = array("id" => 2, "title" => "article test", "short_desc" => "duliuh fhruij hdeu dhuh", "image_url" => "data/core/carousel1.png" );
-$news[] = array("id" => 3, "title" => "article test", "short_desc" => "duliuh fhruij hdeu dhuh", "image_url" => "data/core/carousel1.png" );
-
 
 ?>
 <div class="col-xs-12" >

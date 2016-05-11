@@ -129,4 +129,64 @@ class ControllerWbhomeadmin extends ControllerSecureNav {
         }
     }
 
+    public function news(){
+        
+        $lang = $this->getLanguage();
+        
+        $modelConfig = new CoreConfig();
+        $webViewNews = $modelConfig->getParam("webViewNews");
+        
+        $form = new Form($this->request, "wbhomeadmin/news");
+        $form->setTitle(WbTranslator::News($lang));
+        $form->addSelect("webViewNews", WbTranslator::ViewNews($lang), array(CoreTranslator::yes($lang), CoreTranslator::no($lang)), array(1,0), $webViewNews);
+        
+        
+        $form->setButtonsWidth(2, 10);
+        $form->setValidationButton(CoreTranslator::Save($lang), "wbhomeadmin/news");
+        
+        if ($form->check()){
+            
+            $modelConfig->setParam("webViewNews", $this->request->getParameter("webViewNews"));
+            $this->redirect("wbhomeadmin/news");
+        }
+        else{
+            $formHtml = $form->getHtml($lang);
+            // view
+            $navBar = $this->navBar();
+            $this->generateView(array(
+                'navBar' => $navBar,
+                'formHtml' => $formHtml
+            ));
+        }
+    }
+    
+    public function events(){
+        
+        $lang = $this->getLanguage();
+        
+        $modelConfig = new CoreConfig();
+        $webViewEvents = $modelConfig->getParam("webViewEvents");
+        
+        $form = new Form($this->request, "wbhomeadmin/events");
+        $form->setTitle(WbTranslator::Events($lang));
+        $form->addSelect("webViewEvents", WbTranslator::ViewEvents($lang), array(CoreTranslator::yes($lang), CoreTranslator::no($lang)), array(1,0), $webViewEvents);
+        
+        $form->setButtonsWidth(2, 10);
+        $form->setValidationButton(CoreTranslator::Save($lang), "wbhomeadmin/events");
+        
+        if ($form->check()){
+            
+            $modelConfig->setParam("webViewEvents", $this->request->getParameter("webViewEvents"));
+            $this->redirect("wbhomeadmin/events");
+        }
+        else{
+            $formHtml = $form->getHtml($lang);
+            // view
+            $navBar = $this->navBar();
+            $this->generateView(array(
+                'navBar' => $navBar,
+                'formHtml' => $formHtml
+            ));
+        }
+    }
 }

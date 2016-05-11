@@ -12,6 +12,7 @@ require_once 'Modules/web/Model/WbTranslator.php';
 require_once 'Modules/web/Model/WbMenu.php';
 require_once 'Modules/web/Model/WbCarousel.php';
 require_once 'Modules/web/Model/WbFeature.php';
+require_once 'Modules/web/Model/WbArticle.php';
 
 class ControllerWbhome extends ControllerOpen {
 
@@ -26,13 +27,21 @@ class ControllerWbhome extends ControllerOpen {
         $modelFeature = new WbFeature();
         $features = $modelFeature->selectAll("id");
         
+        $modelArticles = new WbArticle();
+        $news = $modelArticles->getLastNews(3);
+        
         $viewFeatures = $modelCoreCongig->getParam("webViewFeatures");
+        $viewNews = $modelCoreCongig->getParam("webViewNews");
+        $viewEvents = $modelCoreCongig->getParam("webViewEvents");
         
         // view
         $this->generateView(array(
             'carousel' => $carousel,
             'viewFeatures' => $viewFeatures,
+            'viewNews' => $viewNews,
+            'viewEvents' => $viewEvents,
             'features' => $features,
+            'news' => $news,
             'lang' => $lang
         ));
     }

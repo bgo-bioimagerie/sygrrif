@@ -301,4 +301,18 @@ class WbTranslator {
 		return "All events";
 	}
         
+        public static function ViewNews($lang = ""){
+		if ($lang == "Fr"){
+			return "Afficher les news";
+		}
+		return "View news";
+	}
+        
+        public static function ViewEvents($lang = ""){
+		if ($lang == "Fr"){
+			return "Afficher l'agenda";
+		}
+		return "View events";
+	}
+        
 }

@@ -24,16 +24,18 @@
     <?php if ($viewFeatures){ ?>
         <?php include("Modules/web/View/Wbhome/features.php") ?>
     <?php } ?>
-
-    <?php $viewNews = true ?>
     
     <div class="col-md-12" >
+        <?php if ($viewEvents) { ?>
         <div class="col-md-4" >
             <?php include("Modules/web/View/Wbhome/events.php") ?>
         </div>
-        <div class="col-md-8" >
-            <?php include("Modules/web/View/Wbhome/news.php") ?>
-        </div>
+        <?php } ?>
+        <?php if ($viewNews) { ?>
+            <div class="col-md-8" >
+                <?php include("Modules/web/View/Wbhome/news.php") ?>
+            </div>
+        <?php } ?>
     </div>
     
       <!-- FOOTER -->

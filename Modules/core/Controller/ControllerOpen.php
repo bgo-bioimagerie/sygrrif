@@ -16,6 +16,18 @@ abstract class ControllerOpen extends Controller
     	if (isset($_SESSION["user_settings"]["language"])){
     		$lang = $_SESSION["user_settings"]["language"];
     	}
+        else{
+            // get the navigator language
+            $langNav = substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2);
+            switch ($langNav){
+                case "fr":
+                    $lang = "Fr";
+                    break;
+                case "en":
+                    $lang = "En";
+                    break;      
+            }
+        }
     	return $lang;
     }
 }

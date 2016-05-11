@@ -30,6 +30,7 @@ modules[] = "petshop"
 modules[] = "tetris"
 modules[] = "networking"
 modules[] = "web"
+modules[] = "agenda"
 
 [Company]
 logoFile = "../Themes/logo.png"

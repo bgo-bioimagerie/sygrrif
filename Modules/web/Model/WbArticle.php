@@ -25,6 +25,7 @@ class WbArticle extends Model {
                 `date_modified` int(11) NOT NULL,
                 `is_published` int(1) NOT NULL DEFAULT 0,
                 `is_news` int(1) NOT NULL DEFAULT 0,
+                `image_url` text NOT NULL DEFAULT '',
 		PRIMARY KEY (`id`)
 		);";
 		
@@ -72,6 +73,16 @@ class WbArticle extends Model {
             else{
                 return $this->insert($title, $short_desc, $content, $id_parent_menu, $is_news, $is_published);
             }
+        }
+        
+        public function setImage($id_article, $image_url){
+            $sql = "UPDATE wb_articles SET image_url=? WHERE id=?";
+            $this->runRequest($sql, array($image_url, $id_article));
+        }
+        
+        public function getLastNews($number){
+            $sql = "SELECT * FROM wb_articles WHERE is_news=1 ORDER BY date_modified LIMIT " . $number; 
+            return $this->runRequest($sql)->fetchAll();
         }
         
         public function delete($id){

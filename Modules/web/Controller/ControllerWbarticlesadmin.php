@@ -79,7 +79,8 @@ class ControllerWbarticlesadmin extends ControllerSecureNav {
             "date_created" => "",
             "date_modified" => "",
             "is_published" => "",
-            "is_news" => ""
+            "is_news" => "", 
+            "image_url" => ""
         );
         if ($id_data > 0) {
             $data = $model->select($id_data);
@@ -106,21 +107,29 @@ class ControllerWbarticlesadmin extends ControllerSecureNav {
         $form->addSelect("is_published", WbTranslator::is_published($lang), array(CoreTranslator::no($lang), CoreTranslator::yes($lang)), array(0, 1), $data["is_published"]);
         $form->addSelect("is_news", WbTranslator::is_news($lang), array(CoreTranslator::no($lang), CoreTranslator::yes($lang)), array(0, 1), $data["is_news"]);
         $form->addTextArea("short_desc", WbTranslator::Short_desc($lang), false, $data["short_desc"]);
+        $form->addDownload("image_url", WbTranslator::Image_Url($lang));
         $form->addTextArea("content", WbTranslator::Content($lang), false, $data["content"]);
 
         $form->setValidationButton(CoreTranslator::Ok($lang), "wbarticlesadmin/edit");
         $form->setCancelButton(CoreTranslator::Cancel($lang), "wbarticlesadmin");
 
         if ($form->check()) {
+            
             // run the database query
-            $model->set($this->request->getParameter("id"), 
+            $id_article = $model->set($this->request->getParameter("id"), 
                     $this->request->getParameter("title"), 
                     $this->request->getParameter("content"), 
                     $this->request->getParameter("id_parent_menu"), 
                     $this->request->getParameter("is_news"),
                     $this->request->getParameter("is_published")); 
             
+            $target_dir = "data/web/";
+            if ($_FILES["image_url"]["name"] != ""){
+                Upload::uploadFile($target_dir, "image_url");
+                $model->setImage($id_article, $target_dir . $_FILES["image_url"]["name"]);
+            }
             $this->redirect("wbarticlesadmin");
+            
         } else {
             // set the view
             $formHtml = $form->getHtml();
