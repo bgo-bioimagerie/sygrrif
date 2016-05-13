@@ -100,8 +100,8 @@ class ControllerAgendaadmin extends ControllerSecureNav {
             $tmp = $modelEventType->getName($data[$i]["id_type"]);
             $data[$i]["type"] = $tmp[0]; 
             
-            $data[$i]["date_begin"] = date("Y-m-d H:i", $data[$i]["date_begin"]);
-            $data[$i]["date_end"] = date("Y-m-d H:i", $data[$i]["date_end"]);
+            $data[$i]["date_begin"] = CoreTranslator::dateFromEn($data[$i]["date_begin"], $lang);
+            $data[$i]["date_end"] = CoreTranslator::dateFromEn($data[$i]["date_end"], $lang);
         }
         
         $headers = array("id" => "ID", "name" => CoreTranslator::Name($lang), 
@@ -131,7 +131,9 @@ class ControllerAgendaadmin extends ControllerSecureNav {
             $id = $this->request->getParameter ( "actionid" );
 	}
         
-        $event = array("id" => 0, "name" => "", "content" => "",  "date_begin" => 0, "date_end" => 0, "image_url" => "", "id_type" => 0);
+        $event = array("id" => 0, "name" => "", "content" => "",  "date_begin" => date("Y-m-d"), 
+                       "time_begin" => "", "time_end" => "", 
+                      "date_end" => date("Y-m-d"), "image_url" => "", "id_type" => 0);
         $modelEnvent = new AgEvent();
         if ($id > 0){
             $event = $modelEnvent->select($id);
@@ -145,17 +147,15 @@ class ControllerAgendaadmin extends ControllerSecureNav {
             $choicesid[] = $etype["id"];
         }
         
-        //echo "date begin = " . $event["date_begin"] . "<br/>";
-        $event["date_begin"] = date("Y-m-d", $event["date_begin"]);
-        $event["date_end"] = date("Y-m-d", $event["date_end"]);
-        
         // build the form
         $myform = new Form($this->request, "editeventtypes");
         $myform->setTitle(AgTranslator::EditEventType($lang));
         $myform->addHidden("id", $id);
         $myform->addText("name", CoreTranslator::Name($lang), true, $event["name"]);
-        $myform->addDate("date_begin", AgTranslator::Date_begin($lang), true, $event["date_begin"]);
-        $myform->addDate("date_end", AgTranslator::Date_end($lang), true, $event["date_end"]);
+        $myform->addDate("date_begin", AgTranslator::Date_begin($lang), true, CoreTranslator::dateFromEn($event["date_begin"], $lang));
+        $myform->addText("time_begin", AgTranslator::Time_begin($lang), false, $event["time_begin"]);
+        $myform->addDate("date_end", AgTranslator::Date_end($lang), true, CoreTranslator::dateFromEn($event["date_end"], $lang));
+        $myform->addText("time_end", AgTranslator::time_begin($lang), false, $event["time_end"]);
         $myform->addSelect("id_type", AgTranslator::EventType($lang), $choices, $choicesid, $event["id_type"]);
         $myform->addDownload("image_url", AgTranslator::Image_url($lang));
         $myform->addTextArea("content", AgTranslator::Content($lang), false, $event["content"]);
@@ -164,8 +164,8 @@ class ControllerAgendaadmin extends ControllerSecureNav {
 
         if ($myform->check()) {
             // run the database query
-            $date_begin = strtotime(CoreTranslator::dateToEn($this->request->getParameter("date_begin"), $lang));
-            $date_end = strtotime(CoreTranslator::dateToEn($this->request->getParameter("date_end"), $lang));
+            $date_begin = CoreTranslator::dateToEn($this->request->getParameter("date_begin"), $lang);
+            $date_end = CoreTranslator::dateToEn($this->request->getParameter("date_end"), $lang);
             
             //echo "date_begin = " . print_r($date_begin) . "<br/>";
             //echo "date_end = " . $date_end . "<br/>";
@@ -176,6 +176,8 @@ class ControllerAgendaadmin extends ControllerSecureNav {
                     $this->request->getParameter("content"),
                     $date_begin, 
                     $date_end, 
+                    $this->request->getParameter("time_begin"),
+                    $this->request->getParameter("time_end"),
                     $this->request->getParameter("id_type"));
             
             $target_dir = "data/agenda/";

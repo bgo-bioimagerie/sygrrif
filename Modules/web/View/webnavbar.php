@@ -103,18 +103,24 @@ $classWell = 'col-md-3 well';
                                     <button onclick="location.href='wbsubmenus/items'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Submenusitems($lang) ?></button>
 				    <button onclick="location.href='wbsubmenus/edititem/0'" class="btn btn-link" id="navlink">+</button>
                                 <br/> 
+                                    <button onclick="location.href='Wbarticleslistadmin'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::ArticlesList($lang) ?></button>
+				    <button onclick="location.href='Wbarticleslistadmin/edit/0'" class="btn btn-link" id="navlink">+</button>
+                                
+                                <br/> 
                                     <button onclick="location.href='wbarticlesadmin'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Articles($lang) ?></button>
 				    <button onclick="location.href='wbarticlesadmin/edit/0'" class="btn btn-link" id="navlink">+</button>
-                                       
+                                   
+                                    
+                                    
                         </fieldset>
 		</div>
                 <div class=<?php echo  $classWell ?> >
 			<fieldset>
 				<legend><?php echo  WbTranslator::Contact($lang) ?></legend>
-                                    <button onclick="location.href='wbcontact'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Contact($lang) ?></button>
+                                    <button onclick="location.href='wbcontactadmin'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::Contact($lang) ?></button>
 				<br/>
-                                    <button onclick="location.href='wbteam'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::People($lang) ?></button>
-                                
+                                    <button onclick="location.href='wbteamadmin'" class="btn btn-link" id="navlink"><?php echo  WbTranslator::People($lang) ?></button>
+                                    <button onclick="location.href='wbteamadmin/edit/0'" class="btn btn-link" id="navlink">+</button>
                         </fieldset>
 		</div>
 		

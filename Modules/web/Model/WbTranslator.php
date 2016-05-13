@@ -315,4 +315,67 @@ class WbTranslator {
 		return "View events";
 	}
         
+        public static function Job($lang = ""){
+                if ($lang == "Fr"){
+			return "Fonction";
+		}
+		return "Job";
+        }
+        
+        public static function TopPage($lang = ""){
+                if ($lang == "Fr"){
+			return "Haut de page";
+		}
+		return "Top page";
+        }
+        
+        public static function Edit_Article($lang){
+            if ($lang == "Fr"){
+			return "Editer article";
+            }
+            return "Edit article";
+        }
+        
+        public static function Edit_Menu_item($lang){
+            if ($lang == "Fr"){
+			return "Editer menu item";
+            }
+            return "Edit menu item";
+        }
+        
+        public static function ArticlesList($lang){
+            if ($lang == "Fr"){
+			return "List d'articles";
+            }
+            return "Articles list";
+        }
+        
+        public static function EditArticlesList($lang){
+            if ($lang == "Fr"){
+			return "Editer list d'articles";
+            }
+            return "Edit articles list";
+        }
+        
+        public static function NewArticles($lang){
+            if ($lang == "Fr"){
+			return "Nouveaux articles";
+            }
+            return "New articles";
+        }
+        
+        public static function EditedThe($lang){
+            if ($lang == "Fr"){
+			return "Edité le";
+            }
+            return "Edited the";
+        }
+        
+        public static function ReadMore($lang){
+            if ($lang == "Fr"){
+			return "Lire l'article";
+            }
+            return "Read more";
+        }
+        
 }

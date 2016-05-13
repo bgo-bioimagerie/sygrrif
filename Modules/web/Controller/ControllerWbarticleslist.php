@@ -12,8 +12,9 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 require_once 'Modules/web/Model/WbTranslator.php';
 require_once 'Modules/web/Model/WbSubMenu.php';
 require_once 'Modules/web/Model/WbArticle.php';
+require_once 'Modules/web/Model/WbArticleList.php';
 
-class ControllerWbarticles extends ControllerOpen {
+class ControllerWbarticleslist extends ControllerOpen {
 
     public function index() {
 
@@ -31,31 +32,21 @@ class ControllerWbarticles extends ControllerOpen {
         }
 
         // get belonging info
-        $modelArticle = new WbArticle();
-        $article = $modelArticle->select($id_article);
+        $modelArticle = new WbArticleList();
+        $articleListInfo = $modelArticle->select($id_article);
+        $articles = $modelArticle->getArticles($id_article);
         
         $modelSubMenu = new WbSubMenu();
-        $menuInfo = $modelSubMenu->selectSubMenu($article["id_parent_menu"]);
-        $menuItems = $modelSubMenu->selectSubMenuItems($article["id_parent_menu"]);
+        $menuInfo = $modelSubMenu->selectSubMenu($articleListInfo["id_parent_menu"]);
+        $menuItems = $modelSubMenu->selectSubMenuItems($articleListInfo["id_parent_menu"]);
 
         // view
         $this->generateView(array(
-            'article' => $article,
+            'articleListInfo' => $articleListInfo,
+            'articles' => $articles,
             'menuInfo' => $menuInfo,
             'menuItems' => $menuItems
         ));
         
     }
-    
-    public function newsarticles(){
-        $modelArticle = new WbArticle();
-        $articles = $modelArticle->selectLastNewsArticles(100);
-        
-        // view
-        $this->generateView(array(
-            'articles' => $articles,
-            'lang' => $this->getLanguage()
-        ));
-    }
-    
 }

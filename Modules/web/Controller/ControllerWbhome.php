@@ -14,6 +14,8 @@ require_once 'Modules/web/Model/WbCarousel.php';
 require_once 'Modules/web/Model/WbFeature.php';
 require_once 'Modules/web/Model/WbArticle.php';
 
+require_once 'Modules/agenda/Model/AgEvent.php';
+
 class ControllerWbhome extends ControllerOpen {
 
     public function index() {
@@ -23,6 +25,7 @@ class ControllerWbhome extends ControllerOpen {
         
         $modelCarousel = new WbCarousel();
         $carousel = $modelCarousel->selectAll("id");
+        $carouselFullWidth = true;
         
         $modelFeature = new WbFeature();
         $features = $modelFeature->selectAll("id");
@@ -34,14 +37,26 @@ class ControllerWbhome extends ControllerOpen {
         $viewNews = $modelCoreCongig->getParam("webViewNews");
         $viewEvents = $modelCoreCongig->getParam("webViewEvents");
         
+        $events = array();
+        if($viewEvents){
+            $modelAgenda = new AgEvent();
+            $events = $modelAgenda->getLastEvents();
+        }
+        
+        
+        $copyright = $modelCoreCongig->getParam("webCopyright");
+        
         // view
         $this->generateView(array(
             'carousel' => $carousel,
+            'carouselFullWidth' => $carouselFullWidth,
             'viewFeatures' => $viewFeatures,
             'viewNews' => $viewNews,
             'viewEvents' => $viewEvents,
             'features' => $features,
             'news' => $news,
+            'events' => $events,
+            'copyright' => $copyright,
             'lang' => $lang
         ));
     }

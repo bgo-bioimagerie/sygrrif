@@ -7,6 +7,9 @@ require_once 'Modules/web/Model/WbCarousel.php';
 require_once 'Modules/web/Model/WbFeature.php';
 require_once 'Modules/web/Model/WbSubMenu.php';
 require_once 'Modules/web/Model/WbArticle.php';
+require_once 'Modules/web/Model/WbContact.php';
+require_once 'Modules/web/Model/WbTeam.php';
+require_once 'Modules/web/Model/WbArticleList.php';
 
 
 /**
@@ -39,6 +42,16 @@ class WbInstall extends Model {
                 
                 $modela = new WbArticle();
 		$modela->createTable();
+                
+                $modelc = new WbContact();
+		$modelc->createTable();
+                
+                $modelt = new WbTeam();
+		$modelt->createTable();
+                
+                $modelal = new WbArticleList();
+		$modelal->createTable();
+                
                 
 		$message = 'success';
 		return $message;

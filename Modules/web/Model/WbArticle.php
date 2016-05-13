@@ -33,9 +33,14 @@ class WbArticle extends Model {
             
         }
         
+        public function selectLastNewsArticles($limit){
+            $sql = "SELECT id, title, date_modified, short_desc FROM wb_articles WHERE is_news=1 ORDER BY `date_modified` DESC LIMIT " . $limit;
+            return $this->runRequest($sql)->fetchAll();
+        }
+        
         public function insert($title, $short_desc, $content, $id_parent_menu, $is_news, $is_published){
             $date = time();
-            $sql = "INSERT INTO wb_articles (title, short_desc, content, id_parent_menu, date_created, date_modified, is_news, is_published) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO wb_articles (title, short_desc, content, id_parent_menu, date_created, date_modified, is_news, is_published) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $this->runRequest($sql, array($title, $short_desc, $content, $id_parent_menu, $date, $date, $is_news, $is_published));
             return $this->getDatabase()->lastInsertId();
         }

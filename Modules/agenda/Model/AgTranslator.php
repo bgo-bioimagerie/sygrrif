@@ -116,4 +116,18 @@ class AgTranslator {
 		return "Content";
         }
         
+        public static function Time_begin($lang){
+            if ($lang == "Fr"){
+			return "Heure de début";
+		}
+		return "Time begin";
+        }
+        
+        public static function Time_end($lang){
+            if ($lang == "Fr"){
+			return "Heure de fin";
+		}
+		return "Time end";
+        }
+        
 }

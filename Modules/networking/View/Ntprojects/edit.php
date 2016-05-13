@@ -2,14 +2,14 @@
 
 <?php echo $navBar?>
 
-<div class="col-xs-12" style="background-color: #e9eaed;">
+<div class="col-xs-12" style="background-color: #e9eaed; padding-top: 50px;">
     <p></p>
 </div>
 <div class="col-xs-12" style="background-color: #e9eaed;">
     
     <?php include 'Modules/networking/View/navbar.php'; ?>
     
-    <div class="col-xs-9">
+    <div class="col-xs-10">
     <div class="col-xs-12" style="padding: 25px; background-color: #fff; border: 1px solid #ccc; border-radius: 5px;">
     
         <p style="border-bottom: 1px solid #ddd; text-transform: uppercase;"><?php echo NtTranslator::Project_info($lang) ?></p>

@@ -58,13 +58,13 @@ function drawAgenda($mois, $annee, $entries){
 		<?php 
 		$found = false;
 		foreach ($entries as $entry){
-			if (date("d", $entry["date_begin"]) == $i){
+			if (date("d", strtotime($entry["date_begin"])) == $i){
 				$found = true;
 				?>
 				<a href="agenda/events/<?=$entry["id"] ?>">
 				<div style="background-color: <?= $entry["type_color"] ?>; max-width:200px; -webkit-border-radius: 5px; -moz-border-radius: 5px; border-radius: 5px;" >
 				<p style="border-bottom: thin solid #818181; font-size:10px; color:#313131;" >
-				 <?= date("H:i", $entry["date_begin"]) . " - " . date("H:i", $entry["date_end"]) ?></p>
+				 <?php echo $entry["time_begin"] . " - " . $entry["time_end"] ?></p>
 				<p style="font-size:12px; color:#313131;"><?= $entry["title"] ?></p>
 				</div>
 				</a>

@@ -42,7 +42,7 @@ class ControllerWbmenu extends ControllerSecureNav {
             $modelConfig->setParam("webMenuTitle", $webMenuTitle);
             
             // upload file	
-            $webDataDir = "data/web";
+            $webDataDir = "data/web/";
             if ($_FILES["logo"]["name"] != ""){
                 Upload::uploadFile($webDataDir, "logo");
                 $modelConfig->setParam("webMenuIcon", $webDataDir . $_FILES["logo"]["name"]);

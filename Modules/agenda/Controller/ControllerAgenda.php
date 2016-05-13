@@ -7,6 +7,11 @@ require_once 'Modules/core/Controller/ControllerOpen.php';
 
 require_once 'Modules/agenda/Model/AgEvent.php';
 require_once 'Modules/agenda/Model/AgEventType.php';
+require_once 'Modules/agenda/Model/AgTranslator.php';
+
+require_once 'Modules/core/Model/CoreTranslator.php';
+
+
 
 class ControllerAgenda extends ControllerOpen {
 	
@@ -15,7 +20,8 @@ class ControllerAgenda extends ControllerOpen {
 	}
 	
 	public function index() {
-		
+                $lang = $this->getLanguage();
+            
 		$action = "";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$action = $this->request->getParameter("actionid");
@@ -57,12 +63,15 @@ class ControllerAgenda extends ControllerOpen {
 				"year" => $year,
 				"events" => $events,
 				"lastEvents" => $lastEvents,
-				"eventTypes" => $eventTypes
+				"eventTypes" => $eventTypes,
+                                "lang" => $lang
 		));
 	}
 	
 	public function events(){
 	
+                $lang = $this->getLanguage();
+                
 		$eventid = "";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$eventid = $this->request->getParameter("actionid");
@@ -71,35 +80,47 @@ class ControllerAgenda extends ControllerOpen {
 		$events = array();
 		$modelEntry = new AgEvent();
 		if ($eventid == ""){
-			$events = $modelEntry->getEventsdesc("id");
+			$events = $modelEntry->getEventsdesc("date_end");
 		}
 		else{
-			$events[] = $modelEntry->getEvent($eventid);
+			$events[] = $modelEntry->select($eventid);
 		}
 	
-		$allevents = $modelEntry->getEventsdesc("id");
+		$allevents = $modelEntry->getEventsdesc("date_end");
 	
+                $modelEventTypes = new AgEventType();
+		$eventTypes = $modelEventTypes->selectAll();
+                
 		$this->generateView( array(
 				"events" => $events,
-				"allevents" => $allevents
+				"allevents" => $allevents,
+                                "eventTypes" => $eventTypes,
+                                "lang" => $lang
 		));
 	}
 	
 	public function eventsbytype(){
 		
+                $lang = $this->getLanguage();
+                
 		$eventtypeid = "";
 		if ($this->request->isParameterNotEmpty('actionid')){
 			$eventtypeid = $this->request->getParameter("actionid");
 		}
 		
-		$events = array();
-		$modelEntry = new EventEntry();
+		$allevents = array();
+		$modelEntry = new AgEvent();
 		
 		$allevents = $modelEntry->getEventsByType($eventtypeid);
 		
+                $modelEventTypes = new AgEventType();
+		$eventTypes = $modelEventTypes->selectAll();
+                
 		$this->generateView( array(
 				"events" => $allevents,
-				"allevents" => $allevents
+				"allevents" => $allevents,
+                                "eventTypes" => $eventTypes,
+                                "lang" => $lang
 		), "events");
 	}
 }

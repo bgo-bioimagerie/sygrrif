@@ -19,7 +19,7 @@ $modelConfig =  new CoreConfig();
                 <span class="icon-bar"></span>
               </button>
               <a class="navbar-brand" href="home">
-              <img style="max-width:100px; margin-top: -13px;"
+              <img style="max-height:50px; margin-top: -13px;"
              src="<?php echo $modelConfig->getParam("webMenuIcon"); ?>">
              </a>
                 <span style="font-size: 24;">

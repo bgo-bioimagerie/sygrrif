@@ -24,11 +24,7 @@ font-size:10px;line-height:1.4;text-align:center;background-color:#e9eaed;border
     <div class="bs-glyphicons">
     <ul class="bs-glyphicons-list">
         
-        <li>
-            <a href="ntaccount">
-                <span class="glyphicon-class glyphicon glyphicon-user" aria-hidden="true"> <?php echo NtTranslator::MyProfile($lang) ?></span>
-            </a>
-        </li>
+       
         <!--
         <li>    
             <a href="networking">

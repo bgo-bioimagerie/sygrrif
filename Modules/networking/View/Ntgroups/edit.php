@@ -2,7 +2,7 @@
 
 <?php echo $navBar?>
 
-<div class="col-xs-12" style="background-color: #e9eaed;">
+<div class="col-xs-12" style="background-color: #e9eaed; padding-top: 50px;">
     <p></p>
 </div>
 <div class="col-xs-12" style="background-color: #e9eaed;">

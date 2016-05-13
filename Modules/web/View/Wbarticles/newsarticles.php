@@ -54,7 +54,7 @@ text-align: justify;
 
 <div class="col-lg-12" style="background-color: #fff; border-bottom: 1px solid #e1e1e1;">
 <div class="col-lg-offset-1">
-    <h4><?php echo $article["title"] ?></h4>
+    <h4><?php echo WbTranslator::NewArticles($lang) ?></h4>
 </div>
 </div>
 
@@ -64,30 +64,18 @@ text-align: justify;
 
 <div class="col-xs-12">
 	
-    <?php if($article["id_parent_menu"] > 0){ ?>
-    <!-- MENU -->
-    <div class="col-md-2 col-md-offset-1" style="margin-top:25px; background-color:#f1f1f1;">
-
-    <h5 id="nav_title">
-    <?php echo $menuInfo["title"] ?>
-    </h5>
-    <ul>
-        <?php foreach ($menuItems as $item){ ?>
-            <li><a id="nav_link" href="<?php echo $item["url"] ?>"> <?php echo $item["title"] ?> </a></li>
-        <?php } ?>
-    </ul>
+    <?php foreach($articles as $article){
+        ?>
+    <div class="col-xs-12" style="border-top: 0px solid #999999;">
+    <h2> <?php echo $article["title"] ?></h2>
+    <p style="font-style: italic"> <?php echo WbTranslator::EditedThe($lang) . " " . CoreTranslator::dateFromEn(date("Y-m-d", $article["date_modified"]), $lang) ?></p>
+    <p> <?php echo $article["short_desc"] ?></p>
+    <button class="btn btn-default" onclick="location.href='wbarticles/article<?php echo $article["id"]?>'"><?php echo WbTranslator::ReadMore($lang) ?></button>
     </div>
-    <?php } ?>
-    
-    <!-- CONTENT -->
-    <?php if($article["id_parent_menu"] > 0){ ?>
-        <div class="col-md-8" style="margin-top:25px;">
-    <?php }else{ ?>  
-        <div class="col-md-12" style="margin-top:25px;">    
-    <?php } 
-        echo $article["content"]
-    ?>    
-    </div>        
+        <?php
+    }
+    ?>
+  
 </div>
 
 <?php if (isset($msgError)): ?>

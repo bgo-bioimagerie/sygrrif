@@ -51,7 +51,7 @@ class ControllerNtgroups extends ControllerSecureNav {
 	// form edit info
 	$form = new Form($this->request, "Ntgroups/edit");
         $form->setColumnsWidth(3, 9);
-        $form->setButtonsWidth(5, 7);
+        $form->setButtonsWidth(6, 6);
 	$form->addHidden("id", $group["id"]);
 	$form->addText("name", CoreTranslator::Name($lang), true, $group["name"]);
         $form->addTextArea("description", CoreTranslator::Description($lang), false, $group["description"]);

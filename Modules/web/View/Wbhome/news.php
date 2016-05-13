@@ -11,7 +11,7 @@
         <h2 > </h2>
         <a href="wbarticles/newsarticles/" ><?php echo WbTranslator::All_News($lang) ?> > </a>
     </div>
-</div>
+    </div>
     
     <div class="col-xs-12">
     <!-- ADD TUTO LIST -->
@@ -76,5 +76,6 @@
                 ?>	
 
     <?php } }?>
+    </div>
     </div>
 </div>

@@ -28,6 +28,7 @@ class Form
     private $choices;
     private $choicesid;
     private $validated;
+    private $useJavascript;
     
     /** Validations/cancel/delete buttons */
     private $validationButtonName;
@@ -50,6 +51,7 @@ class Form
     private $useDownload;
     
     private $isDate;
+    private $isTextArea;
     
     /**
      * Constructor
@@ -67,6 +69,7 @@ class Form
     	$this->validationURL = "";
     	$this->cancelURL = "";
     	$this->deleteURL = "";
+        $this->isTextArea = false;
     	
     	$this->parseRequest = false;
     	$formID = $request->getParameterNoException("formid");
@@ -153,6 +156,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
     /**
      * Add hidden input to the form
@@ -170,6 +174,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
     
     public function addDownload($name, $label){
@@ -183,6 +188,7 @@ class Form
     	$this->useDownload = true;
         $this->enabled[] = "";
         $this->setValue($name, "");
+        $this->useJavascript[] = false;
     }
     
     public function addDownloadButton($label, $url){
@@ -194,6 +200,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
     /**
      * Add text input to the form
@@ -212,6 +219,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = $enabled;
+        $this->useJavascript[] = false;
     }
     
     public function addDate($name, $label, $isMandatory = false, $value = ""){
@@ -225,6 +233,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
     
     /**
@@ -244,6 +253,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
     
     /**
@@ -263,6 +273,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
     
     /**
@@ -282,6 +293,7 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
    	/**
    	 * Add select input to the form
@@ -301,6 +313,7 @@ class Form
     	$this->choicesid[] = $choicesid;
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->useJavascript[] = false;
     }
     
     /**
@@ -310,7 +323,7 @@ class Form
      * @param string $isMandatory True if mandatory input
      * @param string $value Input default value
      */
-    public function addTextArea($name, $label, $isMandatory = false, $value = ""){
+    public function addTextArea($name, $label, $isMandatory = false, $value = "", $userichtxt = false){
     	$this->types[] = "textarea";
     	$this->names[] = $name;
     	$this->labels[] = $label;
@@ -320,6 +333,8 @@ class Form
     	$this->choicesid[] = array();
     	$this->validated[] = true;
         $this->enabled[] = "";
+        $this->isTextArea = true;
+        $this->useJavascript[] = $userichtxt;
     }
     
     /**
@@ -435,12 +450,16 @@ class Form
     			$html .= "</div>";
     		}
     		if($this->types[$i] == "textarea"){
-    			$html .= "<div class=\"form-group\">";
-    			$html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
-    			$html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";    			 
-    			$html .= 		"<textarea class=\"form-control\" name=\"".$this->names[$i]."\">".$this->values[$i]."</textarea>";
-    			$html .=	"</div>";
-    			$html .= "</div>";
+                    $divid = "";
+                    if ($this->useJavascript[$i]){
+                        $divid = "id='editor'";
+                    }
+                    $html .= "<div class=\"form-group\">";
+                    $html .= "<label class=\"control-label col-xs-".$this->labelWidth."\">".$this->labels[$i]."</label>";
+                    $html .= 	"<div class=\"col-xs-".$this->inputWidth."\">";    			 
+                    $html .= 		"<textarea ".$divid." class=\"form-control\" name=\"".$this->names[$i]."\">".$this->values[$i]."</textarea>";
+                    $html .=	"</div>";
+                    $html .= "</div>";
     		}
     	    if($this->types[$i] == "download"){
     	    	$html .= "<div class=\"form-group\">";
@@ -492,6 +511,9 @@ class Form
         
         if ($this->isDate == true ){
             $html .= file_get_contents("Framework/timepicker_script.php");
+        }
+        if ($this->isTextArea == true ){
+            $html .= file_get_contents("Framework/textarea_script.php");
         }
     	
     	return $html;

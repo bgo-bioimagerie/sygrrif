@@ -14,8 +14,10 @@ class AgEvent extends Model {
 		`id` int(11) NOT NULL AUTO_INCREMENT,
                 `name` varchar(50) NOT NULL,
                 `content` text NOT NULL,
-                `date_begin` int(11) NOT NULL,
-                `date_end` int(11) NOT NULL,
+                `date_begin` date NOT NULL,
+                `date_end` date NOT NULL,
+                `time_begin` varchar(5) NOT NULL,
+                `time_end` varchar(5) NOT NULL,
                 `image_url` text NOT NULL,
                 `id_type` int(11) NOT NULL,
 		PRIMARY KEY (`id`)
@@ -29,15 +31,15 @@ class AgEvent extends Model {
 	 * Add here the query methods
 	 * 
 	 */
-        public function insert($name, $content, $date_begin, $date_end, $id_type){
-            $sql = "INSERT INTO ag_events (name, content, date_begin, date_end, id_type) VALUES (?,?,?,?,?)";
-            $this->runRequest($sql, array($name, $content, $date_begin, $date_end, $id_type));
+        public function insert($name, $content, $date_begin, $date_end, $time_begin, $time_end, $id_type){
+            $sql = "INSERT INTO ag_events (name, content, date_begin, date_end, time_begin, time_end, id_type) VALUES (?,?,?,?,?,?,?)";
+            $this->runRequest($sql, array($name, $content, $date_begin, $date_end, $time_begin, $time_end, $id_type));
             return $this->getDatabase()->lastInsertId();
         }
         
-        public function update($id, $name, $content, $date_begin, $date_end, $id_type){
-            $sql = "UPDATE ag_events SET name=?, content=?, date_begin=?, date_end=?, id_type=? WHERE id=?";
-            $this->runRequest($sql, array($name, $content, $date_begin, $date_end, $id_type, $id));
+        public function update($id, $name, $content, $date_begin, $date_end, $time_begin, $time_end, $id_type){
+            $sql = "UPDATE ag_events SET name=?, content=?, date_begin=?, date_end=?, time_begin=?, time_end=?, id_type=? WHERE id=?";
+            $this->runRequest($sql, array($name, $content, $date_begin, $date_end, $time_begin, $time_end, $id_type, $id));
         }
         
         public function setImage($id, $image_url){
@@ -54,12 +56,12 @@ class AgEvent extends Model {
             return false;
         }
         
-        public function set($id, $name, $content, $date_begin, $date_end, $id_type){
+        public function set($id, $name, $content, $date_begin, $date_end, $time_begin, $time_end, $id_type){
             if ($this->exists($id)){
-                $this->update($id, $name, $content, $date_begin, $date_end, $id_type);
+                $this->update($id, $name, $content, $date_begin, $date_end, $time_begin, $time_end, $id_type);
             }
             else{
-                $this->insert($name, $content, $date_begin, $date_end, $id_type);
+                $this->insert($name, $content, $date_begin, $date_end, $time_begin, $time_end, $id_type);
             }
         }
         
@@ -81,15 +83,22 @@ class AgEvent extends Model {
         public function getEventsMonth($month, $year){
 		
 		// premier jour du mois
+                $firstDay = $year . "-" . $month . "-01"; 
+                $lastDay  = $year . "-" . $month . "-31";
+                        /*
 		$firstDay = mktime(0,0,0,$month,1,$year);
 		$l_day=date("t",$firstDay);
 		// dernier jour du moi
 		$lastDay=mktime(0, 0, 0, $month,$l_day , $year);
+                 
+                         */
 		
 		$sql = "SELECT  
 					events.id as id,
 					events.date_begin as date_begin,
 					events.date_end as date_end,
+                                        events.time_begin as time_begin,
+					events.time_end as time_end,
 					events.name as title,
 					event_types.color as type_color
 				FROM ag_events as events 
@@ -107,6 +116,8 @@ class AgEvent extends Model {
 					events.id as id,
 					events.date_begin as date_begin,
 					events.date_end as date_end,
+                                        events.time_begin as time_begin,
+					events.time_end as time_end,
 					events.name as title,
 					event_types.color as type_color,
 					event_types.name as type_name
@@ -122,5 +133,11 @@ class AgEvent extends Model {
 		$sql = "select * from ag_events order by " . $sortentry . " DESC;";
 		$user = $this->runRequest($sql);
 		return $user->fetchAll();
+	}
+        
+        public function getEventsByType($typeID){
+		$sql = "SELECT * from ag_events WHERE id_type=? ORDER BY date_end DESC";
+		$req = $this->runRequest($sql, array($typeID));
+		return $req->fetchAll();
 	}
 }

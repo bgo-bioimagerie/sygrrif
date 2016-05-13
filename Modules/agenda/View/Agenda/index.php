@@ -10,7 +10,7 @@
 
 <div class="col-lg-12" style="background-color: #fff; border-bottom: 1px solid #e1e1e1;">
 <div class="col-lg-offset-1">
-<h4>Info / Actu</h4>
+    <h4><?php echo AgTranslator::Agenda($lang) ?> </h4>
 </div>
 </div>
 

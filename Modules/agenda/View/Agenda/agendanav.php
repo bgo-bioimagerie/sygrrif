@@ -9,7 +9,7 @@ ul li {
 }
 </style>
 
-<div class="col-lg-2 col-lg-offset-1" style="background-color: #e1e1e1; margin-top:50px;">
+<div class="col-lg-2 col-lg-offset-1" style="background-color: #f1f1f1; margin-top:50px;">
 
 <p><a href="agenda" style="color: #337ab7;">Agenda</a><br/>
 <a href="agenda/events" style="color: #337ab7;">fil d'actualité</a></p>

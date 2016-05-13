@@ -146,7 +146,7 @@ class NtProject extends Model {
        
 	public function add($name, $adressed_problem, $expected_results, $protocol, $date_created){
             $date_modified = time();
-            $sql = "INSERT INTO nt_projects (name, adressed_problem, expected_results, protocol, date_created, date_modified) VALUES(?, ?, ?, ?, ?, ?, ?)";
+            $sql = "INSERT INTO nt_projects (name, adressed_problem, expected_results, protocol, date_created, date_modified) VALUES(?, ?, ?, ?, ?, ?)";
             $this->runRequest($sql, array($name, $adressed_problem, $expected_results, $protocol, $date_created, $date_modified));
             return $this->getDatabase()->lastInsertId();
         }

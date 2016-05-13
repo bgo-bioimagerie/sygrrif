@@ -102,8 +102,8 @@ class ControllerWbsubmenus extends ControllerSecureNav {
 
         $table = new TableView();
         $table->setTitle(WbTranslator::Submenus($lang));
-        $table->addLineEditButton("wbsubmenus/edit");
-        $table->addDeleteButton("wbsubmenus/delete", "id", "title");
+        $table->addLineEditButton("wbsubmenus/edititem");
+        $table->addDeleteButton("wbsubmenus/deleteitem", "id", "title");
         $tableHtml = $table->view($data, array("id" => "ID", "title" => WbTranslator::Title($lang), "url" => WbTranslator::Url($lang), "menu" => WbTranslator::Submenus($lang), "display_order" => CoreTranslator::Display_order($lang)));
 
         $navBar = $this->navBar();
@@ -139,11 +139,11 @@ class ControllerWbsubmenus extends ControllerSecureNav {
         // form
         // build the form
         $form = new Form($this->request, "wbsubmenus/edit");
-        $form->setTitle(WbTranslator::Edit_Sub_Menu($lang));
+        $form->setTitle(WbTranslator::Edit_Menu_item($lang));
         $form->addHidden("id", $data["id"]);
         $form->addText("title", CoreTranslator::title($lang), true, $data["title"]);
         $form->addText("url", WbTranslator::Url($lang), true, $data["url"]);
-        $form->addSelect("id_menu", CoreTranslator::title($lang), $menusNames, $menusId, $data["id_menu"]);
+        $form->addSelect("id_menu", WbTranslator::Menu($lang), $menusNames, $menusId, $data["id_menu"]);
         $form->addNumber("display_order", CoreTranslator::title($lang), true, $data["display_order"]);
 
         $form->setValidationButton(CoreTranslator::Ok($lang), "wbsubmenus/edititem");

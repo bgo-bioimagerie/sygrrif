@@ -4,6 +4,7 @@ require_once 'Framework/Controller.php';
 
 require_once 'Framework/Form.php';
 require_once 'Framework/TableView.php';
+require_once 'Framework/Upload.php';
 
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/core/Model/CoreConfig.php';
@@ -31,7 +32,7 @@ class ControllerWbarticlesadmin extends ControllerSecureNav {
                 $data[$i]["is_published"] = CoreTranslator::yes($lang);
             }
             else{
-                $data[$i]["is_news"] = CoreTranslator::no($lang);
+                $data[$i]["is_published"] = CoreTranslator::no($lang);
             }
             if ($data[$i]["is_news"] > 0){
                 $data[$i]["is_news"] = CoreTranslator::yes($lang);
@@ -100,7 +101,7 @@ class ControllerWbarticlesadmin extends ControllerSecureNav {
         }
         // build the form
         $form = new Form($this->request, "wbarticlesadmin/edit");
-        $form->setTitle(WbTranslator::Edit_Sub_Menu($lang));
+        $form->setTitle(WbTranslator::Edit_Article($lang));
         $form->addHidden("id", $data["id"]);
         $form->addText("title", CoreTranslator::Name($lang), true, $data["title"]);
         $form->addSelect("id_parent_menu", WbTranslator::parent_menu($lang), $menusNames, $menusId, $data["id_parent_menu"]);
@@ -118,6 +119,7 @@ class ControllerWbarticlesadmin extends ControllerSecureNav {
             // run the database query
             $id_article = $model->set($this->request->getParameter("id"), 
                     $this->request->getParameter("title"), 
+                    $this->request->getParameter("short_desc"), 
                     $this->request->getParameter("content"), 
                     $this->request->getParameter("id_parent_menu"), 
                     $this->request->getParameter("is_news"),

@@ -18,13 +18,16 @@
 <div class="col-lg-12">
 
 <!-- MENU -->
+<?php include("Modules/agenda/View/Agenda/agendanav.php")?>
+
+<!-- 
 <div class="col-lg-2 col-lg-offset-1" style="background-color: #f1f1f1; margin-top:50px; padding-top:10px;">
 <ul>
 <?php 
 foreach ($allevents as $event){
 	?>
 	<li><a href="agenda/events/<?= $event["id"] ?>" style="color:#515151;">
-	<?php echo date("Y-m-d", $event["date_begin"]) . " " . $event["name"]  ?>
+	<?php echo CoreTranslator::dateFromEn($event["date_begin"], $lang) . " " . $event["name"]  ?>
 	</a></li>
 	
 	<?php
@@ -33,7 +36,7 @@ foreach ($allevents as $event){
 </ul>
 
 </div>
-
+-->
 <!-- DISPLAY EVENTS -->
 <div class="col-lg-9" style="margin-top:50px;">
 <?php 
@@ -45,9 +48,10 @@ foreach ($events as $event){
 <div style="background-color:#f1f1f1; padding-top:10px; padding-bottom:5px; padding-left:10px;">
 <p style="text-transform:uppercase;; color:#337ab7;"><?= $event["name"] ?></p>
 <p>
-<b>date début:</b>  <?= date("Y-m-d - H:i", $event["date_begin"]) ?>
+    <b>date début:</b>  <?php echo CoreTranslator::dateFromEn($event["date_begin"], $lang) ?>
+     <?php echo $event["time_begin"] ?>
 <br/>
-<b>date fin:</b> <?= date("Y-m-d - H:i", $event["date_end"]) ?>
+<b>date fin:</b> <?php echo CoreTranslator::dateFromEn($event["date_end"], $lang) ?> <?php echo $event["time_end"] ?>
 </p>
 </div>
 

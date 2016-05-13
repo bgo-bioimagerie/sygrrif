@@ -50,12 +50,12 @@ class ControllerNtprojects extends ControllerSecureNav {
 	// form edit info
         $form = new Form($this->request, "Ntprojects/edit");
         $form->setColumnsWidth(2, 10);
-        $form->setButtonsWidth(2, 10);
+        $form->setButtonsWidth(4, 8);
 	$form->addHidden("id", $project["id"]);
 	$form->addText("name", CoreTranslator::Name($lang), true, $project["name"]);
         $form->addTextArea("adressed_problem", NtTranslator::adressed_problem($lang), false, $project["adressed_problem"]);
         $form->addTextArea("expected_results", NtTranslator::expected_results($lang), false, $project["expected_results"]);
-        $form->addTextArea("protocol", NtTranslator::protocol($lang), false, $project["protocol"]);
+        $form->addTextArea("protocol", NtTranslator::protocol($lang), false, $project["protocol"], true);
         
         $form->addDownload("image_url", NtTranslator::Image($lang));	
 
