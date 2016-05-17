@@ -340,7 +340,10 @@ class SyBillGenerator extends Model {
 	 * @param number $unit_id ID of the unit to bill
 	 * @param number $responsible_id ID of the responsible to bill
 	 */
-	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $billDir = "", $noBill = ""){
+        public function generateBillSite($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $id_site){
+            $this->generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id, "", "", $id_site);
+        }
+	public function generateBill($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $billDir = "", $noBill = "", $id_site = ""){
 		
 		$this->updateUnsetResponsibles(); // this is needed to setup responsible if a user has booked without setted responsible
 		
@@ -378,8 +381,14 @@ class SyBillGenerator extends Model {
 		$unitInfo = $modelUnit->getUnit($unit_id);
 		$unitAddress = $unitInfo[2];
 		
-		$sql = 'SELECT * FROM sy_resources ORDER BY name';
-		$req = $this->runRequest($sql);
+                if ($id_site == ""){
+                    $sql = 'SELECT * FROM sy_resources ORDER BY name';
+                    $req = $this->runRequest($sql);
+                }
+                else{
+                    $sql = 'SELECT * FROM sy_resources WHERE cathegory_id IN (SELECT id FROM sy_resourcescathegory WHERE id_site=?) ORDER BY name';
+                    $req = $this->runRequest($sql, array($id_site));
+                }
 		$resources = $req->fetchAll();
 		
 		// ///////////////////////////////////////// //
@@ -434,13 +443,13 @@ class SyBillGenerator extends Model {
 		// fill the table
 		$objPHPExcel = $this->fillTable($objPHPExcel, $date_debut, $date_fin, $resources, $reservationsSummary,
 				 $packagesPrices, $timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end,
-				 $number, $responsible_id, $billDir);
+				 $number, $responsible_id, $billDir, $id_site);
 
 	}
 	
 	protected function fillTable($objPHPExcel, $date_debut, $date_fin, $resources, $reservationsSummary, $packagesPrices, 
 			$timePrices, $stylesheet, $unitName, $unit_id, $responsibleFullName, $searchDate_start, $searchDate_end, 
-                        $number, $responsible_id, $billDir = ""){
+                        $number, $responsible_id, $billDir = "", $id_site = 1){
 		
 		// search the table line index
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
@@ -641,7 +650,7 @@ class SyBillGenerator extends Model {
                 
                 $bgdatebill = date("Y-m-d", $searchDate_start);
                 $enddatebill = date("Y-m-d", $searchDate_end);
-		$modelBill->addBillUnit($number, $bgdatebill, $enddatebill, date("Y-m-d", time()), $unit_id, $responsible_id, $total);
+		$modelBill->addBillUnit($number, $bgdatebill, $enddatebill, date("Y-m-d", time()), $unit_id, $responsible_id, $total, "", 0, $id_site);
 		
 		
 		// TVA 20p
@@ -1104,7 +1113,7 @@ class SyBillGenerator extends Model {
 	 * @param number $unit_id ID of the unit to count
 	 * @param number $responsible_id ID of the responsible to count
 	 */
-	public function generateCounting($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
+	public function generateCounting($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $id_site){
 		
 		require_once ("externals/PHPExcel/Classes/PHPExcel.php");
 		require_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel2007.php");
@@ -1136,11 +1145,22 @@ class SyBillGenerator extends Model {
 		
 		
 		//----------------------------------------------------------------------------
-		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
-		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
-		(start_time <:start AND end_time <= :end AND end_time>:start) OR
-		(start_time >=:start AND end_time <= :end) OR
-		(start_time >=:start AND start_time<:end AND end_time > :end) ORDER BY id';
+		
+                if ($id_site == ""){
+                    $q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
+                    $sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
+                    (start_time <:start AND end_time <= :end AND end_time>:start) OR
+                    (start_time >=:start AND end_time <= :end) OR
+                    (start_time >=:start AND start_time<:end AND end_time > :end) ORDER BY id';
+                }
+                else{
+                    $q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'site' => $id_site);
+                    $sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE 
+                       ( resource_id IN ( SELECT id FROM sy_resources WHERE category_id IN (SELECT id from sy_resourcescathegories WHERE id_site=:site) ) ) AND (
+                    (start_time <:start AND end_time <= :end AND end_time>:start) OR
+                    (start_time >=:start AND end_time <= :end) OR
+                    (start_time >=:start AND start_time<:end AND end_time > :end) ) ORDER BY id';
+                }
 		$req = $this->runRequest($sql, $q);
 		$beneficiaire = $req->fetchAll();
 		
@@ -1170,10 +1190,17 @@ class SyBillGenerator extends Model {
 		}
 		array_multisort($people[0],SORT_ASC,$people[1],$people[2],$people[3],$people[4]);
 		
-		$sql = 'SELECT id, name, area_id FROM sy_resources ORDER BY name';
-		$req = $this->runRequest($sql);
-		$equipement = $req->fetchAll();
+                if ($id_site != ""){
+                    $sql = 'SELECT id, name, area_id FROM sy_resources WHERE category_id IN (SELECT id from sy_resourcescathegories WHERE id_site=?)
+                     ORDER BY name';
+                    $req = $this->runRequest($sql, array($id_site));
+                }
+                else{
+                    $sql = 'SELECT id, name, area_id FROM sy_resources ORDER BY name';
+                    $req = $this->runRequest($sql);
+                }
 		
+		$equipement = $req->fetchAll();
 		
 		
 		$i=0;
@@ -1202,7 +1229,6 @@ class SyBillGenerator extends Model {
 		$header = "Date d'edition de ce document : \n".$today;
 		$titre = "Decompte des heures reserves du ".$date_debut." inclu au ".$date_fin." inclu";
 		
-		//$footer = "https://bioimagerie.univ-rennes1.fr/h2p2_db-demo/exportFiles/".$nom;
 		$footer = $nom;
 		
 		
@@ -1540,7 +1566,7 @@ class SyBillGenerator extends Model {
 	 * @param number $unit_id ID of the unit to bill
 	 * @param number $responsible_id ID of the responsible to bill
 	 */
-	public function generateDetail($searchDate_start, $searchDate_end, $unit_id, $responsible_id){
+	public function generateDetail($searchDate_start, $searchDate_end, $unit_id, $responsible_id, $id_site){
 		
 		include_once ("externals/PHPExcel/Classes/PHPExcel.php");
 		include_once ("externals/PHPExcel/Classes/PHPExcel/Writer/Excel5.php");
@@ -1566,12 +1592,23 @@ class SyBillGenerator extends Model {
 		//----------------------------------------------------------------------------
 		
 		//On liste l'ensemble des reservations sur la periode selectionnee
-		$q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
-		$sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
-		(start_time <:start AND end_time <= :end AND end_time>:start) OR
-		(start_time >=:start AND end_time <= :end) OR
-		(start_time >=:start AND start_time<:end AND end_time > :end) ORDER BY id';
+                if($id_site != ""){
+                    $q = array('start'=>$searchDate_start, 'end'=>$searchDate_end, 'site' => $id_site);
+                    $sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
+                    ( resource_id IN ( SELECT id FROM sy_resources WHERE category_id IN (SELECT id from sy_resourcescathegories WHERE id_site=:site) ) ) AND (
+                    (start_time <:start AND end_time <= :end AND end_time>:start) OR
+                    (start_time >=:start AND end_time <= :end) OR
+                    (start_time >=:start AND start_time<:end AND end_time > :end) )ORDER BY id';
+                }
+                else{
+                    $q = array('start'=>$searchDate_start, 'end'=>$searchDate_end);
+                    $sql = 'SELECT DISTINCT recipient_id FROM sy_calendar_entry WHERE
+                    (start_time <:start AND end_time <= :end AND end_time>:start) OR
+                    (start_time >=:start AND end_time <= :end) OR
+                    (start_time >=:start AND start_time<:end AND end_time > :end) ORDER BY id';
+                }
 		$req = $this->runRequest($sql, $q);
+                
 		$beneficiaire = $req->fetchAll();
 		
 		$i=0;
@@ -2047,5 +2084,3 @@ class SyBillGenerator extends Model {
 		return $objPHPExcel;
 	}
 }
-	
-?>

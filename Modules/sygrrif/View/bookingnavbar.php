@@ -16,7 +16,7 @@ if($sygrrifmenucolortxt == ""){
     
 
     <script type="text/javascript" src="externals/datepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
-	<script type="text/javascript" src="externals/datepicker/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
+    <script type="text/javascript" src="externals/datepicker/js/locales/bootstrap-datetimepicker.fr.js" charset="UTF-8"></script>
 
 
 <style>
@@ -73,7 +73,34 @@ if (isset($_SESSION["user_settings"]["language"])){
 		<h1><?php echo  SyTranslator::SyGRRif_Booking($lang) ?></h1>
 
 		<form role="form" class="form-horizontal" action="sygrrif/booking" method="post" id="navform">
-		<div class='col-md-4' id="well">
+		<div class='col-md-3' id="well">
+			<fieldset>
+                            <legend><?php echo  CoreTranslator::Sites($lang) ?></legend>
+				<div >
+					<select class="form-control" name="id_site" onchange="getareaval(this);">
+						<?php 
+						foreach($menuData['sites'] as $site){
+							$areaID = $this->clean($site['id']);
+							$curentPricingId = $this->clean($menuData['curentSiteId']);
+							$selected = "";
+							if ($curentPricingId == $areaID){
+								$selected = "selected=\"selected\"";
+							}
+						?>
+							<option value="<?php echo  $areaID ?>" <?php echo $selected?>> <?php echo  $this->clean($site['name']) ?> </option>
+						<?php 
+						}
+						?>
+					</select>
+					<script type="text/javascript">
+    					function getareaval(sel) {
+    					$( "#navform" ).submit();
+    					}
+					</script>
+				</div>
+			</fieldset>
+		</div>
+                <div class='col-md-3' id="well">
 			<fieldset>
 				<legend><?php echo  SyTranslator::Area($lang) ?></legend>
 				<div >
@@ -100,7 +127,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				</div>
 			</fieldset>
 		</div>
-		<div class='col-md-4' id="well">
+		<div class='col-md-3' id="well">
 			<fieldset>
 				<legend><?php echo  SyTranslator::Resource($lang) ?></legend>
 				<div >
@@ -128,7 +155,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 				</div>
 			</fieldset>
 		</div>
-		<div class='col-md-3' id="well">
+		<div class='col-md-2' id="well">
 			<fieldset>
 				<legend><?php echo  SyTranslator::Date($lang) ?></legend>
 				<div >

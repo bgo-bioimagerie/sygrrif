@@ -137,8 +137,18 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 		$form = new Form($this->request, "formeditVisa");
 		$form->setTitle(SyTranslator::Edit_Visa($lang));
 
-		$modelResourcesCategory = new SyResourcesCategory();
-		$resourcesCategories = $modelResourcesCategory->getResourcesCategories();
+                // get resources categories
+                $modelResourcesCategory = new SyResourcesCategory();
+                $modelSite = new CoreSite();
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                    $resourcesCategories = $modelResourcesCategory->getResourcesCategoriesForManager($_SESSION["id_user"]);
+                }
+                else{
+                    $resourcesCategories = $modelResourcesCategory->getResourcesCategories();
+                }
+                
 		$rcchoices = array();
 		$rcchoicesid = array();
 		foreach($resourcesCategories as $rc){
@@ -279,8 +289,16 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 	
 		// query
 		$authModel = new SyAuthorization();
-		$authorizationTable = $authModel->getActiveAuthorizations ( $sortentry, $active );
-			
+                $modelSite = new CoreSite();
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                    $authorizationTable = $authModel->getActiveAuthorizationsForManager($_SESSION["id_user"], $active);
+                }
+                else{
+                    $authorizationTable = $authModel->getActiveAuthorizations ( $sortentry, $active );
+                }
+                
 		$lang = $this->getLanguage();
 		$table = new TableView ();
 		
@@ -365,13 +383,24 @@ class ControllerSygrrifauthorisations extends ControllerSecureNav {
 			$uschoicesid[] = $us["id"];
 		}
 		$modelVisa = new SyVisa();
+                
 		$modelResourcesCategory = new SyResourcesCategory();
 		$visas = $modelVisa->getVisas("id");
 		foreach($visas as $vi){
 			$vichoices[] = $modelUser->getUserFUllName($vi["id_instructor"]) . " - " . $modelResourcesCategory->getResourcesCategoryName($vi["id_resource_category"]);
 			$vichoicesid[] = $vi["id"];
 		}
-		$resCat = $modelResourcesCategory->getResourcesCategories("name");
+                
+                // get resources categories
+                $modelSite = new CoreSite();
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                    $resCat = $modelResourcesCategory->getResourcesCategoriesForManager($_SESSION["id_user"]);
+                }
+                else{
+                    $resCat = $modelResourcesCategory->getResourcesCategories("name");
+                }
 		foreach($resCat as $un){
 			$reschoices[] = $un["name"];
 			$reschoicesid[] = $un["id"];

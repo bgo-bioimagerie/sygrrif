@@ -31,6 +31,17 @@ class CoreSite extends Model {
             $this->runRequest($sql2);
 	}
 	
+        public function countSites(){
+            $sql = "SELECT id FROM core_sites";
+            return $this->runRequest($sql)->rowCount();
+            
+        }
+        
+        public function getUserManagingSites($id_user){
+            $sql = "SELECT * FROM core_sites WHERE id IN(SELECT id_site FROM core_j_user_site WHERE id_user=? AND id_status>=3)";
+            return $this->runRequest($sql, array($id_user))->fetchAll();
+        }
+        
         public function getUserAdminSites($id_user){
             $sql = "SELECT * FROM core_sites WHERE id IN(SELECT id_site FROM core_j_user_site WHERE id_user=? AND id_status>=4)";
             return $this->runRequest($sql, array($id_user))->fetchAll();
@@ -173,7 +184,7 @@ class CoreSite extends Model {
                 $this->add($name);
             }
             else{
-                $this->editUnit($id, $name);
+                $this->edit($id, $name);
             }
 	}
 	

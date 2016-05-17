@@ -12,6 +12,9 @@ require_once 'Modules/sygrrif/Model/SyResourceType.php';
 require_once 'Modules/sygrrif/Model/SyColorCode.php';
 require_once 'Modules/sygrrif/Model/SyCalendarEntry.php';
 
+require_once 'Modules/core/Model/CoreSite.php';
+
+
 /**
  * SyGRRif area management pages
  * 
@@ -85,7 +88,6 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		
 		$tableHtml = $table->view ( $areas, $tableContent );
 		
-		$print = $this->request->getParameterNoException ( "print" );
 		if ($table->isPrint ()) {
 			echo $tableHtml;
 			return;
@@ -135,11 +137,21 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		
 		$modelCss = new SyBookingTableCSS ();
 		$css = $modelCss->getAreaCss ( $id );
-		
+                
+                // get the list of areas for the connected user
+                $modelSite = new CoreSite();
+                $isMultisite = false;
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $isMultisite = true;
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                }
+                
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
 				'navBar' => $navBar,
 				'area' => $area,
+                                'sites' => $sites,
 				'css' => $css 
 		) );
 	}
@@ -156,9 +168,13 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		$name = $this->request->getParameter ( "name" );
 		$display_order = $this->request->getParameter ( "display_order" );
 		$restricted = $this->request->getParameter ( "restricted" );
+                $id_site = $this->request->getParameterNoException ( "id_site" );
+                if ($id_site == ""){
+                    $id_site = 1;
+                }
 		
 		$model = new SyArea ();
-		$model->updateArea ( $id, $name, $display_order, $restricted );
+		$model->updateArea ( $id, $name, $display_order, $restricted, $id_site );
 		
 		// set the css
 		$header_background = $this->request->getParameter ( "header_background" );
@@ -181,9 +197,19 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 			return;
 		}
 		
+                // get the list of areas for the connected user
+                $modelSite = new CoreSite();
+                $isMultisite = false;
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $isMultisite = true;
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                }
+                
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
-				'navBar' => $navBar 
+				'navBar' => $navBar,
+                                'sites' => $sites
 		) );
 	}
 	
@@ -199,9 +225,13 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		$name = $this->request->getParameter ( "name" );
 		$display_order = $this->request->getParameter ( "display_order" );
 		$restricted = $this->request->getParameter ( "restricted" );
+                $id_site = $this->request->getParameterNoException ( "id_site" );
+                if ($id_site == ""){
+                    $id_site = 1;
+                }
 		
 		$model = new SyArea ();
-		$id = $model->addArea ( $name, $display_order, $restricted );
+		$id = $model->addArea ( $name, $display_order, $restricted, $id_site );
 		
 		// set the css
 		$header_background = $this->request->getParameter ( "header_background" );
@@ -273,9 +303,19 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 			return;
 		}
 		
+                // get the list of areas for the connected user
+                $modelSite = new CoreSite();
+                $isMultisite = false;
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $isMultisite = true;
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                }
+                
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
-				'navBar' => $navBar 
+				'navBar' => $navBar,
+                                'sites' => $sites
 		) );
 	}
 	
@@ -289,10 +329,14 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		
 		// get form variables
 		$name = $this->request->getParameter ( "name" );
+                $id_site = $this->request->getParameter ( "id_site" );
+                if ($id_site == ""){
+                    $id_site = 1;
+                }
 		
 		// get the user list
-		$rcModel = new SyResourcesCategory ();
-		$rcModel->addResourcesCategory ( $name );
+		$rcModel = new SyResourcesCategory();
+		$rcModel->addResourcesCategory ( $name, $id_site );
 		
 		$this->redirect ( "sygrrifareasresources", "resourcescategory" );
 	}
@@ -311,6 +355,15 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 			$rcId = $this->request->getParameter ( "actionid" );
 		}
 		
+                // get the list of areas for the connected user
+                $modelSite = new CoreSite();
+                $isMultisite = false;
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $isMultisite = true;
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                }
+                
 		// get unit info
 		$rcModel = new SyResourcesCategory ();
 		$rc = $rcModel->getResourcesCategory ( $rcId );
@@ -318,7 +371,8 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'rc' => $rc 
+				'rc' => $rc,
+                                'sites' => $sites
 		) );
 	}
 	
@@ -333,10 +387,14 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
+                $id_site = $this->request->getParameter ( "id_site" );
+                if ($id_site == ""){
+                    $id_site = 1;
+                }
 		
 		// get the user list
 		$rcModel = new SyResourcesCategory ();
-		$rcModel->editResourcesCategory ( $id, $name );
+		$rcModel->editResourcesCategory ( $id, $name, $id_site );
 		
 		$this->redirect ( "sygrrifareasresources", "resourcescategory" );
 	}
@@ -452,7 +510,6 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		
 		$tableHtml = $table->view ( $colorTable, $tableContent );
 		
-		$print = $this->request->getParameterNoException ( "print" );
 		if ($table->isPrint ()) {
 			echo $tableHtml;
 			return;
@@ -470,9 +527,19 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 	 */
 	public function addcolorcode(){
 	
+                // get the list of areas for the connected user
+                $modelSite = new CoreSite();
+                $isMultisite = false;
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $isMultisite = true;
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                }
+                
 		$navBar = $this->navBar();
 		$this->generateView ( array (
 				'navBar' => $navBar,
+                                'sites' => $sites
 		) );
 	}
 	
@@ -486,11 +553,14 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		$color = $this->request->getParameter ( "color" );
 		$text_color = $this->request->getParameter ( "text_color" );
 		$display_order = $this->request->getParameter ( "display_order" );
-	
+                $id_site = $this->request->getParameterNoException ( "id_site" );
+                if ($id_site == ""){
+                    $id_site = 1;
+                }
 	
 		// get the user list
 		$ccModel = new SyColorCode();
-		$ccModel->addColorCode($name, $color, $text_color, $display_order);
+		$ccModel->addColorCode($name, $color, $text_color, $display_order, $id_site);
 	
 		$this->redirect ( "sygrrifareasresources", "colorcodes" );
 	}
@@ -505,6 +575,15 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		if ($this->request->isParameterNotEmpty ( 'actionid' )) {
 			$ccId = $this->request->getParameter ( "actionid" );
 		}
+                
+                // get the list of areas for the connected user
+                $modelSite = new CoreSite();
+                $isMultisite = false;
+                $sites = array();
+                if ($modelSite->countSites() > 1){
+                    $isMultisite = true;
+                    $sites = $modelSite->getUserManagingSites($_SESSION["id_user"]);
+                }
 	
 		// get unit info
 		$ccModel = new SyColorCode();
@@ -513,7 +592,8 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 		$navBar = $this->navBar ();
 		$this->generateView ( array (
 				'navBar' => $navBar,
-				'colorcode' => $colorcode
+				'colorcode' => $colorcode,
+                                'sites' => $sites
 		) );
 	}
 	
@@ -521,18 +601,21 @@ class ControllerSygrrifareasresources extends ControllerSecureNav {
 	 * Query to edit a color code
 	 */
 	public function editcolorcodequery(){
-		$navBar = $this->navBar ();
-	
+		
 		// get form variables
 		$id = $this->request->getParameter ( "id" );
 		$name = $this->request->getParameter ( "name" );
 		$color = $this->request->getParameter ( "color" );
 		$text_color = $this->request->getParameter ( "text_color" );
 		$display_order = $this->request->getParameter ( "display_order" );
-	
+                $id_site = $this->request->getParameterNoException ( "id_site" );
+                if ($id_site == ""){
+                    $id_site = 1;
+                }
+                
 		// get the user list
 		$ccModel = new SyColorCode();
-		$ccModel->editColorCode($id, $name, $color, $text_color, $display_order);
+		$ccModel->editColorCode($id, $name, $color, $text_color, $display_order, $id_site);
 	
 		$this->redirect ( "sygrrifareasresources", "colorcodes" );
 	}

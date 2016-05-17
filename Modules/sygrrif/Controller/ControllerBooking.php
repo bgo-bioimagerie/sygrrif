@@ -2,6 +2,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
 require_once 'Modules/sygrrif/Model/SyAuthorization.php';
+require_once 'Modules/core/Model/CoreSite.php';
 
 /**
  * Controller containing the common methods for the calendar booking pages
@@ -18,22 +19,27 @@ abstract class ControllerBooking extends ControllerSecureNav {
 	 * @param date $curentDate Curent date
 	 * @return array: booking menu content
 	 */
-	public function calendarMenuData($curentAreaId, $curentResourceId, $curentDate){
+	public function calendarMenuData($curentSiteId, $curentAreaId, $curentResourceId, $curentDate){
 	
+                $modelSite = new CoreSite();
+                $sites = $modelSite->getAll("name");
+            
 		$modelArea = new SyArea();
 		$areas = array();
 		if ($_SESSION["user_status"] < 3){
-			$areas = $modelArea->getUnrestrictedAreasIDName();
+			$areas = $modelArea->getUnrestrictedAreasIDName($curentSiteId);
 		}
 		else{
-			$areas = $modelArea->getAreasIDName();
+			$areas = $modelArea->getAreasIDName($curentSiteId);
 		}
 		
 		$modelResource = new SyResource();
 		$resources = $modelResource->resourceIDNameForArea($curentAreaId);
                 
-		return array('areas' => $areas, 
+		return array(   'sites' => $sites,
+                                'areas' => $areas, 
 				'resources' => $resources,
+                                'curentSiteId' => $curentSiteId,
 				'curentAreaId' => $curentAreaId, 
 				'curentResourceId' => $curentResourceId, 
 				'curentDate' => $curentDate

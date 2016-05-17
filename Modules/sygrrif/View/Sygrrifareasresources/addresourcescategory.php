@@ -37,7 +37,22 @@
 				/>
 			</div>
 		</div>
-		<br></br>
+                <?php if (count($sites) > 0){ ?>
+                <br/>
+                <div class="form-group">
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Site($lang) ?></label>
+			<div class="col-xs-10">
+                            <select class="form-control" name="id_site">
+                                <?php foreach($sites as $site): 
+                                    
+                                    ?>
+                                    <OPTION value="<?php echo $site["id"] ?>" > <?php echo $site["name"] ?> </OPTION>
+                                <?php endforeach; ?>
+                            </select>
+			</div>
+                </div>
+                <?php } ?>
+		<br/>
 		<div class="col-xs-4 col-xs-offset-8" id="button-div">
 		        <input type="submit" class="btn btn-primary" value="<?php echo  SyTranslator::Add($lang) ?>" />
 				<button type="button" onclick="location.href='sygrrifareasresources/resourcescategory'" class="btn btn-default"><?php echo  SyTranslator::Cancel($lang) ?></button>

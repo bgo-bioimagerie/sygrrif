@@ -885,6 +885,7 @@ class ControllerCalendar extends ControllerBooking {
 		// get inputs
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
+                $id_site = $this->request->getParameterNoException('id_site');
 		$curentDate = $this->request->getParameterNoException('curentDate');
 		
                 //echo "curent resource bookday 1 = " . $curentResource . "<br/>";
@@ -897,6 +898,7 @@ class ControllerCalendar extends ControllerBooking {
 			$curentResource = $_SESSION['id_resource'];
 			$curentAreaId = $_SESSION['id_area'];
 			$curentDate = $_SESSION['curentDate'];
+                        $id_site = $_SESSION['id_site'];
 		}
 		
                 //print_r($_SESSION);
@@ -923,12 +925,13 @@ class ControllerCalendar extends ControllerBooking {
 			$curentDate = date("Y-m-d", time());
 		}
 		
-		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+		$menuData = $this->calendarMenuData($id_site, $curentAreaId, $curentResource, $curentDate);
 		
 		// save the menu info in the session
 		$_SESSION['id_resource'] = $curentResource;
 		$_SESSION['id_area'] = $curentAreaId;
 		$_SESSION['curentDate'] = $curentDate;
+                $_SESSION['id_site'] = $id_site;
 		
 		// get the resource info
 		$modelRescal = new SyResourceCalendar();
@@ -1001,6 +1004,7 @@ class ControllerCalendar extends ControllerBooking {
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
+                $id_site = $this->request->getParameterNoException('id_site');
 
 		if ($curentDate != ""){
 			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
@@ -1010,6 +1014,7 @@ class ControllerCalendar extends ControllerBooking {
 			$curentResource = $_SESSION['id_resource'];
 			$curentAreaId = $_SESSION['id_area'];
 			$curentDate = $_SESSION['curentDate'];
+                        $id_site = $_SESSION['id_site'];
 		}
 	
 		// change input if action
@@ -1044,12 +1049,13 @@ class ControllerCalendar extends ControllerBooking {
 		$sundayDate  = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i)+6, $curentDateE[0]));
 		
 	
-		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+		$menuData = $this->calendarMenuData($id_site, $curentAreaId, $curentResource, $curentDate);
 	
 		// save the menu info in the session
 		$_SESSION['id_resource'] = $curentResource;
 		$_SESSION['id_area'] = $curentAreaId;
 		$_SESSION['curentDate'] = $curentDate;
+                $_SESSION['id_site'] = $id_site;
 	
 		// get the resource info
 		$modelRescal = new SyResourceCalendar();
@@ -1125,6 +1131,7 @@ class ControllerCalendar extends ControllerBooking {
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
+                $id_site = $this->request->getParameterNoException('id_site');
 	
 		if ($curentDate != ""){
 			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
@@ -1134,6 +1141,7 @@ class ControllerCalendar extends ControllerBooking {
 			$curentResource = $_SESSION['id_resource'];
 			$curentAreaId = $_SESSION['id_area'];
 			$curentDate = $_SESSION['curentDate'];
+                        $id_site = $_SESSION['id_site'];
 		}
 	
 		// change input if action
@@ -1170,12 +1178,13 @@ class ControllerCalendar extends ControllerBooking {
 		$mondayDate = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i), $curentDateE[0]));
 		$sundayDate  = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i)+31, $curentDateE[0]));
 	
-		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+		$menuData = $this->calendarMenuData($id_site, $curentAreaId, $curentResource, $curentDate);
 	
 		// save the menu info in the session
 		$_SESSION['id_resource'] = $curentResource;
 		$_SESSION['id_area'] = $curentAreaId;
 		$_SESSION['curentDate'] = $curentDate;
+                $_SESSION['id_site'] = $id_site;
 	
 		// get the resource info
 		$modelRescal = new SyResourceCalendar();
@@ -1248,6 +1257,7 @@ class ControllerCalendar extends ControllerBooking {
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
+                $id_site = $this->request->getParameterNoException('id_site');
 	
 		if ($curentDate != ""){
 			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
@@ -1257,6 +1267,7 @@ class ControllerCalendar extends ControllerBooking {
 			$curentResource = $_SESSION['id_resource'];
 			$curentAreaId = $_SESSION['id_area'];
 			$curentDate = $_SESSION['curentDate'];
+                        $id_site = $_SESSION['id_site'];
 		}
 	
 		// change input if action
@@ -1280,12 +1291,13 @@ class ControllerCalendar extends ControllerBooking {
 			$curentDate = date("Y-m-d", time());
 		}
 	
-		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+		$menuData = $this->calendarMenuData($id_site, $curentAreaId, $curentResource, $curentDate);
 	
 		// save the menu info in the session
 		$_SESSION['id_resource'] = $curentResource;
 		$_SESSION['id_area'] = $curentAreaId;
 		$_SESSION['curentDate'] = $curentDate;
+                $_SESSION['id_site'] = $id_site;
 	
 		// get the area info
 		$modelArea = new SyArea();
@@ -1365,6 +1377,7 @@ class ControllerCalendar extends ControllerBooking {
 		$curentResource = $this->request->getParameterNoException('id_resource');
 		$curentAreaId = $this->request->getParameterNoException('id_area');
 		$curentDate = $this->request->getParameterNoException('curentDate');
+                $id_site = $this->request->getParameterNoException('id_site');
 		
 		if ($curentDate != ""){
 			$curentDate = CoreTranslator::dateToEn($curentDate, $lang);
@@ -1374,6 +1387,7 @@ class ControllerCalendar extends ControllerBooking {
 			$curentResource = $_SESSION['id_resource'];
 			$curentAreaId = $_SESSION['id_area'];
 			$curentDate = $_SESSION['curentDate'];
+                        $id_site = $_SESSION['id_site'];
 			//echo "curent date n-2 = " . $curentDate . "<br/>";
 		}
 	
@@ -1409,12 +1423,13 @@ class ControllerCalendar extends ControllerBooking {
 		$mondayDate = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i), $curentDateE[0]));
 		$sundayDate  = date('Y-m-d', mktime(0,0,0,$curentDateE[1], $curentDateE[2]-($i)+6, $curentDateE[0]));
 	
-		$menuData = $this->calendarMenuData($curentAreaId, $curentResource, $curentDate);
+		$menuData = $this->calendarMenuData($id_site, $curentAreaId, $curentResource, $curentDate);
 	
 		// save the menu info in the session
 		$_SESSION['id_resource'] = $curentResource;
 		$_SESSION['id_area'] = $curentAreaId;
 		$_SESSION['curentDate'] = $curentDate;
+                $_SESSION['id_site'] = $id_site;
 	
 		// get the area info
 		$modelArea = new SyArea();
@@ -1542,6 +1557,7 @@ class ControllerCalendar extends ControllerBooking {
 		$id_resource = $this->request->getSession()->getAttribut('id_resource');
 		$id_area = $this->request->getSession()->getAttribut('id_area');
 		$curentDate = $this->request->getSession()->getAttribut('curentDate');
+                $id_site = $this->request->getSession()->getAttribut('id_site');
 		
 		// get the resource info
 		$modelRescal = new SyResourceCalendar();
@@ -1558,7 +1574,7 @@ class ControllerCalendar extends ControllerBooking {
 		
 		// navigation
 		$navBar = $this->navBar();
-		$menuData = $this->calendarMenuData($id_area, $id_resource, $curentDate);
+		$menuData = $this->calendarMenuData($id_site, $id_area, $id_resource, $curentDate);
 		
 		// color types
 		$colorCodeModel = new SyColorCode();
@@ -1637,7 +1653,7 @@ class ControllerCalendar extends ControllerBooking {
 			}
 			
 			// navigation
-			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
+			$menuData = $this->calendarMenuData($id_site, $id_area, $_SESSION["id_resource"], $curentDate);
 			
 
 			$responsiblesList = $modelUser->getUserResponsibles($curentuser["id"]);
@@ -1673,7 +1689,7 @@ class ControllerCalendar extends ControllerBooking {
 			
 			// navigation
 			$_SESSION["id_resource"] = $reservationInfo["resource_id"];
-			$menuData = $this->calendarMenuData($id_area, $_SESSION["id_resource"], $curentDate);
+			$menuData = $this->calendarMenuData($id_site, $id_area, $_SESSION["id_resource"], $curentDate);
 			
 			
 			//print_r($reservationInfo);
@@ -2186,10 +2202,10 @@ class ControllerCalendar extends ControllerBooking {
 		$id_resource = $this->request->getSession()->getAttribut('id_resource');
 		$id_area = $this->request->getSession()->getAttribut('id_area');
 		$curentDate = $this->request->getSession()->getAttribut('curentDate');
+                $id_site = $this->request->getSession()->getAttribut('id_site');
 		
 		// navigation
-		$navBar = $this->navBar();
-		$menuData = $this->calendarMenuData($id_area, $id_resource, $curentDate);
+		$menuData = $this->calendarMenuData($id_site, $id_area, $id_resource, $curentDate);
 		
 		// view
 		$navBar = $this->navBar();

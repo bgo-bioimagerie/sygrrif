@@ -1037,6 +1037,13 @@ class CoreTranslator {
 		return "Sites";
         }
         
+        public static function Site($lang){
+            if ($lang == "Fr"){
+			return "Site";
+		}
+		return "Site";
+        }
+        
         public static function Edit_Site($lang){
             if ($lang == "Fr"){
 			return "Sites";

@@ -44,6 +44,23 @@
 				/>
 			</div>
 		</div>
+            <?php if (count($sites) > 0){ ?>
+                <div class="form-group">
+			<label class="control-label col-xs-4"><?php echo  CoreTranslator::Site($lang) ?></label>
+			<div class="col-xs-8">
+                            <select class="form-control" name="id_site">
+                                <?php foreach($sites as $site): 
+                                    $selected = "";
+                                    if($site["id"] == $area["id_site"]){
+                                        $selected = "selected=\"selected\"";
+                                    }
+                                    ?>
+                                    <OPTION value="<?php echo $site["id"] ?>" <?php echo $selected ?> > <?php echo $site["name"] ?> </OPTION>
+                                <?php endforeach; ?>
+                            </select>
+			</div>
+                </div>
+                <?php } ?>
 		<div class="form-group">
 			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Color_diese($lang) ?></label>
 			<div class="col-xs-8">

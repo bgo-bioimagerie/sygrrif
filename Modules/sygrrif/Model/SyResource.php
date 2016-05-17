@@ -29,8 +29,9 @@ class SyResource extends Model {
 		PRIMARY KEY (`id`)
 		);";
 
-		$pdo = $this->runRequest($sql);
-		return $pdo;
+		$this->runRequest($sql);
+                
+                $this->addColumn("sy_resources", "id_site", "int(11)", 1);
 	}
 	
 	/**
@@ -45,7 +46,7 @@ class SyResource extends Model {
 	 * @return string
 	 */
 	public function addResource($name, $description, $accessibility_id, $type_id, $area_id, $category_id = 0, $display_order = 0){
-		$sql = "INSERT INTO sy_resources (name, description, accessibility_id, type_id, area_id, category_id, display_order) VALUES(?, ?, ?, ?, ?,?,?)";
+		$sql = "INSERT INTO sy_resources (name, description, accessibility_id, type_id, area_id, category_id, display_order) VALUES(?, ?, ?, ?, ?, ?, ?)";
 		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order));
 		return $this->getDatabase()->lastInsertId();
 	}
@@ -68,7 +69,7 @@ class SyResource extends Model {
 			$this->editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order);
 		}
 		else{
-			$sql = "INSERT INTO sy_resources (id, name, description, accessibility_id, type_id, area_id, category_id, display_order) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			$sql = "INSERT INTO sy_resources (id, name, description, accessibility_id, type_id, area_id, category_id, display_order) VALUES(?, ?, ?, ?, ?, ?, ?)";
 			$this->runRequest($sql, array($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order));
 			return $this->getDatabase()->lastInsertId();
 		}
@@ -120,7 +121,7 @@ class SyResource extends Model {
 	 */
 	public function editResource($id, $name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order){
 		$sql = "update sy_resources set name=?, description=?, accessibility_id=?, type_id=?, area_id=?,
-				category_id=?, display_order=?  where id=?";
+				category_id=?, display_order=? where id=?";
 		$this->runRequest($sql, array($name, $description, $accessibility_id, $type_id, $area_id, $category_id, $display_order, $id));
 	}
 	
@@ -185,10 +186,12 @@ class SyResource extends Model {
 	public function resource($id){
 		$sql = "select * from sy_resources where id=?";
 		$req = $this->runRequest($sql, array($id));
-		if ($req->rowCount() == 1)
+		if ($req->rowCount() == 1){
 			return $req->fetch();
-		else
+                }
+		else{
 			return 0;
+                }
 	}
 	
 	public function resourcesNumber(){
@@ -264,7 +267,7 @@ class SyResource extends Model {
 	 */
 	public function delete($id_resource){
 		$sql="DELETE FROM sy_resources WHERE id = ?";
-		$req = $this->runRequest($sql, array($id_resource));
+		$this->runRequest($sql, array($id_resource));
 	}
 	
 	/**

@@ -40,9 +40,13 @@ class SyVisa extends Model {
 	 * @return PDOStatement
 	 */
 	public function createDefaultVisa(){
+            
+             $sqle = "SELECT id FROM sy_visas WHERE id=1";
+            if($this->runRequest($sqle)->rowCount() <1){
 		$sql = "insert into sy_visas(id_resource_category, id_instructor, instructor_status)"
 				. " values(?,?,?)";
 		$this->runRequest($sql, array(0, 1, 1));
+            }
 	}
 	
 	/**
@@ -52,7 +56,7 @@ class SyVisa extends Model {
 	 * @return multitype: array
 	 */
 	public function getVisas($sortentry = 'id'){
-		 
+		
 		$sql = "select * from sy_visas order by " . $sortentry . " ASC;";
 		$user = $this->runRequest($sql);
 		return $user->fetchAll();

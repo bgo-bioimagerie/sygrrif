@@ -33,14 +33,29 @@
 		<input class="form-control" id="id" type="hidden"  name="id" />
 	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3"><?php echo  SyTranslator::Name($lang) ?></label>
+			<label class="control-label col-xs-3"><?php echo  SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-9">
 				<input class="form-control" id="name" type="text" name="name"  
 				/>
 			</div>
 		</div>
+                
+                <?php if (count($sites) > 0){ ?>
+                <div class="form-group">
+			<label class="control-label col-xs-3"><?php echo CoreTranslator::Site($lang) ?></label>
+			<div class="col-xs-9">
+                            <select class="form-control" name="id_site">
+                                <?php foreach($sites as $site): ?>
+                                    <OPTION value="<?php echo $site["id"] ?>" > <?php echo $site["name"] ?> </OPTION>
+                                    
+                                <?php endforeach; ?>
+                            </select>
+			</div>
+                </div>
+                <?php } ?>
+                
 	    <div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3"><?php echo  SyTranslator::Is_resticted($lang) ?></label>
+			<label class="control-label col-xs-3"><?php echo  SyTranslator::Is_resticted($lang) ?></label>
 			<div class="col-xs-9">
 					<select class="form-control" name="restricted">
 						<?php $restricted = $this->clean($area['restricted']) ?>
@@ -48,9 +63,9 @@
 						<OPTION value="0" selected="selected"> <?php echo  SyTranslator::No($lang) ?> </OPTION>
 				</select>
 			</div>
-		</div>
+            </div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-3"><?php echo  SyTranslator::Display_order($lang) ?></label>
+			<label class="control-label col-xs-3"><?php echo  SyTranslator::Display_order($lang) ?></label>
 			<div class="col-xs-9">
 				<input class="form-control" id="name" type="number" name="display_order"  
 				/>
@@ -121,4 +136,4 @@
 
 <?php if (isset($msgError)): ?>
 <p><?php echo  $msgError ?></p>
-<?php endif; ?>
+<?php endif;

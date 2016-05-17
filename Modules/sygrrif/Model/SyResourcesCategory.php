@@ -20,12 +20,14 @@ class SyResourcesCategory extends Model {
 		CREATE TABLE IF NOT EXISTS `sy_resourcescategory` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
 		`name` varchar(200) NOT NULL DEFAULT '',
+                `id_site` int(11) NOT NULL  DEFAULT 1,
 		PRIMARY KEY (`id`)
 		);
 		";
 		
-		$pdo = $this->runRequest($sql);
-		return $pdo;
+		$this->runRequest($sql);
+                
+                $this->addColumn("sy_resourcescategory", "id_site", "int(11)", 1);
 	}
 	
 	/**
@@ -40,7 +42,12 @@ class SyResourcesCategory extends Model {
 		return $user->fetchAll();
 	}
 	
-	public function categoriesNumber($sortentry = 'id'){
+        public function getResourcesCategoriesForManager($id_user, $sortentry = "name"){
+            $sql = "SELECT * FROM sy_resourcescategory WHERE id_site IN (SELECT id_site FROM core_j_user_site WHERE id_user=? AND id_status>=3) order by " . $sortentry . " ASC;";
+            $user = $this->runRequest($sql, array($id_user));
+            return $user->fetchAll();
+        }
+	public function categoriesNumber(){
 			
 		$sql = "select * from sy_resourcescategory";
 		$user = $this->runRequest($sql);
@@ -64,11 +71,11 @@ class SyResourcesCategory extends Model {
 	 *
 	 * @param string $name name of the resources category
 	 */
-	public function addResourcesCategory($name){
+	public function addResourcesCategory($name, $id_site = 1){
 		
-		$sql = "insert into sy_resourcescategory(name)"
-				. " values(?)";
-		$user = $this->runRequest($sql, array($name));	
+		$sql = "insert into sy_resourcescategory(name, id_site)"
+				. " values(?, ?)";
+		$this->runRequest($sql, array($name, $id_site));	
 		return $this->getDatabase()->lastInsertId();	
 	}
 	
@@ -78,10 +85,10 @@ class SyResourcesCategory extends Model {
 	 * @param unknown $name
 	 * @return string
 	 */
-	public function importResourcesCategory($id, $name){
-		$sql = "insert into sy_resourcescategory(id, name)"
-				. " values(?,?)";
-		$user = $this->runRequest($sql, array($id, $name));	
+	public function importResourcesCategory($id, $name, $id_site){
+		$sql = "insert into sy_resourcescategory(id, name, id_site)"
+				. " values(?,?,?)";
+		$this->runRequest($sql, array($id, $name, $id_site));	
 		return $this->getDatabase()->lastInsertId();
 	}
 	
@@ -93,10 +100,12 @@ class SyResourcesCategory extends Model {
 	public function isResourcesCategory($name){
 		$sql = "select * from sy_resourcescategory where name=?";
 		$unit = $this->runRequest($sql, array($name));
-		if ($unit->rowCount() == 1)
+		if ($unit->rowCount() == 1){
 			return true;
-		else
+                }
+		else{
 			return false;
+                }
 	}
 	
 	/**
@@ -118,7 +127,7 @@ class SyResourcesCategory extends Model {
 	public function editResourcesCategory($id, $name){
 		
 		$sql = "update sy_resourcescategory set name=? where id=?";
-		$unit = $this->runRequest($sql, array("".$name."", $id));
+		$this->runRequest($sql, array("".$name."", $id));
 	}
 	
 	/**
@@ -131,10 +140,12 @@ class SyResourcesCategory extends Model {
 	public function getResourcesCategory($id){
 		$sql = "select * from sy_resourcescategory where id=?";
 		$unit = $this->runRequest($sql, array($id));
-		if ($unit->rowCount() == 1)
-    		return $unit->fetch();  // get the first line of the result
-    	else
-    		throw new Exception("Cannot find the resources category using the given id"); 
+		if ($unit->rowCount() == 1){
+                    return $unit->fetch();  // get the first line of the result
+                }
+                else{
+                    throw new Exception("Cannot find the resources category using the given id"); 
+                }
 	}
 	
 	/**
@@ -151,8 +162,9 @@ class SyResourcesCategory extends Model {
 			$tmp = $unit->fetch();
 			return $tmp[0];  // get the first line of the result
 		}
-		else
+		else{
 			return "";
+                }
 	}
 	
 	/**
@@ -165,11 +177,13 @@ class SyResourcesCategory extends Model {
 	public function getResourcesCategoryId($name){
 		$sql = "select id from sy_resourcescategory where name=?";
 		$unit = $this->runRequest($sql, array($name));
-		if ($unit->rowCount() == 1)
+		if ($unit->rowCount() == 1){
 			return $unit->fetch();  // get the first line of the result
-		else
+                }
+		else{
 			throw new Exception("Cannot find the resources category using the given name: " . $name);
-	}
+                }
+        }
 	
 	// joint ressource category
 	/**
@@ -258,7 +272,7 @@ class SyResourcesCategory extends Model {
 	 */
 	public function updateJResourceCategory($id_resource, $id_category){
 		$sql = "update sy_j_resource_category set id_category=? where id_resource=?";
-		$unit = $this->runRequest($sql, array($id_category, $id_resource));
+		$this->runRequest($sql, array($id_category, $id_resource));
 	}
 	
 	/**
@@ -267,6 +281,6 @@ class SyResourcesCategory extends Model {
 	 */
 	public function delete($id){
 		$sql="DELETE FROM sy_resourcescategory WHERE id = ?";
-		$req = $this->runRequest($sql, array($id));
+		$this->runRequest($sql, array($id));
 	}
 }

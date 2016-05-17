@@ -29,14 +29,31 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		$ModulesManagerModel = new ModulesManager();
 		$projectStatus = $ModulesManagerModel->getDataMenusUserType("projects");
 		
+                // get the list of areas for the connected user
+                $modelSite = new CoreSite();
+                $isMultisite = false;
+                if ($modelSite->countSites() > 1){
+                    $isMultisite = true;
+                }
+                
 		// get bill list
 		$modelBillManager = new SyBill();
 		$billsList = array();
 		if ($projectStatus > 0){
+                    if ($isMultisite){
 			$billsList = $modelBillManager->getBills($sortentry);
+                    }
+                    else{
+                        $billsList = $modelBillManager->getBillsForManager($_SESSION["id_user"], $sortentry);
+                    }
 		}
 		else{
+                    if ($isMultisite){
 			$billsList = $modelBillManager->getBillsUnit($sortentry);
+                    }
+                    else{
+                        $billsList = $modelBillManager->getBillsUnitForManager($_SESSION["id_user"], $sortentry);
+                    }
 		}
 		
 		$lang = $this->getLanguage();

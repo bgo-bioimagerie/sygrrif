@@ -41,8 +41,25 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 			</div>
 		<?php } ?>
 		
+            <?php if (count($sites) > 0){ ?>
+                <div class="form-group">
+			<label class="control-label col-xs-2"><?php echo  CoreTranslator::Site($lang) ?></label>
+			<div class="col-xs-9">
+                            <select class="form-control" name="id_site">
+                                <?php foreach($sites as $site): 
+                                    $selected = "";
+                                    if($site["id"] == $id_site){
+                                        $selected = "selected=\"selected\"";
+                                    }
+                                    ?>
+                                    <OPTION value="<?php echo $site["id"] ?>" <?php echo $selected ?> > <?php echo $site["name"] ?> </OPTION>
+                                <?php endforeach; ?>
+                            </select>
+			</div>
+                </div>
+                <?php } ?>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Date_Start($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  SyTranslator::Date_Start($lang) ?></label>
 				<div class="col-xs-9">
 				<div class='input-group date form_date_<?php echo  $lang ?>'>
 					<input type='text' class="form-control" name="searchDate_start" id="searchDate_start"
@@ -54,7 +71,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		    </div>
 		</div>
 		<div class="form-group ">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Date_End($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  SyTranslator::Date_End($lang) ?></label>
 				<div class="col-xs-9">
 				<div class='input-group date form_date_<?php echo  $lang ?>'>
 					<input id="test32" type='text' class="form-control" name="searchDate_end"
@@ -70,7 +87,7 @@ require_once 'Modules/core/Model/CoreTranslator.php';
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-2"><?php echo  SyTranslator::Unit($lang) ?></label>
+			<label class="control-label col-xs-2"><?php echo  SyTranslator::Unit($lang) ?></label>
 			<div class="col-xs-10">
 					<select class="form-control" name="unit" id="unit" onchange="updateResponsibe(this);"
 						>
