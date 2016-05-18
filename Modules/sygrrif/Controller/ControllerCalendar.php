@@ -961,10 +961,10 @@ class ControllerCalendar extends ControllerBooking {
 		$modelColor = new SyColorCode();
 		$colorcodes = $modelColor->getColorCodes("name");
 		
+                
 		// isUserAuthorizedToBook	
 		$isUserAuthorizedToBook = $this->hasAuthorization($resourceBase["category_id"], $resourceBase["accessibility_id"], 
 								$_SESSION['id_user'], $_SESSION["user_status"], $curentDateUnix);
-		
 		
 		// stylesheet
 		$modelCSS = new SyBookingTableCSS();

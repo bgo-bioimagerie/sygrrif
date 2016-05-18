@@ -77,7 +77,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 			<fieldset>
                             <legend><?php echo  CoreTranslator::Sites($lang) ?></legend>
 				<div >
-					<select class="form-control" name="id_site" onchange="getareaval(this);">
+					<select class="form-control" name="id_site" onchange="getsiteval(this);">
 						<?php 
 						foreach($menuData['sites'] as $site){
 							$areaID = $this->clean($site['id']);
@@ -93,7 +93,7 @@ if (isset($_SESSION["user_settings"]["language"])){
 						?>
 					</select>
 					<script type="text/javascript">
-    					function getareaval(sel) {
+    					function getsiteval(sel) {
     					$( "#navform" ).submit();
     					}
 					</script>

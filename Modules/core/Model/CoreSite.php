@@ -71,6 +71,17 @@ class CoreSite extends Model {
             $this->runRequest($sql, array($id_status, $id_user, $id_site));
         }
         
+        public function isUserSiteManager($id_user, $id_site){
+            $sql = "select * from core_j_user_site where id_user=? AND id_site=? AND id_status >= 3";
+            $unit = $this->runRequest($sql, array($id_user, $id_site));
+            if ($unit->rowCount() == 1){
+                return true;
+            }
+            else{
+                return false;
+            }
+        }
+        
         public function isUserSite($id_user, $id_site){
             $sql = "select * from core_j_user_site where id_user=? AND id_site=?";
             $unit = $this->runRequest($sql, array($id_user, $id_site));

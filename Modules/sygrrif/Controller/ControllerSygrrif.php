@@ -684,6 +684,7 @@ class ControllerSygrrif extends ControllerBooking {
             //$menuData = $this->calendarMenuData($id_area, $id_resource, date("Y-m-d", time()));
             $_SESSION['id_resource'] = $id_resource;
             $_SESSION['id_area'] = $id_area;
+            $_SESSION['id_site'] = $id_site;
             $_SESSION['curentDate'] = date("Y-m-d", time());
 
 
@@ -697,6 +698,7 @@ class ControllerSygrrif extends ControllerBooking {
                 return;
             }
         }
+        
         // redirect to the resource page
         // redirect given the resource type
         $modelRes = new SyResource();
@@ -704,10 +706,12 @@ class ControllerSygrrif extends ControllerBooking {
 
         $modelType = new SyResourceType();
         $typInfo = $modelType->getType($idType);
-
+        
+      
         // call the controller like the rooter does
         $controller = ucfirst(strtolower($typInfo['controller']));
         $classController = "Controller" . $controller;
+        //echo "controller = " . $controller . "<br/>";
 
         $modulesNames = Configuration::get("modules");
         $count = count($modulesNames);

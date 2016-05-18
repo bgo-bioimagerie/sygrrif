@@ -41,6 +41,12 @@ class SyResourcesCategory extends Model {
 		$user = $this->runRequest($sql);
 		return $user->fetchAll();
 	}
+        
+        public function getSite($id){
+            $sql = "SELECT id_site FROM sy_resourcescategory WHERE id=?";
+            $tmp = $this->runRequest($sql, array($id))->fetch();
+            return $tmp[0];
+        }
 	
         public function getResourcesCategoriesForManager($id_user, $sortentry = "name"){
             $sql = "SELECT * FROM sy_resourcescategory WHERE id_site IN (SELECT id_site FROM core_j_user_site WHERE id_user=? AND id_status>=3) order by " . $sortentry . " ASC;";
