@@ -36,12 +36,13 @@
     	$(document).ready( function() {
     	$('#dataTable').dataTable( {
     	"aoColumns": [
-    	{ "bSearchable": true }
-    		{ "bSearchable": true }
-    			{ "bSearchable": true }
-    				{ "bSearchable": true }
-    					{ "bSearchable": true }
-    						{ "bSearchable": true }
+    	{ "bSearchable": true },
+        null,
+    		{ "bSearchable": true },
+    			{ "bSearchable": true },
+    				{ "bSearchable": true },
+    					{ "bSearchable": true },
+    						{ "bSearchable": true },
     							{ "bSearchable": true }
         	
     	],
