@@ -127,7 +127,7 @@
 		<?php if ($this->clean($id) != ""){
 			?>
 			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4">ID</label>
+				<label class="control-label col-xs-4">ID</label>
 				<div class="col-xs-8">
 				<input class="form-control" id="id" type="text"  name="id" value="<?php echo $this->clean($id) ?>" readonly/>
 				</div>
@@ -137,7 +137,7 @@
 		}
 		?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Name($lang) ?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Name($lang) ?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="text" name="name"
 				       value="<?php echo $this->clean($name) ?>"  
@@ -145,14 +145,14 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Description($lang) ?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Description($lang) ?></label>
 			<div class="col-xs-8">
 				<textarea class="form-control" id="name" name="description"
 				><?php echo $this->clean($description) ?></textarea>
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Category($lang) ?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Category($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="category_id">
 					<OPTION value="0"> ... </OPTION>
@@ -170,7 +170,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Area($lang) ?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Area($lang) ?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="area_id">
 					<OPTION value="0"> ... </OPTION>
@@ -190,7 +190,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Who_can_book($lang) ?> </label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Who_can_book($lang) ?> </label>
 			<div class="col-xs-8">
 				<select class="form-control" name="accessibility_id">
 					<?php $accessibility_id = $this->clean($accessibility_id) ?>
@@ -205,7 +205,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Display_order($lang) ?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Display_order($lang) ?></label>
 			<div class="col-xs-8">
 			<input class="form-control" id="id" type="text"  name="display_order" value="<?php echo $this->clean($display_order) ?>"/>
 			</div>
@@ -222,7 +222,7 @@
 		</div>
 		
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Max_number_of_people($lang)?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Max_number_of_people($lang)?></label>
 			<div class="col-xs-8">
 				<input class="form-control" id="name" type="number" name="nb_people_max"
 				       value="<?php echo $this->clean($nb_people_max) ?>"  
@@ -230,7 +230,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Available_Days($lang)?></label>
+				<label class="control-label col-xs-4"><?php echo  SyTranslator::Available_Days($lang)?></label>
 				<div class="col-xs-8">
 					<div class="checkbox">
     				<label>
@@ -277,7 +277,7 @@
 				</div>
 			</div>
 		<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Day_beginning($lang) ?></label>
+				<label class="control-label col-xs-4"><?php echo  SyTranslator::Day_beginning($lang) ?></label>
 				<div class="col-xs-8">
 				<select class="form-control" name="day_begin">
 				    <?php $sday = $this->clean($day_begin); 
@@ -294,7 +294,7 @@
 			</div>
 		</div>
 			<div class="form-group">	
-				<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Day_end($lang)?></label>
+				<label class="control-label col-xs-4"><?php echo  SyTranslator::Day_end($lang)?></label>
 				<div class="col-xs-8">
 				<select class="form-control" name="day_end">
 			    <?php $eday = $this->clean($day_end); 
@@ -311,7 +311,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Booking_size_bloc($lang)?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Booking_size_bloc($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="size_bloc_resa">
 				<?php $size_bloc_resa = $this->clean($size_bloc_resa)?>
@@ -321,8 +321,20 @@
 				</select>
 			</div>
 		</div>
+            
+                <div class="form-group">
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Booking_time_scale($lang)?></label>
+			<div class="col-xs-8">
+				<select class="form-control" name="booking_time_scale">
+				<?php $booking_time_scale = $this->clean($booking_time_scale); ?>
+                                    	<OPTION value="1" <?php if($booking_time_scale==1){echo "selected=\"selected\"";} ?> > <?php echo  SyTranslator::Minutes($lang) ?> </OPTION>
+                                        <OPTION value="2" <?php if($booking_time_scale==2){echo "selected=\"selected\"";} ?> > <?php echo  SyTranslator::Hours($lang) ?> </OPTION>
+					<OPTION value="3" <?php if($booking_time_scale==3){echo "selected=\"selected\"";} ?> > <?php echo  SyTranslator::Days($lang) ?> </OPTION>
+				</select>
+			</div>
+		</div>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::The_user_specify($lang)?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::The_user_specify($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="resa_time_setting">
 				<?php $resa_time_setting = $this->clean($resa_time_setting)?>
@@ -332,7 +344,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Pricing_Type($lang)?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Pricing_Type($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="use_package">
 						<OPTION value="1" <?php if( $use_package == 1){echo "selected=\"selected\"";} ?> > <?php echo SyTranslator::Use_time_and_package($lang)  ?> </OPTION>
@@ -341,7 +353,7 @@
 			</div>
 		</div>	
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo  SyTranslator::Default_color($lang)?></label>
+			<label class="control-label col-xs-4"><?php echo  SyTranslator::Default_color($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="default_color_id">
 					<?php foreach( $colors as $color ){

@@ -162,7 +162,7 @@ else{
 		
 		<?php if( count($responsiblesList) > 1 ){ ?>
 		<div class="form-group">
-			<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Responsible($lang)?></label>
+			<label class="control-label col-xs-4"><?php echo SyTranslator::Responsible($lang)?></label>
 			<div class="col-xs-8">
 				<select class="form-control" name="responsible_id">
 				<?php   
@@ -447,24 +447,40 @@ else{
 		<?php 
 		}
 		else{
-			$duration = 30*60;
-			if (isset($reservationInfo)){
-				$duration = $this->clean($reservationInfo['end_time']) - $this->clean($reservationInfo['start_time']);
-			}
-			
-			$viewDuration = 1;
-			$durationPrint = $duration/60;
-			if ( $duration/60 > 120 ){
-				$viewDuration = 2;
-				$durationPrint = $duration/3600;
-			}
-			if ( $duration/(3600) > 48 ){
-				$viewDuration = 3;
-				$durationPrint = $duration/(3600*24);
-			}
+                        if ($id_new_resa){
+                            if ($resourceInfo["booking_time_scale"] == 1){
+                                $durationPrint = 30;
+                                $viewDuration = 1;
+                            }
+                            else if ($resourceInfo["booking_time_scale"] == 2){
+                                $durationPrint = 1;
+                                $viewDuration = 2;
+                            }
+                            else if ($resourceInfo["booking_time_scale"] == 3){
+                                $durationPrint = 1;
+                                $viewDuration = 3;
+                            }
+                        }
+                        else{
+                            $duration = 30*60;
+                            if (isset($reservationInfo)){
+                                    $duration = $this->clean($reservationInfo['end_time']) - $this->clean($reservationInfo['start_time']);
+                            }
+
+                            $viewDuration = 1;
+                            $durationPrint = $duration/60;
+                            if ( $duration/60 >= 120 ){
+                                    $viewDuration = 2;
+                                    $durationPrint = $duration/3600;
+                            }
+                            if ( $duration/(3600) >= 48 ){
+                                    $viewDuration = 3;
+                                    $durationPrint = $duration/(3600*24);
+                            }
+                        }
 			?>
 			<div class="form-group">
-				<label for="inputEmail" class="control-label col-xs-4"><?php echo SyTranslator::Duration($lang)?></label>
+				<label class="control-label col-xs-4"><?php echo SyTranslator::Duration($lang)?></label>
 				<div class="col-xs-4">
 					<input class="form-control" id="name" type="text" name="duration"
 					       value="<?php echo  $durationPrint ?>" 

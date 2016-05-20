@@ -1646,6 +1646,12 @@ class SyTranslator {
             return "When manager/admin edit a reservation";
         }
         
+        public static function booking_time_scale($lang){
+            if ($lang == "Fr") {
+                return "Echelle de temps par défaut";
+            }
+            return "Default booking scale";
+        }
 }
 
 
