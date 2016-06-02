@@ -2,6 +2,7 @@
 require_once 'Framework/Controller.php';
 require_once 'Framework/Configuration.php';
 require_once 'Modules/core/Controller/ControllerSecureNav.php';
+require_once 'Modules/core/Model/CoreStatus.php';
 
 /**
  * 

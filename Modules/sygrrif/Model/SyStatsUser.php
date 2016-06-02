@@ -353,7 +353,7 @@ class SyStatsUser extends Model {
 		$id = $resource_id;
 		$nom = date('Y-m-d-H-i')."_".$id.".xlsx";
 		$teamName = Configuration::get("name");
-		$footer = "https://bioimagerie.univ-rennes1.fr/".$teamName."/exportFiles/".$nom;
+		$footer = "platform-manager/".$teamName."/exportFiles/".$nom;
 		
 		
 		$modelAuthorisation = new SyAuthorization();
@@ -527,7 +527,7 @@ class SyStatsUser extends Model {
 			$colonne='A';
 			$sheet->getRowDimension($ligne)->setRowHeight(13);
 		
-			$sheet->SetCellValue($colonne.$ligne,$r["userName"]); // user name
+			$sheet->SetCellValue($colonne.$ligne,$r["name"] . " " . $r["firstname"]); // user name
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($style2);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($center);
 			$sheet->getStyle($colonne.$ligne)->applyFromArray($borderLR);

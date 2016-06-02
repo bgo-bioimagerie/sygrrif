@@ -314,7 +314,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, $unitName);
             $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, $modelUser->getUserFUllName($proj["id_user"]));
             $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, $proj["name"]);
-            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, $proj["date_close"]);
+            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, CoreTranslator::dateFromEn($proj["date_close"], $lang));
             
             $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
@@ -502,7 +502,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, $unitName);
             $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, $modelUser->getUserFUllName($proj["id_user"]));
             $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, $proj["name"]);
-            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, $proj["date_close"]);
+            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, CoreTranslator::dateFromEn($proj["date_close"], $lang));
             
             $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
@@ -514,6 +514,7 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $idx = -1;
             $entries = $proj["entries"];
             $offset = 5;
+            $projItemCount = 0;
             foreach ($entries as $entry) {
                 $idx++;
                 $pos = $this->findItemPos($items, $entry["id"]);
@@ -521,12 +522,17 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
                     //print_r($entry);
                     $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($pos + $offset) . $curentLine, $entry["sum"]);
                     $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($pos + $offset) . $curentLine)->applyFromArray($styleBorderedCell);
-                
+                    $projItemCount += $entry["sum"];
                     //$itemsTotal[$idx] += floatval($entry["sum"]);
                 }
                 
             }
             //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $proj["total"]);
+        
+            if($projItemCount == 0){
+                $objPHPExcel->getActiveSheet()->removeRow($curentLine);
+                $curentLine--;
+            }
         }
         
         // total services sum

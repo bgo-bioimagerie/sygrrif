@@ -407,23 +407,24 @@ class SpProject extends Model {
 
             $projectEntries = $this->getPeriodProjectEntries($projects[$i]["id"], $beginPeriod, $endPeriod);
 
-            // get active items
-            $activeItems = $this->getProjectItems($projectEntries);
-            $itemsSummary = $this->getProjectItemsSymmary($projectEntries, $activeItems); 
-            //print_r($itemsSummary);
+            //if (count($projectEntries) > 0){
+                // get active items
+                $activeItems = $this->getProjectItems($projectEntries);
+                $itemsSummary = $this->getProjectItemsSymmary($projectEntries, $activeItems); 
+                //print_r($itemsSummary);
 
-            $projects[$i]["entries"] = $itemsSummary;
-            //print_r($itemsSummary);
-            foreach ($itemsSummary as $itSum){
-                if ($itSum["pos"] > 0 && !in_array($itSum["id"], $items)){
-                    $items[] = $itSum["id"];
+                $projects[$i]["entries"] = $itemsSummary;
+                //print_r($itemsSummary);
+                foreach ($itemsSummary as $itSum){
+                    if ($itSum["pos"] > 0 && !in_array($itSum["id"], $items)){
+                        $items[] = $itSum["id"];
+                    }
                 }
-            }
-      
-            $id_unit = $modelUser->getUserUnit($projects[$i]["id_resp"]);
-            $LABpricingid = $modelUnit->getBelonging($id_unit);
-            $projects[$i]["total"] = $this->calculateProjectTotal($itemsSummary, $LABpricingid);
-            
+
+                $id_unit = $modelUser->getUserUnit($projects[$i]["id_resp"]);
+                $LABpricingid = $modelUnit->getBelonging($id_unit);
+                $projects[$i]["total"] = $this->calculateProjectTotal($itemsSummary, $LABpricingid);
+            //}
         }
         
         return array("items" => $items, "projects" => $projects);

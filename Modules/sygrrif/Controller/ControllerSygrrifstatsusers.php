@@ -56,7 +56,7 @@ class ControllerSygrrifstatsusers extends ControllerSecureNav {
 		}
 		else{
 			header_remove();
-			ob_clean();
+			//ob_clean();
 			$statUserModel->authorizedUsers($resource_id, $lang);
 		}	
 		

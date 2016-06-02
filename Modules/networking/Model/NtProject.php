@@ -30,12 +30,12 @@ class NtProject extends Model {
 		);";
 		$this->runRequest($sqlju);
                 
-                $sqlju = "CREATE TABLE IF NOT EXISTS `nt_j_project_group` (
+                $sqljp = "CREATE TABLE IF NOT EXISTS `nt_j_project_group` (
 		`id_project` int(11) NOT NULL,
                 `id_group` int(11) NOT NULL,
                 `id_role` int(11) NOT NULL
 		);";
-		$this->runRequest($sqlju);
+		$this->runRequest($sqljp);
                 
                 $sqljd = "CREATE TABLE IF NOT EXISTS `nt_j_projects_data` (
 		`id` int(11) NOT NULL AUTO_INCREMENT,
@@ -168,7 +168,7 @@ class NtProject extends Model {
                 return $this->update($id, $name, $adressed_problem, $expected_results, $protocol, $date_created);
             }
             else{
-                return $this->add($id, $name, $adressed_problem, $expected_results, $protocol, $date_created);
+                return $this->add($name, $adressed_problem, $expected_results, $protocol, $date_created);
             }
         }
         

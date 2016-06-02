@@ -114,4 +114,3 @@ class CoreStatus extends Model {
                 }
 	}
 }
-

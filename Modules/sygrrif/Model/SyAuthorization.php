@@ -718,20 +718,27 @@ class SyAuthorization extends Model {
 	
 	
 	public function getActiveAuthorizationSummaryForResourceCategory($resource_id, $lang){
-		$sql = "SELECT * FROM sy_authorization WHERE sy_authorization.resource_id=? AND sy_authorization.is_active=1";
+                
+                $sql = "SELECT DISTINCT core_users.name, auth.visa_id, auth.date, core_users.firstname, core_users.email,"
+                        . "core_units.name AS unitName " .
+                       "FROM sy_authorization AS auth " .
+                       "INNER JOIN core_units ON auth.lab_id = core_units.id " .
+                       "INNER JOIN core_users ON auth.user_id = core_users.id " .
+                       "WHERE auth.resource_id=? AND auth.is_active=1 "
+                        . " ORDER BY core_users.name ASC;"; 
+    			 
+		//$sql = "SELECT * FROM sy_authorization WHERE sy_authorization.resource_id=? AND sy_authorization.is_active=1";
 		$req = $this->runRequest($sql, array($resource_id));
 		$auth = $req->fetchAll();
 		
 		$modelVisa = new SyVisa();
-		$modelUser = new CoreUser();
-		$modelUnit = new CoreUnit();
+		//$modelUser = new CoreUser();
+		//$modelUnit = new CoreUnit();
 		for($i = 0 ; $i < count($auth) ; $i++){
 			$auth[$i]["visa"] = $modelVisa->getVisaShortDescription($auth[$i]["visa_id"], $lang);
-			$auth[$i]["userName"] = $modelUser->getUserFUllName($auth[$i]["user_id"]);
-			$auth[$i]["userEmail"] = $modelUser->getUserEmail($auth[$i]["user_id"]);
-			$auth[$i]["unitName"] = $modelUnit->getUnitName($auth[$i]["lab_id"]);
-			
-			
+			//$auth[$i]["userName"] = $modelUser->getUserFUllName($auth[$i]["user_id"]);
+			//$auth[$i]["userEmail"] = $modelUser->getUserEmail($auth[$i]["user_id"]);
+			//$auth[$i]["unitName"] = $modelUnit->getUnitName($auth[$i]["lab_id"]);
 		}
 		return $auth;
 	}
