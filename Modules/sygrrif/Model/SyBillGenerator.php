@@ -408,7 +408,7 @@ class SyBillGenerator extends Model {
 		$stylesheet = $this->stylesheet();
 		
 		// load the template
-		$file = "data/template.xls";
+		$file = "data/sygrrif/template.xls";
 		$XLSDocument = new PHPExcel_Reader_Excel5();
 		$objPHPExcel = $XLSDocument->load($file);
 		
