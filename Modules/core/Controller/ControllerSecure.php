@@ -39,18 +39,18 @@ abstract class ControllerSecure extends Controller
         	//$connect = $modelUser->connect2($login, $pwd);
         	//echo "connect = " . $connect . "</br>";
         	if ($modelUser->isUser($login) && Configuration::get("name") == $company){
-            	parent::runAction($action);
+                    parent::runAction($action);
         	}
         	else{
         		//echo "redirect to connection here";
-                        $this->callAction($action);
-        		//$this->redirect("connection");
+                        //$this->callAction($action);
+        		$this->redirect("connection");
         	}
         }
         else {
             //echo "redirect to connection";
-            //$this->redirect("connection");
-            $this->callAction($action);
+            $this->redirect("connection");
+            //$this->callAction($action);
         }
     }
     public function getLanguage(){

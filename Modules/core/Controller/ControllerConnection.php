@@ -111,6 +111,7 @@ class ControllerConnection extends Controller
                     $redirectController = $redirectionForm;
                 }
                 
+                //echo "redirection = " .  $redirectController . "<br/>";
                 $this->redirect($redirectController);
             }
             else{
