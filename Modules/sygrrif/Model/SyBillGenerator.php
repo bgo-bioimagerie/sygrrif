@@ -363,8 +363,7 @@ class SyBillGenerator extends Model {
 		$modelUnit = new CoreUnit();
 		$LABpricingid = $modelUnit->getBelonging($unit_id);
 		if ($LABpricingid <= 1 ){
-                        //echo "no price id for the unit " . $unit_id . "<br/>";
-			return;
+                        return "no price id for the unit " . $modelUnit->getUnitName($unit_id) . "<br/>";
 		}
 
 		// responsible fullname
@@ -391,8 +390,7 @@ class SyBillGenerator extends Model {
 		
 		$bookingUsers = $this->generateBillGetBookersUsersInfo($searchDate_start, $searchDate_end, $LABpricingid, $unit_id, $responsible_id);
 		if (count($bookingUsers) == 0){
-			echo "ERROR: no reservations found ! <br/>";
-			return;
+                    return "ERROR: no reservations found for responsible" . $modelUser->getUserFUllName($responsible_id) . "";
 		}
 		
 		$packagesPrices = $this->getUnitPackagePricesForEachResource($resources, $LABpricingid);
@@ -400,7 +398,6 @@ class SyBillGenerator extends Model {
 		
 		$reservationsSummary = $this->generateBillGetReservations($searchDate_start, $searchDate_end, $resources, $bookingUsers, 
 				$packagesPrices, $timePrices, $responsible_id);
-		
 		
 		// ///////////////////////////////////////// //
 		//             Generate invoice xls          //
