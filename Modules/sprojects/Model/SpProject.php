@@ -397,7 +397,7 @@ class SpProject extends Model {
     }
 
     public function getPeriodeServicesBalances($beginPeriod, $endPeriod){
-        $sql = "select * from sp_projects where date_close<? OR date_close='0000-00-00'";
+        $sql = "select * from sp_projects where date_close>=? OR date_close='0000-00-00'";
         $req = $this->runRequest($sql, array($beginPeriod));
         $projects = $req->fetchAll();
         $items = array();

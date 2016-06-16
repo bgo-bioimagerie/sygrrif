@@ -473,15 +473,15 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
         $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, CoreTranslator::Unit($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, CoreTranslator::User($lang));
         $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, SpTranslator::No_Projet($lang));
-        $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, SpTranslator::Closed_date($lang));
+        //$objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, SpTranslator::Closed_date($lang));
         
         $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('C' . $curentLine)->applyFromArray($styleBorderedCell);
         $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
-        $objPHPExcel->getActiveSheet()->getStyle('E' . $curentLine)->applyFromArray($styleBorderedCell);
+        //$objPHPExcel->getActiveSheet()->getStyle('E' . $curentLine)->applyFromArray($styleBorderedCell);
 
-        $itemIdx = 5;
+        $itemIdx = 4;
         $items = $projectsBalance["items"];
         $modelItem = new SpItem();
         
@@ -492,6 +492,17 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             
         }
         $itemIdx++;
+        
+        $lastItemIdx = $itemIdx-1;
+        $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($lastItemIdx+1) . $curentLine, SpTranslator::Opened_date($lang));
+        $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($lastItemIdx+1) . $curentLine)->applyFromArray($styleBorderedCell);
+        
+        $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($lastItemIdx+2) . $curentLine, SpTranslator::Time_limite($lang));
+        $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($lastItemIdx+2) . $curentLine)->applyFromArray($styleBorderedCell);
+
+        $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($lastItemIdx+3) . $curentLine, SpTranslator::Closed_date($lang));
+        $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($lastItemIdx+3) . $curentLine)->applyFromArray($styleBorderedCell);
+        
         //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, SpTranslator::TotalPrice($lang));
 
         $projects = $projectsBalance["projects"];
@@ -502,18 +513,29 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             $objPHPExcel->getActiveSheet()->SetCellValue('B' . $curentLine, $unitName);
             $objPHPExcel->getActiveSheet()->SetCellValue('C' . $curentLine, $modelUser->getUserFUllName($proj["id_user"]));
             $objPHPExcel->getActiveSheet()->SetCellValue('D' . $curentLine, $proj["name"]);
-            $objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, CoreTranslator::dateFromEn($proj["date_close"], $lang));
+            //$objPHPExcel->getActiveSheet()->SetCellValue('E' . $curentLine, CoreTranslator::dateFromEn($proj["date_close"], $lang));
             
             $objPHPExcel->getActiveSheet()->getStyle('A' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('B' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('C' . $curentLine)->applyFromArray($styleBorderedCell);
             $objPHPExcel->getActiveSheet()->getStyle('D' . $curentLine)->applyFromArray($styleBorderedCell);
-            $objPHPExcel->getActiveSheet()->getStyle('E' . $curentLine)->applyFromArray($styleBorderedCell);
+            //$objPHPExcel->getActiveSheet()->getStyle('E' . $curentLine)->applyFromArray($styleBorderedCell);
 
+            $dateClosed = "";
+            if ($proj["date_close"] != "0000-00-00"){
+                $dateClosed = CoreTranslator::dateFromEn($proj["date_close"], $lang);
+            }
+            $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($lastItemIdx+1) . $curentLine, CoreTranslator::dateFromEn($proj["date_open"], $lang));
+            $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($lastItemIdx+2) . $curentLine, CoreTranslator::dateFromEn($proj["time_limit"], $lang));
+            $objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($lastItemIdx+3) . $curentLine, $dateClosed);
+            $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($lastItemIdx+1) . $curentLine)->applyFromArray($styleBorderedCell);
+            $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($lastItemIdx+2) . $curentLine)->applyFromArray($styleBorderedCell);
+            $objPHPExcel->getActiveSheet()->getStyle($this->get_col_letter($lastItemIdx+3) . $curentLine)->applyFromArray($styleBorderedCell);
+            
             // "entries"
             $idx = -1;
             $entries = $proj["entries"];
-            $offset = 5;
+            $offset = 4;
             $projItemCount = 0;
             foreach ($entries as $entry) {
                 $idx++;
@@ -529,10 +551,10 @@ class ControllerSprojectsbalancesheet extends ControllerSecureNav {
             }
             //$objPHPExcel->getActiveSheet()->SetCellValue($this->get_col_letter($itemIdx) . $curentLine, $proj["total"]);
         
-            if($projItemCount == 0){
-                $objPHPExcel->getActiveSheet()->removeRow($curentLine);
-                $curentLine--;
-            }
+            //if($projItemCount == 0){
+            //    $objPHPExcel->getActiveSheet()->removeRow($curentLine);
+            //    $curentLine--;
+            //}
         }
         
         // total services sum
