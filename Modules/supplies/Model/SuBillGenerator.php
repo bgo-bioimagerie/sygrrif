@@ -16,6 +16,9 @@ class SuBillGenerator extends Model {
 	
         public function invoiceResponsible($responsibleID, $lang){
             $invoiceNumber = $this->calculateBillNumber();
+            if ($responsibleID <= 2){
+                echo "Cannot find the person in charge of the unit <br/>";
+            }
             $this->invoice($responsibleID, $invoiceNumber, "", $lang);
         }
         
@@ -75,9 +78,11 @@ class SuBillGenerator extends Model {
 		// responsible fullname
 		$modelUser = new CoreUser();
 		$responsibleFullName = $modelUser->getUserFUllName($responsible_id);
+                //echo "responsible_id = " . $responsible_id . "<br/>";
 		$unit_id = $modelUser->getUserUnit($responsible_id); 	
                 
                 if ($unit_id < 2){
+                    echo "unit id = " . $unit_id . "<br/>";
                     return;
                 }
 		// unit name
@@ -428,6 +433,7 @@ class SuBillGenerator extends Model {
 		
 		// Save the xls file
                 $objWriter = new PHPExcel_Writer_Excel5($objPHPExcel);
+                //echo "bill dir = " . $billDir . "<br/>";
 		if ($billDir == ""){
             
                     $objWriter->save($invoiceurl);

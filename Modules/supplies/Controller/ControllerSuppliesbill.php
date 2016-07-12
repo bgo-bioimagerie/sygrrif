@@ -42,7 +42,7 @@ class ControllerSuppliesbill extends ControllerSecureNav {
 		if ($selectedUnitId != 0 && $responsible_id > 1){
 				
 			// if the form is correct, calculate the output
-			$this->billOutput($selectedUnitId, $responsible_id);
+			$this->billOutput($responsible_id);
 			return;
 		}
 		
@@ -70,6 +70,7 @@ class ControllerSuppliesbill extends ControllerSecureNav {
 	}
 	
 	protected function billOutput($responsible_id){
+            //echo "bill output start <br/>";
                 $lang = $this->getLanguage();
 		$billgenaratorModel = new SuBillGenerator();
 		$billgenaratorModel->invoiceResponsible($responsible_id, $lang);
