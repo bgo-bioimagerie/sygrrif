@@ -177,7 +177,7 @@ class Form
         $this->useJavascript[] = false;
     }
     
-    public function addDownload($name, $label){
+    public function addUpload($name, $label){
     	$this->types[] = "download";
     	$this->names[] = $name;
     	$this->labels[] = $label;

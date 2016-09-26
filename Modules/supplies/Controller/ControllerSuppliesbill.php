@@ -19,6 +19,7 @@ class ControllerSuppliesbill extends ControllerSecureNav {
         $selectedUnitId = 0;
         if ($unit_id != "" && $unit_id > 1) {
             $selectedUnitId = $unit_id;
+
         }
 
         $modelConfig = new CoreConfig();
