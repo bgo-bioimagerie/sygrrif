@@ -32,31 +32,29 @@ if (!$canEditReservation){
 
 <style>
 
-<?php 
-if (!isset($reservationInfo) ){
-?>
-	#package_div {
-	    display: none;
-	} 
-<?php 
-}
-else{
-	if ( $reservationInfo["package_id"] == 0 && $resourceInfo["use_package"] < 2){
-	?>
-	#package_div {
-	    display: none;
-	} 
-<?php 
-}
-else{
-?>
-	#resa_time_div {
-	    display: none;
-	}
-<?php
-}
-}
-?>
+    <?php
+    if (!isset($reservationInfo)) {
+        ?>
+    	#package_div {
+    	    display: none;
+    	} 
+        <?php
+    } else {
+        if ($reservationInfo["package_id"] == 0 && $resourceInfo["use_package"] < 2) {
+            ?>
+        	#package_div {
+        	    display: none;
+        	} 
+            <?php
+        } else {
+            ?>
+        	#resa_time_div {
+        	    display: none;
+        	}
+            <?php
+        }
+    }
+    ?>
 	
 </style>
 </header>

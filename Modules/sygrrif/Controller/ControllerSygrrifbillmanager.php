@@ -61,6 +61,7 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		$table->addLineEditButton ( "sygrrifbillmanager/edit" );
 		$table->addDeleteButton ( "sygrrifbillmanager/removeentry", "id", "number" );
 		$table->addPrintButton ( "sygrrifbillmanager/index/" );
+                $table->addExportButton( "sygrrifbillmanager/index/" );
 		
 		if ($projectStatus > 0){
 			$tableContent = array (
@@ -92,6 +93,10 @@ class ControllerSygrrifbillmanager extends ControllerSecureNav {
 		//$print = $this->request->getParameterNoException ( "print" );
 		if ($table->isPrint ()) {
 			echo $tableHtml;
+			return;
+		}
+                if ($table->isExport()){
+			echo $table->exportCsv($billsList, $tableContent);
 			return;
 		}
 		

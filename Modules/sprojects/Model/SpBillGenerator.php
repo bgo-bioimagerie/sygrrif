@@ -50,6 +50,7 @@ class SpBillGenerator extends Model {
 		$LABpricingid = $modelUnit->getBelonging($id_unit);
 		//echo "lab pricing id = " . $LABpricingid . "<br/>";
 		$unitName = $modelUnit->getUnitName($id_unit);
+                $userName = $modelUser->getUserFUllName($id_user);
 		$responsibleFullName = $modelUser->getUserFUllName($id_resp);
 		//$userFullName = $modelUser->getUserFUllName($id_user);
 		
@@ -231,6 +232,26 @@ class SpBillGenerator extends Model {
 			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $responsibleFullName);
 		}
 		
+                // replace the user
+                $rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
+		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");
+		$insertCol = "";
+		foreach($rowIterator as $row) {
+			for ($i = 0 ; $i < count($col) ; $i++){
+				$rowIndex = $row->getRowIndex ();
+				$num = $objPHPExcel->getActiveSheet()->getCell($col[$i].$rowIndex)->getValue();
+				if (strpos($num,"{utilisateur}") !== false){
+					$insertLine = $rowIndex;
+					$insertCol = $col[$i];
+					break;
+				}
+			}
+		}
+		if ($insertCol != ""){
+			$objPHPExcel->getActiveSheet()->SetCellValue($insertCol.$insertLine, $userName);
+		}
+                
+                
 		// replace $unitName
 		$rowIterator = $objPHPExcel->getActiveSheet()->getRowIterator();
 		$col = array("A", "B","C","D","E","F","G","H","I","J","K","L");

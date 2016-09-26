@@ -53,7 +53,7 @@ a{
 
 <!-- Add the table title -->
 <br></br>
-<div class="col-lg-12">
+<div class="col-md-10">
 <div class="col-lg-10 col-lg-offset-1">
 	<?php if ($message != ""): 
 		if (strpos($message, "Error") === false){?>
@@ -73,9 +73,9 @@ a{
 </div>
 </div>
 
-<div class="col-lg-12">
+<div class="col-lg-10">
 
-<div class="col-md-8 text-left">
+<div class="col-md-6 text-left">
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/daybefore'"> &lt; </button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/dayafter'"> > </button>
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/today'"><?php echo  SyTranslator::Today($lang) ?></button>
@@ -98,7 +98,7 @@ for ($p = 0 ; $p < count($day_position) ; $p++){
 </div>
 
 
-<div class="col-md-4 text-right">
+<div class="col-md-6 text-right">
 <button type="button" class="btn btn-default active"><?php echo  SyTranslator::Day($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookdayarea'" class="btn btn-default"><?php echo  SyTranslator::Day_Area($lang) ?></button>
 <button type="button" onclick="location.href='calendar/bookweek'" class="btn btn-default "><?php echo  SyTranslator::Week($lang) ?></button>
@@ -119,7 +119,7 @@ $available_days = explode(",", $available_days);
 ?>
 
 <!-- hours column -->
-<div class="col-xs-12">
+<div class="col-xs-10">
 <div class="col-xs-1" id="colDiv">
 
 	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo $agendaStyle["header_background"]?>;">
@@ -169,7 +169,7 @@ $available_days = explode(",", $available_days);
 </div>
 </div>
 
-<div class="col-xs-12">
+<div class="col-xs-10">
 
 <?php include "Modules/sygrrif/View/colorcodenavbar.php"; ?>
 

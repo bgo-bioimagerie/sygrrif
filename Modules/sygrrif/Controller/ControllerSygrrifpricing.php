@@ -558,8 +558,11 @@ class ControllerSygrrifpricing extends ControllerSecureNav {
                 // Ouverture de l’archive réussie.
                 // Récupération des fichiers.
                 $fichiers = scandir($billDir);
+                //print_r($fichiers);
                 // On enlève . et .. qui représentent le dossier courant et le dossier parent.
                 unset($fichiers[0], $fichiers[1]);
+                //echo "<br/>";
+                //print_r($fichiers);
 
                 foreach ($fichiers as $f) {
                     // On ajoute chaque fichier à l’archive en spécifiant l’argument optionnel.

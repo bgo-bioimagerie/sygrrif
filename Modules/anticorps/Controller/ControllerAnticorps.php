@@ -570,7 +570,7 @@ class ControllerAnticorps extends ControllerSecureNav {
 	
 		// get source info
 		$anticorpsModel = new Anticorps();
-		$source = $anticorpsModel->delete($id);
+		$anticorpsModel->delete($id);
 	
 		$this->redirect ( "anticorps" );
 	}
