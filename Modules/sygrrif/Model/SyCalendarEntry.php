@@ -92,7 +92,7 @@ class SyCalendarEntry extends Model {
 	}
 	
 	public function getZeroRespEntries(){
-		$sql = "select * from sy_calendar_entry WHERE responsible_id=0";
+		$sql = "select * from sy_calendar_entry WHERE (responsible_id=0 OR responsible_id=1 )";
 		$req = $this->runRequest($sql);
 		return $req->fetchAll();
 	}
@@ -335,7 +335,7 @@ class SyCalendarEntry extends Model {
 		//echo "resp_id = " . $resp_id . "<br/>";
 		$q = array('start'=>$startdate, 'end'=>$enddate, 'resp'=>$resp_id);
 		$sql = 'SELECT DISTINCT recipient_id, id FROM sy_calendar_entry WHERE
-				(start_time >=:start AND start_time <= :end) AND (responsible_id = :resp OR responsible_id = 0)';
+				(start_time >=:start AND start_time <= :end) AND (responsible_id = :resp OR responsible_id = 0 OR recipient_id = :resp)';
 		$req = $this->runRequest($sql, $q);
 		//$recs = $req->fetchAll();
 		

@@ -53,7 +53,7 @@ a{
 
 <!-- Add the table title -->
 <br></br>
-<div class="col-md-10">
+<div class="col-md-12">
 <div class="col-lg-10 col-lg-offset-1">
 	<?php if ($message != ""): 
 		if (strpos($message, "Error") === false){?>
@@ -73,7 +73,7 @@ a{
 </div>
 </div>
 
-<div class="col-lg-10">
+<div class="col-lg-12">
 
 <div class="col-md-6 text-left">
 <button type="submit" class="btn btn-default" onclick="location.href='calendar/bookday/daybefore'"> &lt; </button>
@@ -119,7 +119,7 @@ $available_days = explode(",", $available_days);
 ?>
 
 <!-- hours column -->
-<div class="col-xs-10">
+<div class="col-xs-12">
 <div class="col-xs-1" id="colDiv">
 
 	<div id="tcelltop" style="height: <?php echo $agendaStyle["header_height"]?>px; background-color:<?php echo $agendaStyle["header_background"]?>;">
