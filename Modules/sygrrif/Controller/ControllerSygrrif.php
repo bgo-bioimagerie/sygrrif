@@ -429,7 +429,7 @@ class ControllerSygrrif extends ControllerBooking {
 			
 			if ($view_counting != ""){
 				$msData = $modelAuth->minimalStatistics($searchDate_start, $searchDate_end, $user_id, $curentunit_id, 
-			                          $trainingunit_id, $visa_id, $resource_id);
+			                          $trainingunit_id, $visa_id, $resource_id, $lang);
 			}
 			
 			if ($view_details != ""){
@@ -438,7 +438,7 @@ class ControllerSygrrif extends ControllerBooking {
 			}
 			
 			if ($view_pie_chart != ""){
-				$camembert = $modelAuth->statsResources($searchDate_start, $searchDate_end);
+				$camembert = $modelAuth->statsResources($searchDate_start, $searchDate_end, $lang);
 			}
 			
 			$resultsVisible = true;

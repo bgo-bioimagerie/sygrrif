@@ -328,7 +328,7 @@ class SyAuthorization extends Model {
 	 * @return array Statistics
 	 */
 	public function minimalStatistics($searchDate_start, $searchDate_end, $user_id, $unit_id, 
-			                          $oldunit_id, $visa_id, $resource_id){
+			                          $oldunit_id, $visa_id, $resource_id, $lang = 'en'){
 		
 		$t = array();
 		$t["erreur"] = "no";
@@ -423,7 +423,7 @@ class SyAuthorization extends Model {
 					
 			$criteres .= "Resource : ".$machine."<br/>";
 		}
-		$criteres .= "Date begin : ".$ddebut."<br/> Date end : ".$dfin."<br/>";
+		$criteres .= SyTranslator::Date_Start($lang) . " : ".$ddebut."<br/> ".SyTranslator::Date_End($lang)." : ".$dfin."<br/>";
 		
 		$sql_search_0 = $sql_search_0.$sql_search.'date >=:start AND date <= :end ORDER BY date';
 		$req = $this->runRequest($sql_search_0, $q_search);
@@ -638,7 +638,7 @@ class SyAuthorization extends Model {
 	 * @param date $searchDate_end
 	 * @return string: XML graph
 	 */
-	public function statsResources($searchDate_start, $searchDate_end){
+	public function statsResources($searchDate_start, $searchDate_end, $lang){
 		
 		$q = array( "start" => $searchDate_start, "end" => $searchDate_end);
 		$sql = 'SELECT id FROM sy_authorization WHERE date >=:start AND date <=:end';
@@ -661,7 +661,7 @@ class SyAuthorization extends Model {
 		$test .= '<desc>Formations</desc>';
 		$test .= '<rect x="0" y="0" width="900" height="600" fill="white" stroke="black" stroke-width="0"/>';
 		$test .= '<g>';
-		$test .= '<text x="450" y="40" font-size="20" fill="black" stroke="none" text-anchor="middle">Training for each resource from '.$searchDate_start.' to '.$searchDate_end.'</text>';
+		$test .= '<text x="450" y="40" font-size="20" fill="black" stroke="none" text-anchor="middle">'. SyTranslator::Training_for_each_resource_from($lang) .$searchDate_start. " " .SyTranslator::to($lang). " " .$searchDate_end.'</text>';
 		$test .= '</g>';
 		$couleur = array("#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
 				"#FC441D","#FE8D11","#FCC212","#6AC720","#53D745","#156947","#291D81","#804DA4","#E4AADF","#FF77EE",
@@ -683,7 +683,7 @@ class SyAuthorization extends Model {
 			$sql = 'SELECT id FROM sy_authorization WHERE date >=:start AND date <=:end AND resource_id="'.$mFL[0].'"';
 			$req = $this->runRequest($sql, $q);
 			$tmp = $modelResouces->getResourcesCategoryName($mFL[0]);
-			$numMachinesFormes[0][$i] = $tmp[0];
+			$numMachinesFormes[0][$i] = $tmp;
 			$numMachinesFormes[1][$i] = $req->rowCount();
 			$i++;
 		}
@@ -697,8 +697,8 @@ class SyAuthorization extends Model {
 			$test .= '<path d="M '.$departX.' '.$departY.' A 250 250 0 0 0 '.$arriveeX.' '.$arriveeY.' L 300 330" fill="'.$couleur[$i].'" stroke="black"/>';
 			$test .= '<g>';
 			$test .= '<rect x="580" y="'.(100+25*$i).'" width="30" height="12" rx="5" ry="5" fill="'.$couleur[$i].'" stroke="'.$couleur[$i].'" stroke-width="2"/>';
-			$test .= '<text x="625" y="'.(100+25*$i).'" font-size="19" fill="black" stroke="none" text-anchor="start" baseline-shift="-12px">'.$numMachinesFormes[0][$i].' :</text>';
-			$test .= '<text x="820" y="'.(100+25*$i).'" font-size="19" fill="black" stroke="none" text-anchor="start" baseline-shift="-12px">'.$numMachinesFormes[1][$i].'</text>';
+			$test .= '<text x="615" y="'.(110+25*$i).'" font-size="19" fill="black" stroke="none" text-anchor="start" baseline-shift="-12px">'.$numMachinesFormes[0][$i].' :</text>';
+			$test .= '<text x="850" y="'.(110+25*$i).'" font-size="19" fill="black" stroke="none" text-anchor="start" baseline-shift="-12px">'.$numMachinesFormes[1][$i].'</text>';
 			$test .= '</g>';
 				
 			$departX = $arriveeX;

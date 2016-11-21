@@ -1652,6 +1652,13 @@ class SyTranslator {
             }
             return "Default booking scale";
         }
+        
+        public static function Training_for_each_resource_from($lang){
+            if ($lang == "Fr") {
+                return "Formations par type de resources du ";
+            }
+            return "Training for each resource from ";
+        } 
 }
 
 

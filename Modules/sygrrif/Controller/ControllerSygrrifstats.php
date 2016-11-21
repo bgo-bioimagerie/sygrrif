@@ -92,6 +92,7 @@ class ControllerSygrrifstats extends ControllerBooking {
 		if($export_type == 1){
 				
 			$camembertContent = $modelGraph->getCamembertContent($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
+                        //echo "timeTotal = " . $graphTimeArray['timeTotal'] . "<br>";
 			$camembertTimeContent = $modelGraph->getCamembertTimeContent($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);
 			$camembertContentResourcesType = $modelGraph->getCamembertContentResourceType($month_start, $year_start, $month_end, $year_end, $graphArray['numTotal']);
 			$camembertTimeContentResourcesType = $modelGraph->getCamembertTimeContentResourceType($month_start, $year_start, $month_end, $year_end, $graphTimeArray['timeTotal']);

@@ -184,19 +184,19 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 		echo $gAnnee2;
 		
 		if (Configuration::get("saveImages") == "enable"){
-			$nameFile = "data/temp/bilan_resaSVG.svg";
+			$nameFile = "data/temp/bilan_resa2SVG.svg";
 			$openFile = fopen($nameFile,"w");
 			$toWrite = $gAnnee2;
 			fwrite($openFile, $toWrite);
 			fclose($openFile);
 			
-			exec('sudo /usr/bin/inkscape -D data/temp/bilan_resaSVG.svg -e data/temp/bilan_resaJPG.jpg -b "#ffffff" -h800');
+			exec('sudo /usr/bin/inkscape -D data/temp/bilan_resa2SVG.svg -e data/temp/bilan_resa2JPG.jpg -b "#ffffff" -h800');
 		}
 		?>
 	</div>
 	<?php if (Configuration::get("saveImages") == "enable"){ ?>
 	<div class='col-md-2 col-md-offset-1'>
-	<button type="button" onclick="location.href='data/temp/bilan_resaJPG.jpg'" download="bilan_reservations<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
+	<button type="button" onclick="location.href='data/temp/bilan_resa2JPG.jpg'" download="bilan_reservations<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 	</div>
 	<?php } ?>	
 		
@@ -250,19 +250,19 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 			echo $camembert2;
 			
 			if (Configuration::get("saveImages") == "enable"){
-				$nameFile = "data/temp/camembert_resaSVG.svg";
+				$nameFile = "data/temp/camembert_resa2SVG.svg";
 				$openFile = fopen($nameFile,"w");
 				$toWrite = $camembert2;
 				fwrite($openFile, $toWrite);
 				fclose($openFile);
 		
-				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resaSVG.svg -e data/temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resa2SVG.svg -e data/temp/camembert_resa2JPG.jpg -b "#ffffff" -h800');
 			}
 		?>
 		</div>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<div class='col-md-2 col-md-offset-1'>
-		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
+		<button type="button" onclick="location.href='data/temp/camembert_resa2JPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 		</div>
 		<?php }?>
 		
@@ -283,19 +283,19 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 			echo $camembert2;
 			
 			if (Configuration::get("saveImages") == "enable"){
-				$nameFile = "data/temp/camembert_resaSVG.svg";
+				$nameFile = "data/temp/camembert_resa3SVG.svg";
 				$openFile = fopen($nameFile,"w");
 				$toWrite = $camembert2;
 				fwrite($openFile, $toWrite);
 				fclose($openFile);
 		
-				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resaSVG.svg -e data/temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resa3SVG.svg -e data/temp/camembert_resa3JPG.jpg -b "#ffffff" -h800');
 			}
 		?>
 		</div>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<div class='col-md-2 col-md-offset-1'>
-		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
+		<button type="button" onclick="location.href='data/temp/camembert_resa3JPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 		</div>
 		<?php }?>	
 		
@@ -315,19 +315,19 @@ $courbe .= '<path d="' . $path . '" fill="none" stroke-width="1px" stroke="red"/
 			echo $camembert2;
 			
 			if (Configuration::get("saveImages") == "enable"){
-				$nameFile = "data/temp/camembert_resaSVG.svg";
+				$nameFile = "data/temp/camembert_resa4SVG.svg";
 				$openFile = fopen($nameFile,"w");
 				$toWrite = $camembert2;
 				fwrite($openFile, $toWrite);
 				fclose($openFile);
 		
-				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resaSVG.svg -e data/temp/camembert_resaJPG.jpg -b "#ffffff" -h800');
+				exec('sudo /usr/bin/inkscape -D data/temp/camembert_resa4SVG.svg -e data/temp/camembert_resa4JPG.jpg -b "#ffffff" -h800');
 			}
 		?>
 		</div>
 		<?php if (Configuration::get("saveImages") == "enable"){ ?>
 		<div class='col-md-2 col-md-offset-1'>
-		<button type="button" onclick="location.href='data/temp/camembert_resaJPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
+		<button type="button" onclick="location.href='data/temp/camembert_resa4JPG.jpg'" download="pie_chart_booking<?php echo $annee?>" class="btn btn-primary" id="navlink"><?php echo  SyTranslator::Export_as_jpeg($lang) ?></button>
 		</div>
 		<?php }?>		
 		
