@@ -458,7 +458,7 @@ class SyTranslator {
 	}
 	public static function Delete($lang = "") {
 		if ($lang == "Fr") {
-			return "Suprimer";
+			return "Supprimer";
 		}
 		return "Delete";
 	}
@@ -1362,7 +1362,7 @@ class SyTranslator {
 	}
 	static public function Remove($lang) {
 		if ($lang == "Fr") {
-			return "Suprimer";
+			return "Supprimer";
 		}
 		return "Remove";
 	}
